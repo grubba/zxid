@@ -1,0 +1,205 @@
+# zxid/Changes
+# $Id: Changes,v 1.39 2010-01-08 02:10:09 sampo Exp $
+# Change log, minor credits, and release history
+
+Usual suspects: zxid.user@lists.unh.edu
+
+To do:
+    - Limited SP local attribute authority
+    - shell script az
+    - shell script wsc using authentication service
+    - Add Trust and Privacy Negotiation capability to discovery
+    - Add Az calls to zxid_wsp_validate() and zxid_wsp_decorate()
+    - Do proper signature validation in zxid_wsp_validate()
+zxid-0.45:: 7.1.2010
+    - Fixed error handling when unable to decrypt an assertion
+    - Fixed mod_auth_saml redirect_to_content when no relay state
+    - Do proper signing in zxid_wsf_call() and zxid_wsp_decorate()
+zxid-0.44:: 16.12.2009
+    - Fixed transient always on bug
+    - Fixed memory free bug in case where defederation is not supported
+zxid-0.43:: 29.11.2009
+    - Fix PHP support for zxid_wsp_validate() and zxid_wsp_decorate()
+    - Renamed hexdec to zx_hexdec to avoid risking conflicts
+zxid-0.42:: 22.11.2009
+    - Added service file name computator: zxcot -n -b <epr.xml
+    - Expose assertion path
+    - zxid_call() reengineering
+    - Added support for urn:mace:shibboleth:metadata:1.0
+    - Added support for TAS3 Credentials and Simple Obligations Language (SOL)
+    - Added zxid_wsp_validate() and zxid_wsp_decorate()
+    - zxidhrxmlwsc and zxidhrxmlwsp tested to work
+zxid-0.41:: 20.11.2009
+    - Yubikey support in zxiduser.c and zxpasswd
+    - config dump screen (o=d)
+    - OpenSSL_add_all_algorithms() fix from Stefan @ Koblenz
+    - di_Query support
+    - ID-WSF 2.0 AuthnSvc support
+    - Bootstrap support, improved
+    - SAML2 IdP support with attributes and bootstraps
+    - zxid-idp.pd documentation
+    - Added 403 Denied error response to SSO servlet (zxidsrvlet.java)
+    - Various bug fixes to zxididp and zxidjava
+    - First winbin release in long time (zxid-0.41-win32-bin.zip)
+zxid-0.40:: 14.11.2009
+    - Shib2 interop testing
+    - XACML cd1 support (sending policies in request)
+    - Populate both OID and FriendlyName variants of attributes from assertion
+    - Extensively tested java servlet configuration with zxidjni.az()
+    - Greatly improved zxid-java.pd documentation
+    - Fixed and tested mod_php configuration with zxid_az()
+    - Fixed and tested mod_perl configuration with Net::SAML::az()
+    - Retested mod_auth_saml
+zxid-0.39:: 5.11.2009
+    - Added zxidsrvlet and zxidappdemo
+zxid-0.38:: 16.10.2009
+    - Added better integrated zxidsrvlet
+zxid-0.36:: 14.10.2009
+    - Added building war files (from Brian Reynolds <leitrim_94@yahoo.com>)
+    - Removed duplicate cn from Auto-Cert generated self signed certs and CSRs
+    - Fixed gcc 4.2 specific compile problem re cast as lvalue (thanks Brian)
+zxid-0.35:: 11.10.2009
+    - fixed Solaris compile problems
+zxid-0.34:: 17.9.2009
+    - Added TAS3 package targets for Java and PHP
+zxid-0.33:: 9.9.2009
+    - Removed Apache check from default make
+    - Continued refactoring README.zxid to separate documents
+    - Changed configuration file reading so that config file is (re)read
+      whenever PATH is supplied, but not if PATH is supplied in file itself.
+    - Added dummy PDP
+    - Added zxcot tool
+    - Fixed zxdecode tool and added html parsing support
+    - Added xml-pretty.pl tool
+    - Added Auto-Cert feature to generate self signed certificates on the fly
+    - Added optional HMAC chaning code to the log format (but not implementation)
+    - Added attribute broker and PEP features
+    - Fixed relay state handling in mod_auth_saml so you land on right protected content page
+    - Added support for zxid_simple() returing JSON or Query String in addition to traditional LDIF
+    - Added preliminary and incomplete CARML support (see Identity Governance Framework - IGF)
+    - Fixed innumerous bugs in mod_auth_saml
+    - Added setting REMOTE_USER to mod_auth_saml
+zxid-0.32:: 25.3.2009
+    - Fixed Java compile
+zxid-0.31:: 15.11.2008
+    - Fixed validation of signatures in redirect binding
+    - Added logging of relied upon information in redirect binding
+    - Fixed memory leak in SLO and MNI
+    - Refactored dispatch functions so CGI and others use same code
+    - Fixed redirect binding signature validation
+zxid-0.30:: 28.9.2008
+    - Fixed some type warnings
+    - Fixed core dump in mod_auth_saml  without query string
+    - Fixed redirect hack to cope with the query string
+zxid-0.29:: 24.9.2008
+    - Fixed bug in redirect hack
+    - Added ANON_OK
+    - Added REQUIRED_AUTHNCTX
+    - Added IDP_SEL_PAGE
+    - Debugged and tested the mod_auth_saml Real World Example
+zxid-0.28:: 18.9.2008
+    - Fixed some Apache documentation issues
+    - Added redirect hack to allow mapping imposed URLs to ZXID native URLs)
+zxid-0.27:: 17.9.2008
+    - Added BSDmakefile hack, suggested by Slaven Rezic (slaven at rezic.de)
+    - Added NON_STANDARD_ENTITYID option
+    - Added precheck to quickly check main compliation and linking problems
+zxid-0.26:: 9.5.2008
+    - Fixed Auto-CoT bug due to form field name conflict
+    - Added missing .java files to Manifest
+zxid-0.25:: 17.4.2008
+    - Added support for SAML POST-SimpleSign binding
+    - Added preliminary draft support for Orange Personal APIs
+    - Added default-cot - ship metadata for some IdPs
+    - Updated documentation about joining OpenLiberty.org
+zxid-0.24:: 22.2.2008
+    - Added mod_auth_saml
+    - Many fixes from testing against commercial products
+zxid-0.23:: 12.10.2007
+    - Support MNI to change NameID
+    - Support EncryptedID on outbound traffic (MNI, SLO)
+zxid-0.22:: 10.10.2007
+    - Added log levels 1 and 2
+    - Added @Destination handling
+    - Ensured preservation of whitespace in XML parsing and exc-xml-canon
+    - Fixed alphabetization of attributes in exc-xml-canon
+    - Added signing ArtifactResolve, LogoutRequest, and ManageNameIDRequest over SOAP
+    - Improved handling of empty ns prefix for XML attributes
+    - Print source IP to logs
+zxid-0.21:: 8.10.2007
+    - Fixed missing Content-type header, reported by Damien Laniel <dlaniel@@entrouvert_com>
+    - Segregated prototypes that use va_list to zxidnoswig.h to avoid problem on Redhat
+    - Created cygwin target
+    - Changed the USE_LOCK handling to allow dummy on cygwin
+    - Fixed MGMT auto flag
+    - Fixed handling of InclusiveNamespaces/@PrefixList
+zxid-0.20:: 1.10.2007
+    - EncryptedAssertion, EncryptedAttribute, and EncryptedID support
+    - Fixed signing of redirect URLs
+    - Fixed indigestion over processing instructions and comments
+    - Fixed encoding of attribute namespaces
+    - Added xs and xsi namespaces
+    - Fixed lookup of attribute tokens without namespace (mismatching id symptom)
+zxid-0.19:: 11.8.2007
+    - fixed php support
+    - bug and documentation fixes
+zxid-0.18:: 17.7.2007
+    - Added HR-XML WSC and WSP support
+    - Much stabilization of ID-WSF code
+zxid-0.17:: 6.3.2007
+    - bug fixes
+zxid-0.16:: 4.3.2007
+    - Added ID-DAP support
+    - Added ID-MM7 support
+    - Added Contact Book support
+    - Added Geo Location support
+    - Added People Service support
+    - Added ID Mapping support
+    - Added Authentication Service support
+    - Added DST and Subscriptions support
+    - Added XACML2 support
+    - Added WS-Trust 1.3 support
+zxid-0.15:: 22.2.2007
+    - JAVAC_FLAGS tweak to avoid insufficient heap from Sean Doyle
+    - Fixed zxid_fed_mgmt_cf() unimplemented warning
+    - Documented fix for __init_array_start linking problem
+    - Annotated sources with call graph information, added call-anal.pl
+zxid-0.14:: 21.2.2007
+    - zxidhlo.java and Tomcat example perfected
+zxid-0.13:: 20.2.2007
+    - Java interface cleanup
+    - Mac compile fixes
+    - minor bug fixes
+zxid-0.12:: 10.2.2007
+    - WSF bootstrap handling
+    - rework of session system
+    - bug fixes
+zxid-0.11:: 1.2.2007
+    - MinGW DLL fixes
+zxid-0.10:: 31.1.2007
+    - MinGW DLL production works
+zxid-0.9:: 26.1.2007
+    - fixed compilation
+    - preliminary Windows support using MinGW
+zxid-0.8:: 1.12.2006
+    - Improved signature checking
+    - New logging infrastructure, document logging
+    - Support config files, document the format
+zxid-0.7:: 25.9.2006
+    - WO encoding with namespace support
+    - First cut of XMLDSIG validation (very early signing, too)
+    - Fixes to PHP, mod_php, Perl, and mod_perl support
+zxid-0.6:: 18.9.2006
+    - PHP support, including mod_php
+zxid-0.5:: 15.9.2006
+    - Encoders and decoders for ID-WSF and ID-FF (various versions)
+zxid-0.4:: 4.9.2006
+    - mod_perl/Net::SAML SP
+zxid-0.3:: Late Ago 2005
+    - First fully functional release
+zxid-0.2:: Ago 2005
+    - SAML 2.0 encoders and decoders, metadata import works
+zxid-0.1:: Ago 2005
+    - Project founded.
+
+# EOF

@@ -1,0 +1,102 @@
+README.zxid-win32
+#################
+<<cvsid: $Id: README.zxid-win32,v 1.3 2009-10-16 13:36:33 sampo Exp $>>
+<<author: Sampo Kellomaki (sampo@symlabs.com)>>
+
+As of version 0.11, January 2007, the Windows port is experimental.
+
+Only well researched questions, please.
+
+Right now the following has been accomplished
+
+1. Compiles cleanly (xmingw cross compile)
+2. CGI executables such as zxid and zxidhlo are produced (but not tested)
+3. zxid.dll is produced
+
+*Todo*
+
+* Call zxid.dll from C# (non COM route)
+* Make zxid.dll into COM object and call it from C#; try
+
+    make csharpzxid TARGET=mingw
+
+* Test and debug that the zxid_simple() API really works on Windows
+
+1 Building
+==========
+
+Current approach is to use the MinGW environment. Cross compilation
+on Linux host and MinGW target is best tested. Native compile
+with MinGW may work, but author is not able to test this combination.
+Nobody has tried compilation using Visual C, reports welcome.
+
+Generally you would proceed as follows
+
+  make default zxid.dll TARGET=xmingw   # Cross compile
+
+or
+
+  make default zxid.dll TARGET=mingw    # Native compile
+
+There is no make install, thus you will have to manually
+put things in right places and create /var/zxid directory
+hierarchy (what would be appropriate place for this in Windows?)
+
+ZXID depends on libcurl, openssl, and zlib. For best results
+you should compile these yourself and link them statically into
+the binaries and dll. It may be possible to use binaries
+from other sources (such as doenload sites of the respective
+projects), but this has not been tested. Cygwin packaged
+versions of these binaries are reported to work.
+
+2 Binary distribution
+=====================
+
+I distribute an experimental binary package. You can find
+it in http://zxid.org/zxid-0.34-win32-bin.zip (substitute release number).
+
+It was cross compiled and probably works on Windows 2000. I do not have
+resources to test more widely.
+
+2 Calling ZXID from C#
+======================
+
+<<code:
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Runtime.InteropServices;
+
+namespace HelloZXID
+{
+    class Program
+    {
+        [DllImport("zxid.dll")]
+        static extern int zxid_version();
+
+        static void Main(string[] args)
+        {
+            int a = zxid_version();
+            Console.WriteLine("ZXID version is --- " + a.ToString());
+            Console.ReadLine();
+        }
+    }
+}
+>>
+
+<<EOF: >>
+
+COM
+===
+
+regsvr32 (register the DLL as COM)
+
+The DLL should have function called
+
+  DllRegisterServer()
+
+C# Calling
+==========
+
+* Turning code "unsafe"
+* pinvoke

@@ -1,0 +1,141 @@
+=head1 NAME
+
+Net::SAML - Perl extension for using SAML SSO
+
+=head1 SYNOPSIS
+
+  use Net::SAML;
+
+  $cf = Net::SAML::new_conf("/var/zxid/");
+  Net::SAML::url_set($cf, $url);
+  Net::SAML::set_opt($cf, 1 ,1);  # Turn on libzxid level debugging
+
+  $cgi = Net::SAML::new_cgi($cf, $ENV{'QUERY_STRING'});
+  Net::SAML::parse_cgi($cgi, $qs);
+  $op = Net::SAML::zxid_cgi::swig_op_get($cgi);
+  $sid = Net::SAML::zxid_cgi::swig_sid_get($cgi);
+
+  $ses = Net::SAML::fetch_ses($cf, $sid);
+  $ses = Net::SAML::fetch_ses($cf, "");  # Just allocate an empty one
+  Net::SAML::del_ses($cf, $ses);
+  $sid = Net::SAML::zxid_ses::swig_sid_get($ses);
+  $nid = Net::SAML::zxid_ses::swig_nid_get($ses);
+
+  Net::SAML::lecp_check($cf, $cgi);
+  Net::SAML::cdc_read($cf, $cgi);
+
+  $url = Net::SAML::start_sso_url($cf, $cgi);
+  $ret = Net::SAML::sp_deref_art($cf, $cgi, $ses);
+
+  $req = Net::SAML::zxid_cgi::swig_saml_req_get($cgi);
+  $res = Net::SAML::zxid_cgi::swig_saml_resp_get($cgi);
+  $ret = Net::SAML::sp_dispatch($cf, $cgi, $ses, $res);
+
+  Net::SAML::send_sp_meta($cf, $cgi);
+  $idp = Net::SAML::load_cot_cache($cf);
+  $eid = Net::SAML::zxid_entity::swig_eid_get($idp);
+  $eid_len = Net::SAML::zxid_entity::swig_eid_len_get($idp);
+  $idp = Net::SAML::zxid_entity::swig_n_get($idp);
+
+  Net::SAML::sp_slo_redir($cf, $cgi, $ses);
+  Net::SAML::sp_slo_soap($cf, $cgi, $ses);
+
+  Net::SAML::sp_nireg_redir($cf, $cgi, $ses, 0);
+  Net::SAML::sp_nireg_soap($cf, $cgi, $ses, 0);
+
+  Net::SAML::OK;
+  Net::SAML::REDIR_OK;
+
+=head1 DESCRIPTION
+
+See zxid/zxid.pl for example use of this module.
+
+Consult zxid/README.zxid for detailed API descriptions. This
+pod is only a place holder - real documentation is in
+the README.zxid file.
+
+=head1 ZXID
+
+The above synopsis is just a tip of the iceberg. Net::SAML
+is part of a bigger project called ZXID. The code for the
+Net::SAML module was automagically generated from schema grammar
+sources and C header files of that project using SWIG.
+
+See http://zxid.org and zxid/README.zxid for further information.
+
+=head1 DIAGNOSTICS
+
+"Random number generator not seeded!!!"
+  This warning indicates that randomize() was not able to read
+  /dev/random or /dev/urandom, possibly because your system does not
+  have them or they are differently named. You can still use SSL, but
+  the encryption will not be as strong. Investigate setting up
+  EGD (entropy gathering daemon) or PRNG (Pseudo Random Number
+  Generator). Both are available on the net.
+
+"msg 123: 1 - error:140770F8:SSL routines:SSL23_GET_SERVER_HELLO:unknown proto"
+  SSLeay error string. First (123) number is PID, second number (1) indicates
+  the position of the error message in SSLeay error stack. You often see
+  a pile of these messages as errors cascade.
+
+"msg 123: 1 - error:02001002::lib(2) :func(1) :reason(2)"
+  The same as above, but you didn't call load_error_strings() so SSLeay
+  couldn't verbosely explain the error. You can still find out what it
+  means with this command:
+
+     /usr/local/ssl/bin/ssleay errstr 02001002
+
+Password is being asked for private key
+  This is normal behaviour if your private key is encrypted. Either
+  you have to supply the password or you have to use unencrypted
+  private key. Scan OpenSSL.org for the FAQ that explains how to
+  do this.
+
+=head1 AUTHOR
+
+Sampo Kellomäki <sampo@iki.fi>
+
+Please send well researched bug reports to the above address.
+General questions should be sent to me as well.
+
+=head1 VERSION
+
+This page documents version 0.5, as of 14.9.2006.
+
+=head1 COPYRIGHT
+
+Copyright (c) 2006 Sampo Kellomäki <sampo@symlabs.com>
+All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+While the source distribution of this perl module does not contain
+SSLeay or OpenSSL code, if you use this module you will use OpenSSL
+library. Please give Eric Young and OpenSSL team credit (as required by
+their licenses).
+
+And remember, you, and nobody else but you, are responsible for
+auditing this module and OpenSSL library for security problems,
+backdoors, and general suitability for your application.
+
+=head1 SEE ALSO
+
+  Net::WSF  -  Related perl module for ID Web Services Framework
+  <http://zxid.org/>  - ZXID Project home
+  <http://www.openssl.org/>                - OpenSSL source, documentation, etc
+  <http://www.w3c.org>                     - HTTP specifications
+  <http://www.ietf.org/rfc/rfc2617.txt>    - How to send password
+  <http://www.lothar.com/tech/crypto/>     - Entropy Gathering Daemon (EGD)
+  <http://www.aet.tu-cottbus.de/personen/jaenicke/postfix_tls/prngd.html>
+                           - pseudo-random number generating daemon (PRNGD)
+
+=cut

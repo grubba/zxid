@@ -1,0 +1,497 @@
+<<if: ZXIDBOOK>>
+<<else: >>ZXID IdP and Discovery
+################################
+<<author: Sampo Kellomäki (sampo@iki.fi)>>
+<<cvsid: $Id: zxid-log.pd,v 1.9 2009-10-16 13:36:33 sampo Exp $>>
+<<class: article!a4paper!!ZXID-IDP 01>>
+<<define: ZXDOC=ZXID IdP and Discovery>>
+
+<<abstract:
+
+ZXID.org Identity Management toolkit implements standalone SAML 2.0 and
+Liberty ID-WSF 2.0 stacks. The IdP provides Single Sign-On capability
+and the Discovery provides ability to issue credentials to web services
+as well as to locate suitable services.
+
+>>
+
+<<maketoc: 1>>
+
+1 Introduction
+==============
+
+ZXID IdP and Discovery configuration and databases are filesystem
+based and consists mainly of text files to which lines are
+appended. After describing the filesystem based configuration,
+we introduce some IdP administration topics and how to accomplish
+them.
+
+1.1 Other documents
+-------------------
+
+<<doc-inc.pd>>
+
+4 IdP and Discovery
+===================
+<<fi: >>
+
+~zxididp~ implements, in a bare-bones way, SAML 2.0 IdP, ID-WSF 2.0
+Authentication Service, and ID-WSF 2.0 Discovery Service. It is one
+of the cornerstones of a federated identity architecture.
+
+4.1 IdP Use of Local UID Directory (idpuid/)
+--------------------------------------------
+
+zxididp uses local idpuid/ directory to implement the IdP logins and
+to store users federations, bootstraps, and attributes.
+
+  /var/zxid/
+   |
+   +-- idpzxid.conf  Main configuration file
+   +-- idppem/       Our certificates
+   +-- idpcot/       Metadata of CoT partners (metadata cache)
+   +-- idpses/       Sessions
+   |    |
+   |    +-- SESID/         Each session has its own directory
+   |         |
+   |         +-- .ses      The session file
+   |         `-- SVC,SHA1  (Each bootstrap is kept in its own file)
+   |
+   +-- idpuid/       Local user ID (local login name) to SHA1 mapping
+   |    |
+   |    +-- JOE/  Local user has directory whose name is the login uid
+   |    |    |
+   |    |    +-- .pw       User's local password
+   |    |    +-- .yk       User's yubikey shared aes128 secret in hex
+   |    |    +-- .ykspent/ Cache of already used One TIme Passwords
+   |    |    |    |
+   |    |    |    `-- OTP  File name is the spent Yubikey ticket (w/o uid)
+   |    |    |    
+   |    |    +-- .bs/      Directory of bootstraps to be included
+   |    |    |    |
+   |    |    |    +-- .at         Attributes to be included in each SSO
+   |    |    |    `-- SVC,SHA1    Bootstrap for a service
+   |    |    |
+   |    |    +-- .di/     Directory of discovery registrations for user
+   |    |    |    |
+   |    |    |    `-- SVC,SHA1    Discovery asso registration for a service
+   |    |    |
+   |    |    `-- SP,SHA1/  One directory for each SP user is federated with
+   |    |         |
+   |    |         +-- .mni        Federated name id to be used with this SP
+   |    |         +-- .at         Attributes to be included for this SP
+   |    |         `-- SVC,SHA1    Bootstrap to be included for this SP
+   |    |
+   |    `-- .all/ Template used for all users
+   |         |
+   |         +-- .bs/      Directory of default bootstraps to be included
+   |         |    |
+   |         |    +-- .at         Attributes to be included in each SSO
+   |         |    `-- SVC,SHA1    Bootstrap for a service
+   |         |
+   |         +-- .di/      Directory of default discovery registrations for all
+   |         |    |
+   |         |    `-- SVC,SHA1    Generic Discovery asso registration
+   |         |
+   |         `-- SP,SHA1/  One directory for each SP
+   |              |
+   |              +-- .at         Attributes to be included for this SP
+   |              `-- SVC,SHA1    Bootstrap to be included for this SP
+   |
+   +-- idpnid/       Index of federated NameIDs, to map to uid
+   |    |
+   |    `-- SVC,SHA1    Bootstrap to be included for this SP
+   |         |
+   |         `-- NID    Content of the file is uid
+   |
+   +-- idpdimd/         Discovery Metadata registrations
+   |    |
+   |    `-- SVC,SHA1    Discovery MD registration for a service (an EPR)
+   |
+   `-- idplog/       Log files, pid files, and the like
+
+zxpasswd(8) is a user provisioning tool that allows creation of
+new accounts as well as manipulation of .pw and .yk files.
+
+4.1.1 Attaching Attributes to Assertions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When generating a SSO assertion, the attributes are collected as follows:
+
+1.  LDIF at /var/zxid/idpuid/JOE/.bs/.at
+2.  LDIF at /var/zxid/idpuid/JOE/SP,SHA/.at
+3.  LDIF at /var/zxid/idpuid/.all/.bs/.at
+4.  LDIF at /var/zxid/idpuid/.all/SP,SHA/.at
+
+As of version 0.33 (20090904) the attributes are rendered
+singlevalued. If multiple occurrances of an attribute happen,
+the first instance is used and others ignored. However, in
+a future version, we expect to support multivalued attributes.
+
+4.1.2 Attaching Bootstrap Attributes to Assertions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The bootstrap attributes (ID-WSF 2.0 EPRs with credentials) are
+attached to the SSO assertions to facilitate frontend web sites
+making backend web services calls.
+
+The bootstraps are generated by scanning /var/zxid/idpuid/JOE/.bs
+directory and for each corresponding file looking up the service EPR
+in the /var/zxid/idpdimd directory. If metadata for the service is
+found there, an access credential for accessing the service is
+generated (unless disallowed by the configuration). The access credential
+is based on existing federation, or if that is lacking and auto federation
+is allowed, on newly generated (IdP unilateral) federation.
+
+Future versions (as of 2009) may allow more granular approach to the
+bootstraps generated, but the strategic direction is to technically
+enable communications automatically and then to rely on explicit
+authorization services (XACML PDP) to make a policy based decision
+about what is allowed to happen.
+
+After user's .bs directory, the global /var/zxid/idpuid/.all/.bs is
+scanned. This allows common bootstraps, such as discovery, that occur
+for all users to be specified only once at the .all level, while
+additional bootstraps can be added for the individual users.
+
+> N.B. As of 0.41 (20091120), the .di directories are unused. In
+> case of discovery, all matching entries in /var/zxid/idpdimd
+> will be considered and federations automatically created,
+> irrespective of user's .di or .all/.di.
+
+4.1.3 Yubikey Authentication Support
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Yubikey support works by using the initial part of the ticket (passed
+in as user field) as uid and the latter as the ticket proper. The uid
+part is used to locate correct directory. Mapping from yubikey modhex
+to real UID is done by creating a symlink. The AES128 shared (between
+yubikey token and IdP) key is kept in the .yk file. As this is not a
+password has, but rather directly the shared secret, it requires
+rigorous approach to the filesystem security. The fact that .pw and
+.yk are separate files caters for the possibility of user
+authenticating either by yubikey or by password. By default yubikey
+is one factor authentication (in fairly secure and very convenient
+form). If two factor authentication is desired, the password component
+should be prefixed to the UID component, i.e. first user types PIN
+and then presses yubikey to add UID and ticket.
+
+To program yubikeys with the shared secrets, you need ykpersonalize(8)
+tool, available from Yubico as open source.
+
+4.1.4 Client Certificate Authetication of the User
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TLS Client Certificate authentication of users has not been
+implemented yet, but in any case would be mainly implemented by
+configuration of web server to request such certificate and verify
+it. By the time zxid gets called, the client cert authentication will
+already have happened. HTTP Basic authentication works in similar way
+and we make no attempt to cater for it, although it can be used of
+configured separately (in the traditional way).
+
+4.2 Installing zxididp
+----------------------
+
+First you need to obtain ~zxididp~ either by downloading a binary
+package (and installing it) or by compiling from source. See
+zxid-install.pd for further details.
+
+4.2.1 Configuring CGI Script in Web Server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+zxididp(8) is a CGI script (written in C) that you can install under
+any web server that supports CGI scripts (e.g. Apache httpd, IIS,
+or mini_httpd). You must configure your web server to execute
+zxididp(8) as a CGI script. The specifics vary from web server
+to web server - consult your server documentation.
+
+For *Apache* this would mean in httpd.conf a stanza like
+
+  <Location "/zxididp">
+  Options All
+  SetHandler cgi-script
+  </Location>
+
+You would then copy the ~zxididp~ binary to the root of your document
+tree and make sure it is executable. See apache.pd for full scoop.
+
+For *mini_httpd* this could mean something like
+
+  mini_httpd -p 8443 -c zxididp -S -E zxid.pem
+
+For *IIS* this could mean something like
+
+*  In Microsoft IIS 7 "Handler Mappings" use "Add Script Map"
+   and associate Request Path: "zxididp" to
+
+     C:/var/zxid/bin/zxididp.exe   # Or what your path is
+
+   This is saved in file web.config
+
+*  In IIS 6 add mapping for zxididp to run as CGI. Go to
+   webroot -> Properties -> Virtual Directory -> Configuration ->
+   Application Configuration
+
+     zxididp  C:\var\zxid\bin\zxididp GET,...
+
+   Remember to add ~zxididp~ to Web Services Extensions
+   New Web Service Extension, Add Required files
+
+     C:\var\zxid\bin\zxididp
+
+*  In IIS3 and earlier it was necessary
+
+     regedt32.exe
+     HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Services/W3SVC/Parameters/ScriptMap
+     Create new value name "zxididp" and value "c:/var/zxid/bin/zxididp.exe"
+
+
+4.2.2 Creating Directory Hirearchy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You must choose location for the configuration and logging hierachy
+of the zxididp(8) and then populate it. See earlier section in this
+document for details. By default the hierarchy will live in
+/var/zxid and the directories will have prefix "idp".
+
+  /var/zxid/
+   |
+   +-- idpzxid.conf  Main configuration file
+   +-- idppem/       Our certificates
+   +-- idpcot/       Metadata of CoT partners (metadata cache)
+   +-- idpses/       Sessions
+   +-- idpuid/       Local user ID (local login name) to SHA1 mapping
+   +-- idpnid/       Index of federated NameIDs, to map to uid
+   +-- idpdimd/      Discovery Metadata registrations
+   `-- idplog/       Log files, pid files, and the lik
+
+You can create this hierarchy by running
+
+  make dir ZXID_PATH=/var/zxid/idp
+
+4.3 Adding Service Providers to Circle of Trust (CoT) of zxididp
+----------------------------------------------------------------
+
+See zxid-cot.pd for full scoop.
+
+If Auto-CoT is enabled, and SP and IdP can communicate over the
+internet (n.b. problems with DNS, firewalls, other party not
+supporting WKL, etc.), the Service Providers can join the CoT
+automatically upon first use.
+
+Otherwise, metadata exchange may need to be arranged manually using
+zxcot(8) tool. Typically you would receive sp-metadata.xml by mail
+from the SP administrator, or by instant messaging file transfer. You
+could even fetch it yourself using a web browser, saving the metadata
+page. Metadata is a XML blob.
+
+  zxcot -a /var/zxid/idpcot <sp-metadata.xml
+  zxcot -g https://site.com/meta.xml /var/zxid/idpcot  # Assumes connectivity
+  zxcot /var/zxid/idpcot     # Lists the SPs in the CoT
+
+When all else fails, you can just manipulate the filesystem
+manually, creating the necessary files and directories.
+
+4.3.1 Sending zxididp Metadata to SP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If SP and IdP can communicate over the internet (n.b. problems with
+DNS, firewalls, other party not supporting WKL, etc.), the Service
+Providers can just request the zxididp metadata on the fly, based on
+Well Known Location (WKL).
+
+The EntityID and WKL of the zxididp(8) are of the form:
+
+  https://you.com/zxididp?o=B
+
+where the "o=B" part is the ZXID general way of triggering
+metadata response.
+
+If you need to perform the metadata exchange manually, your best bet is
+to download the metadata with your web browser (see WKL above)
+and send it to the other party.
+
+4.4 Configuring users into zxididp
+----------------------------------
+
+User provisioning and administration: Currently all this is manual
+and commandline or filesystem based. Contribution in form of fancy user
+self provisioning web GUIs would be appreciated by the zxid.org project.
+
+Generally you should be able to administer the users using
+zxpasswd(8), but when all else fails, you can just manipulate the
+filesystem manually, creating the necessary files and directories.
+
+4.4.1 Adding New User
+~~~~~~~~~~~~~~~~~~~~~
+
+Adding a new user consist of creating a directory corresponding
+to the user ID under /var/zxid/idpuid hierarchy. Typically this
+directory will contain the .pw file for password authentication
+and possibly a .yk file for Yubikey authentication. The directory
+will also contain .bs/.at file for specifying user's attributes.
+
+Easiest way to create a new user is using -c option:
+
+  zxpasswd -c user /var/zxid/idpuid <passwd
+
+4.4.2 Setting or Changing Password
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  zxpasswd user /var/zxid/idpuid <newpasswd
+
+N.B. By default the password is stored as MD5 hash. Use -h X command
+line option to choose other hashing algorithm.
+
+4.4.3 Adding Yubikey Authentication
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Yubikeys are One Time Password (OTP) hardware tokens that connect to
+the USB port and act as keyboard emulators. They are sold by yubico.com
+
+  zxpasswd -h y -s user yubikeyalias /var/zxid/idpuid <yk_aes128_secret
+
+N.B. To program a Yubikey and agree to a AES 128 bit shared secret, you
+need ~ykpersonalize~ program, available from Yubico.
+
+4.4.4 Adding Attributes to User
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There is no command line interface for adding the attributes currently
+(20091120). You simply have to edit the UID/.bs/.at, UID/SP,SHA1/.at,
+ .all/.bs/.at, or .all/SP,SHA1/.at files. The files are in (relaxed) LDIF
+format. E.g.
+
+  dn: cn=Koerkki,o=Labra
+  permisRole: teacher
+  cn: Koerkki
+  o: Labra
+
+N.B.: The LDIF format is essentially an attribute name separated from
+an attribute value by colon and one space, and name-value pairs
+separated from each other by a newline. This is very similar
+to mail header format. The "dn:" line is required in LDIF, but
+can be omitted in zxididp .at files.
+
+If you want to add a complex binary or XML attribute, such as a x509v3
+attribute certificate or a SAML assertion, we recommend that you
+safebase64 [RFC3548] encode the attribute value to prevent it from
+being mangled by SP SSO processing. To unravel such safebase64
+encoding you can use in mod_auth_saml, or other zxid based SP, the
+~INMAP~ specification with +rule+ as ~unsb64-inf~ or ~unsb64~. See
+zxid-conf.pd, section "INMAP specification", for further information.
+
+The attributes from all the available sources are accumulated.
+
+4.5 Configuring Bootstraps and Discovery
+----------------------------------------
+
+The principal step in configuring bootstraps and discovery is to
+register service's EPR in /var/zxid/idpdimd directory. This
+can usually be done on command line as follows:
+
+  zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 | zxcot -b
+
+Or if we analyze by parts
+
+  zxcot -e SOAP-Endpoint Description EntityID ServiceType > epr.xml
+
+This invocation is a mere utility for generating an EPR, without credential,
+that can be used as the registration. This might look like
+
+  <wsa:EndpointReference notOnOrAfter="2037-01-05T23:03:59.001Z"
+       wsu:Id="EPRID92lFPo3ZNEt_3rHtJFoU"
+       xmlns:wsa="http://www.w3.org/2005/08/addressing"
+       xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+    <wsa:Address>http://idp.tas3.pt:8081/zxididp?o=S</wsa:Address>
+    <wsa:Metadata>
+      <di:Abstract xmlns:di="urn:liberty:disco:2006-08">TAS3 Default Discovery Service (ID-WSF 2.0)</di:Abstract>
+      <di:ProviderID xmlns:di="urn:liberty:disco:2006-08">http://idp.tas3.pt:8081/zxididp?o=B</di:ProviderID>
+      <di:ServiceType xmlns:di="urn:liberty:disco:2006-08">urn:liberty:disco:2006-08</di:ServiceType>
+      <sbf:Framework version="2.0" xmlns:sbf="urn:liberty:sb" />
+    </wsa:Metadata>
+  </wsa:EndpointReference>
+
+The next step is to provide this as "discovery metadata":
+
+  zxcot -b < epr.xml
+
+which will create an entry in the /var/zxid/idpdimd directory.
+
+Once the service's EPR (Metadata) exists in the system, any
+user can discover the service, with federations being created
+automatically (unless disabled in the configuration).
+
+If you want the service to be included as bootstrap, you need
+to mention it either in global /var/zxid/idpuid/.all/.bs directory
+or in user's .bs directory.
+
+When all else fails, you can just manipulate the filesystem
+manually, creating the necessary files and directories.
+
+4.9 Supported Specifications
+----------------------------
+
+As of version 0.41 (20091120) zxididp supports the following specifications
+
+* SAML 2.0 IdP Lite [SAML2core], [SAML2conf]
+  - SSO and SLO [SAML2prof]
+  - attributes
+  - bootstraps
+  - redirect and post bindings [SAML2bind]
+  - Well Known Location (WKL) Metadata Exchange [SAML2meta]
+  - Shibboleth2 [Shibboleth]
+  - Password authentication
+  - Yubikey authentication
+  - eID card and client certificate authentication
+* ID-WSF 2.0 Discovery [Disco2]
+* ID-WSF 2.0 Authentication Service [SOAPAuthn2]
+
+4.9.1 Imminently Planned Specifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* TAS3 Architecture (already partially supported)
+* TAS3 Trust and Privacy Negotiation
+* Master and TAS3 audit busses
+* SAWS over SOAP logging (with OpenXDAS events)
+* OpenXDAS log format
+* AMQP logging (with OpenXDAS events)
+* MASTER project event modelling
+* AAPML (and CARML) support
+
+4.9.2 Nice to Have Specifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* SAML 1.1
+* Infocard (Cardspace) and WS-Federation [MS-MWBF]
+* Simple Web Token (SWT) support [Hardt09]
+* OAuth-WRAP support [Tom09]
+* XACML Authorization Decision Query for SSO
+
+<<if: ZXIDBOOK>>
+<<else: >>
+
+96 License
+==========
+
+Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
+Author: Sampo Kellomäki (sampo@iki.fi)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+<<zxid-ref.pd>>
+
+<<doc-end.pd>>
+<<notapath: TCP/IP a.k.a xBSD/Unix n/a Perl/mod_perl PHP/mod_php Java/Tomcat>>
+<<EOF: >>
+<<fi: >>

@@ -1,0 +1,117 @@
+INSTALL.zxid
+============
+$Id: INSTALL.zxid,v 1.5 2009-10-16 13:36:33 sampo Exp $
+
+These instructions are for the impatient. See 
+<<link:html/zxid-install.html: ZXID Compilation and Installation>>
+aka zxid-install.pd for the complete story.
+
+If you want to try ZXID out immediately, we recommend compiling the
+library and examples and installing one of the examples as a CGI
+script in an existing web server.
+
+Compilation and Installation from Source
+----------------------------------------
+
+  tar xvzf zxid-0.34.tgz
+  cd zxid-0.34
+
+  # N.B.  There is no configure script. The Makefile works for all
+  #       supported platforms by provision of correct TARGET option.
+  # N.B2: We distribute some generated files. If they are missing, you need
+  #       to regenerate them: make cleaner; make dep ENA_GEN=1
+
+  make                    # Compile for ix86 Linux (default)
+  make TARGET=sol8        # Compile for Solaris
+  make TARGET=macosx      # Compile for MacOS X (ix86 tested)
+  make TARGET=xmingw      # Cross compile Windows binaries using Linux
+
+  make dir                # Creates /var/zxid hierarchy
+
+  make apachezxid         # optional: compile mod_auth_saml Apache module
+  make apachezxid_install # optional: install mod_auth_saml.so
+
+  make samlmod            # optional: compile Net::SAML perl module
+  make samlmod_install    # optional: install Net::SAML
+
+  make phpzxid            # optional: compile php_zxid PHP extension
+  make phpzxid_install    # optional: install php_zxid.so
+
+  make javazxid           # optional: compile libzxidjni
+  make javazxid_install   # optional: install libzxidjni.so and zxidjni.class
+
+Compilation Problems? (*** also in zxid-faq.pd)
+
+* Makefile tries to compile a bunch of check programs early in the
+  compilation to detect common problems with missing headers (include
+  files) and missing libraries.
+* If the checks fail, you need to adjust the -I and -L flags in Makefile
+  variables CDIR and LIBS (around line 123)
+* Alternately you can create localconf.mk file that will be
+  included by the main Makefile and put your modifications there.
+* ZXID dependency libraries are libcurl, openssl (libssl, libcrypto), and zlib
+* Although compiling the dependency libraries from source is adviced,
+  usually you can use the versions that are supplied with your distribution.
+  However in this case you MUST install also the headers. Usually these
+  are called "development" packages.
+* zxid assumes openssl, libcurl, Java, and Apache to be installed
+  in the locations where source distributions of those packages
+  install them in their default configuration (e.g. /usr/local/ssl,
+  /usr/local/httpd, etc.)
+* Many distributions (e.g. Ubuntu, Redhat, SUSE, ...) choose to install
+  those libraries in different places, thus requiring distribution
+  specific edits to localconf.mk
+* If you have difficulty in finding the headers and libraries (or whether
+  a package is installed at all), try the following commands
+
+    find / -name 'stdio.h'
+    find / -name 'libc.*'
+    find / -name 'zlib.h'
+    find / -name 'libz.*'
+    find / -name 'opensslv.h'
+    find / -name 'libssl.*'
+    find / -name 'libcrypto.*'
+    find / -name 'curlver.h'
+    find / -name 'libcurl.*'
+    find / -name 'ap_release.h'
+    find / -name 'apr_version.h'
+    find / -name 'libapr-1.*'
+    find / -name 'servlet-api.jar'
+
+  If you find more than one of any of the above, you need to be extra
+  careful about which one you use.
+
+Installation of Binaries and Packages
+-------------------------------------
+
+TBD (*** WIP)
+
+Configuration
+-------------
+
+For detailed configuration reference, please see
+<<link:html/zxid-conf.html: ZXID Configuration Reference>> aka
+zxid-conf.pd
+
+Running
+-------
+
+  cp zxidhlo* <webroot>/
+  # configure and start your web server to recognize zxidhlo a CGI, e.g.
+  mini_httpd -p 8443 -c 'zxid*' -S -E zxid.pem
+
+  # Edit your /etc/hosts to contain (on Windows C:\Windows\System32\etc\hosts)
+  127.0.0.1       localhost sp1.zxidcommon.org sp1.zxidsp.org
+
+  # Point your browser to (zxid_simple() API version)
+  https://sp1.zxidsp.org:8443/zxidhlo?o=E
+  https://sp1.zxidsp.org:8443/zxidhlo.pl?o=E       # Perl version
+  https://sp1.zxidsp.org:8443/zxidhlo.php?o=E      # PHP version
+  https://sp1.zxidsp.org:8443/zxidhlo-java.sh?o=E  # Java version
+
+  # Find an IdP to test with and configure it...
+  # ... e.g. download from http://symlabs.com/Products/SFIAM.html
+
+See zxid-install.pd for actual tutorial out-of-box experience.
+
+--Sampo

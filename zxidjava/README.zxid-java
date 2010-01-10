@@ -1,0 +1,43 @@
+README.zxid-java
+$Id: README.zxid-java,v 1.5 2009-11-14 22:44:43 sampo Exp $
+
+This is the Java JNI module for using libzxid. This JNI module is
+tightly integrated into the main ZXID project and distribution.
+As the diretory name reflects, the package name is zxidjava so
+you would do in your .java file:
+
+  import zxidjava.*;
+
+Please see for further information
+
+  zxid.org
+  zxid/README.zxid
+  zxid/INSTALL.zxid
+  zxid/zxid-java.pd       Using ZXID from Java
+  zxid/zxidsrvlet.java    Ready to use SSO servlet
+  zxid/zxidappdemo.java   Example code for using SSO servlet
+  zxid/zxidhlo.java       Example code for direct SSO integration
+
+Install
+
+  cd zxid-0.40
+  make dep
+  make                   # creates libzxid
+  make javazxid
+  make javazxid_install
+
+Rather than program directly with the module, you probably
+want to deploy it as a Servlet, e.g. in Tomcat. For this
+the SSO servler is zxidsrvlet.java and an example payload
+application using the SSO servlet is provided in
+zxidappdemo.java
+
+You can study both for source code, or use them as template
+to develop your own code.
+
+If you get compilation errors, check SERVLET_PATH and other variables
+in Makefile (see zxid-java.pd and zxid-install.pd for details).
+
+See zxid-java.pd (or html) for further information.
+
+--Sampo

@@ -1,0 +1,1474 @@
+<<if: ZXIDBOOK>>
+<<else: >>Configuring ZXID 
+################
+<<author: Sampo Kellomäki (sampo@iki.fi)>>
+<<cvsid: $Id: zxid-conf.pd,v 1.11 2010-01-08 02:10:09 sampo Exp $>>
+<<class: article!a4paper!!ZXID Conf 02>>
+<<define: ZXDOC=ZXID Configuration>>
+
+<<abstract:
+
+ZXID.org Identity Management toolkit implements standalone SAML 2.0 and
+Liberty ID-WSF 2.0 stacks. This document explains configuration options
+of ZXID.
+
+>>
+
+<<maketoc: 1>>
+
+1 Introduction
+==============
+
+ZXID, out-of-box, needs very little configuration. Generally you
+only need to decide the URL of your web site.
+
+> Tip: You can view current configuration by supplying URL suffix o=d
+
+Compile time configuration, based on Makefile and zxidconf.h is
+explained in separate
+document <<link:zxid-install.html: ZXID Compilation and Installation>>.
+
+In addition to setting runtime configure options, you will need to
+join a Circle of Trust - or create your own. This part of
+set-up is explained in <<link:zxid-cot.html: Building CoT>>.
+
+If you are interested in using mod_auth_saml Apache module,
+you can perform some of the configuration in the Apache httpd.conf
+file as explained in <<link:../mod_auth_saml/mod_auth_saml.html: mod_auth_saml>>.
+
+You should remember that some of the configuration will happen in the
+web server level, see your web server's configuration reference, e.g. httpd.conf
+
+1.1 Other documents
+-------------------
+
+<<doc-inc.pd>>
+
+2 Configuring and Running
+=========================
+<<fi: >>
+
+ZXID ships with working demo configuration so you can run it right
+away and once you are familiar with the concepts, you can return
+to this chapter.
+
+ZXID uses a configuration file in default path<<footnote: See Simple
+API for description on how to change this path at deplyment or run
+time.>>
+
+  /var/zxid/zxid.conf
+
+for figuring out its parameters. If this file is not present, built-in
+default configuration is used (see zxidconf.h).<<footnote: You can
+override configuration options at run time by supplying fragments of
+configuration using -O flags, but for CGI use you would have to use a
+wrapper shell script to supply them. Hence, easier to just use the
+config file.>> The built-in configuration will allow you to test
+features of ZXID, but should not be used in production because it uses
+default certificates and private keys. Obviously the demo private key
+is of public knowledge since it is distributed with the ZXID package,
+and as such it provides no privacy protection what-so-ever. For
+production use you MUST generate your own certificate and private key.
+
+Usually configuring a system involves following tasks
+
+1. Configure web server (see your web server documentation)
+
+   a. HTTPS operation and TLS certificate. In the minimum you need
+      the main site, but you may want to configure the Common Domain
+      Cookie virtual host as well.
+
+   b. Arrange for ZXID to be invoked. This could mean configuring
+      zxid, zxid-java.sh, or zxid.pl to be recognized as a CGI script, or
+      it could mean setting up your ~mod_perl~ or ~mod_php~ system to call
+      ZXID at the appropriate place.
+
+2. Configure ZXID, including signing certificate and CoT with peer metadata
+
+   a. generate or acquire certificate
+
+   b. Obtain peer metadata (from their well known location) or
+      enable +Auto CoT+ feature.
+
+3. Configure CoT peers with your metadata. They can download your
+   metadata from your well known location (which is the URL that
+   is your entity ID). For this to happen you need to have web
+   server and ZXID up and running.
+
+2.1 Configuration Parameters
+----------------------------
+
+2.1.1 zxidroot (PATH configuration parameter)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The root directory of ZXID configuration files and directories. By default this
+is /var/zxid and has following directories and files in it
+
+  /var/zxid/
+   |
+   +-- zxid.conf  Main configuration file
+   +-- pem/       Our certificates
+   +-- cot/       Metadata of CoT partners (metadata cache)
+   +-- ses/       Sessions
+   `-- log/       Log files, pid files, and the like
+
+See also zxid-log.pd for detailed description of the filesystem layout.
+
+2.1.2 pem
+~~~~~~~~~
+
+Directory that holds various certificates. The certificates
+have hardwired names that are not configurable.
+
+ca.pem:: Certification Authority certificates. These are used for
+    validating any certificates received from peers (other sites
+    on the CoT). The CA certificates may also be shipped to the
+    peers to facilitate them validating our signatures. This is
+    especially relevant if the certificate is issued by multilayer CA
+    hierarchy where the peer may not have the intermediate CA certificates.
+sign-nopw-cert.pem:: The signing certificate AND private key (concatenated
+    in one file). The private key MUST NOT be encrypted (there will not
+    be any opportunity to supply decryption password).
+enc-nopw-cert.pem:: The encryption certificate AND private key (concatenated
+    in one file). The private key MUST NOT be encrypted (there will not be
+    any opportunity to supply decryption password). The signing certificate
+    can be used as the encryption certificate. If encryption certificate
+    is not specified it will default to signing certificate.
+
+In addition to the above certificates and private keys, you will need
+to configure your web server to use TLS or SSL certificates for the
+main site and the Common Domain site. We suggest the following naming
+
+ssl-nopw-cert.pem:: SSL or TLS certificate for main site. In order to
+    avoid browser warnings, the CN field of this certificate should match
+    the domain name of the site. The SSL certificate can be same as
+    signing or encryption certificate.
+cdc-nopw-cert.pem:: SSL or TLS certificate for Common Domain Cookie
+    introduction site. In order to avoid browser warnings, the CN field
+    of this certificate should match the domain name of the site. The SSL
+    certificate can be same as signing or encryption certificate.
+
+2.1.3 cot
+~~~~~~~~~
+
+Directory that holds metadata of the Circle of Trust (CoT)
+partners. If +Auto CoT+ is enabled, this directory needs to be
+writable at run time.
+
+Typical metadata file path would be
+
+  /var/zxid/cot/Inkl5fOnhVNa0LbWjHem2Y2UphY
+
+If the metadata file appears in this directory, then the entity is in
+the CoT.
+
+The file name component of the path is safe base64 encoded
+SHA1 hash of the Entity ID, with last character stripped (that
+character would always be an equals sign).
+
+2.2 ZXID Configuration File Format
+----------------------------------
+
+Most configuration details are kept as comments in
+zxidconf.h, which you should see.
+
+Configuration file is line oriented. Comments can be introduced with
+cardinal ("#") and empty lines are ignored. End of line comments are NOT
+supported at this time.
+
+Each configuration option is a name=value pair. The name is the same
+as in zxidconf.h except that ZXID_ prefix does not appear.  Only
+single line values are supported, but you can embed characters using
+URI encoding, e.g. %0a for newline. In fact, the configuration lines
+are treated as CGI variables, thus & can also be used as separator
+instead of newline (and needs to be encoded if not intended as
+separator).
+
+When option is not specified, the default from zxidconf.h
+prevails. Thus in the following the PATH specification is redundant.
+
+To give some idea consider following /var/zxid/zxid.conf example:
+
+  # Demo /var/zxid/zxid.conf file
+  PATH=/var/zxid/
+  URL=https://sp.mydomain.com:8443/zxid
+  NICE_NAME=My SP's human%0areadable name.
+  #EOF
+
+The configuration is processed in following order, with
+last instance of an option prevailing:
+
+1. Built in default configuration
+2. Configuration file, usually /var/zxid/zxid.conf, if any
+3. Configuration string passed as first argument.
+
+   Configuration string is processed in order and
+   overrides values from compiled in defaults as well
+   as from zxid.conf in the compiled in default path.
+
+   While processing options, if PATH is found, the
+   (new) config file is read, effectively overriding any
+   options thus far.
+
+
+3 zxid_simple() API Specific Configuration
+===========================================
+
+For full description of the simple API, plese see
+<<link:html/zxid-simple.html: zxid_simple()>> Easy API for SAML.
+
+
+3.1.1 Configuration Options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(*** This section also appears in zxid-simple.pd)
+
+The zxid_simple() can be configured by conf string as argument as well
+as by configuration file. In addition a flags argument is accepted,
+see next subsection "AUTO options", to specify simple API specific
+automation options.
+
+Turns out that often the default configuration modified
+by the configurations string is all you need - you do not
+need to prepare a configuration file.
+
+See section "Configuring and Running" for complete list of
+configuration options, but generally it is
+sufficient to specify only a handful:
+
+PATH:: Where files are kept and configuration file is found.
+URL:: The URL of the SP
+CDC_URL:: The Common Domain URL (optional, if omitted
+    the Common Domain Cookie processing is disabled)
+
+3.1.2 AUTO options (auto flags)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(*** This section also appears in zxid-simple.pd)
+
+The ~auto_flags~ argument allows you to control which
+operations should be performed automatically and
+which should be passed to the calling application,
+see "Gaining More Control" section, below, for
+full description of this case.
+
+The auto options can be added together.
+
+<<table: zxid_simple() AUTO options
+Dec   Hex    Symbol              Description
+===== ====== =================== ===========================================
+    1   0x01 ZXID_AUTO_EXIT      Call exit(), 0=return "n", even if auto CGI
+    2   0x02 ZXID_AUTO_REDIR     Automatic. handle redirects, assume CGI (calls exit(2))
+    4   0x04 ZXID_AUTO_SOAPC     SOAP response handling, content gen
+    8   0x08 ZXID_AUTO_SOAPH     SOAP response handling, header gen
+   16   0x10 ZXID_AUTO_METAC     Metadata response handling, content gen
+   32   0x20 ZXID_AUTO_METAH     Metadata response handling, header gen
+   64   0x40 ZXID_AUTO_LOGINC    IdP select / Login page handling, content gen
+  128   0x80 ZXID_AUTO_LOGINH    IdP select / Login page handling, header gen
+  256  0x100 ZXID_AUTO_MGMTC     Management page handling, content gen
+  512  0x200 ZXID_AUTO_MGMTH     Management page handling, header gen
+ 1024  0x400 ZXID_AUTO_FORMF     In idp list and mgmt screen, generate form fields
+ 2048  0x800 ZXID_AUTO_FORMT     In idp list & mgmt screen, wrap in <form> tag.
+ 4095  0xfff ZXID_AUTO_ALL       Enable all automatic CGI behaviour.
+ 4096 0x1000 ZXID_AUTO_DEBUG     Enable debugging output to stderr.
+ 8192 0x2000 ZXID_AUTO_OFMTQ     Output Format Query String
+16384 0x4000 ZXID_AUTO_OFMTJ     Output Format JSON
+>>
+
+If the AUTO_REDIR flag is true, the LOCATION header is sent to stdout
+and exit(0) may be called, depending on the AUTO_NOEXIT flag.
+
+The SOAP, META, LOGIN, and MGMT flags follow convention:
+
+  HC
+  00  No automation. Only action letter is returned ("e"=login, "b"=meta, etc.)
+  01  Content, not wrapped in headers, is returned as a string
+  10  Headers and content is returned as a string
+  11  Headers and content are sent to stdout, CGI style and
+      exit(0) may be called, depending on AUTO_EXIT. Otherwise "n" is returned.
+
+Whether exit(0) is called in 11 case depends on ZXID_AUTO_NOEXIT flag.
+
+How much HTML is generated for Login page and Mgmt page in 01 (content only)
+mode depends on AUTO_PAGE and AUTO_FORM flags
+
+  TF
+  00  reserved / nothing is generated
+  01  Only form fields (but not form tag itself) are generated.
+  10  Complete form is generated
+  11  Whole page is generated (best support)
+
+The output format in the successful SSO case depends on OFMT bits
+as follows
+
+  JQ
+  00  LDIF (default)
+  01  Query String
+  10  JSON
+  11  empty res, caller is expected to access ses for attributes
+
+3.1.3 Configuration options for customizing HTML
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(*** This section also appears in zxid-simple.pd)
+
+When whole page is generated, some templating information is taken
+from the configuration.
+
+IDP_SEL_START:: All the HTML before <form> tag. This can include HTML headers
+    and the <body> tag, as well as beginning of the page, allowing
+    for complete color selection, stylesheet embedding, and general
+    branding of the page.
+
+IDP_SEL_NEW_IDP:: The HTML fragment to allow login using a new IdP (Auto
+    CoT using IdP URL). Set to empty to hide this possibility.
+
+IDP_SEL_OUR_EID:: Message displaying SP Entity ID, in case (technically
+    minded) user needs to know this to establish relationship with an IdP.
+
+IDP_TECH_USER:: Technical parameters that user might want to set, and
+    typically would be allowed to set. May be hidden (not user
+    controllable) or visible.
+    fc:: Create federation (AllowCreate flag)
+    fn:: Name ID format
+        prstnt:: Persistent (pseudonym)
+        trnsnt:: Transient, temporary pseudonym
+
+IDP_TECH_SITE:: Technical parameters that the site administrator
+    should decide and set. Usually hidden fields:
+    fq:: Affiliation ID (usually empty)
+    fy:: Consent obtained by SP for the federation or SSO
+        empty:: No statement about consent
+        urn:liberty:consent:obtained:: Has been obtained (unspecified way)
+        urn:liberty:consent:obtained:prior:: Obtained prior to present
+            transaction, e.g. user signed terms and conditions of service
+        urn:liberty:consent:obtained:current:implicit:: Consent
+            is implicit in the situation where user came to invoke service
+        urn:liberty:consent:obtained:current:explicit:: Obtained explicitly
+        urn:liberty:consent:unavailable:: Consent can not be obtained
+        urn:liberty:consent:inapplicable:: Obtaining consent is not
+            relevant for the SP or service.
+    fa:: Authentication Context (strength of authentication) needed by the SP
+    fm:: Matching rule for authentication strength (usually empty, IdP decides)
+    fp:: Forbid IdP from interacting with the user (IsPassive flag)
+    ff:: Request reauthentication of user (ForceAuthn flag)
+
+
+4 ZXID Attribute Broker (ZXAB)
+==============================
+
+<<dia: arch-zxid-attr-brkr:bg,fg: Liberty IGF Compliant Attribute Broker fetches the needed attributes from available providers and populates them to the subprocess environment.>>
+
+As can be seen in the accompanying figure, the provision of attributes to the
+applications in the Apache subprocess environment (CGI, mod_perm, mod_php, etc.)
+is handled as follows:
+
+1. Configure attribute needs and names (this corresponds to CARML declaration)
+2. Configure attribute sources (this corresponds to AAPML declaration)
+3. Configure source or input mappings (INMAP)
+4. Filter for needs (and optional wants)
+5. Map to application domain (OUTMAP)
+6. Provide attributes in to subprocess environment
+7. Comply with obligations (large part of this responsibility rests
+   with the subprocesses and can not be automatically enforced)
+
+4.1 Attribute Broker Configuration Directives
+---------------------------------------------
+
+*** This is provisory specification
+
+The Attribute Broker configuration in Apache set-up is per <Location>
+directive. Different Locations within same server can have different needs.
+
+*Example*
+
+  <Location /protected>
+  ZXIDConf "NEED=CN$GUI$40000000$none$ext"
+  ZXIDConf "NEED=age$adult-content$100000$log-upon-sso,report-to-dashboard-if-avail$ext"
+  ZXIDConf "WANT=birthday$horoscope$40000000$log-upon-sso,must-report-to-dashboard$ext"
+  ZXIDConf "WANT=street,l,st,zip,c$ship$40000000$log-upon-sso,report-to-dashboard-if-avail$ext"
+  </Location>
+
+4.1.1 NEED specification
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+~NEED~ specification expresses attributes that are required for the
+application to work. Attribute names are in the +Common Namespace+
+(often same as subprocess environment application
+namespace). Inavailability of the attributes aborts application
+processing.
+
+  NEED=A,B$usage$retention$oblig$ext
+
+A,B:: Names of attributes (comma separated list) needed by subprocess
+    environment
+usage:: The promised usage of the attributes (feeds out to CARML
+    declaration). Specific usage enumerators or policy language
+    are +still To Be Defined+. Special value "reset" clears
+    previous +need+ configuration.
+retention:: The data retention policy that will be applied to these attributes
+    if they are received. Specific enumerators or language
+    are +still To Be Defined+. The example illustrates retention in seconds.
+oblig:: The obligations that will be complied to WRT these attributes
+    if they are received. Specific enumerators or language are +still TBD+.
+ext:: Extension fields to describe attribute policies in more detail.
+
+4.1.2 WANT specification
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+~WANT~ specification expresses attributes that are optional, but useful,
+for the application.  Inavailability of the attributes may cause
+reduced application functionality or the application querying the
+missing attributes directly from the user. ~WANT~ specification
+has same syntax as ~NEED~ specification. Inavailability of the attribute
+has no consequence or may cause default to be supplied.
+
+  WANT=A,B$usage$retention$oblig$ext$default
+
+A,B:: Names of attributes (comma separated list) needed by subprocess
+    environment. If star (*) is specified, all available attributes
+    are requested.<<footnote: This
+    should not be used light heartedly. Much better to spell out explicitly the
+    attribute requirements so that proper CARML description can be made.>>
+usage:: The promised usage of the attributes (feeds out to CARML
+    declaration). Specific usage enumerators or policy language
+    are +still To Be Defined+.
+retention:: The data retention policy that will be applied to these
+    attributes if they are received. Specific enumerators or language
+    are +still To Be Defined+.
+oblig:: The obligations that will be complied to WRT these attributes
+    if they are received. Specific enumerators or language are +still TBD+.
+ext:: Extension fields to describe attribute policies in more detail.
+default:: Optional default value to use in case the attribute is not available.
+
+4.1.3 ATTRSRC specification
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Single Sign-On is an implicit Attribute Source and need not
+be specifically listed. The attribute namespace will be
+IdP's Entity ID.
+
+> N.B. As of Sept 2009, the SSO source is the only one implemented.
+
+Attribute Source (~ATTRSRC~ for short) specification indicates a
+potential source of attribute data and the mechanics for retreiving
+them. Each attribute originating from a determined source is in
+namespace of that source (+source namespace+). This avoids attribute
+naming conflicts and provides for clean attribute renaming
+framework. If an attribute is not renamed, then it is passed to the
++common namespace+ by just dropping the namespace prefix.
+
+  ATTRSRC=namespace$A,B$weight$accessparamURL$AAPMLref$otherLim$ext
+
+namespace:: Namespace string assigned to this attribute source.
+A,B:: List of attributes available from this source
+weight:: Weighting factor (integer) determining the prioirity of this
+    source. Less indicates higher preference.
+accessparam:: Typically URL for contacting the source, or special
+    value "reset" to clear the list and start building anew.
+AAPMLref:: Reference to AAPML declaration about policies applying
+    to this attribute source
+otherLim:: Description of additional policies applying to this attribute source
+ext:: Extensions
+
+4.1.4 INMAP specification
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~INMAP~ specification provides for various input attribute renaming and
+input attribute value decoding operations.
+
+  INMAP=ns$A$rule$b$ext
+
+ns:: Source namespace of the attribute
+A:: Attribute name in the source namespace
+b:: Attribute name in common namespace (if omitted, same as +A+)
+rule:: transformation rule:
+    rename:: Just renames the attribute. Value is passed intact. Default.
+    del:: Deletes the attribute.
+    feidedec:: Decode the attribute value accoring to Feide (Norway) rules.
+        Also rename if +b+ provided.
+    feideenc:: Encode the attribute value accoring to Feide (Norway) rules.
+        Also rename if +b+ provided.
+    unsb64-inf:: Decode the attribute value accoring to safebase64-inflate
+        rules ([RFC3548], [RFC1951]). Also rename if +b+ provided.
+    def-sb64:: Encode the attribute value accoring to deflate-safebase64
+        rules ([RFC1951], [RFC3548]). Also rename if +b+ provided.
+    unsb64:: Decode the attribute value according to safebase64 [RFC3548]
+        rule (NZ). Also rename if +b+ provided.
+    sb64:: Encode the attribute value according to safebase64 [RFC3548]
+        rule (NZ). Also rename if +b+ provided.
+    reset:: Special pseudo rule that clears previous map configuration.
+ext:: Extended argument that may be used by some rules.
+
+The order of evaluation of ~INMAP~ stanzas is not defined, therefore it is
+not avisable to include same attribute in two stanzas as only one
+would fire.
+
+*SSO derived attributes*
+
+nameid:: Concatenation of +affid+ and +idpnid+ like: "affid$idpnid". (*** problem with dollar sep)
+
+4.1.5 OUTMAP specification
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~OUTMAP~ specification provides for various attribute renaming and
+value encoding operations just before passing attributes to the
+subprocess environment (i.e. what CGI scripts see). Syntax and
+available operations are the same as for ~INMAP~.
+
+  OUTMAP=src$A$rule$b$ext
+
+<<ignore:
+4.1.6 Additional Filtering
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*** The del rules in INMAP and OUTMAP achive same purpose.
+
+NOT IMPLEMENTED YET!
+
+By default only attributes listed in +NEED+ and +WANT+ specifications are
+passed thru, and even then only if the available usage policies are acceptable.
+However, if additional attributes are available, they can be accepted using
++WANT+ specification with "*". In this case, some attributes can be filtered
+out using +SUPPRESS+ directive (in fact +SUPPRESS+ applies inconditionally
+to all attributes just before +out-map+ stage):
+
+  SUPPRESS=A,B,C
+>>
+
+5 ZXID XACML PEP
+================
+
+> *Important*: You need a functioning XACML PDP (Policy Decision Point
+> to use this functionality. zxididp includes a PDP that always
+> returns "Permit", unless ~role~ is "deny" - you need to aquire
+> and configure a real PDP, such as commercial (e.g. Axiomatics or
+> Symlabs XACML PDP) or a third party open source PDP (e.g. PERMIS or Sun).
+
+The attributes gathered by the Attribute Broker phase are available
+for authorization decisions. The local authorization is applied before,
+and after, the XACML authorization, if any.
+
+* Explicit Deny stops processing
+* Explicit Allow moves to next phase
+* Lack of Allow or Deny at end of phase moves to next phase
+* Lack of Allow after all phases is Deny
+
+5.1 Local PDP Authorization Functionality
+-----------------------------------------
+
+The authorization module can authorize access locally based on
+
+* List of approved user names or forbidden user names
+* Role attribute having a value or not having a value
+* Authorization token (NI 20090904) (***)
+
+Local PDP specifications have format as follows
+
+  LOCALPDP_ROLE_PERMIT=role,role         # Whitelist of roles
+  LOCALPDP_ROLE_DENY=role,role           # Blacklist of roles
+  LOCALPDP_IDPNID_PERMIT=idpnid,idpnid   # Whitelist of permitted users
+  LOCALPDP_IDPNID_DENY=idpnid,idpnid     # Blacklist of denied users
+
+If whitelist exists, anyone not listed is denied. If blacklist
+exists, anyone listed is denied. If both lists exist, then white
+is applied first and black then, i.e. blacklist overrides whitelist.
+
+The lists accumulate over defalut configuration and repeated instances
+of the configuration directive. The special value "reset" can be used
+to reset any of the lists.
+
+5.2 Configuring XACML PEP
+-------------------------
+
+XACML2 PEP (client) functionality allows an external XACML2 PDP
+(server) to be queried for the authorization decision.  The attributes
+gathered by the Attribute Broker phase are available for formulating
+the XACML request.
+
+Since the XACML PDP may expect attributes names differently from the
++Common Namespace+, an additional mapping directive, ~PEPMAP~, is provided.
+It works in a manner similar to ~OUTMAP~ in that it extracts and
+filters attributes from the common pool. The source namespace field
+is used for indicating whether the attribute is
+
+* "subj": Subject Attributes  (default: idpnid and role=guest)
+* "rsrc": Resource Attributes (default: URL=url of page)
+* "act":  Action Attributes   (default: Action=access)
+* "env":  Environment Attributes (default: ZXID_PEPvers)
+
+6 Full Configuration Option Reference
+=====================================
+
+This section is generated based on comments in zxidconf.h and is
+updated periodically. See zxidconf.h for authorative definitions.
+See also zxid.h for ~struct zxid_conf~ which is the internal
+runtime structure capturing these options.
+
+Most of the configuration options can be set via configuration
+file /var/zxid/zxid.conf or using -O command line flag(s). In
+config file or on command line you should omit the ZXID_ prefix
+and use attribute=value syntax separated by newlines or & characters
+(the parser implements CGI query string syntax with extension that
+also \n is accepted as separator).
+
+N.B. The options marked as "(compile)" can not be set on command line
+or configuration file. They require a recompile.
+
+<<ignore: ./gen-conf-ref.pl <zxidconf.h >foo.pd >>
+
+6.1 Configuration Options
+-------------------------
+
+1.1.1 Compile time configuration enforcement
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether configuration is entirely determined at compile time by this file
+or whether it is possible to use a config file or provide options on
+command line using -O flags (such as via shell script wrapper). When zxid
+is used as a library, it depends on application to call zxid_parse_conf().
+Generally we recommend you leave these turned on (1). 
+
+CONF_FILE:: (compile) (default: 1)
+
+CONF_FLAG:: (compile) (default: 1)
+
+MAX_CONF:: (compile) Maximum size of conf file. (default: 4096)
+
+
+1.1.2 ZXID configuration and working directory path
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Where metadata cache and session files are created. Note that the directory
+is not hashed: you should use a file system that scales easily to oodles
+of small files in one directory. Say `make dir' to create the directory
+with proper layout. If you change it here, also edit Makefile. 
+
+PATH::  (default: "/var/zxid/")
+
+
+1.1.3 SP Nickname for IdP User Interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The nice name may be used by IdP user interface to refer to the SP. It is usually
+be short human readable name or description. 
+
+NICE_NAME::  (default: "ZXID Demo SP")
+
+
+1.1.4 Web Site URL - root of EntityID
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+URL for most zxid operations. It must end in whatever triggers
+the ZXID functionality in the web server. The hostname
+and port number should match the server under which zxid CGI is accessible.
+N.B. There is no explicit way to configure Entity ID (Provider ID) for
+the zxid SP. The Entity ID is always of form ZXID_URL?o=B, for example
+  https://sp1.zxidsp.org:8443/zxid?o=B 
+
+URL::  (default: "https://sp1.zxidsp.org:8443/zxid")
+
+
+1.1.5 Override standard EntityID Construction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The best practise is that SP Entity ID is chosen by the SP (and not
+forced upon SP by IdP). In ZXID this is done by setting ZXID_URL,
+see above. However, should you have to work with an obstinate IdP
+that refuses to follow this best practise, you can use this option
+to manually set the Entity ID. Not following the best practise
+breaks automatic metadata exchange (Auto-CoT). Recommended
+value: leave as 0 so that Entity ID is formed from ZXID_URL 
+
+NON_STANDARD_ENTITYID::  (default: 0)
+
+
+1.1.6 Illadviced ACS URL Hack
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sometimes an illadvised authority may impose to you Assertion
+Consumer Service URL, this URL happens to be different than
+ZXID uses, and you do not have political leverage to change
+these decisions. In those times you can use this hack to
+try to map the imposed URL to the one that works in ZXID.
+Normally you should register at IdP to use the ZXID default
+URLs (easiest way to do this is to use metadata). This
+only works in mod_auth_saml. 
+
+REDIRECT_HACK_IMPOSED_URL::  (default: 0)
+
+REDIRECT_HACK_ZXID_URL::  (default: 0)
+
+
+1.1.7 Common Domain Cookie URL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+URL for reading Common Domain Cookie. It must end in "zxid". The hostname
+and port number should match the server under which zxid CGI is accessible.
+Specifying empty CDC_URL disables CDC check in zxid_simple() API. 
+
+CDC_URL:: CDC disabled (default: "")
+
+
+1.1.8 CDC designated IdP Handling
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How to handle CDC designated IdP. See zxid.h for explanation of constants. 
+
+CDC_CHOICE::  (default: ZXID_CDC_CHOICE_UI_PREF)
+
+
+1.1.9 Metadata Fetching Options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Following four boolean configuration options control how (IdP) metadata
+is obtained. The metadata can be in a cache (by default directory /var/zxid/cot)
+or it can be fetched "on the fly" using the well known location (WKL) method.
+
+ZXID_MD_FETCH:: controls whether fetching is performed. This necessitates
+    that ZXID was linked with libcurl. If you do not enable fetching, you
+    will need to populate the cache manually, perhaps by using a web browser
+    to fetch the meta data xml files from well known location URLs (or other
+    URLs if you know better).
+
+ZXID_MD_POPULATE_CACHE:: controls whether ZXID will write
+    the metadata to the cache. This requires ZXID_MD_FETCH to be enabled
+    and the file system permissions of the cache directory (e.g. /var/zxid/cot)
+    to allow writing.
+
+ZXID_MD_CACHE_FIRST:: controls whether cache will be checked before fetching
+    is attempted. If cache misses, ZXID_MD_FETCH governs whether fetch is tried.
+
+ZXID_MD_CACHE_LAST:: If true, metadata is obtained from cache
+    if fetch was disabled or failed.
+
+If you want to control manually your CoT (e.g. because human process is
+needed to verify that all the paperwork is in place), set ZXID_MD_FETCH to 0.
+
+If you want as automatic operation as possible, set all four to 1.
+ 
+
+MD_FETCH::  (default: 1)
+
+MD_POPULATE_CACHE::  (default: 1)
+
+MD_CACHE_FIRST::  (default: 1)
+
+MD_CACHE_LAST::  (default: 1)
+
+
+1.1.10 Authentication Request Signing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether AuthnReq is signed SP (controls both metadata and actual behavior). 
+
+AUTHN_REQ_SIGN::  (default: 1)
+
+
+1.1.11 Assertion Signing
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether SP insists that SSO assertions are signed. Affects metadata. The
+actual insistence on signing is controlled by ZXID_NOSIG_FATAL, far below.
+Boolean. Recommended value: 1. 
+
+WANT_SSO_A7N_SIGNED::  (default: 1)
+
+
+1.1.12 SOAP Message Signing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether SOAP messages for ArtifactResolution, SLO, and MNI are signed. Whether
+responses are signed as well. (*** doc) 
+
+SSO_SOAP_SIGN::  (default: 1)
+
+SSO_SOAP_RESP_SIGN::  (default: 1)
+
+
+1.1.13 IdP Signing Options
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Which components should be signed by IdP in SSO Response and Assertion.
+Bit mask:
+  0x01  Assertion should be signed (default and highly recommended)
+  0x02  The surrounding Response element should be signed
+  0x03  Both Assertion and Response are signed. 
+
+SSO_SIGN::  (default: 0x01)
+
+
+1.1.14 NameID Encryption
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether SLO and MNI requests emitted by ZXID will encrypt the
+NameID (on received requests ZXID accepts either plain or encrypted
+automatically and without configuration). (*** doc) 
+
+NAMEID_ENC::  (default: 0x0f)
+
+
+1.1.15 Assertion Encryption in POST
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to encrypt assertions when using POST bindings. 
+
+POST_A7N_ENC::  (default: 1)
+
+
+1.1.16 Bit length of identifiers, unguessability
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How many random bits to use in an ID. It would be useful if this was
+such that it produces nice unpadded base64 string, i.e. multiple of 24 bits.
+Longer IDs reduce chances of random collision (most code does not
+check uniqueness of ID) and may increase security. For security purposes
+144 bits is probably good enugh. The unguessability of ID has security
+implications, among others, in session IDs. You may want to use less than
+144 bits if your application could benefit from shorter IDs (e.g. you target
+browsers with length constrained URLs) and does not need to be
+secure against attacks with government level resources.
+E.g:  24 bits ==  3 bytes ==  4 base64 chars,
+      48 bits ==  6 bytes ==  8 base64 chars,
+     120 bits == 15 bytes == 20 base64 chars,
+     144 bits == 18 bytes == 24 base64 chars 
+
+ID_BITS:: (compile) (default: 48)
+
+ID_MAX_BITS:: used for static buffer allocation (compile) (default: 168)
+
+
+1.1.17 True randomness vs. pseudorandom source
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether true randomness is obtained.
+0=use OpenSSL RAND_pseudo_bytes(), which usually uses /dev/urandom
+1=use OpenSSL RAND_bytes(), which usually uses /dev/random
+
+Although true randomness may be more secure, it is operationally
+problematic because if not enough randomness is available, the
+system will block (stop) until enough randomness arrives. Generally
+true randomness is not feasible in a server environment unless
+you have hardware random number generator. 
+
+TRUE_RAND:: (compile) (default: 0)
+
+
+1.1.18 Session Archival Directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If set to a string, indicates a file system directory to which
+dead sessions are moved (sessions are files). This directory
+must be on the same file system as active session directory,
+usually /var/zxid/ses, for example /var/zxid/oldses.
+You may want to archieve old sessions because they contain
+the SSO assertions that allowed the users to log in. This
+may have legal value for your application, you may even be required
+by law to keep this audit trail.
+
+If set to 0, causes old sessions to be unlink(2)'d. 
+
+SES_ARCH_DIR:: 0=Remove dead sessions. (default: 0)
+
+
+1.1.19 Session cookies.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For original Netscape cookie spec see: http://curl.haxx.se/rfc/cookie_spec.html (Oct2007)
+
+If SES_COOKIE_NAME is nonempty string, then
+zxid_simple() will look for said cookie and use it as session ID.
+It will also attempt to set a cookie by that name when new session
+is created (but this may rely on some support in the calling app,
+generally the need to set a cookie is expressed by presence of
+setcookie attribute in the LDIF entry. setcookie specifies what
+should appear in the Set-Cookie HTTP header of HTTP response). 
+
+SES_COOKIE_NAME::  (default: "ZXIDSES")
+
+
+1.1.20 Local user account management.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is optional unless you require IdP
+initiated ManageNameID requests to work. Local user account management
+may be useful on its own right if your application does not yet have
+such system. If it has, you probably want to continue to use
+the application's own system. Local accounts are stored under
+/var/zxid/user/SHA1 
+
+USER_LOCAL::  (default: 1)
+
+
+1.1.21 Mini IdP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether limited IdP functionality is enabled. Affects generated metadata. 
+
+IDP_ENA::  (default: 0)
+
+
+1.1.22 IdP Insitence on Signed AuthnReq
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Must AuthnReq be signed (controls both IdP metadata and actual behavior, i.e. the check). 
+
+WANT_AUTHN_REQ_SIGNED::  (default: 1)
+
+MAX_BUF:: (compile) (default: 1024)
+
+
+1.1.23 Logging Options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See zxid-log.pd for further explanation. Generally you
+need error and activity logs to know yourself what is going on.
+You need the issue logs to know whether other's claims towards you are justified.
+You need the rely logs to hold others responsible. The bits of the
+value are as follows
+0x00    Don't log.
+0x01    Log enable
+0x06    Signing options    
+        0:: no signing (Px)
+        2:: sha1 MD only (Sx)
+        4:: RSA-SHA1 (Rx)
+        6:: DSA-SHA1 (Dx)
+0x08    reserved
+0x70    Encryption options
+        0x00:: no encryption (xP)
+        0x10:: zip-base64 (xZ)
+        0x20:: RSA-AES (xA)
+        0x30:: RSA-3DES (xT)
+        0x40:: Symmetric AES (xB)
+        0x50:: Symmetric 3DES (xU)
+        0x60:: reserved
+        0x70:: reserved
+0x80    reserved
+
+N.B. Every encryption and signature has computational cost so be sure to factor this
+in when doing benchmarks - or disable log enc and sign when performance is at premium.
+
+Log signing may help you to argue that log evidence was (not) tampered with.
+The private key for signing must be available in /var/zxid/pem/logsign-nopw-cert.pem
+
+Log encryption may help to keep the logs confidential.
+For RSA modes the public key for encryption must be available
+in /var/zxid/pem/logenc-nopw-cert.pem. For symmetric encryption the key
+is the sha1 hash of file /var/zxid/pem/logenc.key
+All modes, except for 0, also RFC1951 zip compress the log line and safe-base64 encode
+the result of the encryption.
+ 
+
+LOG_OP_NOLOG::  (default: 0x00)
+
+LOG_OP_LOG::  (default: 0x01)
+
+LOG_OP_LOG_SIGN::  (default: 0x05)
+
+LOG_OP_LOG_ENC::  (default: 0x21)
+
+LOG_OP_LOG_SIGN_ENC::  (default: 0x25)
+
+LOG_ERR:: Log errors to /var/zxid/log/err (default: 0x01)
+
+LOG_ACT:: Log activity to /var/zxid/log/act (default: 0x01)
+
+LOG_ISSUE_A7N:: Log each issued assertion to /var/zxid/log/issue/SHA1/a7n/asn (default: 0x01)
+
+LOG_ISSUE_MSG:: Log each issued PDU to /var/zxid/log/issue/SHA1/msg/asn (default: 0x01)
+
+LOG_RELY_A7N:: Log each received assertion to /var/zxid/log/rely/SHA1/a7n/asn (default: 0x01)
+
+LOG_RELY_MSG:: Log each received PDU to /var/zxid/log/rely/SHA1/a7n/asn (default: 0x01)
+
+LOG_ERR::  (default: 0x00)
+
+LOG_ACT::  (default: 0x25)
+
+LOG_ISSUE_A7N::  (default: 0x23)
+
+LOG_ISSUE_MSG::  (default: 0x45)
+
+LOG_RELY_A7N::  (default: 0x41)
+
+LOG_RELY_MSG::  (default: 0x11)
+
+
+1.1.24 Choice of log given Error or Action
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each operation has its status code and generally those lines that indicate
+successful status (or intermediate status like "continue" or "redirect")
+are considered normal activity. However, you may want to consider
+carefully whether signature failure in assertion or message disqualifies
+an operation as "activity". One approach is to simply log everything (errors and all) to
+activity log and rely on some log analysis software to flag the errors. 
+
+LOG_ERR_IN_ACT:: Log errors to /var/zxid/log/act (in addition to err) (default: 1)
+
+LOG_ACT_IN_ERR:: Log actions to /var/zxid/log/err (in addition to act) (default: 1)
+
+LOG_SIGFAIL_IS_ERR:: Log line with signature validation error to /var/zxid/log/err (default: 1)
+
+
+1.1.25 Log level for activity log.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+0 = Only essential audit relevant events are logged. Note that
+    there is no way to turn off logging audit relevant events.
+1 = Audit and external interactions
+2 = Audit, external interactions, and significant internal events
+3 and higher: reserved for future definition and debugging 
+
+LOG_LEVEL::  (default: 2)
+
+
+1.1.26 Assertion validation options.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These MUST all be turned on (and assertions signed)
+if you want to rely on assertions to hold the other party liable. 
+
+SIG_FATAL:: Signature validation error is fatal (prevents SSO) (default: 0)
+
+NOSIG_FATAL:: Missing signature is fatal (prevents SSO) (default: 1)
+
+MSG_SIG_OK:: Message layer signature (e.g. SimpleSign) is sufficeint when assertion signature is missing. (default: 1)
+
+AUDIENCE_FATAL:: Whether AudienceRestriction is checked. (default: 1)
+
+TIMEOUT_FATAL:: Whether NotBefore and NotOnOrAfter are checked (default: 1)
+
+DUP_A7N_FATAL:: Whether duplication of AssertionID is considered fatal. (default: 0)
+
+DUP_MSG_FATAL:: Whether duplication of MessageID or message is considered fatal. (default: 0)
+
+
+1.1.27 Time Slop
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Because clock sychronization amoung the servers in the CoT is unlikely
+to be perfect, not to speak of timezone misconfigurations and the
+dreaded officially introduced time errors (e.g. daylight "savings" time),
+you can configure some slop in how the timeout is evaluated. For production
+use something like 60 seconds could be a good value. 3600 = 1 hour, 86400 = 1 day. 
+
+BEFORE_SLOP:: Number of seconds before that is acceptable. (default: 86400)
+
+AFTER_SLOP:: Number of seconds after that is acceptable. (default: 86400)
+
+TIMESKEW:: Timeskew, in seconds, for timestamps we emit. (default: 0)
+
+A7NTTL:: Time To Live for IdP issued Assertions (default: 3600)
+
+
+1.1.28 Redirect to Content
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Should explicit redirect to content be used (vs. internal redir). With
+internal redirect there is one over-the-wire transaction less, but
+the URL appears as whatever was sent by the IdP. With explicit (302)
+redirect the URL will appear as the true content URL, without the SAML SSO goo. 
+
+REDIR_TO_CONTENT::  (default: 0)
+
+
+1.1.29 ID-WSF SOAP Call parameters */
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MAX_SOAP_RETRY:: Maximum retries due, e.g., EndpointMoved (default: 5)
+
+
+1.1.30 Session Management Trigger Suffix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In mod_auth_saml the URL ending that triggers session management (e.g. SLO MNI). 
+
+
+1.1.31 Attribute Prefix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In mod_auth_saml the prefix (potentially empty) for attributes brought into environment. 
+
+MOD_SAML_ATTR_PREFIX::  (default: "SAML_")
+
+DEFAULTQS:: Default Query String used by mod_auth_saml for protected page (default: "")
+
+
+1.1.32 Anonymous can see protected content
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If ANON_OK is set and matches prefix of the local URL, SSO failure does
+not block protected content from being
+shown. While this usually is a security problem, in some circumstances
+you may want to show error message or nonpersonalized content from the
+application layer. If application checks that the SSO really happened,
+then there is no security problem - the responsibility is application's.
+Typically ANON_OK=/dir/ is used with IsPassive (fp=1) to implement personalization
+if user already has session, but allow the user to access page anonymously
+without logging in if he does not have session. 
+
+ANON_OK::  (default: 0)
+
+
+1.1.33 Required Authentication Context Class Ref.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This can be used
+to ensure that the IdP has authenticated user sufficiently.
+In some cases this can trigger step-up authentication.
+Value should be dollar separated string of acceptable authn context
+class refs, e.g. ""
+If step-up authentication is triggered, you need to ensure the fa query
+string argument of the IdP selection page also requests the desired
+authentication contrext class reference.
+If not specified, then any authentication context is acceptable. 
+
+REQUIRED_AUTHNCTX::  (default: 0)
+
+
+1.1.34 IdP: Authentication Context Class Ref for Passwords
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+What authentication context IdP issues for password authentication. The
+problem here is that ZXID does not know whether transport layer is TLS (assumed).
+If it is not, you should configure this to be
+"urn:oasis:names:tc:SAML:2.0:ac:classes:Password"
+or you can configure this according to your IdP operational policies. 
+
+ISSUE_AUTHNCTX_PW::  (default: "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport")
+
+
+1.1.35 IdP preference for ACS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If SP does not manifest preference regarding the binding for Assertion Consumer Service,
+then this IdP preference is used, unless SP metadata indicates it can not
+support this binding, in which case the first ACS from metadata is used. 
+
+IDP_PREF_ACS_BINDING::  (default: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST")
+
+
+1.1.36 Simple API HTML customization.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These allow simple branding and customization.
+If these options are not enough for you, consider simply rendering your own forms. 
+
+
+1.1.37 Body tag for the ZXID generated pages.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Edit this to change the colors. 
+
+BODY_TAG:: (compile) (default: "<body bgcolor=\"#330033\" text=\"#ffaaff\" link=\"#ffddff\" vlink=\"#aa44aa\" alink=\"#ffffff\"><font face=sans>")
+
+IDP_SEL_START::  (default: "<title>ZXID SP SSO: Choose IdP</title>" ZXID_BODY_TAG "<h1>ZXID SP Federated SSO (user NOT logged in, no session)</h1>\n")
+
+IDP_SEL_NEW_IDP::  (default: "<h3>Login Using New IdP</h3>\n<i>A new IdP is one whose metadata we do not have yet. We need to know the IdP URL (aka Entity ID) in order to fetch the metadata using the well known location method. You will need to ask the adminstrator of the IdP to tell you what the EntityID is.</i>\n<p>IdP URL <input name=e size=80><input type=submit name=l1 value=\" Login (A2) \">\n<input type=submit name=l2 value=\" Login (P2) \"><br>\n")
+
+IDP_SEL_OUR_EID::  (default: "Entity ID of this SP (click on the link to fetch the SP metadata): ")
+
+IDP_SEL_TECH_USER::  (default: "<h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value=\"\">(none)</select><br>\n")
+
+IDP_SEL_TECH_SITE::  (default: "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h -->")
+
+IDP_SEL_FOOTER::  (default: "<hr><a href=\"http://zxid.org/\">zxid.org</a>, ")
+
+IDP_SEL_END::  (default: "<!-- EOF -->")
+
+
+1.1.38 IdP Selector Page URL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the above simple customization options are not sufficient, you can
+provide URL to page of your own design. This page will receive as
+query string argument the relay state.
+0 (zero) disables. 
+
+IDP_SEL_PAGE::  (default: 0)
+
+AN_START::  (default: "<title>ZXID IdP: Authentication</title>" ZXID_BODY_TAG "<h1>ZXID IdP Authentication for Federated SSO (user NOT logged in, no session)</h1>\n<h3>Please authenticate yourself using one of following methods:</h3>")
+
+AN_OUR_EID::  (default: "Entity ID of this IdP (click on the link to fetch the IdP metadata): ")
+
+AN_TECH_USER::  (default: "<h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value=\"\">(none)</select><br>\n")
+
+AN_TECH_SITE::  (default: "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h -->")
+
+AN_FOOTER::  (default: "<hr><a href=\"http://zxid.org/\">zxid.org</a>, ")
+
+AN_END::  (default: "<!-- EOF -->")
+
+
+1.1.39 Authentication Page URL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the above simple customization options are not sufficient, you can
+provide URL to page of your own design.
+0 (zero) disables. 
+
+AN_PAGE::  (default: 0)
+
+MGMT_START::  (default: "<title>ZXID SP Mgmt</title>" ZXID_BODY_TAG "<h1>ZXID SP Management (user logged in, session active)</h1>\n")
+
+MGMT_LOGOUT::  (default: "<input type=submit name=gl value=\" Local Logout \">\n<input type=submit name=gr value=\" Single Logout (R) \">\n<input type=submit name=gs value=\" Single Logout (S) \">\n")
+
+MGMT_DEFED::  (default: "<input type=submit name=gt value=\" Defederate (R) \">\n<input type=submit name=gu value=\" Defederate (S) \">\n")
+
+MGMT_FOOTER::  (default: "<hr><a href=\"http://zxid.org/\">zxid.org</a>, ")
+
+MGMT_END::  (default: "<!-- EOF -->")
+
+
+<<if: ZXIDBOOK>>
+<<else: >>
+
+96 License
+==========
+
+Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
+Author: Sampo Kellomäki (sampo@iki.fi)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+97 FAQ
+======
+
+
+97.3 Configuration Questions
+----------------------------
+
+1. Q: In mod_auth_saml, what is the relation between ZXIDConf and httpd.conf?
+
+   A: httpd.conf can contain ZXIDConf directives. Those directives are
+   processed as if they came from /var/zxid/zxid.conf file (which is
+   processed first, before and ZXIDConf directives), except that if you
+   specify ZXIDConf "PATH=/your/path", this triggers reporcessing of
+   the zxid.conf (from the new path).
+
+2. Q: In mod_auth_saml, what is the relation between the +port+ in ZXIDConf
+   and the +port+ in the httpd.conf?
+
+   A: The ports must agree. ZXID configuration must match the way the
+   Apache layer is configured.
+
+3. Q: Multiple roles of same entity, acting as SP, WSC, and WSP for
+   different services
+
+   Asa:
+   > Part of what you are saying is that the service
+   > registration is WSC.  This is rather confusing since the case is a WSP
+   > acting as a WSC of the Discovery Service.   For the ClientLib thus far,
+   > I have chosen to think of service registration as a WSP to WSP.  What is
+   > the downside to this approach?
+
+   Conor:
+   > Service registrations can't be done WSP to WSP with any Liberty protocol
+   > (in fact, we don't define any such method of invocation as the invoking
+   > party is always  a WSC for the intent of that message - there's no
+   > problem with a WSP in turn being a WSC of another service instance, just
+
+   Right. You can don WSC role whenever convenient. There is nothing confusing
+   about WSP of one service being WSC of another service. Perhaps the
+   confusion would be avoided if everybody fully qualified their descriptions
+   until common convention about less than fully qualified roles emerges.
+
+   Entity E1, an ID-DAP WSP (primary role), will act as Discovery WSC
+   (secondary role) to perform metadata registration. This same entity E1
+   will also have SP interface (another secondary role) which allows
+   the user to trigger discovery association, again E1 acting in secondary
+   role of Discovery WSC.
+
+   No confusion as far as I can see.
+
+97.3 Common Mistakes
+--------------------
+
+1.  When I try accessing https://sp1.zxidsp.org:8443/zxidtest.sh nothing happens!
+
+    Assuming you have the web server correctly running, the most common
+    gotcha is that zxidhlo has dynamic linking problem.
+    See <<see: ZXID-Installing-CannedTutorialRunningZXIDasCGIundermini_httpd-AccessingZXID>>
+    subsection "Dynamic Linking Problems", for explanation and resolution.
+
+2.  Single Logout does not end the IdP session (i.e. IdP does
+    not force you to supply password when you do SSO next time).
+
+    Usual cause is that the management form (the one with the SLO buttons)
+    does not have correct or any session ID. Do a view source on the
+    the page and look for field called "s". The session ID is
+    supposed to be extracted from the Single Sign-On result. For
+    zxid_simple() you need to parse the returned LDIF and
+    take the sesid. Pass that to zxid_fed_mgmt() as second argument.
+
+3.  Login buttons do nothing.
+
+    A possible cause is that the entity ID is not passed from
+    the IdP selection form. If the form is using POST method,
+    you must make sure you actually read the HTTP body and
+    pass its contents to the zxid_simple() as the ~qs~ argument.
+
+4.  The SP Login, a.k.a. IdP selection, page shows, but SSO does not work
+
+    a. Your configuration does not match actual URL used to
+       access the zxid system. For the zxidhlo family of
+       examples you MUST edit the configuration string
+       to match your situation. Watch out for domain name
+       and port number.
+
+    b. Connectivity issue prevents IdP from fetching metadata.
+       Make sure your domain name is resolvable at IdP (e.g.
+       add it to /etc/hosts). See also next point.
+
+    c. IdP is not configured to get your metadata automatically.
+       You have to configure your metadata to the IdP manually.
+       How to do this depends on IdP product. Do not ask us.
+
+    d. You supplied IdP URL that, in fact, is not the well known
+       location for fetching IdP metadata. Or the IdP does
+       not have well known location enabled. In the latter
+       case you will need to install the IdP metadata
+       manually (*** procedure to be documented). See [SAML2meta]
+       section 4.1 "Publication and Resolution via Well-Known Location",
+       p.29, for normative description of this method.
+
+    e. Connectivity issue at web browser level. Make sure your
+       web browser can resolve both SP and IdP domain names.
+       Edit /etc/hosts as needed on the machine where the browser runs.
+
+    f. Personal firewall blocks access. Check firewall set up on
+       * browser machine
+       * SP machine
+       * IdP machine
+
+5.  The SP Login, a.k.a. IdP selection, page does not show at all
+
+    a. Connectivity issue at web browser level. Make sure your
+       web browser can resolve both SP and IdP domain names.
+       Edit /etc/hosts as needed.
+
+    b. Personal firewall blocks access. Check firewall set up on
+       * browser machine
+       * SP machine
+
+    c. You deployed the zxid in some other URL than you thought.
+       Double check your webserver or servlet container
+       configuration and be sure you understand where
+       zxid is supposed to appear. Be sure you are editing
+       the right configuration - some people run multiple
+       web servers in their machine and get confused about
+       which one actually is active on which port and where
+       the configuration files are located.
+
+    d. ZXID lacks execute permissions, dynamic link libraries
+       are missing (use "ldd zxid" to check), or CGI permission
+       setup prevents it from running. See previous bullet.
+
+6.  Mystery configuration problems. Double check /var/zxid/zxid.conf
+    or consider removing it if you do not understand what it does.
+    Double check the conf string if using zxid_simple() interface.
+
+7.  Writes a user...
+
+    > Once it has been compiled, I copied the files zxidhlo.php and zxid.php
+    > to /var/www/zxid (my webroot). I accessed zxidhlo.php?o=E with my browser
+    > and I saw a page asking for IDP metadata. But when I looked at
+    > the /var/log/apache2/error.log, I found these: 
+    > 
+    >  tb77f96c0 zxidmeta.c:352 zxid_get_ent_by_sha1_name zxid d Trying 
+    >    sha1_name(cot) open (vopen_fd_from_path): No such file or directory 
+
+    Did you create the /var/zxid hierarchy (make dir) and make sure your
+    web user (nobody?) has write permission to the ~log~ directory? Or did
+    you configure it to use some other directory than /var/zxid?
+
+8.  What is this /var/zxidcot directory?
+
+    It is supposed to be /var/zxid/cot
+
+    When configuring PATH, did you forget trailing slash? E.g.
+
+      "PATH=/var/zxid&URL=..."    # WRONG!
+      "PATH=/var/zxid/&URL=..."   # Right
+
+9.  If configuration appears to be prematurely truncated, then
+    see if you need to adjust ZXID_MAX_CONF (default 4KB) in
+    zxidconf.h and recompile.
+
+
+<<references:
+
+[SAML2core] "Assertions and Protocols for the OASIS Security Assertion Markup Language (SAML) V2.0", Oasis Standard, 15.3.2005, saml-core-2.0-os
+
+[SAML2prof] "Profiles for the OASIS Security Assertion Markup Language (SAML) V2.0", Oasis Standard, 15.3.2005, saml-profiles-2.0-os
+
+[SAML2bind] "Bindings for the OASIS Security Assertion Markup Language (SAML) V2.0", Oasis Standard, 15.3.2005, saml-bindings-2.0-os
+
+[SAML2context] "Authentication Context for the OASIS Security Assertion Markup Language (SAML) V2.0", Oasis Standard, 15.3.2005, saml-authn-context-2.0-os
+
+[SAML2meta] Cantor, Moreh, Phipott, Maler, eds., "Metadata for the OASIS Security Assertion Markup Language (SAML) V2.0", Oasis Standard, 15.3.2005, saml-metadata-2.0-os
+
+[SAML2security] "Security and Privacy Considerations for the OASIS Security Assertion Markup Language (SAML) V2.0", Oasis Standard, 15.3.2005, saml-sec-consider-2.0-os
+
+[SAML2conf] "Conformance Requirements for the OASIS Security Assertion Markup Language (SAML) V2.0", Oasis Standard, 15.3.2005, saml-conformance-2.0-os
+
+<<doc-end.pd>>
+<<notapath: TCP/IP a.k.a xBSD/Unix n/a Perl/mod_perl PHP/mod_php Java/Tomcat>>
+<<EOF: >>
+
+#/var/zxid/zxid.conf
+
+IDP_SEL_START=<title>ZXID SP SSO: Choose IdP</title><body bgcolor=white><h1>ZXID SP Federated SSO (user NOT logged in, no session)</h1>
+
+IDP_SEL_NEW_IDP=<h3>Login Using New IdP</h3><i>A new IdP is one whose metadata we do not have yet. We need to know the IdP URL (aka Entity ID) in order to fetch the metadata using the well known location method. You will need to ask the adminstrator of the IdP to tell you what the EntityID is.</i><p>IdP URL <input name=e size=80><input type=submit name=l1 value=" Login (A2) ">\n<input type=submit name=l2 value=" Login (P2) "><br>
+
+IDP_SEL_OUR_EID=Entity ID of this SP (click on the link to fetch the SP metadata): 
+
+IDP_SEL_TECH_USER=<h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value="">(none)</select><br>
+
+IDP_SEL_TECH_SITE=<input type=hidden name=fq value=""><input type=hidden name=fy value=""><input type=hidden name=fa value=""><input type=hidden name=fm value=""><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h -->
+
+IDP_SEL_FOOTER=<hr><a href=\"http://zxid.org/\">zxid.org</a>, 
+IDP_SEL_END=<!-- EOF -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<<fi: >>
