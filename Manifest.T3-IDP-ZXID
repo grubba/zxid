@@ -1,0 +1,9 @@
+TAS3 component package, version 0.1.
+Package: T3-IDP-ZXID
+Source: http://zxid.org/
+Version: 0.37
+X-cvsid: $Id: Manifest.T3-IDP-ZXID,v 1.2 2009-10-16 13:36:33 sampo Exp $
+Maintainer: Sampo Kellomäki <sampo@symlabs.com>
+Depends: 
+Description: Generic IdP that also supports TAS3;
+ Library dependencies: openssl-0.9.8g or newer, libcurl-7.19, zlib, libc

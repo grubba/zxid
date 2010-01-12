@@ -1,0 +1,10 @@
+TAS3 component package, version 0.1.
+Package: T3-SSO-ZXID-MODAUTHSAML
+Source: http://zxid.org/
+Version: 0.33
+cvsid: $Id: Manifest.T3-SSO-ZXID-MODAUTHSAML,v 1.2 2009-09-16 14:59:11 sampo Exp $
+Maintainer: Sampo Kellomäki <sampo@symlabs.com>
+Depends: 
+Description: Generic SP that also supports TAS3;
+ Library dependencies: openssl-0.9.8g or newer, libcurl-7.19, zlib, libc;
+ Designed to work with Apache httpd-2.2.x

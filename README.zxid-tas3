@@ -1,0 +1,78 @@
+README.zxid-tas3
+================
+$Id: README.zxid-tas3,v 1.4 2009-10-18 12:39:10 sampo Exp $
+
+ZXID is general purpose SSO and Identity Web Services project, see zxid.org
+
+TAS3 - Trustable Architecture for Secure Shared Services - is an European
+FP7 research project that has chosen to use SAML 2.0 and ID-WSF 2.0
+and is using ZXID as one implementation of these technologies. See tas3.eu
+
+The research leading to these results has received funding from the
+European Community's Seventh Framework Programme (FP7/2007-2013) under
+grant agreement number 216287 (TAS3 - Trusted Architecture for Securely
+Shared Services - www.tas3.eu).
+
+Since ZXID is important for TAS3 and vice versa, ZXID Makefile contains
+some targets for producing ZXID specific packages
+
+  make tas3maspkg   # T3-SSO-ZXID-MODAUTHSAML-V.VV.zip
+  make tas3phppkg   # T3-SSO-ZXID-PHP-V.VV.zip
+  make tas3javapkg  # T3-SSO-ZXID-JAVA-V.VV.zip
+  make tas3idppkg   # T3-IDP-ZXID-V.VV.zip
+  make tas3rel      # build all of the above
+  make tas3copyrel  # scp release packages
+
+https://portal.tas3.eu/pool/        -- Download from here
+http://idpdemo.tas3.eu/cot/         -- Register your metadata here
+http://idpdemo.tas3.eu/zxididp?o=B  -- Publicly available TAS3 demo IdP
+
+<<dia: tas3-integration,,:bg,fg,comp,api,zxmod:: API and modules for SSO and web service call.>>
+
+--Sampo
+
+T3-IDP-ZXID Install
+-------------------
+
+1.  Download and unzip the package
+
+2.  ldd zxididp
+
+3.  Copy zxididp to document root of your web server
+
+      cp zxididp /srv/www/htdocs   # OpenSUSE 10.2
+
+4.  Create directory hierarchy
+
+      mkdir /var/zxid
+      chown webuser /var/zxid
+      su webuser
+      make dir ZXID_PATH=/var/zxid/idp
+      ls -alFR /var/zxid
+
+5.  Create configuration file /var/zxid/idpzxid.conf
+
+      URL=http://idp.tas3.pt:8081/zxididp
+      PDP_ENA=1
+
+6.  Create a user
+
+      mkdir /var/zxid/idpuid/koerkki
+      echo -n salainen >/var/zxid/idpuid/koerkki/.pw
+      
+7.  Configure web server to run the zxididp as a CGI script.
+    
+    On Apache edit httpd.conf (often in /etc/apache2/httpd.conf)
+
+      <Location "/zxididp">
+      Options ExecCGI
+      SetHandler cgi-script
+      </Location>
+
+8.  Test it
+
+      tail -f /var/tmp/zxid.stderr
+      tail -f /var/log/apache2/error_log
+
+    http://idp.tas3.pt:8081/zxididp?o=B
+

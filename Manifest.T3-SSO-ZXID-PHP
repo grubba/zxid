@@ -1,0 +1,9 @@
+TAS3 component package, version 0.1.
+Package: T3-SSO-ZXID-PHP
+Source: http://zxid.org/
+Version: 0.34
+cvsid: $Id: Manifest.T3-SSO-ZXID-PHP,v 1.1 2009-10-16 13:36:33 sampo Exp $
+Maintainer: Sampo Kellomäki <sampo@symlabs.com>
+Depends: 
+Description: Generic SP library that also supports TAS3;
+ Library dependencies: openssl-0.9.8g or newer, libcurl-7.19, zlib, libc

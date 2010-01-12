@@ -1,0 +1,8 @@
+TAS3 component package, version 0.1.
+Package: T3-ZXID-SRC
+Source: http://zxid.org/
+Version: 0.38
+X-cvsid: $Id: Manifest.T3-ZXID-SRC,v 1.1 2009-10-18 12:39:10 sampo Exp $
+Maintainer: Sampo Kellomäki <sampo@symlabs.com>
+Depends: 
+Description: Source code of the zxid package underlying various binaries, see also zxid.org

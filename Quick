@@ -1,0 +1,74 @@
+#!/bin/sh   # -*-pd-*-
+# Quick Start for ZXID
+######################
+# Sampo Kellomäki (sampo@iki.fi)
+# $Id: Quick,v 1.9 2010-01-08 02:10:09 sampo Exp $
+
+if false; then
+  tar xvzf zxid-0.7.tgz
+  cd zxid-0.8
+  # N.B.  There is no configure script. The Makefile works for all
+  #       supported platforms by provision of correct TARGET option.
+  # N.B2: We distribute some generated files. If they are missing, you need
+  #       to regenerate them: make cleaner; make dep ENA_GEN=1
+  make                   # default Linux. Do `make TARGET=sol8' for Solaris
+  make dir               # Creates /var/zxid hierarchy
+  make samlmod           # optional
+  make samlmod_install   # optional: install Net::SAML perl module
+  make phpzxid           # optional
+  make phpzxid_install   # optional: install php_zxid.so PHP extension
+  cp zxid <webroot>/
+fi
+
+# configure your web server to recognize zxid a CGI, e.g.
+mini_httpd -p 8443 -c 'zxid*' -S -E zxid.pem -l /tmp/mini.stderr &
+mini_httpd -p 8444 -c 'zxid*' -S -E /var/zxid/pem/ssl-nopw-cert.pem -l /tmp/mini.stderr &
+mini_httpd -p 8081 -c 'zxid*' &
+
+tail -f /var/tmp/zxid.stderr &
+tail -f tmp/err-httpd &
+
+echo Edit your /etc/hosts to contain
+echo 127.0.0.1       localhost sp1.zxidcommon.org sp1.zxidsp.org idp1.zxidp.org sp.tas3.pt idp.tas3.pt
+echo
+echo Point your browser to
+echo  https://sp1.zxidsp.org:8443/zxidhlo?o=E
+echo  https://sp1.zxidsp.org:8443/zxidhlo.pl?o=E      # Perl version
+echo  https://sp1.zxidsp.org:8443/zxidhlo.php?o=E     # PHP version
+echo  https://sp1.zxidsp.org:8443/zxidhrxmlwsc?o=E
+echo  https://idp1.zxidp.org:8443/zxididp?o=F         # The IdP
+echo
+echo  http://sp.tas3.pt:8080/zxidservlet/appdemo
+echo  http://sp.tas3.pt:8082/zxidhlo.pl?o=E
+echo  http://sp.tas3.pt:8082/zxidhlo.php?o=E
+echo  http://sp.tas3.pt:8082/protected/saml?o=E       # mod_auth_saml
+echo  http://sp.tas3.pt:8082/protected/env.cgi
+echo  http://idp.tas3.pt:8081/zxididp?o=F
+echo
+echo tail -f /var/tmp/zxid.stderr &
+echo tail -f /var/zxid/log/act &
+echo
+echo wireshark -i lo -f 'port 8080 or port 8081'&
+
+Testing mod_php and mod_perl
+----------------------------
+
+emacs /apps/apache/std/conf/httpd.conf
+/apps/apache/std/bin/apachectl start
+tail -f tmp/err-httpd &
+
+Testing Java
+------------
+
+export LD_LIBRARY_PATH=/d/sampo/zxid/zxidjava:$LD_LIBRARY_PATH
+export JAVA_HOME=/apps/java/j2sdk1.4.2
+make javazxid
+cd apache-tomcat-5.5.20/
+tail -f logs/catalina.out &
+killall java; bin/startup.sh
+http://sp1.zxidsp.org:8080/zxidservlet/zxidHLO?o=E
+http://sp.tas3.pt:8080/zxidservlet/appdemo
+
+gdb /apps/java/j2sdk1.4.2/bin/java core
+
+<<EOF: >>

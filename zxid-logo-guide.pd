@@ -1,0 +1,607 @@
+ZXID Logo Guide
+###############
+<<author: Sampo Kellomäki (sampo@iki.fi)>>
+<<cvsid: $Id: zxid-logo-guide.pd,v 1.1 2009-08-25 16:22:44 sampo Exp $>>
+<<pdflags: stripsecnum=1>>
+<<pdflags: secnum=0>>
+
+<<html:
+<table align=right width=200 border=1 hspace=5 cellpadding=3 bgcolor="#550055"><tr><td>
+>>
+
+2 Downloads
+===========
+
+* Newest: <<link:zxid-0.17.tgz>> (6.3.2007, WSC development, bug fixes)
+* <<link:README.zxid.html: README.zxid>> (<<link:zxid-frame.html: multi page>>)
+  (<<link:README.zxid.pdf: PDF>>) has more technical documentation
+* Windows binaries <<link:zxid-0.12-win32-bin.zip>> (32MB, no support),
+  <<link:README.zxid-win32.html: README.zxid-win32>>
+* See also http://freshmeat.net/zxid
+
+<<ignore:
+* Blog entries:
+  - <<link:http://identitymeme.org/archives/2006/09/08/a-new-libertysaml-opensource-project-zxid/: A new Liberty/SAML opensource project: ZXID>>
+* ZXID Home: zxid.org
+
+*Dependencies*: To compile ZXID you need the following libraries:
+
+1. openssl-0.9.8d or later. See www.openssl.org. What is
+   distributed with most Linux distros is sufficient.
+2. zlib from zlib.net. Your distro is sufficient.
+3. libcurl from http://curl.haxx.se/. I used version 7.15.5, but probably
+   whatever ships with your distribution is fine. It needs to be compiled
+   to support HTTPS.
+4. HTTPS capable web server, such as Apache (see my <<link:apache.html: receipe>>).
+   CGI support is needed. I recommend Jef Pozkanzer's mini_httpd available from
+   <<link:http://www.acme.com/software/mini_httpd/: http://www.acme.com/ software/mini_httpd/>>
+
+*Platforms*:
+
+* Linux: supported (ix86)
+* Solaris 8: supported (Sparc)
+* Mac OS 10 (Darwin): supported (Power PC)
+* Windows 2k: preliminary support using MinGW (I am not knowledgeable enough
+  in Windows to help you if you hit troubles)
+
+ZXID was originally developed on ix86 Linux with portability
+across Unix or at least POSIX as a goal, any modern system
+should work. You will need GNU make. I use gcc-3.4.6 as a compiler so
+others (such as gcc-4) may need minor tweaking.
+
+<<html:
+</td></tr></table>
+>>
+
+1 Who needs this?
+=================
+
+ZXID project has currently (Jan 2007) five outputs
+
+libzxid:: A C library for supporting SAML 2.0, including federated
+    Single Sign-On (SSO)
+zxid:: A C program that implements a SAML Service Provider (SP) as a CGI script
+Net::SAML:: A Perl module wrapping libzxid. Also zxid.pl, that implements SP
+    in mod_perl environment, is supplied.
+php_zxid:: A PHP extension that wraps libzxid. Also supplied: zxid.php
+    that implements SP in mod_php environment.
+libzxidjni.so:: A Java JNI extension that wraps libzxid. Also supplied:
+    zxid.java that implements SP as a CGI script. zxidhlo.java demonstrates
+    use under servlet engine, e.g. Tomcat.
+
+*You need this if you are*
+
+Web Master:: You want to enable SAML based Single Sign-On (SSO) to
+    your web site. In this case you would use the zxid SP CGI script
+    directly, only configuring it slightly or you can go the zxid_simple()
+    route. Otherwise you can hint your PHP or perl developer that this
+    functionality is available and your want it.
+
+Perl Developer:: You can use the Net::SAML module to integrate SSO
+    to your application and web site. Given the direct perl support, this is
+    easier than fully understanding the C interface. Both mod_perl
+    and perl as CGI are supported.
+
+PHP Developer:: You can use ~dl("php_zxid.so")~ to load the module and
+    access the high level functionality, such as SAML 2.0 SSO. We
+    support functionality roughly equivalent to perl Net::SAML.
+    The PHP module is fully ready to use for SSO, but we expect to
+    add a lot more, such as WSC, in future. Both mod_php5 and php as
+    CGI are supported. php4 should also work.
+
+Java Developer:: You can use ~System.loadLibrary("zxidjni")~ to
+    pull into your Java proram the full power of the ZXID. The
+    functionality supported is roughly equal to Net::SAML.
+
+Web Developer:: You want to integrate SAML based SSO to your web site tool
+    or product so that your customers can enjoy SSO enabled web sites. In
+    this case you would study zxid.c for examples and use libzxid.a to
+    implement the functionality in your own program.
+
+Identity Management hacker:: You need some building blocks: you
+    will study libzxid and add to it, contributing to the project.
+
+ZXID Project has vastly more ambitious goals. See the ZXID Project chapter
+in <<link:README.zxid.html: documentation>> (<<link:README.zxid.pdf: PDF>>).
+
+3 Try it out immediately
+========================
+
+In this space we host links to IdPs that work with ZXID and to
+ZXID test sites you can use to get a feel for yourself. There is
+no guarantee that these sites stay up:
+
+* http://ssocircle.com/
+
+(*** http://cgi-service-provider.saml2.com/cgi-bin/zxid  -- An alias of ssocircle.com)
+
+*Freely downloadable IdPs you can install and test against*
+
+* http://symlabs.com/Products/SFIAM.html
+* http://www.lasso.org/
+
+4 Aims of ZXID Project
+======================
+
+ZXID aims at +full stack+ implementation of all federated identity
+management and identity web services protocols. Initial goal
+is supporting SP role, followed by ID-WSF WSC and IdP roles.
+
+ZXID is light weight, has a small foot print, and is implemented in
+C. It is suitable for both high performance and embedded
+applications. Scripting languages are supported using
+<<link:http://www.swig.org: SWIG>>, including Perl, PHP and Java. The "full
+stack" nature of ZXID means it's self contained and has minimal
+external library dependencies (see downloads).
+
+Targeted Federated Identity Standards
+
+* SAML 2.0 (SP role 98% done)
+* SAML 1.1 (Assertion Consumer role 60% done)
+* Liberty ID-FF 1.2 (SP role 62% done)
+* WS-Federation 1.0 Basic Profile (Assertion Consumer role 40% done)
+
+Targeted ID Web Services Standards
+
+* Liberty ID-WSF 2.0 (80% done)
+* Liberty ID-WSF 1.1 (40% done)
+
+5 Approach
+==========
+
+ZXID consists of C libraries. Some of these libraries are generated
+from +schema grammar+ descriptions using a tool called xsd2sg.pl, part
+of <<link:http://mercnet.pt/plaindoc/pd.html: Plaindoc>> distribution. Other
+libraries that express flows and processing rules are hand-written. The
+language bindings, other than C, are generated automatically using swig(1).
+
+6 Status
+========
+
+Pre-alpha development. As of 0.8 (Jan 2007) the package is useful for
+doing SSO and other SP related tasks. It also supports perl and
+mod_perl by way of Net::SAML module, PHP5 (and php4) using
+php_zxid.so, as well as Java using libzxidjni.so. However it is still
+missing some essential functionality (e.g. signature generation).
+
+So far we have
+
+* General SAML 2.0 encoding and decoding of messages in C
+* Net::SAML perl module that gives access to the C functionality
+* php_zxid.so extension for php5 (and php4) roughly equal to Net::SAML
+* libzxidjni.so extension for Java roughly equal to Net::SAML
+* SAML 2.0 metadata handling and support for well known location method
+* Specific logic for Single Sign-On and Federation using artifact and post profiles
+* Single logout, defederation, and NameID management
+* Some session management and ability to handle discovery bootstrap
+* SP role as a CGI written in C
+* SP role written in perl that works both in mod_perl and as a CGI
+* SP role written in php that works under apache mod_php5 (and possibly php4).
+* SP role written in Java
+* SP role written in shell script
+* Command line WSC testing tool
+* Discovery WSC role in C
+* ID-DAP WSC role in C
+* Encoders and decoders for
+  - SAML 2.0 (most mature)
+  - SAML 1.1
+  - Liberty ID-FF 1.2
+  - Liberty ID-WSF 1.1
+  - Liberty ID-WSF 2.0
+
+*Timeline*
+
+1. API freeze for SP functionality in end of Sept 2006 (done, except
+   for adding new language bindings).
+2. API freeze for WSC functionality in end of March 2007.
+
+IdP, DS, and WSP functionality are slated only later (unless a
+volunteer steps forward).
+
+7 Documentation
+===============
+
+Currently most documentation is maintained as an extensive
+<<link:README.zxid.html: README.zxid>> (<<link:README.zxid.pdf: PDF>>)
+file. This file details compilation, installing, configuring,
+and use. It is also distributed as part of the source code
+package.
+
+I also encourage you to read the source, especially headers. Starting
+from c/zx-sa-data.h, zxid.h, zxid.c, and zxidsimp.c will be most
+instructive.
+
+All the specifications supported by ZXID are freely available on the
+net. Try
+
+* OASIS
+* Liberty Alliance
+* W3C
+* Your favorite RFC repository
+
+8 Support
+=========
+
+8.1 Mailing list and forums
+---------------------------
+
+Mail the author until we get the list set up. Or volunteer a list :-)
+
+8.2 Bugs
+--------
+
+Mail the author until we get bug tracking set up. Or volunteer.
+
+8.3 Developer access
+--------------------
+
+We use CVS, but access needs to be manually configured and is not
+anonymous. If you contribute significantly, I will bother. Others
+can send patches (good way to show you are worthy of CVS access)
+to me. I've heard some mixed experiences about open source
+sites like sourceforge. If you run such site and want to
+host ZXID Project, please contact me.
+
+If you just always want the latest source: get the tar ball from
+the downloads section. Trust me, this is still so much in flux
+that only the tar ball snapshots are in any usable state. CVS
+access just to get latest source would be pointless.
+
+8.8 Commercial Support
+----------------------
+
+Following companies provice consultancy and support contracts for
+ZXID:
+
+* symlabs.com
+* mercnet.pt
+
+8.9 Old releases
+----------------
+
+* Historic: <<link:zxid-0.2.tgz>>, <<link:zxid-0.1.tgz>>
+* <<link:zxid-0.3.tgz>> (first fully functional release)
+* <<link:zxid-0.4.tgz>> (4.9.2006, with mod_perl/Net::SAML SP)
+* <<link:zxid-0.5.tgz>> (15.9.2006, with encoders and decoders for ID-WSF and ID-FF)
+* <<link:zxid-0.6.tgz>> (18.9.2006, with PHP support, including mod_php)
+* <<link:zxid-0.7.tgz>> (15.10.2006, with digital signatures, improved PHP, mod_php, and mod_perl support)
+* <<link:zxid-0.8.tgz>> (16.1.2007, zxid_simple() API, logging, conf file, more signature support, JNI support)
+* <<link:zxid-0.9.tgz>> (26.1.2007, fixed compilation, preliminary Windows support using MinGW)
+* <<link:zxid-0.10.tgz>> (31.1.2007, MinGW DLL production works)
+* <<link:zxid-0.11.tgz>> (1.2.2007, MinGW DLL fixes)
+* <<link:zxid-0.12.tgz>> (10.2.2007, WSF bootstrap handling, rework of session system, bug fixes)
+* <<link:zxid-0.13.tgz>> (20.2.2007, clean up Java interface, Mac compile, bug fixes)
+* <<link:zxid-0.14.tgz>> (21.2.2007, Tomcat tutorial)
+* <<link:zxid-0.15.tgz>> (23.2.2007, Tomcat bug fixes)
+* <<link:zxid-0.16.tgz>> (4.3.2007, WSC development, bug fixes)
+
+8.9 Some Links
+--------------
+
+* Another directory where ZXID is featured:
+  <<link:http://www.linuxlinks.com/Software/Programming/Libraries/Networking/: linuxlinks>>
+
+9 License
+=========
+
+Copyright (c) 2006-2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.
+Author: Sampo Kellomäki (sampo@iki.fi)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+While the source distribution of ZXID does not contain
+SSLeay or OpenSSL code, if you use this code you will use OpenSSL
+library. Please give Eric Young and OpenSSL team credit (as required by
+their licenses).
+
+And remember, you, and nobody else but you, are responsible for
+auditing ZXID and OpenSSL library for security problems,
+backdoors, and general suitability for your application.
+
+<<htmlpreamble: <title>ZXID Home - Open Source IdM for the Masses - SAML SSO</title><body bgcolor="#330033" text="#ffaaff" link="#ffddff" vlink="#aa44aa" alink="#ffffff"><font face=sans><h1>ZXID Home - Open Source IdM for the Masses - SAML SSO</h1> >>
+
+<<references:
+
+[SAML2TechOverview] Tech Overview of SAML V2.0 from OASIS. http://www.oasis-open.org/committees/download.php/19258/sstc-saml-tech-overview-2%200-draft-09.pdf (High level use cases starting p.8 would give you more understanding of each player including IdP.)
+
+>>
+
+<<EOF: >>
+
+Conf file interest: hos001@arcor.de
+
+---
+
+Short name: zxid
+Full project name: ZXID Library for Federated SSO and ID-WSF
+Short desc: ZXID Federated Single Sign-On and ID Web Services
+
+ZXID is a C library that implements full SAML 2.0
+stack and aims to implement all popular federated
+id management protocols such as Liberty ID-FF 1.2,
+WS-Federation, WS-Trust, and ID Web Services such as
+Liberty ID-WSF 1.1 and 2.0. ZXID is based on schema
+based code generation, resulting accurate
+implementation. SWIG is used to offer scripting
+language interfaces such as Perl, PHP, and Python,
+as well as Java. ZXID can act as SP, IdP, WSC, and WSP.
+
+Project ID 61041 (submitted on Monday 7.8.2006 20h GMT)
+
+--Sampo
+
+6.9.2006 pause.cpan.org
+
+Net::SAML provides SSO and Assertion support, the latter
+being fundamental Identity Management building block.
+Net::WSF complements Net::SAML by providing several
+Web Services frameworks, such as Liberty Alliance
+ID-WSF 2.0 and 1.1. Support for WS-Trust is
+likely, too. The framework can also be used to implement
+Web Services in nonidentity mode.
+
+Some anticipated subnamespaces
+
+Net::WSF::WSC
+Net::WSF::WSP
+Net::WSF::Discovery
+
+This effort is part of zxid.org and has fairly large
+scope, ranging all sorts of IdM modules.
+
+--Sampo
+
+http://www.cellmail.com/usage/zxid.html
+
+netcraft? who ever - open source IdM list
+Safehaus
+wikipedia.org
+  - Liberty
+  - SAML
+  - SSO
+  - SLO
+
+---
+
+To: http://2idi.com/contact/=Yang
+(Safehaus page for IdM open source)
+Date: 18.9.2006
+
+Please add to your open source IdM map
+
+Net::SAML perl module for federated SSO. Supports
+both mod_perl and CGI for SAML SP role (available
+from CPAN)
+
+php_zxid - PHP extension for federated SSO using
+SAML. Supports mod_php for SAML SP role. Available
+from zxid.org
+
+zxid - C implementation of federated SSO using
+SAML. Works as CGI implementing SP role.
+Available from zxid.org
+
+libzxid - C library implementing SAML, ID-FF,
+ID-WSF and much more. Available from zxid.org
+
+---
+
+Delivered-To: sampo@mercnet.pt
+Return-Path: <nobody@pause.perl.org>
+Received: from jokotaas.iki.fi (jokotaas.iki.fi [::ffff:212.16.100.2])
+  by mail2.mercnet.pt with esmtp; Tue, 08 Aug 2006 22:57:52 +0000
+Received: from x1.develooper.com (ss1.fabel.dk [63.251.223.179])
+        by jokotaas.iki.fi (8.13.5.20060308/8.12.10) with SMTP id k78LwdN6016634
+        for <sampo@iki.fi>; Wed, 9 Aug 2006 00:58:40 +0300 (EEST)
+Received: (qmail 31483 invoked by uid 225); 8 Aug 2006 21:58:37 -0000
+Delivered-To: sampo@cpan.org
+Received: (qmail 31451 invoked by alias); 8 Aug 2006 21:58:34 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+        tests=BAYES_00,FORGED_RCVD_HELO,UNPARSEABLE_RELAY
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 08 Aug 2006 14:58:31 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+        by pause.perl.org (8.13.4/8.13.4/Debian-3sarge1) with ESMTP id k78LwPFS008784;
+        Tue, 8 Aug 2006 23:58:25 +0200
+Received: (from nobody@localhost)
+        by pause.perl.org (8.13.4/8.13.4/Submit) id k78LwP3U008783;
+        Tue, 8 Aug 2006 23:58:25 +0200
+Date: Tue, 8 Aug 2006 23:58:25 +0200
+Message-Id: <200608082158.k78LwP3U008783@pause.perl.org>
+Subject: Module submission Net::SAML
+Reply-To: modules@perl.org
+To: modules@perl.org, sampo@cpan.org
+From: "Perl Authors Upload Server" <upload@pause.perl.org>
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Net::SAML
+  DSLIP:       cdcfo
+  description: Parse and generate SAML Assertions for SSO
+  userid:      SAMPO (Sampo Kellomaki)
+  chapterid:   5 (Networking_Devices_IPC)
+  communities:
+    -
+
+  similar:
+    Net::OpenID, Net::Yadis
+
+  rationale:
+
+    SAML is an OASIS standard, that has existed since 2001, for
+    conveying trustworthy statements, called assertions, about user. The
+    statements can convey authentication, authorization, and attributes
+    of the user. SAML assertions are a federated identity management
+    building block used in Single Sign-On (SSO) to web sites and as
+    credentials in identity web services. SAML 2.0 also includes an
+    actual SSO protocol (which is also supported by this module).
+
+    I feel the usage domain, SSO and id web services, suggests Net::
+    prefix rather than Security::. Authentication:: and Authorization::
+    prefixes would be too narrow as SAML can do much more. Other modules
+    in SSO area, such as Net::OpenID and Net::Yadis, also chose Net::
+    prefix.
+
+    --Sampo
+
+  enteredby:   SAMPO (Sampo Kellomaki)
+  enteredon:   Tue Aug  8 21:58:25 2006 GMT
+
+The resulting entry would be:
+
+Net::
+::SAML            cdcfo Parse and generate SAML Assertions for SSO   SAMPO
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=7ec00000_ec8be0894ac65b1a&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=7ec00000_ec8be0894ac65b1a&SUBMIT_pause99_add_mod_insertit=1
+
+
+---
+
+Rankings
+
+"open source saml sso" - ZXID 2nd (page one)
+"saml sso" - Net::SAML 9th (page one)
+
+Push to these:
+
+http://ios.windley.com/wiki/SAML_SSO_Lamp
+http://en.wikipedia.org/wiki/SAML
+
+---
+
+andreas.vallen@fun.de           - Deployed, evaluating
+cerritus@webtribe.net "Janos"   - Auto everything patch
+
+Peter.Watkins@ama-assn.org  - Net::SAML
+
+> Andreas Vallen  Software Engineer
+> fun communications GmbH   Lorenzstrasse 29   D-76135 Karlsruhe
+> Tel: +49 721 96448-0   Fax: +49 721 96448-2
+> andreas.vallen@fun.de   www.fun.de
+
+--Sampo
+
+http://wiki.apache.org/incubator/HeraldryIdentityProposal
+
+Both Yadis and OpenID have reached a point where they have millions of
+users and a strong community backing. On May 28th 2006, Brion Vibber
+of WikiMedia announced in a Google Tech Talk that WikiPedia would
+support both of them within the following month. This sort of broad
+adoption and traction has not been seen with other technologies of
+this kind in this space.
+
+Apache Champion
+
+Ben Laurie ([MAILTO] benl@google.com) - Champion and Mentor
+Paul Querna (pquerna apache.org) - Mentor
+Ted Leung (twl apache.org) - Mentor
+
+--Sampo
+
+symlabs.com/idurl 
+zxidp.zxid.org
+
+IdP URL, IdP-URL, IDURL, Id-URL, Well Known Location, Provider Id, Entity Id.
+
+IDURL. In identity management and Single Sign-On (SSO), generally a
+party, usually termed an IdP or Identity Provider, needs to
+authenticate the user and assert about the user's identity towards a
+relying party or web site, often called a Service Provider (SP). In
+this context it is necessary to determine which IdP should be used.
+Having the user supply an IDURL, which describes which IdP should be
+used, is the most straight forward solution. This is essentially the
+same solution, and equally convenient for the end users, as adopted by
+OpenID. An end user only needs to memorize her IDURL and will gain
+better privac protection, while fully accessing all of her identity
+resources.
+
+stats: http://www.cellmail.com/usage/zxid.html
+
+http://linux.softpedia.com/progDownload/ZXID-Download-16247.html  (clear freshmeat rip-off outfit)
+
+Most relevant referrers
+
+projectliberty.org
+freshmeat.net
+identitymeme.org
+swik.net
+del.icio.us
+mercnet.pt
+
+others
+
+
+SEO data:
+http://smartybee.com/analysis/1/17/8/1178160-432198.html
+
+Entrouvert / LASSO compatibility matrix
+
+http://lasso.entrouvert.org/documentation/interoperability
+
+
+Added Java JNI support, zxid_simple() API. Better signature support,
+including generation. Logging. Configuration file interface and
+parsing.
+
+http://pecl.php.net/
+
+Purpose:
+
+Prodviding SAML (single sign-on) and Liberty ID-WSF (identity web
+services) interfaces for PHP. SAML and ID-WSF provide a comprehansive
+federated user identity solution and it is expected that many PHP
+based web sites would want to participate, hence ZXID.org php
+interface is timely. Similar interfaces for perl (Net::SAML), C, C++,
+and Java are also provided by ZXID.org. ZXID.org is licensed
+under Apache License, v2.
+
+About you:
+
+I am the principal contributors of the  ZXID.org project. I am also
+very active in Liberty standardization work.
+
+
+Add link in http://en.wikipedia.org/wiki/SAML
+
+Bug tracking systems overview: http://linas.org/linux/pm.html
+
+
+Bug to fix: if permissions forbid reading /var/zxid/pem, then segv
+
+Bug fix: make sure locale is always C. See setlocale(3).
+
+Bug fix: empty IdPURL seg faults
+
+Bug fix: e_attribute in SOAP envelopes
+
+Bug fix: parse error in default namespace case
+
+Bug fix: SOAPaction header
+
+Standard Banner and Button Sizes
+--------------------------------
+
+banner-zxid-468x60.png
+button-zxid-150x60.png
