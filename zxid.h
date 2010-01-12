@@ -132,6 +132,8 @@ struct zxid_conf {
   char  audience_fatal;
   char  dup_a7n_fatal;
   char  dup_msg_fatal;
+  char  wsp_nosig_fatal;
+  char  notimestamp_fatal;
   char  redir_to_content;    /* Should explicit redirect to content be used (vs. internal redir) */
   char  remote_user_ena;
   char* anon_ok;

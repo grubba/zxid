@@ -7,7 +7,9 @@ Changes          - Change log and revision history
 INSTALL.zxid     - Quick installation instructions for the impatient
 README.zxid      - How to build and operate ZXID, API documentation
 README.zxid-win32  - Windows build notes (preliminary Jan 2007)
+README.zxid-tas3 - TAS3 project notes
 zxid-install.pd  - Instructions for Installation from Package or Compilation
+zxid-compile.pd  - Instructions for Compilation
 zxid-conf.pd     - Instructions for configuration, reference to configuration options
 zxid-cot.pd      - Instructions for creating Circle-of-Trust and manipulating certificates
 zxid-simple.pd   - Documentation for ZXID Simple API
@@ -21,6 +23,7 @@ zxid-java.pd     - Documentation on Java support
 zxid-perl.pd     - Documentation on Perl support
 zxid-php.pd      - Documentation on PHP support
 zxid-idp.pd      - Documentation on IdP and Discovery modules
+zxid-tas3.pd     - Documentation on use of ZXID in TAS3 project
 schemata.pd      - Document summarizing schemata and examples
 testplan.pd      - Testing plan
 zxid-faq.pd      - Frequently Asked Questions
@@ -30,6 +33,7 @@ zxid-ref.pd      - Comprehensive list of literature references for ZXID project
 doc-end.pd       - Formatting code include for documents
 doc-inc.pd       - Navigation code include for documents
 ref-inc.pd       - Navigation code include for generated reference
+COPYING          - Copyright and license statement (referencing LICENSE-2.0
 LICENSE-2.0.txt  - Apache License v2.0
 ca.crt           - Certification Authority certificate for zxid.pem
 zxid.pem         - Certificate and privatekey combo for testing (not secure)
@@ -139,6 +143,7 @@ zxidwspaxisout.java  - Out Handler used by Axis2 module for TAS3 WSP
 zxidwspaxisdemo.java - Demonstration web service, TAS3 enabled using the zxidwspaxismod
 servlet/WEB-INF/web.xml  - Hello World servlet definitions
 servlet/META-INF/module.xml  - Axis2 module definitions
+servlet/WEB-INF/services.xml - Additional Axis2 definitions
 zxidhrxmlwsc.c   - Example of ID-SIS HR-XML Web Services Client
 zxidhrxmlwsp.c   - Example of ID-SIS HR-XML Web Services Provider
 zxididp.c        - A rudimentary IdP (WIP Nov 2008)

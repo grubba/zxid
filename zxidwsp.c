@@ -320,16 +320,21 @@ struct zx_str* zxid_wsp_decoratef(struct zxid_conf* cf, struct zxid_ses* ses, co
 /* Called by: */
 char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* enve)
 {
+  struct timeval srcts = {0,501000};
   struct zx_root_s* r;
   struct zx_e_Envelope_s* env;
+  struct zx_wsse_Security_s* sec;
   //struct zx_sa_Assertion_s* a7n;
   struct zx_str* issuer = 0; //&unknown_str;
   struct zx_str* subj = 0; //&unknown_str;
   struct zx_str* logpath;
+  struct zx_str  ss;
 
   D_INDENT("valid: ");
   
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
+  ss.s = enve;
+  ss.len = strlen(enve);
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + ss.len);
   r = zx_DEC_root(cf->ctx, 0, 1);
   if (!r) {
     ERR("Malformed XML enve(%s)", enve);
@@ -363,16 +368,20 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
   }
   issuer = env->Header->Sender->providerID;
 
-  if (!env->Header->Security) {
+  if (!(sec = env->Header->Security)) {
     ERR("No <wsse:Security> found. enve(%s)", enve);
     D_DEDENT("valid: ");
     return 0;
   }
 
-  if (!env->Header->Security->Signature) {
-    ERR("No <wsse:Security> found. enve(%s)", enve);
-    D_DEDENT("valid: ");
-    return 0;
+  if (!sec->Signature) {
+    if (cf->wsp_nosig_fatal) {
+      ERR("No Security/Signature found. enve(%s)", enve);
+      D_DEDENT("valid: ");
+      return 0;
+    } else {
+      INFO("No Security/Signature found. enve(%s)", enve);
+    }
   }
 
 #if 0
@@ -381,6 +390,19 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
     return 0;
   }
 #endif
+
+  if (sec->Timestamp && sec->Timestamp->Created && sec->Timestamp->Created->gg.content
+      && sec->Timestamp->Created->gg.content->s) {
+    srcts.tv_sec = zx_date_time_to_secs(sec->Timestamp->Created->gg.content->s);
+  } else {
+    if (cf->notimestamp_fatal) {
+      ERR("No Security/Timestamp found. enve(%s)", enve);
+      D_DEDENT("valid: ");
+      return 0;
+    } else {
+      INFO("No Security/Timestamp found. enve(%s)", enve);
+    }
+  }
 
   /* See zxid_sp_sso_finalize() for similar code.  *** consider factoring out commonality */
 
@@ -487,17 +509,17 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
 
   /* *** Call Rs-In PDP */
 
-  logpath = zxlog_path(cf, issuer, ses->msgid, ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
+  logpath = zxlog_path(cf, issuer, env->Header->MessageID->gg.content,
+		       ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
   if (zxlog_dup_check(cf, logpath, "validate request")) {
     if (cf->dup_msg_fatal) {
-      zxlog_blob(cf, cf->log_rely_msg, logpath, ss, "validate request dup err");
+      zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request dup err");
       D_DEDENT("valid: ");
       return 0;
     }
   }
-  zxlog_blob(cf, cf->log_rely_msg, logpath, ss, "request");
-
-  zxlog(cf, 0, &srcts, 0, issuer, 0, a7n->ID, subj, sigval, "K", "VALID", logpath, 0);
+  zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request");
+  zxlog(cf, 0, &srcts, 0, issuer, 0, ses->a7n->ID, subj, "N", "K", "VALID", logpath->s, 0);
   
   D_DEDENT("valid: ");
   return ses->tgt;

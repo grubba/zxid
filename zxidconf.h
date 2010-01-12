@@ -387,6 +387,11 @@
 #define ZXID_DUP_A7N_FATAL  1 /* Whether duplication of AssertionID is considered fatal. */
 #define ZXID_DUP_MSG_FATAL  1 /* Whether duplication of MessageID or message is considered fatal. */
 
+/*(c) Web service request and response validation options. For the token
+ * in the request, the assertion validation options apply. */
+#define ZXID_WSP_NOSIG_FATAL 1 /* Missing Security/Signature is fatal. */
+#define ZXID_NOTIMESTAMP_FATAL 1 /* Missing Security/Timestamp is fatal. */
+
 /*(c) Time Slop
  * Because clock sychronization amoung the servers in the CoT is unlikely
  * to be perfect, not to speak of timezone misconfigurations and the

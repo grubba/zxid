@@ -286,6 +286,8 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->audience_fatal = ZXID_AUDIENCE_FATAL;
   cf->dup_a7n_fatal  = ZXID_DUP_A7N_FATAL;
   cf->dup_msg_fatal  = ZXID_DUP_MSG_FATAL;
+  cf->wsp_nosig_fatal = ZXID_WSP_NOSIG_FATAL;
+  cf->notimestamp_fatal = ZXID_NOTIMESTAMP_FATAL;
   cf->anon_ok        = ZXID_ANON_OK;
   cf->required_authnctx = ZXID_REQUIRED_AUTHNCTX;
   cf->issue_authnctx_pw = ZXID_ISSUE_AUTHNCTX_PW;
@@ -947,6 +949,7 @@ scan_end:
       if (!strcmp(n, "NICE_NAME"))      { cf->nice_name = v; break; }
       if (!strcmp(n, "NON_STANDARD_ENTITYID")) { cf->non_standard_entityid = v; break; }
       if (!strcmp(n, "NOSIG_FATAL"))    { SCAN_INT(v, cf->nosig_fatal); break; }
+      if (!strcmp(n, "NOTIMESTAMP_FATAL")) { SCAN_INT(v, cf->notimestamp_fatal); break; }
       if (!strcmp(n, "NEED"))           { cf->need = zxid_load_need(cf, cf->need, v); break; }
       goto badcf;
     case 'O':  /* OUTMAP */
@@ -1034,6 +1037,7 @@ scan_end:
       if (!strcmp(n, "WANT_AUTHN_REQ_SIGNED")) { SCAN_INT(v, cf->want_authn_req_signed); break; }
       if (!strcmp(n, "WSC_SIGN"))       { SCAN_INT(v, cf->wsc_sign); break; }
       if (!strcmp(n, "WSP_SIGN"))       { SCAN_INT(v, cf->wsp_sign); break; }
+      if (!strcmp(n, "WSP_NOSIG_FATAL")) { SCAN_INT(v, cf->wsp_nosig_fatal); break; }
       goto badcf;
     case 'X':  /* XASP_VERS */
       if (!strcmp(n, "XASP_VERS"))      { cf->xasp_vers = v; break; }

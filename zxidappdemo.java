@@ -72,7 +72,7 @@ public class zxidappdemo extends HttpServlet {
 	}
 	res.getOutputStream().print("</pre>");
 
-	// Demo web service call
+	// Demo web service call to zxidhrxmlwsp
 
 	String ret;
 	String sid = ses.getValue("sesid").toString();
