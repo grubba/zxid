@@ -34,8 +34,8 @@ default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool
 
 all: seehelp precheck precheck_apache zxid zxidhlo zxididp zxidsimple zxlogview samlmod phpzxid javazxid apachezxid zxdecode zxcot zxpasswd smime
 
-ZXIDREL=0.45
-ZXIDVERSION=0x000045
+ZXIDREL=0.46
+ZXIDVERSION=0x000046
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
