@@ -1,4 +1,5 @@
 /* zxidpsso.c  -  Handwritten functions for implementing Single Sign-On logic on IdP
+ * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2008-2009 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
@@ -171,10 +172,12 @@ struct zx_sa_Attribute_s* zxid_add_ldif_attrs(struct zxid_conf* cf, struct zx_sa
   return at;
 }
 
+#define ZXID_ADD_BS_LVL_LIM 2  /* 2=only add full bootstraps on SSO. Only add di there after. */
+
 /*() Process .bs directory. See also zxid_di_query() */
 
 /* Called by:  zxid_idp_as_do x2, zxid_mk_user_a7n_to_sp x2 */
-struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, char* path, struct zx_sa_Attribute_s* bootstraps)
+struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, char* path, struct zx_sa_Attribute_s* bootstraps, int bs_lvl)
 {
   struct timeval srcts = {0,501000};
   struct zx_sa_Attribute_s* at;
@@ -186,9 +189,13 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
   char* logop;
   char epr_buf[32*1024];
   int epr_len;
+  int is_di;
 
   D_INDENT("gen_bs: ");
 
+  if (!bs_lvl)
+    return bootstraps;  /* Discovery EPRs do not need any bootstraps. */
+  
   name_from_path(mdpath, sizeof(mdpath), "%s" ZXID_DIMD_DIR, cf->path);
   D("Looking for service metadata in dir(%s)", mdpath);
   
@@ -208,11 +215,11 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
     if (de->d_name[0] == '.')  /* Ignore hidden files. */
       continue;
     
-    /* Probable enough, read and parese EPR so we can continue examination. */
+    /* Probable enough, read and parse EPR so we can continue examination. */
     
     epr_len = read_all(sizeof(epr_buf), epr_buf, "find_bs_svcmd", "%s/%s", mdpath, de->d_name);
     if (!epr_len) {
-      ERR("User's (%s) bootstrap(%s) lacks service metadata registration. Reject.", uid, de->d_name);
+      ERR("User's (%s) bootstrap(%s) lacks service metadata registration. Reject. Consider using zxcot -e ... | zxcot -bs. See zxid-idp.pd for further information.", uid, de->d_name);
       continue;
     }
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
@@ -225,13 +232,22 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
     epr = r->EndpointReference;
     ZX_FREE(cf->ctx, r);
 
-    if (!epr || !epr->Metadata) {
-      ERR("No EPR or missing <Metadata>. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
+    if (!epr || !epr->Metadata || !epr->Metadata->ServiceType
+	|| !epr->Metadata->ServiceType->content || !epr->Metadata->ServiceType->content->s) {
+      ERR("No EPR, corrupt EPR, or missing <Metadata> %p or <ServiceType>. epr_buf(%.*s) file(%s)", epr->Metadata, epr_len, epr_buf, de->d_name);
       continue;
     }
-    D("Found url(%.*s)", epr->Address->gg.content->len, epr->Address->gg.content->s);
-
-    logop = zxid_add_fed_tok_to_epr(cf, epr, uid);
+    is_di = !memcmp(epr->Metadata->ServiceType->content->s, XMLNS_DISCO_2_0,
+		    epr->Metadata->ServiceType->content->len);
+    D("Found url(%.*s) is_di=%d", epr->Address->gg.content->len, epr->Address->gg.content->s, is_di);
+    
+    if (is_di) {
+      logop = zxid_add_fed_tok_to_epr(cf, epr, uid, 0); /* recurse, di tail */
+    } else if (bs_lvl > cf->bootstrap_level) {
+      D("No further bootstraps generated due to boostrap_level=%d (except di boostraps)", bs_lvl);
+      continue;
+    } else
+      logop = zxid_add_fed_tok_to_epr(cf, epr, uid, bs_lvl+1); /* recurse */
     if (!logop)
       goto next_file;
     
@@ -251,10 +267,12 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
   return bootstraps;
 }
 
-/*(i) Construct an assertion given user's attribute and bootstrap configuration. */
+/*(i) Construct an assertion given user's attribute and bootstrap configuration.
+ * bs_lvl:: 0: DI (do not add any bs), 1: add all bootstraps at sso level,
+ *     <= cf->bootstrap_level: add all boostraps, > cf->bootstrap_level: only add di BS. */
 
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso */
-struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zxid_ses* ses, const char* uid, struct zx_sa_NameID_s* nameid, struct zxid_entity* sp_meta, const char* sp_name_buf, int add_bs)
+struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zxid_ses* ses, const char* uid, struct zx_sa_NameID_s* nameid, struct zxid_entity* sp_meta, const char* sp_name_buf, int bs_lvl)
 {
   struct zx_sa_Assertion_s* a7n;
   struct zx_sa_Subject_s* subj;
@@ -294,13 +312,12 @@ struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zx
   
   /* Process bootstraps */
 
-  if (add_bs) {
-    name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, uid);
-    at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute);
+  name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, uid);
+  at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute, bs_lvl);
   
-    name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
-    at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute);
-  }
+  name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR ".all/.bs/", cf->path, bs_lvl);
+  at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute);
+  
   D("sp_eid(%.*s)", sp_meta->eid_len, sp_meta->eid);
   a7n = zxid_mk_a7n(cf, zx_dup_len_str(cf->ctx, sp_meta->eid_len, sp_meta->eid), subj, an_stmt, at_stmt, 0);
   D_DEDENT("mka7n: ");
@@ -431,7 +448,7 @@ void zxid_mk_transient_nid(struct zxid_conf* cf, struct zx_sa_NameID_s* nameid, 
  * was issued. */
 
 /* Called by:  zxid_di_query, zxid_gen_boots */
-char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr, const char* uid)
+char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr, const char* uid, int bs_lvl)
 {
   struct timeval srcts = {0,501000};
   struct zx_sa_NameID_s* nameid;
@@ -440,7 +457,8 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReferenc
   struct zx_str* affil;
   char sp_name_buf[1024];
   char* logop;
-  
+  int add_bs;
+
   if (epr->Metadata->ProviderID) {
     sp_meta = zxid_get_ent_ss(cf, epr->Metadata->ProviderID->content);
     if (!sp_meta) {
@@ -453,10 +471,9 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReferenc
   }
   
   if (sp_meta->ed && sp_meta->ed->AffiliationDescriptor
-      && sp_meta->ed->AffiliationDescriptor->affiliationOwnerID
-      && sp_meta->ed->AffiliationDescriptor->affiliationOwnerID->s
-      && sp_meta->ed->AffiliationDescriptor->affiliationOwnerID->len)
-    affil = sp_meta->ed->AffiliationDescriptor->affiliationOwnerID;
+      && (affil = sp_meta->ed->AffiliationDescriptor->affiliationOwnerID)
+      && affil->s && affil->len)
+    /* affil is good */
   else
     affil = epr->Metadata->ProviderID->content;
   
@@ -481,10 +498,7 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReferenc
   
   /* Generate access credential */
   
-  a7n = zxid_mk_user_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf,
-			       memcmp(epr->Metadata->ServiceType->content->s,
-				      XMLNS_DISCO_2_0,
-				      epr->Metadata->ServiceType->content->len));
+  a7n = zxid_mk_user_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf, bs_lvl);
   
   if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n,
 		       epr->Metadata->ProviderID->content, "DIA7N")) {
@@ -623,7 +637,7 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
     logop = "ITSSO";
   }
 
-  a7n = zxid_mk_user_a7n_to_sp(cf, ses, ses->uid, nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
+  a7n = zxid_mk_user_a7n_to_sp(cf, ses, ses->uid, nameid, sp_meta, sp_name_buf, 0);  /* SSO a7n */
 
   /* Sign, encrypt, and ship the assertion according to the binding. */
 
@@ -666,7 +680,7 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
     
     ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, e);
 
-    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, a7n->ID, nameid->gg.content, "N", "K", logop, ses->uid, 0);
+    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, a7n->ID, nameid->gg.content, "N", "K", logop, ses->uid, "PAOS2");
 
 
     /* *** Check what HTTP level headers PAOS needs */

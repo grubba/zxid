@@ -11,8 +11,10 @@ To do:
     - Add Trust and Privacy Negotiation capability to discovery
     - Add Az calls to zxid_wsp_validate() and zxid_wsp_decorate()
     - Do proper signature validation in zxid_wsp_validate()
-zxid-0.46:: 12.1.2010
+zxid-0.46:: 13.1.2010
     - Moved project under git at zxidrepo, still learning.
+    - Fixed nameid memory allocation problem
+    - Added missing Java files to manifest
 zxid-0.45:: 7.1.2010
     - Fixed error handling when unable to decrypt an assertion
     - Fixed mod_auth_saml redirect_to_content when no relay state

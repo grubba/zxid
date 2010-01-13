@@ -505,6 +505,47 @@ layer the question mark needs to be escaped. The %26 means
 ampersand that separates the arguments at querystring layer. It
 is encoded only once. Hope this is not too confusing.
 
+97.3.3 Web Service Provider Metadata
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The metadata is needed in the web service call mainly to know the
+certificates. The endpoints in the metadata are ignored for purposes
+of the web service call as the endpoint is supplied by the EPR.
+
+Since SAML defines a metadata format with certificates (and SAML
+relevant endpoints), the convention is that web service call consults
+the SAML metadata for the certificates.
+
+It is very common for same service to be accessible as a web GUI (SAML
+SP) and web service (ID-WSF WSP), therefore it is considered
+convenient for the SAML metadata to be used.
+
+If the service does not want to be SAML SP and only wants to be ID-WSF
+WSP, then it still needs to supply the SAML SP metadata just for the
+purpose of the certificates (the SAML SP end point URLs will not be
+used).
+
+> My service only wants to be a ID-WSF WSP. For example, Custodix want
+> to be able to call a SOA Gateway web service, and the SOA Gateawy
+> knows nothing about SAML, etc.
+
+> I need to ensure that ZXID will process necessary soap headers and
+> accept or reject as appriorate.
+
+You still need to generate metadata. Since your service does not have
+SAML SP facet, you can't (directly) use o=B method (but see my example
+zxidwspdemo.java how it still supports o=B). However you can just hand
+edit a metadata file (perhaps using something from o=B as a template).
+
+If you place the hand edited metadata in the right file on WSC side,
+using
+
+   .zxcot -a <meta.xml
+
+then no dynamic metadata fetch will be attempted and you
+do not need to support o=B.
+
+See also zxid-idp.pd for registration of EPR and bootstrap.
 
 97.4 Common Mistakes
 --------------------
@@ -773,6 +814,56 @@ To be continued...
 
 97.6 Use of Signing and Crypto, Security Concerns
 -------------------------------------------------
+
+97.7 Audit Trail
+----------------
+
+1. How can I see what attributes the single sign on assertion contains?
+
+   From IdP side (assuming zxididp, for other IdPs consult respective documentation):
+
+   a.  Locate the SSOA7N line from IdP activity log, e.g.
+
+         grep SSOA7N /var/zxid/log/act
+
+       which might return (single line, linewrap is only for this document)
+
+         PP - 20100112-144157.750 20100112-144157.750 127.0.0.1:- \
+         9u_7LsQjkz0VaXKucmx1_sYjQnM - AWTILy8_0yre96om7n4H-4fMW ENC \
+         zxidp U K SSOA7N - -
+
+   b.  The 8th field is the assertion ID, here AWTILy8_0yre96om7n4H-4fMW. With
+       A7N ID you can grep the issued assertions, e.g.
+
+         grep -l AWTILy8_0yre96om7n4H-4fMW /var/zxid/idplog/issue/*/a7n/*
+
+       which might return something like
+
+         /var/zxid/idplog/issue/9u_7LsQjkz0VaXKucmx1_sYjQnM/a7n/MxevnQGqKFwyBTPUZ-hI7m1PR-Q
+
+       This file contains the assertion in plain text. You can inspect it to
+       see what NameID is sent and what attributes are sent. One convenient command is
+
+         grep -l AWTILy8_0yre96om7n4H-4fMW /var/zxid/idplog/issue/*/a7n/* \
+            | xargs cat | ./xml-pretty.pl
+
+   From SP side the steps would be
+
+   i.  Locate FEDSSO line
+
+         grep SSOA7N /var/zxid/log/act
+
+       which might return (single line, linewrap is only for this document)
+
+         PP - 20100112-144639.184 20100112-144157.501 -:- \
+         xsKJr3DL7sUPDdbdqgC2H_eP-UM - AWTILy8_0yre96om7n4H-4fMW \
+         FIrFwFdR4wO2UFLQZl8c3LlUW      zx O K FEDSSO MSES6GOG4ta-nQdYlRVJriv24dj8 -
+
+   ii. The 8th field is the assertion ID. To locate the assertion in the rely
+       audit trail of the SP you can grep as follows:
+
+         grep -l AWTILy8_0yre96om7n4H-4fMW /var/zxid/log/rely/*/a7n/* \
+            | xargs cat | ./xml-pretty.pl
 
 97.7 Vendor products
 --------------------

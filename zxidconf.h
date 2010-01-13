@@ -105,8 +105,8 @@
  *     to fetch the meta data xml files from well known location URLs (or other
  *     URLs if you know better).
  *
- * ZXID_MD_POPULATE_CACHE:: controls whether ZXID will write
- *     the metadata to the cache. This requires ZXID_MD_FETCH to be enabled
+ * ZXID_MD_POPULATE_CACHE:: controls whether ZXID will write the metadata to
+ *     the on-disk cache. This requires ZXID_MD_FETCH to be enabled
  *     and the file system permissions of the cache directory (e.g. /var/zxid/cot)
  *     to allow writing.
  *
@@ -192,6 +192,15 @@
  * It is highly recommended to encrypt the assertions to avoid man-in-the-middle
  * attacks. */
 #define ZXID_DI_A7N_ENC 1
+
+/*(c) Control how many levels of bootstraps are added to assertions. Normally
+ * only first level is added, i.e. all available bootstraps are embedded in
+ * the assertion are , but the assertions of the embedded bootstraps only
+ * get discovery bootstrap. 2 would cause the assertions of the first order
+ * boostraps to have further bootstraps embedded, etc. Since bootstrap
+ * generation tends to be expensive and wasteful, you should use discovery
+ * instead and leave BOOTSTRAP_LEVEL set to 1. */
+#define ZXID_BOOTSTRAP_LEVEL 1
 
 /*(c) WSC Signing Options
  * Which components of a web service request should be signed by WSC

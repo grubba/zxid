@@ -1,4 +1,5 @@
 /* zxiduser.c  -  Handwritten functions for SP user local account management
+ * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -69,10 +70,10 @@ struct zx_sa_NameID_s* zxid_parse_mni(struct zxid_conf* cf, char* buf, char** pm
   }
   
   nameid = zx_NEW_sa_NameID(cf->ctx);
-  if (*buf)              nameid->Format = zx_ref_str(cf->ctx, buf);
-  if (idpent && *idpent) nameid->NameQualifier = zx_ref_str(cf->ctx, idpent);
-  if (spqual && *spqual) nameid->SPNameQualifier = zx_ref_str(cf->ctx, spqual);
-  if (nid && *nid)       nameid->gg.content = zx_ref_str(cf->ctx, nid);
+  if (*buf)              nameid->Format = zx_dup_str(cf->ctx, buf);
+  if (idpent && *idpent) nameid->NameQualifier = zx_dup_str(cf->ctx, idpent);
+  if (spqual && *spqual) nameid->SPNameQualifier = zx_dup_str(cf->ctx, spqual);
+  if (nid && *nid)       nameid->gg.content = zx_dup_str(cf->ctx, nid);
   return nameid;
 }
 

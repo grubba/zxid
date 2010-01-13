@@ -575,6 +575,8 @@ zxidjava/SWIGTYPE_p_zx_sp_NewEncryptedID_s.java
 zxidjava/SWIGTYPE_p_zx_sp_Response_s.java
 zxidjava/SWIGTYPE_p_zx_sp_Status_s.java
 zxidjava/SWIGTYPE_p_zx_tok.java
+zxidjava/SWIGTYPE_p_zx_wsse_SecurityTokenReference_s.java
+zxidjava/SWIGTYPE_p_zx_wsse_Security_s.java
 zxidjava/SWIGTYPE_p_zx_xac_Attribute_s.java
 zxidjava/SWIGTYPE_p_zx_xac_Response_s.java
 zxidjava/SWIGTYPE_p_zx_xasa_XACMLAuthzDecisionStatement_s.java

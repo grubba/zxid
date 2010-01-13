@@ -1,5 +1,5 @@
 /* zxcot.c  -  CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
- * Copyright (c) 2009 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -26,7 +26,7 @@
 
 CU8* help =
 "zxcot  -  Circle-of-Trust management tool R" ZXID_REL "\n\
-Copyright (c) 2009 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
@@ -40,6 +40,7 @@ Usage: zxcot [options] [dir]\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
   -a               Add metadata from stdin\n\
   -b               Register Web Service, add Service EPR from stdin\n\
+  -bs              Register Web Service as bootstrap, add Service EPR from stdin\n\
   -e endpoint abstract entid servicetype   Dump EPR to stdout.\n\
   -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)\n\
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.\n\
@@ -57,6 +58,7 @@ zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID
 int swap = 0;
 int addmd = 0;
 int regsvc = 0;
+int regbs = 0;
 int dryrun = 0;
 int inflate_flag = 2;  /* Auto */
 int verbose = 1;
@@ -94,6 +96,10 @@ static void opt(int* argc, char*** argv, char*** env)
 
     case 'b':
       switch ((*argv)[0][2]) {
+      case 's':
+	++regsvc;
+	++regbs;
+	continue;
       case '\0':
 	++regsvc;
 	continue;
@@ -205,22 +211,121 @@ static void opt(int* argc, char*** argv, char*** env)
     exit(3);
   }
   if (*argc) {
-    dimddir = cotdir = (*argv)[0];
+    uiddir = dimddir = cotdir = (*argv)[0];
     len = strlen(cotdir);
     if (cotdir[len-1] != '/') {
       cotdir = malloc(len+1);
       strcpy(cotdir, (*argv)[0]);
       cotdir[len] = '/';
       cotdir[len+1] = 0;
-      dimddir = cotdir;
+      uiddir = dimddir = cotdir;
     }
   }
 }
 
-/* Called by: */
-int main(int argc, char** argv, char** env)
+/*() IdP and Discovery. Register service metadata to /var/zxid/idpdimd/XX,
+ * and possibly boostrap to /var/zxid/idpuid/.all/.bs/YY */
+
+static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run)
 {
+  char sha1_name[28];
   char path[ZXID_MAX_BUF];
+  char* p;
+  int got, fd;
+  struct zx_root_s* r;
+  struct zxid_conf cf;
+  struct zxid_entity* ent;
+  struct zx_a_EndpointReference_s* epr;
+  struct zx_str* ss;
+  
+  read_all_fd(0, buf, sizeof(buf)-1, &got);
+  buf[got] = 0;
+  p = buf;
+  
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + got);
+  r = zx_DEC_root(cf->ctx, 0, 1);
+  if (!r || !r->EndpointReference) {
+    ERR("Failed to parse <EndpointReference> buf(%.*s)", got, buf);
+    return 1;
+  }
+  epr = r->EndpointReference;
+
+  /* *** possibly add something here and double check the required fields are available. */
+
+  ss = zx_EASY_ENC_SO_a_EndpointReference(cf->ctx, epr);
+  if (!ss)
+    return 2;
+  
+#if 0
+  // *** wrong
+  got = MIN(epr->Metadata->ProviderID->content->len, sizeof(path)-1);
+  memcpy(path, epr->Metadata->ProviderID->content->s, got);
+#else
+  got = MIN(epr->Metadata->ServiceType->content->len, sizeof(path)-1);
+  memcpy(path, epr->Metadata->ServiceType->content->s, got);
+#endif
+  path[got] = 0;
+  zxid_fold_svc(path, got);
+
+  sha1_safe_base64(sha1_name, ss->len, ss->s);
+  sha1_name[27] = 0;
+  uiddir = strdup(uiddir);
+  got = strlen(uiddir);
+  if (strcmp(uiddir + got - (sizeof("dimd/")-1), "dimd/")) {
+    /* strcpy ok, because always fits: "uid/" is shorter than "dimd/" */
+    strcpy(uiddir + got - (sizeof("dimd/")-1), "uid/");
+  }
+  
+  if (dry_run) {
+    printf("Register EPR dry run. Would have written to path(%s%s,%s). You may also want to\n"
+	   "  touch %s.all/.bs/%s,%s\n\n", dimddir, path, sha1_name, uiddir, path, sha1_name);
+    fflush(stdin);
+    write_all_fd(1, ss->s, ss->len);
+    zx_str_free(cf->ctx, ss);
+    return 0;
+  }
+  
+  D("Register EPR path(%s%s,%s) in discovery metadata.", dimddir, path, sha1_name);
+  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -b",
+			 "%s%s,%s", dimddir, path, sha1_name);
+  if (fd == BADFD) {
+    perror("open epr for registering");
+    ERR("Failed to open file for writing: sha1_name(%s,%s) to service registration", path, sha1_name);
+    zx_str_free(cf->ctx, ss);
+    return 1;
+  }
+  
+  write_all_fd(fd, ss->s, ss->len);
+  zx_str_free(cf->ctx, ss);
+  close_file(fd, (const char*)__FUNCTION__);
+
+  if (bs_reg) {
+    D("Activating bootstrap %s.all/.bs/%s,%s", uiddir, path, sha1_name);
+    fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -bs",
+			   "%s.all/.bs/%s,%s", uiddir, path, sha1_name);
+    if (fd == BADFD) {
+      perror("open epr for bootstrap activation");
+      ERR("Failed to open file for writing: sha1_name(%s,%s) to bootstrap activation", path, sha1_name);
+      return 1;
+    }
+    
+    write_all_fd(fd, "", 0);
+    close_file(fd, (const char*)__FUNCTION__);
+  } else {
+    D("You may also want to activate bootstrap by\n  touch %s.all/.bs/%s,%s", uiddir, path, sha1_name);
+  }
+  return 0;
+}
+
+#ifndef zxcot_main
+#define zxcot_main main
+#endif
+
+/*() Circle of Trust management tool */
+
+/* Called by: */
+int zxcot_main(int argc, char** argv, char** env)
+{
   char sha1_name[28];
   struct zx_root_s* r;
   struct zxid_conf cf;
@@ -243,9 +348,9 @@ int main(int argc, char** argv, char** env)
     printf("%s\n", sha1_name);
     return 0;
   }
-
+  
   zxid_init_conf_ctx(&cf, ZXID_PATH);
-
+  
   if (addmd) {
     if (mdurl) {
       ent = zxid_get_meta(&cf, mdurl);
@@ -285,66 +390,8 @@ int main(int argc, char** argv, char** env)
     return 0;
   }
 
-  if (regsvc) {
-    read_all_fd(0, buf, sizeof(buf)-1, &got);
-    buf[got] = 0;
-    p = buf;
-    
-    zx_prepare_dec_ctx(cf.ctx, zx_ns_tab, buf, buf + got);
-    r = zx_DEC_root(cf.ctx, 0, 1);
-    if (!r || !r->EndpointReference) {
-      ERR("Failed to parse <EndpointReference> buf(%.*s)", got, buf);
-      return 1;
-    }
-    epr = r->EndpointReference;
-
-    /* *** possibly add something here and double check the required fields are available. */
-
-    ss = zx_EASY_ENC_SO_a_EndpointReference(cf.ctx, epr);
-    if (!ss)
-      return 2;
-    
-    //if (verbose) fprintf(stderr, "Writing epr(%.*s) to %s%s\n", ent->eid_len, ent->eid, cotdir, ent->sha1_name);
-    if (dryrun) {
-      write_all_fd(1, ss->s, ss->len);
-      return 0;
-    }
-
-#if 0
-    // *** wrong
-    got = MIN(epr->Metadata->ProviderID->content->len, sizeof(path)-1);
-    memcpy(path, epr->Metadata->ProviderID->content->s, got);
-#else
-    got = MIN(epr->Metadata->ServiceType->content->len, sizeof(path)-1);
-    memcpy(path, epr->Metadata->ServiceType->content->s, got);
-#endif
-    path[got] = 0;
-    zxid_fold_svc(path, got);
-
-    sha1_safe_base64(sha1_name, ss->len, ss->s);
-    sha1_name[27] = 0;
-
-    if (dryrun) {
-      printf("Register EPR dry run. Would have written to path(%s%s,%s). You may also want to\n"
-	     "  touch %s.all/.bs/%s,%s\n\n", dimddir, path, sha1_name, uiddir, path, sha1_name);
-      fflush(stdin);
-      write_all_fd(1, ss->s, ss->len);
-    } else {
-      D("Register EPR path(%s%s,%s). You may also want to\n  touch %s.all/.bs/%s,%s", dimddir, path, sha1_name, uiddir, path, sha1_name);
-      fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -b",
-			     "%s%s,%s", dimddir, path, sha1_name);
-      if (fd == BADFD) {
-	perror("open epr for registering");
-	ERR("Failed to open file for writing: sha1_name(%s,%s) to service registration", path, sha1_name);
-	return 1;
-      }
-    
-      write_all_fd(fd, ss->s, ss->len);
-      close_file(fd, (const char*)__FUNCTION__);
-    }
-    zx_str_free(cf.ctx, ss);
-    return 0;
-  }
+  if (regsvc)
+    return zxid_reg_svc(&cf, regbs, dryrun);
   
   /* --- Directory listing --- */
 

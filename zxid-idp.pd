@@ -387,11 +387,17 @@ The attributes from all the available sources are accumulated.
 4.5 Configuring Bootstraps and Discovery
 ----------------------------------------
 
+> N.B. Before this step you should check that the SAML metadata of the
+> WSP is registered at the IdP, see ~zxcot -a~, etc. Or make
+> sure the auto cot feature is enabled.
+
 The principal step in configuring bootstraps and discovery is to
 register service's EPR in /var/zxid/idpdimd directory. This
 can usually be done on command line as follows:
 
-  zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 | zxcot -b
+  zxcot -e http://sp.tas3.pt/mysvc?o=S 'My Service' \
+     http://sp.tas3.pt/mysvc?o=B urn:x-mysvc \
+     | zxcot -b /var/zxid/idpdimd
 
 Or if we analyze by parts
 
@@ -404,36 +410,98 @@ that can be used as the registration. This might look like
        wsu:Id="EPRID92lFPo3ZNEt_3rHtJFoU"
        xmlns:wsa="http://www.w3.org/2005/08/addressing"
        xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-    <wsa:Address>http://idp.tas3.pt:8081/zxididp?o=S</wsa:Address>
+    <wsa:Address>http://sp.tas3.pt/mysvc?o=S</wsa:Address>
     <wsa:Metadata>
-      <di:Abstract xmlns:di="urn:liberty:disco:2006-08">TAS3 Default Discovery Service (ID-WSF 2.0)</di:Abstract>
-      <di:ProviderID xmlns:di="urn:liberty:disco:2006-08">http://idp.tas3.pt:8081/zxididp?o=B</di:ProviderID>
-      <di:ServiceType xmlns:di="urn:liberty:disco:2006-08">urn:liberty:disco:2006-08</di:ServiceType>
+      <di:Abstract xmlns:di="urn:liberty:disco:2006-08">My Service</di:Abstract>
+      <di:ProviderID xmlns:di="urn:liberty:disco:2006-08">http://sp.tas3.pt/mysvc?o=B</di:ProviderID>
+      <di:ServiceType xmlns:di="urn:liberty:disco:2006-08">urn:x-mysvc</di:ServiceType>
       <sbf:Framework version="2.0" xmlns:sbf="urn:liberty:sb" />
     </wsa:Metadata>
   </wsa:EndpointReference>
 
 The next step is to provide this as "discovery metadata":
 
-  zxcot -b < epr.xml
+  zxcot -b /var/zxid/idpdimd < epr.xml
 
-which will create an entry in the /var/zxid/idpdimd directory.
+which will create an entry in the /var/zxid/idpdimd directory (n.b. specifying
+the directory explicitly is necessary because the default directory corresponds
+to the SP directory layout, now we want the IdP directory).
 
 Once the service's EPR (Metadata) exists in the system, any
 user can discover the service, with federations being created
-automatically (unless disabled in the configuration).
+automatically (unless disabled in the configuration, see MD_FETCH
+and MD_POPULATE_CACHE config options).
 
-If you want the service to be included as bootstrap, you need
+If you want the service to be included as a bootstrap, you need
 to mention it either in global /var/zxid/idpuid/.all/.bs directory
-or in user's .bs directory.
+or in user's .bs directory. The file in .bs directory has to have
+the same name as in /var/zxid/idpdimd directory. Contents of the
+file do not matter. You can either touch(1) the file in existence
+or supply -bs flag to zxcot(1):
+
+  zxcot -bs /var/zxid/idpdimd < epr.xml
+
+This registers the bootstrap under .all user.
 
 When all else fails, you can just manipulate the filesystem
 manually, creating the necessary files and directories.
 
+4.5.1 Creating Discovery Bootstrap
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By far the most common type of bootstrap is a a discovery bootstrap:
+
+  zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'Discovery Svc' \
+    http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 \
+    | zxcot -bs /var/zxid/idpdimd
+
+4.5.2 Bootstrap Recursiveness
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A problem that arises with the bootstraps is the support for recursive
+or multilevel web service calls. The called service, which receives
+the bootstrap credential, may legitimately call other services in
+turn. If it receives the discovery bootstrap as part of its own
+credential (which may have been a bootstrap in its own right),
+then it can go and discover further services. The discovery bootstrap
+does not have to contain any further bootstraps because the
+discovery service itself knowns about the other services even
+without receiving a bootstrap for each of them individually.
+
+Now consider attempting to operate without discovery: service bootstraps
+for first level services need to contain the bootstraps for second level
+services, which needs to contain bootstraps for third level services. There
+is no easy way to know how many levels deep the call structure may be.
+This effectively leads to infinite recursion in bootstrap generation.
+
+Clearly we need some criteria to cap it. In lack of good and logical
+criteria, we adopt arbitrary one: all bootstraps, except discovery,
+will only propagate one level, i.e. they will be supplied in SSO assertion,
+but only the discovery bootstrap will be supplied in the further
+token assertions.
+
+<<dot: recursive-bootstrap,,1: Recursive bootstrap generation call graph
+rankdir=LR;
+
+{
+rank=source;
+idp_sso [shape=box];
+di_query [shape=box];
+};
+
+di_query -> add_fed_tok_to_epr;
+add_fed_tok_to_epr -> mk_user_a7n_to_sp;
+mk_user_a7n_to_sp -> gen_boots;
+mk_user_a7n_to_sp -> add_ldif_attrs;
+gen_boots -> add_fed_tok_to_epr;
+idp_sso -> mk_user_a7n_to_sp;
+
+>>
+
 4.9 Supported Specifications
 ----------------------------
 
-As of version 0.41 (20091120) zxididp supports the following specifications
+As of version 0.47 (20100114) zxididp supports the following specifications
 
 * SAML 2.0 IdP Lite [SAML2core], [SAML2conf]
   - SSO and SLO [SAML2prof]
@@ -447,11 +515,11 @@ As of version 0.41 (20091120) zxididp supports the following specifications
   - eID card and client certificate authentication
 * ID-WSF 2.0 Discovery [Disco2]
 * ID-WSF 2.0 Authentication Service [SOAPAuthn2]
+* TAS3 Architecture Core
 
-4.9.1 Imminently Planned Specifications
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4.9.1 Imminently Planned Specifications (TODO)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* TAS3 Architecture (already partially supported)
 * TAS3 Trust and Privacy Negotiation
 * Master and TAS3 audit busses
 * SAWS over SOAP logging (with OpenXDAS events)
@@ -460,8 +528,8 @@ As of version 0.41 (20091120) zxididp supports the following specifications
 * MASTER project event modelling
 * AAPML (and CARML) support
 
-4.9.2 Nice to Have Specifications
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4.9.2 Nice to Have Specifications (TBD)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * SAML 1.1
 * Infocard (Cardspace) and WS-Federation [MS-MWBF]
@@ -475,6 +543,7 @@ As of version 0.41 (20091120) zxididp supports the following specifications
 96 License
 ==========
 
+Copyright (c) 2009-2010 Sampo Kellomäki (sampo@iki.fi), All Rights Reserved.
 Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
 Author: Sampo Kellomäki (sampo@iki.fi)
 
@@ -492,6 +561,6 @@ limitations under the License.
 <<zxid-ref.pd>>
 
 <<doc-end.pd>>
-<<notapath: TCP/IP a.k.a xBSD/Unix n/a Perl/mod_perl PHP/mod_php Java/Tomcat>>
+<<notapath: E.g TCP/IP a.k.a xBSD/Unix n/a Perl/mod_perl PHP/mod_php Java/Tomcat>>
 <<EOF: >>
 <<fi: >>

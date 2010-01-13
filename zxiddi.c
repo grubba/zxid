@@ -196,7 +196,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
       /* *** Check Action */
 
       D("Found url(%.*s)", epr->Address->gg.content->len, epr->Address->gg.content->s);
-      logop = zxid_add_fed_tok_to_epr(cf, epr, uid);
+      logop = zxid_add_fed_tok_to_epr(cf, epr, uid, 1);
       if (!logop)
 	goto next_file;
 
