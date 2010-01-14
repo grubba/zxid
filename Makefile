@@ -35,8 +35,8 @@ default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool
 
 all: seehelp precheck precheck_apache zxid zxidhlo zxididp zxidsimple zxlogview samlmod phpzxid javazxid apachezxid zxdecode zxcot zxpasswd smime
 
-ZXIDVERSION=0x000047
-ZXIDREL=0.47
+ZXIDVERSION=0x000048
+ZXIDREL=0.48
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -619,6 +619,10 @@ gen: c/zxidvers.h c/license.c c/zx-const.h c/zx-attrs.gperf
 genwrap: gen zxidjava/zxid_wrap.c Net/SAML_wrap.c php/zxid_wrap.c py/zxid_wrap.c ruby/zxid_wrap.c csharp/zxid_wrap.c
 
 endif
+
+updatevers:
+	rm -f c/zxidvers.h
+	$(MAKE) c/zxidvers.h ENA_GEN=1
 
 ###
 ###  Perl Modules

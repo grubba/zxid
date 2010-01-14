@@ -65,9 +65,9 @@ int verbose = 1;
 char buf[ZXID_MAX_MD+1];
 char* mdurl = 0;
 char* entid = 0;
-char* cotdir = ZXID_PATH ZXID_COT_DIR;
+char* cotdir  = ZXID_PATH ZXID_COT_DIR;
 char* dimddir = ZXID_PATH ZXID_COT_DIR;
-char* uiddir = ZXID_PATH ZXID_UID_DIR;
+char* uiddir  = ZXID_PATH ZXID_UID_DIR;
 
 /* Called by:  main x9 */
 static void opt(int* argc, char*** argv, char*** env)
@@ -99,9 +99,12 @@ static void opt(int* argc, char*** argv, char*** env)
       case 's':
 	++regsvc;
 	++regbs;
+	dimddir = ZXID_PATH "idp" ZXID_COT_DIR;
+	uiddir  = ZXID_PATH "idp" ZXID_UID_DIR;
 	continue;
       case '\0':
 	++regsvc;
+	uiddir  = ZXID_PATH "idp" ZXID_UID_DIR;
 	continue;
       }
       break;
@@ -268,11 +271,11 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
 
   sha1_safe_base64(sha1_name, ss->len, ss->s);
   sha1_name[27] = 0;
-  uiddir = strdup(duid);
-  got = strlen(uiddir);
-  if (strcmp(uiddir + got - (sizeof("dimd/")-1), "dimd/")) {
+  duid = strdup(duid);
+  got = strlen(duid);
+  if (strcmp(duid + got - (sizeof("dimd/")-1), "dimd/")) {
     /* strcpy ok, because always fits: "uid/" is shorter than "dimd/" */
-    strcpy(uiddir + got - (sizeof("dimd/")-1), "uid/");
+    strcpy(duid + got - (sizeof("dimd/")-1), "uid/");
   }
   
   if (dry_run) {
@@ -299,9 +302,9 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
   close_file(fd, (const char*)__FUNCTION__);
 
   if (bs_reg) {
-    D("Activating bootstrap %s.all/.bs/%s,%s", uiddir, path, sha1_name);
+    D("Activating bootstrap %s.all/.bs/%s,%s", duid, path, sha1_name);
     fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -bs",
-			   "%s.all/.bs/%s,%s", uiddir, path, sha1_name);
+			   "%s.all/.bs/%s,%s", duid, path, sha1_name);
     if (fd == BADFD) {
       perror("open epr for bootstrap activation");
       ERR("Failed to open file for writing: sha1_name(%s,%s) to bootstrap activation", path, sha1_name);
