@@ -193,11 +193,14 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
 
   D_INDENT("gen_bs: ");
 
-  if (!bs_lvl)
+  if (!bs_lvl) {
+    D("bs_lvl=%d: nothing to add", bs_lvl);
+    D_DEDENT("gen_bs: ");
     return bootstraps;  /* Discovery EPRs do not need any bootstraps. */
+  }
   
   name_from_path(mdpath, sizeof(mdpath), "%s" ZXID_DIMD_DIR, cf->path);
-  D("Looking for service metadata in dir(%s)", mdpath);
+  D("Looking for service metadata in dir(%s) bs_lvl=%d", mdpath, bs_lvl);
   
   dir = opendir(path);
   if (!dir) {
@@ -248,6 +251,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
       continue;
     } else
       logop = zxid_add_fed_tok_to_epr(cf, epr, uid, bs_lvl+1); /* recurse */
+    D("bs_lvl=%d: adding logop(%s)", bs_lvl, STRNULLCHK(logop));
     if (!logop)
       goto next_file;
     
@@ -256,7 +260,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
     ZX_NEXT(at) = (void*)bootstraps;
     bootstraps = at;
     
-    zxlog(cf, 0, &srcts, 0, 0, 0, 0 /*a7n->ID*/, 0 /*nameid->gg.content*/,"N","K",logop, uid, "");
+    zxlog(cf, 0, &srcts, 0, 0, 0, 0 /*a7n->ID*/, 0 /*nameid->gg.content*/,"N","K", logop, uid, "gen_bs");
     
   next_file:
     continue;
@@ -308,15 +312,15 @@ struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zx
   if (got) {
     at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute, got, buf, "idpsso_all_sp_at");
   }
-  D("sp_eid(%.*s)", sp_meta->eid_len, sp_meta->eid);
+  D("sp_eid(%.*s) bs_lvl=%d", sp_meta->eid_len, sp_meta->eid, bs_lvl);
   
   /* Process bootstraps */
 
   name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, uid);
   at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute, bs_lvl);
   
-  name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR ".all/.bs/", cf->path, bs_lvl);
-  at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute);
+  name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
+  at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute, bs_lvl);
   
   D("sp_eid(%.*s)", sp_meta->eid_len, sp_meta->eid);
   a7n = zxid_mk_a7n(cf, zx_dup_len_str(cf->ctx, sp_meta->eid_len, sp_meta->eid), subj, an_stmt, at_stmt, 0);
@@ -457,7 +461,6 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReferenc
   struct zx_str* affil;
   char sp_name_buf[1024];
   char* logop;
-  int add_bs;
 
   if (epr->Metadata->ProviderID) {
     sp_meta = zxid_get_ent_ss(cf, epr->Metadata->ProviderID->content);
@@ -473,7 +476,7 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReferenc
   if (sp_meta->ed && sp_meta->ed->AffiliationDescriptor
       && (affil = sp_meta->ed->AffiliationDescriptor->affiliationOwnerID)
       && affil->s && affil->len)
-    /* affil is good */
+    ; /* affil is good */
   else
     affil = epr->Metadata->ProviderID->content;
   
@@ -637,7 +640,7 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
     logop = "ITSSO";
   }
 
-  a7n = zxid_mk_user_a7n_to_sp(cf, ses, ses->uid, nameid, sp_meta, sp_name_buf, 0);  /* SSO a7n */
+  a7n = zxid_mk_user_a7n_to_sp(cf, ses, ses->uid, nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
 
   /* Sign, encrypt, and ship the assertion according to the binding. */
 
@@ -812,7 +815,7 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(struct zxid_conf* cf, struct zx_as_S
   if (zxid_pw_authn(cf, &cgi, &ses)) {
     D_INDENT("as_ok: ");
     name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, cgi.uid);
-    at = zxid_gen_boots(cf, cgi.uid, path, 0);
+    at = zxid_gen_boots(cf, cgi.uid, path, 0, 1);
     for (; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
       at->AttributeValue->EndpointReference->gg.g.n = (void*)res->EndpointReference;
       res->EndpointReference = at->AttributeValue->EndpointReference;
@@ -820,7 +823,7 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(struct zxid_conf* cf, struct zx_as_S
     /* *** Free the attribute chain, but do not free EPRs */
 
     name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
-    at = zxid_gen_boots(cf, cgi.uid, path, 0);
+    at = zxid_gen_boots(cf, cgi.uid, path, 0, 1);
     for (; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
       at->AttributeValue->EndpointReference->gg.g.n = (void*)res->EndpointReference;
       res->EndpointReference = at->AttributeValue->EndpointReference;

@@ -1,0 +1,1243 @@
+ZXID Home - Open Source IdM - SAML SSO - Federated
+##################################################
+<<author: Sampo Kellomäki (sampo@iki.fi)>>
+<<cvsid: $Id: index.pd,v 1.63 2010-01-08 02:10:09 sampo Exp $>>
+<<pdflags: stripsecnum=1>>
+<<pdflags: secnum=0>>
+<<define: ibox300!align=right width=300 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
+<<define: ibox150!align=right width=150 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
+
+<<define: ZXVERS!0.47>>
+<<define: ZXNEWS!20100114 - Added zxcot -bs and fixed recursive bootstrap infinite loop>>
+
+<<maketitle: 1>>
+
+<<ignore:
+1 ZXID Joins OpenLiberty.org
+----------------------------
+
+* ZXID has joined the OpenLiberty.org open source initiative
+* ZXID source code is available from OpenLiberty area in SourceForge
+* ZXID.org will stay up as an alternate source code distribution point
+>>
+
+1 What is it?
+-------------
+
+* *mod_auth_saml*: An Apache httpd auth module that does SAML SSO. No programming,
+  just configure Apache, see <<link:html/mod_auth_saml.html: receipe>>.
+  *Web Master* - you +need+ this because it is config only install, no programming.
+
+* *SSO servlet* and *libzxidjni.so*: A Java JNI extension that wraps libzxid. Also supplied:
+  zxidsrvlet.java that implements SP SSO as servlet, directly integrateable with
+  existing application under servlet engine, e.g. Tomcat.
+
+* *php_zxid*: A PHP extension that wraps libzxid. Also supplied: zxidhlo.php
+  that implements SP in mod_php environment.
+
+* *Net::SAML*: Perl module wrapping libzxid. Also zxidhlo.pl example, implementing
+  SP in mod_perl environment, is supplied.
+
+* *libzxid*: C library for SAML 2.0 federated Single Sign-On (SSO) and ID-WSF Web
+  Services. Many other language bindings are supported through SWIG.
+  *IdM Hacker* - you +need+ this because it supports all relevant protocols, you will
+  study it and you will contribute patches.
+
+
+<<html:
+<div class=zxbox>
+<table align=right width=200 border=1 hspace=5 cellpadding=3 bgcolor="#550055"><tr><td>
+>>
+
+<<html:
+<a href="http://zxid.org/"><img src="logo-zxid-256x256.png" width=256 height=256 border=0 alt="ZXID - SAML & ID-WSF Enabled"></a>
+>>
+
+* Sampo's presentation in 1st European Identity Conference, Munich, May 10, 2007
+  (similar presentation was given in Liberty eGov day during Brussels meeting
+  in April 2007). <<link:sampo-easy-saml-id-wsf-zxid-slides-muc-2007.pdf: Slides.>>
+* Buttons, banners, and other promotional materials, <<link:zxid-logo-guide.html: here>>
+
+<<html:
+</td></tr><tr><td>
+>>
+
+Dependencies
+------------
+
+To compile ZXID you need:
+
+1. openssl-0.9.8e or later. See www.openssl.org.
+   Most Linux distros are sufficient.
+2. zlib from zlib.net. Your distro is sufficient.
+3. libcurl from http://curl.haxx.se/, version 7.15.5 (probably
+   your distribution is fine). It needs to be compiled to support HTTPS.
+4. HTTPS capable web server, such as Apache (see
+   my <<link:apache.html: receipe>>), with CGI support. Or Jef Pozkanzer's mini_httpd available from
+   <<link:http://www.acme.com/software/mini_httpd/: http://www.acme.com/ software/mini_httpd/>>
+
+<<html:
+</td></tr><tr><td>
+>>
+
+Platforms
+---------
+
+* Linux: supported (ix86)
+* FreeBSD: supported, see port in <<link:http://www.freshports.org/security/zxid/: http://www.freshports.org/ security/zxid/>>
+* Solaris 8: supported (Sparc)
+* Mac OS 10 (Darwin): supported (Power PC & ix86)
+* Windows 2k: preliminary support using MinGW (I am not knowledgeable enough
+  in Windows to help you if you hit troubles)
+
+ZXID is developed on ix86 Linux with POSIX as a goal, any modern system
+should work. You will need GNU make. I use gcc-3.4.6 as a compiler so
+others (such as gcc-4) may need minor tweaking.
+
+<<html:
+</td></tr></table></div>
+>>
+
+<<if: 0>>
+
+1 Who needs this?
+-----------------
+
+* *Web Master*: You want to enable SAML based Single Sign-On (SSO) to
+  your web site? Use mod_auth_saml to federate your web site without
+  any programming<<infobox:webmaster:...:!!ibox300: Just edit your Apache httpd.conf or hint your PHP or perl developer - see below.>>
+
+* *PHP Developer*: Use ~dl("php_zxid.so")~ to load the module for
+  SAML 2.0 SSO<<infobox:phpdev:...:ibox300: zxid_simple() API is
+  fully usable and we expect to add soon WSC and WSP features that
+  are already (Oct 2008) available for C. We support functionality
+  roughly equivalent to perl Net::SAML. Both mod_php5 and php as
+  CGI are supported. php4 should also work.>>
+
+* *Java Developer*: Use ~System.loadLibrary("zxidjni")~ to
+  pull into your Java proram the full SSO power of the ZXID<<infobox:javadev:...:ibox300: The
+  functionality supported is roughly equal to Net::SAML.
+  Tested in Apache Tomcat environment.>>
+
+* *Perl Developer*: Use the Net::SAML module to integrate SSO
+  to mod_perl application<<infobox:perldev:...:ibox300: Given the
+  direct perl support, this is easier than fully understanding
+  the C interface. Both mod_perl and perl as CGI are supported.>>
+
+* *Platform Developer*: Integrate SAML based SSO to your web site tool
+  or product so that your customers can enjoy SSO enabled web sites.
+  <<infobox:platdev:...:ibox300: Study zxidhlo.c for examples and use libzxid.a to
+  implement the functionality in your own program.>>
+
+* *Identity Management hacker*: You need some building blocks: you
+  will study libzxid and add to it, contributing to the project.
+
+<<else: >>
+<<fi: >>
+
+ZXID Project has vastly more ambitious goals. See the ZXID Project chapter
+in <<link:README.zxid.html: documentation>> (<<link:README.zxid.pdf: PDF>>).
+
+Conor Cahill of Intel (formerly AOL) said back in 2006:
+> IMNSHO, better go Liberty up front and have the confidence that you
+> do not need to upgrade later - or run two parallel systems. The Liberty
+> (or SAML 2.0) system is comprehensive and addresses every use case
+> anyone has thought so far. The percieved complexity is really an
+> implementation issue and not underlying propery of the spec. Since
+> we provide an implementation, the "complexity" is not customer problem.
+
+3 Try it out immediately
+========================
+
+In this space we host links to IdPs that work with ZXID and to
+ZXID test sites you can use to get a feel for yourself. There is
+no guarantee that these sites stay up:
+
+* http://ssocircle.com/
+
+(*** http://cgi-service-provider.saml2.com/cgi-bin/zxid  -- An alias of ssocircle.com)
+
+*Freely downloadable IdPs you can install and test against*
+
+* http://symlabs.com/Products/SFIAM.html
+* Lasso: http://lasso.entrouvert.org/
+* The IDP:  http://authentic.labs.libre-entreprise.org/ 
+
+4 Aims of ZXID Project
+======================
+
+ZXID aims at +full stack+ implementation of all federated identity
+management and identity web services protocols. Initial goal
+is supporting SP role, followed by ID-WSF WSC, WSP and IdP roles.
+We aim at supporting US GSA E-Auth profile.
+
+ZXID is light weight, has a small foot print, and is implemented in
+C. It is suitable for both high performance and embedded
+applications. Scripting languages are supported using
+<<link:http://www.swig.org: SWIG>>, including Perl, PHP and Java. The "full
+stack" nature of ZXID means it's self contained and has minimal
+external library dependencies (see downloads).
+
+Targeted Federated Identity Standards
+
+* SAML 2.0 (fully done)
+* SAML 1.1 (Assertion Consumer role 60% done)
+* Liberty ID-FF 1.2 (SP role 62% done)
+* WS-Federation 1.0 Basic Profile (Assertion Consumer role 40% done)
+
+Targeted ID Web Services Standards
+
+* Liberty ID-WSF 2.0 (95% done)
+* Liberty ID-WSF 1.1 (40% done)
+* TAS3 - Trusted Architecture for Securely Shareable Services (that
+  are privacy friendly as well), www.tas3.eu. ZXID aims to be the
+  reference implementation of the TAS3 APIs. See specs in
+  <<link:http://zxid.org/tas3/index.html: ZXID-TAS3 Page>>
+
+Targeted Authorization Standards
+
+* OASIS XACML 2.0 and 2.0 committee draft 1
+
+5 Approach
+==========
+
+ZXID consists of C libraries. Some of these libraries are generated
+from +schema grammar+ descriptions using a tool called xsd2sg.pl, part
+of <<link:http://zxid.org/plaindoc/pd.html: Plaindoc>> distribution. Other
+libraries that express flows and processing rules are hand-written. The
+language bindings, other than C, are generated automatically using swig(1).
+
+6 Status
+========
+
+Beta. As of 0.41 (20091120) the package is mature for
+doing SSO and other SP related tasks. It also supports perl and
+mod_perl by way of Net::SAML module, PHP5 (and php4) using
+php_zxid.so, as well as Java using libzxidjni.so. The Java
+support includes SSO servlet to be used with Tomcat or other
+application server.
+
+mod_auth_saml is fully production grade and can be used to implement
+SSO to Apach httpd just by configuring (no programming needed).
+
+WSC role is beta grade and WSP roles are still alpha grade.
+
+So far we have
+
+* General SAML 2.0 encoding and decoding of messages in C
+* Net::SAML perl module that gives access to the C functionality
+* php_zxid.so extension for php5 (and php4) roughly equal to Net::SAML
+* libzxidjni.so extension for Java roughly equal to Net::SAML
+* zxidsrvlet.class for Tomcat enviroment, giving SSO
+* SAML 2.0 metadata handling and support for Well Known Location method
+* Specific logic for Single Sign-On and Federation using artifact, post, and simplesign-post profiles
+* Single logout, defederation, and NameID management
+* Some session management and ability to handle discovery bootstrap, ability to start Java HttpSession, ability to pass information from SSO to WSC.
+* SP role as a CGI written in C
+* SP role written in perl that works both in mod_perl and as a CGI
+* SP role written in php that works under apache mod_php5 (and possibly php4).
+* SP role written in Java as servlet (zxidsrvlet)
+* SP role written in shell script
+* SP role as Apache httpd auth module (mod_auth_saml)
+* IdP role written in C
+* Command line WSC testing tool
+* Discovery WSC role in C, perl, php, and Java
+* Discovery WSP role in C
+* General WSC role in C, perl, php, and Java
+* General WSP role in C
+* ID-DAP WSC role in C
+* ID-HR-XML WSC and WSP
+* Encoders and decoders for
+  - SAML 2.0 (most mature)
+  - SAML 1.1
+  - Liberty ID-FF 1.2
+  - Liberty ID-WSF 1.1
+  - Liberty ID-WSF 2.0
+  - XACML 2.0
+
+7 Documentation
+===============
+
+Documentation starts from
+<<link:README.zxid.html: README.zxid>> (<<link:README.zxid.pdf: PDF>>)
+file. There is also low level source code derived documentation in
+<<link:ref/html/index.html: API Reference>>
+
+I also encourage you to read the source, especially headers. Starting
+from c/zx-sa-data.h, zxid.h, zxid.c, and zxidsimp.c will be most
+instructive.
+
+All the specifications supported by ZXID are freely available on the
+net. Try
+
+* OASIS: http://www.oasis-open.org/specs/index.php#samlv2.0
+* Liberty Alliance: http://projectliberty.org/liberty/specifications__1
+* W3C
+* RFC: http://www.ietf.org/rfc.html
+
+8 Support
+=========
+
+8.1 Mailing list and forums
+---------------------------
+
+* Official ZXID mailing list is zxid.user@lists.unh.edu
+* The archives can be seen at http://listproc.unh.edu/archives/zxid.user
+
+8.2 Bugs
+--------
+
+Mail the author until we get bug tracking set up. Or volunteer.
+
+8.3 Developer access
+--------------------
+
+We use GIT over SSH, but access needs to be manually configured and is not
+anonymous. If you contribute significantly, I will bother. Others
+can send patches (good way to show you are worthy of GIT access)
+to me. I've heard some mixed experiences about open source
+sites like sourceforge. If you run such site and want to
+host ZXID Project, please contact me.
+
+If you just always want the latest source: get the tar ball from
+the downloads section. Trust me, this is still so much in flux
+that only the tar ball snapshots are in any usable state. CVS
+access just to get latest source would be pointless.
+
+8.8 Commercial Support
+----------------------
+
+Following companies provice consultancy and support contracts for
+ZXID:
+
+* symlabs.com
+* mercnet.pt
+
+8.9 Previous Releases
+---------------------
+
+<<html:
+<ul>
+<li>2010 (<a href="#" onClick="vis('old2010',1);">show</a>/<a href="#" onClick="vis('old2010',0);">hide</a>)
+<div id="old2010">
+>>
+
+* <<link:zxid-0.47.tgz>> (20100114 - Added zxcot -bs and fixed recursive bootstrap infinite loop)
+* <<link:zxid-0.46.tgz>> (20100113 - Fixed Java build)
+* <<link:zxid-0.45.tgz>> (20100112 - Signature generation in web service call, logging messages)
+
+<<html:
+</div>
+<li>2008 (<a href="#" onClick="vis('old2009',1);">show </a>/<a href="#" onClick="vis('old2009',0);">hide</a>)
+<div id="old2009">
+>>
+
+* <<link:zxid-0.44.tgz>> (20091216 - Minor bug fixes)
+* <<link:zxid-0.42.tgz>> (20091126 - ID-WSF full web service call improvements)
+* <<link:zxid-0.41.tgz>> (20091120 - Java servlet improvements)
+* <<link:zxid-0.40.tgz>> (20091114 - Java servlet improvements, PHP check Perl check)
+* <<link:zxid-0.39.tgz>> (20091105 - Java servlet improvements)
+* <<link:zxid-0.34.tgz>> (17.9.2009, Java compile fix)
+* <<link:zxid-0.33.tgz>> (16.9.2009, Major improvements to mod_auth_saml, bug fixes to Net::SAML)
+* <<link:zxid-0.32.tgz>> (4.4.2009, documentation fixes)
+
+<<html:
+</div>
+<li>2008 (<a href="#" onClick="vis('old2008',1);">show </a>/<a href="#" onClick="vis('old2008',0);">hide</a>)
+<div id="old2008">
+>>
+
+* <<link:zxid-0.29.tgz>> (25.9.2008, mod_auth_saml fixes, more config options)
+* <<link:zxid-0.28.tgz>> (18.9.2008, bug fixes)
+* <<link:zxid-0.27.tgz>> (17.9.2008, build precheck)
+* <<link:zxid-0.26.tgz>> (9.5.2008, fixed Auto-CoT bug due to form field name conflict)
+* <<link:zxid-0.25.tgz>> (17.4.2008, SAML POST-SimpleSign binding, mod_auth_saml)
+* <<link:zxid-0.22.tgz>> (11.10.2007, Added log levels 1 and 2, Fixed Destination handling; Ensured preservation of whitespace in XML parsing and exc-xml-canon; Fixed alphabetization of attributes in exc-xml-canon; Added signing ArtifactResolve, Logout and MNI requests over SOAP; Improved handling of empty ns prefix for XML attributes; Print source IP to logs)
+* <<link:zxid-0.21.tgz>> (8.10.2007, bug fixes: Content-type header, SWIG related build problem for Net::SAML on RedHat, added cygwin target, fixed InclusiveNamespaces/@PrefixList)
+* <<link:zxid-0.20.tgz>> (1.10.2007, working towards GSA E-Auth requirements, EncryptedAssertions, EncryptedIDs, bug fixes)
+
+<<html:
+</div>
+<li>2007 (<a href="#" onClick="vis('old2007',1);">show</a>/<a href="#" onClick="vis('old2007',0);">hide</a>)
+<div id="old2007">
+>>
+
+* <<link:zxid-0.19.tgz>> (11.8.2007, minor bug fixes, documentation)
+* <<link:zxid-0.18.tgz>> (17.7.2007, ID-HR-XML, WSF bug fixes)
+* <<link:zxid-0.17.tgz>> (6.3.2007, WSC development, bug fixes) *This is a very stable release.*
+* <<link:zxid-0.16.tgz>> (4.3.2007, WSC development, bug fixes)
+* <<link:zxid-0.15.tgz>> (23.2.2007, Tomcat bug fixes)
+* <<link:zxid-0.14.tgz>> (21.2.2007, Tomcat tutorial)
+* <<link:zxid-0.13.tgz>> (20.2.2007, clean up Java interface, Mac compile, bug fixes)
+* <<link:zxid-0.12.tgz>> (10.2.2007, WSF bootstrap handling, rework of session system, bug fixes)
+* <<link:zxid-0.11.tgz>> (1.2.2007, MinGW DLL fixes)
+* <<link:zxid-0.10.tgz>> (31.1.2007, MinGW DLL production works)
+* <<link:zxid-0.9.tgz>> (26.1.2007, fixed compilation, preliminary Windows support using MinGW)
+* <<link:zxid-0.8.tgz>> (16.1.2007, zxid_simple() API, logging, conf file, more signature support, JNI support)
+
+<<html:
+</div>
+<li>2006 (<a href="#" onClick="vis('old2006',1);">show </a>/<a href="#" onClick="vis('old2006',0);">hide</a>)
+<div id="old2006">
+>>
+
+* <<link:zxid-0.7.tgz>> (15.10.2006, with digital signatures, improved PHP, mod_php, and mod_perl support)
+* <<link:zxid-0.6.tgz>> (18.9.2006, with PHP support, including mod_php)
+* <<link:zxid-0.5.tgz>> (15.9.2006, with encoders and decoders for ID-WSF and ID-FF)
+* <<link:zxid-0.4.tgz>> (4.9.2006, with mod_perl/Net::SAML SP)
+* <<link:zxid-0.3.tgz>> (first fully functional release)
+* Historic: <<link:zxid-0.2.tgz>>, <<link:zxid-0.1.tgz>>
+
+<<html:
+</div>
+</ul>
+>>
+
+<<html:
+<script language="javascript" type="text/javascript"><!--
+function vis(el, state) { document.getElementById(el).style.display=state?"block":"none"; }
+vis("old2009",0);
+vis("old2008",0);
+vis("old2007",0);
+vis("old2006",0);
+vis("webmaster",webmaster=0);
+vis("phpdev",phpdev=0);
+vis("javadev",javadev=0);
+vis("perldev",perldev=0);
+vis("platdev",platdev=0);
+vis("lic",lic=0);
+//--></script>
+>>
+
+8.9 Some Links
+--------------
+
+* Another directory where ZXID is featured:
+  <<link:http://www.linuxlinks.com/Software/Programming/Libraries/Networking/: linuxlinks>>
+* http://www.freshports.org/security/zxid/
+* Good collection of docs: http://polarssl.org/?page=docs (n.b. zxid does not yet support polarssl, but contributions are always welcome)
+* TAS3 project: www.tas3.eu
+  - <<link:http://zxid.org/tas3/index.html: ZXID-TAS3 Page>>
+* Sampo's hobby: <<link:http://zxid.org/fe-aco/html/index.html: Teräsaika (iron and steel making)>>
+
+9 Acknowledgement
+=================
+
+The research leading to these results has received funding from the
+European Community's Seventh Framework Programme (FP7/2007-2013) under
+grant agreement number 216287 (TAS3 - Trusted Architecture for Securely
+Shared Services - www.tas3.eu).
+
+<<ignore:
+9 License
+=========
+
+Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
+Author: Sampo Kellomäki (sampo@iki.fi)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+While the source distribution of ZXID does not contain
+SSLeay or OpenSSL code, if you use this code you will use OpenSSL
+library. Please give Eric Young and OpenSSL team credit (as required by
+their licenses).
+
+And remember, you, and nobody else but you, are responsible for
+auditing ZXID and OpenSSL library for security problems,
+backdoors, and general suitability for your application.
+>>
+
+<<ignore: htmlpreamble: <title>ZXID Home - Open Source IdM for the Masses - SAML SSO</title><body bgcolor="#330033" text="#ffaaff" link="#ffddff" vlink="#aa44aa" alink="#ffffff"><font face=sans><h1>ZXID Home - Open Source IdM for the Masses - SAML SSO</h1> >>
+
+<<define: NAVCOLOR2!#ACBC43>>
+<<define: NAVCOLOR!#8c9a33>>
+<<define: HCOLOR!#b6c842>>
+<<define: HCOLORB!#666666>>
+
+<<htmlpreamble: <title>ZXID Home - Open Source IdM for the Masses - SAML SSO</title>
+<style type="text/css" media="screen, projection">
+
+/* <link href="http://openliberty.org/blog/wp-content/themes/openliberty/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://openliberty.org/expandingMenu.js"></script>
+/* http://www.w3.org/TR/CSS2/ */
+
+body {
+background: #FFFFFF;
+margin: 10px 0 10px 0;
+padding: 0;
+text-align: center; /* IE workaround to center, cf. margin: 0 auto; */
+color: #3F3F3F;
+font-family: Arial, Verdana, Helvetica, sans-serif;
+font-size: 76%;
+}
+
+#ctr {
+width: 763px;
+margin: 0 auto;
+text-align: left;  /* Counter demand IE work around from body */
+}
+
+#payload {
+margin-left:232px;
+font-size:11px;
+line-height:18px;
+}
+       
+#hdr {
+}
+
+#ftr {
+color:!!NAVCOLOR;
+font-size:10px;
+line-height:16px;
+text-decoration:none;
+margin-left:232px;
+text-align: center;
+}       
+
+#sidebar {
+position: absolute;
+top: 150px;
+}
+
+.primnav {
+font-size:13px;
+font-weight:600;
+text-decoration:none;
+color: #FFFFFF;
+margin-left:10px;
+margin-right:10px;
+margin-top:6px;
+width:500px;
+height:21px;
+}
+        
+.primnav a {
+color: #FFFFFF;
+font-weight: 600;
+text-decoration: none;
+}
+
+.primnav a:link {
+color: #FFFFFF;
+font-weight: 600;
+text-decoration: none;
+}
+        
+.primnav a:visited {
+color: #FFFFFF;
+font-weight: 600;
+text-decoration: none;
+}
+        
+.primnav a:hover {
+text-decoration: underline;
+}
+
+.secnav {
+font-size:11px;
+font-weight:600;
+text-decoration:none;
+color:!!NAVCOLOR;
+margin-left:10px;
+margin-right:10px;
+margin-top:14px;
+}
+        
+.secnav a {
+color: !!NAVCOLOR;
+font-weight: 600;
+text-decoration: none;
+}
+
+.secnav a:link {
+color: !!NAVCOLOR;
+font-weight: 600;
+text-decoration: none;
+}
+        
+.secnav a:hover {
+text-decoration: none;
+background-color: #F1F7CB;
+}
+
+.sidenav {
+font-size:12px;
+margin-top:25px;
+font-weight:bold;
+list-style:none;
+line-height:30px;
+}
+        
+.sidenav a{
+color:#000000;
+}
+        
+.sidenav a:visited{
+color:#000000;
+}
+
+.sidenav a:hover{
+color:#000000;
+text-decoration:underline;
+background-color:#CCCCCC;
+}
+
+.sidebox {
+font-size:12px;
+margin-top:25px;
+margin-left:12px;
+padding:12px;
+font-weight:bold;
+list-style:none;
+/*line-height:30px;*/
+background-color:#f1f7cb;
+width:120px;
+}
+        
+.sidebox a:link, .sidebox a:visited {
+color:#8E9B37;
+text-decoration:none;
+}
+
+.sidebox a:hover{
+color:#000000;
+text-decoration:underline;
+background-color:#CCCCCC;
+}
+
+.sideminitxt {
+font-size:0.5em;
+line-height:1.5em;
+}
+
+.sideminilink {
+color:#8E9B37;
+font-size:0.5em;
+}
+
+/* Uncomment if you want to use the tagline feature (make sure you uncomment .tagline below) - off by default
+h1 {
+color: #FCFEF4;
+margin: -45px 0 0 7px;
+position: absolute;
+font-size: 2.2em;
+}
+*/
+
+h1 {
+color: !!HCOLORB;
+/*margin: -35px 0 0 7px;*/
+/*position: absolute;*/
+font-size: 2.2em;
+line-height: 1.2em;
+}
+                
+h1 a:link, h1 a:visited {
+color: !!HCOLOR;
+text-decoration: none;
+}
+        
+h1 a:hover, h1 a:active {
+background: none;
+color: !!HCOLOR;
+text-decoration: none;
+}
+        
+h2 {
+color: !!HCOLOR;
+font-weight: normal;
+font-size: 1.8em;
+/*margin: 20px 0 0 0;*/
+}
+        
+h2 a:link, h2 a:visited {
+color: !!HCOLOR;
+font-weight: normal;
+text-decoration: none;
+}
+
+h2 a:hover, h2 a:active {
+color: !!HCOLOR;
+background: none;
+font-weight: normal;
+text-decoration: none;
+}
+        
+h3 {
+font-size: 1.4em;
+/*margin: 20px 0 -10px 0;*/
+font-weight: normal;
+}
+        
+a:link {
+color: !!HCOLOR;
+font-weight: bold;
+text-decoration: none;
+}
+        
+a:visited {
+color: #999;
+}
+        
+a:hover, a:active {
+background: #78A515;
+color: #fff;
+text-decoration: none;
+}
+        
+blockquote {
+border-left: 4px solid #3F3F3F;
+padding: 0 10px;
+margin: 0 0 0 10px;
+font-style: italic;
+}
+        
+code {
+display: block;
+padding: 10px;
+color: !!HCOLOR;
+background: !!HCOLOR;
+font-size: 1.2em;
+border-top: 2px solid !!HCOLOR;
+}
+
+p {
+line-height: 1.4;
+}
+
+#content {
+padding-top: 0px;
+margin: 5px;
+width: 480px;
+}
+#content_bg {
+background: #fff;
+}
+        
+/* Uncomment if you want to use the tagline feature (make sure you uncomment h1 above and comment the original h1) - off by default
+.tagline {
+        color: #888;
+        margin: -18px 0 0 9px;
+        position: absolute;
+        font-size: 1em;
+        }
+*/
+
+        
+.clearfix:after { /* float hack used to float content correctly */
+    content: "."; 
+        display: block; 
+        height: 0; 
+        clear: both; 
+    visibility: hidden;
+        }
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+/* End hide from IE-mac */      
+
+/* See also expandinMenu.js */
+
+ul#menu {
+  width: 200px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  line-height:20px;
+}
+
+ul#menu ol {
+  display: none;
+  text-align: left;
+  list-style-type: none;
+  margin-left: 10px;
+  padding: 5px;
+  list-style: none;
+}
+
+ul#menu li, 
+  ul#menu a {
+  font-family: verdana, sans-serif;
+  font-size: 12px;
+  font-weight:bold;
+  color: #8E9B37;
+  list-style-image: url(img/bullet_arrow.gif);
+}
+
+ul#menu li {
+  line-height: 20px;
+}
+
+ul#menu ol li {
+  border-bottom: none;
+  list-style: none;
+}
+
+ul#menu ol li:before {
+  content: "- ";
+  font-size: 12px;
+}
+
+ul#menu a {
+  text-decoration: none;
+  outline: none;
+}
+
+ul#menu a:hover {
+  color: #539dbc;
+  text-decoration:underline;
+}
+
+ul#menu ol a:hover {
+  color: #539dbc;
+  text-decoration:underline;
+}
+
+ul#menu a.active {
+  color: #be5028;
+
+}
+
+.zxbox {
+background: #330033;
+color: #ffaaff;
+font-size:11px;
+line-height:18px;
+}
+
+.zxbox table {
+background: #550055;
+}
+
+.zxbox h1 {
+color: #ffaaff;
+}
+
+.zxbox h2 {
+color: #ffaaff;
+}
+
+.zxbox h3 {
+color: #ffaaff;
+}
+
+.zxbox p {
+color: #ffaaff;
+font-size:11px;
+line-height:18px;
+}
+
+.zxbox a:link {
+color: #ffddff;
+}
+.zxbox a:visited {
+color: #aa44aa;
+}
+.zxbox a:hover, .zxbox a:active {
+color: #ffffff;
+}
+
+ text="#ffaaff" link="#ffddff" vlink="#aa44aa" alink="#ffffff"
+
+</style>
+
+<body>
+<div id=ctr>
+<div id=hdr><table width=763 border=0 cellspacing=0 cellpadding=0>
+<tr>
+  <td width=232 rowspan=3><a href="http://openliberty.org/index.php"><img src="http://openliberty.org/img/openliberty_logo.gif" alt="openLiberty" width=186 height=130 border=0></a></td>
+  <td width=531 height=101 valign=top>
+    <div align=right class=secnav>
+      <a href="http://openliberty.org/contact/" class=secnav>CONTACT</a>
+    | <a href="http://openliberty.org/sitemap/" class=secnav>SITEMAP</a>
+    </div>
+  </td>
+</tr>
+<tr>
+  <td align=center valign=middle bgcolor="#ACBC43">
+    <div align=center class=primnav><a href="http://openliberty.org/wiki/index.php/About" class=primnav>ABOUT OPENLIBERTY</a>
+    | <a href="http://openliberty.org/blog" class=primnav>OPENLIBERTY WEBLOG</a>
+    | <a href="http://openliberty.org/licensing" class=primnav>LICENSING</a></div>
+  </td>
+</tr>
+<tr><td bgcolor="#FFFFFF" style="height:15px">&nbsp;</td></tr>
+</table></div>
+
+<div id=payload>
+
+<h1>ZXID Home - Open Source IdM for the Masses - SAML SSO</h1>
+
+>>
+
+<<html:
+</div><!-- payload -->
+
+<div id=sidebar>
+<table width="220" border="0" cellspacing="0" cellpadding="0">
+<tr><td width="232" rowspan="2" valign="top">
+<ul class=sidenav style="padding:0px; margin-left:12px">
+<li>PROJECTS</li>
+<li style="margin-left:12px">        
+  <ul id=menu>
+
+  <li>ZXID
+    <ol>
+    <li><a href="http://zxid.org/">Project Page</a></li>
+    <li><a href="http://zxid.org/html/zxid-simple.html">ZXID API</a></li>
+    <li><a href="http://zxid.org/html/mod_auth_saml.html">mod_auth_saml</a></li>
+    </ol>
+  </li>
+
+  <li>Aristotle
+    <ol>
+    <li><a href="/wiki/index.php/ProjectAris">Project Overview</a></li>
+    <li><a href="/wiki/index.php/ArisID_API">ArisID API</a></li>
+    <li><a href="/wiki/index.php/ArisID_Beans">ArisID Beans</a></li>
+    <li><a href="/wiki/index.php/ArisIdFAQ">FAQ</a></li>
+    </ol>
+  </li>
+
+  <li>Wakame
+    <ol>
+
+    <li><a href="http://openliberty.org/wiki/index.php/Main_Page#ID-WSF_2.0_Web_Services_Client_Library_.28ClientLib.29">overview</a></li>
+    <li><a href="http://openliberty.org/wiki/index.php/5_Step_Start">5-step start</a></li>
+    <li><a href="/documentation/IDWSF2.0/ClientLib/javadoc/">javadoc</a></li>
+    <li><a href="http://sourceforge.net/projects/openliberty/">source code</a></li>
+    <li><a href="/wiki/index.php/Main_Page">wiki main page</a></li>
+    <li><a href="/wiki/index.php/GetInvolved">get involved!!</a></li>
+
+    </ol>
+  </li>
+  <li>Identity Landscape
+    <ol>
+    <li><a href="/wiki/index.php/Identity_Landscape_Overview">Overview</a></li>
+    <li><a href="/wiki/index.php/Identity_and_Technology">Identity and Technology</a></li>
+    <li><a href="/wiki/index.php/Social_Aspects_of_Identity">Social Aspects of Identity</a></li>
+    <li><a href="/wiki/index.php/Existing_Identity_Systems">Existing Identity Systems</a></li>
+    </ol>
+  </li>
+  <li>ECP Plugin
+    <ol>
+    <li><a href="http://openliberty.org/wiki/index.php/Main_Page#Firefox_ECP_Plugin">Wiki Documentation</a></li>
+    <li><a href="http://sourceforge.net/projects/openliberty/">source code</a></li>
+    </ol>
+  </li>
+  </ul>
+</li>
+</ul>
+
+<ul class="sidebox">
+<li>Download Source</li>
+<li style="margin-left:20px;"><a href="/zxid-!!ZXVERS.tgz">zxid-!!ZXVERS.tgz</a><br><span class=sideminitxt>!!ZXNEWS</span></li>
+<li>Win32 Binary</li>
+<li style="margin-left:20px;"><a href="/zxid-0.41-win32-bin.zip">zxid-0.41-win32-bin.zip</a><br><span class=sideminitxt>20091122, standalone and Java</span></li>
+</ul>
+
+<ul class="sidebox">
+<li>Support</li>
+<li style="margin-left:20px;"><a href="http://listproc.unh.edu/archives/zxid.user">ZXID mailing list</a><br><span class=sideminitxt>zxid.user@lists.unh.edu archives</span></li>
+<li style="margin-left:20px;"><a href="http://www.tas3.eu/">TAS3</a>, <a href="tas3/">ZXID-TAS3</a></li>
+</ul>
+
+<ul class="sidebox">
+<li>Documentation</li>
+
+<li style="margin-left:20px;"><a href="html/mod_auth_saml.html">mod_auth_saml</a><br><span class=sideminitxt>Deploy SAML on Apache without programming</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-conf.html">Configuration</a><br><span class=sideminitxt>Nitty gritty on all options</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-cot.html">Circle of Trust</a><br><span class=sideminitxt>Set up a Circle of Trust (aka Trust Network or Federation)</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-install.html">Compile</a><br><span class=sideminitxt>Install from package or source</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-simple.html">zxid_simple()</a><br><span class=sideminitxt>Easy API for SAML</span></li>
+
+<li style="margin-left:20px;"><a href="ref/html/index.html">API Reference</a><br><span class=sideminitxt>Every Function</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-raw.html">ZXID Raw API</a><br><span class=sideminitxt>Program like pros (and fix your own problems).</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-wsf.html">ZXID ID-WSF API</a><br><span class=sideminitxt>Make Identity Web Services Calls using ID-WSF</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-log.html">Secure Logging</a><br><span class=sideminitxt>Digitally signed logging facility</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-java.html">Java</a><br><span class=sideminitxt>Using ZXID from Java</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-perl.html">Net::SAML</a><br><span class=sideminitxt>Using ZXID from Perl</span></li>
+
+<li style="margin-left:20px;"><a href="html/zxid-php.html">php_zxid</a><br><span class=sideminitxt>Using ZXID from PHP</span></li>
+
+<li style="margin-left:20px;"><a href="README.smime">README.smime</a><br><span class=sideminitxt>Crypto and Cert Tutorial</span></li>
+
+</ul>
+
+<ul class="sidebox">
+<li>Links
+<li style="margin-left:20px;"><a href="http://freshmeat.net/zxid" class=sideminilink>http://freshmeat.net/zxid</a>
+<li style="margin-left:20px;"><a title="Get a Yubikey" href="http://www.yubico.com/o.php?refid=109&rno=749864514" target=_new><img border=0 src="http://forum.yubico.com/includes/affiliate/images/yubico.jpg" width=89 height=50></a>
+</ul>
+
+</td></tr>
+</table>
+</div>
+
+<div id=ftr>
+<a href="http://openliberty.org/faq/">FAQ</a>
+| <a href="http://openliberty.org/wiki/index.php/Roadmap">Roadmap</a>
+| <a href="http://openliberty.org/wiki">Wiki</a><br>
+
+<a href="http://sourceforge.net/projects/openliberty/">Code Repository</a>
+| <a href="http://openliberty.org/licensing/">Licensing</a>
+| <a href="http://openliberty.org/wiki/index.php/Specifications">Specs</a></div>
+</div><!-- ctr -->
+
+<script type="text/javascript"><!--
+/* This script and many more are available free online at
+The JavaScript Source :: http://javascript.internet.com
+Created by: Travis Beckham :: http://www.squidfingers.com | http://www.podlob.com
+version date: 06/02/03 :: If want to use this code, feel free to do so,
+but please leave this message intact. (Travis Beckham) */
+
+// Node Functions
+
+if(!window.Node){
+  var Node = {ELEMENT_NODE : 1, TEXT_NODE : 3};
+}
+
+function checkNode(node, filter){
+  return (filter == null || node.nodeType == Node[filter] || node.nodeName.toUpperCase() == filter.toUpperCase());
+}
+
+function getChildren(node, filter){
+  var result = new Array();
+  var children = node.childNodes;
+  for(var i = 0; i < children.length; i++){
+    if(checkNode(children[i], filter)) result[result.length] = children[i];
+  }
+  return result;
+}
+
+function getChildrenByElement(node){
+  return getChildren(node, "ELEMENT_NODE");
+}
+
+function getFirstChild(node, filter){
+  var child;
+  var children = node.childNodes;
+  for(var i = 0; i < children.length; i++){
+    child = children[i];
+    if(checkNode(child, filter)) return child;
+  }
+  return null;
+}
+
+function getFirstChildByText(node){
+  return getFirstChild(node, "TEXT_NODE");
+}
+
+function getNextSibling(node, filter){
+  for(var sibling = node.nextSibling; sibling != null; sibling = sibling.nextSibling){
+    if(checkNode(sibling, filter)) return sibling;
+  }
+  return null;
+}
+function getNextSiblingByElement(node){
+        return getNextSibling(node, "ELEMENT_NODE");
+}
+
+// Menu Functions & Properties
+
+var activeMenu = null;
+
+function showMenu() {
+  if(activeMenu){
+    activeMenu.className = "";
+    getNextSiblingByElement(activeMenu).style.display = "none";
+  }
+  if(this == activeMenu){
+    activeMenu = null;
+  } else {
+    this.className = "active";
+    getNextSiblingByElement(this).style.display = "block";
+    activeMenu = this;
+  }
+  return false;
+}
+
+function initMenu(){
+  var menus, menu, text, a, i;
+  menus = getChildrenByElement(document.getElementById("menu"));
+  for(i = 0; i < menus.length; i++){
+    menu = menus[i];
+    text = getFirstChildByText(menu);
+    a = document.createElement("a");
+    menu.replaceChild(a, text);
+    a.appendChild(text);
+    a.href = "#";
+    a.onclick = showMenu;
+    a.onfocus = function(){this.blur()};
+  }
+}
+
+if(document.createElement) window.onload = initMenu;
+--></script>
+
+>>
+
+<<EOF: >>
+
+see notes.zxid
+
+
+<a href="http://www4.clustrmaps.com/counter/maps.php?url=http://zxid.org" id="clustrMapsLink"><img src="http://www4.clustrmaps.com/counter/index2.php?url=http://zxid.org" width=160 height=106 style="border:0px;" alt="Locations of visitors to this page" title="Locations of visitors to this page" id="clustrMapsImg" onerror="this.onerror=null; this.src='http://www2.clustrmaps.com/images/clustrmaps-back-soon.jpg'; document.getElementById('clustrMapsLink').href='http://www2.clustrmaps.com';" />
+</a>
+
+<a href="http://www4.clustrmaps.com/user/20d6df21"><img src="http://www4.clustrmaps.com/stats/maps-no_clusters/zxid.org-thumb.jpg" alt="Locations of visitors to this page" />
+</a>
+
+<<xxxhtmlpreamble: <title>ZXID Home - Open Source IdM for the Masses - SAML SSO</title>
+<style type="text/css" media="screen, projection">/*<![CDATA[*/
+@import "http://openliberty.org/wiki/skins/common/shared.css?97";
+@import "http://openliberty.org/wiki/skins/monobook/main.css?97";
+/*]]>*/</style>
+<link rel="stylesheet" type="text/css" media="print" href="http://openliberty.org/wiki/skins/common/commonPrint.css?97" /><body class="mediawiki ns-0 ltr page-Main_Page">
+<style type="text/css">/*<![CDATA[*/
+@import "http://openliberty.org/wiki/index.php?title=MediaWiki:Common.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+@import "http://openliberty.org/wiki/index.php?title=MediaWiki:Monobook.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+@import "http://openliberty.org/wiki/index.php?title=-&action=raw&gen=css&maxage=18000";
+/*]]>*/</style>
+<div id="header"><table width="763" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="232" rowspan="3"><a href="http://openliberty.org/index.php"><img src="http://openliberty.org/img/openliberty_logo.gif" alt="openLiberty" width="186" height="130" border="0" /></a></td>
+    <td width="531" height="101" valign="top">
+
+<div align="right" class=secnav>
+   <a href="http://openliberty.org/contact/" class=secnav>CONTACT</a>
+ | <a href="http://openliberty.org/sitemap/" class=secnav>SITEMAP</a>
+</div>
+         </td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" bgcolor="#ACBC43">
+    	
+	<div align="center" class=primnav><a href="http://openliberty.org/wiki/index.php/About" class=primnav>ABOUT OPENLIBERTY</a> | <a href="/blog" class=primnav>OPENLIBERTY WEBLOG</a> | <a href="http://openliberty.org/licensing" class=primnav>LICENSING</a></div>
+    
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF" style="height:15px">&nbsp;</td>
+  </tr>
+</table>
+</div>
+
+<font face=sans>
+<h1>ZXID Home - Open Source IdM for the Masses - SAML SSO</h1>
+
+>>
+
+
+https://adwords.google.com/select/KeywordToolExternal
+
+single sign-on
+identity management
+service provider
+identity web services
+identity provider
+web service
+web service provider
+web service client
+web service toolkit
+identity management toolkit
+
+
+
+---
+
+
+<<html:
+<div class=zxbox>
+<table align=right width=300 border=1 hspace=5 cellpadding=3 bgcolor="#550055"><tr><td>
+>>
+
+2 Downloads
+-----------
+
+* Newest: <<link:zxid-0.29.tgz>> (25.9.2008, mod_auth_saml fixes, more config options)
+* <<link:README.zxid.html: README.zxid>> (<<link:zxid-frame.html: multi page>>)
+  (<<link:README.zxid.pdf: PDF>>) has more technical documentation
+* Windows binaries <<link:zxid-0.12-win32-bin.zip>> (32MB, no support),
+  <<link:README.zxid-win32.html: README.zxid-win32>>
+* License: Apache 2 (BSD style)<<infobox:lic:...:!!ibox150: Apache 2 open source
+  license is considered to be the most trouble free license for inclusion
+  of code to other projects, even commerial projects.>>
+
+<<html:
+</td></tr><tr><td>
+>>
+
+3 Info
+------
+
+* See also http://freshmeat.net/zxid, http://www.freshports.org/security/zxid/,
+  http://saml.xml.org/zxid, http://idtrust.xml.org/zxid
+* http://linux.softpedia.com/get/Programming/Widgets/Perl-Modules/Net-SAML-41683.shtml
+* http://search.cpan.org/~sampo/zxid-0.27/Net/SAML.pod
+
+* Blog entries:
+  - <<link:http://blog.gslin.org/archives/2007/07/16/1239/: Gea-Suan Lin: SAML, zxid, Lasso (July 16, 2007)>>
+  - <<link:http://identitymeme.org/archives/2006/09/08/a-new-libertysaml-opensource-project-zxid/: A new Liberty/SAML opensource project: ZXID>>
+* Sampo's presentation in 1st European Identity Conference, Munich, May 10, 2007
+  (similar presentation was given in Liberty eGov day during Brussels meeting
+  in April 2007). <<link:sampo-easy-saml-id-wsf-zxid-slides-muc-2007.pdf: Slides.>>
+* Buttons, banners, and other promotional materials, <<link:zxid-logo-guide.html: here>>
+* ZXID Home: zxid.org
+
+<<html:
+</td></tr><tr><td>
+>>
+
+4 Dependencies
+--------------
+
+To compile ZXID you need:
+
+1. openssl-0.9.8e or later. See www.openssl.org.
+   Most Linux distros are sufficient.
+2. zlib from zlib.net. Your distro is sufficient.
+3. libcurl from http://curl.haxx.se/, version 7.15.5 (probably
+   your distribution is fine). It needs to be compiled to support HTTPS.
+4. HTTPS capable web server, such as Apache (see
+   my <<link:apache.html: receipe>>), with CGI support. Or Jef Pozkanzer's mini_httpd available from
+   <<link:http://www.acme.com/software/mini_httpd/: http://www.acme.com/ software/mini_httpd/>>
+
+<<html:
+</td></tr><tr><td>
+>>
+
+5 Platforms
+-----------
+
+* Linux: supported (ix86)
+* FreeBSD: supported, see port in http://www.freshports.org/security/zxid/
+* Solaris 8: supported (Sparc)
+* Mac OS 10 (Darwin): supported (Power PC & ix86)
+* Windows 2k: preliminary support using MinGW (I am not knowledgeable enough
+  in Windows to help you if you hit troubles)
+
+ZXID is developed on ix86 Linux with POSIX as a goal, any modern system
+should work. You will need GNU make. I use gcc-3.4.6 as a compiler so
+others (such as gcc-4) may need minor tweaking.
+
+<<html:
+</td></tr></table></div>
+>>

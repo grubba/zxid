@@ -303,6 +303,11 @@ link this into webapps directory of Tomcat servlet container
   cd ~/apache-tomcat-5.5.20/webapps
   ln -s ~/zxid-0.34/servlet zxidservlet
 
+and also
+
+  cd ~/apache-tomcat-5.5.20/webapps/zxidservlet/WEB-INF
+  ln -s ../.. classes
+
 You also need to set ~allowLinking~ flag in 
 apache-tomcat-5.5.20/conf/context.xml (the ~reloadable~
 flag avoids having to restart Tomcat if you recompile
@@ -333,7 +338,6 @@ using URL (defined in servlet/WEB-INF/web.xml)
 
 N.B. You should make sure sp1.zxidsp.org resolves to the machine
 where you are running Tomcat, e.g. localhost (127.0.0.1).
-
 
 9.4 Using ZXID with AXIS2
 -------------------------

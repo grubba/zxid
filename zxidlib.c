@@ -623,7 +623,7 @@ struct zx_str* zxid_decrypt_newnym(struct zxid_conf* cf, struct zx_str* newnym, 
   return 0;
 }
 
-/*(i) Check signature on given Request, Response, or Assertion. Typical usage
+/*(i) Check single item signature on given Request, Response, or Assertion. Typical usage
  *
  *     if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)req,
  *                       req->Signature, req->Issuer, "LogoutRequest"))
@@ -643,6 +643,8 @@ struct zx_str* zxid_decrypt_newnym(struct zxid_conf* cf, struct zx_str* newnym, 
  *     configured to be required (NOSIG_FATAL option).
  *
  * See also: Signature validation codes VVV in zxid-log.pd, section "ZXID Log Format".
+ * N.B: If the signature is over multiple references, you need to do many processing steps
+ * manually and then call zxsig_validate() with correctly populate refs array.
  */
 
 /* Called by:  zxid_idp_slo_do, zxid_mni_do, zxid_sp_dig_sso_a7n, zxid_sp_slo_do, zxid_xacml_az_do */

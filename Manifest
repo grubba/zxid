@@ -210,6 +210,11 @@ sg/liberty-idwsf-soap-binding.sg       - Framework SOAP header
 sg/liberty-idwsf-utility-1.0-errata-v1.0.sg
 sg/liberty-idwsf-utility-v1.1.sg
 sg/liberty-idwsf-utility-v2.0.sg
+sg/liberty-idwsf-idp-v1.0.sg
+sg/liberty-idwsf-dp-v1.0.sg
+sg/liberty-idwsf-pmm-v1.0.sg
+sg/liberty-idwsf-prov-v1.0.sg
+sg/liberty-idwsf-shps-v1.0.sg
 sg/liberty-metadata-v2.0.sg
 sg/liberty-utility-v2.0.sg
 sg/oasis-sstc-saml-schema-assertion-1.1.sg
@@ -252,24 +257,27 @@ sg/xacml-2.0-profile-saml2.0-v2-schema-assertion-cd-1.sg
 sg/ws-trust-1.3.sg
 sg/ws-policy.sg
 sg/ws-secureconversation-1.3.sg
+sg/id-hrxml.sg
+sg/hr-xml-sampo.sg
+sg/demo-media-v1.0.sg
 sg/tas3.sg
 sg/tas3sol.sg
 
 # Schema generated C code (see also Makefile if you add files)
 
-c/license.c   - Generated file: License string
-c/zxidvers.h  - Generated file: version string
+c/license.c      - Generated file: License string
+c/zxidvers.h     - Generated file: version string
 
-c/zx-attrs.c  - Generated: Mapping of a string to attribute token
-c/zx-aux.c    - Generated from aux-templ.c and various .sg files
-c/zx-const.h  - Generated: Token value constants
-c/zx-data.h   - Generated: Data structures reflecting schemata (.sg files). Root object.
-c/zx-dec.c    - Generated from dec-templ.c and various .sg files. The root decoder.
-c/zx-elems.c  - Generated: Mapping of a string to element token
-c/zx-enc.c    - Generated from enc-templ.c and various .sg files. The root encoder.
-c/zx-getput.c - Generated from getput-templ.c and various .sg files
-c/zx-ns.c     - Generated: initializations of namespace tables
-c/zx-ns.h     - Generated: namespace constant and macro definitions
+c/zx-attrs.c     - Generated: Mapping of a string to attribute token
+c/zx-aux.c       - Generated from aux-templ.c and various .sg files
+c/zx-const.h     - Generated: Token value constants
+c/zx-data.h      - Generated: Data structures reflecting schemata (.sg files). Root object.
+c/zx-dec.c       - Generated from dec-templ.c and various .sg files. The root decoder.
+c/zx-elems.c     - Generated: Mapping of a string to element token
+c/zx-enc.c       - Generated from enc-templ.c and various .sg files. The root encoder.
+c/zx-getput.c    - Generated from getput-templ.c and various .sg files
+c/zx-ns.c        - Generated: initializations of namespace tables
+c/zx-ns.h        - Generated: namespace constant and macro definitions
 
 c/zx-a-data.h    - Generated: Web Services Addressing data structures
 c/zx-a-aux.c     - Generated from aux-templ.c: WS-Addr aux functions

@@ -40,7 +40,7 @@ Usage: zxcot [options] [dir]\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
   -a               Add metadata from stdin\n\
   -b               Register Web Service, add Service EPR from stdin\n\
-  -bs              Register Web Service as bootstrap, add Service EPR from stdin\n\
+  -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
   -e endpoint abstract entid servicetype   Dump EPR to stdout.\n\
   -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)\n\
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.\n\
@@ -226,15 +226,14 @@ static void opt(int* argc, char*** argv, char*** env)
 /*() IdP and Discovery. Register service metadata to /var/zxid/idpdimd/XX,
  * and possibly boostrap to /var/zxid/idpuid/.all/.bs/YY */
 
-static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run)
+static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const char* ddimd, const char* duid)
 {
   char sha1_name[28];
   char path[ZXID_MAX_BUF];
   char* p;
+  char* uiddir;
   int got, fd;
   struct zx_root_s* r;
-  struct zxid_conf cf;
-  struct zxid_entity* ent;
   struct zx_a_EndpointReference_s* epr;
   struct zx_str* ss;
   
@@ -269,7 +268,7 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run)
 
   sha1_safe_base64(sha1_name, ss->len, ss->s);
   sha1_name[27] = 0;
-  uiddir = strdup(uiddir);
+  uiddir = strdup(duid);
   got = strlen(uiddir);
   if (strcmp(uiddir + got - (sizeof("dimd/")-1), "dimd/")) {
     /* strcpy ok, because always fits: "uid/" is shorter than "dimd/" */
@@ -278,16 +277,16 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run)
   
   if (dry_run) {
     printf("Register EPR dry run. Would have written to path(%s%s,%s). You may also want to\n"
-	   "  touch %s.all/.bs/%s,%s\n\n", dimddir, path, sha1_name, uiddir, path, sha1_name);
+	   "  touch %s.all/.bs/%s,%s\n\n", ddimd, path, sha1_name, uiddir, path, sha1_name);
     fflush(stdin);
     write_all_fd(1, ss->s, ss->len);
     zx_str_free(cf->ctx, ss);
     return 0;
   }
   
-  D("Register EPR path(%s%s,%s) in discovery metadata.", dimddir, path, sha1_name);
+  D("Register EPR path(%s%s,%s) in discovery metadata.", ddimd, path, sha1_name);
   fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -b",
-			 "%s%s,%s", dimddir, path, sha1_name);
+			 "%s%s,%s", ddimd, path, sha1_name);
   if (fd == BADFD) {
     perror("open epr for registering");
     ERR("Failed to open file for writing: sha1_name(%s,%s) to service registration", path, sha1_name);
@@ -317,6 +316,116 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run)
   return 0;
 }
 
+/*() Add metadata of a partner to the Circle-of-Trust, represented by the CoT dir */
+
+static int zxid_addmd(struct zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
+{
+  int got, fd;
+  char* p;
+  struct zxid_entity* ent;
+  struct zx_str* ss;
+  
+  if (mdurl) {
+    ent = zxid_get_meta(cf, mdurl);
+  } else {
+    read_all_fd(0, buf, sizeof(buf)-1, &got);
+    buf[got] = 0;
+    p = buf;
+    ent = zxid_parse_meta(cf, &p, buf+got);
+  }
+  
+  if (!ent) {
+    ERR("***** Parsing metadata failed %d", 0);
+    return 1;
+  }
+  
+  ss = zx_EASY_ENC_SO_md_EntityDescriptor(cf->ctx, ent->ed);
+  if (!ss)
+    return 2;
+  
+  if (verbose)
+    fprintf(stderr, "Writing ent(%.*s) to %s%s\n", ent->eid_len, ent->eid, dcot, ent->sha1_name);
+  if (dry_run) {
+    write_all_fd(1, ss->s, ss->len);
+    zx_str_free(cf->ctx, ss);
+    return 0;
+  }
+  
+  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -a", "%s%s", dcot, ent->sha1_name);
+  if (fd == BADFD) {
+    perror("open metadata for writing metadata to cache");
+    ERR("Failed to open file for writing: sha1_name(%s) to metadata cache", ent->sha1_name);
+    zx_str_free(cf->ctx, ss);
+    return 0;
+  }
+  
+  write_all_fd(fd, ss->s, ss->len);
+  zx_str_free(cf->ctx, ss);
+  close_file(fd, (const char*)__FUNCTION__);
+  return 0;
+}
+
+/*() Print a line of Circle-of-Trust listing */
+
+static int zxid_lscot_line(struct zxid_conf* cf, int col_swap, const char* dcot, const char* den)
+{
+  struct zxid_entity* ent;
+  char* p;
+  int got = read_all(ZXID_MAX_MD, buf, "zxcot line", "%s%s", dcot, den);
+  if (!got) {
+    ERR("Zero data in file(%s%s)", dcot, den);
+    return 1;
+  }
+  p = buf;
+  ent = zxid_parse_meta(cf, &p, buf+got);
+  if (!ent) {
+    ERR("***** Parsing metadata failed for(%s%s)", dcot, den);
+    return 2;
+  }
+  switch (col_swap) {
+  case 1:  printf("%.*s\t%s%s\n", ent->eid_len, ent->eid, dcot, den); break;
+  case 2:  printf("%.*s\n",       ent->eid_len, ent->eid); break;
+  default: printf("%s%s %.*s\n",  dcot, den, ent->eid_len, ent->eid);
+  }
+  if (strcmp(*den?den:dcot, ent->sha1_name))
+    fprintf(stderr, "Filename(%s) does not match sha1_name(%s)\n", *den?den:dcot, ent->sha1_name);
+  return 0;
+}
+
+/*() List the contents of the Circle-of-Trust, represented by the CoT directory,
+ * in various formats. */
+
+static int zxid_lscot(struct zxid_conf* cf, int col_swap, const char* dcot)
+{
+  int got, ret;
+  char* p;
+  DIR* dir;
+  struct dirent* de;
+
+  dir = opendir(dcot);
+  if (!dir) {
+    perror("opendir for /var/zxid/cot (or other if configured) for loading cot cache");
+    D("failed path(%s)", dcot);
+    
+    got = strlen(dcot);
+    p = ZX_ALLOC(cf->ctx, got+1);
+    memcpy(p, dcot, got-1);
+    p[got-1] = 0;  /* chop off / */
+    got = zxid_lscot_line(cf, col_swap, p, "");
+    ZX_FREE(cf->ctx, p);
+    return got;
+  }
+  
+  while (de = readdir(dir)) {
+    if (de->d_name[0] == '.' || de->d_name[strlen(de->d_name)-1] == '~')
+      continue;
+    ret = zxid_lscot_line(cf, col_swap, dcot, de->d_name);
+    if (!ONE_OF_2(ret, 0, 2))
+      return ret;
+  }
+  return 0;
+}
+
 #ifndef zxcot_main
 #define zxcot_main main
 #endif
@@ -326,23 +435,14 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run)
 /* Called by: */
 int zxcot_main(int argc, char** argv, char** env)
 {
-  char sha1_name[28];
-  struct zx_root_s* r;
   struct zxid_conf cf;
-  struct zxid_entity* ent;
-  struct zx_a_EndpointReference_s* epr;
-  struct zx_str* ss;
-  int got;
-  char* p;
-  fdtype fd;
-  DIR* dir;
-  struct dirent* de;
 
   strncpy(zx_instance, "\tzxdec", sizeof(zx_instance));
  
   opt(&argc, &argv, &env);
-
+  
   if (entid) {
+    char sha1_name[28];
     sha1_safe_base64(sha1_name, strlen(entid), entid);
     sha1_name[27] = 0;
     printf("%s\n", sha1_name);
@@ -351,99 +451,13 @@ int zxcot_main(int argc, char** argv, char** env)
   
   zxid_init_conf_ctx(&cf, ZXID_PATH);
   
-  if (addmd) {
-    if (mdurl) {
-      ent = zxid_get_meta(&cf, mdurl);
-    } else {
-      read_all_fd(0, buf, sizeof(buf)-1, &got);
-      buf[got] = 0;
-      p = buf;
-      ent = zxid_parse_meta(&cf, &p, buf+got);
-    }
-
-    if (!ent) {
-      ERR("***** Parsing metadata failed %d", 0);
-      return 1;
-    }
-
-    ss = zx_EASY_ENC_SO_md_EntityDescriptor(cf.ctx, ent->ed);
-    if (!ss)
-      return 2;
-
-    if (verbose)
-      fprintf(stderr, "Writing ent(%.*s) to %s%s\n", ent->eid_len, ent->eid, cotdir, ent->sha1_name);
-    if (dryrun) {
-      write_all_fd(1, ss->s, ss->len);
-      return 0;
-    }
-
-    fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -a", "%s%s", cotdir, ent->sha1_name);
-    if (fd == BADFD) {
-      perror("open metadata for writing metadata to cache");
-      ERR("Failed to open file for writing: sha1_name(%s) to metadata cache", ent->sha1_name);
-      return 0;
-    }
-    
-    write_all_fd(fd, ss->s, ss->len);
-    zx_str_free(cf.ctx, ss);
-    close_file(fd, (const char*)__FUNCTION__);
-    return 0;
-  }
-
+  if (addmd)
+    return zxid_addmd(&cf, mdurl, dryrun, cotdir);
+  
   if (regsvc)
-    return zxid_reg_svc(&cf, regbs, dryrun);
+    return zxid_reg_svc(&cf, regbs, dryrun, dimddir, uiddir);
   
-  /* --- Directory listing --- */
-
-  dir = opendir(cotdir);
-  if (!dir) {
-    perror("opendir for /var/zxid/cot (or other if configured) for loading cot cache");
-    D("failed path(%s)", cotdir);
-    
-    got = strlen(cotdir);
-    cotdir[got-1] = 0;  /* chop off / */
-    got = read_all(ZXID_MAX_MD, buf, "zxcot file", "%s", cotdir);
-    if (!got) {
-      ERR("Zero data in file(%s)", cotdir);
-      return 1;
-    }
-    p = buf;
-    ent = zxid_parse_meta(&cf, &p, buf+got);
-    if (!ent) {
-      ERR("***** Parsing metadata failed for(%s)", cotdir);
-      return 1;
-    }
-    switch (swap) {
-    case 1:  printf("%.*s\t%s\n", ent->eid_len, ent->eid, cotdir); break;
-    case 2:  printf("%.*s\n", ent->eid_len, ent->eid); break;
-    default: printf("%s %.*s\n", cotdir, ent->eid_len, ent->eid);
-    }
-    if (strcmp(cotdir, ent->sha1_name))
-      fprintf(stderr, "Filename(%s) does not match sha1_name(%s)\n", cotdir, ent->sha1_name);
-    return 0;
-  }
-  
-  while (de = readdir(dir))
-    if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
-      got = read_all(ZXID_MAX_MD, buf, "zxcot", "%s%s", cotdir, de->d_name);
-      if (!got) {
-	ERR("Zero data in file(%s%s)", cotdir, de->d_name);
-	continue;
-      }
-      p = buf;
-      ent = zxid_parse_meta(&cf, &p, buf+got);
-      if (!ent) {
-	ERR("***** Parsing metadata failed for sha1_name(%s)", de->d_name);
-      }
-      switch (swap) {
-      case 1:  printf("%.*s\t%s%s\n", ent->eid_len, ent->eid, cotdir, de->d_name); break;
-      case 2:  printf("%.*s\n", ent->eid_len, ent->eid); break;
-      default: printf("%s%s %.*s\n", cotdir, de->d_name, ent->eid_len, ent->eid);
-      }
-      if (strcmp(de->d_name, ent->sha1_name))
-	fprintf(stderr, "Filename(%s) does not match sha1_name(%s)\n", de->d_name, ent->sha1_name);
-    }
-  return 0;
+  return zxid_lscot(&cf, swap, cotdir);
 }
 
 /* EOF  --  zxcot.c */
