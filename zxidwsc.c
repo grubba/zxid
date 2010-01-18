@@ -665,6 +665,8 @@ struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char*
 
   if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
     for (enve += sizeof("<?xml "); *enve && !(enve[0] == '?' && enve[1] == '>'); ++enve) ;
+    if (*enve)
+      enve += 2;
   }
   
   if (memcmp(enve, "<e:Envelope", sizeof("<e:Envelope")-1)) {

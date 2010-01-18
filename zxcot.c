@@ -66,7 +66,7 @@ char buf[ZXID_MAX_MD+1];
 char* mdurl = 0;
 char* entid = 0;
 char* cotdir  = ZXID_PATH ZXID_COT_DIR;
-char* dimddir = ZXID_PATH ZXID_COT_DIR;
+char* dimddir = ZXID_PATH ZXID_DIMD_DIR;
 char* uiddir  = ZXID_PATH ZXID_UID_DIR;
 
 /* Called by:  main x9 */
@@ -99,7 +99,7 @@ static void opt(int* argc, char*** argv, char*** env)
       case 's':
 	++regsvc;
 	++regbs;
-	dimddir = ZXID_PATH "idp" ZXID_COT_DIR;
+	dimddir = ZXID_PATH "idp" ZXID_DIMD_DIR;
 	uiddir  = ZXID_PATH "idp" ZXID_UID_DIR;
 	continue;
       case '\0':
@@ -207,6 +207,7 @@ static void opt(int* argc, char*** argv, char*** env)
 
     } 
     /* fall thru means unrecognized flag */
+    D("HERE");
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
     fprintf(stderr, help);
@@ -251,6 +252,23 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
     return 1;
   }
   epr = r->EndpointReference;
+  if (!epr->Address || !epr->Address->gg.content || !epr->Address->gg.content->len) {
+    ERR("<EndpointReference> MUST have <Address> element buf(%.*s)", got, buf);
+    return 1;
+  }
+  if (!epr->Metadata) {
+    ERR("<EndpointReference> MUST have <Metadata> element buf(%.*s)", got, buf);
+    return 1;
+  }
+  if (!epr->Metadata->ProviderID
+      || !epr->Metadata->ProviderID->content->len || !epr->Metadata->ProviderID->content->len) {
+    ERR("<EndpointReference> MUST have <Metadata> with <ProviderID> element buf(%.*s)", got, buf);
+    return 1;
+  }
+  if (!epr->Metadata->ServiceType) {
+    ERR("<EndpointReference> MUST have <ServiceType> element buf(%.*s)", got, buf);
+    return 1;
+  }
 
   /* *** possibly add something here and double check the required fields are available. */
 
@@ -277,10 +295,15 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
     /* strcpy ok, because always fits: "uid/" is shorter than "dimd/" */
     strcpy(duid + got - (sizeof("dimd/")-1), "uid/");
   }
+
+  if (verbose)
+    fprintf(stderr, "Registering metadata in %s%s,%s", ddimd, path, sha1_name);
   
   if (dry_run) {
-    printf("Register EPR dry run. Would have written to path(%s%s,%s). You may also want to\n"
-	   "  touch %s.all/.bs/%s,%s\n\n", ddimd, path, sha1_name, uiddir, path, sha1_name);
+    if (verbose)
+      fprintf(stderr, "Register EPR dry run. Would have written to path(%s%s,%s). "
+	      "You may also want to\n"
+	      "  touch %s.all/.bs/%s,%s\n\n", ddimd, path, sha1_name, uiddir, path, sha1_name);
     fflush(stdin);
     write_all_fd(1, ss->s, ss->len);
     zx_str_free(cf->ctx, ss);
@@ -302,19 +325,23 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
   close_file(fd, (const char*)__FUNCTION__);
 
   if (bs_reg) {
-    D("Activating bootstrap %s.all/.bs/%s,%s", duid, path, sha1_name);
-    fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -bs",
-			   "%s.all/.bs/%s,%s", duid, path, sha1_name);
-    if (fd == BADFD) {
-      perror("open epr for bootstrap activation");
-      ERR("Failed to open file for writing: sha1_name(%s,%s) to bootstrap activation", path, sha1_name);
-      return 1;
-    }
+    if (verbose)
+      fprintf(stderr, "Activating bootstrap %s.all/.bs/%s,%s", duid, path, sha1_name);
+
+    if (!dryrun) {
+      fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -bs",
+			     "%s.all/.bs/%s,%s", duid, path, sha1_name);
+      if (fd == BADFD) {
+	perror("open epr for bootstrap activation");
+	ERR("Failed to open file for writing: sha1_name(%s,%s) to bootstrap activation", path, sha1_name);
+	return 1;
+      }
     
-    write_all_fd(fd, "", 0);
-    close_file(fd, (const char*)__FUNCTION__);
+      write_all_fd(fd, "", 0);
+      close_file(fd, (const char*)__FUNCTION__);
+    }
   } else {
-    D("You may also want to activate bootstrap by\n  touch %s.all/.bs/%s,%s", uiddir, path, sha1_name);
+    D("You may also want to activate bootstrap by\n  touch %s.all/.bs/%s,%s", duid, path, sha1_name);
   }
   return 0;
 }

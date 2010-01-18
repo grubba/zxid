@@ -1,4 +1,5 @@
 /* zxidepr.c  -  Handwritten functions for client side EPR and bootstrap handling
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -140,11 +141,19 @@ int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_Endpo
   struct zx_str* ss;
   char path[ZXID_MAX_BUF];
   
-  if (!epr || !epr->Metadata) {
+  if (!ses || !ses->sid || !ses->sid[0]) {
+    ERR("Valid session required %p", ses);
+    return 0;
+  }
+  if (!epr || !epr->Metadata || epr->Metadata->ServiceType) {
     ERR("EPR is not a ID-WSF 2.0 Bootstrap: no Metadata %p", epr);
     return 0;
   }
   ss = zx_EASY_ENC_WO_a_EndpointReference(cf->ctx, epr);
+  if (!ss) {
+    ERR("Encoding EndpointReference failed %p", epr);
+    return 0;
+  }
   zxid_epr_path(cf, ZXID_SES_DIR, ses->sid, path, sizeof(path),
 		epr->Metadata->ServiceType->content, ss);
   //fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
@@ -374,7 +383,7 @@ struct zx_a_EndpointReference_s* zxid_get_epr(struct zxid_conf* cf, struct zxid_
   env->Header = zx_NEW_e_Header(cf->ctx);
   env->Body = zx_NEW_e_Body(cf->ctx);
   env->Body->Query = zxid_mk_di_query(cf, svc, url, di_opt, 0);
-  epr = zxid_find_epr(cf, ses, zx_xmlns_di, 0, 0, 0, 1);
+  epr = zxid_find_epr(cf, ses, zx_xmlns_di, 0, 0, 0, n);
   if (!epr) {
     ERR("EPR for svc(%s) not found in cache and no discovery EPR in cache, thus no way to discover the svc.", STRNULLCHK(svc));
     return 0;

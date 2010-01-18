@@ -1,4 +1,5 @@
 /* zxiddi.c  -  Discovery Server
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -44,13 +45,17 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
   struct dirent * de;
   struct zx_str* affil;
   struct zx_elem_s* el;
+  struct zx_a_Metadata_s* md = 0;  
+  struct zx_str* addr = 0;  
   struct zx_a_EndpointReference_s* epr = 0;
+  D_INDENT("di_query: ");
 
   //resp->ID = zxid_mk_id(cf, "DIR", ZXID_ID_BITS);
   
   if (!a7n || !a7n->Subject) {
     ERR("Malformed Assertion(%p): Subject missing.", a7n);
     resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+    D_DEDENT("di_query: ");
     return resp;
   }
 
@@ -65,6 +70,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
   if (!len) {
     ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
     resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+    D_DEDENT("di_query: ");
     return resp;
   }
 
@@ -90,6 +96,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
       perror("opendir to find service metadata");
       ERR("Opening service metadata directory failed path(%s)", mdpath);
       resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+      D_DEDENT("di_query: ");
       return resp;
     }
     
@@ -116,7 +123,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
 	}
       }
       
-      /* Probable enough, read and parese EPR so we can continue examination. */
+      /* Probable enough, read and parse EPR so we can continue examination. */
 
       epr_len = read_all(sizeof(epr_buf), epr_buf, "find_svcmd", "%s/%s", mdpath, de->d_name);
       if (!epr_len)
@@ -134,6 +141,12 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
 	ERR("No EPR or missing <Metadata>. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
 	continue;
       }
+      if (!epr->Address || !epr->Address->gg.content || !epr->Address->gg.content->len) {
+	ERR("EPR missing <Address>. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
+	continue;
+      }
+      addr = epr->Address->gg.content;
+      md = epr->Metadata;
 
       /* Filter by service type */
       
@@ -142,15 +155,13 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
 	if (!el->content || !el->content->len)
 	  continue;
 	match = 0;
-	if (!epr->Metadata->ServiceType
-	    || !epr->Metadata->ServiceType->content
-	    || !epr->Metadata->ServiceType->content->len) {
+	if (!md->ServiceType || !md->ServiceType->content || !md->ServiceType->content->len) {
 	  INFO("EPR missing ServiceType. Rejected. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
 	  goto next_file;
 	}
-	if (el->content->len != epr->Metadata->ServiceType->content->len
-	    || memcmp(el->content->s, epr->Metadata->ServiceType->content->s, el->content->len)) {
-	  D("Internal svctype(%.*s) does not match desired(%.*s)", epr->Metadata->ServiceType->content->len, epr->Metadata->ServiceType->content->s, el->content->len, el->content->s);
+	if (el->content->len != md->ServiceType->content->len
+	    || memcmp(el->content->s, md->ServiceType->content->s, el->content->len)) {
+	  D("Internal svctype(%.*s) does not match desired(%.*s)", md->ServiceType->content->len, md->ServiceType->content->s, el->content->len, el->content->s);
 	  continue;
 	}
 	D("ServiceType matches. file(%s)", de->d_name);
@@ -164,26 +175,41 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
 
       /* Filter by provider id */
       
-      match = 1;
       for (el = rs->ProviderID; el; el = (struct zx_elem_s*)el->g.n) {
 	if (!el->content || !el->content->len)
 	  continue;
 	match = 0;
-	if (!epr->Metadata->ProviderID
-	    || !epr->Metadata->ProviderID->content
-	    || !epr->Metadata->ProviderID->content->len) {
-	  INFO("EPR missing ProviderID. Rejected. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
-	  goto next_file;
+	if (!md->ProviderID || !md->ProviderID->content || !md->ProviderID->content->len) {
+	  INFO("EPR missing ProviderID. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
+	  break;
 	}
-	if (el->content->len != epr->Metadata->ProviderID->content->len
-	    || memcmp(el->content->s, epr->Metadata->ProviderID->content->s, el->content->len)) {
-	  D("ProviderID(%.*s) does not match desired(%.*s)", epr->Metadata->ProviderID->content->len, epr->Metadata->ProviderID->content->s, el->content->len, el->content->s);
+	if (el->content->len != md->ProviderID->content->len
+	    || memcmp(el->content->s, md->ProviderID->content->s, el->content->len)) {
+	  D("ProviderID(%.*s) does not match desired(%.*s)", md->ProviderID->content->len, md->ProviderID->content->s, el->content->len, el->content->s);
 	  continue;
 	}
 	D("ProviderID matches. file(%s)", de->d_name);
 	match = 1;
 	break;
       }
+#if 1
+      /* TAS3 extension: allow matching by the Address (URL) as well */
+      if (!match) {
+	for (el = rs->ProviderID; el; el = (struct zx_elem_s*)el->g.n) {
+	  if (!el->content || !el->content->len)
+	    continue;
+	  match = 0;
+	  if (el->content->len != addr->len
+	      || memcmp(el->content->s, addr->s, el->content->len)) {
+	    D("Address(%.*s) does not match desired(%.*s)", addr->len, addr->s, el->content->len, el->content->s);
+	    continue;
+	  }
+	  D("Address matches. file(%s)", de->d_name);
+	  match = 1;
+	  break;
+	}
+      }
+#endif
       if (!match) {
 	D("Rejected due to ProviderID. file(%s)", de->d_name);
 	goto next_file;
@@ -195,7 +221,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
 
       /* *** Check Action */
 
-      D("Found url(%.*s)", epr->Address->gg.content->len, epr->Address->gg.content->s);
+      D("Found url(%.*s)", addr->len, addr->s);
       logop = zxid_add_fed_tok_to_epr(cf, epr, uid, 1);
       if (!logop)
 	goto next_file;
@@ -220,6 +246,7 @@ next_file:
   }
   
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
+  D_DEDENT("di_query: ");
   return resp;
 }
 
