@@ -238,6 +238,9 @@ struct zx_str* zxid_wsp_decorate(struct zxid_conf* cf, struct zxid_ses* ses, con
   struct zx_e_Envelope_s* env;
 
   D_INDENT("decor: ");
+  if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
+    for (enve += sizeof("<?xml "); *enve && !(enve[0] == '?' && enve[1] == '>'); ++enve) ;
+  }
   if (memcmp(enve, "<e:Envelope", sizeof("<e:Envelope")-1)) {
     if (memcmp(enve, "<e:Body", sizeof("<e:Body")-1)) {
       /* Must be just payload */
