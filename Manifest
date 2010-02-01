@@ -58,7 +58,7 @@ tas3.h           - Mapping from ZXID API to official TAS3 API
 zx.h             - General data structures and prototypes used by generated code
 zxid.h           - Specific data structures and prototypes for handwritten code
 zxidconf.h       - Configuration parameters and default configuration of ZXID
-zxidnoswig.h     -  Prototypes that give indigestion to SWIG
+zxidnoswig.h     - Prototypes that give indigestion to SWIG
 zxwsc.h          - Specific data structures and prototypes for Web Services Client
 aux-templ.c      - Code generation template for auxiliary functions
 dec-templ.c      - Code generation template for decoders
@@ -106,6 +106,7 @@ zxidssofinalizetest.c  - Test zxid_sso_finalize()
 zxdecode.c       - SAML redirect and post message decoding tool
 zxcot.c          - CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
 zxpasswd.c       - Password creation and user management tool
+zxcall.c         - Web Service Client tool
 
 # Yubikey (yubico.com) One Time Password (OTP) USB token support
 

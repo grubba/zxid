@@ -73,6 +73,12 @@ the canonicalization order) and where random access is not needed, or
 cardinality is low enough so that simple pointer chasing is efficient
 enough.>>
 
+<<ignore: *** Problem here: how to preserve ordering of elements. We need to
+   * do SO canonicalization as there are new elements, yet we would like
+   * to maintain WO as much as possible, especially for elements for which
+   * we do not have schema ("any" elements). Always reverse any elem list?
+>>
+
 Simple elements and all attributes are represented by simple string node
 (even if they are booleans or integers).
 

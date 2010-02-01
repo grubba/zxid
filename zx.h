@@ -1,4 +1,5 @@
 /* zx.h  -  Common definitions for zx generated code (encoders, decoders, etc.)
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -106,7 +107,7 @@ struct zx_ctx {
   void  (*free_func)(void*);
 };
 
-/* We arrange all structs to start with a common header. */
+/* We arrange all structs to start with a common header (16 bytes on 32bit platforms) */
 
 struct zx_node_s {
   struct zx_node_s* n;    /* next pointer for compile time construction of data structures */

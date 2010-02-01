@@ -797,8 +797,15 @@ int zx_scan_pi_or_comment(struct zx_ctx* c)
     DD("Processing Instruction scanned (%.*s)", c->p-name, name);
     /*ZX_PI_DEC_EXT(pi);*/
     return 0;
-  case '!':  /* comment <!-- ... --> */
+  case '!':  /* comment <!-- ... --> or <!DOCTYPE...> */
     name = c->p-1;
+    if (!memcmp(c->p+1, "DOCTYPE", sizeof("DOCTYPE")-1)) {
+      D("DOCTYPE detected (%.*s)", 60, c->p-1);
+      ZX_LOOK_FOR(c,'>');
+      ++c->p;
+      D("DOCTYPE scanned (%.*s)", c->p-name, name);
+      return 0;
+    }
     c->p += 2;
     if (c->p[-1] != '-' || c->p[0] != '-') {
       c->p -= 3;

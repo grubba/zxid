@@ -11,9 +11,10 @@ To do:
     - Add Trust and Privacy Negotiation capability to discovery
     - Add Az calls to zxid_wsp_validate() and zxid_wsp_decorate()
     - Do proper signature validation in zxid_wsp_validate()
-    - Added AuthnSvc client
-    - Fixed WO rendering of parsed unknown elements
+zxid-0.49:: 1.2.2010
+    - Added AuthnSvc client and zxcall tool
 zxid-0.48:: 18.1.2010
+    - Fixed reversed WO rendering of parsed unknown elements
     - Definititve path sanity fix for zxcot -bs
     - Fixed ses check in case of no ses in zxid_cache_epr()
     - Fixed iterations other than n==1 in zxid_get_epr()

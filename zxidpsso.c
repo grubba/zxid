@@ -242,7 +242,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
     }
     is_di = !memcmp(epr->Metadata->ServiceType->content->s, XMLNS_DISCO_2_0,
 		    epr->Metadata->ServiceType->content->len);
-    D("Found url(%.*s) is_di=%d", epr->Address->gg.content->len, epr->Address->gg.content->s, is_di);
+    D("FOUND BOOTSTRAP url(%.*s) is_di=%d", epr->Address->gg.content->len, epr->Address->gg.content->s, is_di);
     
     if (is_di) {
       logop = zxid_add_fed_tok_to_epr(cf, epr, uid, 0); /* recurse, di tail */
@@ -255,6 +255,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
     if (!logop)
       goto next_file;
     
+    D("ADD BOOTSTRAP url(%.*s) is_di=%d", epr->Address->gg.content->len, epr->Address->gg.content->s, is_di);
     at = zxid_mk_attribute(cf, WSF20_DI_RO, 0);
     at->AttributeValue->EndpointReference = epr;
     ZX_NEXT(at) = (void*)bootstraps;

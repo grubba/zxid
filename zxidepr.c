@@ -145,7 +145,7 @@ int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_Endpo
     ERR("Valid session required %p", ses);
     return 0;
   }
-  if (!epr || !epr->Metadata || epr->Metadata->ServiceType) {
+  if (!epr || !epr->Metadata || !epr->Metadata->ServiceType) {
     ERR("EPR is not a ID-WSF 2.0 Bootstrap: no Metadata %p", epr);
     return 0;
   }

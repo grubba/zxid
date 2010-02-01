@@ -1,5 +1,5 @@
-/* zxcot.c  -  CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
- * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+/* zxcall.c  -  Web Service Client tool
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -25,49 +25,49 @@
 #include "c/zx-data.h"
 
 CU8* help =
-"zxcot  -  Circle-of-Trust management tool R" ZXID_REL "\n\
-Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+"zxcall  -  Web Service Client tool R" ZXID_REL "\n\
+Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
-Usage: zxcot [options] [dir]\n\
-       zxcot -a [options] [dir] <meta.xml\n\
-       zxcot -b [options] [dir] <epr.xml\n\
-       curl https://site.com/metadata.xml | zxcot -a [options] [dir]\n\
-       zxcot -g https://site.com/metadata.xml [options] [dir]\n\
-       zxcot -p https://site.com/metadata.xml\n\
-  [dir]            CoT directory. Default /var/zxid/cot\n\
-  -a               Add metadata from stdin\n\
-  -b               Register Web Service, add Service EPR from stdin\n\
-  -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
-  -e endpoint abstract entid servicetype   Dump EPR to stdout.\n\
-  -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)\n\
-  -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.\n\
-  -s               Swap columns, for easier sorting by URL\n\
-  -p ENTID         Print sha1 name corresponding to an entity ID.\n\
+Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
+       zxcall [options] -a IDP USER:PW -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
+  -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
+                   Most of the configuration is read from /var/zxid/zxid.conf\n\
+  -s SESID         Session ID referring to a directory in /var/zxid/ses\n\
+                   Use zxidhlo to do SSO and then cut and paste from there.\n\
+  -a IDP USER:PW   Use Authentication service to authenticate the user and
+                   create session. IDP is IdP's Entity ID. This is alternative to -s\n\
+  -t SVCTYPE       Service Type URI. Used for discovery.\n\
+  -u URL           Optional endpoint URL or ProviderID. Discovery must match this.\n\
+  -di DISCOOPTS    Optional discovery options. Query string format.\n\
+  -az AZCREDS      Optional authorization credentials. Query string format.\n\
+                   N.B. For authorization to work PDP_URL configuration option is needed.\n\
+  -e SOAPBODY      Pass SOAP body as argument (default is to read from STDIN)\n\
+  -n               Dryrun. Do not actually make call. Instead print it to stdout.\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
   -h               This help message\n\
   --               End of options\n\
 \n\
-zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 | zxcot -b\n\
+echo '<query>Foo</query>' | zxcall -a user:pw -t urn:x-demo-svc
 \n";
 
-int swap = 0;
-int addmd = 0;
-int regsvc = 0;
-int regbs = 0;
 int dryrun = 0;
-int inflate_flag = 2;  /* Auto */
 int verbose = 1;
 char buf[ZXID_MAX_MD+1];
-char* mdurl = 0;
 char* entid = 0;
-char* cotdir  = ZXID_PATH ZXID_COT_DIR;
-char* dimddir = ZXID_PATH ZXID_DIMD_DIR;
-char* uiddir  = ZXID_PATH ZXID_UID_DIR;
+char* idp = 0;
+char* user = 0;
+char* ses = 0;
+char* svc = 0;
+char* url = 0;
+char* di = 0;
+char* az = 0;
+char* bdy = 0;
+struct zxid_conf* cf;
 
 /* Called by:  main x9 */
 static void opt(int* argc, char*** argv, char*** env)
@@ -89,22 +89,39 @@ static void opt(int* argc, char*** argv, char*** env)
     case 'a':
       switch ((*argv)[0][2]) {
       case '\0':
-	++addmd;
+	++(*argv); --(*argc);
+	if ((*argc) < 2) break;
+	idp = (*argv)[0];
+	++(*argv); --(*argc);
+	user = (*argv)[0];
+	continue;
+      case 'z':
+	++(*argv); --(*argc);
+	if ((*argc) < 1) break;
+	az = (*argv)[0];
 	continue;
       }
       break;
 
-    case 'b':
+    case 'c':
       switch ((*argv)[0][2]) {
-      case 's':
-	++regsvc;
-	++regbs;
-	dimddir = ZXID_PATH "idp" ZXID_DIMD_DIR;
-	uiddir  = ZXID_PATH "idp" ZXID_UID_DIR;
-	continue;
       case '\0':
-	++regsvc;
-	uiddir  = ZXID_PATH "idp" ZXID_UID_DIR;
+	++(*argv); --(*argc);
+	if ((*argc) < 1) break;
+	zxid_parse_conf(cf, (*argv)[0]);
+	continue;
+      }
+      break;
+
+    case 'd':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++zx_debug;
+	continue;
+      case 'i':
+	++(*argv); --(*argc);
+	if ((*argc) < 1) break;
+	di = (*argv)[0];
 	continue;
       }
       break;
@@ -141,13 +158,6 @@ static void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
-    case 'd':
-      switch ((*argv)[0][2]) {
-      case '\0':
-	++zx_debug;
-	continue;
-      }
-      break;
 
     case 's':
       switch ((*argv)[0][2]) {
@@ -456,8 +466,8 @@ static int zxid_lscot(struct zxid_conf* cf, int col_swap, const char* dcot)
   return 0;
 }
 
-#ifndef zxcot_main
-#define zxcot_main main
+#ifndef zxcall_main
+#define zxcall_main main
 #endif
 
 /*() Circle of Trust management tool */
@@ -467,7 +477,9 @@ int zxcot_main(int argc, char** argv, char** env)
 {
   struct zxid_conf cf;
 
-  strncpy(zx_instance, "\tzxcot", sizeof(zx_instance));
+  strncpy(zx_instance, "\tzxcall", sizeof(zx_instance));
+
+  cf = zxid_new_conf(ZXID_PATH);
  
   opt(&argc, &argv, &env);
   
@@ -479,8 +491,6 @@ int zxcot_main(int argc, char** argv, char** env)
     return 0;
   }
   
-  zxid_init_conf_ctx(&cf, ZXID_PATH);
-  
   if (addmd)
     return zxid_addmd(&cf, mdurl, dryrun, cotdir);
   
@@ -490,4 +500,4 @@ int zxcot_main(int argc, char** argv, char** env)
   return zxid_lscot(&cf, swap, cotdir);
 }
 
-/* EOF  --  zxcot.c */
+/* EOF  --  zxcall.c */

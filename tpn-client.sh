@@ -13,10 +13,12 @@ NID=$1
 TNSTARGET=$2
 TNSSERVER=$3
 
+#edu.uiuc.cs.TrustBuilder2.TrustBuilder2.log_config = /var/zxid/idptpn/log.properties
+
 cd /var/zxid/idpuid/$NID/tpn
 cat >client.properties <<EOF
 edu.uiuc.cs.TrustBuilder2.TrustBuilder2.root = ./
-edu.uiuc.cs.TrustBuilder2.TrustBuilder2.log_config = /var/zxid/idptpn/log.properties
+edu.uiuc.cs.TrustBuilder2.TrustBuilder2.log_config = ../../../idptpn/log.properties
 edu.uiuc.cs.TrustBuilder2.TrustBuilder2.SecureRandom = SHA1PRNG
 edu.uiuc.cs.TrustBuilder2.TrustBuilder2.configuration_1 = \
   be.kuleuven.esat.cosic.negotiation.CUPRelevantStrategy; \
@@ -41,17 +43,19 @@ edu.uiuc.cs.TrustBuilder2.query.QueryEngineMediator.loadQueryEngines = \
   edu.uiuc.cs.TrustBuilder2.query.profile.ProfileManager, \
     be.kuleuven.esat.cosic.negotiation.CUPPolicyManager
 be.kuleuven.esat.cosic.negotiation.CUPPolicyManager.policyDir=./policies
-edu.uiuc.cs.TrustBuilder2.query.profile.ProfileManager.loaderFileDir=./profile_loaders
+edu.uiuc.cs.TrustBuilder2.query.profile.ProfileManager.loaderFileDir=profile_loaders
 edu.uiuc.cs.TrustBuilder2.query.profile.ProfileManager.loadLoaders = \
   edu.uiuc.cs.TrustBuilder2.query.profile.ClaimLoader, \
   be.kuleuven.esat.cosic.negotiation.AttributeCredentialLoader
-TCPTimeout=2000
+TCPTimeout=20000
 TNSTarget=$TNSTARGET
 TNSServer=$TNSSERVER
 
 EOF
 
-/apps/java/jre1.6.0_05/bin/java -classpath ./tn.jar be.kuleuven.esat.cosic.negotiation.client.TAS3Client >tns.result
+/apps/java/jre1.6.0_05/bin/java -classpath /s/T3-TPN-TB2/client/tn.jar be.kuleuven.esat.cosic.negotiation.client.TAS3Client client.properties >tns.result
+
+#/apps/java/jre1.6.0_05/bin/java -classpath /s/T3-TPN-TB2/server/tn.jar be.kuleuven.esat.cosic.negotiation.server.TrustNegotiationServer # >tns.result
 
 grep 'NO ERROR' tns.result
 

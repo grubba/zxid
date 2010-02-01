@@ -492,10 +492,16 @@ struct zx_str* zxenc_privkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedD
   struct zx_str* symkey;
   struct zx_str* ss;
   char* lim;
+
+  if (!ed) {
+    ERR("Missing or malformed EncryptedData %d", 0);
+    return 0;
+  }
+
   if (!ek && ed->KeyInfo)
     ek = ed->KeyInfo->EncryptedKey;
   if (!ek || !ek->CipherData || !ek->CipherData->CipherValue
-      || !(ss = ek->CipherData->CipherValue->content)) {
+      || !(ss = ek->CipherData->CipherValue->content) || !ss->len) {
     ERR("EncryptedKey element not found or malformed %p", ek->CipherData);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "EMISS", 0, "EncryptedKey not found");
     return 0;
@@ -508,7 +514,12 @@ struct zx_str* zxenc_privkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedD
   if (!cf->enc_pkey)
     cf->enc_pkey = zxid_read_private_key(cf, "enc-nopw-cert.pem");
 
-  ss = ek->EncryptionMethod->Algorithm;
+  if (!ek->EncryptionMethod || !(ss = ek->EncryptionMethod->Algorithm)
+      || !ss->len) {
+    ERR("Missing or malformed EncryptionMethod %d", 0);
+    return 0;
+  }
+  
   if (sizeof(ENC_KEYTRAN_RSA_1_5)-1 == ss->len
       && !memcmp(ENC_KEYTRAN_RSA_1_5, ss->s, sizeof(ENC_KEYTRAN_RSA_1_5)-1)) {
     symkey = zx_rsa_priv_dec(cf->ctx, &raw, cf->enc_pkey, RSA_PKCS1_PADDING);

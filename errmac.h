@@ -210,7 +210,7 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
  * The nodes argument is "iterator". The reveresed list is left in root. */
 #define REVERSE_LIST_NEXT(root,nodes,nxt) MB (root) = 0; \
   while (nodes) { void* n = (nodes)->nxt; (nodes)->nxt = (void*)(root); \
-    (root) = (nodes); (nodes) = n;  } ME
+    (root) = (void*)(nodes); (nodes) = n;  } ME
 
 #define REVERSE_LIST(root,nodes) REVERSE_LIST_NEXT((root),(nodes),next)
 
