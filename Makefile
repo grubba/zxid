@@ -31,9 +31,9 @@
 vpath %.c ../zxid
 vpath %.h ../zxid
 
-default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd
+default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall
 
-all: seehelp precheck precheck_apache zxid zxidhlo zxididp zxidsimple zxlogview samlmod phpzxid javazxid apachezxid zxdecode zxcot zxpasswd smime
+all: seehelp precheck precheck_apache zxid zxidhlo zxididp zxidsimple zxlogview samlmod phpzxid javazxid apachezxid zxdecode zxcot zxpasswd zxcall smime
 
 ZXIDVERSION=0x000049
 ZXIDREL=0.49
@@ -940,6 +940,9 @@ zxdecode: zxdecode.o libzxid.a
 
 zxpasswd: zxpasswd.o libzxid.a
 	$(LD) $(LDFLAGS) -o $@ $^ -L. -lzxid $(LIBS)
+
+zxcall: zxcall.o libzxid.a
+	$(LD) $(LDFLAGS) -o $@ $< -L. -lzxid $(LIBS)
 
 zxidwsctool: $(ZXIDWSCTOOL_OBJ) libzxid.a
 	$(LD) $(LDFLAGS) -o zxidwsctool $(ZXIDWSCTOOL_OBJ) -L. -lzxid $(LIBS)

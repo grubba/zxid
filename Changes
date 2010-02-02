@@ -6,13 +6,16 @@ Usual suspects: zxid.user@lists.unh.edu
 
 To do:
     - Limited SP local attribute authority
-    - shell script az
-    - shell script wsc using authentication service
     - Add Trust and Privacy Negotiation capability to discovery
     - Add Az calls to zxid_wsp_validate() and zxid_wsp_decorate()
     - Do proper signature validation in zxid_wsp_validate()
+
 zxid-0.49:: 1.2.2010
-    - Added AuthnSvc client and zxcall tool
+    - Added AuthnSvc client and zxcall tool, which allows shellscript wsc
+    - The zxcall tool also allows shell script az
+    - Removed arbitrary 64KB limits from metadata, SOAP, and EPR processing. Now dynamically reallocated as needed.
+    - Added zxid_ses_to_{ldif|json|qs}() family of functions
+    - Added zxid_add_attr_to_ses() and zxid_add_qs_to_ses()
 zxid-0.48:: 18.1.2010
     - Fixed reversed WO rendering of parsed unknown elements
     - Definititve path sanity fix for zxcot -bs

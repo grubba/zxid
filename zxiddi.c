@@ -221,7 +221,8 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
 
       /* *** Check Action */
 
-#if 1
+#if 0
+      /* Call Trust and Privacy Negotiation (TrustBuilder), Andreas. */
       systemf("./tpn-client.sh %s %s %s", idpnid, "urn:idhrxml:cv:update", host);
 #endif
 

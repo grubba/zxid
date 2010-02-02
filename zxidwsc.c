@@ -664,7 +664,7 @@ struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char*
   D_INDENT("call: ");
 
   if (!cf || !ses || !enve) {
-    ERR("");
+    ERR("Missing mandatory arguments ses=%p", ses);
     return 0;
   }
 

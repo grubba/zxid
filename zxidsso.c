@@ -12,7 +12,8 @@
  * 30.9.2006, added signature verification --Sampo
  * 9.10.2007, added signing SOAP requests, Destination for redirects --Sampo
  * 22.3.2008, permitted passing RelayState for SSO --Sampo
- * 7.10.2008,  added documentation --Sampo
+ * 7.10.2008, added documentation --Sampo
+ * 1.2.2010,  added authentication service client --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
@@ -28,6 +29,7 @@
 #include <sys/stat.h>
 
 #include "errmac.h"
+#include "zx.h"
 #include "zxid.h"
 #include "zxidconf.h"
 #include "saml2.h"
@@ -673,6 +675,137 @@ int zxid_sp_anon_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
   zxlog(cf, 0, 0, 0, 0, 0, 0, 0, cgi->sigval, "K", "TMPSSO", "-", 0);
   D_DEDENT("anon_ssof: ");
   return ZXID_SSO_OK;
+}
+
+/*() Authentication Service Client
+ * See also: zxid_idp_as_do()
+ */
+
+int zxid_as_call_ses(struct zxid_conf* cf, struct zxid_entity* idp_meta, struct zxid_cgi* cgi, struct zxid_ses* ses)
+{
+  int len;
+  struct zx_root_s* r;
+  struct zx_e_Body_s* body;
+#if 0
+  struct zx_md_ArtifactResolutionService_s* ar_svc;
+#else
+  struct zx_md_SingleLogoutService_s* ar_svc;
+#endif
+  struct zx_as_SASLResponse_s* res;
+  char* buf;
+  char* b64;
+  char* p;
+  D_INDENT("as_call: ");
+
+  if (!cf || !cgi || !ses || !cgi->uid || !cgi->pw) {
+    ERR("Missing user, password, or mandatory argument cgi=%p (caller programming error)", cgi);
+    D_DEDENT("as_call: ");
+    return 0;
+  }
+  
+  if (!idp_meta || !idp_meta->ed->IDPSSODescriptor) {
+    ERR("Entity(%.*s) does not have IdP SSO Descriptor (metadata problem)", idp_meta?idp_meta->eid_len:1, idp_meta?idp_meta->eid:"-");
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "No IDPSSODescriptor eid(%.*)", idp_meta?idp_meta->eid_len:1, idp_meta?idp_meta->eid:"-");
+    D_DEDENT("as_call: ");
+    return 0;
+  }
+
+#if 0
+  for (ar_svc = idp_meta->ed->IDPSSODescriptor->ArtifactResolutionService;
+       ar_svc;
+       ar_svc = (struct zx_md_ArtifactResolutionService_s*)ar_svc->gg.g.n)
+    if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->s, ar_svc->Binding->len)
+	/*&& ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->s, ar_svc->index->len)*/
+	&& ar_svc->Location)
+      break;
+#else
+  for (ar_svc = idp_meta->ed->IDPSSODescriptor->SingleLogoutService;
+       ar_svc;
+       ar_svc = (struct zx_md_SingleLogoutService_s*)ar_svc->gg.g.n)
+    if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->s, ar_svc->Binding->len)
+	/*&& ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->s, ar_svc->index->len)*/
+	&& ar_svc->Location)
+      break;
+#endif
+  if (!ar_svc) {
+    ERR("Entity(%.*s) does not have any IdP Artifact Resolution Service with " SAML2_SOAP " binding (metadata problem)", idp_meta->eid_len, idp_meta->eid);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "No Artifact Resolution Svc eid(%.*)", idp_meta->eid_len, idp_meta->eid);
+    D_DEDENT("as_call: ");
+    return 0;
+  }
+
+  len = 1+strlen(cgi->uid)+1+strlen(cgi->pw)+1;
+  p = buf = ZX_ALLOC(cf->ctx, len);
+  *p++ = 0;
+  strcpy(p, cgi->uid);
+  p += strlen(cgi->uid) + 1;
+  strcpy(p, cgi->pw);
+  
+  b64 = ZX_ALLOC(cf->ctx, SIMPLE_BASE64_LEN(len)+1);
+  p = base64_fancy_raw(buf, len, b64, std_basis_64, 1<<31, 0, 0, '=');
+  *p = 0;
+  ZX_FREE(cf->ctx, buf);
+  
+  body = zx_NEW_e_Body(cf->ctx);
+  body->SASLRequest = zx_NEW_as_SASLRequest(cf->ctx);
+  body->SASLRequest->mechanism = zx_dup_str(cf->ctx, "PLAIN");
+  body->SASLRequest->Data = zx_ref_len_simple_elem(cf->ctx, p-b64, b64);
+  r = zxid_soap_call_body(cf, ar_svc->Location, body);
+  /* *** free the body */
+  
+  if (!r || !r->Envelope || !r->Envelope->Body || !(res = r->Envelope->Body->SASLResponse)) {
+    ERR("Autentication Service call failed idp(%.*s). Missing response.", idp_meta->eid_len, idp_meta->eid);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "Missing response eid(%.*)", idp_meta->eid_len, idp_meta->eid);
+    D_DEDENT("as_call: ");
+    return 0;
+  }
+  
+  if (!res->Status || !res->Status->code || !res->Status->code->len || !res->Status->code->s) {
+    ERR("Autentication Service call failed idp(%.*s). Missing Status code.", idp_meta->eid_len, idp_meta->eid);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "Missing Status code eid(%.*)", idp_meta->eid_len, idp_meta->eid);
+    D_DEDENT("as_call: ");
+    return 0;
+  }
+
+  if (res->Status->code->len != 2
+      || res->Status->code->s[0]!='O' || res->Status->code->s[1]!='K') {  /* "OK" */
+    ERR("Autentication Service call failed idp(%.*s). Status code(%.*s).", idp_meta->eid_len, idp_meta->eid, res->Status->code->len, res->Status->code->s);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "Missing Status code(%.*s) eid(%.*)", res->Status->code->len, res->Status->code->s, idp_meta->eid_len, idp_meta->eid);
+    D_DEDENT("as_call: ");
+    return 0;
+  }
+  
+  ses->sigres = ZXSIG_NO_SIG;
+  ses->a7n = 0;
+  ses->nameid = 0;
+  ses->nid = "-";
+  ses->nidfmt = 0;
+  ses->sesix = 0;
+  
+  D("AuthenSvc OK. Creating session... %p", ses);
+  
+  zxid_put_ses(cf, ses);
+  zxid_ses_to_pool(cf, ses);  /* Process SSO a7n, applying NEED, WANT, and INMAP */
+  zxid_snarf_eprs(cf, ses, res->EndpointReference);
+  
+  /* *** free r */
+  D_DEDENT("as_call: ");
+  return ZXID_SSO_OK;
+}
+
+struct zxid_ses* zxid_as_call(struct zxid_conf* cf, struct zxid_entity* idp_meta, const char* user, const char* pw)
+{
+  struct zxid_ses* ses = zxid_alloc_ses(cf);
+  struct zxid_cgi cgi;
+  memset(&cgi, 0, sizeof(cgi));
+  cgi.uid = user;
+  cgi.pw = pw;
+  
+  if (!zxid_as_call_ses(cf, idp_meta, &cgi, ses)) {
+    ZX_FREE(cf->ctx, ses);
+    return 0;
+  }
+  return ses;
 }
 
 /* EOF  --  zxidsso.c */

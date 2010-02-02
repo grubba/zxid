@@ -71,4 +71,7 @@ http://sp.tas3.pt:8080/zxidservlet/appdemo
 
 gdb /apps/java/j2sdk1.4.2/bin/java core
 
+
+./zxcall -d -a http://idp.tas3.pt:8081/zxididp?o=B tastest:tastest -t urn:x-foobar -e '<foobar>Do It!</foobar>'
+
 <<EOF: >>

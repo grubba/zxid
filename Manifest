@@ -374,6 +374,7 @@ protected/content.txt  - Test content for mod_auth_saml
 protected/saml         - Test content for mod_auth_saml
 protected/orange.cgi   - Demonstration of using Orange Personal APIs
 protected/protected.html
+protected/env.cgi
 pers/personalized.html
 pers/env.cgi
 intra/intranet.html
@@ -602,6 +603,7 @@ zxidjava/SWIGTYPE_p_zxid_entity.java
 zxidjava/SWIGTYPE_p_zxid_map.java
 zxidjava/SWIGTYPE_p_zxid_need.java
 zxidjava/SWIGTYPE_p_zxsig_ref.java
+
 zxidjava/zxid_conf.java
 zxidjava/zxid_ses.java
 zxidjava/zxidjni.java

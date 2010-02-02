@@ -287,6 +287,13 @@
  * Whether limited IdP functionality is enabled. Affects generated metadata. */
 #define ZXID_IDP_ENA 0
 
+/*(c) Mini IdP
+ * Whether limited Authentication Service functionality is enabled.
+ * Please note that the AuthenticationService impmenetation at present (2010)
+ * is incomplete and fails to properly authenticate and authorize the caller,
+ * i.e. anyone who knows a username and password can call it. */
+#define ZXID_AS_ENA 0
+
 /*(c) Dummy PDP
  * Whether limited PDP functionality is enabled. */
 #define ZXID_PDP_ENA 1
@@ -297,9 +304,6 @@
 
 /*() Maximum filesystem path used in /var/zxid tree. */
 #define ZXID_MAX_BUF 1024  /* (compile) */
-
-/*() Maximum EPR size */
-#define ZXID_MAX_EPR (64*1024) /* (compile) */
 
 /*(c) Logging Options
  * See zxid-log.pd for further explanation. Generally you

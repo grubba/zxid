@@ -180,12 +180,34 @@ int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_Endpo
  * Typical name /var/zxid/ses/SESID/SVCTYPE,SHA1 */
 
 /* Called by:  zxid_sp_anon_finalize, zxid_sp_sso_finalize */
+void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr)
+{
+  int wsf20 = 0;
+  for (; epr; epr = (struct zx_a_EndpointReference_s*)epr->gg.g.n) {
+    ++wsf20;
+    D("Detected wsf20 EPR. %d", wsf20);
+    zxid_cache_epr(cf, ses, epr);
+    D("EPR cached %d", wsf20);
+  }
+}
+
+/*() Look into attribute statements of a SSO assertion and extract anything
+ * that looks like EPR, storing results in the session for later reference.
+ *
+ * cf:: ZXID configuration object, also used for memory allocation
+ * ses:: Session object in whose EPR cache will be populated
+ *
+ * N.B. This approach ignores the official attribute names totally. Anything
+ * that looks like an EPR and that is strcturally in right place will work.
+ * Typical name /var/zxid/ses/SESID/SVCTYPE,SHA1 */
+
+/* Called by:  zxid_sp_anon_finalize, zxid_sp_sso_finalize */
 void zxid_snarf_eprs_from_ses(struct zxid_conf* cf, struct zxid_ses* ses)
 {
   struct zx_sa_AttributeStatement_s* as;
   struct zx_sa_Attribute_s* at;
   struct zx_sa_AttributeValue_s* av;
-  int wsf11 = 0, wsf20 = 0;
+  int wsf11 = 0;
   
   D_INDENT("snarf_eprs: ");
   zxid_get_ses_sso_a7n(cf, ses);
@@ -193,12 +215,7 @@ void zxid_snarf_eprs_from_ses(struct zxid_conf* cf, struct zxid_ses* ses)
     for (as = ses->a7n->AttributeStatement; as; as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n)
       for (at = as->Attribute; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n)
 	for (av = at->AttributeValue; av; av = (struct zx_sa_AttributeValue_s*)av->gg.g.n) {
-	  if (av->EndpointReference) {
-	    ++wsf20;
-	    D("Detected wsf20 EPR. %d", wsf20);
-	    zxid_cache_epr(cf, ses, av->EndpointReference);
-	    D("EPR cached %d", 0);
-	  }
+	  zxid_snarf_eprs(cf, ses, av->EndpointReference);
 	  if (av->ResourceOffering) {
 	    ++wsf11;
 	    D("Detected wsf11 resource offering. %d", wsf11);
@@ -248,7 +265,7 @@ void zxid_snarf_eprs_from_ses(struct zxid_conf* cf, struct zxid_ses* ses)
 struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   struct zx_root_s* r;
-  int len, epr_len;
+  int len, epr_len, siz = ZXID_INIT_EPR_BUF;
   char path[ZXID_MAX_BUF];
   char* epr_buf;  /* MUST NOT come from stack. */
   DIR* dir;
@@ -280,7 +297,7 @@ struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid
     return 0;
   }
 
-  epr_buf = ZX_ALLOC(cf->ctx, ZXID_MAX_EPR);  /* MUST NOT come from stack. */
+  epr_buf = ZX_ALLOC(cf->ctx, siz);  /* MUST NOT come from stack. */
   len = strlen(svc);
   len = MIN(len, sizeof(path)-1);
   memcpy(path, svc, len);
@@ -297,10 +314,25 @@ struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid
     if (memcmp(de->d_name, path, len) || de->d_name[len] != ',')
       continue;
     D("Checking EPR content file(%s)", de->d_name);
-    epr_len = read_all(ZXID_MAX_EPR, epr_buf, "find_epr",
+    epr_len = read_all(siz, epr_buf, "find_epr",
 		       "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
     if (!epr_len)
       continue;
+
+    while (epr_len == siz) {
+      siz += siz;
+      if (siz > ZXID_MAX_CURL_BUF) {
+	ERR("Fail: Size of EPR(%s) exeeds internal limit %d.", de->d_name, ZXID_MAX_CURL_BUF);
+	ZX_FREE(cf->ctx, epr_buf);
+	D_DEDENT("find_epr: ");
+	return 0;
+      }
+      D("Large EPR. Reallocating and rereading %d", siz);
+      REALLOCN(/*cf->ctx,*/ epr_buf, siz);
+      epr_len = read_all(siz, epr_buf, "find_epr",
+			 "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
+    }
+    
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
     r = zx_DEC_root(cf->ctx, 0, 1);
     if (!r || !r->EndpointReference) {
@@ -348,6 +380,7 @@ struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid
     D_DEDENT("find_epr: ");
     return epr;
   }
+  ZX_FREE(cf->ctx, epr_buf);
   closedir(dir);
   D_DEDENT("find_epr: ");
   return 0;

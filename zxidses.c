@@ -132,7 +132,9 @@ struct zxid_ses* zxid_alloc_ses(struct zxid_conf* cf)
   return ZX_ZALLOC(cf->ctx, struct zxid_ses);
 }
 
-/*() Allocate memory and get session object from the filesystem */
+/*(i) Allocate memory and get session object from the filesystem, populating
+ * attributes to pool so they are available for use. You mus obtain session id
+ * from some source. */
 
 /* Called by: */
 struct zxid_ses* zxid_fetch_ses(struct zxid_conf* cf, const char* sid)
@@ -143,12 +145,14 @@ struct zxid_ses* zxid_fetch_ses(struct zxid_conf* cf, const char* sid)
       ZX_FREE(cf->ctx, ses);
       return 0;
     }
+  zxid_ses_to_pool(cf, ses);
   return ses;
 }
 
 /*() Get simple session object from the filesystem. This just gets the nameid
  * and reference to the assertion. Use zxid_get_ses_sso_a7n() to actually
- * load the assertion, if needed. Returns 1 if session gotten, 0 if fail. */
+ * load the assertion, if needed. Or zxid_ses_to_pool() if you need attributes
+ * as well. Returns 1 if session gotten, 0 if fail. */
 
 /* Called by:  chkuid x2, main x6, zxid_az_cf, zxid_fetch_ses, zxid_find_ses, zxid_simple_cf_ses */
 int zxid_get_ses(struct zxid_conf* cf, struct zxid_ses* ses, const char* sid)

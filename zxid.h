@@ -93,6 +93,7 @@ struct zxid_conf {
   char  auto_cert;
   char  user_local;          /* Whether local user accounts should be maintained. */
   char  idp_ena;
+  char  as_ena;
   char  pdp_ena;
   char  authn_req_sign;
   char  want_authn_req_signed;
@@ -344,8 +345,10 @@ struct zxid_atsrc {
 #define ZXID_COT_DIR  "cot/"
 #define ZXID_DIMD_DIR "dimd/"
 #define ZXID_MAX_USER (256)  /* Maximum size of .mni or user file */
-#define ZXID_MAX_MD   (64*1024)
-#define ZXID_MAX_SOAP (64*1024)
+#define ZXID_INIT_MD_BUF   (8*1024-1)  /* Initial size, will automatically reallocate. */
+#define ZXID_INIT_SOAP_BUF (8*1024-1)  /* Initial size, will automatically reallocate. */
+#define ZXID_INIT_EPR_BUF  (32*1024)   /* Initial size, will automatically reallocate. */
+#define ZXID_MAX_CURL_BUF  (10*1024*1024-1)  /* Buffer reallocation will not grow beyond this. */
 #define ZXID_MAX_EID  (1024)
 #define ZXID_MAX_DIR  (4*1024)
 
@@ -534,12 +537,12 @@ int zxid_find_ses(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_str* ses
 /* zxidpool */
 
 //struct zx_str* zxid_ses_to_ldif(struct zxid_conf* cf, struct zxid_ses* ses);
-struct zx_str* zxid_pool_to_ldif(struct zxid_conf* cf, struct zxid_attr* pool);
-struct zx_str* zxid_pool_to_json(struct zxid_conf* cf, struct zxid_attr* pool);
-struct zx_str* zxid_pool_to_qs(struct zxid_conf* cf, struct zxid_attr* pool);
+struct zx_str* zxid_ses_to_ldif(struct zxid_conf* cf, struct zxid_ses* ses);
+struct zx_str* zxid_ses_to_json(struct zxid_conf* cf, struct zxid_ses* ses);
+struct zx_str* zxid_ses_to_qs(struct zxid_conf* cf, struct zxid_ses* ses);
 void zxid_ses_to_pool(struct zxid_conf* cf, struct zxid_ses* ses);
-void zxid_add_attr_to_pool(struct zxid_conf* cf, struct zxid_ses* ses, char* at_name, struct zx_str* val);
-int zxid_add_qs_to_pool(struct zxid_conf* cf, struct zxid_ses* ses, char* qs, int apply_map);
+void zxid_add_attr_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* at_name, struct zx_str* val);
+int zxid_add_qs_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* qs, int apply_map);
 
 /* zxiduser */
 
@@ -636,6 +639,9 @@ char* zxid_saml2_map_authn_ctx(char* c);
 struct zx_sa_Issuer_s* zxid_issuer(struct zxid_conf* cf, struct zx_str* nameid, char* affiliation);
 void zxid_sigres_map(int sigres, char** sigval, char** sigmsg);
 int zxid_validate_cond(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sa_Assertion_s* a7n, struct zx_str* myentid, struct timeval* ourts, char** err);
+
+int zxid_as_call_ses(struct zxid_conf* cf, struct zxid_entity* idp_meta, struct zxid_cgi* cgi, struct zxid_ses* ses);
+struct zxid_ses* zxid_as_call(struct zxid_conf* cf, struct zxid_entity* idp_meta, const char* user, const char* pw);
 
 /* zxidslo */
 
@@ -756,6 +762,7 @@ int zxid_epr_path(struct zxid_conf* cf, char* dir, char* sid, char* buf, int buf
 struct zx_a_EndpointReference_s* zxid_get_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n);
 struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n);
 int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr);
+void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr);
 void zxid_snarf_eprs_from_ses(struct zxid_conf* cf, struct zxid_ses* ses);
 struct zx_str* zxid_get_epr_address(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr);
 struct zx_str* zxid_get_epr_entid(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr);
@@ -853,6 +860,7 @@ int close_file(fdtype fd, const char* logkey);
 
 struct zxid_curl_ctx {
   char* p;
+  char* buf;
   char* lim;
 };
 

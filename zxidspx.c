@@ -301,13 +301,14 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
     return zxid_soap_cgi_resp_body(cf, body);
   }
 
-  if (1 /*cf->as_ena*/) {
+  D("as_ena=%d %p", cf->as_ena, r->Envelope->Body->SASLRequest);
+  if (cf->as_ena) {
     if (r->Envelope->Body->SASLRequest) {
       struct zx_as_SASLResponse_s* res;
       res = zxid_idp_as_do(cf, r->Envelope->Body->SASLRequest);
       body = zx_NEW_e_Body(cf->ctx);
       body->SASLResponse = res;
- #if 0
+#if 0
       if (cf->sso_soap_resp_sign) {
 	refs.id = res->ID;
 	refs.canon = zx_EASY_ENC_SO_as_SASLResponse(cf->ctx, res);

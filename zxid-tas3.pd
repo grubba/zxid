@@ -203,8 +203,8 @@ TAS3 APIs where appropriate.
 3.5 Auxiliary
 -------------
 
-* zxid_add_attr_to_pool()
-* zxid_add_qs_to_pool()
+* zxid_add_attr_to_ses()
+* zxid_add_qs_to_ses()
 
 8 TAS3 Demo
 ===========

@@ -267,6 +267,7 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->ses_cookie_name   = ZXID_SES_COOKIE_NAME;
   cf->user_local        = ZXID_USER_LOCAL;
   cf->idp_ena           = ZXID_IDP_ENA;
+  cf->as_ena            = ZXID_AS_ENA;
   cf->pdp_ena           = ZXID_PDP_ENA;
 
   cf->log_level = ZXLOG_LEVEL;
@@ -887,6 +888,7 @@ scan_end:
       if (!strcmp(n, "AN_PAGE"))      { cf->an_page = v; break; }
       if (!strcmp(n, "ATTRSRC"))      { cf->attrsrc = zxid_load_atsrc(cf, cf->attrsrc, v); break; }
       if (!strcmp(n, "A7NTTL"))       { SCAN_INT(v, cf->a7nttl); break; }
+      if (!strcmp(n, "AS_ENA"))       { SCAN_INT(v, cf->as_ena); break; }
       goto badcf;
     case 'B':  /* BEFORE_SLOP */
       if (!strcmp(n, "BEFORE_SLOP"))     { SCAN_INT(v, cf->before_slop); break; }
@@ -1247,6 +1249,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "IPPORT=%s\n"
 "USER_LOCAL=%d\n"
 "IDP_ENA=%d\n"
+"AS_ENA=%d\n"
 "PDP_ENA=%d\n"
 "#ZXID_MAX_BUF=%d (compile)\n"
 
@@ -1375,6 +1378,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 STRNULLCHK(cf->ipport),
 		 cf->user_local,
 		 cf->idp_ena,
+		 cf->as_ena,
 		 cf->pdp_ena,
 		 ZXID_MAX_BUF,
 

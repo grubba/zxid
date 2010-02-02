@@ -641,10 +641,10 @@ char* zxid_simple_ab_pep(struct zxid_conf* cf, struct zxid_ses* ses, int* res_le
   
   switch (auto_flags & (ZXID_AUTO_FMTQ | ZXID_AUTO_FMTJ)) {
   case ZXID_AUTO_FMTQ|ZXID_AUTO_FMTJ: ss = zx_dup_str(cf->ctx, ""); break; /* No output */
-  case ZXID_AUTO_FMTQ:  ss = zxid_pool_to_qs(cf, ses->at); break;
-  case ZXID_AUTO_FMTJ:  ss = zxid_pool_to_json(cf, ses->at); break;
-  default: ERR("Unsupported output format bits %x", auto_flags & (ZXID_AUTO_FMTQ | ZXID_AUTO_FMTJ));
-  case 0:               ss = zxid_pool_to_ldif(cf, ses->at); break;
+  case ZXID_AUTO_FMTQ:  ss = zxid_ses_to_qs(cf, ses); break;
+  case ZXID_AUTO_FMTJ:  ss = zxid_ses_to_json(cf, ses); break;
+  default: ERR("Unsupported output format bits %x", auto_flags & (ZXID_AUTO_FMTQ|ZXID_AUTO_FMTJ));
+  case 0:               ss = zxid_ses_to_ldif(cf, ses); break;
   }
   if (zx_debug & ZXID_INOUT) INFO("LDIF(%.*s)", ss?ss->len:1, ss?ss->s:"-");
   if (cf->log_level > 0)

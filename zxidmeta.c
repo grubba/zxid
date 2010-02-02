@@ -1,4 +1,5 @@
 /* zxidmeta.c  -  Handwritten functions for metadata parsing and generation as well as CoT handling
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -12,6 +13,7 @@
  * 13.12.2007, fixed missing KeyDescriptor/@use as seen in CA IdP metadata --Sampo
  * 14.4.2008,  added SimpleSign --Sampo
  * 7.10.2008,  added documentation --Sampo
+ * 1.2.2010,   removed arbitrary size limit --Sampo
  */
 
 #include <fcntl.h>
@@ -46,8 +48,7 @@
  * be called twice per entity, with different kd argument. */
 
 /* Called by:  zxid_parse_meta x2 */
-static void zxid_process_keys(struct zxid_conf* cf, struct zxid_entity* ent,
-			      struct zx_md_KeyDescriptor_s* kd, char* logkey)
+static void zxid_process_keys(struct zxid_conf* cf, struct zxid_entity* ent, struct zx_md_KeyDescriptor_s* kd, char* logkey)
 {
   int len;
   char* pp;
@@ -56,6 +57,10 @@ static void zxid_process_keys(struct zxid_conf* cf, struct zxid_entity* ent,
   X509* x;
 
   for (; kd; kd = (struct zx_md_KeyDescriptor_s*)kd->gg.g.n) {
+    if (!kd->KeyInfo || !kd->KeyInfo->X509Data || !kd->KeyInfo->X509Data->X509Certificate || !kd->KeyInfo->X509Data->X509Certificate->content) {
+      ERR("KeyDescriptor for %s missing essential subelements KeyInfo=%p", logkey, kd->KeyInfo);
+      return;
+    }
     p = kd->KeyInfo->X509Data->X509Certificate->content->s;
     len = kd->KeyInfo->X509Data->X509Certificate->content->len;
     e = p + len;
@@ -104,11 +109,8 @@ struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
   struct zx_md_EntityDescriptor_s* ed;
   struct zx_root_s* r;
 
-  DD("!!!!!!!!!!!!!!lim(%s)", lim);
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, *md, lim);
-  DD("???????????????lim(%s)", lim);
   r = zx_DEC_root(cf->ctx, 0, 5);
-  DD("@@@@@@@@@@@@@@@@@lim(%s)", lim);
   *md = cf->ctx->p;
   if (!r)
     return 0;
@@ -181,7 +183,7 @@ int zxid_write_ent_to_cache(struct zxid_conf* cf, struct zxid_entity* ent)
 /* Called by:  main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_from_cache */
 struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name)
 {
-  int n,got;
+  int n, got, gotty, siz = ZXID_INIT_MD_BUF;
   fdtype fd;
   char* md_buf;
   char* p;
@@ -195,16 +197,29 @@ struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name
     return 0;
   }
   
-  md_buf = ZX_ALLOC(cf->ctx, ZXID_MAX_MD+1);
-  n = read_all_fd(fd, md_buf, ZXID_MAX_MD, &got);
+  md_buf = ZX_ALLOC(cf->ctx, siz+1);
+  n = read_all_fd(fd, md_buf, siz, &got);
   DD("==========sha1_name(%s)", sha1_name);
-  if (n == -1) {
-    perror("read metadata");
-    D("Failed to read metadata for sha1_name(%s)", sha1_name);
-    close_file(fd, (const char*)__FUNCTION__);
-    return 0;
+  if (n == -1)
+    goto readerr;
+
+  while (got == siz) {
+    siz += siz;
+    if (siz > ZXID_MAX_CURL_BUF) {
+      ERR("Metadata for sha1_name(%s) is too big. Exceeds built in limit ZXID_MAX_CURL_BUF=%d", sha1_name, ZXID_MAX_CURL_BUF);
+      close_file(fd, (const char*)__FUNCTION__);
+      return 0;
+    }
+    DD("Realloc(%.*s) got=%d siz=%d Realloc(%s)", got, md_buf, got, siz, sha1_name);
+    REALLOCN(md_buf, siz+1);
+    n = read_all_fd(fd, md_buf+got, siz-got, &gotty);
+    if (n == -1)
+      goto readerr;
+    got += gotty;
   }
   close_file(fd, (const char*)__FUNCTION__);
+
+  DD("md_buf(%.*s) got=%d siz=%d md_buf(%s)", got, md_buf, got, siz, sha1_name);
   
   p = md_buf;
   ent = zxid_parse_meta(cf, &p, md_buf+got);
@@ -218,6 +233,12 @@ struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name
   cf->cot = ent;
   D("GOT META sha1_name(%s) eid(%.*s)", sha1_name, ent->eid_len, ent->eid);
   return ent;
+
+readerr:
+  perror("read metadata");
+  D("Failed to read metadata for sha1_name(%s)", sha1_name);
+  close_file(fd, (const char*)__FUNCTION__);
+  return 0;
 }
 
 /*() Compute sha1_name for an entity and then read the metadata from

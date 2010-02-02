@@ -55,6 +55,8 @@ Usage: zxcot [options] [dir]\n\
 zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 | zxcot -b\n\
 \n";
 
+#define ZXID_MAX_MD (256*1024)
+
 int swap = 0;
 int addmd = 0;
 int regsvc = 0;

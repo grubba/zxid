@@ -783,6 +783,7 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
  * To generate the data, use:
  *   perl -MMIME::Base64 -e 'print encode_base64("\0user\0pw\0")'
  *   perl -MMIME::Base64 -e 'print encode_base64("\0tastest\0tas123\0")'
+ * See also: zxid_as_call_ses()
  */
 
 /* Called by:  zxid_sp_soap_dispatch */

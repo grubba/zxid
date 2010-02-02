@@ -1,4 +1,5 @@
 /* zxidpool.c  -  Attribute handling
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -8,6 +9,7 @@
  * $Id: zxidpool.c,v 1.7 2009-11-24 23:53:40 sampo Exp $
  *
  * 4.9.2009, forked from zxidsimp.c --Sampo
+ * 1.2.2010, added ses_to methods --Sampo
  */
 
 #include <memory.h>
@@ -27,7 +29,7 @@
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by: */
-struct zx_str* zxid_pool_to_ldif(struct zxid_conf* cf, struct zxid_attr* pool)
+static struct zx_str* zxid_pool_to_ldif(struct zxid_conf* cf, struct zxid_attr* pool)
 {
   char* p;
   char* name;
@@ -174,7 +176,7 @@ struct zx_str* zxid_pool_to_ldif(struct zxid_conf* cf, struct zxid_attr* pool)
  * *** Need to check escaping JSON values, e.g. " or \n */
 
 /* Called by:  zxid_simple_ab_pep */
-struct zx_str* zxid_pool_to_json(struct zxid_conf* cf, struct zxid_attr* pool)
+static struct zx_str* zxid_pool_to_json(struct zxid_conf* cf, struct zxid_attr* pool)
 {
   char* p;
   char* name;
@@ -311,7 +313,7 @@ struct zx_str* zxid_pool_to_json(struct zxid_conf* cf, struct zxid_attr* pool)
  *     other returns, like redirect. Perhaps arrange dn field always first? */
 
 /* Called by:  zxid_simple_ab_pep */
-struct zx_str* zxid_pool_to_qs(struct zxid_conf* cf, struct zxid_attr* pool)
+static struct zx_str* zxid_pool_to_qs(struct zxid_conf* cf, struct zxid_attr* pool)
 {
   char* p;
   char* name;
@@ -411,6 +413,24 @@ struct zx_str* zxid_pool_to_qs(struct zxid_conf* cf, struct zxid_attr* pool)
   return ss;
 }
 
+/*() Convert attributes from session to LDIF, applying OUTMAP. */
+
+struct zx_str* zxid_ses_to_ldif(struct zxid_conf* cf, struct zxid_ses* ses) {
+  return zxid_pool_to_ldif(cf, ses?ses->at:0);
+}
+
+/*() Convert attributes from session to JSON, applying OUTMAP. */
+
+struct zx_str* zxid_ses_to_json(struct zxid_conf* cf, struct zxid_ses* ses) {
+  return zxid_pool_to_json(cf, ses?ses->at:0);
+}
+
+/*() Convert attributes from session to query string, applying OUTMAP. */
+
+struct zx_str* zxid_ses_to_qs(struct zxid_conf* cf, struct zxid_ses* ses) {
+  return zxid_pool_to_qs(cf, ses?ses->at:0);
+}
+
 /*() Add values, applying NEED, WANT, and INMAP */
 
 /* Called by:  zxid_add_a7n_at_to_pool x2 */
@@ -483,7 +503,7 @@ static void zxid_add_a7n_at_to_pool(struct zxid_conf* cf, struct zxid_ses* ses, 
 /*() Add simple attribute to pool, applying NEED, WANT, and INMAP */
 
 /* Called by:  zxid_add_qs_to_pool, zxid_ses_to_pool x8, zxid_simple_ab_pep x2 */
-void zxid_add_attr_to_pool(struct zxid_conf* cf, struct zxid_ses* ses, char* at_name, struct zx_str* val)
+void zxid_add_attr_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* at_name, struct zx_str* val)
 {
   struct zxid_map* map;
   if (!val)
@@ -526,21 +546,21 @@ void zxid_ses_to_pool(struct zxid_conf* cf, struct zxid_ses* ses)
   /* Format some pseudo attributes that describe the SSO */
   
   issuer = ses->a7n&&ses->a7n->Issuer&&ses->a7n->Issuer->gg.content?ses->a7n->Issuer->gg.content:0;
-  zxid_add_attr_to_pool(cf, ses, "affid", issuer);
+  zxid_add_attr_to_ses(cf, ses, "affid", issuer);
 
   accr = ses->a7n&&ses->a7n->AuthnStatement&&ses->a7n->AuthnStatement->AuthnContext&&ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef&&ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content&&ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content?ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content:0;
-  zxid_add_attr_to_pool(cf, ses, "authnctxlevel", accr);
+  zxid_add_attr_to_ses(cf, ses, "authnctxlevel", accr);
 
-  zxid_add_attr_to_pool(cf, ses, "idpnid",     zx_dup_str(cf->ctx, STRNULLCHK(ses->nid)));
-  zxid_add_attr_to_pool(cf, ses, "tgtnid",     zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt)));
-  zxid_add_attr_to_pool(cf, ses, "eid",        zxid_my_entity_id(cf));
-  zxid_add_attr_to_pool(cf, ses, "sesid",      zx_dup_str(cf->ctx, STRNULLCHK(ses->sid)));
-  zxid_add_attr_to_pool(cf, ses, "setcookie",  zx_dup_str(cf->ctx, STRNULLCHK(ses->setcookie)));
-  zxid_add_attr_to_pool(cf, ses, "cookie",     zx_dup_str(cf->ctx, STRNULLCHK(ses->cookie)));
-  zxid_add_attr_to_pool(cf, ses, "ssoa7npath", zx_dup_str(cf->ctx, STRNULLCHK(ses->sso_a7n_path)));
-  zxid_add_attr_to_pool(cf, ses, "tgta7npath", zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt_a7n_path)));
-  zxid_add_attr_to_pool(cf, ses, "msgid",      zx_dup_str(cf->ctx, STRNULLCHK(ses->msgid)));
-  zxid_add_attr_to_pool(cf, ses, "rs",         zx_dup_str(cf->ctx, STRNULLCHK(ses->rs)));
+  zxid_add_attr_to_ses(cf, ses, "idpnid",     zx_dup_str(cf->ctx, STRNULLCHK(ses->nid)));
+  zxid_add_attr_to_ses(cf, ses, "tgtnid",     zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt)));
+  zxid_add_attr_to_ses(cf, ses, "eid",        zxid_my_entity_id(cf));
+  zxid_add_attr_to_ses(cf, ses, "sesid",      zx_dup_str(cf->ctx, STRNULLCHK(ses->sid)));
+  zxid_add_attr_to_ses(cf, ses, "setcookie",  zx_dup_str(cf->ctx, STRNULLCHK(ses->setcookie)));
+  zxid_add_attr_to_ses(cf, ses, "cookie",     zx_dup_str(cf->ctx, STRNULLCHK(ses->cookie)));
+  zxid_add_attr_to_ses(cf, ses, "ssoa7npath", zx_dup_str(cf->ctx, STRNULLCHK(ses->sso_a7n_path)));
+  zxid_add_attr_to_ses(cf, ses, "tgta7npath", zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt_a7n_path)));
+  zxid_add_attr_to_ses(cf, ses, "msgid",      zx_dup_str(cf->ctx, STRNULLCHK(ses->msgid)));
+  zxid_add_attr_to_ses(cf, ses, "rs",         zx_dup_str(cf->ctx, STRNULLCHK(ses->rs)));
 
   src = dst = ses->at->val;
   lim = ses->at->val + strlen(ses->at->val);
@@ -561,7 +581,7 @@ void zxid_ses_to_pool(struct zxid_conf* cf, struct zxid_ses* ses)
  * Returns 1 on success, 0 on failure (return value often not checked). */
 
 /* Called by:  zxid_az_cf_ses */
-int zxid_add_qs_to_pool(struct zxid_conf* cf, struct zxid_ses* ses, char* qs, int apply_map)
+int zxid_add_qs_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* qs, int apply_map)
 {
   char *p, *n, *v, *val, *name;
   if (!qs || !ses)
@@ -594,7 +614,7 @@ int zxid_add_qs_to_pool(struct zxid_conf* cf, struct zxid_ses* ses, char* qs, in
 
     if (apply_map) {
       D("map %s=%s", n,v);
-      zxid_add_attr_to_pool(cf, ses, n, zx_dup_str(cf->ctx, v));  
+      zxid_add_attr_to_ses(cf, ses, n, zx_dup_str(cf->ctx, v));  
     } else {
       D("asis %s=%s", n,v);
       ses->at = zxid_new_at(cf, ses->at, v-n-1, n, p-v, v, "as is");

@@ -1,4 +1,5 @@
 /* zxidcurl.c  -  libcurl interface for making SOAP calls and getting metadata
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -10,6 +11,7 @@
  * 12.8.2006, created --Sampo
  * 4.10.2007, fixed missing Content-length header found by Damien Laniel --Sampo
  * 4.10.2008, added documentation --Sampo
+ * 1.2.2010,  removed arbitrary limit on SOAP response size --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  *           http://curl.haxx.se/libcurl/
@@ -45,9 +47,18 @@ size_t zxid_curl_write_data(void *buffer, size_t size, size_t nmemb, void *userp
   int len = size * nmemb;
 #if 1
   struct zxid_curl_ctx* rc = (struct zxid_curl_ctx*)userp;
+  int old_len, new_len, in_buf = rc->p - rc->buf;
   if (rc->p + len > rc->lim) {
-    ERR("Metadata is too long. Wont fit in %d byte buffer.", ZXID_MAX_MD);
-    return 0;
+    old_len = rc->lim-rc->buf;
+    new_len = MIN(MAX(old_len + old_len, in_buf + len), ZXID_MAX_CURL_BUF);
+    if (new_len == ZXID_MAX_CURL_BUF) {
+      ERR("Too large HTTP response. Response length at least %d. Maximum allowed length (ZXID_MAX_CURL_BUF): %d", in_buf + len, ZXID_MAX_CURL_BUF);
+      return -1;  /* Signal error */
+    }
+    D("Reallocating curl buffer from %d to %d in_buf=%d len=%d", old_len, new_len, in_buf, len);
+    REALLOCN(rc->buf, new_len+1);
+    rc->p = rc->buf + in_buf;
+    rc->lim = rc->buf + new_len;
   }
   memcpy(rc->p, buffer, len);
   rc->p += len;
@@ -92,9 +103,8 @@ struct zxid_entity* zxid_get_meta(struct zxid_conf* cf, char* url)
   CURLcode res;
 #if 1
   struct zxid_curl_ctx rc;
-  char* md_buf = ZX_ALLOC(cf->ctx, ZXID_MAX_MD+1);
-  rc.p = md_buf;
-  rc.lim = md_buf + ZXID_MAX_MD;
+  rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_MD_BUF+1);
+  rc.lim = rc.buf + ZXID_INIT_MD_BUF;
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
 #else
   /* TEST CODE (usually disabled) */
@@ -120,19 +130,18 @@ struct zxid_entity* zxid_get_meta(struct zxid_conf* cf, char* url)
   res = curl_easy_perform(cf->curl);
   rc.lim = rc.p;
   rc.p[1] = 0;
-  rc.p = md_buf;
+  rc.p = rc.buf;
   if (rc.lim - rc.p < 300) {
-    ERR("Metadata response too short (%d chars, min 300 required). url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",
-	rc.lim-md_buf, url, res, CURL_EASY_STRERR(res), rc.lim-md_buf, md_buf);
-    ZX_FREE(cf->ctx, md_buf);
+    ERR("Metadata response too short (%d chars, min 300 required). url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",	rc.lim-rc.buf, url, res, CURL_EASY_STRERR(res), rc.lim-rc.buf, rc.buf);
+    ZX_FREE(cf->ctx, rc.buf);
     return 0;
   }
-
+  
   ent = zxid_parse_meta(cf, &rc.p, rc.lim);
   if (!ent) {
     ERR("Failed to parse metadata response url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",
-	url, res, CURL_EASY_STRERR(res), rc.lim-md_buf, md_buf);
-    ZX_FREE(cf->ctx, md_buf);
+	url, res, CURL_EASY_STRERR(res), rc.lim-rc.buf, rc.buf);
+    ZX_FREE(cf->ctx, rc.buf);
     return 0;
   }
   if (cf->log_level>0)
@@ -173,9 +182,8 @@ struct zx_root_s* zxid_soap_call_raw(struct zxid_conf* cf, struct zx_str* url, s
   struct curl_slist content_type;
   struct curl_slist SOAPaction;
   char* urli;
-  char* buf = ZX_ALLOC(cf->ctx, ZXID_MAX_SOAP+1);
-  rc.p = buf;
-  rc.lim = buf + ZXID_MAX_SOAP;
+  rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
+  rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
   curl_easy_setopt(cf->curl, CURLOPT_WRITEFUNCTION, zxid_curl_write_data);
   curl_easy_setopt(cf->curl, CURLOPT_NOPROGRESS, 1);
@@ -187,7 +195,7 @@ struct zx_root_s* zxid_soap_call_raw(struct zxid_conf* cf, struct zx_str* url, s
   D("urli(%s) len=%d", urli, data->len);
   curl_easy_setopt(cf->curl, CURLOPT_URL, urli);
   
-  wc.p = data->s;
+  wc.buf = wc.p = data->s;
   wc.lim = data->s + data->len;
   
   curl_easy_setopt(cf->curl, CURLOPT_POST, 1);
@@ -215,20 +223,20 @@ struct zx_root_s* zxid_soap_call_raw(struct zxid_conf* cf, struct zx_str* url, s
   ZX_FREE(cf->ctx, urli);
   rc.lim = rc.p;
   rc.p[1] = 0;
-  rc.p = buf;
 
-  D("SOAP_CALL got(%s)", buf);
+  D("SOAP_CALL got(%s)", rc.buf);
   
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, rc.lim);
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, rc.buf, rc.lim);
   r = zx_DEC_root(cf->ctx, 0, 1);
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP response url(%.*s) CURLcode(%d) CURLerr(%s) buf(%.*s)",
-	url->len, url->s, res, CURL_EASY_STRERR(res), rc.lim-buf, buf);
+	url->len, url->s, res, CURL_EASY_STRERR(res), rc.lim-rc.buf, rc.buf);
+    ZX_FREE(cf->ctx, rc.buf);
     return 0;
   }
   return r;
 #else
-  ERR("This copy of zxid was compiled to NOT use libcurl. SOAP calls (such as Artifact profile and WSC) are not supported. Add -DUSE_CURL and recompile. %d", 0);
+  ERR("This copy of zxid was compiled to NOT use libcurl. SOAP calls (such as Artifact profile and WSC) are not supported. Add -DUSE_CURL (make ENA_CURL=1) and recompile. %d", 0);
   return 0;
 #endif
 }
