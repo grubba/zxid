@@ -1,4 +1,5 @@
 /* zxencdectest.c  -  Test XML encoding and decoding using zx generated code
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -40,6 +41,7 @@ int write_all_fd(int fd, char* p, int pending);
 
 CU8* help =
 "zxencdectest  -  ZX encoding and decoding tester - R" ZXID_REL "\n\
+Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 Copyright (c) 2006-2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
 Author: Sampo Kellomaki (sampo@iki.fi)\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
@@ -47,25 +49,28 @@ See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
-  -r  N            Run test number N. 1 = IBM cert dec, 2 = IBM cert enc dec\n\
-  -n  N            Number of iterations to benchmark (default 1).\n\
-  -t  SECONDS      Timeout. Default: 0=no timeout.\n\
-  -c  CIPHER       Enable crypto on DTS interface using specified cipher. Use '?' for list.\n\
-  -k  FDNUMBER     File descriptor for reading symmetric key. Use 0 for stdin.\n\
-  -egd PATH        Specify path of Entropy Gathering Daemon socket, default on\n\
-                   Solaris: /tmp/entropy. On Linux /dev/urandom is used instead\n\
-                   See http://www.lothar.com/tech/crypto/ or\n\
-                   http://www.aet.tu-cottbus.de/personen/jaenicke/postfix_tls/prngd.html\n\
-  -rand PATH       Location of random number seed file. On Solaris EGD is used.\n\
-                   On Linux the default is /dev/urandom. See RFC1750.\n\
-  -v               Verbose messages.\n\
-  -q               Be extra quiet.\n\
-  -d               Turn on debugging.\n\
-  -license         Show licensing and NO WARRANTY details.\n\
-  -h               This help message\n\
-  --               End of options\n";
+  -r N         Run test number N. 1 = IBM cert dec, 2 = IBM cert enc dec\n\
+  -n N         Number of iterations to benchmark (default 1).\n\
+  -t SECONDS   Timeout. Default: 0=no timeout.\n\
+  -c CIPHER    Enable crypto on DTS interface using specified cipher. Use '?' for list.\n\
+  -k FDNUMBER  File descriptor for reading symmetric key. Use 0 for stdin.\n\
+  -egd PATH    Specify path of Entropy Gathering Daemon socket, default\n\
+               on Solaris: /tmp/entropy; Linux: /dev/urandom\n\
+               See http://www.lothar.com/tech/crypto/ or\n\
+               http://www.aet.tu-cottbus.de/personen/jaenicke/postfix_tls/prngd.html\n\
+  -rand PATH   Location of random number seed file. On Solaris EGD is used.\n\
+               On Linux the default is /dev/urandom. See RFC1750.\n\
+  -so PATH     File to write schema order encoding in\n\
+  -wo PATH     File to write wire order encoding in\n\
+  -v           Verbose messages.\n\
+  -q           Be extra quiet.\n\
+  -d           Turn on debugging.\n\
+  -license     Show licensing and NO WARRANTY details.\n\
+  -h           This help message\n\
+  --           End of options\n";
 
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
+char buf[256*1024];
 
 /* Called by:  opt */
 void test_ibm_cert_problem()
@@ -74,7 +79,6 @@ void test_ibm_cert_problem()
   struct zxid_conf* cf;
   struct zx_root_s* r;
   struct zx_sp_LogoutRequest_s* req;
-  char buf[256*1024];
 
   len_so = read_all_fd(0, buf, sizeof(buf)-1, &got_all);
   if (got_all <= 0) DIE("Missing data");
@@ -130,7 +134,6 @@ char* instance = "zxencdectest";  /* how this server is identified in logs */
 int afr_buf_size = 0;
 int verbose = 1;
 extern int debug;
-int debugpoll = 0;
 int timeout = 0;
 int gcthreshold = 0;
 int leak_free = 0;
@@ -142,16 +145,18 @@ char* egd_path;
 char  symmetric_key[1024];
 int symmetric_key_len;
 int n_iter = 1;
+char* so_path = 0;
+char* wo_path = 0;
 
 /* Called by:  main x9 */
 void opt(int* argc, char*** argv, char*** env)
 {
-  if (*argc <= 1) goto argerr;
+  if (*argc < 1) goto argerr;
   
   while (1) {
     ++(*argv); --(*argc);
     
-    if (!(*argc) || ((*argv)[0][0] != '-')) break;  /* probably the remote host and port */
+    if (!(*argc) || ((*argv)[0][0] != '-')) break;
     
     switch ((*argv)[0][1]) {
     case '-': if ((*argv)[0][2]) break;
@@ -175,9 +180,6 @@ void opt(int* argc, char*** argv, char*** env)
       switch ((*argv)[0][2]) {
       case '\0':
 	++zx_debug;
-	continue;
-      case 'p':  if ((*argv)[0][3]) break;
-	++debugpoll;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
@@ -274,6 +276,26 @@ void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
+    case 's':
+      switch ((*argv)[0][2]) {
+      case 'o': if ((*argv)[0][3]) break;
+	++(*argv); --(*argc);
+	if (!(*argc)) break;
+	so_path = (*argv)[0];
+	continue;
+      }
+      break;
+
+    case 'w':
+      switch ((*argv)[0][2]) {
+      case 'o': if ((*argv)[0][3]) break;
+	++(*argv); --(*argc);
+	if (!(*argc)) break;
+	wo_path = (*argv)[0];
+	continue;
+      }
+      break;
+
     case 'k':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -333,9 +355,8 @@ int main(int argc, char** argv, char** env)
   struct zx_ctx ctx;
   struct zx_root_s* r;
   int got_all, len_so, len_wo;
-  char buf[256*1024];
-  char out[256*1024];
-  char* p;
+  char so_out[256*1024];
+  char* so_p;
   char wo_out[256*1024];
   char* wo_p;
   opt(&argc, &argv, &env);
@@ -356,9 +377,9 @@ int main(int argc, char** argv, char** env)
     len_so = zx_LEN_SO_root(&ctx, r);
     D("Enc so len %d chars", len_so);
 
-    ctx.base = out;
-    p = zx_ENC_SO_root(&ctx, r, out);
-    if (!p)
+    ctx.base = so_out;
+    so_p = zx_ENC_SO_root(&ctx, r, so_out);
+    if (!so_p)
       DIE("encoding error");
 
     len_wo = zx_LEN_WO_root(&ctx, r);
@@ -371,16 +392,28 @@ int main(int argc, char** argv, char** env)
 
     zx_FREE_root(&ctx, r, 0);
   }
-  printf("\nRe-encoded result SO:\n%.*s\n\n", len_so, out);
-  if (p - out != len_so)
-    D("so encode length mismatch %d vs. %d (len)", p - out, len_so);
 
-  printf("Re-encoded result WO:\n%.*s\n\n", len_wo, wo_out);
-  if (wo_p - wo_out != len_wo)
-    D("wo encode length mismatch %d vs %d (len)", wo_p - wo_out, len_wo);
+  if (got_all != len_wo)
+    printf("Original and WO are different lengths %d != %d\n", got_all, len_wo);
 
-  if (memcmp(out, wo_out, MIN(len_so, len_wo)))
+  if (memcmp(buf, wo_out, MIN(got_all, len_wo)))
+    printf("Original and WO differ.\n");
+
+  if (memcmp(so_out, wo_out, MIN(len_so, len_wo)))
     printf("SO and WO differ.\n");
+
+  if (so_p - so_out != len_so)
+    ERR("SO encode length mismatch %d vs. %d (len)", so_p - so_out, len_so);
+  printf("Re-encoded result SO (len=%d):\n%.*s\n\n", len_so, len_so, so_out);
+
+  if (wo_p - wo_out != len_wo)
+    ERR("WO encode length mismatch %d vs %d (len)", wo_p - wo_out, len_wo);
+  printf("Re-encoded result WO (len=%d):\n%.*s\n\n", len_wo, len_wo, wo_out);
+
+  if (so_path)
+    write_all_path_fmt("SO", sizeof(buf), buf, "%s", so_path, 0, "%.*s", len_so, so_out);
+  if (wo_path)
+    write_all_path_fmt("WO", sizeof(buf), buf, "%s", wo_path, 0, "%.*s", len_wo, wo_out);
   return 0;
 }
 

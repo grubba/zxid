@@ -15,6 +15,8 @@
  * This file contains option processing, configuration, and main().
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
+ *
+ * WARNING: This file is outdated. See zxidhlo.c instead.
  */
 
 #include <string.h>
@@ -79,7 +81,6 @@ Usage: zxid [options]   (when used as CGI, no options can be supplied)\n\
 char* instance = "zxid";  /* how this server is identified in logs */
 int afr_buf_size = 0;
 int verbose = 1;
-int debugpoll = 0;
 int timeout = 0;
 int gcthreshold = 0;
 int leak_free = 0;
@@ -135,9 +136,6 @@ void opt(int* argc, char*** argv, char*** env, struct zxid_conf* cf, struct zxid
       switch ((*argv)[0][2]) {
       case '\0':
 	++zx_debug;
-	continue;
-      case 'p':  if ((*argv)[0][3]) break;
-	++debugpoll;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);

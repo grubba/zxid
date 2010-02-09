@@ -1,4 +1,5 @@
 /** enc-templ.c  -  XML encoder template, used in code generation
+ ** Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  ** Copyright (c) 2006-2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  ** Author: Sampo Kellomaki (sampo@iki.fi)
  ** This is confidential unpublished proprietary source code of the author.
@@ -13,6 +14,7 @@
  ** 26.8.2006, some CSE --Sampo
  ** 23.9.2006, added WO logic --Sampo
  ** 30.9.2007, improvements to WO encoding --Sampo
+ ** 8.2.2010,  better handling of schema order encoding of unknown namespace prefixes --Sampo
  **
  ** N.B: wo=wire order (needed for exc-c14n), so=schema order
  ** N.B2: This template is meant to be processed by pd/xsd2sg.pl. Beware

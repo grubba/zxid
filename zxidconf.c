@@ -16,7 +16,7 @@
  * 29.8.2009, added Auto-Cert feature a.k.a. zxid_mk_self_signed_cert() --Sampo
  * 4.9.2009,  added NEED, WANT, INMAP, PEPMAP, OUTMAP, and ATTRSRC --Sampo
  * 15.11.2009, added SHOW_CONF (o=d) option --Sampo
- * 7.1.2010,   added WSC and WSP signing options --Sampo
+ * 7.1.2010,  added WSC and WSP signing options --Sampo
  */
 
 #include <memory.h>

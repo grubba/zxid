@@ -73,7 +73,6 @@ char* instance = "zxid";  /* how this server is identified in logs */
 int afr_buf_size = 0;
 int verbose = 1;
 extern int zx_debug;
-int debugpoll = 0;
 int timeout = 0;
 int gcthreshold = 0;
 int leak_free = 0;
@@ -118,9 +117,6 @@ void opt(int* argc, char*** argv, char*** env)
       switch ((*argv)[0][2]) {
       case '\0':
 	++zx_debug;
-	continue;
-      case 'p':  if ((*argv)[0][3]) break;
-	++debugpoll;
 	continue;
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);

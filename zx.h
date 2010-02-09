@@ -205,9 +205,15 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #define ZX_OUT_STR(p, str) ZX_OUT_MEM(p, ((struct zx_str*)(x))->s, ((struct zx_str*)(x))->len)
 
 #define ZX_OUT_TAG(p, tag) ZX_OUT_MEM(p, tag, sizeof(tag)-1)
-#define ZX_OUT_SIMPLE_TAG(p, tag, len) MB ZX_OUT_CH(p, '<'); ZX_OUT_MEM(p, tag, len); ME
 #define ZX_OUT_CLOSE_TAG(p, tag) ZX_OUT_MEM(p, tag, sizeof(tag)-1)
-#define ZX_OUT_SIMPLE_CLOSE_TAG(p, tag, len) MB ZX_OUT_CH(p, '<'); ZX_OUT_CH(p, '/'); ZX_OUT_MEM(p, tag, len); ZX_OUT_CH(p, '>'); ME
+#if 1
+#define ZX_LEN_SIMPLE_TAG(tok, len, ns) (1 + ((tok == ZX_TOK_NOT_FOUND && ns && ns->prefix_len)?ns->prefix_len+1:0) + len)
+#define ZX_OUT_SIMPLE_TAG(p, tok, tag, len, ns) MB ZX_OUT_CH(p, '<'); if (tok == ZX_TOK_NOT_FOUND && ns && ns->prefix_len) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ME
+#define ZX_OUT_SIMPLE_CLOSE_TAG(p, tok, tag, len, ns) MB ZX_OUT_CH(p, '<'); ZX_OUT_CH(p, '/');  if (tok == ZX_TOK_NOT_FOUND && ns && ns->prefix_len) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ZX_OUT_CH(p, '>'); ME
+#else
+#define ZX_OUT_SIMPLE_TAG(p, tag, len, ns) MB ZX_OUT_CH(p, '<'); if (0&&ns) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ME
+#define ZX_OUT_SIMPLE_CLOSE_TAG(p, tag, len, ns) MB ZX_OUT_CH(p, '<'); ZX_OUT_CH(p, '/');  if (0&&ns) { ZX_OUT_MEM(p, ns->prefix, ns->prefix_len); ZX_OUT_CH(p, ':'); } ZX_OUT_MEM(p, tag, len); ZX_OUT_CH(p, '>'); ME
+#endif
 
 /* Special token values. */
 #define ZX_TOK_XMLNS     (-4)

@@ -35,8 +35,8 @@ default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool
 
 all: seehelp precheck precheck_apache zxid zxidhlo zxididp zxidsimple zxlogview samlmod phpzxid javazxid apachezxid zxdecode zxcot zxpasswd zxcall smime
 
-ZXIDVERSION=0x000049
-ZXIDREL=0.49
+ZXIDVERSION=0x000050
+ZXIDREL=0.50
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -1129,29 +1129,38 @@ precheckclean:
 	rm -f precheck/chk-zlib	precheck/chk-openssl precheck/chk-curl precheck/chk-apache
 
 ###
-### Installation (needs more work, try `make dir' or `make dir ZXID_PATH=/var/zxid/idp')
+### Test suite
 ###
 
-ZXDIR= $(ZXID_PATH)ses \
-	$(ZXID_PATH)user \
-	$(ZXID_PATH)uid \
-	$(ZXID_PATH)nid \
-	$(ZXID_PATH)log $(ZXID_PATH)log/rely $(ZXID_PATH)log/issue \
-	$(ZXID_PATH)cot
+t/cot:
+	./mkdirs.sh t/
+
+t/idpcot:
+	./mkdirs.sh t/idp
+
+t/wspcot:
+	./mkdirs.sh t/wsp
+
+t/wsp2cot:
+	./mkdirs.sh t/wsp2
+
+#test: t/cot t/idp t/wsp t/wsp2
+#	$(PERL) zxtest.pl
+
+test: test.o
+	$(CC) -o $@ $< -L. -lzxid $(LIBS)
+
+testclean:
+	rm -rf t/*ses t/*user t/*/uid t/*nid t/*log t/*cot t/*pem
+
+###
+### Installation (needs more work, try `make dir' or `make dir ZXID_PATH=/var/zxid/idp')
+###  ./zxmkdirs.sh /var/zxid/idp
+###
 
 dir:
-	-mkdir -p $(ZXID_PATH)
-	-for d in $(ZXDIR); do mkdir $$d && chmod 02770 $$d; done
-	-mkdir $(ZXID_PATH)pem   # Our certificates and private keys (need to protect well)
-	chmod -R 02750 $(ZXID_PATH)pem
+	./zxmkdirs.sh
 	-cp default-cot/* $(ZXID_PATH)cot
-	@$(ECHO) "You may need to run"
-	@$(ECHO)
-	@$(ECHO) "    chown -R nobody $(ZXID_PATH)"
-	@$(ECHO)
-	@$(ECHO) "to make sure the zxid CGI script can write to the $(ZXID_PATH)"
-	@$(ECHO) "directory (substitute nobody with the user your web server runs as)."
-	@$(ECHO)
 
 #	cp zxid.pem $(ZXID_PATH)pem/sign-nopw-cert.pem
 #	cp zxid.pem $(ZXID_PATH)pem/enc-nopw-cert.pem
@@ -1239,7 +1248,7 @@ clean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean prech
 
 dist:
 	rm -rf zxid-$(ZXIDREL)
-	mkdir zxid-$(ZXIDREL) zxid-$(ZXIDREL)/c zxid-$(ZXIDREL)/sg zxid-$(ZXIDREL)/t  zxid-$(ZXIDREL)/tex  zxid-$(ZXIDREL)/html zxid-$(ZXIDREL)/pulver zxid-$(ZXIDREL)/Net zxid-$(ZXIDREL)/Metadata zxid-$(ZXIDREL)/Raw zxid-$(ZXIDREL)/WSC zxid-$(ZXIDREL)/WSF_Raw zxid-$(ZXIDREL)/php zxid-$(ZXIDREL)/zxidjava zxid-$(ZXIDREL)/servlet zxid-$(ZXIDREL)/servlet/WEB-INF zxid-$(ZXIDREL)/servlet/META-INF zxid-$(ZXIDREL)/default-cot zxid-$(ZXIDREL)/py zxid-$(ZXIDREL)/ruby zxid-$(ZXIDREL)/csharp zxid-$(ZXIDREL)/precheck zxid-$(ZXIDREL)/pers zxid-$(ZXIDREL)/intra zxid-$(ZXIDREL)/protected zxid-$(ZXIDREL)/strong zxid-$(ZXIDREL)/other
+	mkdir zxid-$(ZXIDREL) zxid-$(ZXIDREL)/c zxid-$(ZXIDREL)/sg zxid-$(ZXIDREL)/t zxid-$(ZXIDREL)/tex  zxid-$(ZXIDREL)/html zxid-$(ZXIDREL)/pulver zxid-$(ZXIDREL)/Net zxid-$(ZXIDREL)/Metadata zxid-$(ZXIDREL)/Raw zxid-$(ZXIDREL)/WSC zxid-$(ZXIDREL)/WSF_Raw zxid-$(ZXIDREL)/php zxid-$(ZXIDREL)/zxidjava zxid-$(ZXIDREL)/servlet zxid-$(ZXIDREL)/servlet/WEB-INF zxid-$(ZXIDREL)/servlet/META-INF zxid-$(ZXIDREL)/default-cot zxid-$(ZXIDREL)/py zxid-$(ZXIDREL)/ruby zxid-$(ZXIDREL)/csharp zxid-$(ZXIDREL)/precheck zxid-$(ZXIDREL)/pers zxid-$(ZXIDREL)/intra zxid-$(ZXIDREL)/protected zxid-$(ZXIDREL)/strong zxid-$(ZXIDREL)/other
 	(cd zxid-$(ZXIDREL); ln -s . zx)
 	$(PERL) mkdist.pl zxid-$(ZXIDREL) <Manifest
 	tar czf zxid-$(ZXIDREL).tgz zxid-$(ZXIDREL)
