@@ -235,6 +235,7 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->sso_sign     = ZXID_SSO_SIGN;
   cf->wsc_sign     = ZXID_WSC_SIGN;
   cf->wsp_sign     = ZXID_WSP_SIGN;
+  cf->wspcgicmd    = ZXID_WSPCGICMD;
   cf->nameid_enc   = ZXID_NAMEID_ENC;
   cf->post_a7n_enc = ZXID_POST_A7N_ENC;
   cf->di_allow_create = ZXID_DI_ALLOW_CREATE;
@@ -412,6 +413,10 @@ struct zxid_conf* zxid_init_conf_ctx(struct zxid_conf* cf, char* zxid_path)
 #endif
   return cf;
 }
+
+/*() Allocate conf object, but do not actually initialize it with default config
+ * or config file.
+ * See: zxid_new_conf_to_cf() for a more complete solution. */
 
 /* Called by:  main x5, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode */
 struct zxid_conf* zxid_new_conf(const char* zxid_path)
@@ -1041,6 +1046,7 @@ scan_end:
       if (!strcmp(n, "WANT_AUTHN_REQ_SIGNED")) { SCAN_INT(v, cf->want_authn_req_signed); break; }
       if (!strcmp(n, "WSC_SIGN"))       { SCAN_INT(v, cf->wsc_sign); break; }
       if (!strcmp(n, "WSP_SIGN"))       { SCAN_INT(v, cf->wsp_sign); break; }
+      if (!strcmp(n, "WSPCGICMD"))      { cf->wspcgicmd = v; break; }
       if (!strcmp(n, "WSP_NOSIG_FATAL")) { SCAN_INT(v, cf->wsp_nosig_fatal); break; }
       goto badcf;
     case 'X':  /* XASP_VERS */
@@ -1234,6 +1240,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "SSO_SIGN=%x\n"
 "WSC_SIGN=%x\n"
 "WSP_SIGN=%x\n"
+"WSPCGICMD=%s\n"
 "NAMEID_ENC=%x\n"
 "POST_A7N_ENC=%d\n"
 "DI_ALLOW_CREATE=%d\n"
@@ -1363,6 +1370,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 cf->sso_sign,
 		 cf->wsc_sign,
 		 cf->wsp_sign,
+		 cf->wspcgicmd,
 		 cf->nameid_enc,
 		 cf->post_a7n_enc,
 		 cf->di_allow_create,

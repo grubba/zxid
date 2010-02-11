@@ -218,6 +218,9 @@
  *   0x03  Both Headers and Body are signed. */
 #define ZXID_WSP_SIGN 0x03
 
+/*(c) Command that will be executed by zxidwspcgi to respond to a web service call. */
+#define ZXID_WSPCGICMD "./zxid-wspcgicmd.sh"
+
 /*(c) Bit length of identifiers, unguessability
  * How many random bits to use in an ID. It would be useful if this was
  * such that it produces nice unpadded base64 string, i.e. multiple of 24 bits.

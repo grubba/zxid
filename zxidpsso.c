@@ -187,7 +187,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
   struct dirent * de;
   char mdpath[ZXID_MAX_BUF];
   char* logop;
-  char epr_buf[32*1024];
+  char* epr_buf;
   int epr_len;
   int is_di;
 
@@ -220,15 +220,18 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
     
     /* Probable enough, read and parse EPR so we can continue examination. */
     
-    epr_len = read_all(sizeof(epr_buf), epr_buf, "find_bs_svcmd", "%s/%s", mdpath, de->d_name);
+    epr_buf = ZX_ALLOC(cf->ctx, ZXID_INIT_EPR_BUF);
+    epr_len = read_all(ZXID_INIT_EPR_BUF, epr_buf, "find_bs_svcmd", "%s/%s", mdpath, de->d_name);
     if (!epr_len) {
       ERR("User's (%s) bootstrap(%s) lacks service metadata registration. Reject. Consider using zxcot -e ... | zxcot -bs. See zxid-idp.pd for further information.", uid, de->d_name);
+      ZX_FREE(cf->ctx, epr_buf);
       continue;
     }
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
     r = zx_DEC_root(cf->ctx, 0, 1);
     if (!r) {
       ERR("Failed to XML parse epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
+      ZX_FREE(cf->ctx, epr_buf);
       continue;
     }
     /* *** add ID-WSF 1.1 handling */
@@ -238,6 +241,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
     if (!epr || !epr->Metadata || !epr->Metadata->ServiceType
 	|| !epr->Metadata->ServiceType->content || !epr->Metadata->ServiceType->content->s) {
       ERR("No EPR, corrupt EPR, or missing <Metadata> %p or <ServiceType>. epr_buf(%.*s) file(%s)", epr->Metadata, epr_len, epr_buf, de->d_name);
+      ZX_FREE(cf->ctx, epr_buf);
       continue;
     }
     is_di = !memcmp(epr->Metadata->ServiceType->content->s, XMLNS_DISCO_2_0,
@@ -248,6 +252,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
       logop = zxid_add_fed_tok_to_epr(cf, epr, uid, 0); /* recurse, di tail */
     } else if (bs_lvl > cf->bootstrap_level) {
       D("No further bootstraps generated due to boostrap_level=%d (except di boostraps)", bs_lvl);
+      ZX_FREE(cf->ctx, epr_buf);
       continue;
     } else
       logop = zxid_add_fed_tok_to_epr(cf, epr, uid, bs_lvl+1); /* recurse */

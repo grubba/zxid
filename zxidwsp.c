@@ -281,6 +281,7 @@ struct zx_str* zxid_wsp_decorate(struct zxid_conf* cf, struct zxid_ses* ses, con
   }
   
   ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
+  D("DECOR len=%d envelope(%.*s)", ss->len, ss->len, ss->s);
   D_DEDENT("decor: ");
   return ss;
 }
@@ -353,6 +354,7 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
   env = r->Envelope;
   if (!env) {
     ERR("No <e:Envelope> found. enve(%s)", enve);
+    D_DEDENT("valid: ");
     return 0;
   }
   ZX_FREE(cf->ctx, r);
@@ -398,6 +400,7 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
   wsc_meta = zxid_get_ent_ss(cf, issuer);
   if (!wsc_meta) {
     ERR("Unable to find metadata for Sender(%.*s).", issuer->len, issuer->s);
+    D_DEDENT("valid: ");
     return 0;
     //cgi->sigval = "I";
     //cgi->sigmsg = "Issuer of Assertion unknown.";

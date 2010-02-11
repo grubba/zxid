@@ -148,8 +148,9 @@ servlet/META-INF/module.xml  - Axis2 module definitions
 servlet/WEB-INF/services.xml - Additional Axis2 definitions
 zxidhrxmlwsc.c   - Example of ID-SIS HR-XML Web Services Client
 zxidhrxmlwsp.c   - Example of ID-SIS HR-XML Web Services Provider
-zxididp.c        - A rudimentary IdP (WIP Nov 2008)
+zxididp.c        - A rudimentary IdP (WIP Jan 2010)
 zxidsp.c         - A slightly more configurable use of simple API
+zxidwspcgi.c     - Generic Web Services Provider that calls your shell script
 
 # S/MIME Utility for Certificate Manipulations, Signing, and Encryption
 
@@ -610,6 +611,15 @@ zxidjava/zxid_ses.java
 zxidjava/zxidjni.java
 zxidjava/zxidjniConstants.java
 zxidjava/zxidjniJNI.java
+
+# Test suite
+
+zxtest.pl              - Test suite driver program
+t/default-ns-bug.xml; t/XML1.out
+t/azrq1.xml; t/XML2.out
+t/azrs1.xml; t/XML3.out
+t/x-foobar-rq.xml
+t/id-hrxml-rq.xml
 
 # Precheck. These are build time tests for dependency libraries.
 

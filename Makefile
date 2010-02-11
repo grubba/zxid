@@ -31,12 +31,12 @@
 vpath %.c ../zxid
 vpath %.h ../zxid
 
-default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall
+default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxidwspcgi
 
-all: seehelp precheck precheck_apache zxid zxidhlo zxididp zxidsimple zxlogview samlmod phpzxid javazxid apachezxid zxdecode zxcot zxpasswd zxcall smime
+all: default precheck_apache samlmod phpzxid javazxid apachezxid smime
 
-ZXIDVERSION=0x000050
-ZXIDREL=0.50
+ZXIDVERSION=0x000051
+ZXIDREL=0.51
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -944,6 +944,9 @@ zxpasswd: zxpasswd.o libzxid.a
 zxcall: zxcall.o libzxid.a
 	$(LD) $(LDFLAGS) -o $@ $< -L. -lzxid $(LIBS)
 
+zxidwspcgi: zxidwspcgi.o libzxid.a
+	$(LD) $(LDFLAGS) -o $@ $< -L. -lzxid $(LIBS)
+
 zxidwsctool: $(ZXIDWSCTOOL_OBJ) libzxid.a
 	$(LD) $(LDFLAGS) -o zxidwsctool $(ZXIDWSCTOOL_OBJ) -L. -lzxid $(LIBS)
 
@@ -1144,14 +1147,14 @@ t/wspcot:
 t/wsp2cot:
 	./mkdirs.sh t/wsp2
 
-#test: t/cot t/idp t/wsp t/wsp2
-#	$(PERL) zxtest.pl
+test: t/cot t/idp t/wsp t/wsp2 zxencdectest zxcall zxididp
+	$(PERL) zxtest.pl -a
 
-test: test.o
-	$(CC) -o $@ $< -L. -lzxid $(LIBS)
+#test: test.o
+#	$(CC) -o $@ $< -L. -lzxid $(LIBS)
 
 testclean:
-	rm -rf t/*ses t/*user t/*/uid t/*nid t/*log t/*cot t/*pem
+	rm -rf t/*ses t/*user t/*/uid t/*nid t/*log t/*cot t/*pem tmp/*.out tmp/*.err
 
 ###
 ### Installation (needs more work, try `make dir' or `make dir ZXID_PATH=/var/zxid/idp')

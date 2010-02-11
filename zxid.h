@@ -137,6 +137,7 @@ struct zxid_conf {
   char  notimestamp_fatal;
   char  redir_to_content;    /* Should explicit redirect to content be used (vs. internal redir) */
   char  remote_user_ena;
+  char* wspcgicmd;
   char* anon_ok;
   char** required_authnctx;  /* Array of acceptable authentication context class refs */
   char* issue_authnctx_pw;   /* What authentication context IdP issues for password authent. */

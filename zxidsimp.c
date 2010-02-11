@@ -1274,7 +1274,7 @@ char* zxid_simple_cf_ses(struct zxid_conf* cf, int qs_len, char* qs, struct zxid
 	    sp_soap:
 	      /* *** TODO: SOAP response should not be sent internally unless there is auto */
 	      ret = zxid_sp_soap_parse(cf, &cgi, ses, got, buf);
-	      D("POST soap parse returned %d", ret);
+	      D("POST soap parse returned %d (0=fail, 1=ok, 2=redir, 3=sso ok)", ret);
 	      if (ret == ZXID_SSO_OK)
 		return zxid_simple_ab_pep(cf, ses, res_len, auto_flags);
 	      if (auto_flags & ZXID_AUTO_SOAPC || auto_flags & ZXID_AUTO_SOAPH) {

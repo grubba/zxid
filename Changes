@@ -18,8 +18,13 @@ To do:
     - Eliminate unnecessary UI clutter: show technical flag
     - (Local) logout should either return to referer, or to configurable page
 
-zxid-0.50:: 2.2.2010
-    - Some tests
+zxid-0.51:: 11.2.2010
+    NOT PUB
+zxid-0.50:: 9.2.2010
+    - Fixed missing prefix in case of unknown tag/namespace
+    - Fixed ordering of unknown tags
+    - Added beginnings of a test suite, see zxtest.pl
+    - Added WSP tool: zxidwspcgi
 zxid-0.49:: 1.2.2010
     - Added AuthnSvc client and zxcall tool, which allows shellscript wsc
     - The zxcall tool also allows shell script az

@@ -26,6 +26,7 @@
 
 CU8* help =
 "zxcall  -  Web Service Client tool R" ZXID_REL "\n\
+SAML 2.0 and ID-WSF 2.0 are standards for federated identity and web services.\n\
 Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
@@ -46,10 +47,12 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
   -az AZCREDS      Optional authorization credentials. Query string format.\n\
                    N.B. For authorization to work PDP_URL configuration option is needed.\n\
   -e SOAPBODY      Pass SOAP body as argument (default is to read from STDIN)\n\
+  -b               In response, only return content of SOAP body, omitting Envelope and Body.\n\
   -n               Dryrun. Do not actually make call. Instead print it to stdout.\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
+  -dc              Dump config.\n\
   -h               This help message\n\
   --               End of options\n\
 \n\
@@ -58,6 +61,7 @@ echo '<query>Foo</query>' | zxcall -a user:pw -t urn:x-demo-svc\n\
 
 int dryrun  = 0;
 int verbose = 1;
+int out_fmt = 0;
 char* entid = 0;
 char* idp   = 0;
 char* user  = 0;
@@ -72,6 +76,7 @@ struct zxid_conf* cf;
 /* Called by:  main x9 */
 static void opt(int* argc, char*** argv, char*** env)
 {
+  struct zx_str* ss;
   if (*argc <= 1) return;
   
   while (1) {
@@ -102,6 +107,14 @@ static void opt(int* argc, char*** argv, char*** env)
       }
       break;
 
+    case 'b':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++out_fmt;
+	continue;
+      }
+      break;
+
     case 'c':
       switch ((*argv)[0][2]) {
       case '\0':
@@ -121,6 +134,10 @@ static void opt(int* argc, char*** argv, char*** env)
 	++(*argv); --(*argc);
 	if ((*argc) < 1) break;
 	di = (*argv)[0];
+	continue;
+      case 'c':
+	ss = zxid_show_conf(cf);
+	fprintf(stderr, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
 	continue;
       }
       break;
@@ -233,12 +250,13 @@ int zxcall_main(int argc, char** argv, char** env)
 {
   int siz, got, n;
   char* p;
+  char* q;
   struct zx_str* ss;
   struct zxid_ses* ses;
   struct zxid_entity* idp_meta;
   
   strncpy(zx_instance, "\tzxcall", sizeof(zx_instance));
-  cf = zxid_new_conf(ZXID_PATH);
+  cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
   
   if (sid) {
@@ -300,7 +318,33 @@ int zxcall_main(int argc, char** argv, char** env)
     }
     if (verbose)
       fprintf(stderr, "Call returned %d bytes.\n", ss->len);
-    printf("%.*s", ss->len, ss->s);
+    if (out_fmt) {
+      for (p = ss->s;; p+=4) {
+	p = strstr(p, "Body");
+	if (!p) {
+nobody:
+	  ERR("Response does not contain <Body> len=%d res(%.*s)", ss->len, ss->len, ss->s);
+	  return 1;
+	}
+	if (p > ss->s && ONE_OF_2(p[-1], '<', ':') && ONE_OF_5(p[4], '>', ' ', '\t', '\r', '\n'))
+	  break;
+      }
+      for (p += 4; *p && *p != '>'; ++p) ;
+      if (!*p)
+	goto nobody;
+      
+      for (q = ++p; ; q+=5) {
+	q = strstr(q, "Body>");
+	if (!q)
+	  goto nobody;
+	if (ONE_OF_2(q[-1], '<', ':'))
+	  break;
+      }
+      for (q; *q != '<'; --q) ;
+      
+      printf("%.*s", q - p, p);
+    } else
+      printf("%.*s", ss->len, ss->s);
   } else {
     D("Call Az(%s)", az);
     if (dryrun) {

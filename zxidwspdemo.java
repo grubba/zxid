@@ -108,7 +108,7 @@ public class zxidwspdemo extends HttpServlet {
 	}
 	
 	res.getOutputStream().print(ret);
-	System.err.print("^^^^^^^^^^^^^ WSP Done. ^^^^^^^^^^^^^\n\n");
+	System.err.print("^^^^^^^^^^^^^ WSP Done ("+ret.length()+" chars output) ^^^^^^^^^^^^^\n\n");
     }
 }
 
