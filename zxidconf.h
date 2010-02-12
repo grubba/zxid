@@ -127,6 +127,13 @@
 #define ZXID_MD_CACHE_FIRST    1
 #define ZXID_MD_CACHE_LAST     1
 
+/*(c) Whether to load CoT cache from a file containing the concatenated metadata
+ * of the Circle of Trust. Some real world federations distribute their
+ * metadata this way. Setting this to 0 disables the feature (default).
+ * Setting this to file name or path enables this feature. */
+
+#define ZXID_LOAD_COT_CACHE 0
+
 /*(c) Automatic Self-signed Cert Generation (Auto-Cert)
  * If ZXID does not find one of the certificate plus private key
  * pairs it needs to operate, it will generate automatically
@@ -534,6 +541,10 @@
 /*(c) Simple API HTML customization.
  * These allow simple branding and customization.
  * If these options are not enough for you, consider simply rendering your own forms. */
+
+/*(c) Whether to show more technical fields in the GUI. Normally they
+ * are hidden and POST profile is used */
+#define ZXID_SHOW_TECH 0
 
 /*(c) Body tag for the ZXID generated pages.
  * Edit this to change the colors. */

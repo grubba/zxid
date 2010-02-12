@@ -17,7 +17,7 @@
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile
  * P2 = SAML 2.0 POST Profile
- * '' = SAML 2.0 POST Simple Sign
+ * S2 = SAML 2.0 POST Simple Sign
  * A12 = Liberty ID-FF 1.2 Artifact Profile
  * P12 = Liberty ID-FF 1.2 POST Profile
  * A1 = Bare SAML 1.x Artifact Profile
@@ -382,28 +382,42 @@ char* zxid_idp_list_cf_cgi(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_
 		 idp->eid_len, idp->eid, idp->eid_len, idp->eid,
 		 mark);
 #else
-    dd = zx_strf(cf->ctx, "%.*s"
-		 "<input type=submit name=\"l0%.*s\" value=\" Login to %.*s \">\n"
-		 "<input type=submit name=\"l1%.*s\" value=\" Login to %.*s (A2) \">\n"
-		 "<input type=submit name=\"l2%.*s\" value=\" Login to %.*s (P2) \">\n"
-		 "<input type=submit name=\"l5%.*s\" value=\" Login to %.*s (S2) \">%s<br>\n",
-		 ss->len, ss->s,
-		 idp->eid_len, idp->eid, idp->eid_len, idp->eid,
-		 idp->eid_len, idp->eid, idp->eid_len, idp->eid,
-		 idp->eid_len, idp->eid, idp->eid_len, idp->eid,
-		 idp->eid_len, idp->eid, idp->eid_len, idp->eid,
-		 mark);
+    if (show_tech) {
+      dd = zx_strf(cf->ctx, "%.*s"
+		   "<input type=submit name=\"l0%.*s\" value=\" Login to %.*s \">\n"
+		   "<input type=submit name=\"l1%.*s\" value=\" Login to %.*s (A2) \">\n"
+		   "<input type=submit name=\"l2%.*s\" value=\" Login to %.*s (P2) \">\n"
+		   "<input type=submit name=\"l5%.*s\" value=\" Login to %.*s (S2) \">%s<br>\n",
+		   ss->len, ss->s,
+		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
+		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
+		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
+		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
+		   mark);
+    } else {
+      dd = zx_strf(cf->ctx, "%.*s"
+		   "<input type=submit name=\"l0%.*s\" value=\" Login to %.*s \">%s<br>\n"
+		   ss->len, ss->s,
+		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
+		   mark);
+    }
 #endif
     zx_str_free(cf->ctx, ss);
     ss = dd;
   }
 #ifdef ZXID_USE_POPUP
-  dd = zx_strf(cf->ctx, "%.*s</select>"
-	       "<input type=submit name=\"l0\" value=\" Login \">\n"
-	       "<input type=submit name=\"l1\" value=\" Login (A2) \">\n"
-	       "<input type=submit name=\"l2\" value=\" Login (P2) \">\n"
-	       "<input type=submit name=\"l5\" value=\" Login (S2) \"><br>\n",
-	       ss->len, ss->s);
+  if (show_tech) {
+    dd = zx_strf(cf->ctx, "%.*s</select>"
+		 "<input type=submit name=\"l0\" value=\" Login \">\n"
+		 "<input type=submit name=\"l1\" value=\" Login (A2) \">\n"
+		 "<input type=submit name=\"l2\" value=\" Login (P2) \">\n"
+		 "<input type=submit name=\"l5\" value=\" Login (S2) \"><br>\n",
+		 ss->len, ss->s);
+  } else {
+    dd = zx_strf(cf->ctx, "%.*s</select>"
+		 "<input type=submit name=\"l0\" value=\" Login \"><br>\n",
+		 ss->len, ss->s);
+  }
   zx_str_free(cf->ctx, ss);
   ss = dd;
 #endif
@@ -1330,7 +1344,7 @@ done:
 
 /*() Allocate simple session and then call simple handler. Strings
  * are length + pointer (no C string nul termination needed).
- * a wrapper for zxid_simple_cf().
+ * A wrapper for zxid_simple_cf().
  *
  * cf:: Configuration object
  * qs_len:: Length of the query string. -1 = use strlen()

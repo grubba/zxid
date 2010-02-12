@@ -137,6 +137,8 @@ struct zxid_conf {
   char  notimestamp_fatal;
   char  redir_to_content;    /* Should explicit redirect to content be used (vs. internal redir) */
   char  remote_user_ena;
+  char  show_tech;
+  char* load_cot_cache;
   char* wspcgicmd;
   char* anon_ok;
   char** required_authnctx;  /* Array of acceptable authentication context class refs */
@@ -662,10 +664,10 @@ struct zx_str* zxid_mni_do_ss(struct zxid_conf* cf, struct zxid_cgi* cgi, struct
 
 /* zxidpep */
 
-int zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, const char* pdp_url);
-int zxid_az_cf_ses(struct zxid_conf* cf, const char* qs, struct zxid_ses* ses);
-int zxid_az_cf(struct zxid_conf* cf, const char* qs, const char* sid);
-int zxid_az(const char* conf, const char* qs, const char* sid);
+char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, const char* pdp_url);
+char* zxid_az_cf_ses(struct zxid_conf* cf, const char* qs, struct zxid_ses* ses);
+char* zxid_az_cf(struct zxid_conf* cf, const char* qs, const char* sid);
+char* zxid_az(const char* conf, const char* qs, const char* sid);
 
 /* zxida7n */
 

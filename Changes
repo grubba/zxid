@@ -15,11 +15,14 @@ To do:
       3. Indication of which virtual server
       4. If SOAP, the name of the first direct child element of the SOAP Body
       5. Any SOAP Action header, from SOAP message or from HTTP header.
-    - Eliminate unnecessary UI clutter: show technical flag
     - (Local) logout should either return to referer, or to configurable page
+    - Thread safety: cf->ipport, key loading, indent, cf->curl, cf->cot
 
 zxid-0.51:: 11.2.2010
     NOT PUB
+    - LOAD_COT_CACHE=file feature. The cache is concatenation of the metadata of CoT
+    - Change zxid_az() to return string containing XACML obligations
+    - Eliminate unnecessary UI clutter: show_tech config flag
 zxid-0.50:: 9.2.2010
     - Fixed missing prefix in case of unknown tag/namespace
     - Fixed ordering of unknown tags

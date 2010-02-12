@@ -1,4 +1,5 @@
 /* zxidpep.c  -  Handwritten functions for XACML Policy Enforcement Point
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -37,13 +38,14 @@
  * cgi:: if non-null, will receive error and status codes
  * ses:: all attributes are obtained from the session. You may wish
  *     to add additional attributes that are not known by SSO.
- * returns:: 0 on deny (for any reason, e.g. indeterminate), or 1 if permit
+ * returns:: 0 on deny (for any reason, e.g. indeterminate), or string
+ *     containing the obligations on permit.
  *
  * For simpler API, see zxid_az() family of functions.
  */
 
 /* Called by:  zxid_az_cf_ses, zxid_simple_ab_pep, zxid_simple_ses_active_cf */
-int zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, const char* pdp_url)
+char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, const char* pdp_url)
 {
   struct zxid_map* map;
   struct zxid_attr* at;
@@ -59,7 +61,7 @@ int zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
   struct zx_root_s* r;
   struct zx_e_Header_s* hdr;
   struct zx_e_Body_s* body;
-  struct zx_str* loc;
+  struct zx_str* ss;
   struct zx_sp_Response_s* resp;
   struct zx_sa_Statement_s* stmt;
   struct zx_xasa_XACMLAuthzDecisionStatement_s* az_stmt;
@@ -192,16 +194,16 @@ int zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
   }
 
 #if 0
-  //loc = zx_ref_str(cf->ctx, "https://idpdemo.tas3.eu:8443/zxididp?o=S");
+  //ss = zx_ref_str(cf->ctx, "https://idpdemo.tas3.eu:8443/zxididp?o=S");
   // http://192.168.136.42:1104/axis2/services/TestPolicy.PERMISAuthzServerHttpSoap12Endpoint/
   // http://192.168.1.27:1104/axis2/services/TestPolicy?wsdl
   // http://192.168.1.66:1104/axis2/services/TestPolicy.PERMISAuthzServerHttpEndpoint/
-  loc = zx_ref_str(cf->ctx, "http://192.168.1.27:1104/axis2/services/TestPolicy.PERMISAuthzServerHttpEndpoint/");
-  //loc = zx_ref_str(cf->ctx, "");
-  //loc = zx_ref_str(cf->ctx, "http://192.168.1.66:1104/axis2/services/TestPolicy.PERMISAuthzServerHttpEndpoint/");
-  //loc = zx_ref_str(cf->ctx, "http://192.168.1.27:1104/axis2/services/TestPolicy.PERMISAuthzServerHttpSoap12Endpoint/");
+  ss = zx_ref_str(cf->ctx, "http://192.168.1.27:1104/axis2/services/TestPolicy.PERMISAuthzServerHttpEndpoint/");
+  //ss = zx_ref_str(cf->ctx, "");
+  //ss = zx_ref_str(cf->ctx, "http://192.168.1.66:1104/axis2/services/TestPolicy.PERMISAuthzServerHttpEndpoint/");
+  //ss = zx_ref_str(cf->ctx, "http://192.168.1.27:1104/axis2/services/TestPolicy.PERMISAuthzServerHttpSoap12Endpoint/");
 #else
-  loc = zx_ref_str(cf->ctx, pdp_url);
+  ss = zx_ref_str(cf->ctx, pdp_url);
 #endif
   r = zxid_soap_call_hdr_body(cf, loc, hdr, body);
   //r = zxid_idp_soap(cf, cgi, ses, idp_meta, ZXID_MNI_SVC, body);
@@ -223,8 +225,13 @@ int zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
     decision = az_stmt->Response->Result->Decision;
     if (decision && decision->content->len == sizeof("Permit")-1
 	&& !memcmp(decision->content->s, "Permit", sizeof("Permit")-1)) {
-      D("Permit %d", 1);
-      return 1;
+      ss = zx_EASY_ENC_WO_xac_Result(cf->ctx, az_stmt->Response->Result);
+      if (!ss || !ss->len)
+	return 0;
+      name = ss->s;
+      ZX_FREE(cf->ctx, ss);
+      D("Permit azstmt(%s)", name);
+      return name;
     }
   }
   az_stmt_cd1 = resp->Assertion->xasacd1_XACMLAuthzDecisionStatement;
@@ -232,8 +239,13 @@ int zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
     decision = az_stmt_cd1->Response->Result->Decision;
     if (decision && decision->content->len == sizeof("Permit")-1
 	&& !memcmp(decision->content->s, "Permit", sizeof("Permit")-1)) {
-      D("Permit cd1 %d", 1);
-      return 1;
+      ss = zx_EASY_ENC_WO_xac_Result(cf->ctx, az_stmt_cd1->Response->Result);
+      if (!ss || !ss->len)
+	return 0;
+      name = ss->s;
+      ZX_FREE(cf->ctx, ss);
+      D("Permit cd1(%s)", name);
+      return name;
     }
   }
   stmt = resp->Assertion->Statement;
@@ -241,8 +253,13 @@ int zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
     decision = stmt->Response->Result->Decision;
     if (decision && decision->content->len == sizeof("Permit")-1
 	&& !memcmp(decision->content->s, "Permit", sizeof("Permit")-1)) {
-      D("Permit stmt %d", 1);
-      return 1;
+      ss = zx_EASY_ENC_WO_xac_Result(cf->ctx, stmt->Response->Result);
+      if (!ss || !ss->len)
+	return 0;
+      name = ss->s;
+      ZX_FREE(cf->ctx, ss);
+      D("Permit stmt(%s)", name);
+      return name;
     }
   }
   /*if (resp->Assertion->AuthzDecisionStatement) {  }*/
@@ -252,13 +269,27 @@ int zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
 
 /*int zxid_az_cf_cgi_ses(struct zxid_conf* cf,  struct zxid_cgi* cgi, struct zxid_ses* ses);*/
 
-/*() See zxid_call_cf() for documentation. Only difference is that the session is
- * accepted as data structure instead of a session id. */
+/*(i) Call Policy Decision Point (PDP) to obtain an authorization decision
+ * about a contemplated action on a resource. The attributes from the session
+ * pool, as filtered by ~PEPMAP~ are fed to the PDP as inputs
+ * for the decision.
+ *
+ * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~ options
+ *     set according to your situation.
+ * qs:: if non-null, will resceive error and status codes
+ * ses:: all attributes are obtained from the session. You may wish
+ *     to add additional attributes that are not known by SSO.
+ *     The session object, e.g. from zxid_get_ses()
+ * returns:: 0 on deny (for any reason, e.g. indeterminate),  or string
+ *     containing the obligations on permit.
+ *
+ * For simpler API, see zxid_az() family of functions.
+ */
 
 /* Called by:  zxid_az_cf */
-int zxid_az_cf_ses(struct zxid_conf* cf, const char* qs, struct zxid_ses* ses)
+char* zxid_az_cf_ses(struct zxid_conf* cf, const char* qs, struct zxid_ses* ses)
 {
-  int ret;
+  char* ret;
   struct zxid_cgi cgi;
   D_INDENT("az: ");
   memset(&cgi, 0 , sizeof(struct zxid_cgi));
@@ -279,15 +310,17 @@ int zxid_az_cf_ses(struct zxid_conf* cf, const char* qs, struct zxid_ses* ses)
  * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~ options
  *     set according to your situation.
  * qs:: if non-null, will resceive error and status codes
- * ses:: all attributes are obtained from the session. You may wish
- *     to add additional attributes that are not known by SSO.
- * returns:: 0 on deny (for any reason, e.g. indeterminate), or 1 if permit
+ * sid:: all attributes are obtained from the session. You may wish
+ *     to add additional attributes that are not known by SSO. The
+ *     session id, such as returned from SSO.
+ * returns:: 0 on deny (for any reason, e.g. indeterminate),  or string
+ *     containing the obligations on permit.
  *
  * For simpler API, see zxid_az() family of functions.
  */
 
 /* Called by:  zxid_az */
-int zxid_az_cf(struct zxid_conf* cf, const char* qs, const char* sid)
+char* zxid_az_cf(struct zxid_conf* cf, const char* qs, const char* sid)
 {
   struct zxid_ses ses;
   memset(&ses, 0 , sizeof(struct zxid_ses));
@@ -300,7 +333,7 @@ int zxid_az_cf(struct zxid_conf* cf, const char* qs, const char* sid)
  * is accepted as a string instead of an object. */
 
 /* Called by: */
-int zxid_az(const char* conf, const char* qs, const char* sid)
+char* zxid_az(const char* conf, const char* qs, const char* sid)
 {
   struct zx_ctx ctx;
   struct zxid_conf cf;

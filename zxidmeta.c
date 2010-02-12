@@ -222,16 +222,18 @@ struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name
   DD("md_buf(%.*s) got=%d siz=%d md_buf(%s)", got, md_buf, got, siz, sha1_name);
   
   p = md_buf;
-  ent = zxid_parse_meta(cf, &p, md_buf+got);
-  DD("++++++++++++sha1_name(%s)", sha1_name);
-  if (!ent) {
-    ZX_FREE(cf->ctx, md_buf);
-    ERR("***** Parsing metadata failed for sha1_name(%s)", sha1_name);
-    return 0;
+  while (p < md_buf+got) {
+    ent = zxid_parse_meta(cf, &p, md_buf+got);
+    DD("++++++++++++sha1_name(%s)", sha1_name);
+    if (!ent) {
+      ZX_FREE(cf->ctx, md_buf);
+      ERR("***** Parsing metadata failed for sha1_name(%s)", sha1_name);
+      return 0;
+    }
+    ent->n = cf->cot;
+    cf->cot = ent;
+    D("GOT META sha1_name(%s) eid(%.*s)", sha1_name, ent->eid_len, ent->eid);
   }
-  ent->n = cf->cot;
-  cf->cot = ent;
-  D("GOT META sha1_name(%s) eid(%.*s)", sha1_name, ent->eid_len, ent->eid);
   return ent;
 
 readerr:
@@ -249,6 +251,11 @@ struct zxid_entity* zxid_get_ent_from_cache(struct zxid_conf* cf, struct zx_str*
 {
   struct zxid_entity* ent;
   char sha1_name[28];
+  if (cf->load_cot_cache && !cf->cot) {
+    D("Loading cot cache from(%s)", cf->load_cot_cache);
+    zxid_get_ent_from_file(cf, cf->load_cot_cache);
+    D("CoT cache loaded from(%s)", cf->load_cot_cache);
+  }
   for (ent = cf->cot; ent; ent = ent->n)  /* Check in memory cache. */
     if (eid->len == ent->eid_len && !memcmp(eid->s, ent->eid, eid->len)) {
       D("GOT FROM MEM eid(%.*s)", ent->eid_len, ent->eid);

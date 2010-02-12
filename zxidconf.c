@@ -263,6 +263,7 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->md_populate_cache = ZXID_MD_POPULATE_CACHE;
   cf->md_cache_first    = ZXID_MD_CACHE_FIRST;
   cf->md_cache_last     = ZXID_MD_CACHE_LAST;
+  cf->load_cot_cache    = ZXID_LOAD_COT_CACHE;
   cf->auto_cert         = ZXID_AUTO_CERT;
   cf->ses_arch_dir      = ZXID_SES_ARCH_DIR;
   cf->ses_cookie_name   = ZXID_SES_COOKIE_NAME;
@@ -321,6 +322,7 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->max_soap_retry    = ZXID_MAX_SOAP_RETRY;
   cf->mod_saml_attr_prefix = ZXID_MOD_SAML_ATTR_PREFIX;
 
+  cf->show_tech         = ZXID_SHOW_TECH;
   cf->idp_sel_page      = ZXID_IDP_SEL_PAGE;
   cf->idp_sel_start     = ZXID_IDP_SEL_START;
   cf->idp_sel_new_idp   = ZXID_IDP_SEL_NEW_IDP;
@@ -937,6 +939,7 @@ scan_end:
       if (!strcmp(n, "LOCALPDP_ROLE_DENY"))     { cf->localpdp_role_deny     = zxid_load_cstr_list(cf, cf->localpdp_role_deny, v);     break; }
       if (!strcmp(n, "LOCALPDP_IDPNID_PERMIT")) { cf->localpdp_idpnid_permit = zxid_load_cstr_list(cf, cf->localpdp_idpnid_permit, v); break; }
       if (!strcmp(n, "LOCALPDP_IDPNID_DENY"))   { cf->localpdp_idpnid_deny   = zxid_load_cstr_list(cf, cf->localpdp_idpnid_deny, v);   break; }
+      if (!strcmp(n, "LOAD_COT_CACHE"))   { cf->load_cot_cache = v; break; }
       goto badcf;
     case 'M':  /* MD_FETCH, MD_POPULATE_CACHE, MD_CACHE_FIRST, MD_CACHE_LAST */
       if (!strcmp(n, "MD_FETCH"))          { SCAN_INT(v, cf->md_fetch); break; }
@@ -1031,6 +1034,7 @@ scan_end:
       if (!strcmp(n, "SSO_SOAP_SIGN"))  { SCAN_INT(v, cf->sso_soap_sign); break; }
       if (!strcmp(n, "SSO_SOAP_RESP_SIGN"))  { SCAN_INT(v, cf->sso_soap_resp_sign); break; }
       if (!strcmp(n, "SHOW_CONF"))      { SCAN_INT(v, cf->show_conf); break; }
+      if (!strcmp(n, "SHOW_TECH"))      { SCAN_INT(v, cf->show_tech); break; }
       goto badcf;
     case 'T':  /* TIMEOUT_FATAL */
       if (!strcmp(n, "TIMEOUT_FATAL"))  { SCAN_INT(v, cf->timeout_fatal); break; }
@@ -1226,6 +1230,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "CDC_URL=%s\n"
 "CDC_CHOICE=%d\n"
 
+"LOAD_COT_CACHE=%s\n"
 "MD_FETCH=%d\n"
 "MD_POPULATE_CACHE=%d\n"
 "MD_CACHE_FIRST=%d\n"
@@ -1296,6 +1301,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "PDP_CALL_URL=%s\n"
 "XASP_VERS=%s\n"
 "MOD_SAML_ATTR_PREFIX=%s\n"
+"SHOW_TECH=%d\n"
 "</pre>"
 
 "<textarea cols=100 rows=20>"
@@ -1356,6 +1362,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 STRNULLCHK(cf->cdc_url),
 		 cf->cdc_choice,
 
+		 STRNULLCHK(cf->load_cot_cache),
 		 cf->md_fetch,
 		 cf->md_populate_cache,
 		 cf->md_cache_first,
@@ -1426,6 +1433,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 STRNULLCHK(cf->pdp_call_url),
 		 STRNULLCHK(cf->xasp_vers),
 		 STRNULLCHK(cf->mod_saml_attr_prefix),
+		 cf->show_tech,
 
 		 STRNULLCHK(cf->idp_sel_page),
 		 STRNULLCHK(cf->idp_sel_start),

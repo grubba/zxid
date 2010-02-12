@@ -181,15 +181,7 @@ int zxidwspcgi_main(int argc, char** argv)
     return 1;
   }
 
-#if 0
-  zx_reset_ctx(&ctx);
-  memset(&cfs, 0, sizeof(struct zxid_conf));
-  cfs.ctx = &ctx;
-  cf = &cfs;
-  zxid_conf_to_cf_len(cf, -1, CONF);
-#else
   cf = zxid_new_conf_to_cf(CONF);
-#endif
 
   /* Dynamic construction of URL configuration parameter */
 
@@ -216,7 +208,7 @@ int zxidwspcgi_main(int argc, char** argv)
   zxid_url_set(cf, urlbuf);
 
   //if (!memcmp(qs+cl-4, "?o=B", 4)) {
-  if (!memcmp(qs, "o=B", 3)) {
+  if (qs[0] == 'o' && qs[1] == '=' && ONE_OF_2(qs[2], 'B', 'd')) {
     D("Metadata qs(%s)", qs);
     //cf = zxid_new_conf_to_cf(CONF);
     
