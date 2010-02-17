@@ -34,10 +34,7 @@ $trace = 0;
 
 select STDERR; $| = 1; select STDOUT; $| = 1;
 warn "START pid=$$ $cvsid qs($ENV{'QUERY_STRING'})";
-
-if ($ARGV[0] eq '-a') {
-    $ascii = shift;
-}
+$ascii = shift if $ARGV[0] eq '-a';
 syswrite STDOUT, "Content-Type: text/html\r\n\r\n" if !$ascii;
 
 ### N.B. Ignoring SIGCHLD breaks return value of system() and $?

@@ -1094,13 +1094,13 @@ tas3idppkg: zxididp zxpasswd zxcot zxdecode
 
 TAS3LINUXX86=T3-ZXID-LINUX-X86_$(ZXIDREL)
 
-tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode mod_auth_saml.so php/php_zxid.so zxidjava/libzxidjni.so zxidjava/zxidjni.class
+tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/php_zxid.so zxidjava/libzxidjni.so zxidjava/zxidjni.class
 	rm -rf $(TAS3LINUXX86) $(TAS3LINUXX86).zip
 	mkdir $(TAS3LINUXX86)
 	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
 	cp mod_auth_saml.so $(TAS3LINUXX86)
 	cp *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
-	cp zxididp zxpasswd zxcot zxdecode zxid-idp.pd $(TAS3LINUXX86)
+	cp zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
 	cp zxidjava/libzxidjni.so zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3LINUXX86)
 	cp $(TAS3COMMONFILES) $(TAS3LINUXX86)
 	zip -r $(TAS3LINUXX86).zip $(TAS3LINUXX86)

@@ -280,7 +280,7 @@ void zxlog_write_line(struct zxid_conf* cf, char* c_path, int encflags, int n, c
 /* Called by:  zxid_an_page_cf, zxid_anoint_sso_a7n, zxid_anoint_sso_resp, zxid_chk_sig, zxid_decode_redir_or_post x2, zxid_fed_mgmt_cf, zxid_get_ent_by_sha1_name, zxid_get_ent_ss, zxid_get_meta x2, zxid_idp_dispatch, zxid_idp_select_zxstr_cf_cgi, zxid_idp_soap_dispatch x2, zxid_idp_soap_parse, zxid_parse_conf_raw, zxid_parse_meta, zxid_saml_ok x2, zxid_simple_render_ses, zxid_simple_ses_active_cf, zxid_sp_anon_finalize, zxid_sp_deref_art x5, zxid_sp_dig_sso_a7n x2, zxid_sp_dispatch, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_mni_soap, zxid_sp_slo_redir, zxid_sp_slo_soap, zxid_sp_soap_dispatch x2, zxid_sp_soap_parse, zxid_sp_sso_finalize x2, zxid_start_sso_url x3 */
 int zxlog(struct zxid_conf* cf,   /* 1 */
 	  struct timeval* ourts,  /* 2 null allowed, will use current time */
-	  struct timeval* srcts,  /* 3 null allowed, willnuse start of unix epoch + 501 usec */
+	  struct timeval* srcts,  /* 3 null allowed, will use start of unix epoch + 501 usec */
 	  const char* ipport,     /* 4 null allowed, -:- or cf->ipport if not given */
 	  struct zx_str* entid,   /* 5 null allowed, - if not given */
 	  struct zx_str* msgid,   /* 6 null allowed, - if not given */
