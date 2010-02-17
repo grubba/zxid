@@ -10,6 +10,7 @@
  * 14.11.2008, created --Sampo
  * 4.9.2009,   added persistent nameid support --Sampo
  * 24.11.2009, fixed handling of transient nameid --Sampo
+ * 12.2.2010,  added locking to lazy loading --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
@@ -35,6 +36,8 @@
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso x3 */
 int zxid_anoint_a7n(struct zxid_conf* cf, int sign, struct zx_sa_Assertion_s* a7n, struct zx_str* issued_to, const char* lk)
 {
+  X509* sign_cert;
+  RSA*  sign_pkey;
   struct zxsig_ref refs;
   struct zx_str* ss;
   struct zx_str* logpath;
@@ -44,11 +47,8 @@ int zxid_anoint_a7n(struct zxid_conf* cf, int sign, struct zx_sa_Assertion_s* a7
   if (sign) {
     refs.id = a7n->ID;
     refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
-    if (!cf->sign_cert) /* Lazy load cert and private key */
-      cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-    if (!cf->sign_pkey)
-      cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-    a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, cf->sign_cert, cf->sign_pkey);
+    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert anoint a7n"))
+      a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
     zx_str_free(cf->ctx, refs.canon);
   }
   
@@ -90,6 +90,8 @@ int zxid_anoint_a7n(struct zxid_conf* cf, int sign, struct zx_sa_Assertion_s* a7
 /* Called by:  zxid_idp_sso x4 */
 static struct zx_str* zxid_anoint_sso_resp(struct zxid_conf* cf, int sign, struct zx_sp_Response_s* resp, struct zx_sp_AuthnRequest_s* ar)
 {
+  X509* sign_cert;
+  RSA*  sign_pkey;
   struct zxsig_ref refs;
   struct zx_str* ss;
   struct zx_str* logpath;
@@ -99,11 +101,8 @@ static struct zx_str* zxid_anoint_sso_resp(struct zxid_conf* cf, int sign, struc
   if (sign) {
     refs.id = resp->ID;
     refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, resp);
-    if (!cf->sign_cert) /* Lazy load cert and private key */
-      cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-    if (!cf->sign_pkey)
-      cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-    resp->Signature = zxsig_sign(cf->ctx, 1, &refs, cf->sign_cert, cf->sign_pkey);
+    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert anoint resp"))
+      resp->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
     zx_str_free(cf->ctx, refs.canon);
   }
   
@@ -227,8 +226,10 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
       ZX_FREE(cf->ctx, epr_buf);
       continue;
     }
+    LOCK(cf->ctx->mx, "gen boots");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
     r = zx_DEC_root(cf->ctx, 0, 1);
+    UNLOCK(cf->ctx->mx, "gen boots");
     if (!r) {
       ERR("Failed to XML parse epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
       ZX_FREE(cf->ctx, epr_buf);
@@ -492,7 +493,7 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReferenc
   nameid = zxid_check_fed(cf, affil, uid, cf->di_allow_create, &srcts,
 			  epr->Metadata->ProviderID->content, 0 /*ID*/, sp_name_buf);
   
-  if (!nameid) {
+  if (nameid) {
     if (cf->di_nid_fmt == 't') {
       zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
       logop = "TMPDI";
@@ -541,6 +542,8 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReferenc
 /* Called by:  zxid_idp_dispatch */
 struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sp_AuthnRequest_s* ar)
 {
+  X509* sign_cert;
+  RSA*  sign_pkey;
   int binding = 0;
   struct zxsig_ref refs;
   struct zxid_entity* sp_meta;
@@ -657,11 +660,8 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
     if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
       refs.id = a7n->ID;
       refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
-      if (!cf->sign_cert) /* Lazy load cert and private key */
-	cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-      if (!cf->sign_pkey)
-	cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-      a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, cf->sign_cert, cf->sign_pkey);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos"))
+	a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
     }
     resp = zxid_mk_saml_resp(cf);
     if (cf->post_a7n_enc) {

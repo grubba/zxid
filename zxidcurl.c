@@ -93,7 +93,17 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
  *
  * cf::      ZXID configuration object, also used for memory allocation
  * url::     Where the request will be sent, i.e. the WKL
- * return::  XML data structure representing the entity, or 0 upon failure  */
+ * return::  XML data structure representing the entity, or 0 upon failure
+ *
+ * The underlying HTTP client is libcurl. While libcurl is documented to
+ * be "entirely thread safe", one limitation is that chrl handle can not
+ * be shared between threads. Since we keep the curl handle a part
+ * of the configuration object, which may be shared between threads,
+ * we need to take a lock for duration of the curl operation. Thus any
+ * given configuration object can have only one HTTP request active
+ * at a time. If you need more parallelism, you need more configuration
+ * objects.
+ */
 
 /* Called by:  main, opt x3, zxid_get_meta_ss */
 struct zxid_entity* zxid_get_meta(struct zxid_conf* cf, char* url)
@@ -101,20 +111,24 @@ struct zxid_entity* zxid_get_meta(struct zxid_conf* cf, char* url)
   struct zxid_entity* ent;
 #ifdef USE_CURL
   CURLcode res;
-#if 1
   struct zxid_curl_ctx rc;
+#if 1
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_MD_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_MD_BUF;
+  LOCK(cf->curl_mx, "curl get_meta");
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
 #else
-  /* TEST CODE (usually disabled) */
-  int fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "get_meta TEST", "%s" ZXID_COT_DIR "test", cf->path);
-  if (fd == -1) {
-    perror("open meta to write");
-    ERR("Failed to open file(%s) for writing metadata", url);
-    return 0;
+  {
+    /* TEST CODE (usually disabled) */
+    int fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "get_meta TEST", "%s" ZXID_COT_DIR "test", cf->path);
+    if (fd == -1) {
+      perror("open meta to write");
+      UNLOCK(cf->curl_mx, "curl get_meta");
+      ERR("Failed to open file(%s) for writing metadata", url);
+      return 0;
+    }
+    curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, fd);
   }
-  curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, fd);
 #endif
   curl_easy_setopt(cf->curl, CURLOPT_WRITEFUNCTION, zxid_curl_write_data);
   curl_easy_setopt(cf->curl, CURLOPT_NOPROGRESS, 1);
@@ -128,6 +142,7 @@ struct zxid_entity* zxid_get_meta(struct zxid_conf* cf, char* url)
   if (cf->log_level>1)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "GETMD", url, 0);
   res = curl_easy_perform(cf->curl);
+  UNLOCK(cf->curl_mx, "curl get_meta");
   rc.lim = rc.p;
   rc.p[1] = 0;
   rc.p = rc.buf;
@@ -169,7 +184,17 @@ struct zxid_entity* zxid_get_meta_ss(struct zxid_conf* cf, struct zx_str* url)
  * cf:: ZXID configuration object, also used for memory allocation
  * url:: Where the request will be sent
  * data:: Serialized XML data to be sent
- * return:: XML data structure representing the response, or 0 upon failure  */
+ * return:: XML data structure representing the response, or 0 upon failure
+ *
+ * The underlying HTTP client is libcurl. While libcurl is documented to
+ * be "entirely thread safe", one limitation is that chrl handle can not
+ * be shared between threads. Since we keep the curl handle a part
+ * of the configuration object, which may be shared between threads,
+ * we need to take a lock for duration of the curl operation. Thus any
+ * given configuration object can have only one HTTP request active
+ * at a time. If you need more parallelism, you need more configuration
+ * objects.
+ */
 
 /* Called by:  zxid_soap_call_envelope, zxid_soap_call_hdr_body */
 struct zx_root_s* zxid_soap_call_raw(struct zxid_conf* cf, struct zx_str* url, struct zx_str* data)
@@ -184,6 +209,7 @@ struct zx_root_s* zxid_soap_call_raw(struct zxid_conf* cf, struct zx_str* url, s
   char* urli;
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
+  LOCK(cf->curl_mx, "curl soap");
   curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
   curl_easy_setopt(cf->curl, CURLOPT_WRITEFUNCTION, zxid_curl_write_data);
   curl_easy_setopt(cf->curl, CURLOPT_NOPROGRESS, 1);
@@ -220,14 +246,17 @@ struct zx_root_s* zxid_soap_call_raw(struct zxid_conf* cf, struct zx_str* url, s
   D("------------------------ url(%.*s) ------------------------", url->len, url->s);
   D("SOAP_CALL post(%.*s) len=%d", data->len, data->s, data->len);
   res = curl_easy_perform(cf->curl);  /* <========= Actual call, blocks. */
+  UNLOCK(cf->curl_mx, "curl soap");
   ZX_FREE(cf->ctx, urli);
   rc.lim = rc.p;
   rc.p[1] = 0;
 
   D("SOAP_CALL got(%s)", rc.buf);
   
+  LOCK(cf->ctx->mx, "soap_call");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, rc.buf, rc.lim);
   r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "soap_call");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP response url(%.*s) CURLcode(%d) CURLerr(%s) buf(%.*s)",
 	url->len, url->s, res, CURL_EASY_STRERR(res), rc.lim-rc.buf, rc.buf);

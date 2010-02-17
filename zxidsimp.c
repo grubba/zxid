@@ -51,11 +51,14 @@ int zxid_conf_to_cf_len(struct zxid_conf* cf, int conf_len, const char* conf)
   }
   zxid_init_conf(cf, ZXID_PATH);
 #ifdef USE_CURL
+  LOCK(cf->curl_mx, "curl init");
   cf->curl = curl_easy_init();
   if (!cf->curl) {
     ERR("Failed to initialize libcurl %d",0);
+    UNLOCK(cf->curl_mx, "curl init");
     exit(2);
   }
+  UNLOCK(cf->curl_mx, "curl init");
 #endif
 #else
   zxid_init_conf_ctx(cf, ZXID_PATH /* N.B. Often this is overridden. */);
@@ -98,6 +101,7 @@ int zxid_conf_to_cf_len(struct zxid_conf* cf, int conf_len, const char* conf)
 struct zxid_conf* zxid_new_conf_to_cf(const char* conf)
 {
   struct zxid_conf* cf = malloc(sizeof(struct zxid_conf));  /* *** direct use of malloc */
+  D("malloc %p size=%d", cf, sizeof(struct zxid_conf));
   if (!cf) {
     ERR("out-of-memory %d", sizeof(struct zxid_conf));
     exit(1); /* *** perhaps too severe! */
@@ -382,7 +386,7 @@ char* zxid_idp_list_cf_cgi(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_
 		 idp->eid_len, idp->eid, idp->eid_len, idp->eid,
 		 mark);
 #else
-    if (show_tech) {
+    if (cf->show_tech) {
       dd = zx_strf(cf->ctx, "%.*s"
 		   "<input type=submit name=\"l0%.*s\" value=\" Login to %.*s \">\n"
 		   "<input type=submit name=\"l1%.*s\" value=\" Login to %.*s (A2) \">\n"
@@ -406,7 +410,7 @@ char* zxid_idp_list_cf_cgi(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_
     ss = dd;
   }
 #ifdef ZXID_USE_POPUP
-  if (show_tech) {
+  if (cf->show_tech) {
     dd = zx_strf(cf->ctx, "%.*s</select>"
 		 "<input type=submit name=\"l0\" value=\" Login \">\n"
 		 "<input type=submit name=\"l1\" value=\" Login (A2) \">\n"
@@ -1250,6 +1254,7 @@ char* zxid_simple_cf_ses(struct zxid_conf* cf, int qs_len, char* qs, struct zxid
   
   /*fprintf(stderr, "qs(%s) arg, autoflags=%x\n", qs, auto_flags);*/
   if (auto_flags & ZXID_AUTO_DEBUG) zxid_set_opt(cf, 1, 1);
+  LOCK(cf->mx, "simple ipport");
   if (!cf->ipport) {
     remote_addr = getenv("REMOTE_ADDR");
     if (remote_addr) {
@@ -1257,6 +1262,7 @@ char* zxid_simple_cf_ses(struct zxid_conf* cf, int qs_len, char* qs, struct zxid
       sprintf(cf->ipport, "%s:-", remote_addr);
     }
   }
+  UNLOCK(cf->mx, "simple ipport");
   
   if (!qs) {
     qs = getenv("QUERY_STRING");

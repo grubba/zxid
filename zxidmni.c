@@ -1,4 +1,5 @@
 /* zxidmni.c  -  Handwritten functions for NameID Management logic for SP
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -9,6 +10,7 @@
  *
  * 12.10.2007, split from zxidslo.c --Sampo
  * 7.10.2008,  added documentation --Sampo
+ * 12.2.2010,  added locking to lazy loading --Sampo
  */
 
 #include "errmac.h"
@@ -27,6 +29,9 @@
 /* Called by:  zxid_mgmt, zxid_simple_ses_active_cf */
 int zxid_sp_mni_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_str* new_nym)
 {
+  X509* sign_cert;
+  RSA*  sign_pkey;
+
   zxid_get_ses_sso_a7n(cf, ses);
   if (ses->a7n) {
     struct zxsig_ref refs;
@@ -46,11 +51,9 @@ int zxid_sp_mni_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
     if (cf->sso_soap_sign) {
       refs.id = body->ManageNameIDRequest->ID;
       refs.canon = zx_EASY_ENC_SO_sp_ManageNameIDRequest(cf->ctx, body->ManageNameIDRequest);
-      if (!cf->sign_cert) // Lazy load cert and private key
-	cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-      if (!cf->sign_pkey)
-	cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-      body->ManageNameIDRequest->Signature = zxsig_sign(cf->ctx, 1, &refs, cf->sign_cert, cf->sign_pkey);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mni"))
+	body->ManageNameIDRequest->Signature
+	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
     r = zxid_idp_soap(cf, cgi, ses, idp_meta, ZXID_MNI_SVC, body);

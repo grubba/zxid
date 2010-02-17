@@ -1,0 +1,9 @@
+TAS3 component package, version 0.1.
+Package: T3-ZXID-LINUX-X86
+Source: http://zxid.org/
+Version: 0.52
+X-cvsid: $Id$
+Maintainer: Sampo Kellomäki <sampo@symlabs.com>
+Depends: 
+Description:  IdP, Discovery, FE-SP, WSC, Discovery Client, Az Client, WSP validate and decorate;
+ Library dependencies: openssl-0.9.8g or newer, libcurl-7.19, zlib, libc

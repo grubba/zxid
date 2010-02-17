@@ -17,6 +17,7 @@
  * 4.9.2009,  added NEED, WANT, INMAP, PEPMAP, OUTMAP, and ATTRSRC --Sampo
  * 15.11.2009, added SHOW_CONF (o=d) option --Sampo
  * 7.1.2010,  added WSC and WSP signing options --Sampo
+ * 12.2.2010,  added pthread locking --Sampo
  */
 
 #include <memory.h>
@@ -146,6 +147,25 @@ RSA* zxid_read_private_key(struct zxid_conf* cf, char* name)
   return zxid_extract_private_key(buf, name);
 }
 
+/*() Lazy load signing certificate and private key. This reads them from disk
+ * if needed. If they do not exist and auto_cert is enabled, they will be
+ * generated on disk and the read. Once read from disk, they will be cached in
+ * memory. */
+
+int zxid_lazy_load_sign_cert_and_pkey(struct zxid_conf* cf, X509** cert, RSA** pkey, const char* logkey)
+{
+  LOCK(cf->mx, logkey);
+  if (cert) {
+    if (!(*cert = cf->sign_cert)) // Lazy load cert and private key
+      *cert = cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
+  }
+  if (!(*pkey = cf->sign_pkey))
+    *pkey = cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
+  UNLOCK(cf->mx, logkey);
+  if (cert && !*cert || !*pkey)
+    return 0;
+  return 1;
+}
 #endif
 
 /*() Set obscure options of ZX and ZXID layers. Used to set debug options.
@@ -345,7 +365,10 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->mgmt_defed        = ZXID_MGMT_DEFED;
   cf->mgmt_footer       = ZXID_MGMT_FOOTER;
   cf->mgmt_end          = ZXID_MGMT_END;
-
+  
+  LOCK_INIT(cf->mx);
+  LOCK_INIT(cf->curl_mx);
+  
 #if 1
   DD("path(%.*s) cf->magic=%x", cf->path_len, cf->path, cf->magic);
 #else
@@ -365,6 +388,7 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
 void zx_reset_ctx(struct zx_ctx* ctx)
 {
   memset(ctx, 0, sizeof(struct zx_ctx));
+  LOCK_INIT(ctx->mx);
   ctx->guard_seen_n.seen_n = &ctx->guard_seen_p;
   ctx->guard_seen_p.seen_p = &ctx->guard_seen_n;
   ctx->malloc_func = &malloc;
@@ -380,6 +404,7 @@ struct zx_ctx* zx_init_ctx()
 {
   struct zx_ctx* ctx;
   ctx = malloc(sizeof(struct zx_ctx));
+  D("malloc %p size=%d", ctx, sizeof(struct zx_ctx));
   if (!ctx) {
     ERR("out-of-memory in ctx alloc sizeof=%d", sizeof(struct zx_ctx));
     return 0;

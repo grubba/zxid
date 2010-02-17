@@ -277,7 +277,11 @@ OP:: The documented operation
     TMPSSO:: SP SSO using transient NameID was performed
     IFSSO::  IdP SSO using federated ID was issued
     ITSSO::  IdP SSO using transient NameID was issued
-    SLO::    Single Logout was completed
+    NEWSES:: SP new session
+    INEWSES:: IdP new session
+    PNEWSES:: WSP new session
+    SLO::    Single Logout was completed (SP)
+    ISLO::   Single Logout completed (IdP)
     DEFED::  Defederation was performed
     BADCF::  Server configuration (/var/zxid/zxid.conf) is bad
     NOMD::   No metadata found after options exhausted (cache, fetch from net)

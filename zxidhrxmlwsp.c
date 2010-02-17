@@ -157,8 +157,10 @@ int main(int argc, char** argv)
   }
   D("target nid(%s)", nid);
     
+  LOCK(cf->ctx->mx, "hrxml wsp");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, qs2, qs2+cl);
   r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "hrxml wsp");
   
   if (!r->Envelope) {
     ERR("No SOAP Envelope found buf(%.*s)", got, buf);
@@ -242,8 +244,10 @@ int main(int argc, char** argv)
       return 0;
     }
     
+    LOCK(cf->ctx->mx, "hrxml wsp cand");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + got);
     r = zx_DEC_root(cf->ctx, 0, 1);
+    UNLOCK(cf->ctx->mx, "hrxml wsp cand");
     if (!r->Candidate) {
       ERR("No hrxml:Candidate tag found in cv.xml(%s)", buf);
 #if 0

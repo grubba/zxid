@@ -488,6 +488,7 @@ struct zx_str* zxenc_symkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedDa
 /* Called by:  zxid_dec_a7n, zxid_decrypt_nameid, zxid_decrypt_newnym, zxid_get_ses_sso_a7n */
 struct zx_str* zxenc_privkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedData_s* ed, struct zx_xenc_EncryptedKey_s* ek)
 {
+  RSA* enc_pkey;
   struct zx_str raw;
   struct zx_str* symkey;
   struct zx_str* ss;
@@ -511,9 +512,13 @@ struct zx_str* zxenc_privkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedD
   lim = unbase64_raw(ss->s, ss->s+ss->len, raw.s, zx_std_index_64);
   raw.len = lim - raw.s;
   
-  if (!cf->enc_pkey)
-    cf->enc_pkey = zxid_read_private_key(cf, "enc-nopw-cert.pem");
-
+  LOCK(cf->mx, "zxenc_privkey_dec");      
+  if (!(enc_pkey = cf->enc_pkey))
+    enc_pkey = cf->enc_pkey = zxid_read_private_key(cf, "enc-nopw-cert.pem");
+  UNLOCK(cf->mx, "zxenc_privkey_dec");      
+  if (!enc_pkey)
+    return 0;
+  
   if (!ek->EncryptionMethod || !(ss = ek->EncryptionMethod->Algorithm)
       || !ss->len) {
     ERR("Missing or malformed EncryptionMethod %d", 0);
@@ -522,10 +527,10 @@ struct zx_str* zxenc_privkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedD
   
   if (sizeof(ENC_KEYTRAN_RSA_1_5)-1 == ss->len
       && !memcmp(ENC_KEYTRAN_RSA_1_5, ss->s, sizeof(ENC_KEYTRAN_RSA_1_5)-1)) {
-    symkey = zx_rsa_priv_dec(cf->ctx, &raw, cf->enc_pkey, RSA_PKCS1_PADDING);
+    symkey = zx_rsa_priv_dec(cf->ctx, &raw, enc_pkey, RSA_PKCS1_PADDING);
   } else if (sizeof(ENC_KEYTRAN_RSA_OAEP)-1 == ss->len
 	     && !memcmp(ENC_KEYTRAN_RSA_OAEP, ss->s, sizeof(ENC_KEYTRAN_RSA_OAEP)-1)) {
-    symkey = zx_rsa_priv_dec(cf->ctx, &raw, cf->enc_pkey, RSA_PKCS1_OAEP_PADDING);
+    symkey = zx_rsa_priv_dec(cf->ctx, &raw, enc_pkey, RSA_PKCS1_OAEP_PADDING);
   } else {
     ERR("Unsupported key transformation method(%.*s)", ss->len, ss->s);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "ECRYPT", 0, "unsupported key transformation method");

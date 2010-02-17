@@ -8,12 +8,20 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxidmeta.c,v 1.59 2009-11-24 23:53:40 sampo Exp $
  *
+ * The CoT cache exists both on disk as directory /var/zxid/cot and in
+ * memory as the field cf->cot. The latter is protected by cf->mx lock.
+ * The entities in cache are essentially read only, i.e. once the head
+ * of the list cf->cot has been dereferenced in a thread safe way,
+ * the entity pointers themselves can be passed around threads with
+ * impunity. No locking needed for them.
+ *
  * 12.8.2006,  created --Sampo
  * 12.10.2007, mild refactoring to process keys for xenc as well. --Sampo
  * 13.12.2007, fixed missing KeyDescriptor/@use as seen in CA IdP metadata --Sampo
  * 14.4.2008,  added SimpleSign --Sampo
  * 7.10.2008,  added documentation --Sampo
  * 1.2.2010,   removed arbitrary size limit --Sampo
+ * 12.2.2010,  added pthread locking --Sampo
  */
 
 #include <fcntl.h>
@@ -109,8 +117,10 @@ struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
   struct zx_md_EntityDescriptor_s* ed;
   struct zx_root_s* r;
 
+  LOCK(cf->ctx->mx, "parse meta");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, *md, lim);
   r = zx_DEC_root(cf->ctx, 0, 5);
+  UNLOCK(cf->ctx->mx, "parse meta");
   *md = cf->ctx->p;
   if (!r)
     return 0;
@@ -230,8 +240,10 @@ struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name
       ERR("***** Parsing metadata failed for sha1_name(%s)", sha1_name);
       return 0;
     }
+    LOCK(cf->mx, "add ent to cot");
     ent->n = cf->cot;
     cf->cot = ent;
+    UNLOCK(cf->mx, "add ent to cot");
     D("GOT META sha1_name(%s) eid(%.*s)", sha1_name, ent->eid_len, ent->eid);
   }
   return ent;
@@ -243,6 +255,25 @@ readerr:
   return 0;
 }
 
+LOCK_STATIC(zxid_ent_cache_mx);
+
+static void zxid_load_cot_cache_from_file(struct zxid_conf* cf)
+{
+  if (!cf->load_cot_cache)
+    return;
+  LOCK(zxid_ent_cache_mx, "get ent from cache");
+  LOCK(cf->mx, "check cot");
+  if (!cf->cot) {
+    UNLOCK(cf->mx, "check cot");
+    D("Loading cot cache from(%s)", cf->load_cot_cache);
+    zxid_get_ent_from_file(cf, cf->load_cot_cache);
+    D("CoT cache loaded from(%s)", cf->load_cot_cache);
+  } else {
+    UNLOCK(cf->mx, "check cot");
+  }
+  UNLOCK(zxid_ent_cache_mx, "get ent from cache");
+}
+
 /*() Compute sha1_name for an entity and then read the metadata from
 * the CoT metadata cache directory, e.g. /var/zxit/cot. */
 
@@ -251,16 +282,15 @@ struct zxid_entity* zxid_get_ent_from_cache(struct zxid_conf* cf, struct zx_str*
 {
   struct zxid_entity* ent;
   char sha1_name[28];
-  if (cf->load_cot_cache && !cf->cot) {
-    D("Loading cot cache from(%s)", cf->load_cot_cache);
-    zxid_get_ent_from_file(cf, cf->load_cot_cache);
-    D("CoT cache loaded from(%s)", cf->load_cot_cache);
-  }
+  zxid_load_cot_cache_from_file(cf);
+  LOCK(cf->mx, "scan cache");
   for (ent = cf->cot; ent; ent = ent->n)  /* Check in memory cache. */
     if (eid->len == ent->eid_len && !memcmp(eid->s, ent->eid, eid->len)) {
       D("GOT FROM MEM eid(%.*s)", ent->eid_len, ent->eid);
+      UNLOCK(cf->mx, "scan cache");
       return ent;
     }
+  UNLOCK(cf->mx, "scan cache");
   sha1_safe_base64(sha1_name, eid->len, eid->s);
   sha1_name[27] = 0;
   return zxid_get_ent_from_file(cf, sha1_name);
@@ -288,8 +318,10 @@ struct zxid_entity* zxid_get_ent_ss(struct zxid_conf* cf, struct zx_str* eid)
   if (cf->md_fetch) {
     ent = zxid_get_meta_ss(cf, eid);
     if (ent) {
+      LOCK(cf->mx, "add fetched ent to cot");
       ent->n = cf->cot;
       cf->cot = ent;
+      UNLOCK(cf->mx, "add fetched ent to cot");
       
       if (cf->md_populate_cache)
         zxid_write_ent_to_cache(cf, ent);
@@ -327,9 +359,13 @@ struct zxid_entity* zxid_get_ent(struct zxid_conf* cf, char* eid)
 struct zxid_entity* zxid_get_ent_by_sha1_name(struct zxid_conf* cf, char* sha1_name)
 {
   struct zxid_entity* ent;
+  LOCK(cf->mx, "scan cache by sha1_name");
   for (ent = cf->cot; ent; ent = ent->n)  /* Check in-memory cache. */
-    if (!strcmp(sha1_name, ent->sha1_name))
+    if (!strcmp(sha1_name, ent->sha1_name)) {
+      UNLOCK(cf->mx, "scan cache by sha1_name");
       return ent;
+    }
+  UNLOCK(cf->mx, "scan cache by sha1_name");
   ent = zxid_get_ent_from_file(cf, sha1_name);
   if (!ent)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "NOMD", 0, "sha1_name(%s)", sha1_name);
@@ -361,6 +397,7 @@ struct zxid_entity* zxid_get_ent_by_succinct_id(struct zxid_conf* cf, char* raw_
 /* Called by:  main x2, zxid_idp_list_cf_cgi, zxid_mk_idp_list */
 struct zxid_entity* zxid_load_cot_cache(struct zxid_conf* cf)
 {
+  struct zxid_entity* ent;
   struct dirent* de;
   DIR* dir;
   char buf[4096];
@@ -372,10 +409,12 @@ struct zxid_entity* zxid_load_cot_cache(struct zxid_conf* cf)
   memcpy(buf, cf->path, cf->path_len);
   memcpy(buf + cf->path_len, ZXID_COT_DIR, sizeof(ZXID_COT_DIR));
 
+  zxid_load_cot_cache_from_file(cf);
+  
   dir = opendir(buf);
   if (!dir) {
     perror("opendir for /var/zxid/cot (or other if configured) for loading cot cache");
-    D("failed path(%s)", buf);
+    ERR("opendir failed path(%s) uid=%d gid=%d", buf, geteuid(), getegid());
     return 0;
   }
   
@@ -385,7 +424,11 @@ struct zxid_entity* zxid_load_cot_cache(struct zxid_conf* cf)
   
   DD("HERE %p", cf);
   closedir(dir);
-  return cf->cot;
+
+  LOCK(cf->mx, "return cot");
+  ent = cf->cot;
+  UNLOCK(cf->mx, "return cot");
+  return ent;
 }
 
 /* ============== Our Metadata ============== */
@@ -565,6 +608,7 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(struct zxid_conf* cf)
   sp_ssod->errorURL                   = zx_strf(cf->ctx, "%s?o=E", cf->url);
   sp_ssod->protocolSupportEnumeration = zx_ref_str(cf->ctx, SAML2_PROTO);
 
+  LOCK(cf->mx, "read certs for our md");
   if (!cf->enc_cert)
     cf->enc_cert = zxid_read_cert(cf, "enc-nopw-cert.pem");
 
@@ -572,6 +616,7 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(struct zxid_conf* cf)
     cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
 
   if (!cf->enc_cert || !cf->sign_cert) {
+    UNLOCK(cf->mx, "read certs for our md");
     ERR("Signing or encryption certificate not found (or both are corrupt). %p", cf->enc_cert);
   } else {
     zk = zxid_key_desc(cf, "encryption", cf->enc_cert);
@@ -581,6 +626,7 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(struct zxid_conf* cf)
     zk = zxid_key_desc(cf, "signing", cf->sign_cert);
     zk->gg.g.n = &sp_ssod->KeyDescriptor->gg.g;
     sp_ssod->KeyDescriptor = zk;
+    UNLOCK(cf->mx, "read certs for our md");
   }
 
   z2 = zxid_slo_desc(cf, SAML2_REDIR, "?o=Q", "?o=Q");
@@ -649,6 +695,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(struct zxid_conf* cf)
   idp_ssod->errorURL                   = zx_strf(cf->ctx, "%s?o=E", cf->url);
   idp_ssod->protocolSupportEnumeration = zx_ref_str(cf->ctx, SAML2_PROTO);
 
+  LOCK(cf->mx, "read certs for our md idp");
   if (!cf->enc_cert)
     cf->enc_cert = zxid_read_cert(cf, "enc-nopw-cert.pem");
 
@@ -656,6 +703,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(struct zxid_conf* cf)
     cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
 
   if (!cf->enc_cert || !cf->sign_cert) {
+    UNLOCK(cf->mx, "read certs for our md idp");
     ERR("Signing or encryption certificate not found (or both are corrupt). %p", cf->enc_cert);
   } else {
     zk = zxid_key_desc(cf, "encryption", cf->enc_cert);
@@ -665,6 +713,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(struct zxid_conf* cf)
     zk = zxid_key_desc(cf, "signing", cf->sign_cert);
     zk->gg.g.n = &idp_ssod->KeyDescriptor->gg.g;
     idp_ssod->KeyDescriptor = zk;
+    UNLOCK(cf->mx, "read certs for our md idp");
   }
 
 #if 0

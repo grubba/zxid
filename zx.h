@@ -105,6 +105,9 @@ struct zx_ctx {
   void* (*malloc_func)(size_t);
   void* (*realloc_func)(void*, size_t);
   void  (*free_func)(void*);
+#ifdef USE_PTHREAD
+  pthread_mutex_t mx;
+#endif
 };
 
 /* We arrange all structs to start with a common header (16 bytes on 32bit platforms) */

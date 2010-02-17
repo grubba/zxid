@@ -264,8 +264,10 @@ int main(int argc, char** argv, char** env)
   cf = zxid_new_conf_to_cf("PATH=/var/sfis/");
 
   for (; n_iter; --n_iter) {
+    LOCK(cf->ctx->mx, "fin test");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + got_all);
     r = zx_DEC_root(cf->ctx, 0, 1000);
+    UNLOCK(cf->ctx->mx, "fin test");
     if (!r)
       DIE("Decode failure");
     

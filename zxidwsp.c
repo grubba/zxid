@@ -253,8 +253,10 @@ struct zx_str* zxid_wsp_decorate(struct zxid_conf* cf, struct zxid_ses* ses, con
     }
   } /* else <e:Envelope> provided */
   
+  LOCK(cf->ctx->mx, "decor");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
   r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "decor");
   if (!r) {
     ERR("Malformed XML enve(%s)", enve);
     D_DEDENT("decor: ");
@@ -337,6 +339,7 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
   struct zx_str* issuer = 0; //&unknown_str;
   struct zx_str* subj = 0; //&unknown_str;
   struct zx_str* logpath;
+  struct zx_str* a7nss;
   struct zx_str  ss;
   struct zxid_cgi cgi;
 
@@ -344,8 +347,10 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
   
   ss.s = enve;
   ss.len = strlen(enve);
+  LOCK(cf->ctx->mx, "valid");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + ss.len);
   r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "valid");
   if (!r) {
     ERR("Malformed XML enve(%s)", enve);
     D_DEDENT("valid: ");
@@ -509,33 +514,31 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
     }
     
     if (zxid_validate_cond(cf, cgi, ses, a7n, zxid_my_entity_id(cf), &ourts, &err))
-      goto erro;
+      goto erro;    
+#endif
     
     if (cf->log_rely_a7n) {
       DD("Logging... %d", 0);
-      logpath = zxlog_path(cf, issuer, a7n->ID, ZXLOG_RELY_DIR, ZXLOG_A7N_KIND, 1);
+      logpath = zxlog_path(cf, issuer, ses->a7n->ID, ZXLOG_RELY_DIR, ZXLOG_A7N_KIND, 1);
       if (logpath) {
 	ses->sso_a7n_path = ses->tgt_a7n_path = zx_str_to_c(cf->ctx, logpath);
-	ss = zx_EASY_ENC_WO_sa_Assertion(cf->ctx, a7n);
+	a7nss = zx_EASY_ENC_WO_sa_Assertion(cf->ctx, ses->a7n);
 	if (zxlog_dup_check(cf, logpath, "SSO assertion")) {
 	  if (cf->dup_a7n_fatal) {
-	    err = "C";
-	    zxlog_blob(cf, cf->log_rely_a7n, logpath, ss, "sp_sso_finalize dup err");
-	    goto erro;
+	    zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validade dup err");
+	    D_DEDENT("valid: ");
+	    return 0;
 	  }
 	}
-	zxlog_blob(cf, cf->log_rely_a7n, logpath, ss, "sp_sso_finalize");
+	zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validate");
+	zxlog(cf, 0, &srcts, 0, issuer, 0, ses->a7n->ID, subj, "N", "K", "A7N VALID", logpath->s, 0);  /* *** not yet validating */
       }
     }
     DD("Creating session... %d", 0);
-    //zxid_put_ses(cf, ses);
+    zxid_put_ses(cf, ses);
     zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
-    cgi->msg = "SSO completed and session created.";
-    cgi->op = '-';  /* Make sure management screen does not try to redispatch. */
     zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);
-    DD("Logging... %d", 0);
-#endif
-    
+    zxlog(cf, 0, &srcts, 0, issuer, 0, ses->a7n->ID, subj, "N", "K", "PNEWSES", ses->sid, 0);
   } else {
     ERR("No <sa:Assertion> found. enve(%s)", enve);
     D_DEDENT("valid: ");

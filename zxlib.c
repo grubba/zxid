@@ -46,13 +46,17 @@ char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int 
  * actual (2008) implementation simply uses malloc(3).
  *
  * Rather than reference this function directly, you should
- * use the ZX_ALLOC() macro as much as possible. */
+ * use the ZX_ALLOC() macro as much as possible.
+ *
+ * Some implementations may take c->mx mutex lock. However, they will
+ * do so such that no deadlock will result even if already taken. */
 
 /* Called by:  zx_zalloc */
 void* zx_alloc(struct zx_ctx* c, int size)
 {
   char* p;
   p = malloc(size);
+  DD("malloc %p size=%d", p, size);
   if (!p) {
     ERR("Out-of-memory(%d)", size);
     exit(1);
@@ -746,6 +750,14 @@ char* zx_enc_so_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, char* p, ch
   return p;
 }
 #endif
+
+/*() Prepare a context for decoding XML.
+ * N.B. Often you would wrap this in locks, like
+ *   LOCK(cf->ctx->mx, "valid");
+ *   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s + ss->len);
+ *   r = zx_DEC_root(cf->ctx, 0, 1);
+ *   UNLOCK(cf->ctx->mx, "valid");
+ */
 
 /* Called by:  main x7, test_ibm_cert_problem, zxid_call, zxid_dec_a7n, zxid_decode_redir_or_post, zxid_decrypt_nameid, zxid_decrypt_newnym, zxid_di_query, zxid_find_epr, zxid_gen_bootstraps, zxid_get_ses_sso_a7n x2, zxid_idp_soap_parse, zxid_parse_meta, zxid_soap_call_raw, zxid_sp_soap_parse */
 void zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, char* start, char* lim)

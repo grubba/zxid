@@ -202,6 +202,7 @@ static char* login_failed = "Login failed. Check username and password. Make sur
 /* Called by:  zxid_idp_as_do, zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
 int zxid_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses)
 {
+  const char* meth = "??";
   struct zx_str* ss;
   unsigned char buf[ZXID_MAX_BUF];
   unsigned char pw_buf[256];
@@ -227,6 +228,7 @@ int zxid_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* s
 
   len = strlen(cgi->uid);
   if (len > 32) {  /* Yubikey */
+    meth = "yk";
     strcpy(pw_hash, cgi->uid + len - 32);
     cgi->uid[len - 32] = 0;
     D("yubikey user(%s) ticket(%s)", cgi->uid, pw_hash);
@@ -273,6 +275,8 @@ int zxid_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* s
     }
   
     /* *** Add here support for other authentication backends */
+
+    meth = "pw";
 
     len = read_all(sizeof(pw_buf), pw_buf, "pw_authn",
 		   "%s" ZXID_UID_DIR "%s/.pw", cf->path, cgi->uid);
@@ -327,7 +331,8 @@ int zxid_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* s
 				   cf->ses_cookie_name, ses->sid);
   }
   cgi->sid = ses->sid;
-  INFO("LOCAL LOGIN SUCCESSFUL. uid(%s) sid(%s)", cgi->uid, cgi->sid);
+  INFO("LOCAL LOGIN SUCCESSFUL. sid(%s) uid(%s) %s", cgi->sid, cgi->uid, meth);
+  zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "K", "INEWSES", ses->sid, "uid(%s) %s", ses->uid, meth);
   return 1;
 }
 

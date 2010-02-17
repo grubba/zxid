@@ -34,10 +34,6 @@
 #include <openssl/aes.h>
 #endif
 
-#ifdef USE_CURL
-#include <curl/curl.h>
-#endif
-
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"
@@ -88,6 +84,7 @@ static char* zxlog_alloc_zbuf(struct zxid_conf* cf, int *zlen, char* zbuf, int l
 /* Called by:  test_mode x12 */
 void zxlog_write_line(struct zxid_conf* cf, char* c_path, int encflags, int n, const char* logbuf)
 {
+  RSA* log_sign_pkey;
   struct rsa_st* rsa_pkey;
   struct aes_key_st aes_key;
   int len = 0, blen, zlen, um;
@@ -113,9 +110,13 @@ void zxlog_write_line(struct zxid_conf* cf, char* c_path, int encflags, int n, c
       break;
     case 0x04:      /* Rx RSA-SHA1 signature */
       sigletter = 'R';
-      if (!cf->log_sign_pkey)
-	cf->log_sign_pkey = zxid_read_private_key(cf, "logsign-nopw-cert.pem");
-      len = zxsig_data_rsa_sha1(cf->ctx, zlen, zbuf, &sig, cf->log_sign_pkey, "enc log line");
+      LOCK(cf->mx, "logsign wrln");      
+      if (!(log_sign_pkey = cf->log_sign_pkey))
+	log_sign_pkey = cf->log_sign_pkey = zxid_read_private_key(cf, "logsign-nopw-cert.pem");
+      UNLOCK(cf->mx, "logsign wrln");      
+      if (!log_sign_pkey)
+	break;
+      len = zxsig_data_rsa_sha1(cf->ctx, zlen, zbuf, &sig, log_sign_pkey, "enc log line");
       break;
     case 0x06:      /* Dx DSA-SHA1 signature */
       ERR("DSA-SHA1 sig not implemented in encrypted mode. Use RSA-SHA1 or none. %x", encflags);
@@ -136,9 +137,13 @@ void zxlog_write_line(struct zxid_conf* cf, char* c_path, int encflags, int n, c
       memcpy(ivec, zbuf, sizeof(ivec));
       AES_cbc_encrypt(zbuf+16, zbuf+16, zlen-16, &aes_key, ivec, 1);
 
+      LOCK(cf->mx, "logenc wrln");
       if (!cf->log_enc_cert)
 	cf->log_enc_cert = zxid_read_cert(cf, "logenc-nopw-cert.pem");
       rsa_pkey = zx_get_rsa_pub_from_cert(cf->log_enc_cert, "log_enc_cert");
+      UNLOCK(cf->mx, "logenc wrln");
+      if (!rsa_pkey)
+	break;
       
       len = RSA_size(rsa_pkey);
       sig = ZX_ALLOC(cf->ctx, len);
@@ -214,9 +219,13 @@ void zxlog_write_line(struct zxid_conf* cf, char* c_path, int encflags, int n, c
     p = sigbuf;
     break;
   case 0x04:   /* RP RSA-SHA1 signature */
-    if (!cf->log_sign_pkey)
-      cf->log_sign_pkey = zxid_read_private_key(cf, "logsign-nopw-cert.pem");
-    zlen = zxsig_data_rsa_sha1(cf->ctx, n-1, logbuf, &zbuf, cf->log_sign_pkey, "log line");
+    LOCK(cf->mx, "logsign wrln");      
+    if (!(log_sign_pkey = cf->log_sign_pkey))
+      log_sign_pkey = cf->log_sign_pkey = zxid_read_private_key(cf, "logsign-nopw-cert.pem");
+    UNLOCK(cf->mx, "logsign wrln");
+    if (!log_sign_pkey)
+      break;
+    zlen = zxsig_data_rsa_sha1(cf->ctx, n-1, logbuf, &zbuf, log_sign_pkey, "log line");
     len = SIMPLE_BASE64_LEN(zlen) + 4;
     sig = ZX_ALLOC(cf->ctx, len);
     strcpy(sig, "RP ");

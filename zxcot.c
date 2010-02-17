@@ -247,8 +247,10 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
   buf[got] = 0;
   p = buf;
   
+  LOCK(cf->ctx->mx, "cot reg_svc");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + got);
   r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "cot reg_svc");
   if (!r || !r->EndpointReference) {
     ERR("Failed to parse <EndpointReference> buf(%.*s)", got, buf);
     return 1;
@@ -470,7 +472,8 @@ int zxcot_main(int argc, char** argv, char** env)
   struct zxid_conf cf;
 
   strncpy(zx_instance, "\tzxcot", sizeof(zx_instance));
- 
+  memset(&cf, 0, sizeof(cf));
+
   opt(&argc, &argv, &env);
   
   if (entid) {

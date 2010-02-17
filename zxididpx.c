@@ -1,5 +1,5 @@
 /* zxididpx.c  -  Handwritten functions for IdP dispatch
- * Copyright (c) 2008 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2008-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -7,6 +7,7 @@
  * $Id: zxididpx.c,v 1.10 2010-01-08 02:10:09 sampo Exp $
  *
  * 14.11.2008,  created --Sampo
+ * 12.2.2010,   added locking to lazy loading --Sampo
  *
  * TODO: *** Review of all of IdP SLO and MNI code
  */
@@ -100,6 +101,8 @@ struct zx_str* zxid_idp_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, str
 /* Called by: */
 int zxid_idp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_root_s* r)
 {
+  X509* sign_cert;
+  RSA*  sign_pkey;
   struct zxsig_ref refs;
   struct zx_e_Body_s* body;
   struct zx_sp_LogoutRequest_s* req;
@@ -127,11 +130,8 @@ int zxid_idp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx
     if (cf->sso_soap_resp_sign) {
       refs.id = body->LogoutResponse->ID;
       refs.canon = zx_EASY_ENC_SO_sp_LogoutResponse(cf->ctx, body->LogoutResponse);
-      if (!cf->sign_cert) // Lazy load cert and private key
-	cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-      if (!cf->sign_pkey)
-	cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-      body->LogoutResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, cf->sign_cert, cf->sign_pkey);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert idp slo"))
+	body->LogoutResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
     return zxid_soap_cgi_resp_body(cf, body);
@@ -144,11 +144,8 @@ int zxid_idp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx
     if (cf->sso_soap_resp_sign) {
       refs.id = res->ID;
       refs.canon = zx_EASY_ENC_SO_sp_ManageNameIDResponse(cf->ctx, res);
-      if (!cf->sign_cert) // Lazy load cert and private key
-	cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-      if (!cf->sign_pkey)
-	cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-      res->Signature = zxsig_sign(cf->ctx, 1, &refs, cf->sign_cert, cf->sign_pkey);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert idp mni"))
+	res->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
     return zxid_soap_cgi_resp_body(cf, body);
@@ -167,8 +164,10 @@ int zxid_idp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx
 int zxid_idp_soap_parse(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int len, char* buf)
 {
   struct zx_root_s* r;
+  LOCK(cf->ctx->mx, "idp soap parse");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + len);
   r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "idp soap parse");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP request buf(%.*s)", len, buf);
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "BADXML", 0, "sid(%s) bad soap req", ses->sid);

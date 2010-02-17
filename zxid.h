@@ -62,19 +62,6 @@
 struct zxid_conf {
   unsigned int magic;
   struct zx_ctx* ctx;        /* ZX parsing context. Usually used for memory allocation. */
-#ifdef USE_CURL
-  CURL* curl;
-#endif
-#ifdef USE_OPENSSL
-  X509* sign_cert;
-  RSA*  sign_pkey;
-  X509* enc_cert;
-  RSA*  enc_pkey;
-
-  RSA*  log_sign_pkey;
-  X509* log_enc_cert;
-  char  log_symkey[20];      /* sha1 hash of key data */
-#endif
   struct zxid_entity* cot;   /* Linked list of metadata for CoT partners (in-memory CoT cache) */
   int path_supplied;         /* FLAG: If config variable PATH is supplied, it may trigger reading config file from the supplied location. */
   int path_len;
@@ -85,13 +72,13 @@ struct zxid_conf {
   char* redirect_hack_zxid_url;
   char* redirect_hack_zxid_qs;
   char* cdc_url;
+
   char  cdc_choice;
   char  md_fetch;            /* Auto-CoT */
   char  md_populate_cache;
   char  md_cache_first;
   char  md_cache_last;
   char  auto_cert;
-  char  user_local;          /* Whether local user accounts should be maintained. */
   char  idp_ena;
   char  as_ena;
   char  pdp_ena;
@@ -109,23 +96,6 @@ struct zxid_conf {
   char  di_nid_fmt;
   char  di_a7n_enc;
   char  show_conf;
-  char* affiliation;
-  char* nice_name;           /* Human readable "nice" name. Used in AuthnReq->ProviderName */
-  char* ses_arch_dir;        /* Place where dead sessions go. 0=rm */
-  char* ses_cookie_name;
-  char* ipport;              /* Source IP and port for logging, e.g: "1.2.3.4:5" */
-  
-  char  log_err;             /* Log enables and signing and encryption flags (if USE_OPENSSL) */
-  char  log_act;
-  char  log_issue_a7n;
-  char  log_issue_msg;
-  char  log_rely_a7n;
-  char  log_rely_msg;
-  char  log_err_in_act;      /* Log errors to action log flag (may also log to error log) */
-  char  log_act_in_err;      /* Log actions to error log flag (may also log to action log) */
-  char  log_sigfail_is_err;  /* Log signature failures to error log */
-  char  log_level;           /* act log level: 0=audit, 1=audit+extio, 2=audit+extio+events */
-  
   char  sig_fatal;
   char  nosig_fatal;
   char  msg_sig_ok;
@@ -135,9 +105,13 @@ struct zxid_conf {
   char  dup_msg_fatal;
   char  wsp_nosig_fatal;
   char  notimestamp_fatal;
-  char  redir_to_content;    /* Should explicit redirect to content be used (vs. internal redir) */
-  char  remote_user_ena;
-  char  show_tech;
+  
+  char* affiliation;
+  char* nice_name;           /* Human readable "nice" name. Used in AuthnReq->ProviderName */
+  char* ses_arch_dir;        /* Place where dead sessions go. 0=rm */
+  char* ses_cookie_name;
+  char* ipport;              /* Source IP and port for logging, e.g: "1.2.3.4:5" */
+    
   char* load_cot_cache;
   char* wspcgicmd;
   char* anon_ok;
@@ -151,6 +125,8 @@ struct zxid_conf {
   char* pdp_url;             /* If non-NULL, the inline PEP is enabled and PDP at URL is called. */
   char* pdp_call_url;        /* PDP URL for zxid_az() API */
   char* xasp_vers;
+  char* defaultqs;
+  char* mod_saml_attr_prefix;  /* Prefix for req variables in mod_auth_saml */
 
   struct zxid_need*  need;
   struct zxid_need*  want;
@@ -166,10 +142,7 @@ struct zxid_conf {
   
   int   bootstrap_level;     /* How many layers of bootstraps are generated. */
   int   max_soap_retry;      /* How many times a ID-WSF SOAP call can be retried (update EPR) */
-  char* defaultqs;
-  char* mod_saml_attr_prefix;  /* Prefix for req variables in mod_auth_saml */
 
-  char* idp_sel_page;        /* URL for IdP selection Page. */
   char* idp_sel_start;       /* HTML headers, start of page, side bars */
   char* idp_sel_new_idp;     /* Auto-CoT fields */
   char* idp_sel_our_eid;     /* Our EID advice */
@@ -177,6 +150,7 @@ struct zxid_conf {
   char* idp_sel_tech_site;   /* Technical options site admin sets (hidden) */
   char* idp_sel_footer;      /* End of page stuff, after form */
   char* idp_sel_end;         /* End of page, after version string */
+  char* idp_sel_page;        /* URL for IdP selection Page. */
 
   char* an_page;       /* URL for Authentication Page. */
   char* an_start;      /* HTML headers, start of page, side bars */
@@ -193,6 +167,39 @@ struct zxid_conf {
   char* mgmt_end;      /* End of page, after version string */
 
   char* dbg;           /* Debug message that may be shown. */
+#ifdef USE_CURL
+  CURL* curl;
+#endif
+#ifdef USE_PTHREAD
+  pthread_mutex_t mx;
+  pthread_mutex_t curl_mx;   /* Avoid holding the main lock for duration of HTTP request */
+#endif
+  char  log_err;             /* Log enables and signing and encryption flags (if USE_OPENSSL) */
+  char  log_act;
+  char  log_issue_a7n;
+  char  log_issue_msg;
+  char  log_rely_a7n;
+  char  log_rely_msg;
+  char  log_err_in_act;      /* Log errors to action log flag (may also log to error log) */
+  char  log_act_in_err;      /* Log actions to error log flag (may also log to action log) */
+  char  log_sigfail_is_err;  /* Log signature failures to error log */
+  char  log_level;           /* act log level: 0=audit, 1=audit+extio, 2=audit+extio+events */
+  char  user_local;          /* Whether local user accounts should be maintained. */
+  char  redir_to_content;    /* Should explicit redirect to content be used (vs. internal redir) */
+  char  remote_user_ena;
+  char  show_tech;
+  char  pad14;
+  char  pad15;
+#ifdef USE_OPENSSL
+  RSA*  sign_pkey;
+  X509* sign_cert;
+  RSA*  enc_pkey;
+  X509* enc_cert;
+
+  char  log_symkey[20];      /* sha1 hash of key data */
+  RSA*  log_sign_pkey;
+  X509* log_enc_cert;
+#endif
 };
 
 /*(s) Query string, or post, is parsed into following structure. If a variable
@@ -274,6 +281,9 @@ struct zxid_ses {
   char* sesbuf;
   char* sso_a7n_buf;
   struct zxid_attr* at; /* Attributes extracted from a7n and translated using inmap. Linked list */
+#ifdef USE_PTHREAD
+  pthread_mutex_t mx;
+#endif
 };
 
 /*(s) Attribute node */
@@ -500,6 +510,7 @@ X509* zxid_extract_cert(char* buf, char* name);
 RSA*  zxid_extract_private_key(char* buf, char* name);
 X509* zxid_read_cert(struct zxid_conf* cf, char* name);
 RSA*  zxid_read_private_key(struct zxid_conf* cf, char* name);
+int zxid_lazy_load_sign_cert_and_pkey(struct zxid_conf* cf, X509** cert, RSA** pkey, const char* logkey);
 int   zxid_set_opt(struct zxid_conf* cf, int which, int val);
 char* zxid_set_opt_cstr(struct zxid_conf* cf, int which, char* val);
 void  zxid_url_set(struct zxid_conf* cf, char* url);
@@ -769,6 +780,7 @@ void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_End
 void zxid_snarf_eprs_from_ses(struct zxid_conf* cf, struct zxid_ses* ses);
 struct zx_str* zxid_get_epr_address(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr);
 struct zx_str* zxid_get_epr_entid(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr);
+struct zx_str* zxid_get_epr_desc(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr);
 
 /* zxiddi -  Discovery Service */
 

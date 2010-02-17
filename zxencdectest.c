@@ -86,8 +86,10 @@ void test_ibm_cert_problem()
 
   /* IBM padding debug */
   cf = zxid_new_conf("/var/zxid/");
+  LOCK(cf->ctx->mx, "zxencdectest");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + got_all);
   r = zx_DEC_root(cf->ctx, 0, 1000);
+  UNLOCK(cf->ctx->mx, "zxencdectest");
   if (!r)
     DIE("Decode failure");
 
@@ -369,8 +371,10 @@ int main(int argc, char** argv, char** env)
   
   for (; n_iter; --n_iter) {
     memset(&ctx, 0, sizeof(ctx));
+    LOCK(ctx.mx, "zxencdectest main");
     zx_prepare_dec_ctx(&ctx, zx_ns_tab, buf, buf + got_all);
     r = zx_DEC_root(&ctx, 0, 1000);
+    LOCK(ctx.mx, "zxencdectest main");
     if (!r)
       DIE("Decode failure");
 

@@ -10,6 +10,7 @@
  *
  * 24.8.2009, created --Sampo
  * 10.10.2009, added zxid_az() family --Sampo
+ * 12.2.2010,  added locking to lazy loading --Sampo
  */
 
 #include "errmac.h"
@@ -47,6 +48,8 @@
 /* Called by:  zxid_az_cf_ses, zxid_simple_ab_pep, zxid_simple_ses_active_cf */
 char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, const char* pdp_url)
 {
+  X509* sign_cert;
+  RSA*  sign_pkey;
   struct zxid_map* map;
   struct zxid_attr* at;
   struct zxid_attr* av;
@@ -166,17 +169,27 @@ char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
 #endif
 
   body = zx_NEW_e_Body(cf->ctx);
-  if (!strcmp(cf->xasp_vers, "2.0-cd1")) {
+  if (!strcmp(cf->xasp_vers, "xac-soap")) {
+    body->xac_Request = zxid_mk_az_cd1(cf, subj, rsrc, act, env);
+#if 0
+    /* *** xac:Response does not have signature field */
+    if (cf->sso_soap_sign) {
+      refs.id = body->xac_Request->ID;
+      refs.canon = zx_EASY_ENC_SO_xac_Request(cf->ctx, body->xac_Request);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az xac-soap"))
+	body->xac_Request->Signature
+	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+      zx_str_free(cf->ctx, refs.canon);
+    }
+#endif
+  } else if (!strcmp(cf->xasp_vers, "2.0-cd1")) {
     body->xaspcd1_XACMLAuthzDecisionQuery = zxid_mk_az_cd1(cf, subj, rsrc, act, env);
     if (cf->sso_soap_sign) {
       refs.id = body->xaspcd1_XACMLAuthzDecisionQuery->ID;
       refs.canon = zx_EASY_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx, body->xaspcd1_XACMLAuthzDecisionQuery);
-
-      if (!cf->sign_cert) // Lazy load cert and private key
-	cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-      if (!cf->sign_pkey)
-	cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-      body->xaspcd1_XACMLAuthzDecisionQuery->Signature = zxsig_sign(cf->ctx, 1, &refs, cf->sign_cert, cf->sign_pkey);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az cd1"))
+	body->xaspcd1_XACMLAuthzDecisionQuery->Signature
+	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
   } else {
@@ -184,11 +197,9 @@ char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
     if (cf->sso_soap_sign) {
       refs.id = body->XACMLAuthzDecisionQuery->ID;
       refs.canon = zx_EASY_ENC_SO_xasp_XACMLAuthzDecisionQuery(cf->ctx, body->XACMLAuthzDecisionQuery);
-      if (!cf->sign_cert) // Lazy load cert and private key
-	cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-      if (!cf->sign_pkey)
-	cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-      body->XACMLAuthzDecisionQuery->Signature = zxsig_sign(cf->ctx, 1, &refs, cf->sign_cert, cf->sign_pkey);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az"))
+	body->XACMLAuthzDecisionQuery->Signature
+	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
   }
@@ -205,7 +216,7 @@ char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
 #else
   ss = zx_ref_str(cf->ctx, pdp_url);
 #endif
-  r = zxid_soap_call_hdr_body(cf, loc, hdr, body);
+  r = zxid_soap_call_hdr_body(cf, ss, hdr, body);
   //r = zxid_idp_soap(cf, cgi, ses, idp_meta, ZXID_MNI_SVC, body);
   if (!r || !r->Envelope || !r->Envelope->Body || !r->Envelope->Body->Response) {
     ERR("Missing Response or other essential element %p %p %p %p", r, r?r->Envelope:0, r && r->Envelope?r->Envelope->Body:0, r && r->Envelope && r->Envelope->Body ? r->Envelope->Body->Response:0);

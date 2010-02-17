@@ -49,6 +49,9 @@ echo tail -f /var/tmp/zxid.stderr &
 echo tail -f /var/zxid/log/act &
 echo
 echo wireshark -i lo -f 'port 8080 or port 8081'&
+echo wireshark -i eth0 -f 'host 87.106.206.244' -k -S -l
+
+(ip.addr eq 1.1.1.1)
 
 Testing mod_php and mod_perl
 ----------------------------

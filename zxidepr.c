@@ -182,13 +182,19 @@ int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_Endpo
 /* Called by:  zxid_sp_anon_finalize, zxid_sp_sso_finalize */
 void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr)
 {
+  struct zx_str* ss;
+  struct zx_str* url;
   int wsf20 = 0;
   for (; epr; epr = (struct zx_a_EndpointReference_s*)epr->gg.g.n) {
-    ++wsf20;
-    D("Detected wsf20 EPR. %d", wsf20);
-    zxid_cache_epr(cf, ses, epr);
-    D("EPR cached %d", wsf20);
+    D("%d: Detected wsf20 EPR.", wsf20);
+    if (zxid_cache_epr(cf, ses, epr)) {
+      ++wsf20;
+      ss = epr->Metadata->ServiceType->content;
+      url = epr->Address;
+      D("%d: EPR cached svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", url?url->len:0, url?url->s:"");
+    }
   }
+  D("TOTAL wsf20 EPRs snarfed: %d", wsf20);
 }
 
 /*() Look into attribute statements of a SSO assertion and extract anything
@@ -333,8 +339,10 @@ struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid
 			 "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
     }
     
+    LOCK(cf->ctx->mx, "find epr");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
     r = zx_DEC_root(cf->ctx, 0, 1);
+    UNLOCK(cf->ctx->mx, "find epr");
     if (!r || !r->EndpointReference) {
       ERR("No EPR found. Failed to parse epr_buf(%.*s)", epr_len, epr_buf);
       continue;
@@ -405,6 +413,9 @@ struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid
 /* Called by:  main x7 */
 struct zx_a_EndpointReference_s* zxid_get_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
+  int wsf20 = 0;
+  struct zx_str* ss;
+  struct zx_str* urlss;
   struct zx_e_Envelope_s* env;
   struct zx_a_EndpointReference_s* epr;
   epr = zxid_find_epr(cf, ses, svc, url, di_opt, action, n);
@@ -423,15 +434,23 @@ struct zx_a_EndpointReference_s* zxid_get_epr(struct zxid_conf* cf, struct zxid_
   }
   env = zxid_wsc_call(cf, ses, epr, env);
   if (env && env->Body) {
-    if (env->Body->QueryResponse)
-      for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = (struct zx_a_EndpointReference_s*)ZX_NEXT(epr))
-	zxid_cache_epr(cf, ses, epr);
-    if (env->Body->QueryResponse)
+    if (env->Body->QueryResponse) {
+      for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = (struct zx_a_EndpointReference_s*)ZX_NEXT(epr)) {
+	D("%d: wsf20 EPR...", wsf20);
+	if (zxid_cache_epr(cf, ses, epr)) {
+	  ++wsf20;
+	  ss = epr->Metadata->ServiceType->content;
+	  urlss = epr->Address;
+	  D("%d: EPR cached svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
+	}
+      }
       epr = env->Body->QueryResponse->EndpointReference;
-    else
+    } else {
       epr = 0;
+    }
     if (!epr)
       ERR("No end point discovered for svc(%s)", STRNULLCHK(svc));
+    D("TOTAL wsf20 EPRs discovered: %d", wsf20);
     return epr;
   }
   ERR("discovery call failed envelope=%p", env);
@@ -450,6 +469,13 @@ struct zx_str* zxid_get_epr_address(struct zxid_conf* cf, struct zx_a_EndpointRe
 /* Called by: */
 struct zx_str* zxid_get_epr_entid(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr) {
   return epr->Metadata->ProviderID->content;
+}
+
+/*() Accessor function for extracting endpoint Description (Abstract). */
+
+/* Called by: */
+struct zx_str* zxid_get_epr_desc(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr) {
+  return epr->Metadata->Abstract->content;
 }
 
 #if 0

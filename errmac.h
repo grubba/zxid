@@ -1,6 +1,6 @@
 /* errmac.h  -  Utility, debugging, and error checking macros
  *
- * Copyright (c) 1998,2001,2006 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
+ * Copyright (c) 1998,2001,2006,2010 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
  * Copyright (c) 2001-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * This is free software and comes with NO WARRANTY. For licensing
  * see file COPYING in the distribution directory.
@@ -369,8 +369,17 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 
 /* =============== pthread locking =============== */
 
-#define LOCK(l,lk) if (pthread_mutex_lock(&(l))) NEVERNEVER("DEADLOCK(%s)", (lk))
+#ifdef USE_PTHREAD
+#define LOCK_STATIC(l) pthread_mutex_t l = PTHREAD_MUTEX_INITIALIZER
+#define LOCK_INIT(l) pthread_mutex_init(&(l), 0)
+#define LOCK(l,lk)   if (pthread_mutex_lock(&(l)))   NEVERNEVER("DEADLOCK(%s)", (lk))
 #define UNLOCK(l,lk) if (pthread_mutex_unlock(&(l))) NEVERNEVER("UNLOCK-TWICE(%s)", (lk))
+#else
+#define LOCK_STATIC(l) 
+#define LOCK_INIT(l)
+#define LOCK(l,lk)
+#define UNLOCK(l,lk)
+#endif
 
 /* =============== file system flocking =============== */
 
@@ -403,6 +412,8 @@ extern char zx_instance[64];
 extern int zx_debug;         /* Defined in zxidlib.c */
 extern char zx_indent[256];  /* Defined in zxidlib.c. *** Locking issues? */
 #if 1
+/* In some scenarios multithreaded access can cause zx_indent to be scrambled.
+ * However, it should not under- or overflow. Thus no lock. */
 #define D_INDENT(s) strncat(zx_indent, (s), sizeof(zx_indent)-1)
 #define D_DEDENT(s) (zx_indent[MAX(0, strlen(zx_indent)-sizeof(s)+1)] = 0)
 #else

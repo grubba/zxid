@@ -630,6 +630,8 @@ int zxid_sp_sso_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid
   zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);
   DD("Logging... %d", 0);
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, a7n->ID, subj,
+	cgi->sigval, "K", "NEWSES", ses->sid, "sesix(%s)", ses->sesix?ses->sesix:"-");
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, a7n->ID, subj,
 	cgi->sigval, "K", ses->nidfmt?"FEDSSO":"TMPSSO", ses->sesix?ses->sesix:"-", 0);
   D_DEDENT("ssof: ");
   return ZXID_SSO_OK;

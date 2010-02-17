@@ -45,38 +45,39 @@ public class zxidappdemo extends HttpServlet {
 	    res.sendRedirect("sso?o=E&fr=" + fullURL);
 	    return;
 	}
+	ServletOutputStream out = res.getOutputStream();
 	
 	res.setContentType("text/html");
-	res.getOutputStream().print("<title>ZXID Demo App Protected Content</title><body><h1>ZXID Demo App Protected Content at " + fullURL + "</H1>\n");
+	out.print("<title>ZXID Demo App Protected Content</title><body><h1>ZXID Demo App Protected Content at " + fullURL + "</H1>\n");
 
 	// Render logout buttons (optional)
 
-	res.getOutputStream().print("[<a href=\"sso?gl=1&s="+ses.getValue("sesid")+"\">Local Logout</a> | <a href=\"sso?gr=1&s="+ses.getValue("sesid")+"\">Single Logout</a>]\n");
+	out.print("[<a href=\"sso?gl=1&s="+ses.getValue("sesid")+"\">Local Logout</a> | <a href=\"sso?gr=1&s="+ses.getValue("sesid")+"\">Single Logout</a>]\n");
 
 	// The SSO servlet will have done one iteration of authorization. The following
 	// serves to illustrate, how to explicitly call a PDP from your code.
 
-	if (zxidjni.az_cf(cf, "Action=Show", ses.getValue("sesid").toString()) == 0) {
-	    res.getOutputStream().print("<p><b>Denied.</b> Normally page would not be shown, but we show the session attributes for debugging purposes.\n");
+	if (zxidjni.az_cf(cf, "Action=Show", ses.getValue("sesid").toString()) == null) {
+	    out.print("<p><b>Denied.</b> Normally page would not be shown, but we show the session attributes for debugging purposes.\n");
 	    //res.setStatus(302, "Denied");
 	} else {
-	    res.getOutputStream().print("<p>Authorized.\n");
+	    out.print("<p>Authorized.\n");
 	}
 
 	// Render protected content page (your application starts working)
 
-	res.getOutputStream().print("<pre>HttpSession dump:\n");
+	out.print("<pre>HttpSession dump:\n");
 	String[] val_names = ses.getValueNames();
 	for (int i = 0; i < val_names.length; ++i) {
-	    res.getOutputStream().print(val_names[i] + ": " + ses.getValue(val_names[i]) + "\n");
+	    out.print(val_names[i] + ": " + ses.getValue(val_names[i]) + "\n");
 	}
-	res.getOutputStream().print("</pre>");
+	out.print("</pre>");
 
 	// Demo web service call to zxidhrxmlwsp
 
 	String ret;
 	String sid = ses.getValue("sesid").toString();
-	res.getOutputStream().print("<p>Output from idhrxml web service call sid("+sid+"):<br>\n<textarea cols=80 rows=20>");
+	out.print("<p>Output from idhrxml web service call sid("+sid+"):<br>\n<textarea cols=80 rows=20>");
 	ret = zxidjni.call(cf, zxidjni.fetch_ses(cf, sid),
 			   zxidjni.zx_xmlns_idhrxml, null, null, null,
 			   "<idhrxml:Query>" +
@@ -85,17 +86,50 @@ public class zxidappdemo extends HttpServlet {
 			     "</idhrxml:QueryItem>" +
 			   "</idhrxml:Query>");
 
-	res.getOutputStream().print(ret);
-	res.getOutputStream().print("</textarea>");
+	out.print(ret);
+	out.print("</textarea>");
 
 	// Demo another web service call, this time the service by zxidwspdemo.java
 
-	res.getOutputStream().print("<p>Output from foobar web service call:<br>\n<textarea cols=80 rows=20>");
-	ret = zxidjni.call(cf, zxidjni.fetch_ses(cf, sid), "urn:x-foobar", null, null, null,
+	out.print("<p>Output from foobar web service call:<br>\n<textarea cols=80 rows=20>");
+	zxid_ses zxses = zxidjni.fetch_ses(cf, sid);
+	ret = zxidjni.call(cf, zxses, "urn:x-foobar", null, null, null,
 			   "<foobar>Do it!</foobar>");
 
-	res.getOutputStream().print(ret);
-	res.getOutputStream().print("</textarea>");
+	out.print(ret);
+	out.print("</textarea>");
+
+	// Multidiscovery and call
+
+	out.print("<h4>Multidiscovery</h4>\n");
+
+	SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
+
+	for (int i=1; i<100; ++i) {
+	    epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);
+	    if (epr[i] == null)
+		break;
+	    out.print("<p>EPR "+i+" address("+zxidjni.get_epr_address(cf, epr[i])+")\n");
+	    out.print("<p>EPR "+i+"   entid("+zxidjni.get_epr_entid(cf, epr[i])+")\n");
+	    out.print("<p>EPR "+i+"   desc("+zxidjni.get_epr_desc(cf, epr[i])+")\n");
+	}
+
+	for (int i=1; i<100; ++i) {
+	    if (epr[i] == null)
+		break;
+	    out.print("<p>Output from multicall "+i+" entid:<br>\n<textarea cols=80 rows=20>");
+	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_entid(cf, epr[i]), null, null,
+			       "<foobar>do i="+i+"</foobar>");
+	    out.print(ret);
+	    out.print("</textarea>\n");
+
+	    out.print("<p>Output from multicall "+i+" address:<br>\n<textarea cols=80 rows=20>");
+	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_address(cf, epr[i]), null, null,
+			       "<foobar>do i="+i+"</foobar>");
+	    out.print(ret);
+	    out.print("</textarea>\n");
+	}
+	out.print("<p>Done.\n");
     }
 }
 

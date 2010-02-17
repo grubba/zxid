@@ -122,6 +122,8 @@ Body -> %e:Body
   xasp:XACMLPolicyQuery?
   xaspcd1:XACMLAuthzDecisionQuery?
   xaspcd1:XACMLPolicyQuery?
+  xac:Request?
+  xac:Response?
   di:Query?
   di:QueryResponse?
   di12:Query?

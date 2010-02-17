@@ -23,10 +23,6 @@
 #include <sys/stat.h>
 //#include <sys/wait.h>
 
-#ifdef USE_CURL
-#include <curl/curl.h>
-#endif
-
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"

@@ -214,6 +214,7 @@ int zxid_soap_cgi_resp_body(struct zxid_conf* cf, struct zx_e_Body_s* body)
 /* Called by:  zxid_idp_sso x3 */
 struct zx_str* zxid_saml2_post_enc(struct zxid_conf* cf, char* field, struct zx_str* payload, char* relay_state, int sign, struct zx_str* action_url)
 {
+  RSA* sign_pkey;
   struct zx_str id_str;
   struct zx_str* logpath;
   char* sigbuf[SIG_SIZE];
@@ -249,9 +250,8 @@ struct zx_str* zxid_saml2_post_enc(struct zxid_conf* cf, char* field, struct zx_
     memcpy(p, "&SigAlg=" SIG_ALGO, sizeof("&SigAlg=" SIG_ALGO)-1);
     p += sizeof("&SigAlg=" SIG_ALGO)-1;
 
-    if (!cf->sign_pkey)
-      cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-    zlen = zxsig_data_rsa_sha1(cf->ctx, p-url, url, &zbuf, cf->sign_pkey, "SAML2 post");
+    if (zxid_lazy_load_sign_cert_and_pkey(cf, 0, &sign_pkey, "SAML2 post"))
+      zlen = zxsig_data_rsa_sha1(cf->ctx, p-url, url, &zbuf, sign_pkey, "SAML2 post");
     if (zlen == -1)
       return 0;
 
@@ -336,6 +336,7 @@ struct zx_str zxstr_unknown = { {0,0,0,0,0}, sizeof("UNKNOWN")-1, "UNKNOWN" };
 /* Called by:  zxid_saml2_redir, zxid_saml2_redir_url, zxid_saml2_resp_redir */
 struct zx_str* zxid_saml2_redir_enc(struct zxid_conf* cf, char* field, struct zx_str* pay_load, char* relay_state)
 {
+  RSA* sign_pkey;
   struct zx_str* logpath;
   struct zx_str* ss;
   char* zbuf;
@@ -379,9 +380,8 @@ struct zx_str* zxid_saml2_redir_enc(struct zxid_conf* cf, char* field, struct zx
   
   memcpy(url+len, "&SigAlg=" SIG_ALGO_URLENC, sizeof("&SigAlg=" SIG_ALGO_URLENC)-1);
   len += sizeof("&SigAlg=" SIG_ALGO_URLENC)-1;
-  if (!cf->sign_pkey)
-    cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-  zlen = zxsig_data_rsa_sha1(cf->ctx, len, url, &zbuf, cf->sign_pkey, "SAML2 redir");
+  if (zxid_lazy_load_sign_cert_and_pkey(cf, 0, &sign_pkey, "SAML2 redir"))
+    zlen = zxsig_data_rsa_sha1(cf->ctx, len, url, &zbuf, sign_pkey, "SAML2 redir");
   if (zlen == -1)
     return 0;
   
@@ -581,8 +581,10 @@ struct zx_sa_NameID_s* zxid_decrypt_nameid(struct zxid_conf* cf, struct zx_sa_Na
       ERR("Failed to decrypt NameID. Most probably certificate-private key mismatch or metadata problem. Could also be corrupt message. %d", 0);
       return 0;
     }
+    LOCK(cf->ctx->mx, "dec nid");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s + ss->len);
     r = zx_DEC_root(cf->ctx, 0, 1);
+    UNLOCK(cf->ctx->mx, "dec nid");
     if (!r) {
       ERR("Failed to parse EncryptedID buf(%.*s)", ss->len, ss->s);
       return 0;
@@ -611,8 +613,10 @@ struct zx_str* zxid_decrypt_newnym(struct zxid_conf* cf, struct zx_str* newnym, 
     return newnym;
   if (encid) {
     ss = zxenc_privkey_dec(cf, encid->EncryptedData, encid->EncryptedKey);
+    LOCK(cf->ctx->mx, "dec newnym");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s + ss->len);
     r = zx_DEC_root(cf->ctx, 0, 1);
+    UNLOCK(cf->ctx->mx, "dec newnym");
     if (!r) {
       ERR("Failed to parse NewEncryptedID buf(%.*s)", ss->len, ss->s);
       return 0;

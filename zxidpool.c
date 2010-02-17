@@ -552,7 +552,9 @@ void zxid_ses_to_pool(struct zxid_conf* cf, struct zxid_ses* ses)
   zxid_add_attr_to_ses(cf, ses, "authnctxlevel", accr);
 
   zxid_add_attr_to_ses(cf, ses, "idpnid",     zx_dup_str(cf->ctx, STRNULLCHK(ses->nid)));
+  zxid_add_attr_to_ses(cf, ses, "nidfmt",     zx_dup_str(cf->ctx, ses->nidfmt?"P":"T"));
   zxid_add_attr_to_ses(cf, ses, "tgtnid",     zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt)));
+  zxid_add_attr_to_ses(cf, ses, "tgtfmt",     zx_dup_str(cf->ctx, ses->tgtfmt?"P":"T"));
   zxid_add_attr_to_ses(cf, ses, "eid",        zxid_my_entity_id(cf));
   zxid_add_attr_to_ses(cf, ses, "sesid",      zx_dup_str(cf->ctx, STRNULLCHK(ses->sid)));
   zxid_add_attr_to_ses(cf, ses, "setcookie",  zx_dup_str(cf->ctx, STRNULLCHK(ses->setcookie)));

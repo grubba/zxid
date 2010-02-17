@@ -7,8 +7,8 @@ ZXID Home - Open Source IdM - SAML SSO - Federated
 <<define: ibox300!align=right width=300 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 <<define: ibox150!align=right width=150 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 
-<<define: ZXVERS!0.50>>
-<<define: ZXNEWS!20100211 - Fixed multibootstrap.>>
+<<define: ZXVERS!0.52>>
+<<define: ZXNEWS!20100217 - Fixed multidiscovery, etc.>>
 
 <<maketitle: 1>>
 
@@ -322,6 +322,7 @@ ZXID:
 <div id="old2010">
 >>
 
+* <<link:zxid-0.52.tgz>> (20100217 - Fixed multidiscovery, etc.)
 * <<link:zxid-0.50.tgz>> (20100211 - Fixed multibootstrap)
 * <<link:zxid-0.49.tgz>> (20100201 - Removed many arbitrary 64KB limits. Added zxcall tool.)
 * <<link:zxid-0.48.tgz>> (20100119 - Unknown XML paresing improvements)

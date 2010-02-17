@@ -1,4 +1,5 @@
 /* zxidslo.c  -  Handwritten functions for implementing Single LogOut logic for SP
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -11,6 +12,7 @@
  * 12.10.2007, tweaked for signing SLO and MNI --Sampo
  * 14.4.2008,  added SimpleSign --Sampo
  * 7.10.2008,  added documentation --Sampo
+ * 12.2.2010,  added locking to lazy loading --Sampo
  */
 
 #include "errmac.h"
@@ -31,6 +33,9 @@
 /* Called by:  zxid_mgmt, zxid_simple_ses_active_cf */
 int zxid_sp_slo_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses)
 {
+  X509* sign_cert;
+  RSA*  sign_pkey;
+
   zxid_get_ses_sso_a7n(cf, ses);  
   if (ses->a7n) {
     struct zxsig_ref refs;
@@ -52,11 +57,8 @@ int zxid_sp_slo_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
     if (cf->sso_soap_sign) {
       refs.id = body->LogoutRequest->ID;
       refs.canon = zx_EASY_ENC_SO_sp_LogoutRequest(cf->ctx, body->LogoutRequest);
-      if (!cf->sign_cert) // Lazy load cert and private key
-	cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-      if (!cf->sign_pkey)
-	cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-      body->LogoutRequest->Signature = zxsig_sign(cf->ctx, 1, &refs, cf->sign_cert, cf->sign_pkey);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slo"))
+	body->LogoutRequest->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
     r = zxid_idp_soap(cf, cgi, ses, idp_meta, ZXID_SLO_SVC, body);
@@ -158,15 +160,20 @@ struct zx_str* zxid_slo_resp_redir(struct zxid_conf* cf, struct zxid_cgi* cgi, s
 /* Called by:  zxid_idp_dispatch, zxid_sp_dispatch, zxid_sp_soap_dispatch */
 int zxid_sp_slo_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sp_LogoutRequest_s* req)
 {
+  struct zx_str* sesix = req->SessionIndex&&req->SessionIndex->content&&req->SessionIndex->content->len&&req->SessionIndex->content->s?req->SessionIndex->content:0;
+
   if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)req, req->Signature, req->Issuer, "LogoutRequest"))
     return 0;
 
+  if (cf->log_level>0)
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, cgi->sigval, "K", "SLO", ses->sid, "sesix(%.*s)", sesix?sesix->len:1, sesix?sesix->s:"?");
+  
   req->NameID = zxid_decrypt_nameid(cf, req->NameID, req->EncryptedID);
   if (!req->NameID || !req->NameID->gg.content) {
     ERR("SLO failed: request does not have NameID. %p", req->NameID);
     return 0;
   }
-  zxid_find_ses(cf, ses, req->SessionIndex?req->SessionIndex->content:0, req->NameID->gg.content);
+  zxid_find_ses(cf, ses, sesix, req->NameID->gg.content);
   zxid_del_ses(cf, ses);
   return 1;
 }
@@ -181,15 +188,19 @@ int zxid_sp_slo_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* 
 /* Called by:  zxid_idp_dispatch, zxid_idp_soap_dispatch, zxid_sp_dispatch */
 int zxid_idp_slo_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sp_LogoutRequest_s* req)
 {
+  struct zx_str* sesix = req->SessionIndex&&req->SessionIndex->content&&req->SessionIndex->content->len&&req->SessionIndex->content->s?req->SessionIndex->content:0;
+
   if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)req, req->Signature, req->Issuer, "LogoutRequest"))
     return 0;
+  
+  if (cf->log_level>0)
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, cgi->sigval, "K", "ISLO", ses->sid, "sesix(%.*s)", sesix?sesix->len:1, sesix?sesix->s:"?");
 
   req->NameID = zxid_decrypt_nameid(cf, req->NameID, req->EncryptedID);
   if (!req->NameID || !req->NameID->gg.content) {
-    ERR("SLO failed: request does not have NameID. %p", req->NameID);
-    return 0;
+    INFO("SLO: request does not have NameID. %p sesix(%.*s)", req->NameID, sesix?sesix->len:0, sesix?sesix->s:"");
   }
-  if (zxid_find_ses(cf, ses, req->SessionIndex?req->SessionIndex->content:0, 0 /*req->NameID->gg.content*/))
+  if (zxid_find_ses(cf, ses, sesix, 0 /*req->NameID->gg.content*/))
     zxid_del_ses(cf, ses);
   return 1;
 }

@@ -17,6 +17,7 @@
 # 29.8.2009, merged in smime support --Sampo
 # 15.9.2009, added TAS3 packaging --Sampo
 # 14.11.2009, added yubikey support --Sampo
+# 12.2.2010, added pthread support --Sampo
 #
 # Build so far only tested on Linux, Solaris 8 and MacOS 10.3. This
 # makefile needs gmake-3.78 or newer.
@@ -35,8 +36,9 @@ default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool
 
 all: default precheck_apache samlmod phpzxid javazxid apachezxid smime
 
-ZXIDVERSION=0x000051
-ZXIDREL=0.51
+### This is the authorative spot to set version number. c/zxidvers.h is generated from these.
+ZXIDVERSION=0x000052
+ZXIDREL=0.52
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -110,6 +112,13 @@ JNI_INC=-I/usr/java/include -I/usr/java/include/linux
 SERVLET_PATH=../apache-tomcat-5.5.20/common/lib/servlet-api.jar
 #SERVLET_PATH=../apache-tomcat-6.0.18/lib/servlet-api.jar
 
+# Without cURL the Artifact Profile, WSC, and metadata fetch features are disabled.
+CDEF+= -DUSE_CURL
+# Without OpenSSL signing and signature verification are not possible
+CDEF+= -DUSE_OPENSSL
+# Using PTHREAD helps to avoid problems in multithreaded programs, such as Java servlets
+CDEF+= -DUSE_PTHREAD
+
 ### To change any of the above options, you can either supply
 ### alternate values on make command line, like `make PREFIX=/your/path'
 ### or you can create localconf.mk file to hold your options. This
@@ -127,10 +136,6 @@ APACHE_MODULES ?= $(APACHE_ROOT)/modules
 CDIR+= -I. -I$(TOP) -I$(OPENSSL_ROOT)/include -I$(CURL_ROOT)/include
 CDIR+= $(APACHE_INCLUDE) $(APR_INCLUDE)
 CDEF+= -D_REENTRANT -DDEBUG
-# Without cURL the Artifact Profile, WSC, and metadata fetch features are disabled.
-CDEF+= -DUSE_CURL
-# Without OpenSSL signing and signature verification are not possible
-CDEF+= -DUSE_OPENSSL
 LIBS+= -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
 #LIBS+=-ldl
 
@@ -1087,6 +1092,19 @@ tas3idppkg: zxididp zxpasswd zxcot zxdecode
 	cp $(TAS3COMMONFILES) $(TAS3IDP)
 	zip -r $(TAS3IDP).zip $(TAS3IDP)
 
+TAS3LINUXX86=T3-ZXID-LINUX-X86_$(ZXIDREL)
+
+tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode mod_auth_saml.so php/php_zxid.so zxidjava/libzxidjni.so zxidjava/zxidjni.class
+	rm -rf $(TAS3LINUXX86) $(TAS3LINUXX86).zip
+	mkdir $(TAS3LINUXX86)
+	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
+	cp mod_auth_saml.so $(TAS3LINUXX86)
+	cp *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
+	cp zxididp zxpasswd zxcot zxdecode zxid-idp.pd $(TAS3LINUXX86)
+	cp zxidjava/libzxidjni.so zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3LINUXX86)
+	cp $(TAS3COMMONFILES) $(TAS3LINUXX86)
+	zip -r $(TAS3LINUXX86).zip $(TAS3LINUXX86)
+
 TAS3SRC=T3-ZXID-SRC_$(ZXIDREL)
 
 tas3srcpkg: zxid-$(ZXIDREL).tgz
@@ -1097,10 +1115,14 @@ tas3srcpkg: zxid-$(ZXIDREL).tgz
 	cp README.zxid-tas3 Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay $(TAS3SRC)
 	zip -r $(TAS3SRC).zip $(TAS3SRC)
 
-tas3rel: tas3idppkg tas3javapkg tas3phppkg tas3maspkg tas3srcpkg
+#tas3rel: tas3idppkg tas3javapkg tas3phppkg tas3maspkg tas3srcpkg
+#tas3copyrel: tas3rel
+#	scp $(TAS3SRC).zip $(TAS3IDP).zip $(TAS3JAVA).zip $(TAS3PHP).zip $(TAS3MAS).zip tas3repo:pool-in
+
+tas3rel: tas3linuxx86pkg tas3srcpkg
 
 tas3copyrel: tas3rel
-	scp $(TAS3SRC).zip $(TAS3IDP).zip $(TAS3JAVA).zip $(TAS3PHP).zip $(TAS3MAS).zip tas3repo:pool-in
+	scp $(TAS3SRC).zip $(TAS3LINUXX86).zip tas3repo:pool-in
 
 ###
 ### Precheck to help analyse compilation problems

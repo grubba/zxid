@@ -13,6 +13,7 @@
  * 5.2.2007,  added EPR handling --Sampo
  * 7.8.2008,  added session lookup by NameID --Sampo
  * 7.10.2008, added documentation --Sampo
+ * 12.2.2010,  added pthread locking --Sampo
  *
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
@@ -64,8 +65,10 @@ int zxid_get_ses_sso_a7n(struct zxid_conf* cf, struct zxid_ses* ses)
   ses->sso_a7n_buf[gotall] = 0;
   
   DD("a7n(%.*s)", gotall, ses->sso_a7n_buf);
+  LOCK(cf->ctx->mx, "sso a7n");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ses->sso_a7n_buf, ses->sso_a7n_buf + gotall);
   r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "sso a7n");
   if (!r) {
     ERR("Failed to decode the sso assertion of session sid(%s) from  path(%s), a7n data(%.*s)",
 	STRNULLCHK(ses->sid), ses->sso_a7n_path, gotall, ses->sso_a7n_buf);
@@ -80,8 +83,10 @@ int zxid_get_ses_sso_a7n(struct zxid_conf* cf, struct zxid_ses* ses)
     encid = ses->a7n->Subject->EncryptedID;
     if (!ses->nameid && encid) {
       ss = zxenc_privkey_dec(cf, encid->EncryptedData, encid->EncryptedKey);
+      LOCK(cf->ctx->mx, "ses nid");
       zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s + ss->len);
       r = zx_DEC_root(cf->ctx, 0, 1);
+      UNLOCK(cf->ctx->mx, "ses nid");
       if (!r) {
 	ERR("Failed to parse EncryptedID buf(%.*s)", ss->len, ss->s);
 	return 0;
@@ -129,7 +134,9 @@ struct zxid_entity* zxid_get_ses_idp(struct zxid_conf* cf, struct zxid_ses* ses)
 /* Called by:  zxid_fetch_ses */
 struct zxid_ses* zxid_alloc_ses(struct zxid_conf* cf)
 {
-  return ZX_ZALLOC(cf->ctx, struct zxid_ses);
+  struct zxid_ses* ses = ZX_ZALLOC(cf->ctx, struct zxid_ses);
+  LOCK_INIT(ses->mx);
+  return ses;
 }
 
 /*(i) Allocate memory and get session object from the filesystem, populating

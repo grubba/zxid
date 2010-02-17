@@ -1,4 +1,5 @@
 /* zxidwspdemo.java  -  Demonstrate server side of handling a web service cal
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -7,6 +8,7 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxidappdemo.java,v 1.3 2009-11-20 20:27:13 sampo Exp $
  * 16.10.2009, created --Sampo
+ * 16.2.2010, fixed virtual hosting --Sampo
  *
  * See also: zxid-java.pd, zxidappdemo.java for client side
  *
@@ -37,9 +39,27 @@ public class zxidwspdemo extends HttpServlet {
 	throws ServletException, IOException
     {
 	System.err.print("Start GET...\n");
+	//String proto = req.getProtocol();
+	String scheme = req.getScheme();
+	//String servername = req.getServerName();
+	//int serverport = req.getServerPort();
+	String host_hdr = req.getHeader("HOST");
 	String fullURL = req.getRequestURI();
-	zxidjni.url_set(cf, fullURL);  // Virtual host support
 	String qs = req.getQueryString();
+	//System.err.print("proto("+proto+")\n");	
+	//System.err.print("scheme("+scheme+")\n");	
+	//System.err.print("servername("+servername+")\n");	
+	//System.err.print("serverport("+serverport+")\n");	
+	//System.err.print("host_hdr("+host_hdr+")\n");	
+	//System.err.print("fullURL("+fullURL+")\n");	
+	//System.err.print("qs("+qs+")\n");	
+	//String url = scheme + "://" + servername
+	//    + (serverport != 80 && serverport != 443 ? ":"+serverport : "")
+	//    + fullURL;
+	String url = scheme + "://" + host_hdr + fullURL;
+	System.err.print("url("+url+")\n");	
+	zxidjni.url_set(cf, url);  // Virtual host support
+	
 	if (qs != null && qs.equals("o=B")) {  // Metadata check
 	    String ret = zxidjni.simple_cf(cf, -1, qs, null, 0x3d54);  // QS response requested
 	    System.err.print(ret);
@@ -93,7 +113,7 @@ public class zxidwspdemo extends HttpServlet {
 	// Perform a application dependent authorization step and ship the response
 
 	String ret;
-	if (zxidjni.az_cf_ses(cf, "Action=Call", ses) == 0) {
+	if (zxidjni.az_cf_ses(cf, "Action=Call", ses) == null) {
 	    ret = zxidjni.wsp_decorate(cf, ses, null,
 				       "<barfoo>" +
 				         "<lu:Status code=\"Fail\" comment=\"Denied\"></lu:Status>" +

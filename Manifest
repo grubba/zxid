@@ -522,7 +522,9 @@ zxidjava/SWIGTYPE_p_f_p_void_size_t__p_void.java
 zxidjava/SWIGTYPE_p_f_size_t__p_void.java
 zxidjava/SWIGTYPE_p_fdtype.java
 zxidjava/SWIGTYPE_p_int.java
+zxidjava/SWIGTYPE_p_p_X509.java
 zxidjava/SWIGTYPE_p_p_char.java
+zxidjava/SWIGTYPE_p_p_p_void.java
 zxidjava/SWIGTYPE_p_p_void.java
 zxidjava/SWIGTYPE_p_p_zx_ns_s.java
 zxidjava/SWIGTYPE_p_p_zx_xenc_EncryptedKey_s.java

@@ -339,6 +339,8 @@ int zxid_add_header_refs(struct zxid_conf* cf, int n_refs, struct zxsig_ref* ref
 
 void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy)
 {
+  X509* sign_cert;
+  RSA*  sign_pkey;
   int n_refs;
   struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];
       
@@ -366,11 +368,8 @@ void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security
    
     ASSERTOP(n_refs, <=, ZXID_N_WSF_SIGNED_HEADERS);
 
-    if (!cf->sign_cert) /* Lazy load cert and private key */
-      cf->sign_cert = zxid_read_cert(cf, "sign-nopw-cert.pem");
-    if (!cf->sign_pkey)
-      cf->sign_pkey = zxid_read_private_key(cf, "sign-nopw-cert.pem");
-    sec->Signature = zxsig_sign(cf->ctx, n_refs, refs, cf->sign_cert, cf->sign_pkey);
+    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert wsc"))
+      sec->Signature = zxsig_sign(cf->ctx, n_refs, refs, sign_cert, sign_pkey);
   }
 }
 
@@ -684,8 +683,10 @@ struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char*
     }
   } /* else <e:Envelope> provided */
 
+  LOCK(cf->ctx->mx, "call");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
   r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "call");
   if (!r) {
     ERR("Malformed XML enve(%s)", enve);
     D_DEDENT("call: ");

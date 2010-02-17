@@ -866,6 +866,7 @@ if ($ascii) {
 ED('XML1', 'Decode-Encode SO and WO: ns-bug', 1000, 't/default-ns-bug.xml');
 ED('XML2', 'Decode-Encode SO and WO: azrq1',  1000, 't/azrq1.xml');
 ED('XML3', 'Decode-Encode SO and WO: azrs1',  1000, 't/azrs1.xml');
+ED('XML4', 'Decode-Encode RIS malformed',     1,    't/risaris-bad.xml');
 # *** TODO: add EncDec for all other types of protocol messages
 # *** TODO: add specific SSO signature validation tests
 

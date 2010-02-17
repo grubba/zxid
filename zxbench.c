@@ -305,8 +305,10 @@ int main(int argc, char** argv, char** env)
   for (;n_iter; --n_iter) {
     //cf = zxid_new_conf("/var/zxid/");
     cf = zxid_new_conf("/var/sfis/");
+    LOCK(cf->ctx->mx, "zxbench");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + got_all);
     r = zx_DEC_root(cf->ctx, 0, 1000);
+    UNLOCK(cf->ctx->mx, "zxbench");
     if (!r) DIE("Decode failure");
     
     //ent = zxid_get_ent_from_file(cf, "YV7HPtu3bfqW3I4W_DZr-_DKMP4" /* cxp06 */);
