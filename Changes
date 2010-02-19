@@ -22,6 +22,7 @@ To do:
     - Process session in validate
     - Brian's ordering problem (risaris-bad.xml)
     - IdP initiated SLO
+    - IdP should include URL for correcting information
 
 zxid-0.53:: 17.2.2010
     NOT PUB

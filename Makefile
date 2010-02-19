@@ -885,10 +885,13 @@ zxidappdemo.class: zxidappdemo.java zxidjava/zxidjni.class
 zxidwspdemo.class: zxidwspdemo.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java zxidwspdemo.java
 
+zxidwspleaf.class: zxidwspleaf.java zxidjava/zxidjni.class
+	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java zxidwspleaf.java
+
 zxidjava.jar: zxidjava/*.class
 	$(JAR) cf zxidjava.jar $<
 
-javazxid: zxidjava/libzxidjni.$(JNILIB) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwspdemo.class
+javazxid: zxidjava/libzxidjni.$(JNILIB) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwspdemo.class zxidwspleaf.class
 
 javazxid_install: zxidjava/libzxidjni.so
 	@$(ECHO) "javazxid_install: Work in Progress. See zxid-java.pd"
@@ -897,7 +900,7 @@ javazxid_war:
 	mkdir -p zxidservlet/WEB-INF/classes/zxidjava/
 	cp -f ./zxidjava/*.class ./zxidservlet/WEB-INF/classes/zxidjava/
 	cp -f ./servlet/WEB-INF/web.xml ./zxidservlet/WEB-INF/
-	cp -f zxidsrvlet.class zxidappdemo.class zxidwspdemo.class zxidhlo.class zxidservlet/WEB-INF/classes/
+	cp -f zxidsrvlet.class zxidappdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
 	cd ./zxidservlet ; $(JAR) cf ../zxidservlet.war *; cd ../
 	rm -rf zxidservlet
 
@@ -1050,7 +1053,7 @@ zxid.dll: libzxid.a
 ### TAS3 Project Specific Targets
 ###
 
-TAS3COMMONFILES=README.zxid-tas3 README.zxid Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay Makefile
+TAS3COMMONFILES=README.zxid-tas3 README.zxid Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay Makefile zxmkdirs.sh
 
 TAS3MAS=T3-SSO-ZXID-MODAUTHSAML_$(ZXIDREL)
 

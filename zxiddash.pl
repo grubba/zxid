@@ -74,7 +74,7 @@ sub read_log {
 }
 
 sub show_log {
-    print "<title>ZXID SP Log Explorer Log listing</title><link type=\"text/css\" rel=stylesheet href=\"explo.css\">\n<pre>\n";
+    print "<title>ZXID SP Log Explorer Log listing</title><link type=\"text/css\" rel=stylesheet href=\"dash.css\">\n<pre>\n";
     read_log();
     syswrite STDOUT, "</pre>";
 }
@@ -98,6 +98,6 @@ sub show_templ {
     exit;
 }
 
-show_templ("explo-main.html", $cgi);
+show_templ("dash-main.html", $cgi);
 
 __END__

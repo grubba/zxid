@@ -1,4 +1,4 @@
-/* zxidwspdemo.java  -  Demonstrate server side of handling a web service cal
+/* zxidwspleaf.java  -  Demonstrate server side of handling a web service cal
  * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -22,7 +22,7 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-public class zxidwspdemo extends HttpServlet {
+public class zxidwspleaf extends HttpServlet {
     static final String conf = "URL=http://sp1.zxidsp.org:8080/sso&PATH=/var/zxid/";
     static zxidjava.zxid_conf cf;
     static {
@@ -31,7 +31,7 @@ public class zxidwspdemo extends HttpServlet {
 	System.loadLibrary("zxidjni");
 	cf = zxidjni.new_conf_to_cf(conf);
     }
-
+    
     // Only reason why a pure WSP would handle GET is supporting WKL metadata
     // exchange (o=B). However, a hybrid frontend SP plus WSP would handle its SSO here.
 
@@ -39,23 +39,10 @@ public class zxidwspdemo extends HttpServlet {
 	throws ServletException, IOException
     {
 	System.err.print("Start GET...\n");
-	//String proto = req.getProtocol();
 	String scheme = req.getScheme();
-	//String servername = req.getServerName();
-	//int serverport = req.getServerPort();
 	String host_hdr = req.getHeader("HOST");
 	String fullURL = req.getRequestURI();
 	String qs = req.getQueryString();
-	//System.err.print("proto("+proto+")\n");	
-	//System.err.print("scheme("+scheme+")\n");	
-	//System.err.print("servername("+servername+")\n");	
-	//System.err.print("serverport("+serverport+")\n");	
-	//System.err.print("host_hdr("+host_hdr+")\n");	
-	//System.err.print("fullURL("+fullURL+")\n");	
-	//System.err.print("qs("+qs+")\n");	
-	//String url = scheme + "://" + servername
-	//    + (serverport != 80 && serverport != 443 ? ":"+serverport : "")
-	//    + fullURL;
 	String url = scheme + "://" + host_hdr + fullURL;
 	System.err.print("url("+url+")\n");	
 	zxidjni.url_set(cf, url);  // Virtual host support
@@ -82,7 +69,7 @@ public class zxidwspdemo extends HttpServlet {
 	}
 	
 	res.setContentType("text/html");
-	res.getOutputStream().print("<title>ZXID Demo WSP</title><body><h1>ZXID Demo WSP does not offer web GUI (" + fullURL + ")</H1>\n<pre>"+qs+"</pre>");
+	res.getOutputStream().print("<title>ZXID Leaf WSP</title><body><h1>ZXID Leaf WSP does not offer web GUI (" + fullURL + ")</H1>\n<pre>"+qs+"</pre>");
     }
 
     // Handle a SOAP call, which is always a POST
@@ -90,7 +77,7 @@ public class zxidwspdemo extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException
     {
-	System.err.print("\n============ WSP Start SOAP POST ============\n");
+	System.err.print("\n============ LEAF WSP Start SOAP POST ============\n");
 	zxidjava.zxid_ses ses = zxidjni.alloc_ses(cf);
 	String scheme = req.getScheme();
 	String host_hdr = req.getHeader("HOST");
@@ -119,38 +106,17 @@ public class zxidwspdemo extends HttpServlet {
 	    return;
 	}
 	String ldif = zxidjni.ses_to_ldif(cf, ses);
-	System.err.print("\n===== Doing work for user nid("+nid+").\nAttribute dump: "+ldif+"\n");
-
-	// Perform a application dependent authorization step and ship the response
+	System.err.print("\n===== Leaf Doing work for user nid("+nid+").\nLDIF: "+ldif+"\n");
 
 	String ret;
-	if (zxidjni.az_cf_ses(cf, "Action=Call", ses) == null) {
-	    ret = zxidjni.wsp_decorate(cf, ses, null,
-				       "<barfoo>"
-				       + "<lu:Status code=\"Fail\" comment=\"Denied\"></lu:Status>"
-				       + "<data>Denied: nid="+nid+"</data>" +
-				       "</barfoo>");
-	} else {
-	    String recurse = "";
-	    if (buf.indexOf("STOP") == -1) {
-		// "http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B"
-	        recurse = zxidjni.call(cf, ses, "x-recurs", null, null, null,
-				       "<recursing>STOP</recursing>");
-		System.err.print("Recursive out("+recurse+")\n");
-		recurse = zxidjni.extract_body(cf, recurse);
-	    } else {
-		System.err.print("Recursive STOP\n");		
-	    }
-	    
-	    ret = zxidjni.wsp_decorate(cf, ses, null,
-				       "<barfoo>"
-				       + "<lu:Status code=\"OK\" comment=\"Permit\"></lu:Status>"
-				       + "<data>nid="+nid+"\n"+ldif+"\n\nRECURSE OUT:\n"+recurse+"\n</data>" +
-				       "</barfoo>");
-	}
+	ret = zxidjni.wsp_decorate(cf, ses, null,
+				   "<recursed>"
+				   + "<lu:Status code=\"OK\"></lu:Status>"
+				   + "<data>nid="+nid+"\n"+ldif+"\n</data>" +
+				   "</recursed>");
 	
 	res.getOutputStream().print(ret);
-	System.err.print("^^^^^^^^^^^^^ WSP Done ("+ret.length()+" chars output) ^^^^^^^^^^^^^\n\n");
+	System.err.print("^^^^^^^^^^^^^ LEAF WSP Done ("+ret.length()+" chars output) ^^^^^^^^^^^^^\n\n");
     }
 }
 

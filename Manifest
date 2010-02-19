@@ -139,6 +139,7 @@ zxidhlo.java     - Hello World SSO using Java JNI
 zxidsrvlet.java  - SSO helper servlet. Just configure this into Tomcat to get SSO
 zxidappdemo.java - Demonstration of using zxidsrvlet to achive SSO (and WSC)
 zxidwspdemo.java - Demonstration of using servlet to act as a SOAP web service
+zxidwspleaf.java - Leaf service for recursive call demo
 zxidwspaxismod.java  - Axis2 module for TAS3 WSP
 zxidwspaxisin.java   - In Handler used by Axis2 module for TAS3 WSP
 zxidwspaxisout.java  - Out Handler used by Axis2 module for TAS3 WSP
@@ -368,6 +369,16 @@ t/sso-w-bootstraps.xml - Example response to artifact resolution. Shows SSO asse
 t/x509.xml             - Example of ID-WSF SOAP call using x509 sec mech
 t/bin-bearer.xml       - Example of ID-WSF SOAP call using bearer token (binary) sec mech
 t/saml-bearer.xml      - Example of ID-WSF SOAP call using bearer token (SAML2) sec mech
+
+# User Dashboard and SP Log Explorer
+
+zxiddash.pl
+dash.css
+dash-main.html
+
+zxidexplo.pl
+explo.css
+explo-main.html
 
 # Apache authentication module
 

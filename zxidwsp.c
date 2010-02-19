@@ -536,6 +536,7 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
     }
     DD("Creating session... %d", 0);
     zxid_put_ses(cf, ses);
+    zxid_ses_to_pool(cf, ses);
     zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
     zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);
     zxlog(cf, 0, &srcts, 0, issuer, 0, ses->a7n->ID, subj, "N", "K", "PNEWSES", ses->sid, 0);

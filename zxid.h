@@ -595,6 +595,7 @@ struct zx_str* zxid_decrypt_newnym(struct zxid_conf* cf, struct zx_str* newnym, 
 int zxid_chk_sig(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, const char* lk);
 
 struct zx_str* zxid_map_val(struct zxid_conf* cf, struct zxid_map* map, struct zx_str* val);
+char* zxid_extract_body(struct zxid_conf* cf, char* enve);
 
 /* zxidloc */
 

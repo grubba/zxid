@@ -37,8 +37,11 @@ public class zxidappdemo extends HttpServlet {
 	throws ServletException, IOException
     {
 	String fullURL = req.getRequestURI();
-	if (req.getQueryString() != null)
+	String qs = req.getQueryString();
+	if (qs != null)
 	    fullURL += "?" + req.getQueryString();
+	else
+	    qs = "";
 	System.err.print("Start ZXID App Demo GET("+fullURL+")...\n");
 	HttpSession ses = req.getSession(false);  // Important: do not allow automatic session.
 	if (ses == null) {                        // Instead, redirect to sso servlet.
@@ -48,7 +51,12 @@ public class zxidappdemo extends HttpServlet {
 	ServletOutputStream out = res.getOutputStream();
 	
 	res.setContentType("text/html");
-	out.print("<title>ZXID Demo App Protected Content</title><body><h1>ZXID Demo App Protected Content at " + fullURL + "</H1>\n");
+	out.print("<title>ZXID Demo App Protected Content</title><body>\n");
+	out.print("<table align=right><tr><td>");
+	out.print("<a href=\"http://www.tas3.eu/\"><img src=\"tas3-logo.jpg\" height=64 border=0></a>");
+	out.print("<a href=\"http://zxid.org/\"><img src=\"logo-zxid-128x128.png\" height=64 border=0></a>");
+	out.print("</td></tr></table>");
+	out.print("<h1>ZXID Demo App Protected Content</h1> at " + fullURL + "\n");
 
 	// Render logout buttons (optional)
 
@@ -64,6 +72,10 @@ public class zxidappdemo extends HttpServlet {
 	    out.print("<p>Authorized.\n");
 	}
 
+	out.print("<table align=right><tr><td>");
+	out.print("<img src=\"tas3-recurs-demo.png\" border=0>");
+	out.print("</td></tr></table>");
+
 	// Render protected content page (your application starts working)
 
 	out.print("<pre>HttpSession dump:\n");
@@ -71,63 +83,92 @@ public class zxidappdemo extends HttpServlet {
 	for (int i = 0; i < val_names.length; ++i) {
 	    out.print(val_names[i] + ": " + ses.getValue(val_names[i]) + "\n");
 	}
-	out.print("</pre>");
+	out.print("</pre><p>");
+	out.print("[ <a href=\"?idhrxml\">tas3_call(idhrxml)</a>");
+	out.print("| <a href=\"?x-foobar\">Recursive</a>");
+	out.print("| <a href=\"?leaf\">Leaf</a>");
+	out.print("| <a href=\"?multi\">Multi discovery and call</a>");
+	out.print("| <a href=\"?all\">All</a>");
+	out.print("]<p>");
 
 	// Demo web service call to zxidhrxmlwsp
 
 	String ret;
 	String sid = ses.getValue("sesid").toString();
-	out.print("<p>Output from idhrxml web service call sid("+sid+"):<br>\n<textarea cols=80 rows=20>");
-	ret = zxidjni.call(cf, zxidjni.fetch_ses(cf, sid),
-			   zxidjni.zx_xmlns_idhrxml, null, null, null,
-			   "<idhrxml:Query>" +
-			     "<idhrxml:QueryItem>" +
-			       "<idhrxml:Select></idhrxml:Select>" +
-			     "</idhrxml:QueryItem>" +
-			   "</idhrxml:Query>");
+	zxid_ses zxses = zxidjni.fetch_ses(cf, sid);
+	
+	if (qs.equals("idhrxml") || qs.equals("all")) {
+	    out.print("<p>Output from idhrxml web service call sid("+sid+"):<br>\n<textarea cols=80 rows=20>");
+	    ret = zxidjni.call(cf, zxidjni.fetch_ses(cf, sid),
+			       zxidjni.zx_xmlns_idhrxml, "http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", null, null,
+			       "<idhrxml:Query>"
+			       + "<idhrxml:QueryItem>"
+			       + "<idhrxml:Select></idhrxml:Select>"
+			       + "</idhrxml:QueryItem>" +
+			       "</idhrxml:Query>");
 
-	out.print(ret);
-	out.print("</textarea>");
-
+	    ret = zxidjni.extract_body(cf, ret);
+	    out.print(ret);
+	    out.print("</textarea>");
+	}
+	
 	// Demo another web service call, this time the service by zxidwspdemo.java
 
-	out.print("<p>Output from foobar web service call:<br>\n<textarea cols=80 rows=20>");
-	zxid_ses zxses = zxidjni.fetch_ses(cf, sid);
-	ret = zxidjni.call(cf, zxses, "urn:x-foobar", null, null, null,
-			   "<foobar>Do it!</foobar>");
+	if (qs.equals("x-foobar") || qs.equals("all")) {
+	    out.print("<p>Output from foobar web service call:<br>\n<textarea cols=80 rows=20>");
+	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", "http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B", null, null,
+			       "<foobar>Do it!</foobar>");
+	    
+	    ret = zxidjni.extract_body(cf, ret);
+	    out.print(ret);
+	    out.print("</textarea>");
+	}
+	
+	// Demo another web service call, this time the service by zxidwspdemo.java
 
-	out.print(ret);
-	out.print("</textarea>");
-
+	if (qs.equals("leaf") || qs.equals("all")) {
+	    out.print("<p>Output from Leaf web service call:<br>\n<textarea cols=80 rows=20>");
+	    ret = zxidjni.call(cf, zxses, "x-recurs", null, null, null,
+			       "<foobar>Do it!</foobar>");
+	    
+	    ret = zxidjni.extract_body(cf, ret);
+	    out.print(ret);
+	    out.print("</textarea>");
+	}
+	
 	// Multidiscovery and call
 
-	out.print("<h4>Multidiscovery</h4>\n");
-
-	SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
-
-	for (int i=1; i<100; ++i) {
-	    epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);
-	    if (epr[i] == null)
-		break;
-	    out.print("<p>EPR "+i+" address("+zxidjni.get_epr_address(cf, epr[i])+")\n");
-	    out.print("<p>EPR "+i+"   entid("+zxidjni.get_epr_entid(cf, epr[i])+")\n");
-	    out.print("<p>EPR "+i+"   desc("+zxidjni.get_epr_desc(cf, epr[i])+")\n");
-	}
-
-	for (int i=1; i<100; ++i) {
-	    if (epr[i] == null)
-		break;
-	    out.print("<p>Output from multicall "+i+" entid:<br>\n<textarea cols=80 rows=20>");
-	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_entid(cf, epr[i]), null, null,
-			       "<foobar>do i="+i+"</foobar>");
-	    out.print(ret);
-	    out.print("</textarea>\n");
-
-	    out.print("<p>Output from multicall "+i+" address:<br>\n<textarea cols=80 rows=20>");
-	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_address(cf, epr[i]), null, null,
-			       "<foobar>do i="+i+"</foobar>");
-	    out.print(ret);
-	    out.print("</textarea>\n");
+	if (qs.equals("multi") || qs.equals("all")) {
+	    out.print("<h4>Multidiscovery</h4>\n");
+	    
+	    SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
+	    
+	    for (int i=1; i<100; ++i) {
+		epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);
+		if (epr[i] == null)
+		    break;
+		out.print("<p>EPR "+i+" address("+zxidjni.get_epr_address(cf, epr[i])+")\n");
+		out.print("<p>EPR "+i+"   entid("+zxidjni.get_epr_entid(cf, epr[i])+")\n");
+		out.print("<p>EPR "+i+"    desc("+zxidjni.get_epr_desc(cf, epr[i])+")\n");
+	    }
+	    
+	    for (int i=1; i<100; ++i) {
+		if (epr[i] == null)
+		    break;
+		out.print("<p>Output from multicall "+i+" entid:<br>\n<textarea cols=80 rows=20>");
+		ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_entid(cf, epr[i]), null, null,
+				   "<foobar>do i="+i+"</foobar>");
+		ret = zxidjni.extract_body(cf, ret);
+		out.print(ret);
+		out.print("</textarea>\n");
+		
+		out.print("<p>Output from multicall "+i+" address:<br>\n<textarea cols=80 rows=20>");
+		ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_address(cf, epr[i]), null, null,
+				   "<foobar>do i="+i+"</foobar>");
+		ret = zxidjni.extract_body(cf, ret);
+		out.print(ret);
+		out.print("</textarea>\n");
+	    }
 	}
 	out.print("<p>Done.\n");
     }

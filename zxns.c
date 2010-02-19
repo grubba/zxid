@@ -96,9 +96,19 @@ static struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, char* prefix,
 {
   struct zx_ns_s* ns = ZX_ZALLOC(c, struct zx_ns_s);
   ns->prefix_len = prefix_len;
-  ns->prefix = prefix;
   ns->url_len = url_len;
+#if 0
+  ns->prefix = prefix;
   ns->url = url;
+#else
+  /* *** reallocating these should not be necessary, excapt for unknown namespaces */
+  ns->prefix = ZX_ALLOC(c, prefix_len+1);
+  ns->url = ZX_ALLOC(c, url_len+1);
+  memcpy(ns->prefix, prefix, prefix_len);
+  memcpy(ns->url, url, url_len);
+  ns->prefix[prefix_len] = 0;
+  ns->url[url_len] = 0;
+#endif
   return ns;
 }
 

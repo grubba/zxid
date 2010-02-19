@@ -263,7 +263,7 @@ next_file:
     closedir(dir);
   }
   el = req->RequestedService->ServiceType;
-  D("TOTAL discovered %d svctype(%.*)", n_discovered, el->content->len, el->content->s);
+  D("TOTAL discovered %d svctype(%.*s)", n_discovered, el->content->len, el->content->s);
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
   D_DEDENT("di_query: ");
   return resp;

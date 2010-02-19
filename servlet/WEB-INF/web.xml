@@ -48,4 +48,14 @@
 <url-pattern>/wspdemo</url-pattern>
 </servlet-mapping>
 
+<servlet>
+<servlet-name>zxidwspleaf</servlet-name>
+<servlet-class>zxidwspleaf</servlet-class>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>zxidwspleaf</servlet-name>
+<url-pattern>/wspleaf</url-pattern>
+</servlet-mapping>
+
 </web-app>

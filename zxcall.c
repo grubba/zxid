@@ -250,7 +250,6 @@ int zxcall_main(int argc, char** argv, char** env)
 {
   int siz, got, n;
   char* p;
-  char* q;
   struct zx_str* ss;
   struct zxid_ses* ses;
   struct zxid_entity* idp_meta;
@@ -319,30 +318,8 @@ int zxcall_main(int argc, char** argv, char** env)
     if (verbose)
       fprintf(stderr, "Call returned %d bytes.\n", ss->len);
     if (out_fmt) {
-      for (p = ss->s;; p+=4) {
-	p = strstr(p, "Body");
-	if (!p) {
-nobody:
-	  ERR("Response does not contain <Body> len=%d res(%.*s)", ss->len, ss->len, ss->s);
-	  return 1;
-	}
-	if (p > ss->s && ONE_OF_2(p[-1], '<', ':') && ONE_OF_5(p[4], '>', ' ', '\t', '\r', '\n'))
-	  break;
-      }
-      for (p += 4; *p && *p != '>'; ++p) ;
-      if (!*p)
-	goto nobody;
-      
-      for (q = ++p; ; q+=5) {
-	q = strstr(q, "Body>");
-	if (!q)
-	  goto nobody;
-	if (ONE_OF_2(q[-1], '<', ':'))
-	  break;
-      }
-      for (q; *q != '<'; --q) ;
-      
-      printf("%.*s", q - p, p);
+      p = zxid_extract_body(cf, ss->s);
+      printf("%s", p);
     } else
       printf("%.*s", ss->len, ss->s);
   } else {

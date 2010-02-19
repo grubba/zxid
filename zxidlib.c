@@ -775,4 +775,45 @@ struct zx_str* zxid_map_val(struct zxid_conf* cf, struct zxid_map* map, struct z
   return ss;
 }
 
+/*() Extract from a string representing SOAP envelope, the payload part in the body. */
+
+char* zxid_extract_body(struct zxid_conf* cf, char* enve)
+{
+  char* p;
+  char* q;
+
+  if (!p)
+    goto nobody;
+  for (p = enve; p; p+=4) {
+    p = strstr(p, "Body");
+    if (!p) {
+nobody:
+      ERR("Response does not contain <Body> res(%s)", enve);
+      return 0;
+    }
+    if (p > enve && ONE_OF_2(p[-1], '<', ':') && ONE_OF_5(p[4], '>', ' ', '\t', '\r', '\n'))
+      break;
+  }
+  if (!p)
+    goto nobody;
+  
+  for (p += 4; *p && *p != '>'; ++p) ;
+  if (!*p)
+    goto nobody;
+  
+  for (q = ++p; q; q+=5) {
+    q = strstr(q, "Body>");
+    if (!q)
+      goto nobody;
+    if (ONE_OF_2(q[-1], '<', ':'))
+      break;
+  }
+  for (q; *q != '<'; --q) ;
+
+  enve = ZX_ALLOC(cf->ctx, q-p+1);
+  memcpy(enve, p, q-p);
+  enve[q-p] = 0;
+  return enve;
+}
+
 /* EOF  --  zxidlib.c */
