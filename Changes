@@ -24,6 +24,26 @@ To do:
     - IdP initiated SLO
     - IdP should include URL for correcting information
 
+Regarding mod_perl stability: I would assume most of that has to do
+with underlying memory allocator. All allocation activity in zxid code
+goes through zx_alloc() (in zxlib.c:55). The ctx->malloc_func function
+pointer is not currently used. I should fix zx_alloc() to use it.
+Anyway, all this is in place to ensure that you could replace malloc()
+with an alternative allocator, such as Apache pool allocator.
+
+In playing with allocators, important caveat: OpenSSL has similar
+vectorable allocator. You should use same allocator for OpenSSL and
+ZXID (and perl). libcurl documentation is not entirely clear regarding
+its allocator usage, but I assume it uses malloc() so that would be
+yet another worry.
+
+https://idp.testshib.org/idp/shibboleth
+
+    - zxcall should have discovery only mode and iteration option
+    - zxcall should have EPR cache listing mode
+    - zxcot should have idpdimd listing mode
+    - zxpasswd should have user federation listing mode
+
 zxid-0.53:: 17.2.2010
     NOT PUB
 zxid-0.52:: 15.2.2010

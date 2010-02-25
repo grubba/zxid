@@ -186,14 +186,11 @@ void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_End
   struct zx_str* urlss;
   int wsf20 = 0;
   for (; epr; epr = (struct zx_a_EndpointReference_s*)epr->gg.g.n) {
-    D("%d: Detected wsf20 EPR.", wsf20);
     ss = epr->Metadata->ServiceType->content;
-    urlss = epr->Address;
-    D("%d: EPRd svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
+    urlss = epr->Address->gg.content;
+    D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
     if (zxid_cache_epr(cf, ses, epr)) {
       ++wsf20;
-      ss = epr->Metadata->ServiceType->content;
-      urlss = epr->Address;
       D("%d: EPR cached svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
     }
   }
@@ -297,7 +294,7 @@ struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid
     return 0;
   }
   
-  D("Looking in session dir(%s) sid(%s) svc(%s) sesptr=%p", path, ses->sid, svc, ses);
+  D("Looking in session dir(%s) svc(%s) pses=%p", path, svc, ses);
   dir = opendir(path);
   if (!dir) {
     perror("opendir to find epr in session");
@@ -439,14 +436,11 @@ struct zx_a_EndpointReference_s* zxid_get_epr(struct zxid_conf* cf, struct zxid_
   if (env && env->Body) {
     if (env->Body->QueryResponse) {
       for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = (struct zx_a_EndpointReference_s*)ZX_NEXT(epr)) {
-	D("%d: wsf20 EPR...", wsf20);
 	ss = epr->Metadata->ServiceType->content;
-	urlss = epr->Address;
+	urlss = epr->Address->gg.content;
 	D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
 	if (zxid_cache_epr(cf, ses, epr)) {
 	  ++wsf20;
-	  ss = epr->Metadata->ServiceType->content;
-	  urlss = epr->Address;
 	  D("%d: EPR cached svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
 	}
       }

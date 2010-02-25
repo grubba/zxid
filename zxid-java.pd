@@ -614,6 +614,15 @@ If you get
 
 Then ... ? Currently it seems you have to restart Tomcat.
 
+See
+
+* http://forums.sun.com/thread.jspa?threadID=633985
+
+In essence the Java environment has arbitrary restriction that same
+library can not be used twice, e.g. due to two instances of same
+application. Most trivial way around this is to create two copies
+of the libzxidjni.so with different names.
+
 9.8 Logging and Debugging Tips
 ------------------------------
 

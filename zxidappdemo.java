@@ -85,10 +85,11 @@ public class zxidappdemo extends HttpServlet {
 	}
 	out.print("</pre><p>");
 	out.print("[ <a href=\"?idhrxml\">tas3_call(idhrxml)</a>");
-	out.print("| <a href=\"?x-foobar\">Recursive</a>");
-	out.print("| <a href=\"?leaf\">Leaf</a>");
-	out.print("| <a href=\"?multi\">Multi discovery and call</a>");
-	out.print("| <a href=\"?all\">All</a>");
+	out.print(" | <a href=\"?x-foobar\">Recursive</a>");
+	out.print(" | <a href=\"?leaf\">Leaf</a>");
+	out.print(" | <a href=\"?multidi\">Multi discovery</a>");
+	out.print(" | <a href=\"?multi\">Multi discovery and call</a>");
+	out.print(" | <a href=\"?all\">All</a>");
 	out.print("]<p>");
 
 	// Demo web service call to zxidhrxmlwsp
@@ -136,10 +137,41 @@ public class zxidappdemo extends HttpServlet {
 	    out.print("</textarea>");
 	}
 	
+	// Multidiscovery
+
+	if (qs.equals("multi")) {
+	    out.print("<h4>Multidiscovery</h4>\n");
+	    
+	    SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
+	    
+	    for (int i=1; i<100; ++i) {
+		epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);
+		if (epr[i] == null)
+		    break;
+		out.print("<p>EPR "+i+" <a href=\"?o=call&url="+zxidjni.get_epr_address(cf, epr[i])+"\"Call</a><br>\n");
+		out.print(" address("+zxidjni.get_epr_address(cf, epr[i])+")<br>\n");
+		out.print(" entid("+zxidjni.get_epr_entid(cf, epr[i])+")<br>\n");
+		out.print(" desc("+zxidjni.get_epr_desc(cf, epr[i])+")<br>\n");
+	    }
+	}
+
+	// Call specific
+
+	if (false /*qs.startswith("o=call&url=")*/) {
+	    String url = ""; // qs.substr(11);
+	    out.print("<h4>Specific Call</h4>\n");
+	    out.print("<p>Output from call address:<br>\n<textarea cols=80 rows=20>");
+	    //ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_address(cf, epr[i]), null, null,
+	    //		   "<foobar>do i="+i+"</foobar>");
+	    ret = zxidjni.extract_body(cf, ret);
+	    out.print(ret);
+	    out.print("</textarea>\n");	    
+	}
+
 	// Multidiscovery and call
 
 	if (qs.equals("multi") || qs.equals("all")) {
-	    out.print("<h4>Multidiscovery</h4>\n");
+	    out.print("<h4>Multidiscovery and Call</h4>\n");
 	    
 	    SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
 	    

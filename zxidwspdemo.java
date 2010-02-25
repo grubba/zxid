@@ -134,8 +134,8 @@ public class zxidwspdemo extends HttpServlet {
 	    String recurse = "";
 	    if (buf.indexOf("STOP") == -1) {
 		// "http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B"
-	        recurse = zxidjni.call(cf, ses, "x-recurs", null, null, null,
-				       "<recursing>STOP</recursing>");
+	        recurse = zxidjni.call(cf, ses, "x-recurs", null, null, null, "<recursing>STOP</recursing>");
+	        //recurse = zxidjni.call(cf, ses, "urn:x-foobar", "http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B", null, null, "<recursing>STOP</recursing>");
 		System.err.print("Recursive out("+recurse+")\n");
 		recurse = zxidjni.extract_body(cf, recurse);
 	    } else {

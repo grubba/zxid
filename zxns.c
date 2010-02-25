@@ -101,7 +101,7 @@ static struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, char* prefix,
   ns->prefix = prefix;
   ns->url = url;
 #else
-  /* *** reallocating these should not be necessary, excapt for unknown namespaces */
+  /* *** reallocating these should not be necessary, except for unknown namespaces */
   ns->prefix = ZX_ALLOC(c, prefix_len+1);
   ns->url = ZX_ALLOC(c, url_len+1);
   memcpy(ns->prefix, prefix, prefix_len);
