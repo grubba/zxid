@@ -105,7 +105,7 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
  * objects.
  */
 
-/* Called by:  main, opt x3, zxid_get_meta_ss */
+/* Called by:  opt x3, zxid_addmd, zxid_get_meta_ss */
 struct zxid_entity* zxid_get_meta(struct zxid_conf* cf, char* url)
 {
   struct zxid_entity* ent;

@@ -31,7 +31,7 @@
 
 /*() Extract an assertion, decrypting EncryptedAssertion if needed. */
 
-/* Called by:  zxid_sp_dig_sso_a7n, zxid_sp_soap_dispatch */
+/* Called by:  zxid_sp_dig_sso_a7n, zxid_sp_soap_dispatch, zxid_wsp_validate */
 struct zx_sa_Assertion_s* zxid_dec_a7n(struct zxid_conf* cf, struct zx_sa_Assertion_s* a7n, struct zx_sa_EncryptedAssertion_s* enca7n)
 {
   struct zx_str* ss;
@@ -189,6 +189,25 @@ static void zxid_ins_xacml_az_stmt(struct zxid_conf* cf, struct zx_sa_Assertion_
 #endif
 }
 
+static void zxid_ins_xacml_az_cd1_stmt(struct zxid_conf* cf, struct zx_sa_Assertion_s* a7n, char* deci)
+{
+  /* Two ways of doing assertion with XACMLAuthzDecisionStatement:
+   * 1. Explicitly include such statement in assertion
+   * 2. Use sa:Statement, but brandit with xsi:type
+   * The former is more logical, but the latter is what Jericho does
+   * and in effect the XACML interop events have done (de-facto standard?). */
+
+#if 1
+  a7n->xasacd1_XACMLAuthzDecisionStatement = zx_NEW_xasacd1_XACMLAuthzDecisionStatement(cf->ctx);
+  a7n->xasacd1_XACMLAuthzDecisionStatement->Response = zxid_mk_xacml_resp(cf, deci);
+  /* *** Add xaspcd1 and xasacd1 variants */
+#else
+  a7n->Statement = zx_NEW_sa_Statement(cf->ctx);
+  a7n->Statement->type = zx_ref_str(cf->ctx, "xasacd1:XACMLAuthzDecisionStatementType");
+  a7n->Statement->Response = zxid_mk_xacml_resp(cf, deci);
+#endif
+}
+
 /*() Process <XACMLAuthzDecisionQuery>. The response will have
  * SAML assertion containing Authorization Decision Statement. */
 
@@ -236,6 +255,49 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(struct zxid_conf* cf, struct zx
   return resp;
 }
 
+static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* azq)
+{
+  struct zx_sp_Response_s* resp;
+  struct zx_sa_Assertion_s* a7n;
+  struct zx_str* affil;
+  struct zx_str* subj;
+  struct zx_xac_Attribute_s* xac_at;
+  
+  if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)azq, azq->Signature, azq->Issuer, "XACMLAuthzDecisionQuery"))
+    return 0;
+
+  affil = subj = 0;
+#if 0
+  affil = ar->NameIDPolicy && ar->NameIDPolicy->SPNameQualifier
+    ? ar->NameIDPolicy->SPNameQualifier
+    : ar->Issuer->gg.content;
+  subj = zxid_mk_subj(cf, ses, affil, sp_meta);
+#endif
+  //a7n = zxid_mk_a7n(cf, affil, subj, 0, 0, 0);
+  a7n = zxid_mk_a7n(cf, affil, 0, 0, 0, 0);
+
+  if (azq->Request && azq->Request->Subject) {
+    for (xac_at = azq->Request->Subject->Attribute; xac_at; xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
+      if (xac_at->AttributeId->len == sizeof("role")-1
+	  && !memcmp(xac_at->AttributeId->s, "role", sizeof("role")-1)) {
+	if (xac_at->AttributeValue && xac_at->AttributeValue->content
+	    && xac_at->AttributeValue->content->len == sizeof("deny")-1
+	    && !memcmp(xac_at->AttributeValue->content->s, "deny", sizeof("deny")-1)) {
+	  D("PDP: Deny due to role=deny %d",0);
+	  zxid_ins_xacml_az_cd1_stmt(cf, a7n, "Deny");
+	  resp = zxid_mk_saml_resp(cf);
+	  resp->Assertion = a7n;
+	  return resp;
+	}
+      }
+    }
+  }
+  zxid_ins_xacml_az_cd1_stmt(cf, a7n, "Permit");
+  resp = zxid_mk_saml_resp(cf);
+  resp->Assertion = a7n;
+  return resp;
+}
+
 /*() SOAP dispatch can also handle requests and responses received via artifact
  * resolution. However only some combinations make sense.
  * See zxid/sg/wsf-soap11.sg for the master SOAP dispatch from parsing perspective.
@@ -250,6 +312,7 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
   struct zxsig_ref refs;
   struct zx_e_Body_s* body;
   struct zx_sp_LogoutRequest_s* req;
+  struct zx_str* issuer;
   ses->sigres = ZXSIG_NO_SIG;
 
   if (!r) goto bad;
@@ -283,7 +346,7 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
 	body->LogoutResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
-    return zxid_soap_cgi_resp_body(cf, body);
+    return zxid_soap_cgi_resp_body(cf, body, req->Issuer->gg.content);
   }
 
   if (r->Envelope->Body->ManageNameIDRequest) {
@@ -298,13 +361,19 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
 	res->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
-    return zxid_soap_cgi_resp_body(cf, body);
+    return zxid_soap_cgi_resp_body(cf, body, r->Envelope->Body->ManageNameIDRequest->Issuer->gg.content);
   }
 
   D("as_ena=%d %p", cf->as_ena, r->Envelope->Body->SASLRequest);
   if (cf->as_ena) {
     if (r->Envelope->Body->SASLRequest) {
       struct zx_as_SASLResponse_s* res;
+      if (r->Envelope->Header && r->Envelope->Header->Sender
+	  && r->Envelope->Header->Sender->providerID)
+	issuer = r->Envelope->Header->Sender->providerID;
+      else
+	issuer = 0;
+      //issuer = r->Envelope->Body->SASLRequest->Issuer->gg.content;
       res = zxid_idp_as_do(cf, r->Envelope->Body->SASLRequest);
       body = zx_NEW_e_Body(cf->ctx);
       body->SASLResponse = res;
@@ -317,7 +386,7 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
 	zx_str_free(cf->ctx, refs.canon);
       }
 #endif
-      return zxid_soap_cgi_resp_body(cf, body);
+      return zxid_soap_cgi_resp_body(cf, body, issuer);
     }
   }
   
@@ -333,10 +402,13 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
       struct zx_sa_Assertion_s* a7n;
       struct zx_di_QueryResponse_s* di_resp;
 
-      if (!r->Envelope->Header || !r->Envelope->Header->Security) {
+      if (!r->Envelope->Header || !r->Envelope->Header->Security
+	  || !r->Envelope->Header->Sender || !r->Envelope->Header->Sender->providerID) {
 	goto malformed;
       }
-
+      
+      issuer = r->Envelope->Header->Sender->providerID;
+      
       a7n = zxid_dec_a7n(cf, r->Envelope->Header->Security->Assertion,
 			 r->Envelope->Header->Security->EncryptedAssertion);
       di_resp = zxid_di_query(cf, a7n, r->Envelope->Body->Query);
@@ -352,7 +424,7 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
 	zx_str_free(cf->ctx, refs.canon);
       }
 #endif
-      return zxid_soap_cgi_resp_body(cf, body);
+      return zxid_soap_cgi_resp_body(cf, body, issuer);
     }
   }
   
@@ -370,7 +442,22 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
 	res->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
 	zx_str_free(cf->ctx, refs.canon);
       }
-      return zxid_soap_cgi_resp_body(cf, body);
+      return zxid_soap_cgi_resp_body(cf, body, r->Envelope->Body->XACMLAuthzDecisionQuery->Issuer->gg.content);
+    }
+    if (r->Envelope->Body->xaspcd1_XACMLAuthzDecisionQuery) {
+      struct zx_sp_Response_s* res;
+      D("xaspcd1:XACMLAuthzDecisionQuery %d",0);
+      res = zxid_xacml_az_cd1_do(cf, cgi, ses, r->Envelope->Body->xaspcd1_XACMLAuthzDecisionQuery);
+      body = zx_NEW_e_Body(cf->ctx);
+      body->Response = res;
+      if (cf->sso_soap_resp_sign) {
+	refs.id = res->ID;
+	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, res);
+	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
+	res->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	zx_str_free(cf->ctx, refs.canon);
+      }
+      return zxid_soap_cgi_resp_body(cf, body, r->Envelope->Body->XACMLAuthzDecisionQuery->Issuer->gg.content);
     }
   }
   

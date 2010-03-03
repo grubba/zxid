@@ -26,7 +26,7 @@
 
 /*() Try to map security mechanisms across different frame works. Low level function. */
 
-/* Called by:  zxid_wsc_call */
+/* Called by:  zxid_wsc_call, zxid_wsf_decor */
 int zxid_map_sec_mech(struct zx_a_EndpointReference_s* epr)
 {
   int len;
@@ -91,6 +91,7 @@ int zxid_map_sec_mech(struct zx_a_EndpointReference_s* epr)
 
 /*() For purposes of signing, add references and canon forms of all known SOAP headers */
 
+/* Called by:  zxid_wsf_sign, zxid_wsp_validate */
 int zxid_add_header_refs(struct zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_e_Header_s* hdr)
 {
   /* Addressing and Security Headers */
@@ -337,6 +338,7 @@ int zxid_add_header_refs(struct zxid_conf* cf, int n_refs, struct zxsig_ref* ref
   return n_refs;
 }
 
+/* Called by:  zxid_wsc_call x3, zxid_wsf_decor */
 void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy)
 {
   X509* sign_cert;
@@ -373,6 +375,124 @@ void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security
   }
 }
 
+struct zx_e_Envelope_s* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env)
+{
+  struct zx_root_s* root;
+  struct zx_e_Fault_s* flt;
+  struct zx_wsse_Security_s* sec;
+  struct zx_wsse_SecurityTokenReference_s* str;
+  struct zx_e_Header_s* hdr;
+  
+  if (!env || !env->Body) {
+    ERR("NULL SOAP envelope or body %p", env);
+    return 0;
+  }
+
+  if (!env->Header)
+    env->Header = zx_NEW_e_Header(cf->ctx);
+  hdr = env->Header;
+  
+  /* *** Much similarity to zxid_wsp_decor(), consider merge. */
+  
+  /* Populate SOAP headers. */
+  
+  hdr->Framework = zx_NEW_sbf_Framework(cf->ctx);
+  hdr->Framework->version = zx_ref_str(cf->ctx, "2.0");
+  hdr->Framework->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->Framework->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+
+#if 1
+  /* *** Conor claims Sender is not mandatory */
+  hdr->Sender = zx_NEW_b_Sender(cf->ctx);
+  hdr->Sender->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->Sender->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  if (cf->affiliation)
+    hdr->Sender->affiliationID = zx_ref_str(cf->ctx, cf->affiliation);
+  hdr->Sender->providerID = zxid_my_entity_id(cf);
+#endif
+
+#if 0
+  /**** for now, this is just implied by the sec mech */
+  hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx);
+  hdr->TargetIdentity->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->TargetIdentity->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+#endif
+
+  hdr->To = zx_NEW_a_To(cf->ctx);
+  hdr->To->gg.content = epr->Address->gg.content;
+  hdr->To->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->To->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+
+#if 0
+  hdr->Action = zx_NEW_a_Action(cf->ctx);
+  hdr->Action->gg.content = zx_ref_str(cf->ctx, ***);
+  hdr->Action->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->Action->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+#endif
+
+#if 0
+  hdr->From = zx_NEW_a_From(cf->ctx);
+  hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));
+  hdr->From->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->From->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+#endif
+
+  /* Mandatory for a request. */
+  hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx);
+  /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));*/
+  hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_dup_str(cf->ctx, A_ANON));
+  hdr->ReplyTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->ReplyTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+
+#if 0
+  /* Omission means to use same address as ReplyTo */
+  hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx);
+  hdr->FaultTo->Address = zx_mk_addr(cf->ctx, zx_strf(cf->ctx, "%s?o=P", cf->url));
+  hdr->FaultTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->FaultTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+#endif
+
+#if 0
+  hdr->ReferenceParameters = zx_NEW_a_ReferenceParameters(cf->ctx);
+  hdr->ReferenceParameters->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->ReferenceParameters->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+#endif
+
+#if 0
+  hdr->Credentials = zx_NEW_tas3_Credentials(cf->ctx);
+  hdr->Credentials->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->Credentials->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+#endif
+
+#if 0
+  /* If you want this header, you should
+   * create it prior to calling zxid_wsc_call() */
+  hdr->UsageDirective = zx_NEW_b_UsageDirective(cf->ctx);
+  hdr->UsageDirective->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->UsageDirective->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+#endif
+
+#if 0
+  /* Interaction or redirection. If you want this header, you should
+   * create it prior to calling zxid_wsc_call() */
+  hdr->UserInteraction = zx_NEW_b_UserInteraction(cf->ctx);
+  hdr->UserInteraction->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->UserInteraction->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+#endif
+  
+  sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx);
+  //sec->Id = zx_ref_str(cf->ctx, "SEC");
+  sec->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  sec->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx);
+  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx);
+  
+  hdr->MessageID = zx_NEW_a_MessageID(cf->ctx);
+  hdr->MessageID->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  hdr->MessageID->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  
+}
+
 /*(i) zxid_wsc_call() implements the main low level ID-WSF web service call
  * logic, including preparation of SOAP headers, use of sec mech (e.g.
  * preparation of wsse:Security header and signing of appropriate compoments
@@ -385,7 +505,7 @@ void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security
  * additional SOAP headers at will before calling this function. This function
  * will add Liberty ID-WSF specific SOAP headers. */
 
-/* Called by:  main x15, zxid_call, zxid_get_epr */
+/* Called by:  main x9, zxid_call, zxid_get_epr */
 struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env)
 {
   int i, res, secmech;
@@ -653,7 +773,7 @@ static char zx_env_close[] = "</e:Envelope>";
  *     string to obtain all returned SOAP headers as well as the Body and its
  *     content. */
 
-/* Called by:  zxid_callf */
+/* Called by:  zxcall_main, zxid_callf */
 struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve)
 {
   struct zx_str* ret;

@@ -175,7 +175,7 @@ static struct zx_str* zxid_pool_to_ldif(struct zxid_conf* cf, struct zxid_attr* 
 /*() Convert attributes from (session) pool to JSON, applying OUTMAP.
  * *** Need to check escaping JSON values, e.g. " or \n */
 
-/* Called by:  zxid_simple_ab_pep */
+/* Called by:  zxid_ses_to_json */
 static struct zx_str* zxid_pool_to_json(struct zxid_conf* cf, struct zxid_attr* pool)
 {
   char* p;
@@ -312,7 +312,7 @@ static struct zx_str* zxid_pool_to_json(struct zxid_conf* cf, struct zxid_attr* 
  * *** Need to figure out how to distinguish query string return from
  *     other returns, like redirect. Perhaps arrange dn field always first? */
 
-/* Called by:  zxid_simple_ab_pep */
+/* Called by:  zxid_ses_to_qs */
 static struct zx_str* zxid_pool_to_qs(struct zxid_conf* cf, struct zxid_attr* pool)
 {
   char* p;
@@ -415,18 +415,21 @@ static struct zx_str* zxid_pool_to_qs(struct zxid_conf* cf, struct zxid_attr* po
 
 /*() Convert attributes from session to LDIF, applying OUTMAP. */
 
+/* Called by: */
 struct zx_str* zxid_ses_to_ldif(struct zxid_conf* cf, struct zxid_ses* ses) {
   return zxid_pool_to_ldif(cf, ses?ses->at:0);
 }
 
 /*() Convert attributes from session to JSON, applying OUTMAP. */
 
+/* Called by:  zxid_simple_ab_pep */
 struct zx_str* zxid_ses_to_json(struct zxid_conf* cf, struct zxid_ses* ses) {
   return zxid_pool_to_json(cf, ses?ses->at:0);
 }
 
 /*() Convert attributes from session to query string, applying OUTMAP. */
 
+/* Called by:  zxid_simple_ab_pep */
 struct zx_str* zxid_ses_to_qs(struct zxid_conf* cf, struct zxid_ses* ses) {
   return zxid_pool_to_qs(cf, ses?ses->at:0);
 }
@@ -502,7 +505,7 @@ static void zxid_add_a7n_at_to_pool(struct zxid_conf* cf, struct zxid_ses* ses, 
 
 /*() Add simple attribute to pool, applying NEED, WANT, and INMAP */
 
-/* Called by:  zxid_add_qs_to_pool, zxid_ses_to_pool x8, zxid_simple_ab_pep x2 */
+/* Called by:  zxid_add_qs_to_ses, zxid_ses_to_pool x14 */
 void zxid_add_attr_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* at_name, struct zx_str* val)
 {
   struct zxid_map* map;
@@ -530,7 +533,7 @@ void zxid_add_attr_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* at_n
  * are applied. The pool is suitable for use by PEP or eventually
  * rendering to LDIF (or JSON). */
 
-/* Called by:  zxid_simple_ab_pep */
+/* Called by:  zxid_as_call_ses, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsp_validate */
 void zxid_ses_to_pool(struct zxid_conf* cf, struct zxid_ses* ses)
 {
   char* src;

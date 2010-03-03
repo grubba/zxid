@@ -34,7 +34,7 @@
  * additional SOAP headers at will before calling this function. This function
  * will add Liberty ID-WSF specific SOAP headers. */
 
-/* Called by:  main x15, zxid_call, zxid_get_epr */
+/* Called by:  main, zxid_wsp_decorate */
 struct zx_e_Envelope_s* zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_e_Envelope_s* env)
 {
   struct zx_wsse_Security_s* sec;
@@ -230,7 +230,7 @@ static char zx_env_close[] = "</e:Envelope>";
  * return:: SOAP Envelope of the response, as a string, ready to be
  *     sent as HTTP response. */
 
-/* Called by:  zxid_callf */
+/* Called by:  main x7, zxid_wsp_decoratef, zxidwspcgi_parent */
 struct zx_str* zxid_wsp_decorate(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* enve)
 {
   struct zx_str* ss;
@@ -325,7 +325,7 @@ struct zx_str* zxid_wsp_decoratef(struct zxid_conf* cf, struct zxid_ses* ses, co
  *     from the session, should there be desire to process the message despite
  *     the validation failure. */
 
-/* Called by: */
+/* Called by:  main, zxidwspcgi_main */
 char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* enve)
 {
   int n_refs = 0;

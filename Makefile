@@ -18,6 +18,7 @@
 # 15.9.2009, added TAS3 packaging --Sampo
 # 14.11.2009, added yubikey support --Sampo
 # 12.2.2010, added pthread support --Sampo
+# 25.2.2010, added gcov support --Sampo
 #
 # Build so far only tested on Linux, Solaris 8 and MacOS 10.3. This
 # makefile needs gmake-3.78 or newer.
@@ -37,8 +38,8 @@ default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool
 all: default precheck_apache samlmod phpzxid javazxid apachezxid smime
 
 ### This is the authorative spot to set version number. c/zxidvers.h is generated from these.
-ZXIDVERSION=0x000052
-ZXIDREL=0.52
+ZXIDVERSION=0x000053
+ZXIDREL=0.53
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -94,8 +95,27 @@ SHARED_CLOSE=-Wl,-no-whole-archive
 CFLAGS=-g -fpic -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing
 #CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86
 CFLAGS += -Wall -Wno-parentheses -DMAYBE_UNUSED='__attribute__ ((unused))'
-CFLAGS += -ffunction-sections -fdata-sections
 #LDFLAGS += -Wl,--gc-sections
+
+ifeq ($(ENA_PG),1)
+
+###
+### To compile for profiling your should run make ENA_PG=1
+### See also: make gcov, make lcov (and lcovhtml directory), man gcov, man gprof
+### N.B. ccache seems to be incompatible with profiling.
+###
+
+#CDEF += -DMUTEX_DEBUG
+CFLAGS += -pg -ftest-coverage -fprofile-arcs
+LDFLAGS += -pg -ftest-coverage -fprofile-arcs
+
+else
+
+# -ffunction-sections is incompatible with profiling
+
+CFLAGS += -ffunction-sections -fdata-sections
+
+endif
 
 ###
 ### Java options (watch out javac running out of heap)
@@ -730,7 +750,7 @@ php/zxid_wrap.o: php/zxid_wrap.c
 	$(CC) -c -o $@ `$(PHP_CONFIG) --includes` $(CFLAGS) $<
 
 php/php_zxid.so: php/zxid_wrap.o libzxid.a
-	$(LD) -o php/php_zxid.so -shared php/zxid_wrap.o -L. -lzxid $(LIBS)
+	$(LD) $(LDFLAGS) -o php/php_zxid.so -shared php/zxid_wrap.o -L. -lzxid $(LIBS)
 
 phpzxid: php/php_zxid.so
 
@@ -766,7 +786,7 @@ py/zxid_wrap.o: py/zxid_wrap.c
 	$(CC) -c -o $@ `$(PY_CONFIG) --includes` $(CFLAGS) $<
 
 py/py_zxid.so: py/zxid_wrap.o libzxid.a
-	$(LD) -o py/py_zxid.so -shared py/zxid_wrap.o -L. -lzxid $(LIBS)
+	$(LD) $(LDFLAGS) -o py/py_zxid.so -shared py/zxid_wrap.o -L. -lzxid $(LIBS)
 
 pyzxid: py/py_zxid.so
 
@@ -797,7 +817,7 @@ ruby/zxid_wrap.o: ruby/zxid_wrap.c
 	$(CC) -c -o $@ `$(RUBY_CONFIG) --includes` $(CFLAGS) $<
 
 ruby/ruby_zxid.so: ruby/zxid_wrap.o libzxid.a
-	$(LD) -o ruby/ruby_zxid.so -shared ruby/zxid_wrap.o -L. -lzxid $(LIBS)
+	$(LD) $(LDFLAGS) -o ruby/ruby_zxid.so -shared ruby/zxid_wrap.o -L. -lzxid $(LIBS)
 
 rubyzxid: ruby/ruby_zxid.so
 
@@ -828,7 +848,7 @@ csharp/zxid_wrap.o: csharp/zxid_wrap.c
 	$(CC) -c -o $@ `$(CSHARP_CONFIG) --includes` $(CFLAGS) $<
 
 csharp/csharp_zxid.so: csharp/zxid_wrap.o libzxid.a
-	$(LD) -o csharp/csharp_zxid.so -shared csharp/zxid_wrap.o -L. -lzxid $(LIBS)
+	$(LD) $(LDFLAGS) -o csharp/csharp_zxid.so -shared csharp/zxid_wrap.o -L. -lzxid $(LIBS)
 
 csharpzxid: csharp/csharp_zxid.so
 
@@ -865,7 +885,7 @@ zxidjava/zxid_wrap.o: zxidjava/zxid_wrap.c
 
 # zxidjava/libzxidjni.so zxidjava/libzxidjni.jnilib zxidjava/libzxidjni.dll (?)
 zxidjava/libzxidjni.$(JNILIB): zxidjava/zxid_wrap.o libzxid.a
-	$(LD) -o zxidjava/libzxidjni.$(JNILIB) $(SHARED_FLAGS) zxidjava/zxid_wrap.o -L. -lzxid $(LIBS)  $(SHARED_CLOSE)
+	$(LD) $(LDFLAGS) -o zxidjava/libzxidjni.$(JNILIB) $(SHARED_FLAGS) zxidjava/zxid_wrap.o -L. -lzxid $(LIBS)  $(SHARED_CLOSE)
 
 zxidjava/zxidjni.class: zxidjava/zxidjni.java
 	cd zxidjava; $(JAVAC) $(JAVAC_FLAGS) *.java
@@ -917,7 +937,7 @@ javacleaner: javaclean
 ###
 
 mod_auth_saml.so: mod_auth_saml.o libzxid.a
-	$(LD) -o mod_auth_saml.so $(SHARED_FLAGS) mod_auth_saml.o $(SHARED_CLOSE) -L. -lzxid $(LIBS) $(MOD_AUTH_SAML_LIBS)
+	$(LD) $(LDFLAGS) -o mod_auth_saml.so $(SHARED_FLAGS) mod_auth_saml.o $(SHARED_CLOSE) -L. -lzxid $(LIBS) $(MOD_AUTH_SAML_LIBS)
 
 mod_auth_saml.dll: mod_auth_saml.so
 	mv mod_auth_saml.so mod_auth_saml.dll
@@ -1333,6 +1353,9 @@ tex/%.pdf: %.pd
 html/%.html: %.pd doc-inc.pd doc-end.pd
 	pd2tex -noref -nortf -nodbx -notex $<
 
+tex/README.zxid.pdf: README.zxid
+	pd2tex -noref -nortf -nodbx -nohtml $<
+
 html/README.zxid.html: README.zxid doc-inc.pd doc-end.pd
 	pd2tex -noref -nortf -nodbx -notex README.zxid
 
@@ -1365,6 +1388,35 @@ rsynclite:
 
 cvstag:
 	cvs tag ZXID_ZXIDREL_$(ZXIDVERSION)
+
+### Coverage analysis
+
+gcov:
+	@$(ECHO) "Remember to compile for profiling: make ENA_PG=1 && make gcov"
+	gcov *.c */*.c
+
+# gcov /a/d/sampo/zxid/zxidconf.gcda -o /a/d/sampo/zxid -b -c -a -p
+
+covrep:
+	echo "*** This rule seems broken"
+	grep '#####:' *.c.gcov */*.c.gcov >uncovered.gcov
+	total=`cat *.c.gcov */*.c.gcov | wc -l`
+	inactive=`grep -e '-:' *.c.gcov */*.c.gcov | wc -l`
+	uncov=`cat uncovered.gcov | wc -l`
+	active=`expr $total - $inactive`
+	percent=`expr $uncov \* 100 / $active`
+	printf "Total source lines: %d, Active: %d, Not covered: %d (%.2f%%)\n" $total $active $uncov $percent
+
+lcov:
+	rm -rf lcovhtml; mkdir lcovhtml
+	lcov -d . -c -no-checksum -o lcovhtml/zxid.info
+	genhtml -t 'ZXID Code Coverage' -o lcovhtml lcovhtml/zxid.info
+
+cleangcov:
+	rm -f *.gcno *.gcda *.c.gcov *.y.gcov *.c-ann gmon.out
+	rm -f */*.gcno */*.gcda */*.c.gcov */*.y.gcov */*.c-ann */gmon.out
+
+### Call graphs and reference documentation
 
 function.list: 
 	$(PERL) ./call-anal.pl -n *.c >/dev/null

@@ -18,8 +18,6 @@ To do:
     - (Local) logout should either return to referer, or to configurable page
     - Depend logging validate, az response, emit logging decorate, azreq
     - Static linking, dynamic linking libzxid
-    - Coverage
-    - Process session in validate
     - Brian's ordering problem (risaris-bad.xml)
     - IdP initiated SLO
     - IdP should include URL for correcting information
@@ -39,13 +37,21 @@ yet another worry.
 
 https://idp.testshib.org/idp/shibboleth
 
+    - zxcall should have sso only mode
     - zxcall should have discovery only mode and iteration option
     - zxcall should have EPR cache listing mode
     - zxcot should have idpdimd listing mode
     - zxpasswd should have user federation listing mode
+    - zxid_pw_authn() should not report scary error message when checking .ykspent in
+      not spent case
 
 zxid-0.53:: 17.2.2010
     NOT PUB
+    - Fixed case where last item (null return) of cached multi discovery would trigger yet another discovery
+    - Added logging of issued discovery messages
+    - Feature improvements to zxidappdemo.java
+    - Added ENA_PG and coverage targets to the Makefile (current coverage 47%)
+    - Process session in validate
 zxid-0.52:: 15.2.2010
     - Log session create and destroy
     - Relax error checking in SLO: missing NameID ok if sesix supplied

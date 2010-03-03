@@ -110,7 +110,7 @@ static void zxid_process_keys(struct zxid_conf* cf, struct zxid_entity* ent, str
  * lim:: End of the metadata buffer
  * return:: Entity data structure composed from the metadata. */
 
-/* Called by:  main x3, zxid_get_ent_from_file, zxid_get_meta */
+/* Called by:  zxid_addmd, zxid_get_ent_from_file, zxid_get_meta, zxid_lscot_line */
 struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
 {
   struct zxid_entity* ent;
@@ -190,7 +190,7 @@ int zxid_write_ent_to_cache(struct zxid_conf* cf, struct zxid_entity* ent)
  * See also zxid_get_ent_from_cache() which will compute the sha1_name
  * and then read the metadata. */
 
-/* Called by:  main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_from_cache */
+/* Called by:  main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_from_cache, zxid_load_cot_cache_from_file */
 struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name)
 {
   int n, got, gotty, siz = ZXID_INIT_MD_BUF;
@@ -257,6 +257,7 @@ readerr:
 
 LOCK_STATIC(zxid_ent_cache_mx);
 
+/* Called by:  zxid_get_ent_from_cache, zxid_load_cot_cache */
 static void zxid_load_cot_cache_from_file(struct zxid_conf* cf)
 {
   if (!cf->load_cot_cache)
@@ -303,7 +304,7 @@ struct zxid_entity* zxid_get_ent_from_cache(struct zxid_conf* cf, struct zx_str*
  * eid:: Entity ID whose metadata is desired
  * return:: Entity data structure, including the metadata */
 
-/* Called by:  zxid_add_fed_tok_to_epr, zxid_chk_sig, zxid_decode_redir_or_post, zxid_get_ent, zxid_get_ses_idp, zxid_idp_dispatch, zxid_idp_sso, zxid_slo_resp_redir, zxid_sp_dispatch, zxid_sp_sso_finalize */
+/* Called by:  zxid_add_fed_tok_to_epr, zxid_chk_sig, zxid_decode_redir_or_post, zxid_get_ent, zxid_get_ses_idp, zxid_idp_dispatch, zxid_idp_sso, zxid_slo_resp_redir, zxid_sp_dispatch, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
 struct zxid_entity* zxid_get_ent_ss(struct zxid_conf* cf, struct zx_str* eid)
 {
   struct zxid_entity* ent;
@@ -341,7 +342,7 @@ struct zxid_entity* zxid_get_ent_ss(struct zxid_conf* cf, struct zx_str* eid)
 
 /*() Wrapper for zxid_get_ent_ss(), which see. */
 
-/* Called by:  zxid_cdc_check x2, zxid_start_sso_url */
+/* Called by:  zxcall_main, zxid_cdc_check x2, zxid_start_sso_url */
 struct zxid_entity* zxid_get_ent(struct zxid_conf* cf, char* eid)
 {
   struct zx_str ss;
@@ -766,7 +767,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(struct zxid_conf* cf)
  * cf:: ZXID configuration object, used to compute EntityID and also for memory allocation
  * return:: Entity ID as zx_str */
 
-/* Called by:  main x2, zxid_an_page_cf, zxid_check_fed, zxid_di_query, zxid_idp_select_zxstr_cf_cgi, zxid_mk_ecp_Request_hdr, zxid_mk_subj, zxid_my_issuer, zxid_ses_to_pool, zxid_show_conf, zxid_sp_meta, zxid_sp_sso_finalize, zxid_validate_conditions, zxid_wsc_call */
+/* Called by:  main x2, zxid_an_page_cf, zxid_check_fed, zxid_di_query, zxid_idp_select_zxstr_cf_cgi, zxid_mk_ecp_Request_hdr, zxid_mk_subj, zxid_my_issuer, zxid_ses_to_pool, zxid_show_conf, zxid_sp_meta, zxid_sp_sso_finalize, zxid_validate_cond, zxid_wsc_call, zxid_wsf_decor, zxid_wsp_validate */
 struct zx_str* zxid_my_entity_id(struct zxid_conf* cf)
 {
   if (cf->non_standard_entityid) {

@@ -422,6 +422,7 @@ struct zx_sa_NameID_s* zxid_check_fed(struct zxid_conf* cf, struct zx_str* affil
 
 /*() Change NameID to be transient and record corresponding mapping. */
 
+/* Called by:  zxid_add_fed_tok_to_epr x2, zxid_idp_sso x2 */
 void zxid_mk_transient_nid(struct zxid_conf* cf, struct zx_sa_NameID_s* nameid, const char* sp_name_buf, const char* uid)
 {
   struct zx_str* nid;
@@ -456,9 +457,9 @@ void zxid_mk_transient_nid(struct zxid_conf* cf, struct zx_sa_NameID_s* nameid, 
 
 /*() Consider an EPR and user and generate the necessary access credential (SAML a7n).
  * The EPR is modified in place. Returns logging keyword indicating which kind of token
- * was issued. */
+ * was issued. Returns static string describing the nature of token, for logging purposes. */
 
-/* Called by:  zxid_di_query, zxid_gen_boots */
+/* Called by:  zxid_di_query, zxid_gen_boots x2 */
 char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr, const char* uid, int bs_lvl)
 {
   struct timeval srcts = {0,501000};

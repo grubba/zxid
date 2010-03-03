@@ -125,7 +125,7 @@ RSA* zxid_extract_private_key(char* buf, char* name)
 
 /*() Extract a certificate from PEM encoded file. */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_mk_art_deref, zxid_pep_az_soap x2, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_sp_sso_desc x2, zxlog_write_line */
+/* Called by:  zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
 X509* zxid_read_cert(struct zxid_conf* cf, char* name)
 {
   char buf[4096];
@@ -137,7 +137,7 @@ X509* zxid_read_cert(struct zxid_conf* cf, char* name)
 
 /*() Extract a private key from PEM encoded file. */
 
-/* Called by:  test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxenc_privkey_dec, zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_init_conf x3, zxid_mk_art_deref, zxid_pep_az_soap x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxlog_write_line x2 */
+/* Called by:  test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
 RSA* zxid_read_private_key(struct zxid_conf* cf, char* name)
 {
   char buf[4096];
@@ -152,6 +152,7 @@ RSA* zxid_read_private_key(struct zxid_conf* cf, char* name)
  * generated on disk and the read. Once read from disk, they will be cached in
  * memory. */
 
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_pep_az_soap x3, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_wsf_sign */
 int zxid_lazy_load_sign_cert_and_pkey(struct zxid_conf* cf, X509** cert, RSA** pkey, const char* logkey)
 {
   LOCK(cf->mx, logkey);
@@ -189,6 +190,7 @@ int zxid_set_opt(struct zxid_conf* cf, int which, int val)
  * way the unsupported activity will happen in one controlled place where
  * it can be ignored, if need to be. You have been warned. */
 
+/* Called by: */
 char* zxid_set_opt_cstr(struct zxid_conf* cf, int which, char* val)
 {
   switch (which) {
@@ -203,7 +205,7 @@ char* zxid_set_opt_cstr(struct zxid_conf* cf, int which, char* val)
  * to manipulate this and some other options. This function exists for some
  * special cases encountered in scripting language bindings. */
 
-/* Called by: */
+/* Called by:  main x2, zxidwspcgi_main */
 void zxid_url_set(struct zxid_conf* cf, char* url)
 {
   if (!cf || !url) {
@@ -418,7 +420,7 @@ struct zx_ctx* zx_init_ctx()
  * CURL initialization are omitted. However the zx_ctx is installed so
  * that memory allocation against the context should work. */
 
-/* Called by:  main, zxid_conf_to_cf_len, zxid_new_conf */
+/* Called by:  zxcot_main, zxid_conf_to_cf_len, zxid_new_conf */
 struct zxid_conf* zxid_init_conf_ctx(struct zxid_conf* cf, char* zxid_path)
 {
 #if 0
@@ -445,7 +447,7 @@ struct zxid_conf* zxid_init_conf_ctx(struct zxid_conf* cf, char* zxid_path)
  * or config file.
  * See: zxid_new_conf_to_cf() for a more complete solution. */
 
-/* Called by:  main x5, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode */
+/* Called by:  main x6, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode */
 struct zxid_conf* zxid_new_conf(const char* zxid_path)
 {
   /* *** unholy malloc()s: should use our own allocator! */
@@ -463,7 +465,7 @@ struct zxid_conf* zxid_new_conf(const char* zxid_path)
 
 /*() Create new (common pool) attribute and add it to a linked list */
 
-/* Called by:  zxid_add_at_values x3, zxid_add_attr_to_pool x2, zxid_add_qs_to_pool, zxid_load_atsrc, zxid_load_need */
+/* Called by:  zxid_add_at_values x3, zxid_add_attr_to_ses x2, zxid_add_qs_to_ses, zxid_load_atsrc, zxid_load_need */
 struct zxid_attr* zxid_new_at(struct zxid_conf* cf, struct zxid_attr* at, int name_len, char* name, int val_len, char* val, char* lk)
 {
   struct zxid_attr* aa = ZX_ZALLOC(cf->ctx, struct zxid_attr);
@@ -784,7 +786,7 @@ struct zxid_atsrc* zxid_load_atsrc(struct zxid_conf* cf, struct zxid_atsrc* atsr
 /*() Check whether attribute is in a (needed or wanted) list. Just a linear
  * scan as it is simple and good enough for handful of attributes. */
 
-/* Called by:  zxid_add_at_values x2, zxid_add_attr_to_pool x2 */
+/* Called by:  zxid_add_at_values x2, zxid_add_attr_to_ses x2 */
 struct zxid_need* zxid_is_needed(struct zxid_need* need, char* name)
 {
   struct zxid_attr* at;
@@ -801,7 +803,7 @@ struct zxid_need* zxid_is_needed(struct zxid_need* need, char* name)
 /*() Check whether attribute is in a (needed or wanted) list. Just a linear
  * scan as it is simple and good enough for handful of attributes. */
 
-/* Called by:  pool2apache, zxid_add_at_values, zxid_add_attr_to_pool, zxid_pep_az_soap, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
+/* Called by:  pool2apache, zxid_add_at_values, zxid_add_attr_to_ses, zxid_pep_az_soap, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
 struct zxid_map* zxid_find_map(struct zxid_map* map, char* name)
 {
   if (!name || !*name)
@@ -1092,7 +1094,7 @@ scan_end:
 
 /*() Wrapper with initial error checking for zxid_parse_conf_raw(), which see. */
 
-/* Called by:  opt x6, set_zxid_conf */
+/* Called by:  opt x7, set_zxid_conf */
 int zxid_parse_conf(struct zxid_conf* cf, char* qs)
 {
   if (!cf || !qs)
@@ -1164,7 +1166,7 @@ static struct zx_str* zxid_show_cstr_list(struct zxid_conf* cf, struct zxid_cstr
 
 /*() Generate our SP CARML and return it as a string. */
 
-/* Called by:  zxid_simple_show_conf */
+/* Called by:  opt, zxid_simple_show_conf */
 struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 {
   char* p;

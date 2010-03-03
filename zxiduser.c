@@ -141,7 +141,7 @@ void zxid_user_change_nameid(struct zxid_conf* cf, struct zx_sa_NameID_s* oldnid
 
 /*() Create new user object in file system. */
 
-/* Called by:  zxid_sp_sso_finalize, zxid_user_change_nameid x2 */
+/* Called by:  zxid_sp_sso_finalize, zxid_user_change_nameid x2, zxid_wsp_validate */
 int zxid_put_user(struct zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, struct zx_str* spqual, struct zx_str* idpnid, char* mniptr)
 {
   char sha1_name[28];

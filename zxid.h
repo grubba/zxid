@@ -580,7 +580,7 @@ int zxid_cdc_check(struct zxid_conf* cf, struct zxid_cgi* cgi);
 struct zx_root_s* zxid_soap_call_envelope(struct zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env);
 struct zx_root_s* zxid_soap_call_hdr_body(struct zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body);
 struct zx_root_s* zxid_soap_call_body(struct zxid_conf* cf, struct zx_str* url, struct zx_e_Body_s* body);
-int zxid_soap_cgi_resp_body(struct zxid_conf* cf, struct zx_e_Body_s* body);
+int zxid_soap_cgi_resp_body(struct zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid);
 
 struct zx_str* zxid_saml2_post_enc(struct zxid_conf* cf, char* field, struct zx_str* payload, char* relay_state, int sign, struct zx_str* action_url);
 struct zx_str* zxid_saml2_redir_enc(struct zxid_conf* cf, char* cgivar, struct zx_str* pay_load, char* relay_state);

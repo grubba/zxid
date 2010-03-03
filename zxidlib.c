@@ -46,7 +46,7 @@ int zxid_version()
  * used for runtime version display. For compile time you
  * should check the value of the ~ZXID_VERSION~ macro. */
 
-/* Called by:  main x9, opt x2, zxid_an_page_cf, zxid_fed_mgmt_cf, zxid_idp_select_zxstr_cf_cgi, zxid_mgmt */
+/* Called by:  main x7, opt x2, zxid_an_page_cf, zxid_fed_mgmt_cf, zxid_idp_select_zxstr_cf_cgi, zxid_mgmt */
 char* zxid_version_str()
 {
   return ZXID_REL " " ZXID_COMPILE_DATE " libzxid (zxid.org)";
@@ -61,7 +61,7 @@ char* zxid_version_str()
  *     bits should be multiple of 24 (3 bytes expands to 4 safe base64 chars)
  * return:: The identifier as zx_str. Caller should eventually free this memory.
  */
-/* Called by:  zxid_add_fed_tok_to_epr x2, zxid_check_fed, zxid_di_query, zxid_idp_sso x2, zxid_mk_a7n, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_dap_query_item, zxid_mk_dap_resquery, zxid_mk_dap_subscription, zxid_mk_dap_test_item, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_mk_subj, zxid_put_ses, zxid_pw_authn, zxid_wsc_call */
+/* Called by:  zxid_check_fed, zxid_di_query, zxid_mk_a7n, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_dap_query_item, zxid_mk_dap_resquery, zxid_mk_dap_subscription, zxid_mk_dap_test_item, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_mk_subj, zxid_mk_transient_nid, zxid_put_ses, zxid_pw_authn, zxid_wsc_call, zxid_wsf_decor */
 struct zx_str* zxid_mk_id(struct zxid_conf* cf, char* prefix, int bits)
 {
   char bit_buf[ZXID_ID_MAX_BITS/8];
@@ -82,7 +82,7 @@ struct zx_str* zxid_mk_id(struct zxid_conf* cf, char* prefix, int bits)
  * without milliseconds form. Some other softwares are buggy and fail to
  * accept the without milliseconds form. You can change the format at compile time.
  */
-/* Called by:  zxid_mk_a7n x3, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_wsc_call */
+/* Called by:  zxid_mk_a7n x3, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_wsc_call, zxid_wsf_decor */
 struct zx_str* zxid_date_time(struct zxid_conf* cf, time_t secs)
 {
   struct tm t;
@@ -161,7 +161,7 @@ struct zx_root_s* zxid_soap_call_hdr_body(struct zxid_conf* cf, struct zx_str* u
  * body::   XML data structure representing the SOAP body
  * return:: XML data structure representing the response  */
 
-/* Called by:  zxid_idp_soap, zxid_sp_deref_art, zxid_sp_soap */
+/* Called by:  zxid_as_call_ses, zxid_idp_soap, zxid_sp_deref_art, zxid_sp_soap */
 struct zx_root_s* zxid_soap_call_body(struct zxid_conf* cf, struct zx_str* url, struct zx_e_Body_s* body)
 {
   /*return zxid_soap_call_hdr_body(cf, url, zx_NEW_e_Header(cf->ctx), body);*/
@@ -169,22 +169,44 @@ struct zx_root_s* zxid_soap_call_body(struct zxid_conf* cf, struct zx_str* url, 
 }
 
 /*() Emit to stdout XML data structure representing SOAP envelope (request).
- * Typically used in CGI environment.
+ * Typically used in CGI environment, e.g. by the IdP and Discovery.
+ * Optionally logs the issued message to local audit trail.
  *
  * cf::     ZXID configuration object, also used for memory allocation
  * body::   XML data structure representing the request
  * return:: 0 if fail, ZXID_REDIR_OK if success. */
 
 /* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x5 */
-int zxid_soap_cgi_resp_body(struct zxid_conf* cf, struct zx_e_Body_s* body)
+int zxid_soap_cgi_resp_body(struct zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid)
 {
   struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx);
   struct zx_str* ss;
+  struct zx_str* logpath;
   
   env->Header = zx_NEW_e_Header(cf->ctx);
   env->Body = body;
   ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
 
+  if (cf->log_issue_msg) {
+    logpath = zxlog_path(cf, entid, ss, ZXLOG_ISSUE_DIR, ZXLOG_WIR_KIND, 1);
+    if (logpath) {
+      if (zxlog_dup_check(cf, logpath, "cgi_resp")) {
+	ERR("Duplicate wire msg(%.*s) (Simple Sign)", ss->len, ss->s);
+#if 0
+	if (cf->dup_msg_fatal) {
+	  ERR("FATAL (by configuration): Duplicate wire msg(%.*s) (cgi_resp)", ss->len, ss->s);
+	  zxlog_blob(cf, 1, logpath, ss, "cgi_resp dup");
+	  zx_str_free(cf->ctx, logpath);
+	  return 0;
+	}
+#endif
+      }
+      zxlog_blob(cf, 1, logpath, ss, "cgi_resp");
+      zxlog(cf, 0, 0, 0, entid, 0, 0, 0, "N", "K", "CGIRESP", 0, "logpath(%.*s)", logpath->len, logpath->s);
+      zx_str_free(cf->ctx, logpath);
+    }
+  }
+  
   if (zx_debug & ZXID_INOUT) INFO("SOAP_RESP(%.*s)", ss->len, ss->s);
   printf("CONTENT-TYPE: text/xml" CRLF "CONTENT-LENGTH: %d" CRLF2 "%.*s", ss->len, ss->len, ss->s);
   return ZXID_REDIR_OK;
@@ -207,7 +229,7 @@ int zxid_soap_cgi_resp_body(struct zxid_conf* cf, struct zx_e_Body_s* body)
  * payload::     What should be encoded in the redirect URL. Effectively becomes the query string
  * relay_state:: Optional relay state argument. Ends up being encoded in the query string
  * sign::        Whether binding layer signature is to be applied: 0=no, 1=POST-Simple-Sign
- * url::         URL where the form should be posted
+ * action_url::  URL where the form should be posted
  * return::      Query string encoding of the request. The memory should be freed by the caller.
  *     0 on failure.  */
 
@@ -568,7 +590,7 @@ int zxid_saml_ok(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx_sp_Status
  *     structure is decrypted and its contents returned as the Name ID
  * return:: XML data structure corresponding to (possibly decrypted) Name ID */
 
-/* Called by:  test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, zxid_di_query, zxid_idp_slo_do, zxid_mni_do, zxid_sp_slo_do, zxid_sp_sso_finalize */
+/* Called by:  test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, zxid_di_query, zxid_idp_slo_do, zxid_mni_do, zxid_sp_slo_do, zxid_sp_sso_finalize, zxid_wsp_validate */
 struct zx_sa_NameID_s* zxid_decrypt_nameid(struct zxid_conf* cf, struct zx_sa_NameID_s* nid, struct zx_sa_EncryptedID_s* encid)
 {
   struct zx_str* ss;
@@ -777,6 +799,7 @@ struct zx_str* zxid_map_val(struct zxid_conf* cf, struct zxid_map* map, struct z
 
 /*() Extract from a string representing SOAP envelope, the payload part in the body. */
 
+/* Called by:  zxcall_main */
 char* zxid_extract_body(struct zxid_conf* cf, char* enve)
 {
   char* p;

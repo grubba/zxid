@@ -82,7 +82,7 @@ char pw[1024];
 char userdir[4096];
 char buf[4096];
 
-/* Called by:  main x9 */
+/* Called by:  main x8, zxcall_main, zxcot_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) {

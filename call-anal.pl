@@ -582,7 +582,7 @@ See also
 
 <<../ref-inc.pd>>
 
-<<maketoc: 0>>
+<<maketoc: 1>>
 
 1 Reference
 ===========

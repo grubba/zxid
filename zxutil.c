@@ -74,7 +74,7 @@ int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap)
 
 /*() Generate formatted file name path. */
 
-/* Called by:  main, zxid_check_fed x3, zxid_del_ses x3, zxid_di_query, zxid_find_epr, zxid_find_ses, zxid_gen_bootstraps, zxid_idp_as_do x2, zxid_mk_user_a7n_to_sp x2, zxid_put_ses, zxid_put_user */
+/* Called by:  main, zxid_check_fed x3, zxid_del_ses x3, zxid_di_query, zxid_find_epr, zxid_find_ses, zxid_gen_boots, zxid_idp_as_do x2, zxid_mk_transient_nid x2, zxid_mk_user_a7n_to_sp x2, zxid_put_ses, zxid_put_user */
 int name_from_path(char* buf, int buf_len, const char* name_fmt, ...)
 {
   int ret;
@@ -115,7 +115,7 @@ fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, const char* n
 
 /*() Open a file with formatted file name path. */
 
-/* Called by:  main x4, write_all_path_fmt, zxid_cache_epr, zxid_get_ent_from_file, zxid_get_meta, zxid_write_ent_to_cache */
+/* Called by:  main x2, write_all_path_fmt, zxid_addmd, zxid_cache_epr, zxid_get_ent_from_file, zxid_get_meta, zxid_reg_svc x2, zxid_write_ent_to_cache */
 fdtype open_fd_from_path(int flags, int mode, const char* logkey, const char* name_fmt, ...)
 {
   va_list ap;
@@ -132,7 +132,7 @@ fdtype open_fd_from_path(int flags, int mode, const char* logkey, const char* na
  * Return value reflects last got, i.e. what last read(2) system call returned.
  * got_all reflects the total number of bytes received. */
 
-/* Called by:  main x11, opt x5, read_all, test_ibm_cert_problem, zxid_get_ent_from_file, zxid_simple_cf_ses */
+/* Called by:  main x10, opt x5, read_all, test_ibm_cert_problem, zxcall_main, zxid_addmd, zxid_get_ent_from_file x2, zxid_reg_svc, zxid_simple_cf_ses, zxidwspcgi_main, zxidwspcgi_parent */
 int read_all_fd(fdtype fd, char* p, int want, int* got_all)
 {
 #ifdef USE_STDIO
@@ -165,7 +165,7 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
  * buf:: Result parameter. This buffer will be populated with data from the file.
  * return:: actual total length. The buffer will always be nul terminated. */
 
-/* Called by:  list_user x5, list_users x2, main x6, opt x10, test_mode x2, zxid_check_fed, zxid_conf_to_cf_len, zxid_di_query x2, zxid_find_epr, zxid_gen_bootstraps, zxid_get_ses, zxid_get_ses_sso_a7n, zxid_get_user_nameid, zxid_mk_user_a7n_to_sp x4, zxid_parse_conf_raw, zxid_pw_authn x3, zxid_read_cert, zxid_read_private_key, zxid_sha1_file, zxlog_write_line */
+/* Called by:  list_user x5, list_users x2, main x4, opt x10, test_mode x2, zxid_check_fed, zxid_conf_to_cf_len, zxid_di_query x2, zxid_find_epr x2, zxid_gen_boots, zxid_get_ses, zxid_get_ses_sso_a7n, zxid_get_user_nameid, zxid_lscot_line, zxid_mk_user_a7n_to_sp x4, zxid_parse_conf_raw, zxid_pw_authn x3, zxid_read_cert, zxid_read_private_key, zxid_sha1_file, zxlog_write_line */
 int read_all(int maxlen, char* buf, const char* logkey, const char* name_fmt, ...)
 {
   va_list ap;
@@ -190,7 +190,7 @@ int read_all(int maxlen, char* buf, const char* logkey, const char* name_fmt, ..
 /*() Low level function that keeps writing data to a file descriptor unil
  * everything is written. It may block in the process. */
 
-/* Called by:  main x9, write2_or_append_lock_c_path x4, write_all_path_fmt, zxid_cache_epr, zxid_curl_write_data, zxid_send_sp_meta x2, zxid_snarf_eprs_from_ses, zxid_write_ent_to_cache */
+/* Called by:  main x4, write2_or_append_lock_c_path x4, write_all_path_fmt, zxid_addmd x2, zxid_cache_epr, zxid_curl_write_data, zxid_reg_svc x3, zxid_send_sp_meta x2, zxid_snarf_eprs_from_ses, zxid_write_ent_to_cache, zxidwspcgi_child */
 int write_all_fd(fdtype fd, const char* p, int pending)
 {
 #ifdef MINGW
@@ -217,7 +217,7 @@ int write_all_fd(fdtype fd, const char* p, int pending)
  * data. The path_fmt can have up to two %s specifiers, which will be satisfied
  * by prepath and postpath. Return 1 on success, 0 on fail. */
 
-/* Called by:  main x3, zxid_check_fed x2, zxid_mk_self_sig_cert x2, zxid_put_ses, zxid_put_user, zxid_pw_authn, zxlog_write_line */
+/* Called by:  main x5, zxid_check_fed x2, zxid_mk_self_sig_cert x2, zxid_mk_transient_nid, zxid_put_ses, zxid_put_user, zxid_pw_authn, zxlog_write_line */
 int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_fmt, const char* prepath, const char* postpath, const char* data_fmt, ...)
 {
   va_list ap;
@@ -327,7 +327,7 @@ badopen:
  * from close is important because in NFS environments you may not know
  * that your write has failed until you actually attempt to close the file. */
 
-/* Called by:  main x4, read_all x2, write2_or_append_lock_c_path x6, write_all_path_fmt x2, zxid_cache_epr, zxid_get_ent_from_file x2, zxid_write_ent_to_cache */
+/* Called by:  main x2, read_all x2, write2_or_append_lock_c_path x6, write_all_path_fmt x2, zxid_addmd, zxid_cache_epr, zxid_get_ent_from_file x3, zxid_reg_svc x2, zxid_write_ent_to_cache */
 int close_file(fdtype fd, const char* logkey)
 {
   int res = closefile(fd);
@@ -338,7 +338,7 @@ int close_file(fdtype fd, const char* logkey)
   return res;
 }
 
-/*() Outout a hexdump to stderr. Used for debugging purposes. */
+/*() Output a hexdump to stderr. Used for debugging purposes. */
 
 /* Called by:  hexdmp, zxsig_data_rsa_sha1 x2, zxsig_verify_data_rsa_sha1 x4 */
 int hexdump(char* msg, char* p, char* lim, int max)
@@ -554,7 +554,7 @@ char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char*
  * data:: Data to be digested
  * return:: Pointer one past last character written */
 
-/* Called by:  main x2, zxid_decode_redir_or_post x2, zxid_get_ent_from_cache, zxid_get_user_nameid x2, zxid_nice_sha1, zxid_parse_meta, zxid_put_user x2, zxid_user_change_nameid x2, zxlog_path x2, zxlog_write_line */
+/* Called by:  zxcot_main, zxid_decode_redir_or_post x2, zxid_get_ent_from_cache, zxid_get_user_nameid x2, zxid_nice_sha1, zxid_parse_meta, zxid_put_user x2, zxid_reg_svc, zxid_user_change_nameid x2, zxlog_path x2, zxlog_write_line */
 char* sha1_safe_base64(char* out_buf, int len, const char* data)
 {
   char sha1[20];
@@ -775,7 +775,7 @@ char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans)
  *   01234567890123456789
  *   yyyy-MM-ddThh:mm:ssZ */
 
-/* Called by:  zxid_idp_sso, zxid_sp_sso_finalize, zxid_validate_conditions x2 */
+/* Called by:  zxid_idp_sso, zxid_sp_sso_finalize, zxid_validate_cond x2, zxid_wsp_validate */
 int zx_date_time_to_secs(char* dt)
 {
   struct tm t;

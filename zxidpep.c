@@ -45,7 +45,7 @@
  * For simpler API, see zxid_az() family of functions.
  */
 
-/* Called by:  zxid_az_cf_ses, zxid_simple_ab_pep, zxid_simple_ses_active_cf */
+/* Called by:  zxid_az_cf_ses, zxid_call x2, zxid_simple_ab_pep, zxid_simple_ses_active_cf */
 char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, const char* pdp_url)
 {
   X509* sign_cert;
@@ -297,7 +297,7 @@ char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
  * For simpler API, see zxid_az() family of functions.
  */
 
-/* Called by:  zxid_az_cf */
+/* Called by:  zxcall_main, zxid_az_cf */
 char* zxid_az_cf_ses(struct zxid_conf* cf, const char* qs, struct zxid_ses* ses)
 {
   char* ret;

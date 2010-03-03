@@ -49,6 +49,7 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
   -e SOAPBODY      Pass SOAP body as argument (default is to read from STDIN)\n\
   -b               In response, only return content of SOAP body, omitting Envelope and Body.\n\
   -n               Dryrun. Do not actually make call. Instead print it to stdout.\n\
+  -l               List EPR cache (you need to specify -s SEDID or -a as well)
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
@@ -56,7 +57,7 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
   -h               This help message\n\
   --               End of options\n\
 \n\
-echo '<query>Foo</query>' | zxcall -a user:pw -t urn:x-demo-svc\n\
+echo '<query>Foo</query>' | zxcall -a https://idp.tas3.eu/zxididp?o=B user:pw -t urn:x-demo-svc\n\
 \n";
 
 int dryrun  = 0;
@@ -73,7 +74,7 @@ char* az  = 0;
 char* bdy = 0;
 struct zxid_conf* cf;
 
-/* Called by:  main x9 */
+/* Called by:  main x8, zxcall_main, zxcot_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   struct zx_str* ss;

@@ -760,7 +760,7 @@ sub ED {  # enc-dec command with diff
     
     unlink "tmp/$tsti.out";
     
-    my $latency = system_call($test, 30, $slow, "./zxencdectest -d -n $n_iter <$file >tmp/$tsti.out 2>tmp/tst.err");
+    my $latency = system_call($test, 60, $slow, "./zxencdectest -d -i $n_iter <$file >tmp/$tsti.out 2>tmp/tst.err");
     return if $latency == -1;
     
     if (system "diff -u t/$tsti.out tmp/$tsti.out") {
@@ -785,6 +785,24 @@ sub ZXC {  # zxcall
     #	tst_print('col1r', 'Diff Err', $latency, $slow, $test, '');
     #	return;
     #}
+    tst_ok($latency, $slow, $test);
+}
+
+sub CMD {  # zxpasswd command with diff
+    my ($tsti, $expl, $cmd) = @_;
+    return unless $tst eq 'all' || $tst eq substr($tsti,0,length $tst);
+    my $test = tst_link($tsti, $expl, '');
+    my $slow = 0.1;
+    
+    unlink "tmp/$tsti.out";
+    
+    my $latency = system_call($test, 60, $slow, "$cmd >tmp/$tsti.out 2>tmp/tst.err");
+    return if $latency == -1;
+    
+    if (system "diff -u t/$tsti.out tmp/$tsti.out") {
+	tst_print('col1r', 'Diff Err', $latency, $slow, $test, '');
+	return;
+    }
     tst_ok($latency, $slow, $test);
 }
 
@@ -859,6 +877,16 @@ if ($ascii) {
 }
 
 ### Service testing
+
+CMD('PW1', 'zxpasswd list user', "./zxpasswd -l tastest");
+CMD('PW2', 'zxpasswd pw an ok', "echo tas123 | ./zxpasswd -a tastest");
+CMD('PW3', 'zxpasswd pw an fail', "echo tas124 | ./zxpasswd -a tastest");
+
+CMD('COT1', 'zxcot list', "./zxcot");
+CMD('COT2', 'zxcot list swap', "./zxcot -s");
+CMD('COT3', 'zxcot list s2', "./zxcot -s -s");
+CMD('COT4', 'zxcot get idp meta dry', "./zxcot -g http://idp.tas3.pt:8081/zxididp?o=B -n");
+CMD('COT5', 'zxcot get sp meta dry', "./zxcot -g http://sp.tas3.pt:8080/zxidservlet/appdemo?o=B -n");
 
 ED('XML1', 'Decode-Encode SO and WO: ns-bug', 1000, 't/default-ns-bug.xml');
 ED('XML2', 'Decode-Encode SO and WO: azrq1',  1000, 't/azrq1.xml');

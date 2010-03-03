@@ -50,6 +50,8 @@ public class zxidwspaxisin extends AbstractHandler {
             return InvocationResponse.CONTINUE;        
         }
 	
+	zxid_ses ses = mctx.getProperty("zxidses");
+
 	String env = mctx.getEnvelope().toString();
 	System.err.print("wsp in processing env("+env+").\n");
 	String nid = zxidjni.wsp_validate(cf, ses, null, env);
@@ -57,6 +59,25 @@ public class zxidwspaxisin extends AbstractHandler {
         return InvocationResponse.CONTINUE;
     }
     
+    /* ------------ ASC (1) ----------------- */
+
+    public InvocationResponse invoke(MessageContext mctx) throws AxisFault {
+        if (!context.isEngaged(zxidwspaxismod.MODULE_NAME)) {
+            return InvocationResponse.CONTINUE;        
+        }
+	
+	zxid_ses ses = zxidjni.as_call(cf, idp_meta, user, pw);
+	mctx.putProperty("zxidses", ses);
+
+	String env = mctx.getEnvelope().toString();
+	System.err.print("wsp in processing env("+env+").\n");
+	String nid = zxidjni.wsp_validate(cf, ses, null, env);
+	System.err.print("Doing work for user nid("+nid+").\n");
+        return InvocationResponse.CONTINUE;
+    }
+    
+    
+
 }
 
 /* EOF */

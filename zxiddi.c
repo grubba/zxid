@@ -29,7 +29,6 @@
 /* Called by:  zxid_sp_soap_dispatch */
 struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_Assertion_s* a7n, struct zx_di_Query_s* req)
 {
-  struct timeval srcts = {0,501000};
   struct zx_sa_NameID_s* nameid;
   struct zx_di_RequestedService_s* rs;
   struct zx_di_QueryResponse_s* resp = zx_NEW_di_QueryResponse(cf->ctx);
@@ -247,7 +246,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
       epr->gg.g.n = (void*)resp->EndpointReference;
       resp->EndpointReference = epr;
 
-      zxlog(cf, 0, &srcts, 0, 0, 0, a7n->ID, nameid->gg.content, "N", "K", logop, uid, "");
+      zxlog(cf, 0, 0, 0, 0, 0, a7n->ID, nameid->gg.content, "N", "K", logop, uid, "");
 
       if (rs->resultsType && rs->resultsType->s
 	  && (!memcmp(rs->resultsType->s, "only-one", rs->resultsType->len)
@@ -262,8 +261,10 @@ next_file:
     
     closedir(dir);
   }
-  el = req->RequestedService->ServiceType;
-  D("TOTAL discovered %d svctype(%.*s)", n_discovered, el->content->len, el->content->s);
+  el = req->RequestedService->ServiceType && req->RequestedService->ServiceType->content
+    ? req->RequestedService->ServiceType : 0;
+  D("TOTAL discovered %d svctype(%.*s)", n_discovered, el?el->content->len:0, el?el->content->s:"");
+  zxlog(cf, 0, 0, 0, 0, 0, a7n->ID, nameid->gg.content, "N", "K", "DIOK", (void*)n_discovered, "%.*", el?el->content->len:1, el?el->content->s:"-");
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
   D_DEDENT("di_query: ");
   return resp;

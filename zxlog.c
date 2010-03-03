@@ -416,7 +416,7 @@ int zxlog(struct zxid_conf* cf,   /* 1 */
  *     is to write a file to the computed path. Usually 0 if the intent is to read.
  * return:: The path, as zx_str or 0 if failure */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_sso_finalize */
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
 struct zx_str* zxlog_path(struct zxid_conf* cf,
 			  struct zx_str* entid,  /* issuer or target entity ID */
 			  struct zx_str* objid,  /* AssertionID or MessageID */
@@ -432,7 +432,7 @@ struct zx_str* zxlog_path(struct zxid_conf* cf,
   char* p;
 
   if (!entid) {
-    ERR("No EntityID supplied %d", 0);
+    ERR("No EntityID supplied %p dir(%s) kind(%s)", objid, STRNULLCHK(dir), STRNULLCHK(kind));
     ZX_FREE(cf->ctx, s);
     return 0;
   }
@@ -513,7 +513,7 @@ struct zx_str* zxlog_path(struct zxid_conf* cf,
  * return::  0 if no duplicate (success), 1 if duplicate (failure)
  */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_sso_finalize */
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
 int zxlog_dup_check(struct zxid_conf* cf, struct zx_str* path, const char* logkey)
 {
   struct stat st;
@@ -556,7 +556,7 @@ int zxlog_dup_check(struct zxid_conf* cf, struct zx_str* path, const char* logke
  * captures both the original and the duplicate assertion (the logging is an append),
  * which may have forensic value. */
 
-/* Called by:  zxid_anoint_a7n x2, zxid_anoint_sso_resp x2, zxid_decode_redir_or_post x2, zxid_saml2_post_enc x2, zxid_saml2_redir_enc x2, zxid_sp_sso_finalize x2 */
+/* Called by:  zxid_anoint_a7n x2, zxid_anoint_sso_resp x2, zxid_decode_redir_or_post x2, zxid_saml2_post_enc x2, zxid_saml2_redir_enc x2, zxid_sp_sso_finalize x2, zxid_wsp_validate x4 */
 int zxlog_blob(struct zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* blob, const char* lk)
 {
   if (!logflag || !blob)

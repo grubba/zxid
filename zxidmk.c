@@ -313,7 +313,7 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(struct zxid_conf* cf, struct zxid
 
 /*() Construct SAML SAML Attribute */
 
-/* Called by:  zxid_add_ldif_attributes, zxid_gen_bootstraps, zxid_mk_user_a7n_to_sp */
+/* Called by:  zxid_add_ldif_attrs, zxid_gen_boots, zxid_mk_user_a7n_to_sp */
 struct zx_sa_Attribute_s* zxid_mk_attribute(struct zxid_conf* cf, char* name, char* val)
 {
   struct zx_sa_Attribute_s* r = zx_NEW_sa_Attribute(cf->ctx);
@@ -390,7 +390,7 @@ struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(struct zxid_conf* cf, struc
 
 /*() Construct XACMLAuthzDecisionQuery according to Commitee Draft 1 */
 
-/* Called by:  zxid_pep_az_soap */
+/* Called by:  zxid_pep_az_soap x2 */
 struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zxid_mk_az_cd1(struct zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* r = zx_NEW_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx);

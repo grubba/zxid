@@ -72,7 +72,7 @@ char  symmetric_key[1024];
 int symmetric_key_len;
 int n_iter = 1;
 
-/* Called by:  main x9 */
+/* Called by:  main x8, zxcall_main, zxcot_main */
 void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) goto argerr;

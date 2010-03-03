@@ -298,8 +298,10 @@ OP:: The documented operation
 
     FEDDI::  Discovery: Issue of EPR with assertion using federated NameID
     TMPDI::  Discovery: Issue of EPR with assertion using transient NameID
+    DIOK::   Summary status of successful discovery on server side
     VALID::  Message was validated OK and accepted for processing. See zxid_wsp_validate()
     DECOR::  Message was decorated and issued, see zxid_wsp_decorate()
+    CGIRESP:: Notification of issued message written in local audit trail
 
     For WSC the OP is the command verb preceded by capital C, e.g. "CQuery".
 

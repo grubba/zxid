@@ -97,7 +97,7 @@ int zxid_conf_to_cf_len(struct zxid_conf* cf, int conf_len, const char* conf)
  * conf::   Configuration service
  * return:: Configuration object */
 
-/* Called by:  main x7 */
+/* Called by:  main x6, zxcall_main, zxidwspcgi_main x2 */
 struct zxid_conf* zxid_new_conf_to_cf(const char* conf)
 {
   struct zxid_conf* cf = malloc(sizeof(struct zxid_conf));  /* *** direct use of malloc */
@@ -223,7 +223,7 @@ char* zxid_fed_mgmt_len(int conf_len, char* conf, int* res_len, char* sid, int a
   return zxid_fed_mgmt_cf(&cf, 0, -1, sid, auto_flags);
 }
 
-/* Called by:  main x2 */
+/* Called by: */
 char* zxid_fed_mgmt(char* conf, char* sid, int auto_flags) {
   return zxid_fed_mgmt_len(-1, conf, 0, sid, auto_flags);
 }
@@ -1361,7 +1361,7 @@ done:
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  main x3, zxid_simple_len */
+/* Called by:  main x3, zxid_simple_len, zxidwspcgi_main */
 char* zxid_simple_cf(struct zxid_conf* cf, int qs_len, char* qs, int* res_len, int auto_flags)
 {
   struct zxid_ses ses;
@@ -1392,7 +1392,7 @@ char* zxid_simple_len(int conf_len, char* conf, int qs_len, char* qs, int* res_l
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  main x8 */
+/* Called by:  main x4 */
 char* zxid_simple(char* conf, char* qs, int auto_flags)
 {
   return zxid_simple_len(-1, conf, -1, qs, 0, auto_flags);

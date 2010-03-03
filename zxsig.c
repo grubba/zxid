@@ -73,7 +73,7 @@
  *       FK6X9qO8qZntp3CeFbA7gpG9n9rWyJWlzSXy0vKNspwMGdl8HPfOGcXEs2Ts=</></>
  */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_pep_az_soap x2, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5 */
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_pep_az_soap x3, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_wsf_sign */
 struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* sref, X509* cert, RSA* priv_key)
 {
   char sha1[20];
@@ -153,7 +153,7 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
  * sref::   An array of (reference, xml data structure) tuples that are referenced by the signature
  * return:: ZXSIG value. 0 (ZXSIG_OK) means success. Any other value is some soft of failure */
 
-/* Called by:  main x5, zxid_chk_sig, zxid_sp_sso_finalize */
+/* Called by:  main x5, zxid_chk_sig, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
 int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, int n, struct zxsig_ref* sref)
 {
   EVP_PKEY* evp_pkey;

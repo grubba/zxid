@@ -23,6 +23,8 @@ fi
 # configure your web server to recognize zxid a CGI, e.g.
 mini_httpd -p 8443 -c 'zxid*' -S -E zxid.pem -l /tmp/mini.stderr &
 mini_httpd -p 8444 -c 'zxid*' -S -E /var/zxid/pem/ssl-nopw-cert.pem -l /tmp/mini.stderr &
+
+ulimit -c unlimited
 mini_httpd -p 8081 -c 'zxid*' &
 
 tail -f /var/tmp/zxid.stderr &
@@ -63,11 +65,12 @@ tail -f tmp/err-httpd &
 Testing Java
 ------------
 
+make javazxid
 export LD_LIBRARY_PATH=/d/sampo/zxid/zxidjava:$LD_LIBRARY_PATH
 export JAVA_HOME=/apps/java/j2sdk1.4.2
-make javazxid
-cd apache-tomcat-5.5.20/
+cd /d/sampo/apache-tomcat-5.5.20/
 tail -f logs/catalina.out &
+ulimit -c unlimited
 killall java; bin/startup.sh
 http://sp1.zxidsp.org:8080/zxidservlet/zxidHLO?o=E
 http://sp.tas3.pt:8080/zxidservlet/appdemo

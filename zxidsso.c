@@ -320,7 +320,7 @@ int zxid_sp_deref_art(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_se
 
 /*() Map ZXSIG constant to letter for log and string message. */
 
-/* Called by:  zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize */
+/* Called by:  zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
 void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
 {
   switch (sigres) {
@@ -398,7 +398,7 @@ void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
  *     string will be a constant and MUST NOT be freed by the caller.
  * return::  0 (ZXSIG_OK) if validation was successful, otherwise a ZXSIG error code. */
 
-/* Called by:  zxid_sp_sso_finalize */
+/* Called by:  zxid_sp_sso_finalize, zxid_wsp_validate */
 int zxid_validate_cond(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sa_Assertion_s* a7n, struct zx_str* myentid, struct timeval* ourts, char** err)
 {
   struct zx_sa_AudienceRestriction_s* audr;
@@ -683,6 +683,7 @@ int zxid_sp_anon_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
  * See also: zxid_idp_as_do()
  */
 
+/* Called by:  zxid_as_call */
 int zxid_as_call_ses(struct zxid_conf* cf, struct zxid_entity* idp_meta, struct zxid_cgi* cgi, struct zxid_ses* ses)
 {
   int len;
@@ -795,6 +796,7 @@ int zxid_as_call_ses(struct zxid_conf* cf, struct zxid_entity* idp_meta, struct 
   return ZXID_SSO_OK;
 }
 
+/* Called by:  zxcall_main */
 struct zxid_ses* zxid_as_call(struct zxid_conf* cf, struct zxid_entity* idp_meta, const char* user, const char* pw)
 {
   struct zxid_ses* ses = zxid_alloc_ses(cf);

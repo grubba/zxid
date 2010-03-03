@@ -33,6 +33,22 @@ public class zxidappdemo extends HttpServlet {
 	cf = zxidjni.new_conf_to_cf(conf);
 	zxidjni.set_opt(cf, 1, 1);
     }
+
+//     public String zxid_dead_simple_call(String sid, String svctype, String url, String body)
+//     {
+// 	//System.loadLibrary("zxidjni");
+// 	zxidjava.zxid_conf cf = zxidjni.new_conf_to_cf("PATH=/var/zxid/");
+// 	zxidjni.set_opt(cf, 1, 1);
+// 	zxid_ses zxses = zxidjni.fetch_ses(cf, ***sid);
+	
+// 	ret = zxidjni.call(cf, zxses,
+// 			   svctype,
+// 			   url,
+// 			   null, null,
+// 			   body);
+// 	return ret;
+//     }
+
     public void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException
     {
@@ -100,8 +116,10 @@ public class zxidappdemo extends HttpServlet {
 	
 	if (qs.equals("idhrxml") || qs.equals("all")) {
 	    out.print("<p>Output from idhrxml web service call sid("+sid+"):<br>\n<textarea cols=80 rows=20>");
-	    ret = zxidjni.call(cf, zxidjni.fetch_ses(cf, sid),
-			       zxidjni.zx_xmlns_idhrxml, "http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", null, null,
+	    ret = zxidjni.call(cf, zxses,
+			       zxidjni.zx_xmlns_idhrxml,
+			       "http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B",
+			       null, null,
 			       "<idhrxml:Query>"
 			       + "<idhrxml:QueryItem>"
 			       + "<idhrxml:Select></idhrxml:Select>"
@@ -139,7 +157,7 @@ public class zxidappdemo extends HttpServlet {
 	
 	// Multidiscovery
 
-	if (qs.equals("multi")) {
+	if (qs.equals("multidi")) {
 	    out.print("<h4>Multidiscovery</h4>\n");
 	    
 	    SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
@@ -148,24 +166,25 @@ public class zxidappdemo extends HttpServlet {
 		epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);
 		if (epr[i] == null)
 		    break;
-		out.print("<p>EPR "+i+" <a href=\"?o=call&url="+zxidjni.get_epr_address(cf, epr[i])+"\"Call</a><br>\n");
+		out.print("<p>EPR "+i+" <a href=\"?o=call&url="+zxidjni.get_epr_address(cf, epr[i])+"\">Call</a><br>\n");
 		out.print(" address("+zxidjni.get_epr_address(cf, epr[i])+")<br>\n");
 		out.print(" entid("+zxidjni.get_epr_entid(cf, epr[i])+")<br>\n");
+		out.print(" svctype(urn:x-foobar)<br>\n");
 		out.print(" desc("+zxidjni.get_epr_desc(cf, epr[i])+")<br>\n");
 	    }
 	}
 
 	// Call specific
 
-	if (false /*qs.startswith("o=call&url=")*/) {
-	    String url = ""; // qs.substr(11);
+	if (qs.startsWith("o=call&url=")) {
+	    String url = qs.substring(11);
 	    out.print("<h4>Specific Call</h4>\n");
-	    out.print("<p>Output from call address:<br>\n<textarea cols=80 rows=20>");
-	    //ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_address(cf, epr[i]), null, null,
-	    //		   "<foobar>do i="+i+"</foobar>");
+	    out.print("<p>Output from call address("+url+"):<br>\n<textarea cols=80 rows=20>");
+	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", url, null, null,
+			       "<foobar>do it</foobar>");
 	    ret = zxidjni.extract_body(cf, ret);
 	    out.print(ret);
-	    out.print("</textarea>\n");	    
+	    out.print("</textarea>\n");
 	}
 
 	// Multidiscovery and call

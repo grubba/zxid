@@ -71,7 +71,7 @@ char* cotdir  = ZXID_PATH ZXID_COT_DIR;
 char* dimddir = ZXID_PATH ZXID_DIMD_DIR;
 char* uiddir  = ZXID_PATH ZXID_UID_DIR;
 
-/* Called by:  main x9 */
+/* Called by:  main x8, zxcall_main, zxcot_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   int len;
@@ -232,6 +232,7 @@ static void opt(int* argc, char*** argv, char*** env)
 /*() IdP and Discovery. Register service metadata to /var/zxid/idpdimd/XX,
  * and possibly boostrap to /var/zxid/idpuid/.all/.bs/YY */
 
+/* Called by:  zxcot_main */
 static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const char* ddimd, const char* duid)
 {
   char sha1_name[28];
@@ -352,6 +353,7 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
 
 /*() Add metadata of a partner to the Circle-of-Trust, represented by the CoT dir */
 
+/* Called by:  zxcot_main */
 static int zxid_addmd(struct zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
 {
   int got, fd;
@@ -401,6 +403,7 @@ static int zxid_addmd(struct zxid_conf* cf, char* mdurl, int dry_run, const char
 
 /*() Print a line of Circle-of-Trust listing */
 
+/* Called by:  zxid_lscot x2 */
 static int zxid_lscot_line(struct zxid_conf* cf, int col_swap, const char* dcot, const char* den)
 {
   struct zxid_entity* ent;
@@ -429,6 +432,7 @@ static int zxid_lscot_line(struct zxid_conf* cf, int col_swap, const char* dcot,
 /*() List the contents of the Circle-of-Trust, represented by the CoT directory,
  * in various formats. */
 
+/* Called by:  zxcot_main */
 static int zxid_lscot(struct zxid_conf* cf, int col_swap, const char* dcot)
 {
   int got, ret;

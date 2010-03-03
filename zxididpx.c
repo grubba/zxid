@@ -134,7 +134,7 @@ int zxid_idp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx
 	body->LogoutResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
-    return zxid_soap_cgi_resp_body(cf, body);
+    return zxid_soap_cgi_resp_body(cf, body, req->Issuer->gg.content);
   }
 
   if (r->Envelope->Body->ManageNameIDRequest) {
@@ -148,7 +148,7 @@ int zxid_idp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx
 	res->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
-    return zxid_soap_cgi_resp_body(cf, body);
+    return zxid_soap_cgi_resp_body(cf, body, r->Envelope->Body->ManageNameIDRequest->Issuer->gg.content);
   }
   
  bad:

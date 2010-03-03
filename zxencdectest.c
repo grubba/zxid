@@ -50,7 +50,7 @@ Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxencdectest [options] <foo.xml >reencoded-foo.xml\n\
   -r N         Run test number N. 1 = IBM cert dec, 2 = IBM cert enc dec\n\
-  -n N         Number of iterations to benchmark (default 1).\n\
+  -i N         Number of iterations to benchmark (default 1).\n\
   -t SECONDS   Timeout. Default: 0=no timeout.\n\
   -c CIPHER    Enable crypto on DTS interface using specified cipher. Use '?' for list.\n\
   -k FDNUMBER  File descriptor for reading symmetric key. Use 0 for stdin.\n\
@@ -150,7 +150,7 @@ int n_iter = 1;
 char* so_path = 0;
 char* wo_path = 0;
 
-/* Called by:  main x9 */
+/* Called by:  main x8, zxcall_main, zxcot_main */
 void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc < 1) goto argerr;
@@ -166,7 +166,7 @@ void opt(int* argc, char*** argv, char*** env)
       DD("End of options by --");
       return;  /* -- ends the options */
 
-    case 'n': if ((*argv)[0][2]) break;
+    case 'i': if ((*argv)[0][2]) break;
       ++(*argv); --(*argc);
       if (!(*argc)) break;
       n_iter = atoi((*argv)[0]);
@@ -374,7 +374,7 @@ int main(int argc, char** argv, char** env)
     LOCK(ctx.mx, "zxencdectest main");
     zx_prepare_dec_ctx(&ctx, zx_ns_tab, buf, buf + got_all);
     r = zx_DEC_root(&ctx, 0, 1000);
-    LOCK(ctx.mx, "zxencdectest main");
+    UNLOCK(ctx.mx, "zxencdectest main");
     if (!r)
       DIE("Decode failure");
 

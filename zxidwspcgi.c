@@ -60,6 +60,7 @@ int child_out_fds[2];  /* Parent in */
 
 /*() Send data to script using child process */
 
+/* Called by:  zxidwspcgi_main */
 static int zxidwspcgi_child(struct zxid_conf* cf, int len, char* buf, char* sid, char* nid)
 {
   int status;
@@ -101,6 +102,7 @@ static int zxidwspcgi_child(struct zxid_conf* cf, int len, char* buf, char* sid,
 
 /*() Read from script using parent, and send resp. */
 
+/* Called by:  zxidwspcgi_main */
 static int zxidwspcgi_parent(struct zxid_conf* cf, struct zxid_ses* ses, int pid)
 {
   struct zx_str* ss;

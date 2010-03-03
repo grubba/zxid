@@ -51,7 +51,7 @@ char buf[32*1024];
 int assert_nonfatal = 0;
 char* assert_msg = "assert fired.";
 
-/* Called by:  main x9 */
+/* Called by:  main x8, zxcall_main, zxcot_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) return;

@@ -113,7 +113,7 @@ xtime (uint8_t b)
   return (b & 0x80) ? ((b << 1) ^ 0x1b) : (b << 1);
 }
 
-/* Called by:  main, yubikey_parse, zxid_pw_authn */
+/* Called by:  main, zxid_pw_authn */
 void
 yubikey_aes_decrypt (uint8_t * state, const uint8_t * key)
 {

@@ -11,7 +11,7 @@
  *
  * Test encoding and decoding SAML 2.0 assertions and other related stuff.
  *
- * ./zxbench -d -n 1 <t/hp-idp-post-resp.xml
+ * ./zxbench -d -i 1 <t/hp-idp-post-resp.xml
  */
 
 #include <signal.h>
@@ -49,7 +49,7 @@ See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxbench [options] <saml-assertion.xml >reencoded-a7n.xml\n\
-  -n  N            Number of iterations to benchmark.\n\
+  -i  N            Number of iterations to benchmark.\n\
   -t  SECONDS      Timeout. Default: 0=no timeout.\n\
   -c  CIPHER       Enable crypto on DTS interface using specified cipher. Use '?' for list.\n\
   -k  FDNUMBER     File descriptor for reading symmetric key. Use 0 for stdin.\n\
@@ -85,7 +85,7 @@ char  symmetric_key[1024];
 int symmetric_key_len;
 int n_iter = 1;
 
-/* Called by:  main x9 */
+/* Called by:  main x8, zxcall_main, zxcot_main */
 void opt(int* argc, char*** argv, char*** env)
 {
   if (*argc <= 1) goto argerr;
