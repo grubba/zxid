@@ -22,8 +22,21 @@ import zxidjava.*;   // Pull in the zxidjni.az() API
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class zxidappdemo extends HttpServlet {
+    static final boolean verbose = false;
+    static final Pattern idpnid_pat = Pattern.compile("idpnid:[ ]([^\\n]*)");
+    static final Pattern nidfmt_pat = Pattern.compile("nidfmt:[ ]([^\\n]*)");
+    static final Pattern affid_pat  = Pattern.compile("affid:[ ]([^\\n]*)");
+    static final Pattern eid_pat    = Pattern.compile("eid:[ ]([^\\n]*)");
+    static final Pattern cn_pat     = Pattern.compile("cn:[ ]([^\\n]*)");
+    static final Pattern o_pat      = Pattern.compile("o:[ ]([^\\n]*)");
+    static final Pattern ou_pat     = Pattern.compile("ou:[ ]([^\\n]*)");
+    static final Pattern role_pat   = Pattern.compile("role:[ ]([^\\n]*)");
+    static final Pattern boot_pat   = Pattern.compile("urn:liberty:disco:2006-08:DiscoveryEPR:[ ]([^\\n]*)");
+
     static final String conf = "URL=http://sp1.zxidsp.org:8080/sso&PATH=/var/zxid/";
     static zxidjava.zxid_conf cf;
     static {
@@ -49,6 +62,75 @@ public class zxidappdemo extends HttpServlet {
 // 	return ret;
 //     }
 
+    public void hilite_fields(ServletOutputStream out, String ret, int n)
+	throws IOException
+    {
+	int i;
+	try {
+	    Matcher matcher = idpnid_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>idpnid</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher2 = nidfmt_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher2.find();
+	    out.print("<b>nidfmt</b>: " + matcher2.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher3 = affid_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher3.find();
+	    out.print("<b>affid</b>: " + matcher3.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = eid_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>eid</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = cn_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>cn</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = o_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>o</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = ou_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>ou</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = role_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>role</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+	try {
+	    Matcher matcher = boot_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>urn:liberty:disco:2006-08:DiscoveryEPR</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
+    }
+
     public void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException
     {
@@ -72,7 +154,8 @@ public class zxidappdemo extends HttpServlet {
 	out.print("<a href=\"http://www.tas3.eu/\"><img src=\"tas3-logo.jpg\" height=64 border=0></a>");
 	out.print("<a href=\"http://zxid.org/\"><img src=\"logo-zxid-128x128.png\" height=64 border=0></a>");
 	out.print("</td></tr></table>");
-	out.print("<h1>ZXID Demo App Protected Content</h1> at " + fullURL + "\n");
+	out.print("<h1>ZXID Demo App Protected Content</h1>\n");
+	//out.print("<h1>ZXID Demo App Protected Content</h1> at " + fullURL + "\n");
 
 	// Render logout buttons (optional)
 
@@ -94,15 +177,28 @@ public class zxidappdemo extends HttpServlet {
 
 	// Render protected content page (your application starts working)
 
-	out.print("<pre>HttpSession dump:\n");
+	out.print("<h4>HttpSession dump:</h4>");
 	String[] val_names = ses.getValueNames();
 	for (int i = 0; i < val_names.length; ++i) {
-	    out.print(val_names[i] + ": " + ses.getValue(val_names[i]) + "\n");
+	    if (val_names[i].equals("cn")
+		|| val_names[i].equals("role")
+		|| val_names[i].equals("o")
+		|| val_names[i].equals("ou")
+		|| val_names[i].equals("idpnid")
+		|| val_names[i].equals("nidfmt")
+		|| val_names[i].equals("affid")
+		|| val_names[i].equals("eid")
+		|| val_names[i].equals("urn:liberty:disco:2006-08:DiscoveryEPR")) {
+		out.print("<b>" + val_names[i] + "</b>: " + ses.getValue(val_names[i]) + "<br>\n");
+	    } else {
+		if (verbose)
+		    out.print(val_names[i] + ": " + ses.getValue(val_names[i]) + "<br>\n");
+	    }
 	}
-	out.print("</pre><p>");
+	out.print("<p>");
 	out.print("[ <a href=\"?idhrxml\">tas3_call(idhrxml)</a>");
-	out.print(" | <a href=\"?x-foobar\">Recursive</a>");
-	out.print(" | <a href=\"?leaf\">Leaf</a>");
+	out.print(" | <a href=\"?x-foobar\">Recursive Echo</a>");
+	out.print(" | <a href=\"?leaf\">Leaf Echo</a>");
 	out.print(" | <a href=\"?multidi\">Multi discovery</a>");
 	out.print(" | <a href=\"?multi\">Multi discovery and call</a>");
 	out.print(" | <a href=\"?all\">All</a>");
@@ -134,11 +230,28 @@ public class zxidappdemo extends HttpServlet {
 	// Demo another web service call, this time the service by zxidwspdemo.java
 
 	if (qs.equals("x-foobar") || qs.equals("all")) {
-	    out.print("<p>Output from foobar web service call:<br>\n<textarea cols=80 rows=20>");
+	    out.print("<p>Output from recursive web service call:<br>\n");
 	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", "http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B", null, null,
 			       "<foobar>Do it!</foobar>");
 	    
 	    ret = zxidjni.extract_body(cf, ret);
+	    if (ret.indexOf("code=\"OK\"") == -1) {
+		out.print("<p>Error from call:<br>\n<textarea cols=80 rows=20>");
+		out.print(ret);
+		out.print("</textarea>\n");
+	    } else {
+		out.print("<p>Output from Leaf web services call (relayed by middle call):<br>\n");
+		hilite_fields(out, ret, 1);
+		out.print("<p>Output from Middle web services call:<br>\n");
+		hilite_fields(out, ret, 2);
+		if (true || verbose) {
+		    out.print("<textarea cols=80 rows=20>");
+		    out.print(ret);
+		    out.print("</textarea>\n");
+		}
+	    }
+
+
 	    out.print(ret);
 	    out.print("</textarea>");
 	}
@@ -146,13 +259,23 @@ public class zxidappdemo extends HttpServlet {
 	// Demo another web service call, this time the service by zxidwspdemo.java
 
 	if (qs.equals("leaf") || qs.equals("all")) {
-	    out.print("<p>Output from Leaf web service call:<br>\n<textarea cols=80 rows=20>");
 	    ret = zxidjni.call(cf, zxses, "x-recurs", null, null, null,
 			       "<foobar>Do it!</foobar>");
 	    
 	    ret = zxidjni.extract_body(cf, ret);
-	    out.print(ret);
-	    out.print("</textarea>");
+	    if (ret.indexOf("code=\"OK\"") == -1) {
+		out.print("<p>Error from call:<br>\n<textarea cols=80 rows=20>");
+		out.print(ret);
+		out.print("</textarea>\n");
+	    } else {
+		out.print("<p>Output from Leaf web services call:<br>\n");
+		hilite_fields(out, ret, 1);
+		if (true || verbose) {
+		    out.print("<textarea cols=80 rows=20>");
+		    out.print(ret);
+		    out.print("</textarea>\n");
+		}
+	    }
 	}
 	
 	// Multidiscovery
@@ -166,11 +289,10 @@ public class zxidappdemo extends HttpServlet {
 		epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);
 		if (epr[i] == null)
 		    break;
-		out.print("<p>EPR "+i+" <a href=\"?o=call&url="+zxidjni.get_epr_address(cf, epr[i])+"\">Call</a><br>\n");
+		out.print("<p>EPR "+i+" <a href=\"?o=call&url="+zxidjni.get_epr_address(cf, epr[i])+"\">Call</a>");
+		out.print(" desc("+zxidjni.get_epr_desc(cf, epr[i])+") svctype(urn:x-foobar)<br>\n");
 		out.print(" address("+zxidjni.get_epr_address(cf, epr[i])+")<br>\n");
 		out.print(" entid("+zxidjni.get_epr_entid(cf, epr[i])+")<br>\n");
-		out.print(" svctype(urn:x-foobar)<br>\n");
-		out.print(" desc("+zxidjni.get_epr_desc(cf, epr[i])+")<br>\n");
 	    }
 	}
 
@@ -179,12 +301,22 @@ public class zxidappdemo extends HttpServlet {
 	if (qs.startsWith("o=call&url=")) {
 	    String url = qs.substring(11);
 	    out.print("<h4>Specific Call</h4>\n");
-	    out.print("<p>Output from call address("+url+"):<br>\n<textarea cols=80 rows=20>");
 	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", url, null, null,
 			       "<foobar>do it</foobar>");
 	    ret = zxidjni.extract_body(cf, ret);
-	    out.print(ret);
-	    out.print("</textarea>\n");
+	    if (ret.indexOf("code=\"OK\"") == -1) {
+		out.print("<p>Error from call address("+url+"):<br>\n<textarea cols=80 rows=20>");
+		out.print(ret);
+		out.print("</textarea>\n");
+	    } else {
+		out.print("<p>Output from call address("+url+"):<br>\n");
+		hilite_fields(out, ret, 1);
+		if (verbose) {
+		    out.print("<textarea cols=80 rows=20>");
+		    out.print(ret);
+		    out.print("</textarea>\n");
+		}
+	    }
 	}
 
 	// Multidiscovery and call

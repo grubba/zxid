@@ -75,7 +75,7 @@ int main(int argc, char** argv)
   close(2);
   if (open("tmp/zxid2.stderr", O_WRONLY | O_CREAT | O_APPEND, 0666) != 2)
     exit(2);
-  fprintf(stderr, "=================== Running ===================\n");
+  fprintf(stderr, "=================== Running idhrxml wsp ===================\n");
   zx_debug = 1;
 #endif
 
@@ -153,14 +153,19 @@ int main(int argc, char** argv)
   nid = zxid_wsp_validate(cf, ses, 0, buf);
   if (!nid) {
     ERR("Request validation failed buf(%.*s)", got, buf);
+    ss = zxid_wsp_decorate(cf, ses, 0, "<Response><lu:Status code=\"INV\" comment=\"Request validation failed. Replay?\"></lu:Status></Response>");
+    D("ss(%.*s)", ss->len, ss->s);
+    printf("CONTENT-TYPE: text/xml\r\nCONTENT-LENGTH: %d\r\n\r\n%.*s", ss->len, ss->len, ss->s);
     exit(1);
   }
-  D("target nid(%s)", nid);
+  D("Target nid(%s)", nid);
     
   LOCK(cf->ctx->mx, "hrxml wsp");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, qs2, qs2+cl);
   r = zx_DEC_root(cf->ctx, 0, 1);
   UNLOCK(cf->ctx->mx, "hrxml wsp");
+
+  D("Decoded nid(%s)", nid);
   
   if (!r->Envelope) {
     ERR("No SOAP Envelope found buf(%.*s)", got, buf);
@@ -353,6 +358,9 @@ int main(int argc, char** argv)
     return 0;
   }  
 
+  ss = zxid_wsp_decorate(cf, ses, 0, "<Response><lu:Status code=\"BAD\" comment=\"Unknown XML\"></lu:Status></Response>");
+  D("ss(%.*s)", ss->len, ss->s);
+  printf("CONTENT-TYPE: text/xml\r\nCONTENT-LENGTH: %d\r\n\r\n%.*s", ss->len, ss->len, ss->s);
   return 0;
 }
 

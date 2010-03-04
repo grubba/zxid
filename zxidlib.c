@@ -811,7 +811,7 @@ char* zxid_extract_body(struct zxid_conf* cf, char* enve)
     p = strstr(p, "Body");
     if (!p) {
 nobody:
-      ERR("Response does not contain <Body> res(%s)", enve);
+      ERR("Response does not contain <Body> res(%s)", STRNULLCHKD(enve));
       return 0;
     }
     if (p > enve && ONE_OF_2(p[-1], '<', ':') && ONE_OF_5(p[4], '>', ' ', '\t', '\r', '\n'))

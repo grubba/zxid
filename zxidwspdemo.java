@@ -90,6 +90,7 @@ public class zxidwspdemo extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException
     {
+	String ret;
 	System.err.print("\n============ WSP Start SOAP POST ============\n");
 	zxidjava.zxid_ses ses = zxidjni.alloc_ses(cf);
 	String scheme = req.getScheme();
@@ -116,6 +117,12 @@ public class zxidwspdemo extends HttpServlet {
 	String nid  = zxidjni.wsp_validate(cf, ses, null, buf);
 	if (nid == null) {
 	    System.err.print("Validate fail buf("+buf+")\n");	
+	    ret = zxidjni.wsp_decorate(cf, ses, null,
+				       "<barfoo>"
+				       + "<lu:Status code=\"Fail\" comment=\"INVALID. Token replay?\"></lu:Status>" +
+				       "</barfoo>");
+	    res.getOutputStream().print(ret);
+	    System.err.print("^^^^^^^^^^^^^ WSP inval ("+ret.length()+" chars output) ^^^^^^^^^^^^^\n\n");
 	    return;
 	}
 	String ldif = zxidjni.ses_to_ldif(cf, ses);
@@ -123,7 +130,6 @@ public class zxidwspdemo extends HttpServlet {
 
 	// Perform a application dependent authorization step and ship the response
 
-	String ret;
 	if (zxidjni.az_cf_ses(cf, "Action=Call", ses) == null) {
 	    ret = zxidjni.wsp_decorate(cf, ses, null,
 				       "<barfoo>"

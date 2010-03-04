@@ -77,6 +77,7 @@ public class zxidwspleaf extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException
     {
+	String ret;
 	System.err.print("\n============ LEAF WSP Start SOAP POST ============\n");
 	zxidjava.zxid_ses ses = zxidjni.alloc_ses(cf);
 	String scheme = req.getScheme();
@@ -103,12 +104,17 @@ public class zxidwspleaf extends HttpServlet {
 	String nid  = zxidjni.wsp_validate(cf, ses, null, buf);
 	if (nid == null) {
 	    System.err.print("Validate fail buf("+buf+")\n");	
+	    ret = zxidjni.wsp_decorate(cf, ses, null,
+				       "<recursed>"
+				       + "<lu:Status code=\"Fail\" comment=\"INVALID. Token replay?\"></lu:Status>" +
+				       "</recursed>");
+	    res.getOutputStream().print(ret);
+	    System.err.print("^^^^^^^^^^^^^ WSP inval ("+ret.length()+" chars output) ^^^^^^^^^^^^^\n\n");
 	    return;
 	}
 	String ldif = zxidjni.ses_to_ldif(cf, ses);
 	System.err.print("\n===== Leaf Doing work for user nid("+nid+").\nLDIF: "+ldif+"\n");
 
-	String ret;
 	ret = zxidjni.wsp_decorate(cf, ses, null,
 				   "<recursed>"
 				   + "<lu:Status code=\"OK\"></lu:Status>"

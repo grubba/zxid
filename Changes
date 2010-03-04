@@ -39,7 +39,7 @@ https://idp.testshib.org/idp/shibboleth
 
     - zxcall should have sso only mode
     - zxcall should have discovery only mode and iteration option
-    - zxcall should have EPR cache listing mode
+    - zxcall should have EPR cache and session listing mode -s SID -l
     - zxcot should have idpdimd listing mode
     - zxpasswd should have user federation listing mode
     - zxid_pw_authn() should not report scary error message when checking .ykspent in
