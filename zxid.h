@@ -188,7 +188,7 @@ struct zxid_conf {
   char  redir_to_content;    /* Should explicit redirect to content be used (vs. internal redir) */
   char  remote_user_ena;
   char  show_tech;
-  char  pad14;
+  char  bare_url_entityid;
   char  pad15;
 #ifdef USE_OPENSSL
   RSA*  sign_pkey;

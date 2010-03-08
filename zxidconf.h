@@ -70,6 +70,10 @@
  * value: leave as 0 so that Entity ID is formed from ZXID_URL */
 #define ZXID_NON_STANDARD_ENTITYID 0
 
+/*(c) Allow omission of o=B, i.e. make the URL be the entity ID. */
+
+#define ZXID_BARE_URL_ENTITYID 0
+
 /*(c) Illadviced ACS URL Hack
  * Sometimes an illadvised authority may impose to you Assertion
  * Consumer Service URL, this URL happens to be different than
@@ -548,9 +552,9 @@
 
 /*(c) Body tag for the ZXID generated pages.
  * Edit this to change the colors. */
-#define ZXID_BODY_TAG "<body bgcolor=\"#330033\" text=\"#ffaaff\" link=\"#ffddff\" vlink=\"#aa44aa\" alink=\"#ffffff\"><font face=sans>"  /* (compile) */
+#define ZXID_BODY_TAG "<body bgcolor=white>"  /* (compile) */
 
-#define ZXID_IDP_SEL_START "<title>ZXID SP SSO: Choose IdP</title>" ZXID_BODY_TAG "<h1>ZXID SP Federated SSO (user NOT logged in, no session)</h1>\n"
+#define ZXID_IDP_SEL_START "<title>ZXID SP SSO: Choose IdP</title><link type=\"text/css\" rel=stylesheet href=\"idpsel.css\">" ZXID_BODY_TAG "<h1 class=zxtop>ZXID SP Federated SSO (user NOT logged in, no session)</h1>\n"
 
 #define ZXID_IDP_SEL_NEW_IDP "<h3>Login Using New IdP</h3>\n<i>A new IdP is one whose metadata we do not have yet. We need to know the IdP URL (aka Entity ID) in order to fetch the metadata using the well known location method. You will need to ask the adminstrator of the IdP to tell you what the EntityID is.</i>\n<p>IdP URL <input name=e size=80><input type=submit name=l0 value=\" Login \"><br>\n"
 
@@ -562,8 +566,8 @@
 
 #define ZXID_IDP_SEL_TECH_SITE "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h -->"
 
-#define ZXID_IDP_SEL_FOOTER  "<hr><a href=\"http://zxid.org/\">zxid.org</a>, "
-#define ZXID_IDP_SEL_END     "<!-- EOF -->"
+#define ZXID_IDP_SEL_FOOTER  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, "
+#define ZXID_IDP_SEL_END     "</div>"
 
 /*(c) IdP Selector Page URL
  * If the above simple customization options are not sufficient, you can
@@ -573,7 +577,7 @@
 
 #define ZXID_IDP_SEL_PAGE 0
 
-#define ZXID_AN_START "<title>ZXID IdP: Authentication</title>" ZXID_BODY_TAG "<h1>ZXID IdP Authentication for Federated SSO (user NOT logged in, no session)</h1>\n<h3>Please authenticate yourself using one of the following methods:</h3>"
+#define ZXID_AN_START "<title>ZXID IdP: Authentication</title><link type=\"text/css\" rel=stylesheet href=\"an.css\">" ZXID_BODY_TAG "<h1 class=zxtop>ZXID IdP Authentication for Federated SSO (user NOT logged in, no session)</h1>\n<h3>Please authenticate yourself using one of the following methods:</h3>"
 
 #define ZXID_AN_OUR_EID "Entity ID of this IdP (click on the link to fetch the IdP metadata): "
 
@@ -581,8 +585,8 @@
 
 #define ZXID_AN_TECH_SITE "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h -->"
 
-#define ZXID_AN_FOOTER  "<hr><a href=\"http://zxid.org/\">zxid.org</a>, "
-#define ZXID_AN_END     "<!-- EOF -->"
+#define ZXID_AN_FOOTER  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, "
+#define ZXID_AN_END     "</div>"
 
 /*(c) Authentication Page URL
  * If the above simple customization options are not sufficient, you can
@@ -591,13 +595,13 @@
 
 #define ZXID_AN_PAGE 0
 
-#define ZXID_MGMT_START "<title>ZXID SP Mgmt</title>" ZXID_BODY_TAG "<h1>ZXID SP Management (user logged in, session active)</h1>\n"
+#define ZXID_MGMT_START "<title>ZXID SP Mgmt</title><link type=\"text/css\" rel=stylesheet href=\"idpsel.css\">" ZXID_BODY_TAG "<h1 class=zxtop>ZXID SP Management (user logged in, session active)</h1>\n"
 
 #define ZXID_MGMT_LOGOUT "<input type=submit name=gl value=\" Local Logout \">\n<input type=submit name=gr value=\" Single Logout (R) \">\n<input type=submit name=gs value=\" Single Logout (S) \">\n"
 
 #define ZXID_MGMT_DEFED "<input type=submit name=gt value=\" Defederate (R) \">\n<input type=submit name=gu value=\" Defederate (S) \">\n"
 
-#define ZXID_MGMT_FOOTER  "<hr><a href=\"http://zxid.org/\">zxid.org</a>, "
-#define ZXID_MGMT_END     "<!-- EOF -->"
+#define ZXID_MGMT_FOOTER  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, "
+#define ZXID_MGMT_END     "</div>"
 
 #endif

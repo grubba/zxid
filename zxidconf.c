@@ -344,6 +344,7 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->max_soap_retry    = ZXID_MAX_SOAP_RETRY;
   cf->mod_saml_attr_prefix = ZXID_MOD_SAML_ATTR_PREFIX;
 
+  cf->bare_url_entityid = ZXID_BARE_URL_ENTITYID;
   cf->show_tech         = ZXID_SHOW_TECH;
   cf->idp_sel_page      = ZXID_IDP_SEL_PAGE;
   cf->idp_sel_start     = ZXID_IDP_SEL_START;
@@ -927,6 +928,7 @@ scan_end:
     case 'B':  /* BEFORE_SLOP */
       if (!strcmp(n, "BEFORE_SLOP"))     { SCAN_INT(v, cf->before_slop); break; }
       if (!strcmp(n, "BOOTSTRAP_LEVEL")) { SCAN_INT(v, cf->bootstrap_level); break; }
+      if (!strcmp(n, "BARE_URL_ENTITYID")) { SCAN_INT(v, cf->bare_url_entityid); break; }
       goto badcf;
     case 'C':  /* CDC_URL, CDC_CHOICE */
       if (!strcmp(n, "CDC_URL"))      { cf->cdc_url = v; break; }
@@ -1328,6 +1330,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "PDP_CALL_URL=%s\n"
 "XASP_VERS=%s\n"
 "MOD_SAML_ATTR_PREFIX=%s\n"
+"BARE_URL_ENTITYID=%d\n"
 "SHOW_TECH=%d\n"
 "</pre>"
 
@@ -1460,6 +1463,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 STRNULLCHK(cf->pdp_call_url),
 		 STRNULLCHK(cf->xasp_vers),
 		 STRNULLCHK(cf->mod_saml_attr_prefix),
+		 cf->bare_url_entityid,
 		 cf->show_tech,
 
 		 STRNULLCHK(cf->idp_sel_page),

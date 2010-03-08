@@ -381,6 +381,13 @@ zxidexplo.pl
 explo.css
 explo-main.html
 
+zxidatsel.pl
+atsel.css
+atsel-main.html
+
+idpsel.css
+an.css
+
 # Apache authentication module
 
 mod_auth_saml.c        - Apache auth module to SAML protect web pages

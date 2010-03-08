@@ -1045,6 +1045,9 @@ char* zxid_simple_ses_active_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, stru
   case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
   case 'B':    return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
   case 'n': break;
+  default:
+    if (cf->bare_url_entityid)
+      return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
   }
   if (cf->required_authnctx) {
     zxid_get_ses_sso_a7n(cf, ses);
@@ -1194,7 +1197,10 @@ show_protected_content_setcookie:
   case 'F':
 idp:           return zxid_simple_idp_show_an(cf, cgi, res_len, auto_flags);
   case 'p':    return zxid_simple_idp_pw_authn(cf, cgi, res_len, auto_flags);
-  default: D("unknown op(%c)", cgi->op);
+  default:
+    if (cf->bare_url_entityid)
+      return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
+    D("unknown op(%c)", cgi->op);
   }
   return zxid_simple_show_idp_sel(cf, cgi, res_len, auto_flags);
 
@@ -1325,7 +1331,7 @@ char* zxid_simple_cf_ses(struct zxid_conf* cf, int qs_len, char* qs, struct zxid
     D("QUERY_STRING(%s) %s", STRNULLCHK(qs), ZXID_REL);
     zxid_parse_cgi(&cgi, qs);
   }
-  if (!cgi.op)
+  if (!cgi.op && !cf->bare_url_entityid)
     cgi.op = 'M';  /* By default, if no ses, check CDC and offer SSO */
 
   if (!cgi.sid && cf->ses_cookie_name && *cf->ses_cookie_name)

@@ -223,7 +223,7 @@ int main(int argc, char** argv)
   switch (cgi.op) {
 
   case HRXMLOP_CREATE:
-    D("Here %p", 0);
+    D("Here %d", 0);
     epr = zxid_get_epr(cf, ses, zx_xmlns_idhrxml, 0, 0, 0, 1);
     if (!epr) {
       ERR("EPR could not be discovered %d", 0);

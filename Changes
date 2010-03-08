@@ -21,6 +21,8 @@ To do:
     - Brian's ordering problem (risaris-bad.xml)
     - IdP initiated SLO
     - IdP should include URL for correcting information
+    - Add persona support to IdP
+    - Add attribute editor support to IdP
 
 Regarding mod_perl stability: I would assume most of that has to do
 with underlying memory allocator. All allocation activity in zxid code

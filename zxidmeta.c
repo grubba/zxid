@@ -773,6 +773,9 @@ struct zx_str* zxid_my_entity_id(struct zxid_conf* cf)
   if (cf->non_standard_entityid) {
     D("my_entity_id non_standard_entytid(%s)", cf->non_standard_entityid);
     return zx_strf(cf->ctx, "%s", cf->non_standard_entityid);
+  } else if (cf->bare_url_entityid) {
+    D("my_entity_id bare url(%s)", cf->url);
+    return zx_strf(cf->ctx, "%s", cf->url);
   } else {
     D("my_entity_id url(%s)", cf->url);
     return zx_strf(cf->ctx, "%s?o=B", cf->url);

@@ -49,7 +49,7 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
   -e SOAPBODY      Pass SOAP body as argument (default is to read from STDIN)\n\
   -b               In response, only return content of SOAP body, omitting Envelope and Body.\n\
   -n               Dryrun. Do not actually make call. Instead print it to stdout.\n\
-  -l               List EPR cache (you need to specify -s SEDID or -a as well)
+  -l               List EPR cache (you need to specify -s SEDID or -a as well)\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
