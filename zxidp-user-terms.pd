@@ -1,0 +1,101 @@
+Terms and Conditions for the Users of ZXIDP
+###########################################
+<<author: ZXIDP.org>>
+
+Document ID: zxidp-user-terms.pd (1.0)
+
+1.  ZXIDP is provided as a free service without any
+    warranty or guarantee. ZXIDP accepts no liability
+    for use or inability to use ZXIDP or any of the
+    Service Providers in the ZXIDP's Circle of Trust.
+
+2.  You may only use ZXIDP for lawful purpose and bear
+    full responsibility for your own actions. Should
+    an action be brought against ZXIDP due to your actions
+    or inaction, you agree to hold harmless and indemnify
+    ZXIDP for any damages resulting from such action.
+
+3.  ZXIDP may terminate your account without notice at its
+    sole discretion.
+
+4.  ZXIDP is not required to vet or proof identities of
+    the User or the members of the Circle of Trust, but
+    if you participate in identity proofing or vetting,
+    you must answer truthfully.
+
+5.  You agree to not share your authentication credentials
+    with anyone. You accept full responsibility for
+    any actions taken using your authentication credentials
+    or in session started with them.
+
+6.  Based on the identity proofing and quality of the
+    authentication credentials, ZXIDP shall assign
+    one of the following assurance levels to you
+
+    Self Declared (http://zxidp.org/user/self):: ZXIDP
+        has not performed any identity proofing. All
+        information is asserted by the user himself.
+        Authentication method is password.
+
+    Self Strong (http://zxidp.org/user/self-strong):: ZXIDP
+        has not performed any identity proofing. All
+        information is asserted by the user himself.
+        Authentication method is one time password
+        token (e.g. yubikey).
+
+    Friend (http://zxidp.org/user/friend):: ZXIDP
+        has performed identity proofing on basis of
+        friendship or direct personal knowledge, however
+        ZXIDP or its staff does not assume any liability
+        for failure to authenticate or for any transaction
+        performed on basis of the authentication.
+        Authentication method is password.
+
+    Friend Strong (http://zxidp.org/user/friend-strong):: ZXIDP
+        has performed identity proofing on basis of
+        friendship or direct personal knowledge, however
+        ZXIDP or its staff does not assume any liability
+        for failure to authenticate or for any transaction
+        performed on basis of the authentication.
+        Authentication method is one time password
+        token (e.g. yubikey).
+
+    Insured1000 (http://zxidp.org/user/ins1000):: ZXIDP
+        has performed identity proofing and guarantees
+        the correctness of authentication and selected
+        attributes (identified as such). ZXID accepts
+        liability up to 1000 euro if it can be shown that
+        ZXIDP had failed to proof the identity diligently
+        or that user was not properly authenticated,
+        except in the case of deliberate fraud, abuse,
+        or credential passing by the user.
+        Authentication method is password.
+
+    Insured1000 Strong (http://zxidp.org/user/ins1000-strong):: ZXIDP
+        has performed identity proofing and guarantees
+        the correctness of authentication and selected
+        attributes (identified as such). ZXID accepts
+        liability up to 1000 euro if it can be shown that
+        ZXIDP had failed to proof the identity diligently
+        or that user was not properly authenticated,
+        except in the case of deliberate fraud, abuse,
+        or credential passing by the user.
+        Authentication method is one time password
+        token (e.g. yubikey).
+
+7.  By registering as a user you consent to ZXIDP storing and
+    handing your personal data. You also consent to ZXIDP
+    passing this data to Service Providers that are members
+    of the ZXIDP Circle of Trust, as controlled by your own
+    actions and preferences. 
+
+8.  If you have any questions, please do not hesitate
+    to write to
+
+       ZXIDP.org
+       c/o Sampo Kellomäki
+       Lg. Sta Marinha 11-1.
+       1100 Lisboa, Portugal
+       zxidp@zxidp.org
+
+--Sampo

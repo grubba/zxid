@@ -1,0 +1,92 @@
+<title>ZXID IdP New User</title>
+<link type="text/css" rel=stylesheet href="an.css">
+<body bgcolor=white>
+<h1 class=zxtop>ZXID IdP New User Creation</h1>
+
+<form method=post action="zxidnewuser.pl">
+<table>
+
+<tr><th>Field</th><th>Initial Value</th><th>Required?</th><th>Sharing Default</th></tr>
+<tr><th>Username</th><td><input name=au value="!!au"></td><td>Required</td><td>Internal use</td><td></td></tr>
+<tr><th>Password</th><td><input name=ap value="!!ap"></td><td>Required</td><td>Internal use</td><td></td></tr>
+
+<tr><th>Common Name</th>
+    <td><input name=cn value="!!cn" size=40></td>
+    <td>Optional*</td>
+    <td><input type=checkbox name=cnshare value="!!cnshare"> Share</td></tr>
+
+<tr><th>Org. Title</th>
+    <td><input name=title value="!!title"></td>
+    <td>Optional</td>
+    <td><input type=checkbox name=emailshare value="!!emailshare"> Share</td></tr>
+
+<tr><th>Org. Tax Number</th>
+    <td><input name=taxno value="!!taxno"></td>
+    <td>Optional</td>
+    <td><input type=checkbox name=taxnoshare value="!!taxnoshare"> Share</td></tr>
+
+<tr><th>Organization</th>
+    <td><input name=o value="!!o" size=40></td>
+    <td>Optional</td>
+    <td><input type=checkbox name=oshare value="!!oshare"> Share</td></tr>
+
+<tr><th>Org. Unit</th>
+    <td><input name=ou value="!!ou" size=40></td>
+    <td>Optional</td>
+    <td><input type=checkbox name=oushare value="!!oushare"> Share</td></tr>
+
+<tr><th>Street Address</th>
+    <td><input name=street value="!!street" size=40></td>
+    <td>Optional*</td>
+    <td><input type=checkbox name=streetshare value="!!streetshare"> Share</td></tr>
+
+<tr><th>Location, Zip, Country</th>
+    <td><input name=citystc value="!!citystc" size=40></td>
+    <td>Optional*</td>
+    <td><input type=checkbox name=citystcshare value="!!citystcshare"> Share</td></tr>
+
+<tr><th>Emails</th>
+    <td><input name=email value="!!email" size=40></td>
+    <td>Optional**</td>
+    <td><input type=checkbox name=emailshare value="!!emailshare"> Share</td></tr>
+
+<tr><th>IM / Skype</th>
+    <td><input name=im value="!!im"></td>
+    <td>Optional</td>
+    <td><input type=checkbox name=imshare value="!!imshare"> Share</td></tr>
+
+<tr><th>Phone (international)</th>
+    <td><input name=phone value="!!phone"></td>
+    <td>Optional</td>
+    <td><input type=checkbox name=phoneshare value="!!phoneshare"> Share</td>
+    <td></td></tr>
+
+<tr><th>Language Preference</th>
+    <td><input name=lang value="!!lang"><i>(2 letter code, e.g. "en")</i></td>
+    <td>Optional</td>
+    <td><input type=checkbox name=langshare value="!!langshare"> Share</td></tr>
+
+<tr><th>Self tagging</th>
+    <td><input name=tag value="!!tag"></td>
+    <td>Optional</td>
+    <td><input type=checkbox name=tagshare value="!!tagshare"> Share</td></tr>
+
+</table>
+
+<b>*</b> Required for SP registration (optional for normal users).<br>
+<b>**</b> You have to supply email if you ever want to use
+    password recovery feature.
+
+<p><input type=submit name=ok value="Agree to terms and conditions and register new user">
+<a href="html/zxidp-user-terms.html">Terms and Conditions for Users</a>
+
+<input type=hidden name=ar>
+
+</form>
+
+<div class=zxbot>
+<a class=zx href="http://zxid.org/">ZXID.org</a>
+| <a class=zx href="http://www.tas3.eu/">TAS3.eu</a>
+| <a class=zx href="zxiddash.pl">User Dashboard</a>
+- <i>$Id$</i>
+</div>

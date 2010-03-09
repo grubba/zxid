@@ -1,0 +1,104 @@
+Terms and Conditions for the Service Providers in the Circle of Trust of ZXIDP
+##############################################################################
+<<author: ZXIDP.org>>
+
+Document ID: zxidp-sp-terms.pd (1.0)
+
+1.  ZXIDP is provided as a free service without any
+    warranty or guarantee. ZXIDP accepts no liability
+    for use or inability to use ZXIDP or any of the
+    Service Providers in the ZXIDP's Circle of Trust.
+
+2.  You may only use ZXIDP for lawful purpose and bear
+    full responsibility for your own actions. Should
+    an action be brought against ZXIDP due to your actions
+    or inaction, you agree to hold harmless and indemnify
+    ZXIDP for any damages resulting from such action.
+
+3.  ZXIDP may terminate your account or registration
+    without notice at its sole discretion.
+
+4.  ZXIDP is not required to vet or proof identities of
+    the User or the members of the Circle of Trust, but
+    if you participate in identity proofing or vetting,
+    you must answer truthfully.
+
+5.  You agree to not share your authentication credentials,
+    including the private key of your certificates in particular,
+    with anyone. You accept full responsibility for
+    any actions taken using your authentication credentials.
+
+6.  Based on registration and vetting ZXIDP shall assign
+    one of the following assurance levels to each Service
+    Provider:
+
+    Self Registered (http://zxidp.org/sp/self):: ZXIDP
+        has not performed any vetting. All
+        information is asserted by the Service
+        Provider itself. Certificates are self issued.
+
+    Self Public CA (http://zxidp.org/sp/self-pubca):: ZXIDP
+        has not performed any vetting. All
+        information is asserted by the Service
+        Provider itself. Certificates are issued by a
+        common public certification authority or ZXIDP.
+
+    Friend (http://zxidp.org/sp/friend):: ZXIDP
+        has performed some vetting on basis of
+        friendship or direct personal knowledge, however
+        ZXIDP or its staff does not assume any liability
+        for failure to authenticate or for any transaction
+        performed on basis of the authentication.
+        Certificates are self issued.
+
+    Friend Public CA (http://zxidp.org/sp/friend-pubca):: ZXIDP
+        has performed some vetting on basis of
+        friendship or direct personal knowledge, however
+        ZXIDP or its staff does not assume any liability
+        for failure to authenticate or for any transaction
+        performed on basis of the authentication. Certificates
+        are issued by a common public certification authority or ZXIDP.
+
+    Insured1000 (http://zxidp.org/sp/ins1000):: ZXIDP
+        has performed identity proofing and guarantees
+        the correctness of authentication and selected
+        attributes (identified as such). ZXID accepts
+        liability up to 1000 euro if it can be shown that
+        ZXIDP had failed to proof the identity diligently
+        or that Service Provider was not properly authenticated,
+        except in the case of deliberate fraud, abuse,
+        or credential passing by the user.
+        Certificates are self issued.
+
+    Insured1000 Public CA (http://zxidp.org/sp/ins1000-pubca):: ZXIDP
+        has performed identity proofing and guarantees
+        the correctness of authentication and selected
+        attributes (identified as such). ZXID accepts
+        liability up to 1000 euro if it can be shown that
+        ZXIDP had failed to proof the identity diligently
+        or that Service Provider was not properly authenticated,
+        except in the case of deliberate fraud, abuse,
+        or credential passing by the user. Certificates are issued by a
+        common public certification authority or ZXIDP.
+
+7.  You agree to respect the privacy of the Users, principle of
+    data minimality, minimal data retention, and use for only
+    intended purpose. You shall keep audit trail and facilitate
+    access by the user to the part of the audit trail that concerns him.
+
+8.  Every Service Provider registration is linked to
+    at least one User account. You agree that this User
+    account is the sole contact point of the Service Provider
+    with the ZXIDP. The user behind the account is responsible
+    for lawful and correct operation of the Service Provider.
+
+9.  If you have any questions, please do not hesitate
+    to write to
+
+       ZXIDP.org
+       c/o Sampo Kellomäki
+       Lg. Sta Marinha 11-1.
+       1100 Lisboa, Portugal
+       zxidp@zxidp.org
+
+--Sampo

@@ -377,16 +377,24 @@ zxiddash.pl
 dash.css
 dash-main.html
 
-zxidexplo.pl
-explo.css
-explo-main.html
+idpsel.css
+an.css
 
 zxidatsel.pl
 atsel.css
 atsel-main.html
 
-idpsel.css
-an.css
+zxidexplo.pl
+explo.css
+explo-main.html
+
+zxidcot.pl
+cot-main.html
+
+zxidnewuser.pl
+newuser-main.html
+
+index-idp.html
 
 # Apache authentication module
 

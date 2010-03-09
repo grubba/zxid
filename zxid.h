@@ -152,13 +152,17 @@ struct zxid_conf {
   char* idp_sel_end;         /* End of page, after version string */
   char* idp_sel_page;        /* URL for IdP selection Page. */
 
+  char* an_template_path;    /* Path to template, e.g. an-main.html */
+  char* an_template;         /* Default template used in case template at path can not be found. */
   char* an_page;       /* URL for Authentication Page. */
+#if 0
   char* an_start;      /* HTML headers, start of page, side bars */
   char* an_our_eid;    /* Our EID advice */
   char* an_tech_user;  /* Technical options user might choose */
   char* an_tech_site;  /* Technical options site admin sets (hidden) */
   char* an_footer;     /* End of page stuff, after form */
   char* an_end;        /* End of page, after version string */
+#endif
 
   char* mgmt_start;    /* HTML headers, start of page, side bars */
   char* mgmt_logout;   /* Logout buttons */

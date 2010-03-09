@@ -50,7 +50,7 @@ extern int assert_nonfatal;
 extern int trace;   /* this gets manipulated by -v or similar flag */
 #endif
 
-#define TCP_PROTO 6  /* never seen getprotobyname("tcp") return anything else */
+#define TCP_PROTO 6 /* never seen getprotobyname("tcp") return anything else */
 
 /* END CONFIG */
 

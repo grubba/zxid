@@ -230,11 +230,96 @@ char* zxid_fed_mgmt(char* conf, char* sid, int auto_flags) {
 
 /* ------------ zxid_an_page() ------------ */
 
+#define BBMATCH(k, key, lim) (sizeof(k)-1 == (lim)-(key) && !memcmp((k), (key), sizeof(k)-1))
+
+/*() Bang-bang expansions (!!VAR) understood in the templates. */
+
+static char* zxid_map_bangbang(struct zxid_conf* cf, struct zxid_cgi* cgi, const char* key, const char* lim)
+{
+  char* s;
+  struct zx_str* ss;
+  
+  switch (*key) {
+  case 'D':
+    if (BBMATCH("DBG", key, lim)) return cgi->dbg;
+    break;
+  case 'E':
+    if (BBMATCH("ENTID", key, lim)) {
+      ss = zxid_my_entity_id(cf);
+ssret:
+      s = ss->s; ZX_FREE(cf->ctx, ss);
+      return s;
+    }
+    if (BBMATCH("ERR", key, lim)) return cgi->err;
+    break;
+  case 'M':
+    if (BBMATCH("MSG", key, lim)) return cgi->msg;
+    break;
+  case 'U':
+    if (BBMATCH("URL", key, lim)) return cf->url;
+    break;
+  case 'S':
+    if (BBMATCH("SP_ENTID", key, lim)) return cgi->sp_entid;
+    if (BBMATCH("SP_DISPLAY_NAME", key, lim)) return cgi->sp_display_name;
+    if (BBMATCH("SSOREQ", key, lim)) return cgi->ssoreq;
+    break;
+  case 'V':
+    if (BBMATCH("VERSION", key, lim)) return zxid_version_str();
+    break;
+  case 'Z':
+    if (BBMATCH("ZXAPP", key, lim)) return cgi->zxapp;
+    break;
+  }
+  D("Unmatched bangbang key(%.*s), taken as empty.", lim-key, key);
+  return 0;
+}
+
+/*() Expand a template. */
+
+static struct zx_str* zxid_template_page_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, const char* templ_path, const char* default_templ)
+{
+  char* buf[8192];
+  char* p;
+  char* q;
+  char* pp;
+  struct zx_str* ss;
+  int len, got = read_all(sizeof(buf)-1, buf, "templ", "%s", templ_path);
+  if (got <= 0) {
+    D("Template at path() not found. Using default template.", templ_path);
+    p = default_templ;
+  } else if (got <= 0 || got == sizeof(buf)-1) {
+    ERR("Template at path() does not fit in buffer of %d. Using default template.", templ_path, sizeof(buf)-1);
+    p = default_templ;
+  } else
+    p = buf;
+  ss = zx_new_len_str(cf->ctx, strlen(p) + 4096);
+  for (pp = ss->s; *p && pp < ss->s + ss->len; ) {
+    if (p[0] == '!' && p[1] == '!' && A_Z_a_z_(p[2])) {
+      for (q = p+=2; A_Z_a_z_(*p); ++p) ;
+      q = zxid_map_bangbang(cf, cgi, q, p);
+      len = strlen(q);
+      if (pp + len >= ss->s + ss->len) {
+	pp += len;
+	break;
+      }
+      memcpy(pp, q, len);
+      pp += len;
+      continue;
+    }
+    *pp++ = *p++;
+  }
+  if (pp >= ss->s + ss->len) {
+    ERR("Expansion of template too big. Does not fit in %d", ss->s + ss->len);
+    return 0;
+  }
+  return ss;
+}
+
 #define YUBI_MINI "<a href=\"http://yubico.com\"><img src=\"yubiright_16x16.gif\" width=16 height=16 border=0></a>"
 
 /*() Generate IdP Authentication Page.
  *
- * Either outputs the authencitcation screen to stdout or returns
+ * Either outputs the authentication screen to stdout or returns
  * string of HTML (at specified automation level). If res_len is
  * supplied, the string length is returned in res_len.  Otherwise you
  * can just run strlen() on return value.
@@ -254,13 +339,19 @@ struct zx_str* zxid_an_page_cf(struct zxid_conf* cf, char* ssoreq, struct zxid_c
 
   if (cf->log_level>1)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "AUTHN", 0, "");
-  
+
+#if 1
+  ss = zxid_template_page_cf(cf, cgi, cf->an_template_path, cf->an_template);
+#else  
   if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
     eid = zxid_my_entity_id(cf);
 
   if ((auto_flags & ZXID_AUTO_FORMT) && (auto_flags & ZXID_AUTO_FORMF)) {
     DD("HERE %p", idp_list);
     ss = zx_strf(cf->ctx,
+		 "%s"
+		 "%s%s\n"
+		 "Login requested by %s (%s)"
 		 "%s"
 #ifdef ZXID_USE_POST
 		 "<form method=post action=\"%s?o=P\">\n"
@@ -270,15 +361,17 @@ struct zx_str* zxid_an_page_cf(struct zxid_conf* cf, char* ssoreq, struct zxid_c
 		 "<font color=red>%s</font><font color=green>%s</font><font color=white>%s</font>"
 		 "1. User (or yubikey " YUBI_MINI "): <input name=au> Password: <input type=password name=ap>"
 		 " <input type=submit name=alp value=\" Login to IdP \"><br>\n"
+		 "2. <input type=submit name=an  value=\" Create New User \"><br>\n"
 		 "%s<a href=\"%.*s\">%.*s</a><br>\n"
-		 "%s%s\n"
 		 "<input type=hidden name=ar value=\"%s\">\n"
 		 "<input type=hidden name=zxapp value=\"%s\">\n"
 		 "</form>%s%s%s",
 		 cf->an_start,
+		 cf->an_our_eid, eid?eid->len:0, eid?eid->s:"", eid?eid->len:0, eid?eid->s:"",
+		 cgi->sp_display_name, cgi->sp_entid,
+		 cf->an_an,
 		 cf->url,
 		 cgi->err ? cgi->err : "", cgi->msg ? cgi->msg : "", cgi->dbg ? cgi->dbg : "",
-		 cf->an_our_eid, eid?eid->len:0, eid?eid->s:"", eid?eid->len:0, eid?eid->s:"",
 		 cf->an_tech_user, cf->an_tech_site,
 		 ssoreq,
 		 cgi->zxapp ? cgi->zxapp : "",
@@ -321,6 +414,7 @@ struct zx_str* zxid_an_page_cf(struct zxid_conf* cf, char* ssoreq, struct zxid_c
 		 cgi->zxapp ? cgi->zxapp : "");
   } else
     ss = zx_dup_str(cf->ctx, "");
+#endif
   return ss;
 }
 
@@ -818,7 +912,7 @@ static char* zxid_simple_idp_an_ok_do_rest(struct zxid_conf* cf, struct zxid_cgi
 }
 
 /*() Show Authentication screen. Generally this will be in response to
- * the SP having sent used via redirect carrying AuthnRequest encoded
+ * the SP having sent user via redirect to o=F carrying AuthnRequest encoded
  * in SAMLRequest query string parameter, per SAML redirect binding
  * [SAML2bind].  We must preserve SAMLRequest as hidden field in the
  * page for later processing once the authentication step has been

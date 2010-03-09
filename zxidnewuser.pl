@@ -98,6 +98,6 @@ sub show_templ {
     exit;
 }
 
-show_templ("dash-main.html", $cgi);
+show_templ("newuser-main.html", $cgi);
 
 __END__
