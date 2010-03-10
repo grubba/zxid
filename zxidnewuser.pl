@@ -6,51 +6,45 @@
 # Licensed under Apache License 2.0, see file COPYING.
 # $Id$
 #
-# 17.2.2010, created --Sampo
+# 8.3.2010, created --Sampo
 #
-# Web GUI CGI for exploring ZXID logs and audit trail
-#
-# CGI / QUERY_STRING variables
-#   c  $cmd    Command
-#   d  $dir    Path to ZXID config directory, e.g: /var/zxid/ or /var/zxid/idp
-#   e  $eid    Filter logs by Entity ID
-#   n  $nid    Filter logs by Name ID
-#   s  $sid    Filter logs by session ID
+# Web GUI for creating new user, possibly in middle of login sequence.
+# The AuthnRequest is preserved through new user creation by passing ar.
 
 $usage = <<USAGE;
-Web GUI for attribute selection and privacy preferences
-Usage: http://localhost:8081/zxidatsel.pl?QUERY_STRING
+Web GUI for creating new user, possibly in middle of login sequence.
+Usage: http://localhost:8081/zxidnewuser.pl?QUERY_STRING
        ./zxidatsel.pl -a QUERY_STRING
          -a Ascii mode
 USAGE
     ;
-
 die $USAGE if $ARGV[0] =~ /^-[Hh?]/;
-$ascii = shift if $ARGV[0] eq '-a';
-syswrite STDOUT, "Content-Type: text/html\r\n\r\n" if !$ascii;
+
+$dir = '/var/zxid/idp';
+
+use Data::Dumper;
+
+close STDERR;
+open STDERR, ">>/var/tmp/zxid.stderr" or die "Cant open error log: $!";
+select STDERR; $|=1; select STDOUT;
+
+#warn "$$: START env: " . Dumper(\%ENV);
 
 $ENV{QUERY_STRING} ||= shift;
-$cgi = cgidec($ENV{QUERY_STRING});
-$cmd = $$cgi{'c'};
-$dir = $$cgi{'d'} || '/var/zxid/';
-$eid = $$cgi{'e'};
-$nid = $$cgi{'n'};
-$sid = $$cgi{'s'};
+cgidec($ENV{QUERY_STRING});
 
-sub cgidec {
-    my ($d) = @_;
-    my %qs;
-    for $nv (split '&', $d) {
-	($n, $v) = split '=', $nv, 2;
-	$qs{$n} = $v;
-    }
-    return \%qs;
+if ($ENV{CONTENT_LENGTH}) {
+    sysread STDIN, $data, $ENV{CONTENT_LENGTH};
+    #warn "GOT($data) $ENV{CONTENT_LENGTH}";
+    cgidec($data);
 }
+warn "$$: cgi: " . Dumper(\%cgi);
+
 
 sub uridec {
     my ($val) = @_;
     $val =~ s/\+/ /g;
-    $val =~ s/%([0-9a-f]{2})/chr(hex($1))/gsex;  # URI decode
+    $val =~ s/%([0-9a-f]{2})/chr(hex($1))/gsexi;  # URI decode
     return $val;
 }
 
@@ -60,23 +54,12 @@ sub urienc {
     return $val;
 }
 
-sub read_log {
-    open LOG, "./zxlogview ${dir}pem/logsign-nopw-cert.pem ${dir}pem/logenc-nopw-cert.pem <${dir}log/act|"
-	or die "Cannot open log decoding pipe: $!";
-    $/ = "\n";
-    while ($line = <LOG>) {
-	# ----+ 104 PP - 20100217-151751.352 19700101-000000.501 -:- - - - -      zxcall N W GOTMD http://idp.tas3.eu/zxididp?o=B -
-	($pre, $len, $se, $sig, $ourts, $srcts, $ipport, $ent, $mid, $a7nid, $nid, $mm, $vvv, $res, $op, $para, @rest) = split /\s+/, $line;
-
-	syswrite STDOUT, "$ourts $op\n";
+sub cgidec {
+    my ($d) = @_;
+    for $nv (split '&', $d) {
+	($n, $v) = split '=', $nv, 2;
+	$cgi{$n} = uridec($v);
     }
-    close LOG;
-}
-
-sub show_log {
-    print "<title>ZXID SP Log Explorer Log listing</title><link type=\"text/css\" rel=stylesheet href=\"dash.css\">\n<pre>\n";
-    read_log();
-    syswrite STDOUT, "</pre>";
 }
 
 sub readall {
@@ -94,10 +77,66 @@ sub show_templ {
     my ($templ, $hr) = @_;
     $templ = readall($templ);
     $templ =~ s/!!(\w+)/$$hr{$1}/gs;
-    syswrite STDOUT, $templ;
+    $len = length $templ;
+    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len\r\n\r\n$templ";
     exit;
 }
 
-show_templ("newuser-main.html", $cgi);
+sub redirect {
+    my ($url) = @_;
+    syswrite STDOUT, "Location: $url\r\n\r\n";
+    exit;
+}
+
+### MAIN
+
+if (length $cgi{'ok'}) {
+    if (length $cgi{'au'} < 3 || length $cgi{'au'} > 40) {
+	$cgi{'ERR'} = "Username must be at least 3 characters long.";
+    } elsif ($cgi{'au'} !~ /^[A-Za-z0-9_-]+$/s) {
+	$cgi{'ERR'} = "Username can only contain characters [A-Za-z0-9_-]";
+    } elsif (length $cgi{'ap'} < 5 || length $cgi{'ap'} > 80) {
+	$cgi{'ERR'} = "Password must be at least 5 characters long.";
+    } elsif (-e "${dir}uid/$cgi{'au'}") {
+	$cgi{'ERR'} = "Username already taken.";
+    } else {
+	warn "Creating new user($cgi{'au'})";
+	open P, "|./zxpasswd -c $cgi{'au'}" or die "Cant open pipe to zxpasswd: $! $? $*";
+	print P $cgi{'ap'};
+	close P;
+	warn "Populating user($cgi{'au'})";
+	if (-e "${dir}uid/$cgi{'au'}") {
+	    mkdir "${dir}uid/$cgi{'au'}/.bs" or die "Cant mkdir .bs: $!";
+	    open AT, ">${dir}uid/$cgi{'au'}/.bs/.at" or die "Cant write .bs/.at: $!";
+	    open OPTAT, ">${dir}uid/$cgi{'au'}/.bs/.optat" or die "Cant write .bs/.optat: $!";
+	    
+	    for $at (qw(cn title taxno o ou street citystc email im tel lang tag)) {
+		$val = $cgi{$at};
+		$val =~ s/[\r\n]//g;
+		next if !length $val;
+		if ($cgi{"${at}share"}) {
+		    print AT "$at: $val\n";
+		} else {
+		    print OPTAT "$at: $val\n";
+		}
+	    }
+	    
+	    close AT;
+	    close OPTAT;
+
+	    if ($cgi{'zxidpurl'} && $cgi{'zxrfr'} && $cgi{'ar'}) {
+		warn "Created user($cgi{'au'}). Redirecting back to IdP";
+		redirect("$cgi{'zxidpurl'}?o=$cgi{'zxrfr'}&ar=$cgi{'ar'}");
+	    } else {
+		warn "Created user($cgi{'au'}). Redirecting back to index page.";
+		redirect("/");
+	    }
+	} else {
+	    $cgi{'ERR'} = "User creation failed. System error (${dir}uid/$cgi{'au'}).";
+	}
+    }
+}
+
+show_templ("newuser-main.html", \%cgi);
 
 __END__

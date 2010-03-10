@@ -139,9 +139,13 @@ struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
   if (!ed->entityID)
     goto bad_md;
   ent->eid_len = ed->entityID->len;
-  ent->eid = ed->entityID->s;
+  ent->eid = zx_str_to_c(cf->ctx, ed->entityID);
   sha1_safe_base64(ent->sha1_name, ent->eid_len, ent->eid);
   ent->sha1_name[27] = 0;
+  
+  if (ed->Organization && ed->Organization->OrganizationDisplayName
+      && ed->Organization->OrganizationDisplayName->gg.content)
+    ent->dpy_name = zx_str_to_c(cf->ctx, ed->Organization->OrganizationDisplayName->gg.content);
   
   if (ed->IDPSSODescriptor)
     zxid_process_keys(cf, ent, ed->IDPSSODescriptor->KeyDescriptor, "IDP SSO");
@@ -758,6 +762,60 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(struct zxid_conf* cf)
   return idp_ssod;
 }
 
+/*() Generate Organization metadata fragment [SAML2meta]. */
+
+/* Called by:  zxid_sp_meta */
+struct zx_md_Organization_s* zxid_org_desc(struct zxid_conf* cf)
+{
+  struct zx_md_Organization_s* org = zx_NEW_md_Organization(cf->ctx);
+  org->OrganizationDisplayName = zx_NEW_md_OrganizationDisplayName(cf->ctx);
+  org->OrganizationDisplayName->lang = zx_ref_str(cf->ctx, "en");  /* *** config */
+  org->OrganizationDisplayName->gg.content = zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name));
+
+  org->OrganizationName = zx_NEW_md_OrganizationName(cf->ctx);
+  org->OrganizationName->lang = zx_ref_str(cf->ctx, "en");  /* *** config */
+  if (cf->org_name && cf->org_name[0])
+    org->OrganizationName->gg.content = zx_ref_str(cf->ctx, cf->org_name);
+  else
+    org->OrganizationName->gg.content = zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name));
+
+  org->OrganizationURL = zx_NEW_md_OrganizationURL(cf->ctx);
+  org->OrganizationURL->lang = zx_ref_str(cf->ctx, "en");  /* *** config */
+  if (cf->org_url && cf->org_url[0])
+    org->OrganizationURL->gg.content = zx_ref_str(cf->ctx, cf->org_url);
+  else
+    org->OrganizationURL->gg.content = zx_ref_str(cf->ctx, cf->url);
+
+  return org;
+}
+
+/*() Generate Contact Person metadata fragment [SAML2meta]. */
+
+/* Called by:  zxid_sp_meta */
+struct zx_md_ContactPerson_s* zxid_contact_desc(struct zxid_conf* cf)
+{
+  struct zx_md_ContactPerson_s* contact = zx_NEW_md_ContactPerson(cf->ctx);
+
+  if (cf->contact_org) {
+    if (cf->contact_org[0])
+      contact->Company = zx_ref_simple_elem(cf->ctx, cf->contact_org);
+  } else
+    if (cf->org_name && cf->org_name[0])
+      contact->Company = zx_ref_simple_elem(cf->ctx, cf->org_name);
+    else
+      contact->Company
+	= zx_ref_simple_elem(cf->ctx, STRNULLCHKQ(cf->nice_name));
+
+  if (cf->contact_name && cf->contact_name[0])
+    contact->SurName = zx_ref_simple_elem(cf->ctx, cf->contact_name);
+  if (cf->contact_email && cf->contact_email[0])
+    contact->EmailAddress = zx_ref_simple_elem(cf->ctx, cf->contact_email);
+  if (cf->contact_tel && cf->contact_tel[0])
+    contact->TelephoneNumber = zx_ref_simple_elem(cf->ctx, cf->contact_tel);
+
+  return contact;
+}
+
 /*(i) Primary interface to our own Entity ID. While this would usually be
  * automatically generated from URL configuration option so as to conform
  * to the Well Known Location (WKL) metadata exchange convention [SAML2meta],
@@ -825,6 +883,8 @@ struct zx_str* zxid_sp_meta(struct zxid_conf* cf, struct zxid_cgi* cgi)
   ed->SPSSODescriptor = zxid_sp_sso_desc(cf);
   if (cf->idp_ena)
     ed->IDPSSODescriptor = zxid_idp_sso_desc(cf);
+  ed->Organization = zxid_org_desc(cf);
+  ed->ContactPerson = zxid_contact_desc(cf);
   
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "MYMD", 0, 0);

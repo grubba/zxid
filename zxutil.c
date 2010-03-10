@@ -492,7 +492,7 @@ unsigned char zx_std_index_64[256] = {
     XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX
 };
 
-/*() Raw version. Can use any decoding table, but also assumes r has been allocated
+/*() Raw version. Can use any decoding table. Assumes receiving buffer r has been allocated
  * to correct length. Is able to perform the operation in place, i.e. p and r
  * can point to the same buffer. Both canonical and safe base64 are handled.
  * If string contains URL encoding (as it might for + or =) it is automatically

@@ -147,9 +147,11 @@ set_eid:
     case 'a':
       switch (n[1]) {
       case 'l': cgi->op = n[2];           break;
-      case 'u': cgi->uid = v;             break;
+      case 'u': if (v[0] || !cgi->uid) cgi->uid = v; break;
       case 'p': cgi->pw = v;              break;
       case 'r': cgi->ssoreq = v;          break;
+      case 'n': cgi->op = 'N';            break;
+      case 'w': cgi->op = 'W';            break;
       }
       break;
     case 'z':

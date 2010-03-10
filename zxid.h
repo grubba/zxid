@@ -108,6 +108,12 @@ struct zxid_conf {
   
   char* affiliation;
   char* nice_name;           /* Human readable "nice" name. Used in AuthnReq->ProviderName */
+  char* org_name;
+  char* org_url;
+  char* contact_org;
+  char* contact_name;
+  char* contact_email;
+  char* contact_tel;
   char* ses_arch_dir;        /* Place where dead sessions go. 0=rm */
   char* ses_cookie_name;
   char* ipport;              /* Source IP and port for logging, e.g: "1.2.3.4:5" */
@@ -152,17 +158,13 @@ struct zxid_conf {
   char* idp_sel_end;         /* End of page, after version string */
   char* idp_sel_page;        /* URL for IdP selection Page. */
 
-  char* an_template_path;    /* Path to template, e.g. an-main.html */
-  char* an_template;         /* Default template used in case template at path can not be found. */
   char* an_page;       /* URL for Authentication Page. */
-#if 0
-  char* an_start;      /* HTML headers, start of page, side bars */
-  char* an_our_eid;    /* Our EID advice */
-  char* an_tech_user;  /* Technical options user might choose */
-  char* an_tech_site;  /* Technical options site admin sets (hidden) */
-  char* an_footer;     /* End of page stuff, after form */
-  char* an_end;        /* End of page, after version string */
-#endif
+  char* an_templ_file; /* Path to template, e.g. an-main.html */
+  char* an_templ;      /* Default template used in case template at path can not be found. */
+
+  char* new_user_page; /* URL to redirect to for new user creation */
+  char* recover_passwd;
+  char* atsel_page;
 
   char* mgmt_start;    /* HTML headers, start of page, side bars */
   char* mgmt_logout;   /* Logout buttons */
@@ -252,6 +254,8 @@ struct zxid_cgi {
   char* zxapp;         /* Deployment specific application parameter passed in some querystrings. */
   char* zxrfr;         /* ZX Referer. Indicates to some external pages why user was redirected. */
   char* ok;            /* Ok button in some forms */
+  char* sp_eid;        /* IdP An for to generate page */
+  char* sp_dpy_name;
   struct zxid_entity* idp_list;   /* IdPs from CDC */
 };
 
@@ -376,6 +380,7 @@ struct zxid_entity {
   struct zxid_entity* n_cdc;  /* *** not thread safe */
   int eid_len;
   char* eid;
+  char* dpy_name;
   char  sha1_name[28];  /* 27 chars (+1 that is overwritten with nul) */
   X509* tls_cert;
   X509* sign_cert;
@@ -614,6 +619,7 @@ struct zx_root_s* zxid_sp_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struc
 
 /* zxiddec */
 
+struct zx_sa_Issuer_s* zxid_extract_issuer(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_root_s* r);
 struct zx_root_s* zxid_decode_redir_or_post(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int chk_dup);
 
 /* zxidspx */

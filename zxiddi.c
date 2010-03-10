@@ -264,7 +264,7 @@ next_file:
   el = req->RequestedService->ServiceType && req->RequestedService->ServiceType->content
     ? req->RequestedService->ServiceType : 0;
   D("TOTAL discovered %d svctype(%.*s)", n_discovered, el?el->content->len:0, el?el->content->s:"");
-  zxlog(cf, 0, 0, 0, 0, 0, a7n->ID, nameid->gg.content, "N", "K", "DIOK", (void*)n_discovered, "%.*", el?el->content->len:1, el?el->content->s:"-");
+  zxlog(cf, 0, 0, 0, 0, 0, a7n->ID, nameid->gg.content, "N", "K", "DIOK", 0, "%.* n=%d", el?el->content->len:1, el?el->content->s:"-", n_discovered);
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
   D_DEDENT("di_query: ");
   return resp;

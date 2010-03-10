@@ -244,9 +244,8 @@ static char* zxid_map_bangbang(struct zxid_conf* cf, struct zxid_cgi* cgi, const
     if (BBMATCH("DBG", key, lim)) return cgi->dbg;
     break;
   case 'E':
-    if (BBMATCH("ENTID", key, lim)) {
+    if (BBMATCH("EID", key, lim)) {
       ss = zxid_my_entity_id(cf);
-ssret:
       s = ss->s; ZX_FREE(cf->ctx, ss);
       return s;
     }
@@ -259,8 +258,8 @@ ssret:
     if (BBMATCH("URL", key, lim)) return cf->url;
     break;
   case 'S':
-    if (BBMATCH("SP_ENTID", key, lim)) return cgi->sp_entid;
-    if (BBMATCH("SP_DISPLAY_NAME", key, lim)) return cgi->sp_display_name;
+    if (BBMATCH("SP_EID", key, lim)) return cgi->sp_eid;
+    if (BBMATCH("SP_DPY_NAME", key, lim)) return cgi->sp_dpy_name;
     if (BBMATCH("SSOREQ", key, lim)) return cgi->ssoreq;
     break;
   case 'V':
@@ -278,17 +277,17 @@ ssret:
 
 static struct zx_str* zxid_template_page_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, const char* templ_path, const char* default_templ)
 {
-  char* buf[8192];
+  char buf[8192];
   char* p;
   char* q;
   char* pp;
   struct zx_str* ss;
   int len, got = read_all(sizeof(buf)-1, buf, "templ", "%s", templ_path);
   if (got <= 0) {
-    D("Template at path() not found. Using default template.", templ_path);
+    D("Template at path(%s) not found. Using default template.", templ_path);
     p = default_templ;
   } else if (got <= 0 || got == sizeof(buf)-1) {
-    ERR("Template at path() does not fit in buffer of %d. Using default template.", templ_path, sizeof(buf)-1);
+    ERR("Template at path(%s) does not fit in buffer of %d. Using default template.", templ_path, sizeof(buf)-1);
     p = default_templ;
   } else
     p = buf;
@@ -297,6 +296,8 @@ static struct zx_str* zxid_template_page_cf(struct zxid_conf* cf, struct zxid_cg
     if (p[0] == '!' && p[1] == '!' && A_Z_a_z_(p[2])) {
       for (q = p+=2; A_Z_a_z_(*p); ++p) ;
       q = zxid_map_bangbang(cf, cgi, q, p);
+      if (!q || !*q)
+	continue;
       len = strlen(q);
       if (pp + len >= ss->s + ss->len) {
 	pp += len;
@@ -309,112 +310,10 @@ static struct zx_str* zxid_template_page_cf(struct zxid_conf* cf, struct zxid_cg
     *pp++ = *p++;
   }
   if (pp >= ss->s + ss->len) {
-    ERR("Expansion of template too big. Does not fit in %d", ss->s + ss->len);
+    ERR("Expansion of template too big. Does not fit in %d", ss->len);
     return 0;
   }
-  return ss;
-}
-
-#define YUBI_MINI "<a href=\"http://yubico.com\"><img src=\"yubiright_16x16.gif\" width=16 height=16 border=0></a>"
-
-/*() Generate IdP Authentication Page.
- *
- * Either outputs the authentication screen to stdout or returns
- * string of HTML (at specified automation level). If res_len is
- * supplied, the string length is returned in res_len.  Otherwise you
- * can just run strlen() on return value.
- *
- * The +ssoreq+ parameter is used for conveying the original AuthnReq
- * from the SP, encoded in SAMLRequest, for processing after the
- * authentication step.
- *
- * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
-
-/* Called by:  zxid_simple_idp_show_an */
-struct zx_str* zxid_an_page_cf(struct zxid_conf* cf, char* ssoreq, struct zxid_cgi* cgi, int* res_len, int auto_flags)
-{
-  struct zx_str* eid=0;
-  struct zx_str* ss;
-  if (auto_flags & ZXID_AUTO_DEBUG) zxid_set_opt(cf, 1, 1);
-
-  if (cf->log_level>1)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "AUTHN", 0, "");
-
-#if 1
-  ss = zxid_template_page_cf(cf, cgi, cf->an_template_path, cf->an_template);
-#else  
-  if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
-    eid = zxid_my_entity_id(cf);
-
-  if ((auto_flags & ZXID_AUTO_FORMT) && (auto_flags & ZXID_AUTO_FORMF)) {
-    DD("HERE %p", idp_list);
-    ss = zx_strf(cf->ctx,
-		 "%s"
-		 "%s%s\n"
-		 "Login requested by %s (%s)"
-		 "%s"
-#ifdef ZXID_USE_POST
-		 "<form method=post action=\"%s?o=P\">\n"
-#else
-		 "<form method=get action=\"%s\">\n"
-#endif
-		 "<font color=red>%s</font><font color=green>%s</font><font color=white>%s</font>"
-		 "1. User (or yubikey " YUBI_MINI "): <input name=au> Password: <input type=password name=ap>"
-		 " <input type=submit name=alp value=\" Login to IdP \"><br>\n"
-		 "2. <input type=submit name=an  value=\" Create New User \"><br>\n"
-		 "%s<a href=\"%.*s\">%.*s</a><br>\n"
-		 "<input type=hidden name=ar value=\"%s\">\n"
-		 "<input type=hidden name=zxapp value=\"%s\">\n"
-		 "</form>%s%s%s",
-		 cf->an_start,
-		 cf->an_our_eid, eid?eid->len:0, eid?eid->s:"", eid?eid->len:0, eid?eid->s:"",
-		 cgi->sp_display_name, cgi->sp_entid,
-		 cf->an_an,
-		 cf->url,
-		 cgi->err ? cgi->err : "", cgi->msg ? cgi->msg : "", cgi->dbg ? cgi->dbg : "",
-		 cf->an_tech_user, cf->an_tech_site,
-		 ssoreq,
-		 cgi->zxapp ? cgi->zxapp : "",
-		 cf->an_footer, zxid_version_str(), cf->an_end);
-    DD("HERE(%d) ss(%.*s)", ss->len, ss->len, ss->s);
-  } else if (auto_flags & ZXID_AUTO_FORMT) {
-    ss = zx_strf(cf->ctx,
-#ifdef ZXID_USE_POST
-		 "<form method=post action=\"%s?o=P\">\n"
-#else
-		 "<form method=get action=\"%s\">\n"
-#endif
-		 "<font color=red>%s</font><font color=green>%s</font><font color=white>%s</font>"
-		 "1. User (or yubikey " YUBI_MINI "): <input name=au> Password: <input type=password name=ap>"
-		 " <input type=submit name=alp value=\" Login to IdP \"><br>\n"
-		 "%s<a href=\"%.*s\">%.*s</a><br>\n"
-		 "%s%s\n"
-		 "<input type=hidden name=ar value=\"%s\">\n"
-		 "<input type=hidden name=zxapp value=\"%s\">\n"
-		 "</form>",
-		 cf->url,
-		 cgi->err ? cgi->err : "", cgi->msg ? cgi->msg : "", cgi->dbg ? cgi->dbg : "",
-		 cf->an_our_eid, eid?eid->len:0, eid?eid->s:"", eid?eid->len:0, eid?eid->s:"",
-		 cf->an_tech_user, cf->an_tech_site,
-		 ssoreq,
-		 cgi->zxapp ? cgi->zxapp : "");
-  } else if (auto_flags & ZXID_AUTO_FORMF) {
-    ss = zx_strf(cf->ctx,
-		 "<font color=red>%s</font><font color=green>%s</font><font color=white>%s</font>"
-		 "1. User (or yubikey " YUBI_MINI "): <input name=au> Password: <input type=password name=ap>"
-		 " <input type=submit name=alp value=\" Login to IdP \"><br>\n"
-		 "%s<a href=\"%.*s\">%.*s</a><br>\n"
-		 "%s%s\n"
-		 "<input type=hidden name=ar value=\"%s\">\n"
-		 "<input type=hidden name=zxapp value=\"%s\">\n",
-		 cgi->err ? cgi->err : "", cgi->msg ? cgi->msg : "", cgi->dbg ? cgi->dbg : "",
-		 cf->an_our_eid, eid?eid->len:0, eid?eid->s:"", eid?eid->len:0, eid?eid->s:"",
-		 cf->an_tech_user, cf->an_tech_site,
-		 ssoreq,
-		 cgi->zxapp ? cgi->zxapp : "");
-  } else
-    ss = zx_dup_str(cf->ctx, "");
-#endif
+  *pp = 0;
   return ss;
 }
 
@@ -475,9 +374,9 @@ char* zxid_idp_list_cf_cgi(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_
 
 #ifdef ZXID_USE_POPUP
     dd = zx_strf(cf->ctx, "%.*s"
-		 "<option value=\"%.*s\"> %.*s %s\n",
+		 "<option value=\"%.*s\"> %s (%.*s) %s\n",
 		 ss->len, ss->s,
-		 idp->eid_len, idp->eid, idp->eid_len, idp->eid,
+		 idp->eid_len, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid_len, idp->eid,
 		 mark);
 #else
     if (cf->show_tech) {
@@ -898,6 +797,31 @@ static char* zxid_simple_show_conf(struct zxid_conf* cf, struct zxid_cgi* cgi, i
 
 /* ----------- IdP Screens ----------- */
 
+/*() Decode ssoreq (ar=), i.e. the preserved original AuthnReq */
+
+static int zxid_decode_ssoreq(struct zxid_conf* cf, struct zxid_cgi* cgi)
+{
+  int len;
+  char* buf;
+  char* p;
+  if (!cgi->ssoreq)
+    return 1;
+  D("ssoreq(%s)", cgi->ssoreq);
+  len = strlen(cgi->ssoreq);
+  buf = ZX_ALLOC(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(len));
+  p = unbase64_raw(cgi->ssoreq, cgi->ssoreq + len, buf, zx_std_index_64);
+  p = zx_zlib_raw_inflate(0, p-buf, buf, &len);
+  ZX_FREE(cf->ctx, buf);
+  if (!p)
+    return 0;
+  p[len] = 0;
+  cgi->op = 0;
+  D("ar/ssoreq decoded(%s)", p);
+  zxid_parse_cgi(cgi, p);  /* cgi->op will be Q due to SAMLRequest inside ssoreq */
+  cgi->op = 'F';
+  return 1;
+}
+
 /*() Process IdP side after successful authentication. If IdP was
  * invoked with AuthnReq (in SAMLRequest) then op=='F' as set
  * in zxid_simple_idp_pw_authn() which will trigger the rest of the
@@ -914,7 +838,7 @@ static char* zxid_simple_idp_an_ok_do_rest(struct zxid_conf* cf, struct zxid_cgi
 /*() Show Authentication screen. Generally this will be in response to
  * the SP having sent user via redirect to o=F carrying AuthnRequest encoded
  * in SAMLRequest query string parameter, per SAML redirect binding
- * [SAML2bind].  We must preserve SAMLRequest as hidden field in the
+ * [SAML2bind].  We must preserve SAMLRequest as hidden field, ar, in the
  * page for later processing once the authentication step has been
  * taken care of. It will also be passed on the query string to
  * external authentication page if any was configured with AN_PAGE
@@ -927,49 +851,93 @@ static char* zxid_simple_idp_show_an(struct zxid_conf* cf, struct zxid_cgi* cgi,
 {
   int zlen, len;
   char* zbuf;
-  char* b64;
+  char* b64 = 0;
   char* p;
   char* ar;
+  struct zx_sa_Issuer_s* issuer;
+  struct zxid_entity* meta;
+  struct zx_root_s* r;
   struct zx_str* ss;
   struct zxid_ses sess;
+  memset(&sess, 0 , sizeof(sess));
   D("cf=%p cgi=%p", cf, cgi);
   
   DD("z saml_req(%s) rs(%s) sigalg(%s) sig(%s)", cgi->saml_req, cgi->rs, cgi->sigalg, cgi->sig);  
   if (cgi->uid && zxid_pw_authn(cf, cgi, &sess)) {  /* Try login, just in case. */
     return zxid_simple_idp_an_ok_do_rest(cf, cgi, &sess, res_len, auto_flags);
   }
-  DD("zz saml_req(%s) rs(%s) sigalg(%s) sig(%s)", cgi->saml_req, cgi->rs, cgi->sigalg, cgi->sig);  
-  ss = zx_strf(cf->ctx, "SAMLRequest=%s%s%s&SigAlg=%s&Signature=%s",
-	       STRNULLCHK(cgi->saml_req),
-	       cgi->rs && cgi->rs[0] ? "&RelayState=" : "", cgi->rs ? cgi->rs : "",
-	       STRNULLCHK(cgi->sigalg),
-	       STRNULLCHK(cgi->sig));
-  D("z input(%.*s) len=%d", ss->len, ss->s, ss->len);
-  zbuf = zx_zlib_raw_deflate(cf->ctx, ss->len, ss->s, &zlen);
-  if (!zbuf)
-    return 0;
-  
-  len = SIMPLE_BASE64_LEN(zlen);
-  DD("zbuf(%.*s) zlen=%d len=%d", zlen, zbuf, zlen, len);
-  b64 = ZX_ALLOC(cf->ctx, len+1);
-  p = base64_fancy_raw(zbuf, zlen, b64, safe_basis_64, 1<<31, 0, 0, '=');
-  *p = 0;
-  zx_str_free(cf->ctx, ss);
+  if (cgi->saml_req) {
+    DD("zz saml_req(%s) rs(%s) sigalg(%s) sig(%s)", cgi->saml_req, cgi->rs, cgi->sigalg, cgi->sig);  
+    ss = zx_strf(cf->ctx, "SAMLRequest=%s%s%s&SigAlg=%s&Signature=%s",
+		 STRNULLCHK(cgi->saml_req),
+		 cgi->rs && cgi->rs[0] ? "&RelayState=" : "", cgi->rs ? cgi->rs : "",
+		 STRNULLCHK(cgi->sigalg),
+		 STRNULLCHK(cgi->sig));
+    D("z input(%.*s) len=%d", ss->len, ss->s, ss->len);
+    zbuf = zx_zlib_raw_deflate(cf->ctx, ss->len, ss->s, &zlen);
+    if (!zbuf)
+      return 0;
+    
+    len = SIMPLE_BASE64_LEN(zlen);
+    DD("zbuf(%.*s) zlen=%d len=%d", zlen, zbuf, zlen, len);
+    b64 = ZX_ALLOC(cf->ctx, len+1);
+    p = base64_fancy_raw(zbuf, zlen, b64, safe_basis_64, 1<<31, 0, 0, '=');
+    *p = 0;
+    zx_str_free(cf->ctx, ss);
+    cgi->ssoreq = b64;
+  }
   
   if (cf->an_page && cf->an_page[0]) {
-    ss = zx_strf(cf->ctx, "ar=%.*s&zxrfr=F%s%s%s%s",
-		 p-b64, b64,
+    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s",
+		 cgi->ssoreq,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "");
-    ZX_FREE(cf->ctx, b64);
+    if (b64)
+      ZX_FREE(cf->ctx, b64);
     ar = ss->s;
     ZX_FREE(cf->ctx, ss);
     D("an_page(%s) ar(%s)", cf->an_page, ar);
     return zxid_simple_redir_page(cf, cf->an_page, ar, res_len, auto_flags);
   }
   
-  ss = zxid_an_page_cf(cf, b64, cgi, res_len, auto_flags);
-  ZX_FREE(cf->ctx, b64);
+  if (cf->log_level>1)
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "AUTHN", 0, "");
+  
+  /* Attempt to provisorily decode the request and fetch metadata of the SP so we
+   * can detect trouble early on and provide some assuring knowledge to the user. */
+  
+  if (!cgi->saml_req && cgi->ssoreq) {
+    zxid_decode_ssoreq(cf, cgi);
+  }
+  
+  r = zxid_decode_redir_or_post(cf, cgi, &sess, 0x2);
+  if (r) {
+    issuer = zxid_extract_issuer(cf, cgi, &sess, r);
+    if (issuer && issuer->gg.content && issuer->gg.content->len && issuer->gg.content->s[0]) {
+      meta = zxid_get_ent_ss(cf, issuer->gg.content);
+      if (meta) {
+	cgi->sp_eid = meta->eid;
+	cgi->sp_dpy_name = meta->dpy_name;
+      } else {
+	ERR("Unable to find metadata for Issuer(%.*s) in AnReq Redir", issuer->gg.content->len, issuer->gg.content->s);
+	cgi->err = "Issuer unknown - metadata exchange may be needed (AnReq).";
+	cgi->sp_dpy_name = "--SP description unavailable--";
+	cgi->sp_eid = zx_str_to_c(cf->ctx, issuer->gg.content);
+      }
+    } else {
+      cgi->err = "Issuer could not be determined from Authentication Request.";
+      cgi->sp_eid = "";
+      cgi->sp_dpy_name = "--No SP could be determined--";
+    }
+  } else {
+      cgi->err = "Malformed or nonexistant Authentication Request";
+      cgi->sp_eid = "";
+      cgi->sp_dpy_name = "--No SP could be determined--";
+  }
+  
+  ss = zxid_template_page_cf(cf, cgi, cf->an_templ_file, cf->an_templ);
+  if (b64)
+    ZX_FREE(cf->ctx, b64);
   DD("an_page: ret(%s)", ss?ss->len:1, ss?ss->s:"?");
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_LOGINC, ZXID_AUTO_LOGINH,
 			       "a", "text/html", res_len, auto_flags);
@@ -985,30 +953,73 @@ static char* zxid_simple_idp_show_an(struct zxid_conf* cf, struct zxid_cgi* cgi,
 /* Called by:  zxid_simple_no_ses_cf */
 static char* zxid_simple_idp_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
 {
-  int len;
-  char* p;
   struct zxid_ses sess;
   D("cf=%p cgi=%p", cf, cgi);
-  
-  if (cgi->ssoreq) {
-    DD("ssoreq(%s)", cgi->ssoreq);
-    len = strlen(cgi->ssoreq);
-    p = unbase64_raw(cgi->ssoreq, cgi->ssoreq + len, cgi->ssoreq, zx_std_index_64);
-    p = zx_zlib_raw_inflate(0, p-cgi->ssoreq, cgi->ssoreq, &len);
-    if (!p)
-      goto err;
-    p[len] = 0;
-    cgi->op = 0;
-    D("ar/ssoreq decoded(%s)", p);
-    zxid_parse_cgi(cgi, p);  /* cgi->op will be Q due to SAMLRequest inside ssoreq */
-    cgi->op = 'F';
-  }
+ 
+  if (!zxid_decode_ssoreq(cf, cgi))
+    goto err;
   
   if (zxid_pw_authn(cf, cgi, &sess))
     return zxid_simple_idp_an_ok_do_rest(cf, cgi, &sess, res_len, auto_flags);
 
   D("PW Login failed uid(%s) pw(%s) err(%s)", STRNULLCHK(cgi->uid), STRNULLCHK(cgi->pw), STRNULLCHK(cgi->err));
  err:
+  return zxid_simple_idp_show_an(cf, cgi, res_len, auto_flags);
+}
+
+/*() Redirect user to new user creation page. */
+
+static char* zxid_simple_idp_new_user(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+{
+  char* p;
+  struct zx_str* ss;
+  D("cf=%p cgi=%p", cf, cgi);
+
+  // ***
+
+  if (cf->new_user_page && cf->new_user_page[0]) {
+    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
+		 cgi->ssoreq,
+		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
+		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
+		 cf->url);
+    p = ss->s;
+    ZX_FREE(cf->ctx, ss);
+    D("new_user_page(%s) redir(%s)", cf->an_page, p);
+    return zxid_simple_redir_page(cf, cf->new_user_page, p, res_len, auto_flags);
+  }
+
+  ERR("No new user page URL defined. (IdP config problem, or IdP intentionally does not support online new user creation. See NEW_USER_PAGE config option.) %d", 0);
+  cgi->err = "No new user page URL defined. (IdP config problem, or IdP intentionally does not support online new user creation.)";
+  
+  return zxid_simple_idp_show_an(cf, cgi, res_len, auto_flags);
+}
+
+/*() Redirect user to recover password page. */
+
+static char* zxid_simple_idp_recover_password(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+{
+  char* p;
+  struct zx_str* ss;
+  D("cf=%p cgi=%p", cf, cgi);
+
+  // ***
+
+  if (cf->recover_passwd && cf->recover_passwd[0]) {
+    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
+		 cgi->ssoreq,
+		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
+		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
+		 cf->url);
+    p = ss->s;
+    ZX_FREE(cf->ctx, ss);
+    D("new_user_page(%s) redir(%s)", cf->an_page, p);
+    return zxid_simple_redir_page(cf, cf->recover_passwd, p, res_len, auto_flags);
+  }
+
+  ERR("No password recover page URL defined. (IdP config problem, or IdP intentionally does not support online password recovery. See RECOVER_PASSWD config option.) %d", 0);
+  cgi->err = "No password recover page URL defined. (IdP config problem, or IdP intentionally does not support online password recovery.)";
+  
   return zxid_simple_idp_show_an(cf, cgi, res_len, auto_flags);
 }
 
@@ -1056,12 +1067,14 @@ char* zxid_simple_ses_active_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, stru
    * E = Normal "Entry" page (e.g. after CDC read)
    * L = Start SSO (submit of E)
    * A = Artifact processing
+   * N = New User, during IdP Login (form an)
+   * W = Recover password,  during IdP Login (form aw)
    *
    * I = used for IdP ???
    * K = used?
    * F = IdP: Return SSO A7N after successful An; no ses case, generate IdP ui
    *
-   * Still available: DGHJNORTUVWXYZabcdefghijkoqwxyz
+   * Still available: DGHJORTUVWXYZabcdefghijkoqwxyz
    */
   
   if (cgi->enc_hint)
@@ -1291,6 +1304,8 @@ show_protected_content_setcookie:
   case 'F':
 idp:           return zxid_simple_idp_show_an(cf, cgi, res_len, auto_flags);
   case 'p':    return zxid_simple_idp_pw_authn(cf, cgi, res_len, auto_flags);
+  case 'N':    return zxid_simple_idp_new_user(cf, cgi, res_len, auto_flags);
+  case 'W':    return zxid_simple_idp_recover_password(cf, cgi, res_len, auto_flags);
   default:
     if (cf->bare_url_entityid)
       return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);

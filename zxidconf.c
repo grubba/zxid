@@ -243,6 +243,12 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   memcpy(cf->path, zxid_path, cf->path_len);
   cf->path[cf->path_len] = 0;
   cf->nice_name = ZXID_NICE_NAME;
+  cf->org_name = ZXID_ORG_NAME;
+  cf->org_url = ZXID_ORG_URL;
+  cf->contact_org = ZXID_CONTACT_ORG;
+  cf->contact_name = ZXID_CONTACT_NAME;
+  cf->contact_email = ZXID_CONTACT_EMAIL;
+  cf->contact_tel = ZXID_CONTACT_TEL;
   cf->url = ZXID_URL;
   cf->non_standard_entityid = ZXID_NON_STANDARD_ENTITYID;
   cf->redirect_hack_imposed_url = ZXID_REDIRECT_HACK_IMPOSED_URL;
@@ -356,13 +362,13 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->idp_sel_end       = ZXID_IDP_SEL_END;
 
   cf->an_page           = ZXID_AN_PAGE;
-  cf->an_start          = ZXID_AN_START;
-  cf->an_our_eid        = ZXID_AN_OUR_EID;
-  cf->an_tech_user      = ZXID_AN_TECH_USER;
-  cf->an_tech_site      = ZXID_AN_TECH_SITE;
-  cf->an_footer         = ZXID_AN_FOOTER;
-  cf->an_end            = ZXID_AN_END;
-  
+  cf->an_templ_file     = ZXID_AN_TEMPL_FILE;
+  cf->an_templ          = ZXID_AN_TEMPL;
+
+  cf->new_user_page     = ZXID_NEW_USER_PAGE;
+  cf->recover_passwd    = ZXID_RECOVER_PASSWD;
+  cf->atsel_page        = ZXID_ATSEL_PAGE;
+
   cf->mgmt_start        = ZXID_MGMT_START;
   cf->mgmt_logout       = ZXID_MGMT_LOGOUT;
   cf->mgmt_defed        = ZXID_MGMT_DEFED;
@@ -913,26 +919,27 @@ scan_end:
       if (!strcmp(n, "ACT_IN_ERR"))     { SCAN_INT(v, cf->log_err_in_act); break; }
       if (!strcmp(n, "AUDIENCE_FATAL")) { SCAN_INT(v, cf->audience_fatal); break; }
       if (!strcmp(n, "AFTER_SLOP"))     { SCAN_INT(v, cf->after_slop); break; }
-      if (!strcmp(n, "ANON_OK"))      { cf->anon_ok = v; D("anon_ok(%s)", cf->anon_ok); break; }
-      if (!strcmp(n, "AN_START"))     { cf->an_start = v; break; }
-      if (!strcmp(n, "AN_OUR_EID"))   { cf->an_our_eid = v; break; }
-      if (!strcmp(n, "AN_TECH_USER")) { cf->an_tech_user =v; break; }
-      if (!strcmp(n, "AN_TECH_SITE")) { cf->an_tech_site =v; break; }
-      if (!strcmp(n, "AN_FOOTER"))    { cf->an_footer = v; break; }
-      if (!strcmp(n, "AN_END"))       { cf->an_end = v; break; }
-      if (!strcmp(n, "AN_PAGE"))      { cf->an_page = v; break; }
-      if (!strcmp(n, "ATTRSRC"))      { cf->attrsrc = zxid_load_atsrc(cf, cf->attrsrc, v); break; }
-      if (!strcmp(n, "A7NTTL"))       { SCAN_INT(v, cf->a7nttl); break; }
-      if (!strcmp(n, "AS_ENA"))       { SCAN_INT(v, cf->as_ena); break; }
+      if (!strcmp(n, "ANON_OK"))        { cf->anon_ok = v; D("anon_ok(%s)", cf->anon_ok); break; }
+      if (!strcmp(n, "AN_PAGE"))        { cf->an_page = v; break; }
+      if (!strcmp(n, "AN_TEMPL_FILE"))  { cf->an_templ_file = v; break; }
+      if (!strcmp(n, "AN_TEMPL"))       { cf->an_templ = v; break; }
+      if (!strcmp(n, "ATSEL_PAGE"))     { cf->atsel_page = v; break; }
+      if (!strcmp(n, "ATTRSRC"))     { cf->attrsrc = zxid_load_atsrc(cf, cf->attrsrc, v); break; }
+      if (!strcmp(n, "A7NTTL"))         { SCAN_INT(v, cf->a7nttl); break; }
+      if (!strcmp(n, "AS_ENA"))         { SCAN_INT(v, cf->as_ena); break; }
       goto badcf;
     case 'B':  /* BEFORE_SLOP */
-      if (!strcmp(n, "BEFORE_SLOP"))     { SCAN_INT(v, cf->before_slop); break; }
-      if (!strcmp(n, "BOOTSTRAP_LEVEL")) { SCAN_INT(v, cf->bootstrap_level); break; }
+      if (!strcmp(n, "BEFORE_SLOP"))       { SCAN_INT(v, cf->before_slop); break; }
+      if (!strcmp(n, "BOOTSTRAP_LEVEL"))   { SCAN_INT(v, cf->bootstrap_level); break; }
       if (!strcmp(n, "BARE_URL_ENTITYID")) { SCAN_INT(v, cf->bare_url_entityid); break; }
       goto badcf;
     case 'C':  /* CDC_URL, CDC_CHOICE */
-      if (!strcmp(n, "CDC_URL"))      { cf->cdc_url = v; break; }
-      if (!strcmp(n, "CDC_CHOICE"))   { SCAN_INT(v, cf->cdc_choice); break; }
+      if (!strcmp(n, "CDC_URL"))        { cf->cdc_url = v; break; }
+      if (!strcmp(n, "CDC_CHOICE"))     { SCAN_INT(v, cf->cdc_choice); break; }
+      if (!strcmp(n, "CONTACT_ORG"))    { cf->contact_org = v; break; }
+      if (!strcmp(n, "CONTACT_NAME"))   { cf->contact_name = v; break; }
+      if (!strcmp(n, "CONTACT_EMAIL"))  { cf->contact_email = v; break; }
+      if (!strcmp(n, "CONTACT_TEL"))    { cf->contact_tel = v; break; }
       goto badcf;
     case 'D':  /* DUP_A7N_FATAL, DUP_MSG_FATAL */
       if (!strcmp(n, "DEFAULTQS"))      { cf->defaultqs = v; break; }
@@ -992,9 +999,12 @@ scan_end:
       if (!strcmp(n, "NOSIG_FATAL"))    { SCAN_INT(v, cf->nosig_fatal); break; }
       if (!strcmp(n, "NOTIMESTAMP_FATAL")) { SCAN_INT(v, cf->notimestamp_fatal); break; }
       if (!strcmp(n, "NEED"))           { cf->need = zxid_load_need(cf, cf->need, v); break; }
+      if (!strcmp(n, "NEW_USER_PAGE"))  { cf->new_user_page = v; break; }
       goto badcf;
     case 'O':  /* OUTMAP */
       if (!strcmp(n, "OUTMAP"))         { cf->outmap = zxid_load_map(cf, cf->outmap, v); break; }
+      if (!strcmp(n, "ORG_NAME"))       { cf->org_name = v; break; }
+      if (!strcmp(n, "ORG_URL"))        { cf->org_url = v; break; }
       goto badcf;
     case 'P':  /* PATH (e.g. /var/zxid) */
       DD("PATH maybe n(%s)=v(%s)", n, v);
@@ -1053,6 +1063,7 @@ scan_end:
 	}
 	break;
       }
+      if (!strcmp(n, "RECOVER_PASSWD")) { cf->recover_passwd = v; break; }
       goto badcf;
     case 'S':  /* SES_ARCH_DIR, SIGFAIL_IS_ERR, SIG_FATAL */
       if (!strcmp(n, "SES_ARCH_DIR"))   { cf->ses_arch_dir = (v[0]=='0' && !v[1]) ? 0 : v; break; }
@@ -1248,6 +1259,12 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "URL=%s\n"
 "AFFILIATION=%s\n"
 "NICE_NAME=%s\n"
+"ORG_NAME=%s\n"
+"ORG_URL=%s\n"
+"CONTACT_ORG=%s\n"
+"CONTACT_NAME=%s\n"
+"CONTACT_EMAIL=%s\n"
+"CONTACT_TEL=%s\n"
 "#ZXID_CONF_FILE=%d (compile)\n"
 "#ZXID_CONF_FLAG=%d (compile)\n"
 "#ZXID_MAX_CONF=%d (compile)\n"
@@ -1345,12 +1362,12 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "IDP_SEL_END=%s\n"
 
 "AN_PAGE=%s\n"
-"AN_START=%s\n"
-"AN_OUR_EID=%s\n"
-"AN_TECH_USER=%s\n"
-"AN_TECH_SITE=%s\n"
-"AN_FOOTER=%s\n"
-"AN_END=%s\n"
+"AN_TEMPL_FILE=%s\n"
+"AN_TEMPL=%s\n"
+
+"NEW_USER_PAGE=%s\n"
+"RECOVER_PASSWD=%s\n"
+"ATSEL_PAGE=%s\n"
 
 "MGMT_START=%s\n"
 "MGMT_LOGOUT=%s\n"
@@ -1381,6 +1398,12 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 cf->url,
 		 STRNULLCHK(cf->affiliation),
 		 STRNULLCHK(cf->nice_name),
+		 STRNULLCHK(cf->org_name),
+		 STRNULLCHK(cf->org_url),
+		 STRNULLCHK(cf->contact_org),
+		 STRNULLCHK(cf->contact_name),
+		 STRNULLCHK(cf->contact_email),
+		 STRNULLCHK(cf->contact_tel),
 		 ZXID_CONF_FILE,
 		 ZXID_CONF_FLAG,
 		 ZXID_MAX_CONF,
@@ -1476,12 +1499,12 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 STRNULLCHK(cf->idp_sel_end),
 
 		 STRNULLCHK(cf->an_page),
-		 STRNULLCHK(cf->an_start),
-		 STRNULLCHK(cf->an_our_eid),
-		 STRNULLCHK(cf->an_tech_user),
-		 STRNULLCHK(cf->an_tech_site),
-		 STRNULLCHK(cf->an_footer),
-		 STRNULLCHK(cf->an_end),
+		 STRNULLCHK(cf->an_templ_file),
+		 STRNULLCHK(cf->an_templ),
+
+		 STRNULLCHK(cf->new_user_page),
+		 STRNULLCHK(cf->recover_passwd),
+		 STRNULLCHK(cf->atsel_page),
 
 		 STRNULLCHK(cf->mgmt_start),
 		 STRNULLCHK(cf->mgmt_logout),

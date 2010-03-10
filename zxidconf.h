@@ -46,8 +46,9 @@
 #define ZXID_PATH "/var/zxid/"
 
 /*(c) SP Nickname for IdP User Interface
- * The nice name may be used by IdP user interface to refer to the SP. It is usually
- * be short human readable name or description. */
+ * The nice name may be used by IdP user interface to refer to the SP. It
+ * is usually a short human readable name or description. It will also
+ * appear in metadata as Organization/OrganizationDisplayName */
 #define ZXID_NICE_NAME "ZXID Demo SP"
 
 /*(c) Web Site URL - root of EntityID
@@ -85,6 +86,14 @@
  * only works in mod_auth_saml. */
 #define ZXID_REDIRECT_HACK_IMPOSED_URL 0
 #define ZXID_REDIRECT_HACK_ZXID_URL 0
+
+/*(c) Additional Metadata Fields. Safe to leave all as NULL. */
+#define ZXID_ORG_NAME 0
+#define ZXID_ORG_URL  0
+#define ZXID_CONTACT_ORG 0
+#define ZXID_CONTACT_NAME 0
+#define ZXID_CONTACT_EMAIL 0
+#define ZXID_CONTACT_TEL 0
 
 /*(c) Common Domain Cookie URL
  * URL for reading Common Domain Cookie. It must end in "zxid". The hostname
@@ -577,14 +586,39 @@
 
 #define ZXID_IDP_SEL_PAGE 0
 
-#define ZXID_AN_TEMPLATE_PATH "an-main.html"
-#define ZXID_AN_TEMPLATE "<title>ZXID IdP: Authentication</title>"\
+/*(c) If user clicks "Create New User" he is redirected to this page. */
+
+#define ZXID_NEW_USER_PAGE 0
+
+/*(c) If user clicks on recover password, redirect to this page. */
+
+#define ZXID_RECOVER_PASSWD 0
+
+/*(c) If attribute selection is desired during SSO, redirect to this page. */
+
+#define ZXID_ATSEL_PAGE 0
+
+/*(c) Authentication Page URL
+ * If the template customization options are not sufficient, you can
+ * provide URL to page of your own design. If set, takes priority over AN_TEMPL_FILE.
+ * 0 (zero) disables. */
+
+#define ZXID_AN_PAGE 0
+
+/*(c) Path for Template for IdP Authentication Page */
+
+#define ZXID_AN_TEMPL_FILE "an-main.html"
+
+/*(c) Template for IdP Authentication Page that is used if the
+ * path does not work. This is really meant to be the last resort. */
+
+#define ZXID_AN_TEMPL "<title>ZXID IdP: Authentication</title>"\
   "<link type=\"text/css\" rel=stylesheet href=\"an.css\"><body bgcolor=white>"\
   "<form method=get action=\"!!URL\">"\
   "<h1 class=zxtop>ZXID IdP Authentication for Federated SSO</h1>"\
-  "<p>Entity ID of this IdP (click for the IdP metadata): <a href=\"!!ENTID\">!!ENTID</a><br>"\
+  "<p>Entity ID of this IdP (click for the IdP metadata): <a href=\"!!EID\">!!EID</a><br>"\
   "<input type=checkbox name=atselafter> Adjust attribute sharing after authentication"\
-  "<p>Login requested by !!SP_DISPLAY_NAME (<a href=\"!!SP_ENTID\">!!SP_ENTID</a>)"\
+  "<p>Login requested by !!SP_DPY_NAME (<a href=\"!!SP_EID\">!!SP_EID</a>)"\
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
   "User NOT logged in, no session."\
   "<h3>Please authenticate using one of the following methods:</h3>"\
@@ -595,30 +629,7 @@
   "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h -->"\
   "<input type=hidden name=ar value=\"!!SSOREQ\">"\
   "<input type=hidden name=zxapp value=\"!!ZXAPP\">"\
-  "</form><div class=zxbot><a href=\"http://zxid.org/\">zxid.org</a>, !!VERSION</div>"
-
-#if 0
-/* OBSOLETE: New template based method has been adopted. These will be removed in the next release. You should be preparing an-main.html or setting AN_TEMPLATE_PATH or AN_TEMPLATE to your favorite. */
-#define ZXID_AN_START "<title>ZXID IdP: Authentication</title><link type=\"text/css\" rel=stylesheet href=\"an.css\">" ZXID_BODY_TAG "<h1 class=zxtop>ZXID IdP Authentication for Federated SSO</h1>\n<i>User NOT logged in, no session.</i>"
-
-#define ZXID_AN_AN "<h3>Please authenticate yourself using one of the following methods:</h3>"
-
-#define ZXID_AN_OUR_EID "Entity ID of this IdP (click for the IdP metadata): "
-
-#define ZXID_AN_TECH_USER "<h3>Technical options</h3><input type=checkbox name=fc value=1 checked> Create federation, NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value=\"\">(none)</select><br>\n"
-
-#define ZXID_AN_TECH_SITE "<input type=hidden name=fq value=\"\"><input type=hidden name=fy value=\"\"><input type=hidden name=fa value=\"\"><input type=hidden name=fm value=\"\"><input type=hidden name=fp value=0><input type=hidden name=ff value=0><!-- ZXID built-in defaults, see IDP_SEL_TECH_SITE in zxidconf.h -->"
-
-#define ZXID_AN_FOOTER  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, "
-#define ZXID_AN_END     "</div>"
-#endif
-
-/*(c) Authentication Page URL
- * If the above simple customization options are not sufficient, you can
- * provide URL to page of your own design.
- * 0 (zero) disables. */
-
-#define ZXID_AN_PAGE 0
+  "</form><div class=zxbot><a href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"
 
 #define ZXID_MGMT_START "<title>ZXID SP Mgmt</title><link type=\"text/css\" rel=stylesheet href=\"idpsel.css\">" ZXID_BODY_TAG "<h1 class=zxtop>ZXID SP Management (user logged in, session active)</h1>\n"
 

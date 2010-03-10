@@ -3,73 +3,79 @@
 <body bgcolor=white>
 <h1 class=zxtop>ZXID IdP New User Creation</h1>
 
+<div class=zxerr>!!ERR</div>
+<div class=zxmsg>!!MSG</div>
+<div class=zxdbg>!!DBG</div>
+
 <form method=post action="zxidnewuser.pl">
 <table>
 
 <tr><th>Field</th><th>Initial Value</th><th>Required?</th><th>Sharing Default</th></tr>
 <tr><th>Username</th><td><input name=au value="!!au"></td><td>Required</td><td>Internal use</td><td></td></tr>
-<tr><th>Password</th><td><input name=ap value="!!ap"></td><td>Required</td><td>Internal use</td><td></td></tr>
+<tr><th>Password</th><td><input name=ap value="!!ap">
+    <i>(min. 5 characters)</i></td><td>Required</td><td>Internal use</td><td></td></tr>
 
 <tr><th>Common Name</th>
     <td><input name=cn value="!!cn" size=40></td>
     <td>Optional*</td>
-    <td><input type=checkbox name=cnshare value="!!cnshare"> Share</td></tr>
+    <td><input type=checkbox name=cnshare !!cnshare> Share</td></tr>
 
 <tr><th>Org. Title</th>
     <td><input name=title value="!!title"></td>
     <td>Optional</td>
-    <td><input type=checkbox name=emailshare value="!!emailshare"> Share</td></tr>
+    <td><input type=checkbox name=titleshare !!titleshare> Share</td></tr>
 
 <tr><th>Org. Tax Number</th>
     <td><input name=taxno value="!!taxno"></td>
     <td>Optional</td>
-    <td><input type=checkbox name=taxnoshare value="!!taxnoshare"> Share</td></tr>
+    <td><input type=checkbox name=taxnoshare !!taxnoshare> Share</td></tr>
 
 <tr><th>Organization</th>
     <td><input name=o value="!!o" size=40></td>
     <td>Optional</td>
-    <td><input type=checkbox name=oshare value="!!oshare"> Share</td></tr>
+    <td><input type=checkbox name=oshare !!oshare> Share</td></tr>
 
 <tr><th>Org. Unit</th>
     <td><input name=ou value="!!ou" size=40></td>
     <td>Optional</td>
-    <td><input type=checkbox name=oushare value="!!oushare"> Share</td></tr>
+    <td><input type=checkbox name=oushare !!oushare> Share</td></tr>
 
 <tr><th>Street Address</th>
     <td><input name=street value="!!street" size=40></td>
     <td>Optional*</td>
-    <td><input type=checkbox name=streetshare value="!!streetshare"> Share</td></tr>
+    <td><input type=checkbox name=streetshare !!streetshare> Share</td></tr>
 
 <tr><th>Location, Zip, Country</th>
     <td><input name=citystc value="!!citystc" size=40></td>
     <td>Optional*</td>
-    <td><input type=checkbox name=citystcshare value="!!citystcshare"> Share</td></tr>
+    <td><input type=checkbox name=citystcshare !!citystcshare> Share</td></tr>
 
 <tr><th>Emails</th>
     <td><input name=email value="!!email" size=40></td>
     <td>Optional**</td>
-    <td><input type=checkbox name=emailshare value="!!emailshare"> Share</td></tr>
+    <td><input type=checkbox name=emailshare !!emailshare> Share</td></tr>
 
 <tr><th>IM / Skype</th>
     <td><input name=im value="!!im"></td>
     <td>Optional</td>
-    <td><input type=checkbox name=imshare value="!!imshare"> Share</td></tr>
+    <td><input type=checkbox name=imshare !!imshare> Share</td></tr>
 
 <tr><th>Phone (international)</th>
-    <td><input name=phone value="!!phone"></td>
+    <td><input name=tel value="!!tel">
+    <i>(e.g. +15035470202)</i></td>
     <td>Optional</td>
-    <td><input type=checkbox name=phoneshare value="!!phoneshare"> Share</td>
+    <td><input type=checkbox name=phoneshare !!telshare> Share</td>
     <td></td></tr>
 
 <tr><th>Language Preference</th>
-    <td><input name=lang value="!!lang"><i>(2 letter code, e.g. "en")</i></td>
+    <td><input name=lang value="!!lang" size=5><i>(2 letter code, e.g. "en")</i></td>
     <td>Optional</td>
-    <td><input type=checkbox name=langshare value="!!langshare"> Share</td></tr>
+    <td><input type=checkbox name=langshare !!langshare> Share</td></tr>
 
 <tr><th>Self tagging</th>
     <td><input name=tag value="!!tag"></td>
     <td>Optional</td>
-    <td><input type=checkbox name=tagshare value="!!tagshare"> Share</td></tr>
+    <td><input type=checkbox name=tagshare !!tagshare> Share</td></tr>
 
 </table>
 
@@ -80,7 +86,9 @@
 <p><input type=submit name=ok value="Agree to terms and conditions and register new user">
 <a href="html/zxidp-user-terms.html">Terms and Conditions for Users</a>
 
-<input type=hidden name=ar>
+<input type=hidden name=ar value="!!ar">
+<input type=hidden name=zxrfr value="!!zxrfr">
+<input type=hidden name=zxidpurl value="!!zxidpurl">
 
 </form>
 

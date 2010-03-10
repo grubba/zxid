@@ -1,4 +1,5 @@
 /* zxiddec.c  -  Handwritten functions for Decoding Redirect or POST bindings
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -11,6 +12,7 @@
  * 12.10.2007, tweaked for signing SLO and MNI --Sampo
  * 14.4.2008,  added SimpleSign --Sampo
  * 7.10.2008,  added documentation --Sampo
+ * 10.3.2010,  added predecode support --Sampo
  */
 
 #include "errmac.h"
@@ -24,7 +26,7 @@
 /*() Look for issuer in all messages we support. */
 
 /* Called by:  zxid_decode_redir_or_post */
-static struct zx_sa_Issuer_s* zxid_extract_issuer(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_root_s* r)
+struct zx_sa_Issuer_s* zxid_extract_issuer(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_root_s* r)
 {
   struct zx_sa_Issuer_s* issuer = 0;
   if      (r->Response)             issuer = r->Response->Issuer;
@@ -51,7 +53,9 @@ static struct zx_sa_Issuer_s* zxid_extract_issuer(struct zxid_conf* cf, struct z
 }
 
 /*(i) Decode redirect or POST binding message. zxid_saml2_redir_enc()
- * performs the opposite operation. */
+ * performs the opposite operation. chk_dup is really flags
+ * 0x01  =  Check dup
+ * 0x02  =  Avoid sig check and logging */
 
 /* Called by:  zxid_idp_dispatch, zxid_sp_dispatch */
 struct zx_root_s* zxid_decode_redir_or_post(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int chk_dup)
@@ -99,7 +103,7 @@ struct zx_root_s* zxid_decode_redir_or_post(struct zxid_conf* cf, struct zxid_cg
       break;
   DD("Msg_sans_ws(%.*s) start=%x end=%x", p2-m2+1, m2, *m2, *p2);
   
-  if (cf->log_level > 1)
+  if (!(chk_dup & 0x02) && cf->log_level > 1)
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "W", "REDIRDEC", 0, "sid(%s) len=%d", STRNULLCHK(ses->sid), msglen);
 
   if (*m2 == '<' && *p2 == '>') {  /* POST profiles do not compress the payload */
@@ -121,6 +125,9 @@ struct zx_root_s* zxid_decode_redir_or_post(struct zxid_conf* cf, struct zxid_cg
     return 0;
   }
 
+  if (chk_dup & 0x02)
+    return r;
+  
   issuer = zxid_extract_issuer(cf, cgi, ses, r);
   if (!issuer)
     return 0;
@@ -137,7 +144,7 @@ log_msg:
       id_ss.s = id_buf;
       logpath = zxlog_path(cf, issuer->gg.content, &id_ss, ZXLOG_RELY_DIR, ZXLOG_WIR_KIND, 1);
       if (logpath) {
-	if (chk_dup) {
+	if (chk_dup & 0x01) {
 	  if (zxlog_dup_check(cf, logpath, "Redirect or POST assertion (unsigned)")) {
 	    if (cf->dup_msg_fatal) {
 	      cgi->err = "C Duplicate message";
