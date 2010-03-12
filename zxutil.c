@@ -243,8 +243,10 @@ int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_
   return 1;
 }
 
-/*() Write or append all data to a file at the formatted path. Will perform
- * file locking to ensure consistent results. Returns 1 on success, 0 on err */
+/*() Write or append all data to a file at the formatted path. The file
+ * is opened for appending, data written, and file closed (flushing the data).
+ * Will perform file locking to ensure consistent results. Will create the
+ * file if needed, but will not create parent directories. Returns 1 on success, 0 on err */
 
 /* Called by:  zxlog_blob, zxlog_write_line x2 */
 int write2_or_append_lock_c_path(const char* c_path,

@@ -300,6 +300,7 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->as_ena            = ZXID_AS_ENA;
   cf->pdp_ena           = ZXID_PDP_ENA;
 
+  cf->loguser = ZXID_LOGUSER;
   cf->log_level = ZXLOG_LEVEL;
   cf->log_err = ZXLOG_ERR;      /* Log enables and signing and encryption flags (if USE_OPENSSL) */
   cf->log_act = ZXLOG_ACT;
@@ -853,7 +854,7 @@ struct zxid_attr* zxid_find_at(struct zxid_attr* pool, char* name)
 
 #if defined(ZXID_CONF_FILE) || defined(ZXID_CONF_FLAG)
 
-#define SCAN_INT(v, lval) sscanf(v, "%i", &i); lval = i
+#define SCAN_INT(v, lval) sscanf(v,"%i",&i); lval=i /* Safe for char, too */
 
 /*(i) Parse partial configuration specifications, such as may occur
  * on command line or in a configuration file.
@@ -970,7 +971,8 @@ scan_end:
       if (!strcmp(n, "INMAP"))           { cf->inmap = zxid_load_map(cf, cf->inmap, v); break; }
       goto badcf;
     case 'L':  /* LEVEL (log level) */
-      if (!strcmp(n, "LEVEL"))   { SCAN_INT(v, cf->log_level); break; }
+      if (!strcmp(n, "LEVEL"))     { SCAN_INT(v, cf->log_level); break; }
+      if (!strcmp(n, "LOGUSER"))   { SCAN_INT(v, cf->loguser); break; }
       if (!strcmp(n, "LOCALPDP_ROLE_PERMIT"))   { cf->localpdp_role_permit   = zxid_load_cstr_list(cf, cf->localpdp_role_permit, v);   break; }
       if (!strcmp(n, "LOCALPDP_ROLE_DENY"))     { cf->localpdp_role_deny     = zxid_load_cstr_list(cf, cf->localpdp_role_deny, v);     break; }
       if (!strcmp(n, "LOCALPDP_IDPNID_PERMIT")) { cf->localpdp_idpnid_permit = zxid_load_cstr_list(cf, cf->localpdp_idpnid_permit, v); break; }
@@ -1321,6 +1323,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "LOG_ACT_IN_ERR=%d\n"
 "LOG_SIGFAIL_IS_ERR=%d\n"
 "LOG_LEVEL=%d\n"
+"LOGUSER=%d\n"
 
 "SIG_FATAL=%d\n"
 "NOSIG_FATAL=%d\n"
@@ -1460,6 +1463,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 cf->log_act_in_err,
 		 cf->log_sigfail_is_err,
 		 cf->log_level,
+		 cf->loguser,
   
 		 cf->sig_fatal,
 		 cf->nosig_fatal,

@@ -195,6 +195,8 @@ int zxid_idp_slo_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses*
   
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, cgi->sigval, "K", "ISLO", ses->sid, "sesix(%.*s)", sesix?sesix->len:1, sesix?sesix->s:"?");
+  if (cf->loguser)
+    zxlogusr(cf, ses->uid, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, cgi->sigval, "K", "ISLO", ses->sid, "sesix(%.*s)", sesix?sesix->len:1, sesix?sesix->s:"?");
 
   req->NameID = zxid_decrypt_nameid(cf, req->NameID, req->EncryptedID);
   if (!req->NameID || !req->NameID->gg.content) {

@@ -34,7 +34,7 @@
  * failure (i.e. duplicate), 1 on success. */
 
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso x3 */
-int zxid_anoint_a7n(struct zxid_conf* cf, int sign, struct zx_sa_Assertion_s* a7n, struct zx_str* issued_to, const char* lk)
+static int zxid_anoint_a7n(struct zxid_conf* cf, int sign, struct zx_sa_Assertion_s* a7n, struct zx_str* issued_to, const char* lk, const char* uid)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -53,6 +53,13 @@ int zxid_anoint_a7n(struct zxid_conf* cf, int sign, struct zx_sa_Assertion_s* a7
   }
   
   /* Log the issued a7n */
+
+  if (cf->loguser)
+    zxlogusr(cf, uid, &ourts, &ourts, 0, issued_to, 0, a7n->ID,
+	     (a7n->Subject->NameID && a7n->Subject->NameID->gg.content
+	      ?a7n->Subject->NameID->gg.content
+	      :(zx_dup_str(cf->ctx, (a7n->Subject->EncryptedID?"ENC":"-")))),
+	     sign?"U":"N", "K", lk, "-", 0);
 
   zxlog(cf, &ourts, &ourts, 0, issued_to, 0, a7n->ID,
 	(a7n->Subject->NameID && a7n->Subject->NameID->gg.content
@@ -512,7 +519,7 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReferenc
   a7n = zxid_mk_user_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf, bs_lvl);
   
   if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n,
-		       epr->Metadata->ProviderID->content, "DIA7N")) {
+		       epr->Metadata->ProviderID->content, "DIA7N", uid)) {
     ERR("Failed to sign the assertion %d", 0);
     return 0;
   }
@@ -538,7 +545,8 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReferenc
   return logop;
 }
 
-/*(i) Generate SSO assertion and ship it to SP by chosen binding. */
+/*(i) Generate SSO assertion and ship it to SP by chosen binding. User has already
+ * logged in by the time this is called. */
 
 /* Called by:  zxid_idp_dispatch */
 struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sp_AuthnRequest_s* ar)
@@ -702,7 +710,7 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
   case 'q':
     D("SAML2 BRWS-POST-SIMPLE-SIGN ep(%.*s)", acsurl->len, acsurl->s);
 
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N_SIMPLE, a7n, ar->Issuer->gg.content, "SSOA7N"))
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N_SIMPLE, a7n, ar->Issuer->gg.content, "SSOA7N", ses->uid))
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf);
     if (cf->post_a7n_enc) {
@@ -728,7 +736,7 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
   case 'p':
     D("SAML2 BRWS-POST ep(%.*s)", acsurl->len, acsurl->s);
 
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ar->Issuer->gg.content, "SSOA7N"))
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ar->Issuer->gg.content, "SSOA7N", ses->uid))
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf);
     if (cf->post_a7n_enc) {
@@ -759,7 +767,7 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
       INFO("LOG_ISSUE_A7N must be turned on in IdP configuration for artifact profile to work. Turning on now automatically. %d", 0);
       cf->log_issue_a7n = 1;
     }
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ar->Issuer->gg.content, "SSOA7N"))
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ar->Issuer->gg.content, "SSOA7N", ses->uid))
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf);
     if (0) {

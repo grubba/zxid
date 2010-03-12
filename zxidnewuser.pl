@@ -77,7 +77,7 @@ sub show_templ {
     my ($templ, $hr) = @_;
     $templ = readall($templ);
     $templ =~ s/!!(\w+)/$$hr{$1}/gs;
-    $len = length $templ;
+    my $len = length $templ;
     syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len\r\n\r\n$templ";
     exit;
 }

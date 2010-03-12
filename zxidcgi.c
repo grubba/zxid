@@ -152,6 +152,7 @@ set_eid:
       case 'r': cgi->ssoreq = v;          break;
       case 'n': cgi->op = 'N';            break;
       case 'w': cgi->op = 'W';            break;
+      case 't': cgi->atselafter = 1;      break;
       }
       break;
     case 'z':

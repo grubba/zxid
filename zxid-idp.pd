@@ -61,9 +61,10 @@ to store users federations, bootstraps, and attributes.
    |    |
    |    +-- JOE/  Local user has directory whose name is the login uid
    |    |    |
+   |    |    +-- .log      Log of operations regarding the user
    |    |    +-- .pw       User's local password
    |    |    +-- .yk       User's yubikey shared aes128 secret in hex
-   |    |    +-- .ykspent/ Cache of already used One TIme Passwords
+   |    |    +-- .ykspent/ Cache of already used One Time Passwords
    |    |    |    |
    |    |    |    `-- OTP  File name is the spent Yubikey ticket (w/o uid)
    |    |    |    
@@ -71,10 +72,6 @@ to store users federations, bootstraps, and attributes.
    |    |    |    |
    |    |    |    +-- .at         Attributes to be included in each SSO
    |    |    |    `-- SVC,SHA1    Bootstrap for a service
-   |    |    |
-   |    |    +-- .di/     Directory of discovery registrations for user
-   |    |    |    |
-   |    |    |    `-- SVC,SHA1    Discovery asso registration for a service
    |    |    |
    |    |    `-- SP,SHA1/  One directory for each SP user is federated with
    |    |         |
@@ -88,10 +85,6 @@ to store users federations, bootstraps, and attributes.
    |         |    |
    |         |    +-- .at         Attributes to be included in each SSO
    |         |    `-- SVC,SHA1    Bootstrap for a service
-   |         |
-   |         +-- .di/      Directory of default discovery registrations for all
-   |         |    |
-   |         |    `-- SVC,SHA1    Generic Discovery asso registration
    |         |
    |         `-- SP,SHA1/  One directory for each SP
    |              |
@@ -110,6 +103,13 @@ to store users federations, bootstraps, and attributes.
    |
    `-- idplog/       Log files, pid files, and the like
 
+<<ignore:
+   |    |    |
+   |    |    +-- .di/      Directory of discovery registrations for user
+   |    |    |    |
+   |    |    |    `-- SVC,SHA1    Discovery asso registration for a service
+>>
+
 zxpasswd(8) is a user provisioning tool that allows creation of
 new accounts as well as manipulation of .pw and .yk files.
 
@@ -119,14 +119,79 @@ new accounts as well as manipulation of .pw and .yk files.
 When generating a SSO assertion, the attributes are collected as follows:
 
 1.  LDIF at /var/zxid/idpuid/JOE/.bs/.at
-2.  LDIF at /var/zxid/idpuid/JOE/SP,SHA/.at
+2.  LDIF at ~/var/zxid/idpuid/JOE/SP,SHA/.at~
 3.  LDIF at /var/zxid/idpuid/.all/.bs/.at
-4.  LDIF at /var/zxid/idpuid/.all/SP,SHA/.at
+4.  LDIF at ~/var/zxid/idpuid/.all/SP,SHA/.at~
 
 As of version 0.33 (20090904) the attributes are rendered
 singlevalued. If multiple occurrances of an attribute happen,
 the first instance is used and others ignored. However, in
 a future version, we expect to support multivalued attributes.
+
+*Future design for Attribute Selection*
+
+Keep attributes, that are not shared by default, in .optat file.
+
+Support personas using files like .at-persona and .optat-persona
+where +persona+ is an alias that user has chosen to assign.
+
+Choice of persona is remembered at session level in file
+/var/zxid/idpses/.persona. The attributes of .at are
+augmented and overridden by the attributes in .at-persona
+file. .at-persona can also deny release of an attribute
+that would have been released by virtue of .at.
+
+For each SP, the user can specify .at, .optat, .at-persona, and
+.optat-persona files. The SP specific files can deny attributes
+that would otherwise have been released by virtue of global .at
+and .at-persona files.
+
+Finally, the user can choose to suppress or override the value
+of an attribute just for a specific transaction. The overriding
+value is not saved to SP specific, persona, or global layer
+unless user expressly requests so.
+
+For each attribute the authority is determined. Default is
+self asserted. If attribute has other authority, this will
+be indicated. If user chooses to override the attribute, either
+for transaction or for a persona, its authority reverts
+to self asserted. Attributes from a given authority are
+provided in files of type .at,authority or .optat,authority.
+
+Some attributes are reserved: user does not have the option of setting
+their value (i.e. self asserted is not an option), and depending on
+the case the user may or may not be able to suppress their supply. The
+unsuppressible attributes are listed in configuration option
+MANDATORY_ATTR, which is global (not per user or not per SP).
+
+Attribute Selection screen is displayed whenever
+
+a. User has checked the Adjust attribute sharing -checkbox
+   prior to authentication.
+b. SP requests more attributes than default or SP specific
+   attribute sharing policy permits. If SP does not specify
+   which attributes it wants, then SP specific and default
+   attribute sharing policy determine the attributes to release.
+c. User has requested as a global preference (and this
+   preference has not been overridden in a session) that
+   all attribute releases be displayed.
+d. User has requested at session level that
+   all attribute releases be displayed.
+e. User has requested for the SP that
+   all attribute releases be displayed (similar to specifying
+   an empty, but defined release policy towards SP, see
+   point (b); difference is that the sharing defaults
+   still tick the share boxes, providing convenience to the
+   user.
+
+Attribute release at discovery or web service call time is governed
+first by SP specific attribute sharing policy and then by the default
+sharing policy. If WSP needs more attributes, it will have to submit a
+web service request for them. Eventually, we may support using
+interaction service to query user about release of the extra
+attributes.
+
+
 
 4.1.2 Attaching Bootstrap Attributes to Assertions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -312,7 +377,35 @@ If you need to perform the metadata exchange manually, your best bet is
 to download the metadata with your web browser (see WKL above)
 and send it to the other party.
 
-4.4 Configuring users into zxididp
+4.3.2 zxidcot.pl Web GUI
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+One way to facilitate adding new SPs to the  Circle of Trust is
+to deploy the zxidcot.pl Web GUI. This allows the administrators
+of SPs and WSPs to add their metadata and discovery registrations
+as well as view the existing registrations. This self help method
+is suitable if you want to run very open CoT, i.e. anyone
+can join. It may not be appropriate if you want to control
+who enters your CoT.
+
+To install zxidcot.pl, just copy it to suitable location
+in your web root and make sure it can be executed as a CGI
+script. If you keep your zxididp configuration in any place
+other than the default /var/zxid/idp, you will need to
+edit zxidcot.pl to correspond to your configuration. The
+visual aspects of zxidcot.pl can be controlled to some
+extent by editing the an.css cascading stylesheet, but if you
+need big changes, you will need to edit the script itself.
+
+To access zxidcot.pl point your web browser to
+https://idp.example.com/zxidcot.pl?op=md for metadata
+registration or https://idp.example.com/zxidcot.pl?op=direg
+for discovery registration.
+
+The underlying implementation uses the ~zxcot~ command
+line tool.
+
+4.4 Configuring Users into zxididp
 ----------------------------------
 
 User provisioning and administration: Currently all this is manual
@@ -383,6 +476,41 @@ encoding you can use in mod_auth_saml, or other zxid based SP, the
 zxid-conf.pd, section "INMAP specification", for further information.
 
 The attributes from all the available sources are accumulated.
+
+4.4.5 zxidnewuser.pl web GUI
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you are willing to accept new users on self asserted basis,
+you can set up zxidnewuser.pl script so that anonymous users
+can register themselves. If you do not want anonymous users,
+you should not be setting this script up. To control the
+visual appearance of the new user registration, you can edit
+an.css stylesheet or newuser-main.html template. To control
+which attributes are collected, you need to edit both the
+template and the zxidnewuser.pl script.
+
+<<img: newuser: New user registration screen for self asserted users.>>
+
+To install zxidnewuser.pl, simply place it somewhere in the
+web root of your website and make it executable as a CGI
+script. Then you need to add to /var/zxid/idpzxid.conf
+
+  NEW_USER_PAGE=zxidnewuser.pl
+
+You may also want to edit the an-main.html template to control
+how the new user button will appear.
+
+If new user registration is called in middle of a SSO flow,
+zxidnewuser.pl will preserve the ar= CGI variable (as a hidden
+field) so that when new user has been created, the flow returns
+to the login screen and the new user can login. zxidnewuser.pl
+can also be invoked outside login sequence: just provide a link
+to it from the first page of the IdP. In this case after the
+registration, the user is returned to the top level index page
+of the web site.
+
+The underlying implementation uses the zxpasswd command
+line tool.
 
 4.5 Configuring Bootstraps and Discovery
 ----------------------------------------
@@ -497,6 +625,51 @@ gen_boots -> add_fed_tok_to_epr;
 idp_sso -> mk_user_a7n_to_sp;
 
 >>
+
+4.5.3 Using zxidcot.pl Web GUI to Register Web Service Providers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As described in the metadata registration section, zxidcot.pl
+web GUI can be used to create discovery registrations. Just
+point your browser to  https://idp.example.com/zxidcot.pl?op=direg
+and fill in the form fields:
+
+Endpoint:: URL for sending SOAP messages
+Abstract:: Human readable description of the service
+EntityID:: aka ProviderID
+ServiceType:: a URN to identify the kind of service offered
+    by the WSP.
+
+The underlying implementation uses the ~zxcot -e | zxcot -b~ command
+line technique.
+
+4.6 Attribute Selection and Privacy Manager
+-------------------------------------------
+
+zxidatsel.pl CGI script provides a web GUI for attribute release
+consent and selection by the users. This interface can be enabled
+by setting
+
+  ATSEL_PAGE=zxidatsel.pl
+
+in /var/zxid/idpzxid.conf
+
+You can control the look of Attribute Selection by editing an.css
+stylesheet and atsel-main.html template.
+
+Usually Attribute Selection is accessed as part of the SSO flow right
+after authentication step, but it is also possible to access it
+directly to manage User's attribute sharing preferences. In this
+respect it serves as a Privacy Manager.
+
+4.7 User Specific Logging
+-------------------------
+
+In addition to the official audit trail logging, zxididp logs
+certain basic events on per user basis. This serves to allow
+easily displaying to the user recents events about him, raising
+awareness and allowing user to spot anomalous transactions.
+The log is kept in file /var/zxid/idpuid/UID/.log
 
 4.9 Supported Specifications
 ----------------------------

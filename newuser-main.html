@@ -7,7 +7,7 @@
 <div class=zxmsg>!!MSG</div>
 <div class=zxdbg>!!DBG</div>
 
-<form method=post action="zxidnewuser.pl">
+<form method=post xaction="zxidnewuser.pl">
 <table>
 
 <tr><th>Field</th><th>Initial Value</th><th>Required?</th><th>Sharing Default</th></tr>
@@ -76,6 +76,9 @@
     <td><input name=tag value="!!tag"></td>
     <td>Optional</td>
     <td><input type=checkbox name=tagshare !!tagshare> Share</td></tr>
+
+<tr><th colspan=4>Comments or special requests (internal use)</th></tr>
+<tr><td colspan=4><textarea name=comment cols=80 rows=3>!!comment</textarea></td></tr>
 
 </table>
 

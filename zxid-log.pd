@@ -208,41 +208,45 @@ SE:: Log signing and encryption designator. In all cases
     xZ:: [RFC1951] zipped (not really encryption)
     Xxx:: Experimental arrangements.
 
-HH:: HMAC chaining code to previous message, to protect against log line deletion. If not
-    used, this will be "-".
+HH:: HMAC chaining code to previous message, to protect against log line
+    deletion. If not used, this will be "-".
 
-CCCC:: Safe base64 encoded log encryption blob. In case of encryption blob, the rest of
-    the log fields will not appear. Decrypted logline will contain
+CCCC:: Safe base64 encoded log encryption blob. In case of encryption blob,
+    the rest of the log fields will not appear. Decrypted logline will contain
     fields starting from SSSS.
 
-SIG:: Safe base64 encoded log line signature blob. If no signature, this is a dash ("-").
+SIG:: Safe base64 encoded log line signature blob. If no signature, this is
+    a dash ("-").
 
-OURTS:: Our time stamp, format YYYYMMDD-HHMMSS.TTT where TTT are the milliseconds.
-    The time is always in GMT (UTC, Zulutime).
+OURTS:: Our time stamp, format YYYYMMDD-HHMMSS.TTT where TTT are the
+    milliseconds. The time is always in GMT (UTC, Zulutime).
 
-SRCTS:: Source time stamp, format YYYYMMDD-HHMMSS.TTT. If TTT was not originally specified
-    it is represented as "501". The time is always in GMT (UTC, Zulu-time).
+SRCTS:: Source time stamp, format YYYYMMDD-HHMMSS.TTT. If TTT was not
+    originally specified it is represented as "501". The time is always
+    in GMT (UTC, Zulu-time).
 
-IP:PORT:: The IP address and the port number of the other end point (usually client,
-    but could be spoofed, caveat emptor).
+IP:PORT:: The IP address and the port number of the other end point (usually
+    client, but could be spoofed, caveat emptor).
 
-SUCCEID:: The SHA1 name of the entity (succinct entity ID without the equals sign).
+SUCCEID:: The SHA1 name of the entity (succinct entity ID without the
+    equals sign).
 
 MID:: Message ID relating to the log line. Allows message to be fetched from
     the database or the file system. Any relates-to or similar ID is only
     available by fetching the original message. Dash ("-") if none.
 
-A7NID:: Assertion ID relating to the log line. Allows assertion to be fetched from
-    the database or the file system. If message benefits from multiple assertions,
-    this is the one relating to the outermost one. Other A7NIDs are only
-    available by fetching the original assertion. Dash ("-") if none. If the
-    assertion is encrypted and can not be decrypted, then placehoder "-enca7n-"
-    is used.
+A7NID:: Assertion ID relating to the log line. Allows assertion to be fetched
+    from the database or the file system. If message benefits from multiple
+    assertions, this is the one relating to the outermost one. Other A7NIDs
+    are only available by fetching the original assertion. Dash ("-") if none.
+    If the assertion is encrypted and can not be decrypted, then
+    placehoder "-enca7n-" is used.
 
 NID:: IdP assigned NameID relating to the message, if any. If the NameID is
     encrypted and can not be decrypted, then placeholder "-encnid-" is used.
 
-MM:: Module or subsystem indicator (e.g. discriminate between SP and IdP that log to same file)
+MM:: Module or subsystem indicator (e.g. discriminate between SP and IdP
+    that log to same file)
 
 VVV:: Signature validation codes (*** among VVV and RES still avail HJLQYZ)
     U:: Signature issued ("Underwritten" - getit?).
@@ -346,7 +350,8 @@ OP:: The documented operation
 
 PPP:: Operation dependent one most relevant parameter. Dash ("-") if none.
 
-FMT:: Operation dependent free-form data. May contain spaces. Dash ("-") if none.
+FMT:: Operation dependent free-form data. May contain spaces. Dash ("-") if
+    none.
 
 4.3 Log Signing and Encryption
 ------------------------------
@@ -683,6 +688,7 @@ to store users federations, bootstraps, and attributes.
    |    |
    |    +-- JOE/  Local user has directory whose name is the login uid
    |    |    |
+   |    |    +-- .log      Log of operations regarding the user
    |    |    +-- .pw       User's local password
    |    |    +-- .yk       User's yubikey shared aes128 secret in hex
    |    |    +-- .ykspent/ Cache of already used One TIme Passwords
@@ -693,10 +699,6 @@ to store users federations, bootstraps, and attributes.
    |    |    |    |
    |    |    |    +-- .at         Attributes to be included in each SSO
    |    |    |    `-- SVC,SHA1    Bootstrap for a service
-   |    |    |
-   |    |    +-- .di/     Directory of discovery registrations for user
-   |    |    |    |
-   |    |    |    `-- SVC,SHA1    Discovery asso registration for a service
    |    |    |
    |    |    `-- SP,SHA1/  One directory for each SP user is federated with
    |    |         |
@@ -710,10 +712,6 @@ to store users federations, bootstraps, and attributes.
    |         |    |
    |         |    +-- .at         Attributes to be included in each SSO
    |         |    `-- SVC,SHA1    Bootstrap for a service
-   |         |
-   |         +-- .di/      Directory of default discovery registrations for all
-   |         |    |
-   |         |    `-- SVC,SHA1    Generic Discovery asso registration
    |         |
    |         `-- SP,SHA1/  One directory for each SP
    |              |
@@ -777,6 +775,7 @@ new accounts as well as manipulation of .pw and .yk files.
 96 License
 ==========
 
+Copyright (c) 2010 Sampo Kellomäki (sampo@iki.fi), All Rights Reserved.
 Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
 Author: Sampo Kellomäki (sampo@iki.fi)
 

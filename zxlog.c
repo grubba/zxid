@@ -1,4 +1,5 @@
 /* zxlog.c  -  Liberty oriented logging facility with log signing and encryption
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -11,6 +12,7 @@
  * 10.10.2007, added ipport --Sampo
  * 7.10.2008,  added inline documentation --Sampo
  * 29.8.2009,  added hmac chaining field --Sampo
+ * 12.3.2010,  added per user logging facility --Sampo
  *
  * See also: Logging chapter in README.zxid
  */
@@ -210,6 +212,8 @@ void zxlog_write_line(struct zxid_conf* cf, char* c_path, int encflags, int n, c
     return;
   }
 
+  /* Plain text, possibly signed. */
+
   switch (encflags & 0x06) {
   case 0x02:   /* SP plain sha1 */
     strcpy(sigbuf, "SP ");
@@ -247,68 +251,31 @@ void zxlog_write_line(struct zxid_conf* cf, char* c_path, int encflags, int n, c
     ZX_FREE(cf->ctx, sig);
 }
 
-/*(i) Log to activity and/or error log depending on ~res~ and configuration settings.
- * This is the main audit logging function you should call. Please see <<link:../../html/zxid-log.html: zxid-log.pd>>
- * for detailed description of the log format and features. See <<link:../../html/zxid-conf.html: zxid-conf.pd>> for
- * configuration options governing the logging. (*** check the links)
- *
- * Proper audit trail is essential for any high value transactions based on SSO. Also
- * some SAML protocol Processing Rules, such as duplicate detection, depend on the
- * logging.
- *
- * cf     (1)::  ZXID configuration object, used for configuration options and memory allocation
- * ourts  (2)::  Timestamp as observed by localhost. Typically the wall clock
- *     time. See gettimeofday(3)
- * srcts  (3)::  Timestamp claimed by the message to which the log entry pertains
- * ipport (4)::  IP address and port number from which the message appears to have originated
- * entid  (5)::  Entity ID to which the message pertains, usually the issuer. Null ok.
- * msgid  (6)::  Message ID, can be used for correlation to establish audit trail continuity
- *     from request to response. Null ok.
- * a7nid  (7)::  Assertion ID, if message contained assertion (outermost and first
- *     assertion if there are multiple relevant assertions). Null ok.
- * nid    (8)::  Name ID pertaining to the message
- * sigval (9)::  Signature validation letters
- * res   (10)::  Result letters
- * op    (11)::  Operation code for the message
- * arg   (12)::  Operation specific argument
- * fmt, ...  ::  Free format message conveying additional information
- * return:: 0 on success, nonzero on failure (often ignored as zxlog() is very
- *     robust and rarely fails - and when it does situation is so hopeless that
- *     you would not be able to report its failure anyway)
- */
+/*() Helper function for formatting all kinds of logs. */
 
-/* Called by:  zxid_an_page_cf, zxid_anoint_sso_a7n, zxid_anoint_sso_resp, zxid_chk_sig, zxid_decode_redir_or_post x2, zxid_fed_mgmt_cf, zxid_get_ent_by_sha1_name, zxid_get_ent_ss, zxid_get_meta x2, zxid_idp_dispatch, zxid_idp_select_zxstr_cf_cgi, zxid_idp_soap_dispatch x2, zxid_idp_soap_parse, zxid_parse_conf_raw, zxid_parse_meta, zxid_saml_ok x2, zxid_simple_render_ses, zxid_simple_ses_active_cf, zxid_sp_anon_finalize, zxid_sp_deref_art x5, zxid_sp_dig_sso_a7n x2, zxid_sp_dispatch, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_mni_soap, zxid_sp_slo_redir, zxid_sp_slo_soap, zxid_sp_soap_dispatch x2, zxid_sp_soap_parse, zxid_sp_sso_finalize x2, zxid_start_sso_url x3 */
-int zxlog(struct zxid_conf* cf,   /* 1 */
-	  struct timeval* ourts,  /* 2 null allowed, will use current time */
-	  struct timeval* srcts,  /* 3 null allowed, will use start of unix epoch + 501 usec */
-	  const char* ipport,     /* 4 null allowed, -:- or cf->ipport if not given */
-	  struct zx_str* entid,   /* 5 null allowed, - if not given */
-	  struct zx_str* msgid,   /* 6 null allowed, - if not given */
-	  struct zx_str* a7nid,   /* 7 null allowed, - if not given */
-	  struct zx_str* nid,     /* 8 null allowed, - if not given */
-	  const char* sigval,     /* 9 null allowed, - if not given */
-	  const char* res,        /* 10 */
-	  const char* op,         /* 11 */
-	  const char* arg,        /* 12 null allowed, - if not given */
-	  const char* fmt, ...)   /* 13 null allowed as format, ends the line w/o further ado */
+static int zxlog_fmt(struct zxid_conf* cf,   /* 1 */
+		     int len, char* logbuf,
+		     struct timeval* ourts,  /* 2 null allowed, will use current time */
+		     struct timeval* srcts,  /* 3 null allowed, will use start of unix epoch... */
+		     const char* ipport,     /* 4 null allowed, -:- or cf->ipport if not given */
+		     struct zx_str* entid,   /* 5 null allowed, - if not given */
+		     struct zx_str* msgid,   /* 6 null allowed, - if not given */
+		     struct zx_str* a7nid,   /* 7 null allowed, - if not given */
+		     struct zx_str* nid,     /* 8 null allowed, - if not given */
+		     const char* sigval,     /* 9 null allowed, - if not given */
+		     const char* res,        /* 10 */
+		     const char* op,         /* 11 */
+		     const char* arg,        /* 12 null allowed, - if not given */
+		     const char* fmt,        /* 13 null allowed as format, ends the line */
+		     va_list ap)
 {
   int n;
   char* p;
   char sha1_name[28];
-  char logbuf[1024];
-  char c_path[ZXID_MAX_BUF];
   struct tm ot;
   struct tm st;
   struct timeval ourtsdefault;
   struct timeval srctsdefault;
-  va_list ap;
-  
-  /* Avoid computation if logging is hopeless. */
-  
-  if (!((cf->log_err_in_act || res[0] == 'K') && cf->log_act)
-      && !(cf->log_err && res[0] != 'K')) {
-    return 0;
-  }
   
   /* Prepare values */
 
@@ -340,7 +307,7 @@ int zxlog(struct zxid_conf* cf,   /* 1 */
   
   /* Format */
   
-  n = snprintf(logbuf, sizeof(logbuf)-3, ZXLOG_TIME_FMT " " ZXLOG_TIME_FMT
+  n = snprintf(logbuf, len-3, ZXLOG_TIME_FMT " " ZXLOG_TIME_FMT
 	       " %s %s"  /* ipport  sha1_name-of-ent */
 	       " %.*s"
 	       " %.*s"
@@ -352,7 +319,7 @@ int zxlog(struct zxid_conf* cf,   /* 1 */
 	       a7nid?a7nid->len:1, a7nid?a7nid->s:"-",
 	       nid?nid->len:1,     nid?nid->s:"-",
 	       zx_instance, STRNULLCHKD(sigval), res, op, arg?arg:"-");
-  if (n <= 0 || n >= sizeof(logbuf)-3) {
+  if (n <= 0 || n >= len-3) {
     if (n < 0) {
       perror("snprintf");
       D("Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", n);
@@ -361,13 +328,12 @@ int zxlog(struct zxid_conf* cf,   /* 1 */
     if (n <= 0)
       n = 0;
     else
-      n = sizeof(logbuf)-3;
+      n = len-3;
   } else { /* Space left: try printing the format string as well! */
     p = logbuf+n;
     if (fmt && fmt[0]) {
-      va_start(ap, fmt);
-      n = vsnprintf(p, sizeof(logbuf)-n-2, fmt?fmt:"-", ap);
-      if (n <= 0 || n >= sizeof(logbuf)-(p-logbuf)-2) {
+      n = vsnprintf(p, len-n-2, fmt?fmt:"-", ap);
+      if (n <= 0 || n >= len-(p-logbuf)-2) {
 	if (n < 0) {
 	  perror("vsnprintf");
 	  D("Broken vsnprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", n);
@@ -376,17 +342,81 @@ int zxlog(struct zxid_conf* cf,   /* 1 */
 	if (n <= 0)
 	  n = p-logbuf;
 	else
-	  n = sizeof(logbuf)-(p-logbuf)-2;
+	  n = len-(p-logbuf)-2;
       } else
 	n += p-logbuf;
-      va_end(ap);
     } else {
       logbuf[n++] = '-';
     }
   }
   logbuf[n++] = '\n';
   logbuf[n] = 0;
-  /*logbuf[sizeof(logbuf)-1] = 0;*/
+  /*logbuf[len-1] = 0;*/
+  return n;
+}
+
+/*(i) Log to activity and/or error log depending on ~res~ and configuration settings.
+ * This is the main audit logging function you should call. Please see <<link:../../html/zxid-log.html: zxid-log.pd>>
+ * for detailed description of the log format and features. See <<link:../../html/zxid-conf.html: zxid-conf.pd>> for
+ * configuration options governing the logging. (*** check the links)
+ *
+ * Proper audit trail is essential for any high value transactions based on SSO. Also
+ * some SAML protocol Processing Rules, such as duplicate detection, depend on the
+ * logging.
+ *
+ * cf     (1)::  ZXID configuration object, used for configuration options and memory allocation
+ * ourts  (2)::  Timestamp as observed by localhost. Typically the wall clock
+ *     time. See gettimeofday(3)
+ * srcts  (3)::  Timestamp claimed by the message to which the log entry pertains
+ * ipport (4)::  IP address and port number from which the message appears to have originated
+ * entid  (5)::  Entity ID to which the message pertains, usually the issuer. Null ok.
+ * msgid  (6)::  Message ID, can be used for correlation to establish audit trail continuity
+ *     from request to response. Null ok.
+ * a7nid  (7)::  Assertion ID, if message contained assertion (outermost and first
+ *     assertion if there are multiple relevant assertions). Null ok.
+ * nid    (8)::  Name ID pertaining to the message
+ * sigval (9)::  Signature validation letters
+ * res   (10)::  Result letters
+ * op    (11)::  Operation code for the message
+ * arg   (12)::  Operation specific argument
+ * fmt, ...  ::  Free format message conveying additional information
+ * return:: 0 on success, nonzero on failure (often ignored as zxlog() is very
+ *     robust and rarely fails - and when it does, situation is so hopeless that
+ *     you would not be able to report its failure anyway)
+ */
+
+/* Called by:  zxid_an_page_cf, zxid_anoint_sso_a7n, zxid_anoint_sso_resp, zxid_chk_sig, zxid_decode_redir_or_post x2, zxid_fed_mgmt_cf, zxid_get_ent_by_sha1_name, zxid_get_ent_ss, zxid_get_meta x2, zxid_idp_dispatch, zxid_idp_select_zxstr_cf_cgi, zxid_idp_soap_dispatch x2, zxid_idp_soap_parse, zxid_parse_conf_raw, zxid_parse_meta, zxid_saml_ok x2, zxid_simple_render_ses, zxid_simple_ses_active_cf, zxid_sp_anon_finalize, zxid_sp_deref_art x5, zxid_sp_dig_sso_a7n x2, zxid_sp_dispatch, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_mni_soap, zxid_sp_slo_redir, zxid_sp_slo_soap, zxid_sp_soap_dispatch x2, zxid_sp_soap_parse, zxid_sp_sso_finalize x2, zxid_start_sso_url x3 */
+int zxlog(struct zxid_conf* cf,   /* 1 */
+	  struct timeval* ourts,  /* 2 null allowed, will use current time */
+	  struct timeval* srcts,  /* 3 null allowed, will use start of unix epoch + 501 usec */
+	  const char* ipport,     /* 4 null allowed, -:- or cf->ipport if not given */
+	  struct zx_str* entid,   /* 5 null allowed, - if not given */
+	  struct zx_str* msgid,   /* 6 null allowed, - if not given */
+	  struct zx_str* a7nid,   /* 7 null allowed, - if not given */
+	  struct zx_str* nid,     /* 8 null allowed, - if not given */
+	  const char* sigval,     /* 9 null allowed, - if not given */
+	  const char* res,        /* 10 */
+	  const char* op,         /* 11 */
+	  const char* arg,        /* 12 null allowed, - if not given */
+	  const char* fmt, ...)   /* 13 null allowed as format, ends the line w/o further ado */
+{
+  int n;
+  char logbuf[1024];
+  char c_path[ZXID_MAX_BUF];
+  va_list ap;
+  
+  /* Avoid computation if logging is hopeless. */
+  
+  if (!((cf->log_err_in_act || res[0] == 'K') && cf->log_act)
+      && !(cf->log_err && res[0] != 'K')) {
+    return 0;
+  }
+
+  va_start(ap, fmt);
+  n = zxlog_fmt(cf, sizeof(logbuf), logbuf,
+		ourts, srcts, ipport, entid, msgid, a7nid, nid, sigval, res,
+		op, arg, fmt, ap);
+  va_end(ap);
   
   /* Output stage */
   
@@ -399,6 +429,47 @@ int zxlog(struct zxid_conf* cf,   /* 1 */
     name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "err", cf->path);
     zxlog_write_line(cf, c_path, cf->log_err, n, logbuf);
   }
+  return 0;
+}
+
+/*() Log user specific data */
+
+int zxlogusr(struct zxid_conf* cf,   /* 1 */
+	     const char* uid,
+	     struct timeval* ourts,  /* 2 null allowed, will use current time */
+	     struct timeval* srcts,  /* 3 null allowed, will use start of unix epoch + 501 usec */
+	     const char* ipport,     /* 4 null allowed, -:- or cf->ipport if not given */
+	     struct zx_str* entid,   /* 5 null allowed, - if not given */
+	     struct zx_str* msgid,   /* 6 null allowed, - if not given */
+	     struct zx_str* a7nid,   /* 7 null allowed, - if not given */
+	     struct zx_str* nid,     /* 8 null allowed, - if not given */
+	     const char* sigval,     /* 9 null allowed, - if not given */
+	     const char* res,        /* 10 */
+	     const char* op,         /* 11 */
+	     const char* arg,        /* 12 null allowed, - if not given */
+	     const char* fmt, ...)   /* 13 null allowed as format, ends the line w/o further ado */
+{
+  int n;
+  char logbuf[1024];
+  char c_path[ZXID_MAX_BUF];
+  va_list ap;
+
+  if (!uid) {
+    ERR("NULL uid argument %p", cf);
+    return 1;
+  }
+
+  va_start(ap, fmt);
+  n = zxlog_fmt(cf, sizeof(logbuf), logbuf,
+		ourts, srcts, ipport, entid, msgid, a7nid, nid, sigval, res,
+		op, arg, fmt, ap);
+  va_end(ap);
+
+  /* Output stage */
+  
+  D("UID(%s) LOG(%.*s)", uid, n-1, logbuf);
+  name_from_path(c_path, sizeof(c_path), "%s" ZXID_UID_DIR "%s/.log", cf->path, uid);
+  zxlog_write_line(cf, c_path, cf->log_act, n, logbuf);
   return 0;
 }
 

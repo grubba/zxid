@@ -804,7 +804,7 @@ static int zxid_decode_ssoreq(struct zxid_conf* cf, struct zxid_cgi* cgi)
   int len;
   char* buf;
   char* p;
-  if (!cgi->ssoreq)
+  if (!cgi->ssoreq || !cgi->ssoreq[0])
     return 1;
   D("ssoreq(%s)", cgi->ssoreq);
   len = strlen(cgi->ssoreq);
@@ -831,7 +831,20 @@ static int zxid_decode_ssoreq(struct zxid_conf* cf, struct zxid_cgi* cgi)
 /* Called by:  zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
 static char* zxid_simple_idp_an_ok_do_rest(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int* res_len, int auto_flags)
 {
+  struct zx_str* ss;
+  char* p;
   DD("idp do_rest %p", ses);
+  if (cf->atsel_page && cgi->atselafter) { /* *** More sophisticated criteria needed. */
+    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
+		 cgi->ssoreq,
+		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
+		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
+		 cf->url);
+    p = ss->s;
+    ZX_FREE(cf->ctx, ss);
+    D("atsel_page(%s) redir(%s)", cf->atsel_page, p);
+    return zxid_simple_redir_page(cf, cf->atsel_page, p, res_len, auto_flags);
+  }
   return zxid_simple_ses_active_cf(cf, cgi, ses, res_len, auto_flags);
 }
 
@@ -888,10 +901,11 @@ static char* zxid_simple_idp_show_an(struct zxid_conf* cf, struct zxid_cgi* cgi,
   }
   
   if (cf->an_page && cf->an_page[0]) {
-    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s",
+    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
 		 cgi->ssoreq,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
-		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "");
+		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
+		 cf->url);
     if (b64)
       ZX_FREE(cf->ctx, b64);
     ar = ss->s;
@@ -985,7 +999,7 @@ static char* zxid_simple_idp_new_user(struct zxid_conf* cf, struct zxid_cgi* cgi
 		 cf->url);
     p = ss->s;
     ZX_FREE(cf->ctx, ss);
-    D("new_user_page(%s) redir(%s)", cf->an_page, p);
+    D("new_user_page(%s) redir(%s)", cf->new_user_page, p);
     return zxid_simple_redir_page(cf, cf->new_user_page, p, res_len, auto_flags);
   }
 
@@ -1013,7 +1027,7 @@ static char* zxid_simple_idp_recover_password(struct zxid_conf* cf, struct zxid_
 		 cf->url);
     p = ss->s;
     ZX_FREE(cf->ctx, ss);
-    D("new_user_page(%s) redir(%s)", cf->an_page, p);
+    D("recover_passwd(%s) redir(%s)", cf->recover_passwd, p);
     return zxid_simple_redir_page(cf, cf->recover_passwd, p, res_len, auto_flags);
   }
 
@@ -1148,10 +1162,11 @@ char* zxid_simple_ses_active_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, stru
     D("idp err(%.*s) (fall thru)", ss->len, ss->s);
     /* *** */
     break;
-  case 'c':    return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
-  case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
-  case 'B':    return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
+  case 'c': return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
+  case 'd': return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
+  case 'B': return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
   case 'n': break;
+  case 'p': break;
   default:
     if (cf->bare_url_entityid)
       return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);

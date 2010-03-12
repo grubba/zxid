@@ -195,7 +195,7 @@ struct zxid_conf {
   char  remote_user_ena;
   char  show_tech;
   char  bare_url_entityid;
-  char  pad15;
+  char  loguser;
 #ifdef USE_OPENSSL
   RSA*  sign_pkey;
   X509* sign_cert;
@@ -222,7 +222,7 @@ struct zxid_cgi {
   char  ispassive;     /* fp= Whether IdP is allowed to seize user interface (e.g. ask password) */
   char  force_authn;   /* ff= Whether IdP SHOULD authenticate the user anew. */
   char  enc_hint;      /* Hint: Should NID be encrypted in SLO and MNI, see also cf->nameid_enc */
-  char  pad6;
+  char  atselafter;    /* at= Attribute selection requested checkbox. */
   char  pad7;
   char* sid;           /* If session is already active, the session ID. */
   char* nid;           /* NameID of the user. */
@@ -481,6 +481,7 @@ struct zx_str* zxlog_path(struct zxid_conf* cf, struct zx_str* entid, struct zx_
 int zxlog_dup_check(struct zxid_conf* cf, struct zx_str* path, const char* logkey);
 int zxlog_blob(struct zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* blob, const char* lk);
 int zxlog(struct zxid_conf* cf, struct timeval* ourts, struct timeval* srcts, const char* ipport, struct zx_str* entid, struct zx_str* msgid, struct zx_str* a7nid, struct zx_str* nid, const char* sigval, const char* res, const char* op, const char* arg, const char* fmt, ...);
+int zxlogusr(struct zxid_conf* cf, const char* uid, struct timeval* ourts, struct timeval* srcts, const char* ipport, struct zx_str* entid, struct zx_str* msgid, struct zx_str* a7nid, struct zx_str* nid, const char* sigval, const char* res, const char* op, const char* arg, const char* fmt, ...);
 
 /* zxidmeta */
 
@@ -637,7 +638,6 @@ int zxid_idp_soap_parse(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_
 
 /* zxidpsso - IdP side of SSO: generating A7N */
 
-int zxid_anoint_a7n(struct zxid_conf* cf, int sign, struct zx_sa_Assertion_s* a7n, struct zx_str* issued_to, const char* lk);
 struct zx_sa_Attribute_s* zxid_add_ldif_attrs(struct zxid_conf* cf, struct zx_sa_Attribute_s* prev, int len, char* p, char* lk);
 struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, char* path, struct zx_sa_Attribute_s* bootstraps, int add_bs_lvl);
 struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zxid_ses* ses, const char* uid, struct zx_sa_NameID_s* nameid, struct zxid_entity* sp_meta, const char* sp_name_buf, int add_bs_lvl);

@@ -411,6 +411,12 @@
  * 3 and higher: reserved for future definition and debugging */
 #define ZXLOG_LEVEL 2
 
+/*(c) Per user activity logging.
+ * This option enables logging in /var/zxid/idpuid/UID/.log some key
+ * events such as authentication, SSO, and SLO. */
+
+#define ZXID_LOGUSER 1
+
 /*(c) Assertion validation options.
  * These MUST all be turned on (and assertions signed)
  * if you want to rely on assertions to hold the other party liable. */
@@ -617,11 +623,11 @@
   "<form method=get action=\"!!URL\">"\
   "<h1 class=zxtop>ZXID IdP Authentication for Federated SSO</h1>"\
   "<p>Entity ID of this IdP (click for the IdP metadata): <a href=\"!!EID\">!!EID</a><br>"\
-  "<input type=checkbox name=atselafter> Adjust attribute sharing after authentication"\
   "<p>Login requested by !!SP_DPY_NAME (<a href=\"!!SP_EID\">!!SP_EID</a>)"\
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
   "User NOT logged in, no session."\
   "<h3>Please authenticate using one of the following methods:</h3>"\
+  "<input type=checkbox name=at> Adjust attribute sharing after authentication"\
   "<ol><li> Yubikey <a href=\"http://yubico.com\"><img src=\"yubiright_16x16.gif\" width=16 height=16 border=0></a>:<input name=au><input type=submit name=alp value=\" Login \">"\
   "<li> User: <input name=au> Password: <input type=password name=ap><input type=submit name=alp value=\" Login \">"\
   "<li><input type=submit name=an value=\" Create New User \"></ol>"\

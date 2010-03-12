@@ -24,33 +24,31 @@ Usage: http://localhost:8081/zxidatsel.pl?QUERY_STRING
          -a Ascii mode
 USAGE
     ;
-
 die $USAGE if $ARGV[0] =~ /^-[Hh?]/;
 $ascii = shift if $ARGV[0] eq '-a';
-syswrite STDOUT, "Content-Type: text/html\r\n\r\n" if !$ascii;
+
+$dir = '/var/zxid/idp';
+
+use Data::Dumper;
+
+close STDERR;
+open STDERR, ">>/var/tmp/zxid.stderr" or die "Cant open error log: $!";
+select STDERR; $|=1; select STDOUT;
 
 $ENV{QUERY_STRING} ||= shift;
-$cgi = cgidec($ENV{QUERY_STRING});
-$cmd = $$cgi{'c'};
-$dir = $$cgi{'d'} || '/var/zxid/';
-$eid = $$cgi{'e'};
-$nid = $$cgi{'n'};
-$sid = $$cgi{'s'};
+cgidec($ENV{QUERY_STRING});
 
-sub cgidec {
-    my ($d) = @_;
-    my %qs;
-    for $nv (split '&', $d) {
-	($n, $v) = split '=', $nv, 2;
-	$qs{$n} = $v;
-    }
-    return \%qs;
+if ($ENV{CONTENT_LENGTH}) {
+    sysread STDIN, $data, $ENV{CONTENT_LENGTH};
+    #warn "GOT($data) $ENV{CONTENT_LENGTH}";
+    cgidec($data);
 }
+warn "$$: cgi: " . Dumper(\%cgi);
 
 sub uridec {
     my ($val) = @_;
     $val =~ s/\+/ /g;
-    $val =~ s/%([0-9a-f]{2})/chr(hex($1))/gsex;  # URI decode
+    $val =~ s/%([0-9a-f]{2})/chr(hex($1))/gsexi;  # URI decode
     return $val;
 }
 
@@ -60,23 +58,12 @@ sub urienc {
     return $val;
 }
 
-sub read_log {
-    open LOG, "./zxlogview ${dir}pem/logsign-nopw-cert.pem ${dir}pem/logenc-nopw-cert.pem <${dir}log/act|"
-	or die "Cannot open log decoding pipe: $!";
-    $/ = "\n";
-    while ($line = <LOG>) {
-	# ----+ 104 PP - 20100217-151751.352 19700101-000000.501 -:- - - - -      zxcall N W GOTMD http://idp.tas3.eu/zxididp?o=B -
-	($pre, $len, $se, $sig, $ourts, $srcts, $ipport, $ent, $mid, $a7nid, $nid, $mm, $vvv, $res, $op, $para, @rest) = split /\s+/, $line;
-
-	syswrite STDOUT, "$ourts $op\n";
+sub cgidec {
+    my ($d) = @_;
+    for $nv (split '&', $d) {
+	($n, $v) = split '=', $nv, 2;
+	$cgi{$n} = uridec($v);
     }
-    close LOG;
-}
-
-sub show_log {
-    print "<title>ZXID SP Log Explorer Log listing</title><link type=\"text/css\" rel=stylesheet href=\"dash.css\">\n<pre>\n";
-    read_log();
-    syswrite STDOUT, "</pre>";
 }
 
 sub readall {
@@ -94,7 +81,83 @@ sub show_templ {
     my ($templ, $hr) = @_;
     $templ = readall($templ);
     $templ =~ s/!!(\w+)/$$hr{$1}/gs;
-    syswrite STDOUT, $templ;
+    my $len = length $templ;
+    syswrite STDOUT, "Content-Type: text/html\r\nContent-Length: $len\r\n\r\n$templ";
+    exit;
+}
+
+sub redirect {
+    my ($url) = @_;
+    syswrite STDOUT, "Location: $url\r\n\r\n";
+    exit;
+}
+
+### Metadata
+
+if ($cgi{'okmd'}) {
+    system "./zxcot -e '$cgi{'endpoint'}' '$cgi{'abstract'}' '$cgi{'eid'}' '$cgi{'svctype'}' | ./zxcot -b /var/zxid/idpdimd/";
+    redirect('/');
+}
+
+if ($cgi{'op'} eq 'md') {
+    syswrite STDOUT, "Content-Type: text/html\r\n\r\n".<<HTML;
+<title>ZXID IdP Circle of Trust Manager</title>
+<link type="text/css" rel=stylesheet href="an.css">
+<h1 class=zxtop>ZXID IdP Circle of Trust Manager</h1>
+
+<h3>Metadata Registration</h3>
+
+<form method=post xaction="zxidcot.pl">
+Paste metadata here:<br>
+<textarea name=mdxml cols=80 rows=10>
+</textarea><br>
+<input type=submit name="okmd" value="Submit Metadata">
+</form>
+
+<div class=zxbot>
+<a class=zx href="http://zxid.org/">ZXID.org</a>
+| <a class=zx href="http://www.tas3.eu/">TAS3.eu</a>
+- <i></i>
+</div>
+HTML
+    ;
+    exit;
+}
+
+### Discovery Registration
+
+if ($cgi{'okdireg'}) {
+    warn "./zxcot -e '$cgi{'endpoint'}' '$cgi{'abstract'}' '$cgi{'eid'}' '$cgi{'svctype'}' | ./zxcot -b /var/zxid/idpdimd/";
+    system "./zxcot -e '$cgi{'endpoint'}' '$cgi{'abstract'}' '$cgi{'eid'}' '$cgi{'svctype'}' | ./zxcot -b /var/zxid/idpdimd/";
+    redirect('/');
+}
+
+if ($cgi{'op'} eq 'direg') {
+    syswrite STDOUT, "Content-Type: text/html\r\n\r\n".<<HTML;
+<title>ZXID IdP Circle of Trust Manager</title>
+<link type="text/css" rel=stylesheet href="an.css">
+<h1 class=zxtop>ZXID IdP Circle of Trust Manager</h1>
+
+<h3>Discovery Registration</h3>
+
+<form method=post xaction="zxidcot.pl">
+
+<table>
+<tr><th>Endpoint URL</th><td><input name=endpoint size=60></td></tr>
+<tr><th>Abstract</th><td><input name=abstract size=60></td></tr>
+<tr><th>Entity ID</th><td><input name=eid size=60></td></tr>
+<tr><th>Service Type (URN)</th><td><input name=svctype size=60></td></tr>
+</table>
+<p><input type=submit name="okdireg" value="Submit Discovery Registration">
+</form>
+
+<div class=zxbot>
+<a class=zx href="http://zxid.org/">ZXID.org</a>
+| <a class=zx href="http://www.tas3.eu/">TAS3.eu</a>
+- <i></i>
+</div>
+HTML
+    ;
     exit;
 }
 

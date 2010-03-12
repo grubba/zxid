@@ -924,7 +924,8 @@ javazxid_war:
 	cd ./zxidservlet ; $(JAR) cf ../zxidservlet.war *; cd ../
 	rm -rf zxidservlet
 
-#	mv zxidservlet.war $(WEBAPPS_PATH)/
+#  rsync zxididp root@elsa:/var/zxid/webroot/apache-tomcat-5.5.20/webapps
+#  mv zxidservlet.war $(WEBAPPS_PATH)/
 
 javaclean:
 	rm -rf zxidjava/*.o zxidjava/*~ zxidjava/*.so zxidjava/*.class *.class
