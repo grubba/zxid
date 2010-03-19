@@ -138,9 +138,8 @@ struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
   ent->ed = ed;
   if (!ed->entityID)
     goto bad_md;
-  ent->eid_len = ed->entityID->len;
   ent->eid = zx_str_to_c(cf->ctx, ed->entityID);
-  sha1_safe_base64(ent->sha1_name, ent->eid_len, ent->eid);
+  sha1_safe_base64(ent->sha1_name, ed->entityID->len, ent->eid);
   ent->sha1_name[27] = 0;
   
   if (ed->Organization && ed->Organization->OrganizationDisplayName
@@ -248,7 +247,7 @@ struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name
     ent->n = cf->cot;
     cf->cot = ent;
     UNLOCK(cf->mx, "add ent to cot");
-    D("GOT META sha1_name(%s) eid(%.*s)", sha1_name, ent->eid_len, ent->eid);
+    D("GOT META sha1_name(%s) eid(%s)", sha1_name, ent->eid);
   }
   return ent;
 
@@ -290,8 +289,8 @@ struct zxid_entity* zxid_get_ent_from_cache(struct zxid_conf* cf, struct zx_str*
   zxid_load_cot_cache_from_file(cf);
   LOCK(cf->mx, "scan cache");
   for (ent = cf->cot; ent; ent = ent->n)  /* Check in memory cache. */
-    if (eid->len == ent->eid_len && !memcmp(eid->s, ent->eid, eid->len)) {
-      D("GOT FROM MEM eid(%.*s)", ent->eid_len, ent->eid);
+    if (eid->len == strlen(ent->eid) && !memcmp(eid->s, ent->eid, eid->len)) {
+      D("GOT FROM MEM eid(%s)", ent->eid);
       UNLOCK(cf->mx, "scan cache");
       return ent;
     }

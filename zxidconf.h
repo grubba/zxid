@@ -88,8 +88,9 @@
 #define ZXID_REDIRECT_HACK_ZXID_URL 0
 
 /*(c) Additional Metadata Fields. Safe to leave all as NULL. */
-#define ZXID_ORG_NAME 0
+#define ZXID_ORG_NAME "Unspecified ORG_NAME"
 #define ZXID_ORG_URL  0
+#define ZXID_COUNTRY  "pt"
 #define ZXID_CONTACT_ORG 0
 #define ZXID_CONTACT_NAME 0
 #define ZXID_CONTACT_EMAIL 0
@@ -112,25 +113,25 @@
  * is obtained. The metadata can be in a cache (by default directory /var/zxid/cot)
  * or it can be fetched "on the fly" using the well known location (WKL) method.
  *
- * ZXID_MD_FETCH:: controls whether fetching is performed. This necessitates
+ * MD_FETCH:: controls whether fetching is performed. This necessitates
  *     that ZXID was linked with libcurl. If you do not enable fetching, you
  *     will need to populate the cache manually, perhaps by using a web browser
  *     to fetch the meta data xml files from well known location URLs (or other
- *     URLs if you know better).
+ *     URLs if you know better). Or you could use zxidcot.pl?op=md
  *
- * ZXID_MD_POPULATE_CACHE:: controls whether ZXID will write the metadata to
+ * MD_POPULATE_CACHE:: controls whether ZXID will write the metadata to
  *     the on-disk cache. This requires ZXID_MD_FETCH to be enabled
  *     and the file system permissions of the cache directory (e.g. /var/zxid/cot)
  *     to allow writing.
  *
- * ZXID_MD_CACHE_FIRST:: controls whether cache will be checked before fetching
+ * MD_CACHE_FIRST:: controls whether cache will be checked before fetching
  *     is attempted. If cache misses, ZXID_MD_FETCH governs whether fetch is tried.
  *
- * ZXID_MD_CACHE_LAST:: If true, metadata is obtained from cache
+ * MD_CACHE_LAST:: If true, metadata is obtained from cache
  *     if fetch was disabled or failed.
  *
  * If you want to control manually your CoT (e.g. because human process is
- * needed to verify that all the paperwork is in place), set ZXID_MD_FETCH to 0.
+ * needed to verify that all the paperwork is in place), set MD_FETCH to 0.
  *
  * If you want as automatic operation as possible, set all four to 1.
  */
@@ -512,6 +513,11 @@
  * then this IdP preference is used, unless SP metadata indicates it can not
  * support this binding, in which case the first ACS from metadata is used. */
 #define ZXID_IDP_PREF_ACS_BINDING "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+
+/*(c) List of unsuppressible attributes. Every SSO and discovery will include
+ * these attributes, if they are defined for the user. Comma separated list. */
+
+#define ZXID_MANDATORY_ATTR "zxidvers,zxidloa"
 
 /* ----------------------------------------------------------------------------- */
 /*(c) Attribute Broker definitions */

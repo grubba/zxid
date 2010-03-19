@@ -39,8 +39,8 @@ struct zx_str* zxid_idp_loc_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
   struct zx_md_SingleLogoutService_s* slo_svc;
   struct zx_md_ManageNameIDService_s* mni_svc;
   
-  if (!idp_meta->ed->IDPSSODescriptor) {
-    ERR("Entity(%.*s) does not have IdP SSO Descriptor (metadata problem)", idp_meta->eid_len, idp_meta->eid);
+  if (!idp_meta || !idp_meta->eid || !idp_meta->ed->IDPSSODescriptor) {
+    ERR("Entity(%s) does not have IdP SSO Descriptor (metadata problem)", idp_meta?STRNULLCHKQ(idp_meta->eid):"-");
     return 0;
   }
 
@@ -75,7 +75,7 @@ struct zx_str* zxid_idp_loc_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
     return loc;
   }
 
-  ERR("IdP Entity(%.*s) does not have any %d service with binding(%s) (metadata problem)", idp_meta->eid_len, idp_meta->eid, svc_type, binding);
+  ERR("IdP Entity(%s) does not have any %d service with binding(%s) (metadata problem)", idp_meta->eid, svc_type, binding);
   return 0;
 }
 
@@ -158,8 +158,8 @@ struct zx_str* zxid_sp_loc_by_index_raw(struct zxid_conf* cf, struct zxid_cgi* c
   struct zx_str* loc;
   struct zx_md_AssertionConsumerService_s* acs_svc;
   
-  if (!sp_meta->ed->SPSSODescriptor) {
-    ERR("Entity(%.*s) does not have SP SSO Descriptor (metadata problem)", sp_meta->eid_len, sp_meta->eid);
+  if (!sp_meta || !sp_meta->eid || !sp_meta->ed->SPSSODescriptor) {
+    ERR("Entity(%s) does not have SP SSO Descriptor (metadata problem)", sp_meta?STRNULLCHKQ(sp_meta->eid):'-');
     return 0;
   }
 
@@ -181,7 +181,7 @@ struct zx_str* zxid_sp_loc_by_index_raw(struct zxid_conf* cf, struct zxid_cgi* c
     return loc;
   }
 
-  ERR("SP Entity(%.*s) does not have any %d service with index(%.*s) (metadata problem)", sp_meta->eid_len, sp_meta->eid, svc_type, ix->len, ix->s);
+  ERR("SP Entity(%s) does not have any %d service with index(%.*s) (metadata problem)", sp_meta->eid, svc_type, ix->len, ix->s);
   *binding = 0;
   return 0;
 }
@@ -201,11 +201,11 @@ struct zx_str* zxid_sp_loc_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
   struct zx_md_ManageNameIDService_s* mni_svc;
   struct zx_md_AssertionConsumerService_s* acs_svc;
   
-  if (!sp_meta->ed->SPSSODescriptor) {
-    ERR("Entity(%.*s) does not have SP SSO Descriptor (metadata problem)", sp_meta->eid_len, sp_meta->eid);
+  if (!sp_meta || !sp_meta->eid || !sp_meta->ed->SPSSODescriptor) {
+    ERR("Entity(%s) does not have SP SSO Descriptor (metadata problem)", sp_meta?STRNULLCHKQ(sp_meta->eid):'-');
     return 0;
   }
-
+  
   switch (svc_type) {
   case ZXID_SLO_SVC:
     for (slo_svc = sp_meta->ed->SPSSODescriptor->SingleLogoutService;
@@ -251,7 +251,7 @@ struct zx_str* zxid_sp_loc_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
     return loc;
   }
 
-  ERR("SP Entity(%.*s) does not have any %d service with binding(%s) (metadata problem)", sp_meta->eid_len, sp_meta->eid, svc_type, binding);
+  ERR("SP Entity(%s) does not have any %d service with binding(%s) (metadata problem)", sp_meta->eid, svc_type, binding);
   return 0;
 }
 

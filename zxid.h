@@ -110,6 +110,7 @@ struct zxid_conf {
   char* nice_name;           /* Human readable "nice" name. Used in AuthnReq->ProviderName */
   char* org_name;
   char* org_url;
+  char* country;             /* Used for CSR country field. */
   char* contact_org;
   char* contact_name;
   char* contact_email;
@@ -124,6 +125,7 @@ struct zxid_conf {
   char** required_authnctx;  /* Array of acceptable authentication context class refs */
   char* issue_authnctx_pw;   /* What authentication context IdP issues for password authent. */
   char* idp_pref_acs_binding;
+  char* mandatory_attr;
   int   before_slop;
   int   after_slop;
   int   timeskew;
@@ -378,9 +380,8 @@ struct zxid_atsrc {
 struct zxid_entity {
   struct zxid_entity* n;
   struct zxid_entity* n_cdc;  /* *** not thread safe */
-  int eid_len;
-  char* eid;
-  char* dpy_name;
+  char* eid;            /* Entity ID. Always nul terminated. */
+  char* dpy_name;       /* OrganizationDisplayName. Always nul terminated. */
   char  sha1_name[28];  /* 27 chars (+1 that is overwritten with nul) */
   X509* tls_cert;
   X509* sign_cert;

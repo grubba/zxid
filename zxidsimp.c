@@ -374,29 +374,25 @@ char* zxid_idp_list_cf_cgi(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_
 
 #ifdef ZXID_USE_POPUP
     dd = zx_strf(cf->ctx, "%.*s"
-		 "<option value=\"%.*s\"> %s (%.*s) %s\n",
-		 ss->len, ss->s,
-		 idp->eid_len, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid_len, idp->eid,
-		 mark);
+		 "<option value=\"%s\"> %s (%s) %s\n",
+		 ss->len, ss->s, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid, mark);
 #else
     if (cf->show_tech) {
       dd = zx_strf(cf->ctx, "%.*s"
-		   "<input type=submit name=\"l0%.*s\" value=\" Login to %.*s \">\n"
-		   "<input type=submit name=\"l1%.*s\" value=\" Login to %.*s (A2) \">\n"
-		   "<input type=submit name=\"l2%.*s\" value=\" Login to %.*s (P2) \">\n"
-		   "<input type=submit name=\"l5%.*s\" value=\" Login to %.*s (S2) \">%s<br>\n",
+		   "<input type=submit name=\"l0%s\" value=\" Login to %s \">\n"
+		   "<input type=submit name=\"l1%s\" value=\" Login to %s (A2) \">\n"
+		   "<input type=submit name=\"l2%s\" value=\" Login to %s (P2) \">\n"
+		   "<input type=submit name=\"l5%s\" value=\" Login to %s (S2) \">%s<br>\n",
 		   ss->len, ss->s,
-		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
-		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
-		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
-		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
+		   idp->eid, idp->eid,
+		   idp->eid, idp->eid,
+		   idp->eid, idp->eid,
+		   idp->eid, idp->eid,
 		   mark);
     } else {
       dd = zx_strf(cf->ctx, "%.*s"
-		   "<input type=submit name=\"l0%.*s\" value=\" Login to %.*s \">%s<br>\n"
-		   ss->len, ss->s,
-		   idp->eid_len, idp->eid, idp->eid_len, idp->eid,
-		   mark);
+		   "<input type=submit name=\"l0%s\" value=\" Login to %s \">%s<br>\n"
+		   ss->len, ss->s, idp->eid, idp->eid, mark);
     }
 #endif
     zx_str_free(cf->ctx, ss);
@@ -835,8 +831,8 @@ static char* zxid_simple_idp_an_ok_do_rest(struct zxid_conf* cf, struct zxid_cgi
   char* p;
   DD("idp do_rest %p", ses);
   if (cf->atsel_page && cgi->atselafter) { /* *** More sophisticated criteria needed. */
-    ss = zx_strf(cf->ctx, "ar=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
-		 cgi->ssoreq,
+    ss = zx_strf(cf->ctx, "ar=%s&s=%s&zxrfr=F%s%s%s%s&zxidpurl=%s",
+		 cgi->ssoreq, cgi->sid,
 		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
 		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
 		 cf->url);

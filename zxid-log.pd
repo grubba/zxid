@@ -347,6 +347,7 @@ OP:: The documented operation
     DIRESP::   Issuance of Discovery response
 
     KEYGEN::   Auto-Cert generation of a self-signed certificate
+    NEWUSR::   New user creation
 
 PPP:: Operation dependent one most relevant parameter. Dash ("-") if none.
 

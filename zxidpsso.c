@@ -300,7 +300,7 @@ struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zx
   int got;
 
   D_INDENT("mka7n: ");
-  D("sp_eid(%.*s)", sp_meta->eid_len, sp_meta->eid);
+  D("sp_eid(%s)", sp_meta->eid);
 
   subj = zxid_mk_subj(cf, sp_meta, nameid);
   an_stmt = ses ? zxid_mk_an_stmt(cf, ses) : 0;
@@ -326,7 +326,7 @@ struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zx
   if (got) {
     at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute, got, buf, "idpsso_all_sp_at");
   }
-  D("sp_eid(%.*s) bs_lvl=%d", sp_meta->eid_len, sp_meta->eid, bs_lvl);
+  D("sp_eid(%s) bs_lvl=%d", sp_meta->eid, bs_lvl);
   
   /* Process bootstraps */
 
@@ -336,8 +336,8 @@ struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zx
   name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
   at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute, bs_lvl);
   
-  D("sp_eid(%.*s)", sp_meta->eid_len, sp_meta->eid);
-  a7n = zxid_mk_a7n(cf, zx_dup_len_str(cf->ctx, sp_meta->eid_len, sp_meta->eid), subj, an_stmt, at_stmt, 0);
+  D("sp_eid(%s)", sp_meta->eid);
+  a7n = zxid_mk_a7n(cf, zx_dup_str(cf->ctx, sp_meta->eid), subj, an_stmt, at_stmt, 0);
   D_DEDENT("mka7n: ");
   return a7n;
 }
@@ -581,7 +581,7 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
     ERR("The metadata for Issuer of the AuthnRequest could not be found or fetched %d", 0);
     return zx_dup_str(cf->ctx, "* ERR");
   }
-  D("sp_eid(%.*s)", sp_meta->eid_len, sp_meta->eid);
+  D("sp_eid(%s)", sp_meta->eid);
 
   /* Figure out the binding and url */
 
@@ -622,7 +622,7 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
 
   /* User ses->uid is already logged in, now check for federation with sp */
 
-  D("sp_eid(%.*s)", sp_meta->eid_len, sp_meta->eid);
+  D("sp_eid(%s)", sp_meta->eid);
 
   if (ar->IssueInstant && ar->IssueInstant->s)
     srcts.tv_sec = zx_date_time_to_secs(ar->IssueInstant->s);

@@ -572,14 +572,14 @@ int main(int argc, char** argv, char** env)
     for (; idp; idp = idp->n) {
       if (!idp->ed->IDPSSODescriptor)
 	continue;
-      printf("<input type=submit name=\"l0%.*s\" value=\" Login to %.*s (SAML20:any) \">\n",
-	     idp->eid_len, idp->eid, idp->eid_len, idp->eid);
-      printf("<input type=submit name=\"l1%.*s\" value=\" Login to %.*s (SAML20:Artifact) \">\n",
-	     idp->eid_len, idp->eid, idp->eid_len, idp->eid);
-      printf("<input type=submit name=\"l2%.*s\" value=\" Login to %.*s (SAML20:POST) \">\n",
-	     idp->eid_len, idp->eid, idp->eid_len, idp->eid);
-      printf("<input type=submit name=\"l5%.*s\" value=\" Login to %.*s (SAML20:SimpleSign) \">\n",
-	     idp->eid_len, idp->eid, idp->eid_len, idp->eid);
+      printf("<input type=submit name=\"l0%s\" value=\" Login to %s (SAML20:any) \">\n",
+	     idp->eid, idp->eid);
+      printf("<input type=submit name=\"l1%s\" value=\" Login to %s (SAML20:Artifact) \">\n",
+	     idp->eid, idp->eid);
+      printf("<input type=submit name=\"l2%s\" value=\" Login to %s (SAML20:POST) \">\n",
+	     idp->eid, idp->eid);
+      printf("<input type=submit name=\"l5%s\" value=\" Login to %s (SAML20:SimpleSign) \">\n",
+	     idp->eid, idp->eid);
     }
   }
   

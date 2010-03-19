@@ -320,7 +320,7 @@ int zxid_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* s
   ss = zxid_mk_id(cf, "MSES", ZXID_ID_BITS);  /* Master session. Each pairwise SSO should have its own to avoid correlation. */
   ses->sesix = ss->s;
   ZX_FREE(cf->ctx, ss);
-  ses->sid = ses->sesix;
+  ses->sid = cgi->sid = ses->sesix;
   ses->uid = cgi->uid;
   zxid_put_ses(cf, ses);
   if (cf->ses_cookie_name && *cf->ses_cookie_name) {
@@ -330,7 +330,6 @@ int zxid_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* s
     ses->cookie = zx_alloc_sprintf(cf->ctx, 0, "$Version=1; %s=%s",
 				   cf->ses_cookie_name, ses->sid);
   }
-  cgi->sid = ses->sid;
   INFO("LOCAL LOGIN SUCCESSFUL. sid(%s) uid(%s) %s", cgi->sid, cgi->uid, meth);
   zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "K", "INEWSES", ses->sid, "uid(%s) %s", ses->uid, meth);
   if (cf->loguser)

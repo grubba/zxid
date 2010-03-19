@@ -245,6 +245,7 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->nice_name = ZXID_NICE_NAME;
   cf->org_name = ZXID_ORG_NAME;
   cf->org_url = ZXID_ORG_URL;
+  cf->country = ZXID_COUNTRY;
   cf->contact_org = ZXID_CONTACT_ORG;
   cf->contact_name = ZXID_CONTACT_NAME;
   cf->contact_email = ZXID_CONTACT_EMAIL;
@@ -325,6 +326,7 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->required_authnctx = ZXID_REQUIRED_AUTHNCTX;
   cf->issue_authnctx_pw = ZXID_ISSUE_AUTHNCTX_PW;
   cf->idp_pref_acs_binding = ZXID_IDP_PREF_ACS_BINDING;
+  cf->mandatory_attr = ZXID_MANDATORY_ATTR;
 
   cf->before_slop    = ZXID_BEFORE_SLOP;
   cf->after_slop     = ZXID_AFTER_SLOP;
@@ -941,6 +943,7 @@ scan_end:
       if (!strcmp(n, "CONTACT_NAME"))   { cf->contact_name = v; break; }
       if (!strcmp(n, "CONTACT_EMAIL"))  { cf->contact_email = v; break; }
       if (!strcmp(n, "CONTACT_TEL"))    { cf->contact_tel = v; break; }
+      if (!strcmp(n, "COUNTRY"))        { cf->country = v; break; }
       goto badcf;
     case 'D':  /* DUP_A7N_FATAL, DUP_MSG_FATAL */
       if (!strcmp(n, "DEFAULTQS"))      { cf->defaultqs = v; break; }
@@ -980,6 +983,7 @@ scan_end:
       if (!strcmp(n, "LOAD_COT_CACHE"))   { cf->load_cot_cache = v; break; }
       goto badcf;
     case 'M':  /* MD_FETCH, MD_POPULATE_CACHE, MD_CACHE_FIRST, MD_CACHE_LAST */
+      if (!strcmp(n, "MANDATORY_ATTR"))    { cf->mandatory_attr = v; break; }
       if (!strcmp(n, "MD_FETCH"))          { SCAN_INT(v, cf->md_fetch); break; }
       if (!strcmp(n, "MD_POPULATE_CACHE")) { SCAN_INT(v, cf->md_populate_cache); break; }
       if (!strcmp(n, "MD_CACHE_FIRST"))    { SCAN_INT(v, cf->md_cache_first); break; }
@@ -1263,6 +1267,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "NICE_NAME=%s\n"
 "ORG_NAME=%s\n"
 "ORG_URL=%s\n"
+"COUNTRY=%s\n"
 "CONTACT_ORG=%s\n"
 "CONTACT_NAME=%s\n"
 "CONTACT_EMAIL=%s\n"
@@ -1346,6 +1351,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "ANON_OK=%s\n"
 "ISSUE_AUTHNCTX_PW=%s\n"
 "IDP_PREF_ACS_BINDING=%s\n"
+"MANDATORY_ATTR=%s\n"
 "PDP_URL=%s\n"
 "PDP_CALL_URL=%s\n"
 "XASP_VERS=%s\n"
@@ -1403,6 +1409,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 STRNULLCHK(cf->nice_name),
 		 STRNULLCHK(cf->org_name),
 		 STRNULLCHK(cf->org_url),
+		 STRNULLCHK(cf->country),
 		 STRNULLCHK(cf->contact_org),
 		 STRNULLCHK(cf->contact_name),
 		 STRNULLCHK(cf->contact_email),
@@ -1486,6 +1493,7 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 STRNULLCHK(cf->anon_ok),
 		 STRNULLCHK(cf->issue_authnctx_pw),
 		 STRNULLCHK(cf->idp_pref_acs_binding),
+		 STRNULLCHK(cf->mandatory_attr),
 		 STRNULLCHK(cf->pdp_url),
 		 STRNULLCHK(cf->pdp_call_url),
 		 STRNULLCHK(cf->xasp_vers),

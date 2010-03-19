@@ -380,7 +380,7 @@ static int zxid_addmd(struct zxid_conf* cf, char* mdurl, int dry_run, const char
     return 2;
   
   if (verbose)
-    fprintf(stderr, "Writing ent(%.*s) to %s%s\n", ent->eid_len, ent->eid, dcot, ent->sha1_name);
+    fprintf(stderr, "Writing ent(%s) to %s%s\n", ent->eid, dcot, ent->sha1_name);
   if (dry_run) {
     write_all_fd(1, ss->s, ss->len);
     zx_str_free(cf->ctx, ss);
@@ -420,9 +420,9 @@ static int zxid_lscot_line(struct zxid_conf* cf, int col_swap, const char* dcot,
     return 2;
   }
   switch (col_swap) {
-  case 1:  printf("%.*s\t%s%s\n", ent->eid_len, ent->eid, dcot, den); break;
-  case 2:  printf("%.*s\n",       ent->eid_len, ent->eid); break;
-  default: printf("%s%s %.*s\n",  dcot, den, ent->eid_len, ent->eid);
+  case 1:  printf("%-50s %s%s %s\n", ent->eid, dcot, den, STRNULLCHKD(ent->dpy_name)); break;
+  case 2:  printf("%s\n",       ent->eid); break;
+  default: printf("%s%s %-50s %s\n", dcot, den, ent->eid, STRNULLCHKD(ent->dpy_name));
   }
   if (strcmp(*den?den:dcot, ent->sha1_name))
     fprintf(stderr, "Filename(%s) does not match sha1_name(%s)\n", *den?den:dcot, ent->sha1_name);

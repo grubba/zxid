@@ -303,7 +303,7 @@ void zx_rand(char* buf, int n_bytes)
  * As this is not expected to be frequent, we are cavalier about releasing
  * the memory needed for each intermediate step.
  *
- * cf:: zxid configuration object, of wich cf->ctx will be used for memory allocation
+ * cf:: zxid configuration object, of which cf->ctx will be used for memory allocation
  * buflen:: sizeof(buf)
  * buf:: Buffer used for rendering pem representations of the data
  * log key:: Who and why is calling
@@ -331,13 +331,16 @@ int zxid_mk_self_sig_cert(struct zxid_conf* cf, int buflen, char* buf, char* lk,
   RSA*      rsa;
   X509_EXTENSION*  ext;
   X509_NAME_ENTRY* ne;
-  char      org[512];
   char      cn[256];
+  char      ou[256];
 
   X509V3_add_standard_extensions();
   
   D("keygen start lk(%s) name(%s)", lk, name);
-  
+
+  snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert %s", cf->url);
+  ou[sizeof(ou)-1] = 0;
+
   ts = time(0);
   RAND_seed(&ts,sizeof(ts));
 #ifdef WINDOWS
@@ -369,10 +372,6 @@ int zxid_mk_self_sig_cert(struct zxid_conf* cf, int buflen, char* buf, char* lk,
   DD("keygen populate: set version %d (real vers is one higher)", 2);
   ASN1_INTEGER_set(ri->version, 2L /* version 3 (binary value is one less) */);
 
-  snprintf(org, sizeof(org)-1, "ZXID Auto-Cert %s", cf->url);
-  org[sizeof(org)-1] = 0;
-  DD("keygen populate: org(%s)", org);
-  
   /* Parse domain name out of the URL: skip https:// and then scan name without port or path */
   
   for (p = cf->url; !ONE_OF_2(*p, '/', 0); ++p) ;
@@ -387,7 +386,7 @@ badurl:
   for (q = cn; !ONE_OF_3(*p, ':', '/', 0) && q < cn + sizeof(cn)-1; ++q, ++p) *q = *p;
   *q = 0;
 
-  D("keygen populate DN: cn(%s) org(%s) url=%p cn=%p p=%p q=%p", cn, org, cf->url, cn, p, q);
+  D("keygen populate DN: cn(%s) org(%s) c(%s) url=%p cn=%p p=%p q=%p", cn, cf->org_name, cf->country, cf->url, cn, p, q);
   
   /* Note on string types and allowable char sets:
    * V_ASN1_PRINTABLESTRING  [A-Za-z0-9 '()+,-./:=?]   -- Any domain name, but not query string
@@ -400,11 +399,14 @@ badurl:
   X509_NAME_add_entry(ri->subject, ne, X509_NAME_entry_count(ri->subject), 0);
 
 #if 1
-  ne = X509_NAME_ENTRY_create_by_NID(0, NID_organizationalUnitName, V_ASN1_T61STRING, "SSO Dept", sizeof("SSO Dept")-1);
+  ne = X509_NAME_ENTRY_create_by_NID(0, NID_organizationalUnitName, V_ASN1_T61STRING, ou, strlen(ou));
   X509_NAME_add_entry(ri->subject, ne, X509_NAME_entry_count(ri->subject), 0);
 #endif
 
-  ne = X509_NAME_ENTRY_create_by_NID(0, NID_organizationName, V_ASN1_T61STRING, org, strlen(org));
+  ne = X509_NAME_ENTRY_create_by_NID(0, NID_organizationName, V_ASN1_T61STRING, cf->org_name, strlen(cf->org_name));
+  X509_NAME_add_entry(ri->subject, ne, X509_NAME_entry_count(ri->subject), 0);
+
+  ne = X509_NAME_ENTRY_create_by_NID(0, NID_countryName, V_ASN1_T61STRING, cf->country, strlen(cf->country));
   X509_NAME_add_entry(ri->subject, ne, X509_NAME_entry_count(ri->subject), 0);
 
 #if 0

@@ -40,7 +40,6 @@ if ($ENV{CONTENT_LENGTH}) {
 }
 warn "$$: cgi: " . Dumper(\%cgi);
 
-
 sub uridec {
     my ($val) = @_;
     $val =~ s/\+/ /g;
@@ -106,6 +105,12 @@ if (length $cgi{'ok'}) {
 	close P;
 	warn "Populating user($cgi{'au'})";
 	if (-e "${dir}uid/$cgi{'au'}") {
+	    open LOG, ">${dir}uid/$cgi{'au'}/.regip" or die "Cant open write .bs/.regip: $!";
+	    print LOG $ENV{REMOTE_ADDR} or die "Cant write .bs/.regip: $!";
+	    close LOG or die "Cant close write .bs/.regip: $!";
+	    open IP, ">${dir}uid/$cgi{'au'}/.regip" or die "Cant open write .bs/.regip: $!";
+	    print IP $ENV{REMOTE_ADDR} or die "Cant write .bs/.regip: $!";
+	    close IP or die "Cant close write .bs/.regip: $!";
 	    mkdir "${dir}uid/$cgi{'au'}/.bs" or die "Cant mkdir .bs: $!";
 	    open AT, ">${dir}uid/$cgi{'au'}/.bs/.at" or die "Cant write .bs/.at: $!";
 	    open OPTAT, ">${dir}uid/$cgi{'au'}/.bs/.optat" or die "Cant write .bs/.optat: $!";
@@ -137,6 +142,7 @@ if (length $cgi{'ok'}) {
     }
 }
 
+$cgi{'ip'} = $ENV{REMOTE_ADDR};
 show_templ("newuser-main.html", \%cgi);
 
 __END__

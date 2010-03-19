@@ -271,8 +271,8 @@ int zxid_sp_deref_art(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_se
   }
   
   idp_meta = zxid_get_ent_by_succinct_id(cf, raw_succinct_id);
-  if (!idp_meta) {
-    ERR("Unable to dereference SAMLart(%s). Can not find metadata for IdP.", cgi->saml_art);
+  if (!idp_meta || !idp_meta->eid) {
+    ERR("Unable to dereference SAMLart(%s). Can not find metadata for IdP. %p", cgi->saml_art, idp_meta);
     D_DEDENT("deref: ");
     return 0;
   }
@@ -283,8 +283,8 @@ int zxid_sp_deref_art(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_se
     break;
   case 0x04: /* SAML 2.0 */
     if (!idp_meta->ed->IDPSSODescriptor) {
-      ERR("Entity(%.*s) does not have IdP SSO Descriptor (metadata problem)", idp_meta->eid_len, idp_meta->eid);
-      zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "No IDPSSODescriptor eid(%.*)", idp_meta->eid_len, idp_meta->eid);
+      ERR("Entity(%s) does not have IdP SSO Descriptor (metadata problem)", idp_meta->eid);
+      zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "No IDPSSODescriptor eid(%s)", idp_meta->eid);
       D_DEDENT("deref: ");
       return 0;
     }
@@ -296,8 +296,8 @@ int zxid_sp_deref_art(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_se
 	  && ar_svc->Location)
 	break;
     if (!ar_svc) {
-      ERR("Entity(%.*s) does not have any IdP Artifact Resolution Service with " SAML2_SOAP " binding and index(%s) (metadata problem)", idp_meta->eid_len, idp_meta->eid, end_pt_ix);
-      zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "No Artifact Resolution Svc eid(%.*) ep_ix(%s)", idp_meta->eid_len, idp_meta->eid, end_pt_ix);
+      ERR("Entity(%s) does not have any IdP Artifact Resolution Service with " SAML2_SOAP " binding and index(%s) (metadata problem)", idp_meta->eid, end_pt_ix);
+      zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "No Artifact Resolution Svc eid(%s) ep_ix(%s)", idp_meta->eid, end_pt_ix);
       D_DEDENT("deref: ");
       return 0;
     }
@@ -706,9 +706,9 @@ int zxid_as_call_ses(struct zxid_conf* cf, struct zxid_entity* idp_meta, struct 
     return 0;
   }
   
-  if (!idp_meta || !idp_meta->ed->IDPSSODescriptor) {
-    ERR("Entity(%.*s) does not have IdP SSO Descriptor (metadata problem)", idp_meta?idp_meta->eid_len:1, idp_meta?idp_meta->eid:"-");
-    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "No IDPSSODescriptor eid(%.*)", idp_meta?idp_meta->eid_len:1, idp_meta?idp_meta->eid:"-");
+  if (!idp_meta || !idp_meta->eid || !idp_meta->ed->IDPSSODescriptor) {
+    ERR("Entity(%s) does not have IdP SSO Descriptor (metadata problem)", idp_meta?STRNULLCHKQ(idp_meta->eid):"-");
+    zxlog(cf, 0,0,0,0,0,0,0, "N", "B", "ERR", 0, "No IDPSSODescriptor eid(%*s)", idp_meta?STRNULLCHKQ(idp_meta->eid):"-");
     D_DEDENT("as_call: ");
     return 0;
   }
@@ -731,8 +731,8 @@ int zxid_as_call_ses(struct zxid_conf* cf, struct zxid_entity* idp_meta, struct 
       break;
 #endif
   if (!ar_svc) {
-    ERR("Entity(%.*s) does not have any IdP Artifact Resolution Service with " SAML2_SOAP " binding (metadata problem)", idp_meta->eid_len, idp_meta->eid);
-    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "No Artifact Resolution Svc eid(%.*)", idp_meta->eid_len, idp_meta->eid);
+    ERR("Entity(%s) does not have any IdP Artifact Resolution Service with " SAML2_SOAP " binding (metadata problem)", idp_meta->eid);
+    zxlog(cf, 0,0,0,0,0,0,0,"N","B","ERR",0,"No Artifact Resolution Svc eid(%s)", idp_meta->eid);
     D_DEDENT("as_call: ");
     return 0;
   }
@@ -757,23 +757,23 @@ int zxid_as_call_ses(struct zxid_conf* cf, struct zxid_entity* idp_meta, struct 
   /* *** free the body */
   
   if (!r || !r->Envelope || !r->Envelope->Body || !(res = r->Envelope->Body->SASLResponse)) {
-    ERR("Autentication Service call failed idp(%.*s). Missing response.", idp_meta->eid_len, idp_meta->eid);
-    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "Missing response eid(%.*)", idp_meta->eid_len, idp_meta->eid);
+    ERR("Autentication Service call failed idp(%s). Missing response.", idp_meta->eid);
+    zxlog(cf, 0,0,0,0,0,0,0, "N", "B", "ERR", 0, "Missing response eid(%s)", idp_meta->eid);
     D_DEDENT("as_call: ");
     return 0;
   }
   
   if (!res->Status || !res->Status->code || !res->Status->code->len || !res->Status->code->s) {
-    ERR("Autentication Service call failed idp(%.*s). Missing Status code.", idp_meta->eid_len, idp_meta->eid);
-    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "Missing Status code eid(%.*)", idp_meta->eid_len, idp_meta->eid);
+    ERR("Autentication Service call failed idp(%s). Missing Status code.", idp_meta->eid);
+    zxlog(cf, 0,0,0,0,0,0,0, "N", "B", "ERR", 0, "Missing Status code eid(%s)", idp_meta->eid);
     D_DEDENT("as_call: ");
     return 0;
   }
 
   if (res->Status->code->len != 2
       || res->Status->code->s[0]!='O' || res->Status->code->s[1]!='K') {  /* "OK" */
-    ERR("Autentication Service call failed idp(%.*s). Status code(%.*s).", idp_meta->eid_len, idp_meta->eid, res->Status->code->len, res->Status->code->s);
-    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "ERR", 0, "Missing Status code(%.*s) eid(%.*)", res->Status->code->len, res->Status->code->s, idp_meta->eid_len, idp_meta->eid);
+    ERR("Autentication Service call failed idp(%s). Status code(%.*s).", idp_meta->eid, res->Status->code->len, res->Status->code->s);
+    zxlog(cf, 0,0,0,0,0,0,0, "N", "B", "ERR", 0, "Missing Status code(%.*s) eid(%s)", res->Status->code->len, res->Status->code->s, idp_meta->eid);
     D_DEDENT("as_call: ");
     return 0;
   }
