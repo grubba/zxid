@@ -59,6 +59,8 @@ void* zx_alloc(struct zx_ctx* c, int size)
   DD("malloc %p size=%d", p, size);
   if (!p) {
     ERR("Out-of-memory(%d)", size);
+    if (size < 0)
+      DIE_ACTION(1);
     exit(1);
   }
   return p;

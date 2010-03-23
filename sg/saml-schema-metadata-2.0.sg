@@ -7,6 +7,7 @@ target(md,urn:oasis:names:tc:SAML:2.0:metadata)
 import(ds,http://www.w3.org/2000/09/xmldsig#,http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd)
 import(xenc,http://www.w3.org/2001/04/xmlenc#,http://www.w3.org/TR/2002/REC-xmlenc-core-20021210/xenc-schema.xsd)
 import(sa,urn:oasis:names:tc:SAML:2.0:assertion,saml-schema-assertion-2.0.xsd)
+ns(idpdisc,urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol)
 # import(xml,http://www.w3.org/XML/1998/namespace,http://www.w3.org/2001/xml.xsd)
 ns(xs,  http://www.w3.org/2001/XMLSchema)
 ns(xml, http://www.w3.org/XML/1998/namespace)
@@ -28,8 +29,11 @@ Extensions	 -> %md:ExtensionsType
 %ExtensionsType:
   shibmd:Scope*
   shibmd:KeyAuthority*
+  idpdisc:DiscoveryResponse*
   any+
   ;
+
+# What about IndexedEndpointType as needed in idpdisc,urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol --Sampo
 
 %EndpointType:
   any*

@@ -58,4 +58,14 @@
 <url-pattern>/wspleaf</url-pattern>
 </servlet-mapping>
 
+<servlet>
+<servlet-name>zxidwscprepdemo</servlet-name>
+<servlet-class>zxidwscprepdemo</servlet-class>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>zxidwscprepdemo</servlet-name>
+<url-pattern>/wscprepdemo</url-pattern>
+</servlet-mapping>
+
 </web-app>

@@ -633,7 +633,7 @@
   "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
   "User NOT logged in, no session."\
   "<h3>Please authenticate using one of the following methods:</h3>"\
-  "<input type=checkbox name=at> Adjust attribute sharing after authentication"\
+  "<!--input type=checkbox name=at> Adjust attribute sharing after authentication--"\
   "<ol><li> Yubikey <a href=\"http://yubico.com\"><img src=\"yubiright_16x16.gif\" width=16 height=16 border=0></a>:<input name=au><input type=submit name=alp value=\" Login \">"\
   "<li> User: <input name=au> Password: <input type=password name=ap><input type=submit name=alp value=\" Login \">"\
   "<li><input type=submit name=an value=\" Create New User \"></ol>"\

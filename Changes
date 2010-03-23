@@ -47,13 +47,16 @@ https://idp.testshib.org/idp/shibboleth
     - zxid_pw_authn() should not report scary error message when checking .ykspent in
       not spent case
 
-zxid-0.53:: 17.2.2010
-    NOT PUB
+zxid-0.53:: 23.3.2010
     - Fixed case where last item (null return) of cached multi discovery would trigger yet another discovery
     - Added logging of issued discovery messages
     - Feature improvements to zxidappdemo.java
     - Added ENA_PG and coverage targets to the Makefile (current coverage 47%)
     - Process session in validate
+    - Added more Shibboleth metadata extensions. I claim Shibboleth metadata parses w/o warnings.
+    - Added SAML idp-discovery extention to metadata
+    - Changed templating system for IdP an page (other pages may be changed later to use the same)
+    - Added zxidnewuser.pl and other IdP mangement web GUI scripts
 zxid-0.52:: 15.2.2010
     - Log session create and destroy
     - Relax error checking in SLO: missing NameID ok if sesix supplied

@@ -35,7 +35,7 @@
  * will add Liberty ID-WSF specific SOAP headers. */
 
 /* Called by:  main, zxid_wsp_decorate */
-struct zx_e_Envelope_s* zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_e_Envelope_s* env)
+int zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_e_Envelope_s* env, int is_resp)
 {
   struct zx_wsse_Security_s* sec;
   struct zx_e_Header_s* hdr;
@@ -49,8 +49,6 @@ struct zx_e_Envelope_s* zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* se
     env->Header = zx_NEW_e_Header(cf->ctx);
   hdr = env->Header;
 
-  /* *** Much similarity to zxid_wsc_call(), esp. headers part. Consider merge. */
-  
   /* Populate SOAP headers. */
   
   hdr->Framework = zx_NEW_sbf_Framework(cf->ctx);
@@ -68,20 +66,6 @@ struct zx_e_Envelope_s* zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* se
   hdr->Sender->providerID = zxid_my_entity_id(cf);
 #endif
 
-#if 1
-  hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx);
-  hdr->RelatesTo->gg.content = zx_ref_str(cf->ctx, ses->msgid);
-  hdr->RelatesTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->RelatesTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  hdr->To = zx_NEW_a_To(cf->ctx);
-  hdr->To->gg.content = epr->Address->gg.content;
-  hdr->To->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->To->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
 #if 0
   hdr->Action = zx_NEW_a_Action(cf->ctx);
   hdr->Action->gg.content = zx_ref_str(cf->ctx, ***);
@@ -94,22 +78,6 @@ struct zx_e_Envelope_s* zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* se
   hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));
   hdr->From->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
   hdr->From->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  /* Usually not relevant for a request. */
-  hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx);
-  hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));
-  hdr->ReplyTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->ReplyTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  /* Omission means to use same address as ReplyTo */
-  hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx);
-  hdr->FaultTo->Address = zx_mk_addr(cf->ctx, zx_strf(cf->ctx, "%s?o=P", cf->url));
-  hdr->FaultTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->FaultTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
 #endif
 
 #if 0
@@ -145,62 +113,36 @@ struct zx_e_Envelope_s* zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* se
   sec->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
   sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx);
   sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx);
-  sec->Timestamp->Created->gg.content = zxid_date_time(cf, time(0));
   
   hdr->MessageID = zx_NEW_a_MessageID(cf->ctx);
   hdr->MessageID->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
   hdr->MessageID->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-  hdr->MessageID->gg.content = zxid_mk_id(cf, "urn:M", ZXID_ID_BITS);;
+
+  if (is_resp) {
+    sec->Timestamp->Created->gg.content = zxid_date_time(cf, time(0));
+    hdr->MessageID->gg.content = zxid_mk_id(cf, "urn:M", ZXID_ID_BITS);;
+    /* Clear away any credentials from previous iteration. */
+    sec->Signature = 0;
+    sec->BinarySecurityToken = 0;
+    sec->SecurityTokenReference = 0;
+    sec->Assertion = 0;
+    sec->sa11_Assertion = 0;
+    sec->ff12_Assertion = 0;
     
-  /* Clear away any credentials from previous iteration. */
-  sec->Signature = 0;
-  sec->BinarySecurityToken = 0;
-  sec->SecurityTokenReference = 0;
-  sec->Assertion = 0;
-  sec->sa11_Assertion = 0;
-  sec->ff12_Assertion = 0;
- 
-#if 0
-  /* Sign all Headers that have Id set. See wsc_sign_sec_mech() */
-  switch (secmech = zxid_map_sec_mech(epr)) {
-  case ZXID_SEC_MECH_NULL:
-    break;
-  case ZXID_SEC_MECH_BEARER:
-#if 0
-    sec->Assertion = epr->Metadata->SecurityContext->Token->Assertion;
-    sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx);
-    sec->SecurityTokenReference->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx);
-    sec->SecurityTokenReference->KeyIdentifier->ValueType = zx_ref_str(cf->ctx, SAMLID_TOK_PROFILE);
-    sec->SecurityTokenReference->KeyIdentifier->gg.content = sec->Assertion->ID;
-#endif
-    /* *** Sign SEC, MID, TO, ACT (if any) */
-    break;
-  case ZXID_SEC_MECH_SAML:
-    sec->Assertion = epr->Metadata->SecurityContext->Token->Assertion;
-    /* *** Sign SEC, MID, TO, ACT (if any) */
-    break;
-  case ZXID_SEC_MECH_X509:
-    /* *** Sign SEC, MID, TO, ACT (if any) */
-    break;
-  case ZXID_SEC_MECH_PEERS:
-    /* *** ? */
-    break;
-  default:
-    ERR("Unknown secmech %d", secmech);
-  }
+#if 1
+    hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx);
+    hdr->RelatesTo->gg.content = zx_ref_str(cf->ctx, ses->msgid);
+    hdr->RelatesTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+    hdr->RelatesTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
 #endif
 
-  zxid_wsf_sign(cf, cf->wsp_sign, sec, 0, hdr, env->Body);
-  return env;
+    zxid_wsf_sign(cf, cf->wsp_sign, sec, 0, hdr, env->Body);
+  }
+  return 1;
 }
 
 /* ----------------------------------------
- * Simplify writing WSCs */
-
-static char zx_env_body_open[]  = "<e:Envelope xmlns:e=\""zx_xmlns_e"\"><e:Header></e:Header><e:Body>";
-static char zx_env_body_close[] = "</e:Body></e:Envelope>";
-static char zx_env_open[]  = "<e:Envelope xmlns:e=\""zx_xmlns_e"\"><e:Header></e:Header>";
-static char zx_env_close[] = "</e:Envelope>";
+ * Simplify writing WSPs */
 
 /*(i) Add ID-WSF (and TAS3) specific headers and signatures to
  * web service response. Simple and intuitive specification of
@@ -238,50 +180,23 @@ struct zx_str* zxid_wsp_decorate(struct zxid_conf* cf, struct zxid_ses* ses, con
   struct zx_e_Envelope_s* env;
 
   D_INDENT("decor: ");
-  if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
-    for (enve += sizeof("<?xml "); *enve && !(enve[0] == '?' && enve[1] == '>'); ++enve) ;
-    if (*enve)
-      enve += 2;
-  }
-  if (memcmp(enve, "<e:Envelope", sizeof("<e:Envelope")-1)) {
-    if (memcmp(enve, "<e:Body", sizeof("<e:Body")-1)) {
-      /* Must be just payload */
-      enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_body_open, enve, zx_env_body_close);
-    } else {
-      /* <e:Body> provided */
-      enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_open, enve, zx_env_close);
-    }
-  } /* else <e:Envelope> provided */
-  
-  LOCK(cf->ctx->mx, "decor");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "decor");
-  if (!r) {
-    ERR("Malformed XML enve(%s)", enve);
-    D_DEDENT("decor: ");
-    return 0;
-  }
-  env = r->Envelope;
+
+  env = zxid_add_env_if_needed(cf, enve);
   if (!env) {
-    ERR("No <e:Envelope> found. enve(%s)", enve);
     D_DEDENT("decor: ");
     return 0;
   }
-  ZX_FREE(cf->ctx, r);
   
   //*** Needs thought and development
   
   /* *** Call Rs-Out PDP */
   
-  //env = vzxid_new_envf(cf, envi, ap);
-  env = zxid_wsf_decor(cf, ses, env);
-  if (!env) {
+  if (!zxid_wsf_decor(cf, ses, env, 1)) {
     ERR("Response decoration failed %p", env);
     D_DEDENT("decor: ");
     return 0;
   }
-  
+
   ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
   D("DECOR len=%d envelope(%.*s)", ss->len, ss->len, ss->s);
   D_DEDENT("decor: ");

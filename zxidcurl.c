@@ -177,6 +177,87 @@ struct zxid_entity* zxid_get_meta_ss(struct zxid_conf* cf, struct zx_str* url)
 
 /* ============== SOAP Call ============= */
 
+/*() HTTP client for POST method.
+ * This method is just a wrapper around underlying libcurl HTTP client.
+ *
+ * cf:: ZXID configuration object
+ * url_len:: Length of the URL. If -1 is passed, strlen(url) is used
+ * url:: URL for POST
+ * len:: Length of the data. If -1 is passed, strlen(data) is used
+ * data:: HTTP body for the POST
+ * returns:: HTTP body of the response */
+
+struct zx_str* zxid_http_post_raw(struct zxid_conf* cf, int url_len, const char* url, int len, const char* data)
+{
+#ifdef USE_CURL
+  struct zx_str* ret;
+  CURLcode res;
+  struct zxid_curl_ctx rc;
+  struct zxid_curl_ctx wc;
+  struct curl_slist content_type;
+  struct curl_slist SOAPaction;
+  char* urli;
+  rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
+  rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
+  LOCK(cf->curl_mx, "curl soap");
+  curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
+  curl_easy_setopt(cf->curl, CURLOPT_WRITEFUNCTION, zxid_curl_write_data);
+  curl_easy_setopt(cf->curl, CURLOPT_NOPROGRESS, 1);
+  curl_easy_setopt(cf->curl, CURLOPT_FOLLOWLOCATION, 1);
+  curl_easy_setopt(cf->curl, CURLOPT_MAXREDIRS, 110);
+  curl_easy_setopt(cf->curl, CURLOPT_SSL_VERIFYPEER, 0);  /* *** arrange verification */
+  curl_easy_setopt(cf->curl, CURLOPT_SSL_VERIFYHOST, 0);  /* *** arrange verification */
+
+  if (url_len == -1)
+    url_len = strlen(url);
+  urli = ZX_ALLOC(cf->ctx, url_len+1);
+  memcpy(urli, url, url_len);
+  urli[url_len] = 0;
+  D("urli(%s) len=%d", urli, len);
+  curl_easy_setopt(cf->curl, CURLOPT_URL, urli);
+  
+  if (len == -1)
+    len = strlen(data);
+  wc.buf = wc.p = data;
+  wc.lim = data + len;
+  
+  curl_easy_setopt(cf->curl, CURLOPT_POST, 1);
+  curl_easy_setopt(cf->curl, CURLOPT_POSTFIELDSIZE, len);
+  curl_easy_setopt(cf->curl, CURLOPT_READDATA, &wc);
+  curl_easy_setopt(cf->curl, CURLOPT_READFUNCTION, zxid_curl_read_data);
+
+  memset(&content_type, 0, sizeof(content_type));
+  content_type.data = "Content-Type: text/xml";
+  memset(&SOAPaction, 0, sizeof(SOAPaction));
+#if 1
+  SOAPaction.data = "SOAPAction: \"\"";  /* Empty SOAPAction is the ID-WSF (and SAML?) standard */
+#else
+  /* Evil stuff: some implementations, especially Apache AXIS, are very
+   * picky about SOAPAction header. */
+  //SOAPaction.data = "SOAPAction: \"http://ws.apache.org/axis2/TestPolicyPortType/authRequestRequest\"";
+  SOAPaction.data = "SOAPAction: \"authRequest\"";
+#endif
+  SOAPaction.next = &content_type;    //curl_slist_append(3)
+  curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction);
+  
+  D("------------------------ url(%s) ------------------------", urli);
+  D("SOAP_CALL post(%.*s) len=%d", len, data, len);
+  res = curl_easy_perform(cf->curl);  /* <========= Actual call, blocks. */
+  UNLOCK(cf->curl_mx, "curl soap");
+  ZX_FREE(cf->ctx, urli);
+  rc.lim = rc.p;
+  rc.p[0] = 0;
+
+  D("SOAP_CALL got(%s)", rc.buf);
+  
+  ret = zx_ref_len_str(cf->ctx, rc.lim - rc.buf, rc.buf);
+  return ret;
+#else
+  ERR("This copy of zxid was compiled to NOT use libcurl. SOAP calls (such as Artifact profile and WSC) are not supported. Add -DUSE_CURL (make ENA_CURL=1) and recompile. %d", 0);
+  return 0;
+#endif
+}
+
 /*(i) Send SOAP request and wait for response. Send the message to the
  * server using Curl. Return the parsed XML response data structure.
  * This call will block while the HTTP request-response is happening.
@@ -201,66 +282,16 @@ struct zx_root_s* zxid_soap_call_raw(struct zxid_conf* cf, struct zx_str* url, s
 {
 #ifdef USE_CURL
   struct zx_root_s* r;
-  CURLcode res;
-  struct zxid_curl_ctx rc;
-  struct zxid_curl_ctx wc;
-  struct curl_slist content_type;
-  struct curl_slist SOAPaction;
-  char* urli;
-  rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
-  rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
-  LOCK(cf->curl_mx, "curl soap");
-  curl_easy_setopt(cf->curl, CURLOPT_WRITEDATA, &rc);
-  curl_easy_setopt(cf->curl, CURLOPT_WRITEFUNCTION, zxid_curl_write_data);
-  curl_easy_setopt(cf->curl, CURLOPT_NOPROGRESS, 1);
-  curl_easy_setopt(cf->curl, CURLOPT_FOLLOWLOCATION, 1);
-  curl_easy_setopt(cf->curl, CURLOPT_MAXREDIRS, 110);
-  curl_easy_setopt(cf->curl, CURLOPT_SSL_VERIFYPEER, 0);  /* *** arrange verification */
-  curl_easy_setopt(cf->curl, CURLOPT_SSL_VERIFYHOST, 0);  /* *** arrange verification */
-  urli = zx_str_to_c(cf->ctx, url);
-  D("urli(%s) len=%d", urli, data->len);
-  curl_easy_setopt(cf->curl, CURLOPT_URL, urli);
-  
-  wc.buf = wc.p = data->s;
-  wc.lim = data->s + data->len;
-  
-  curl_easy_setopt(cf->curl, CURLOPT_POST, 1);
-  curl_easy_setopt(cf->curl, CURLOPT_POSTFIELDSIZE, data->len);
-  curl_easy_setopt(cf->curl, CURLOPT_READDATA, &wc);
-  curl_easy_setopt(cf->curl, CURLOPT_READFUNCTION, zxid_curl_read_data);
-
-  memset(&content_type, 0, sizeof(content_type));
-  content_type.data = "Content-Type: text/xml";
-  memset(&SOAPaction, 0, sizeof(SOAPaction));
-#if 1
-  SOAPaction.data = "SOAPAction: \"\"";  /* Empry SOAPAction is the ID-WSF (and SAML?) standard */
-#else
-  /* Evil stuff: some implementations, especially Apache AXIS, are very
-   * picky about SOAPAction header. */
-  //SOAPaction.data = "SOAPAction: \"http://ws.apache.org/axis2/TestPolicyPortType/authRequestRequest\"";
-  SOAPaction.data = "SOAPAction: \"authRequest\"";
-#endif
-  SOAPaction.next = &content_type;    //curl_slist_append(3)
-  curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction);
-  
-  D("------------------------ url(%.*s) ------------------------", url->len, url->s);
-  D("SOAP_CALL post(%.*s) len=%d", data->len, data->s, data->len);
-  res = curl_easy_perform(cf->curl);  /* <========= Actual call, blocks. */
-  UNLOCK(cf->curl_mx, "curl soap");
-  ZX_FREE(cf->ctx, urli);
-  rc.lim = rc.p;
-  rc.p[1] = 0;
-
-  D("SOAP_CALL got(%s)", rc.buf);
+  struct zx_str* ret = zxid_http_post_raw(cf, url->len, url->s, data->len, data->s);
   
   LOCK(cf->ctx->mx, "soap_call");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, rc.buf, rc.lim);
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ret->s, ret->s + ret->len);
   r = zx_DEC_root(cf->ctx, 0, 1);
   UNLOCK(cf->ctx->mx, "soap_call");
   if (!r || !r->Envelope || !r->Envelope->Body) {
-    ERR("Failed to parse SOAP response url(%.*s) CURLcode(%d) CURLerr(%s) buf(%.*s)",
-	url->len, url->s, res, CURL_EASY_STRERR(res), rc.lim-rc.buf, rc.buf);
-    ZX_FREE(cf->ctx, rc.buf);
+    ERR("Failed to parse SOAP response url(%.*s) buf(%.*s)",
+	url->len, url->s, ret->len, ret->s);
+    ZX_FREE(cf->ctx, ret);
     return 0;
   }
   return r;

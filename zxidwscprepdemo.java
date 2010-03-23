@@ -1,13 +1,11 @@
-/* zxidappdemo.java  -  Demonstrate detecting missing session and redirection to zxidsrvlet
+/* zxidwscprepdemo.java  -  Demonstrate calling web service using alternate API
  * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
- * Copyright (c) 2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
- * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
  * Licensed under Apache License 2.0, see file COPYING.
- * $Id: zxidappdemo.java,v 1.4 2009-11-29 12:23:06 sampo Exp $
- * 16.10.2009, created --Sampo
+ * $Id$
+ * 21.3.2010, created --Sampo
  *
  * This servlet plays the role of "payload" servlet in ZXID SSO servlet
  * integration demonstration. It illustrates the steps
@@ -26,7 +24,7 @@ import javax.servlet.http.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class zxidappdemo extends HttpServlet {
+public class zxidwscprepdemo extends HttpServlet {
     static final boolean verbose = false;
     static final Pattern idpnid_pat = Pattern.compile("idpnid:[ ]([^\\n]*)");
     static final Pattern nidfmt_pat = Pattern.compile("nidfmt:[ ]([^\\n]*)");
@@ -47,7 +45,22 @@ public class zxidappdemo extends HttpServlet {
 	cf = zxidjni.new_conf_to_cf(conf);
 	zxidjni.set_opt(cf, 1, 1);
     }
-    
+
+//     public String zxid_dead_simple_call(String sid, String svctype, String url, String body)
+//     {
+// 	//System.loadLibrary("zxidjni");
+// 	zxidjava.zxid_conf cf = zxidjni.new_conf_to_cf("PATH=/var/zxid/");
+// 	zxidjni.set_opt(cf, 1, 1);
+// 	zxid_ses zxses = zxidjni.fetch_ses(cf, ***sid);
+	
+// 	ret = zxidjni.call(cf, zxses,
+// 			   svctype,
+// 			   url,
+// 			   null, null,
+// 			   body);
+// 	return ret;
+//     }
+
     public void hilite_fields(ServletOutputStream out, String ret, int n)
 	throws IOException
     {
@@ -147,16 +160,6 @@ public class zxidappdemo extends HttpServlet {
 
 	out.print("[<a href=\"sso?gl=1&s="+ses.getValue("sesid")+"\">Local Logout</a> | <a href=\"sso?gr=1&s="+ses.getValue("sesid")+"\">Single Logout</a>]\n");
 
-	// The SSO servlet will have done one iteration of authorization. The following
-	// serves to illustrate, how to explicitly call a PDP from your code.
-
-	if (zxidjni.az_cf(cf, "Action=Show", ses.getValue("sesid").toString()) == null) {
-	    out.print("<p><b>Denied.</b> Normally page would not be shown, but we show the session attributes for debugging purposes.\n");
-	    //res.setStatus(302, "Denied");
-	} else {
-	    out.print("<p>Authorized.\n");
-	}
-
 	out.print("<table align=right><tr><td>");
 	out.print("<img src=\"tas3-recurs-demo.png\" border=0>");
 	out.print("</td></tr></table>");
@@ -182,11 +185,8 @@ public class zxidappdemo extends HttpServlet {
 	    }
 	}
 	out.print("<p>");
-	out.print("[ <a href=\"?idhrxml\">tas3_call(idhrxml)</a>");
-	out.print(" | <a href=\"?x-foobar\">Recursive Echo</a>");
-	out.print(" | <a href=\"?leaf\">Leaf Echo</a>");
-	out.print(" | <a href=\"?multidi\">Multi discovery</a>");
-	out.print(" | <a href=\"?multi\">Multi discovery and call</a>");
+	out.print("[ <a href=\"?leaf\">zxid_call(leaf)</a>");
+	out.print(" | [ <a href=\"?leafprep\">zxid_wsc_prepare_call(leaf)</a>");
 	out.print(" | <a href=\"?all\">All</a>");
 	out.print("]<p>");
 
@@ -195,52 +195,6 @@ public class zxidappdemo extends HttpServlet {
 	String ret;
 	String sid = ses.getValue("sesid").toString();
 	zxid_ses zxses = zxidjni.fetch_ses(cf, sid);
-	
-	if (qs.equals("idhrxml") || qs.equals("all")) {
-	    out.print("<p>Output from idhrxml web service call sid("+sid+"):<br>\n<textarea cols=80 rows=20>");
-	    ret = zxidjni.call(cf, zxses,
-			       zxidjni.zx_xmlns_idhrxml,
-			       "http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B",
-			       null, null,
-			       "<idhrxml:Query>"
-			       + "<idhrxml:QueryItem>"
-			       + "<idhrxml:Select></idhrxml:Select>"
-			       + "</idhrxml:QueryItem>" +
-			       "</idhrxml:Query>");
-
-	    ret = zxidjni.extract_body(cf, ret);
-	    out.print(ret);
-	    out.print("</textarea>");
-	}
-	
-	// Demo another web service call, this time the service by zxidwspdemo.java
-
-	if (qs.equals("x-foobar") || qs.equals("all")) {
-	    out.print("<p>Output from recursive web service call:<br>\n");
-	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", "http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B", null, null,
-			       "<foobar>Do it!</foobar>");
-	    
-	    ret = zxidjni.extract_body(cf, ret);
-	    if (ret.indexOf("code=\"OK\"") == -1) {
-		out.print("<p>Error from call:<br>\n<textarea cols=80 rows=20>");
-		out.print(ret);
-		out.print("</textarea>\n");
-	    } else {
-		out.print("<p>Output from Leaf web services call (relayed by middle call):<br>\n");
-		hilite_fields(out, ret, 1);
-		out.print("<p>Output from Middle web services call:<br>\n");
-		hilite_fields(out, ret, 2);
-		if (true || verbose) {
-		    out.print("<textarea cols=80 rows=20>");
-		    out.print(ret);
-		    out.print("</textarea>\n");
-		}
-	    }
-
-
-	    out.print(ret);
-	    out.print("</textarea>");
-	}
 	
 	// Demo another web service call, this time the service by zxidwspdemo.java
 
@@ -263,80 +217,36 @@ public class zxidappdemo extends HttpServlet {
 		}
 	    }
 	}
-	
-	// Multidiscovery
-
-	if (qs.equals("multidi")) {
-	    out.print("<h4>Multidiscovery</h4>\n");
-	    
-	    SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
-	    
-	    for (int i=1; i<100; ++i) {
-		epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);
-		if (epr[i] == null)
-		    break;
-		out.print("<p>EPR "+i+" <a href=\"?o=call&url="+zxidjni.get_epr_address(cf, epr[i])+"\">Call</a>");
-		out.print(" desc("+zxidjni.get_epr_desc(cf, epr[i])+") svctype(urn:x-foobar)<br>\n");
-		out.print(" address("+zxidjni.get_epr_address(cf, epr[i])+")<br>\n");
-		out.print(" entid("+zxidjni.get_epr_entid(cf, epr[i])+")<br>\n");
-	    }
-	}
-
-	// Call specific
-
-	if (qs.startsWith("o=call&url=")) {
-	    String url = qs.substring(11);
-	    out.print("<h4>Specific Call</h4>\n");
-	    ret = zxidjni.call(cf, zxses, "urn:x-foobar", url, null, null,
-			       "<foobar>do it</foobar>");
-	    ret = zxidjni.extract_body(cf, ret);
-	    if (ret.indexOf("code=\"OK\"") == -1) {
-		out.print("<p>Error from call address("+url+"):<br>\n<textarea cols=80 rows=20>");
-		out.print(ret);
-		out.print("</textarea>\n");
-	    } else {
-		out.print("<p>Output from call address("+url+"):<br>\n");
-		hilite_fields(out, ret, 1);
-		if (verbose) {
-		    out.print("<textarea cols=80 rows=20>");
-		    out.print(ret);
+	if (qs.equals("leafprep") || qs.equals("all")) {
+	    SWIGTYPE_p_zx_a_EndpointReference_s epr = zxidjni.get_epr(cf, zxses, "x-recurs", null, null, null, 1);
+	    if (epr != null) {
+		String url = zxidjni.get_epr_address(cf, epr);
+		System.err.print("URL("+url+")\n");
+		String req_soap = zxidjni.wsc_prepare_call(cf, zxses, epr, null,
+							   "<foobar>Do it!</foobar>");
+		//System.err.print("CALL("+url+") req_soap("+req_soap+")\n");
+		String resp_soap = zxidjni.http_post_raw(cf, -1, url, -1, req_soap);
+		if (zxidjni.wsc_valid_resp(cf, zxses, null, resp_soap) == 1) {
+		    if (resp_soap.indexOf("code=\"OK\"") == -1) {
+			out.print("<p>Error from call:<br>\n<textarea cols=80 rows=20>");
+			out.print(resp_soap);
+			out.print("</textarea>\n");
+		    } else {
+			out.print("<p>Output from Leaf web services call (prep):<br>\n");
+			hilite_fields(out, resp_soap, 1);
+			if (true || verbose) {
+			    out.print("<textarea cols=80 rows=20>");
+			    out.print(resp_soap);
+			    out.print("</textarea>\n");
+			}
+		    }
+		} else {
+		    out.print("<p>Invalid response:<br>\n<textarea cols=80 rows=20>");
+		    out.print(resp_soap);
 		    out.print("</textarea>\n");
 		}
-	    }
-	}
-
-	// Multidiscovery and call
-
-	if (qs.equals("multi") || qs.equals("all")) {
-	    out.print("<h4>Multidiscovery and Call</h4>\n");
-	    
-	    SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
-	    
-	    for (int i=1; i<100; ++i) {
-		epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);
-		if (epr[i] == null)
-		    break;
-		out.print("<p>EPR "+i+" address("+zxidjni.get_epr_address(cf, epr[i])+")\n");
-		out.print("<p>EPR "+i+"   entid("+zxidjni.get_epr_entid(cf, epr[i])+")\n");
-		out.print("<p>EPR "+i+"    desc("+zxidjni.get_epr_desc(cf, epr[i])+")\n");
-	    }
-	    
-	    for (int i=1; i<100; ++i) {
-		if (epr[i] == null)
-		    break;
-		out.print("<p>Output from multicall "+i+" entid:<br>\n<textarea cols=80 rows=20>");
-		ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_entid(cf, epr[i]), null, null,
-				   "<foobar>do i="+i+"</foobar>");
-		ret = zxidjni.extract_body(cf, ret);
-		out.print(ret);
-		out.print("</textarea>\n");
-		
-		out.print("<p>Output from multicall "+i+" address:<br>\n<textarea cols=80 rows=20>");
-		ret = zxidjni.call(cf, zxses, "urn:x-foobar", zxidjni.get_epr_address(cf, epr[i]), null, null,
-				   "<foobar>do i="+i+"</foobar>");
-		ret = zxidjni.extract_body(cf, ret);
-		out.print(ret);
-		out.print("</textarea>\n");
+	    } else {
+		out.print("<p>No EPR found<br>\n");
 	    }
 	}
 	out.print("<p>Done.\n");

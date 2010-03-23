@@ -415,6 +415,7 @@ ZX_ROOTS+=-r e:Envelope -r e:Header -r e:Body
 
 ZX_SG+=sg/saml-schema-metadata-2.0.sg
 ZX_SG+=sg/shibboleth-metadata-1.0.sg
+ZX_SG+=sg/sstc-saml-idp-discovery.sg
 ZX_ROOTS+=-r md:EntityDescriptor -r md:EntitiesDescriptor
 
 endif
@@ -530,7 +531,7 @@ ZX_GEN_H=\
  c/zx-dp-data.h   c/zx-pmm-data.h   c/zx-prov-data.h  c/zx-idp-data.h        c/zx-shps-data.h \
  c/zx-demomed-data.h c/zx-hrxml-data.h c/zx-idhrxml-data.h \
  c/zx-xsi-data.h  c/zx-xs-data.h    c/zx-xml-data.h \
- c/zx-tas3-data.h  c/zx-tas3sol-data.h c/zx-shibmd-data.h
+ c/zx-tas3-data.h  c/zx-tas3sol-data.h c/zx-shibmd-data.h c/zx-idpdisc-data.h
 
 ZX_GEN_C=\
  c/zx-a-aux.c      c/zx-di12-dec.c    c/zx-is-enc.c      c/zx-sa11-dec.c     c/zx-sp11-dec.c \
@@ -592,7 +593,8 @@ ZX_GEN_C=\
  c/zx-xml-aux.c     c/zx-xml-dec.c     c/zx-xml-enc.c     c/zx-xml-getput.c \
  c/zx-tas3-aux.c    c/zx-tas3-dec.c    c/zx-tas3-enc.c    c/zx-tas3-getput.c \
  c/zx-tas3sol-aux.c c/zx-tas3sol-dec.c c/zx-tas3sol-enc.c c/zx-tas3sol-getput.c \
- c/zx-shibmd-aux.c  c/zx-shibmd-dec.c  c/zx-shibmd-enc.c  c/zx-shibmd-getput.c
+ c/zx-shibmd-aux.c  c/zx-shibmd-dec.c  c/zx-shibmd-enc.c  c/zx-shibmd-getput.c \
+ c/zx-idpdisc-aux.c  c/zx-idpdisc-dec.c  c/zx-idpdisc-enc.c  c/zx-idpdisc-getput.c
 
 ifeq ($(ENA_GEN),1)
 
@@ -639,9 +641,13 @@ c/zxidvers.h:
 	$(ECHO) "#define ZXID_COMPILE_DATE \"`date +%s`\"" >>c/zxidvers.h
 	$(ECHO) "#endif" >>c/zxidvers.h
 
+# $(ZXID_OBJ:.o=.c) $(WSF_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
+
 gen: c/zxidvers.h c/license.c c/zx-const.h c/zx-attrs.gperf
 
 genwrap: gen zxidjava/zxid_wrap.c Net/SAML_wrap.c php/zxid_wrap.c py/zxid_wrap.c ruby/zxid_wrap.c csharp/zxid_wrap.c
+
+# make cleany && make genwrap ENA_GEN=1 && make all ENA_GEN=1
 
 endif
 
@@ -908,10 +914,14 @@ zxidwspdemo.class: zxidwspdemo.java zxidjava/zxidjni.class
 zxidwspleaf.class: zxidwspleaf.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java zxidwspleaf.java
 
+zxidwscprepdemo.class: zxidwscprepdemo.java zxidjava/zxidjni.class
+	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java zxidwscprepdemo.java
+
+
 zxidjava.jar: zxidjava/*.class
 	$(JAR) cf zxidjava.jar $<
 
-javazxid: zxidjava/libzxidjni.$(JNILIB) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwspdemo.class zxidwspleaf.class
+javazxid: zxidjava/libzxidjni.$(JNILIB) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class
 
 javazxid_install: zxidjava/libzxidjni.so
 	@$(ECHO) "javazxid_install: Work in Progress. See zxid-java.pd"
@@ -920,7 +930,7 @@ javazxid_war:
 	mkdir -p zxidservlet/WEB-INF/classes/zxidjava/
 	cp -f ./zxidjava/*.class ./zxidservlet/WEB-INF/classes/zxidjava/
 	cp -f ./servlet/WEB-INF/web.xml ./zxidservlet/WEB-INF/
-	cp -f zxidsrvlet.class zxidappdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
+	cp -f zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
 	cd ./zxidservlet ; $(JAR) cf ../zxidservlet.war *; cd ../
 	rm -rf zxidservlet
 
@@ -1269,17 +1279,29 @@ docclean:
 
 distclean: clean
 
+cleanbin:
+	rm -f zxid zxlogview zxbench zxencdectest libzxid.a libzxid.so* sizeof zxid.stderr
+	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
+	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall
+	rm -f mod_auth_saml.so zxididp zxdecode
+
 miniclean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean
-	@$(ECHO) ------------------ Making clean
+	@$(ECHO) ------------------ Making miniclean
 	rm -f *.o zxid zxlogview zxbench zxencdectest libzxid.a libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
 	rm -f mod_auth_saml.so zxididp
 	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar afr.*
 
-cleaner: clean perlcleaner phpcleaner pycleaner rubycleaner csharpcleaner javacleaner
-	@$(ECHO) ================== Making cleaner
-	rm -f c/*.[hc] c/*.gperf c/*.y deps deps.dep c/*.deps
+# make cleany && make genwrap ENA_GEN=1 && make all ENA_GEN=1
+
+cleany: clean perlcleaner phpcleaner pycleaner rubycleaner csharpcleaner javacleaner
+	@$(ECHO) ------------------ Making cleany
+	rm -f c/*.[hc] c/*.gperf c/*.y
 	rm -rf pulver; mkdir pulver
+
+cleaner: cleany cleangcov
+	@$(ECHO) ================== Making cleaner
+	rm -f deps deps.dep c/*.deps
 
 regen: clean perlcleaner phpcleaner pycleaner rubycleaner csharpcleaner javacleaner
 	@$(ECHO) ================== Making regen
@@ -1288,12 +1310,12 @@ regen: clean perlcleaner phpcleaner pycleaner rubycleaner csharpcleaner javaclea
 # N.B. The clean and dist targets deliberately do not delete contents of
 #      directory c/ although they are generated files. This is to allow
 #      zxid to be built without the tools needed to generate those files.
-clean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean
+clean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean cleanbin
 	@$(ECHO) ------------------ Making clean
-	rm -f *.o zxid zxlogview zxbench zxencdectest libzxid.a libzxid.so* sizeof zxid.stderr
-	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall
-	rm -f mod_auth_saml.so zxididp zxdecode
-	rm -f core* *~ .*~ .\#* c/*.o c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar afr.*
+	rm -f *.o c/*.o
+	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar afr.*
+
+# zxcot -n -g http://federation.njedge.net/metadata/njedge-fed-metadata.xml
 
 dist:
 	rm -rf zxid-$(ZXIDREL)
@@ -1475,6 +1497,8 @@ dep: deps
 
 deps: $(ZXID_OBJ:.o=.c) $(WSF_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
 	$(CC) $(CDEF) $(CDIR) -MM $^ >deps.dep
+
+# make gen ENA_GEN=1
 
 endif
 

@@ -375,42 +375,12 @@ void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security
   }
 }
 
-struct zx_e_Envelope_s* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env)
+static int zxid_wsc_prep(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env)
 {
-  struct zx_root_s* root;
-  struct zx_e_Fault_s* flt;
-  struct zx_wsse_Security_s* sec;
-  struct zx_wsse_SecurityTokenReference_s* str;
   struct zx_e_Header_s* hdr;
-  
-  if (!env || !env->Body) {
-    ERR("NULL SOAP envelope or body %p", env);
+  if (!zxid_wsf_decor(cf, ses, env, 0))
     return 0;
-  }
-
-  if (!env->Header)
-    env->Header = zx_NEW_e_Header(cf->ctx);
   hdr = env->Header;
-  
-  /* *** Much similarity to zxid_wsp_decor(), consider merge. */
-  
-  /* Populate SOAP headers. */
-  
-  hdr->Framework = zx_NEW_sbf_Framework(cf->ctx);
-  hdr->Framework->version = zx_ref_str(cf->ctx, "2.0");
-  hdr->Framework->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Framework->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-
-#if 1
-  /* *** Conor claims Sender is not mandatory */
-  hdr->Sender = zx_NEW_b_Sender(cf->ctx);
-  hdr->Sender->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Sender->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-  if (cf->affiliation)
-    hdr->Sender->affiliationID = zx_ref_str(cf->ctx, cf->affiliation);
-  hdr->Sender->providerID = zxid_my_entity_id(cf);
-#endif
-
 #if 0
   /**** for now, this is just implied by the sec mech */
   hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx);
@@ -422,20 +392,6 @@ struct zx_e_Envelope_s* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_
   hdr->To->gg.content = epr->Address->gg.content;
   hdr->To->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
   hdr->To->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-
-#if 0
-  hdr->Action = zx_NEW_a_Action(cf->ctx);
-  hdr->Action->gg.content = zx_ref_str(cf->ctx, ***);
-  hdr->Action->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Action->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  hdr->From = zx_NEW_a_From(cf->ctx);
-  hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));
-  hdr->From->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->From->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
 
   /* Mandatory for a request. */
   hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx);
@@ -451,46 +407,77 @@ struct zx_e_Envelope_s* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_
   hdr->FaultTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
   hdr->FaultTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
 #endif
+  return 1;
+}
 
-#if 0
-  hdr->ReferenceParameters = zx_NEW_a_ReferenceParameters(cf->ctx);
-  hdr->ReferenceParameters->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->ReferenceParameters->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
+static int zxid_wsc_prep_secmech(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env)
+{
+  int secmech;
+  struct zx_wsse_Security_s* sec;
+  struct zx_wsse_SecurityTokenReference_s* str;
+  struct zx_e_Header_s* hdr;
 
-#if 0
-  hdr->Credentials = zx_NEW_tas3_Credentials(cf->ctx);
-  hdr->Credentials->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Credentials->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  /* If you want this header, you should
-   * create it prior to calling zxid_wsc_call() */
-  hdr->UsageDirective = zx_NEW_b_UsageDirective(cf->ctx);
-  hdr->UsageDirective->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->UsageDirective->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  /* Interaction or redirection. If you want this header, you should
-   * create it prior to calling zxid_wsc_call() */
-  hdr->UserInteraction = zx_NEW_b_UserInteraction(cf->ctx);
-  hdr->UserInteraction->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->UserInteraction->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-  
-  sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx);
-  //sec->Id = zx_ref_str(cf->ctx, "SEC");
-  sec->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  sec->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-  sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx);
-  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx);
-  
-  hdr->MessageID = zx_NEW_a_MessageID(cf->ctx);
-  hdr->MessageID->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->MessageID->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-  
+  hdr = env->Header;
+  hdr->MessageID->gg.content = zxid_mk_id(cf, "urn:M", ZXID_ID_BITS);
+  sec = hdr->Security;
+  sec->Timestamp->Created->gg.content = zxid_date_time(cf, time(0));
+    
+  /* Clear away any credentials from previous iteration, if any. */
+  sec->Signature = 0;
+  sec->BinarySecurityToken = 0;
+  sec->SecurityTokenReference = 0;
+  sec->Assertion = 0;
+  sec->sa11_Assertion = 0;
+  sec->ff12_Assertion = 0;
+    
+  /* Sign all Headers that have Id set. See wsc_sign_sec_mech() */
+  secmech = zxid_map_sec_mech(epr);
+  if (!secmech)
+    secmech = ZXID_SEC_MECH_BEARER;
+  switch (secmech) {
+  case ZXID_SEC_MECH_NULL:
+    D("secmech null %d", secmech);
+    break;
+  case ZXID_SEC_MECH_BEARER:
+    if (epr->Metadata->SecurityContext->Token->EncryptedAssertion)
+      sec->EncryptedAssertion = epr->Metadata->SecurityContext->Token->EncryptedAssertion;
+    else if (epr->Metadata->SecurityContext->Token->Assertion)
+      sec->Assertion = epr->Metadata->SecurityContext->Token->Assertion;
+    str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx);
+    str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx);
+    str->KeyIdentifier->ValueType = zx_ref_str(cf->ctx, SAMLID_TOK_PROFILE);
+    if (sec->Assertion)
+      str->KeyIdentifier->gg.content = sec->Assertion->ID;
+    /* *** In case of encrypted assertion, how is the KeyIdentifier populated? */
+    
+    zxid_wsf_sign(cf, cf->wsc_sign, sec, str, hdr, env->Body);
+    
+    D("secmech bearer %d", secmech);
+    break;
+  case ZXID_SEC_MECH_SAML:
+    if (epr->Metadata->SecurityContext->Token->EncryptedAssertion)
+      sec->EncryptedAssertion
+	= epr->Metadata->SecurityContext->Token->EncryptedAssertion;
+    else if (epr->Metadata->SecurityContext->Token->Assertion)
+      sec->Assertion = epr->Metadata->SecurityContext->Token->Assertion;
+    /* *** Sign SEC, MID, TO, ACT (if any) */
+    zxid_wsf_sign(cf, cf->wsc_sign, sec, 0, hdr, env->Body);
+    D("secmech saml hok %d", secmech);
+    break;
+  case ZXID_SEC_MECH_X509:
+    /* *** Sign SEC, MID, TO, ACT (if any) */
+    zxid_wsf_sign(cf, cf->wsc_sign, sec, 0, hdr, env->Body);
+    D("secmech x509 %d", secmech);
+    break;
+  case ZXID_SEC_MECH_PEERS:
+    /* *** ? */
+    D("secmech peers %d", secmech);
+    break;
+  default:
+    ERR("Unknown secmech %d", secmech);
+    return 0;
+  }
+  return 1;
 }
 
 /*(i) zxid_wsc_call() implements the main low level ID-WSF web service call
@@ -508,183 +495,21 @@ struct zx_e_Envelope_s* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_
 /* Called by:  main x9, zxid_call, zxid_get_epr */
 struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env)
 {
-  int i, res, secmech;
+  int i, res;
   struct zx_root_s* root;
   struct zx_e_Fault_s* flt;
-  struct zx_wsse_Security_s* sec;
-  struct zx_wsse_SecurityTokenReference_s* str;
-  struct zx_e_Header_s* hdr;
-  
-  if (!env || !env->Body) {
-    ERR("NULL SOAP envelope or body %p", env);
-    return 0;
-  }
 
   D_INDENT("wsc_call: ");
   
-  if (!env->Header)
-    env->Header = zx_NEW_e_Header(cf->ctx);
-  hdr = env->Header;
-  
-  /* *** Much similarity to zxid_wsp_decor(), consider merge. */
-  
-  /* Populate SOAP headers. */
-  
-  hdr->Framework = zx_NEW_sbf_Framework(cf->ctx);
-  hdr->Framework->version = zx_ref_str(cf->ctx, "2.0");
-  hdr->Framework->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Framework->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-
-#if 1
-  /* *** Conor claims Sender is not mandatory */
-  hdr->Sender = zx_NEW_b_Sender(cf->ctx);
-  hdr->Sender->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Sender->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-  if (cf->affiliation)
-    hdr->Sender->affiliationID = zx_ref_str(cf->ctx, cf->affiliation);
-  hdr->Sender->providerID = zxid_my_entity_id(cf);
-#endif
-
-#if 0
-  /**** for now, this is just implied by the sec mech */
-  hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx);
-  hdr->TargetIdentity->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->TargetIdentity->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-  hdr->To = zx_NEW_a_To(cf->ctx);
-  hdr->To->gg.content = epr->Address->gg.content;
-  hdr->To->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->To->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-
-#if 0
-  hdr->Action = zx_NEW_a_Action(cf->ctx);
-  hdr->Action->gg.content = zx_ref_str(cf->ctx, ***);
-  hdr->Action->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Action->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  hdr->From = zx_NEW_a_From(cf->ctx);
-  hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));
-  hdr->From->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->From->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-  /* Mandatory for a request. */
-  hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx);
-  /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));*/
-  hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_dup_str(cf->ctx, A_ANON));
-  hdr->ReplyTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->ReplyTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-
-#if 0
-  /* Omission means to use same address as ReplyTo */
-  hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx);
-  hdr->FaultTo->Address = zx_mk_addr(cf->ctx, zx_strf(cf->ctx, "%s?o=P", cf->url));
-  hdr->FaultTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->FaultTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  hdr->ReferenceParameters = zx_NEW_a_ReferenceParameters(cf->ctx);
-  hdr->ReferenceParameters->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->ReferenceParameters->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  hdr->Credentials = zx_NEW_tas3_Credentials(cf->ctx);
-  hdr->Credentials->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Credentials->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  /* If you want this header, you should
-   * create it prior to calling zxid_wsc_call() */
-  hdr->UsageDirective = zx_NEW_b_UsageDirective(cf->ctx);
-  hdr->UsageDirective->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->UsageDirective->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-
-#if 0
-  /* Interaction or redirection. If you want this header, you should
-   * create it prior to calling zxid_wsc_call() */
-  hdr->UserInteraction = zx_NEW_b_UserInteraction(cf->ctx);
-  hdr->UserInteraction->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->UserInteraction->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
-  
-  sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx);
-  //sec->Id = zx_ref_str(cf->ctx, "SEC");
-  sec->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  sec->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-  sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx);
-  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx);
-  
-  hdr->MessageID = zx_NEW_a_MessageID(cf->ctx);
-  hdr->MessageID->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->MessageID->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  if (!zxid_wsc_prep(cf, ses, epr, env)) {
+    D_DEDENT("wsc_call: ");
+    return 0;
+  }
   
   for (i=0; i < cf->max_soap_retry; ++i) {
-    
-    /* Every iteration gets its own MessageID, Timestamp, and credential assertion. */
-    
-    hdr->MessageID->gg.content = zxid_mk_id(cf, "urn:M", ZXID_ID_BITS);;
-    sec->Timestamp->Created->gg.content = zxid_date_time(cf, time(0));
-    
-    /* Clear away any credentials from previous iteration. */
-    sec->Signature = 0;
-    sec->BinarySecurityToken = 0;
-    sec->SecurityTokenReference = 0;
-    sec->Assertion = 0;
-    sec->sa11_Assertion = 0;
-    sec->ff12_Assertion = 0;
-    
-    /* Sign all Headers that have Id set. See wsc_sign_sec_mech() */
-    secmech = zxid_map_sec_mech(epr);
-    if (!secmech)
-      secmech = ZXID_SEC_MECH_BEARER;
-    switch (secmech) {
-    case ZXID_SEC_MECH_NULL:
-      D("secmech null %d", secmech);
-      break;
-    case ZXID_SEC_MECH_BEARER:
-      if (epr->Metadata->SecurityContext->Token->EncryptedAssertion)
-	sec->EncryptedAssertion = epr->Metadata->SecurityContext->Token->EncryptedAssertion;
-      else if (epr->Metadata->SecurityContext->Token->Assertion)
-	sec->Assertion = epr->Metadata->SecurityContext->Token->Assertion;
-      str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx);
-      str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx);
-      str->KeyIdentifier->ValueType = zx_ref_str(cf->ctx, SAMLID_TOK_PROFILE);
-      if (sec->Assertion)
-	str->KeyIdentifier->gg.content = sec->Assertion->ID;
-      /* *** In case of encrypted assertion, how is the KeyIdentifier populated? */
-      
-      zxid_wsf_sign(cf, cf->wsc_sign, sec, str, hdr, env->Body);
-      
-      D("secmech bearer %d", secmech);
-      break;
-    case ZXID_SEC_MECH_SAML:
-      if (epr->Metadata->SecurityContext->Token->EncryptedAssertion)
-	sec->EncryptedAssertion
-	  = epr->Metadata->SecurityContext->Token->EncryptedAssertion;
-      else if (epr->Metadata->SecurityContext->Token->Assertion)
-	sec->Assertion = epr->Metadata->SecurityContext->Token->Assertion;
-      /* *** Sign SEC, MID, TO, ACT (if any) */
-      zxid_wsf_sign(cf, cf->wsc_sign, sec, 0, hdr, env->Body);
-      D("secmech saml hok %d", secmech);
-      break;
-    case ZXID_SEC_MECH_X509:
-      /* *** Sign SEC, MID, TO, ACT (if any) */
-      zxid_wsf_sign(cf, cf->wsc_sign, sec, 0, hdr, env->Body);
-      D("secmech x509 %d", secmech);
-      break;
-    case ZXID_SEC_MECH_PEERS:
-      /* *** ? */
-      D("secmech peers %d", secmech);
-      break;
-    default:
-      ERR("Unknown secmech %d", secmech);
+    if (!zxid_wsc_prep_secmech(cf, epr, env)) {
+      D_DEDENT("wsc_call: ");
+      return 0;
     }
     
     root = zxid_soap_call_envelope(cf, epr->Address->gg.content, env);
@@ -729,13 +554,59 @@ struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses
   return 0;
 }
 
-/* ----------------------------------------
- * Simplify writing WSCs */
-
 static char zx_env_body_open[]  = "<e:Envelope xmlns:e=\""zx_xmlns_e"\"><e:Header></e:Header><e:Body>";
 static char zx_env_body_close[] = "</e:Body></e:Envelope>";
 static char zx_env_open[]  = "<e:Envelope xmlns:e=\""zx_xmlns_e"\"><e:Header></e:Header>";
 static char zx_env_close[] = "</e:Envelope>";
+
+/*() Convenience helper function to parse SOAP Envelope input string.
+ * If the specified envelope is incomplete, it is completed.
+ *
+ * If the string starts by "<e:Envelope", then string
+ * should be a complete SOAP envelope including <e:Header> and <e:Body> parts.
+ * If the string starts by "<e:Body", then the <e:Envelope> and <e:Header> are
+ * automatically added. If the string starts by neither of the above (be
+ * careful to use the "e:" as namespace prefix), then it is assumed to be the
+ * payload content of the <e:Body> and the rest of the SOAP envelope is added.
+ */
+
+struct zx_e_Envelope_s* zxid_add_env_if_needed(struct zxid_conf* cf, const char* enve)
+{
+  struct zx_e_Envelope_s* env;
+  struct zx_root_s* r;
+  if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
+    for (enve += sizeof("<?xml "); *enve && !(enve[0] == '?' && enve[1] == '>'); ++enve) ;
+    if (*enve)
+      enve += 2;
+  }
+  
+  if (memcmp(enve, "<e:Envelope", sizeof("<e:Envelope")-1)) {
+    if (memcmp(enve, "<e:Body", sizeof("<e:Body")-1)) {
+      /* Must be just payload */
+      enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_body_open, enve, zx_env_body_close);
+    } else {
+      /* <e:Body> provided */
+      enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_open, enve, zx_env_close);
+    }
+  } /* else <e:Envelope> provided */
+
+  LOCK(cf->ctx->mx, "add_env");
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
+  r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "add_env");
+  if (!r) {
+    ERR("Malformed XML enve(%s)", enve);
+    return 0;
+  }
+  env = r->Envelope;
+  ZX_FREE(cf->ctx, r);
+  if (!env)
+    ERR("No <e:Envelope> found in input argument. enve(%s)", enve);
+  return env;
+}
+
+/* ----------------------------------------
+ * Simplify writing WSCs */
 
 /*(i) Make a SOAP call given XML payload for SOAP <e:Envelope> or <e:Body> content,
  * specified by the string. This is your WSC work horse for calling almost any kind
@@ -777,48 +648,20 @@ static char zx_env_close[] = "</e:Envelope>";
 struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve)
 {
   struct zx_str* ret;
-  struct zx_root_s* r;
   struct zx_e_Envelope_s* env;
   struct zx_a_EndpointReference_s* epr;
-  D_INDENT("call: ");
 
   if (!cf || !ses || !enve) {
     ERR("Missing mandatory arguments ses=%p", ses);
     return 0;
   }
 
-  if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
-    for (enve += sizeof("<?xml "); *enve && !(enve[0] == '?' && enve[1] == '>'); ++enve) ;
-    if (*enve)
-      enve += 2;
-  }
-  
-  if (memcmp(enve, "<e:Envelope", sizeof("<e:Envelope")-1)) {
-    if (memcmp(enve, "<e:Body", sizeof("<e:Body")-1)) {
-      /* Must be just payload */
-      enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_body_open, enve, zx_env_body_close);
-    } else {
-      /* <e:Body> provided */
-      enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_open, enve, zx_env_close);
-    }
-  } /* else <e:Envelope> provided */
-
-  LOCK(cf->ctx->mx, "call");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "call");
-  if (!r) {
-    ERR("Malformed XML enve(%s)", enve);
-    D_DEDENT("call: ");
-    return 0;
-  }
-  env = r->Envelope;
+  D_INDENT("call: ");
+  env = zxid_add_env_if_needed(cf, enve);
   if (!env) {
-    ERR("No <e:Envelope> found. enve(%s)", enve);
     D_DEDENT("call: ");
     return 0;
   }
-  ZX_FREE(cf->ctx, r);
 
   //*** Needs thought and development
 
@@ -870,6 +713,118 @@ struct zx_str* zxid_callf(struct zxid_conf* cf, struct zxid_ses* ses, const char
   s = zx_alloc_vasprintf(cf->ctx, 0, env_f, ap);
   va_end(ap);
   return zxid_call(cf, ses, svctype, url, di_opt, az_cred, s);
+}
+
+/*(i) Prepare a SOAP call given XML payload for SOAP <e:Envelope> or <e:Body> content,
+ * specified by the string. Usually you should use zxid_call(), but if you want
+ * to control the steps yourself or use your own http client, this function
+ * may be useful.
+ *
+ * If the string starts by "<e:Envelope", then string
+ * should be a complete SOAP envelope including <e:Header> and <e:Body> parts. This
+ * allows caller to specify custom SOAP headers, in addition to the ones
+ * that the underlying zxid_wsc_call() will add. Usually the payload service
+ * will be passed as the contents of the body. If the string starts by
+ * "<e:Body", then the <e:Envelope> and <e:Header> are automatically added. If
+ * the string starts by neither of the above (be careful to use the "e:" as
+ * namespace prefix), then it is assumed to be the payload content of the <e:Body>
+ * and the rest of the SOAP envelope is added.
+ *
+ * cf:: ZXID configuration object, see zxid_new_conf()
+ * ses:: Session object that contains the EPR cache
+ * epr:: End point to call. From zxid_get_epr().
+ * az_cred:: (Optional) Additional authorization credentials or
+ *     attributes, query string format. These credentials will be populated
+ *     to the attribute pool in addition to the ones obtained from SSO and
+ *     other sources. Then a PDP is called to get an authorization decision
+ *     (as well as obligations we pledge to support). See also PEPMAP
+ *     configuration option. This implementes generalized (application
+ *     independent) Requestor Out and Requestor In PEPs. To implement
+ *     application dependent PEP features you should call zxid_az() directly.
+ * env:: XML payload as a string
+ * return:: SOAP Envelope ready to be sent to the WSP. You can pass this to HTTP client. */
+
+/* Called by:  zxcall_main, zxid_callf */
+struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, const char* az_cred, const char* enve)
+{
+  struct zx_str* ret;
+  struct zx_e_Envelope_s* env;
+
+  if (!cf || !ses || !enve) {
+    ERR("Missing mandatory arguments ses=%p", ses);
+    return 0;
+  }
+  D_INDENT("prep: ");
+  env = zxid_add_env_if_needed(cf, enve);
+  if (!env) {
+    D_DEDENT("prep: ");
+    return 0;
+  }
+  
+  //*** Needs thought and development
+
+  if (!zxid_wsc_prep(cf, ses, epr, env)) {
+    D_DEDENT("prep: ");
+    return 0;
+  }
+  if (!zxid_wsc_prep_secmech(cf, epr, env)) {
+    D_DEDENT("prep: ");
+    return 0;
+  }
+  /* *** Call Rq-Out PDP */
+#if 0
+  if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
+    D("Deny %d", 0);
+    D_DEDENT("prep: ");
+    return 0;
+  }
+#endif
+  ret = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
+  D_DEDENT("prep: ");
+  return ret;
+}
+
+/*() Prepare a web service call, printf style.
+ * See zxid_wsc_prepare_call() for more documentation. */
+
+/* Called by:  main */
+struct zx_str* zxid_wsc_prepare_callf(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, const char* az_cred, const char* env_f, ...)
+{
+  char* s;
+  va_list ap;
+  va_start(ap, env_f);
+  s = zx_alloc_vasprintf(cf->ctx, 0, env_f, ap);
+  va_end(ap);
+  return zxid_wsc_prepare_call(cf, ses, epr, az_cred, s);
+}
+
+/*() Validate a response to web service call. Return: 1=valid. */
+
+int zxid_wsc_valid_resp(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* enve)
+{
+  struct zx_e_Envelope_s* env;
+
+  if (!cf || !ses || !enve) {
+    ERR("Missing mandatory arguments ses=%p", ses);
+    return 0;
+  }
+
+  D_INDENT("valid: ");
+  env = zxid_add_env_if_needed(cf, enve);
+  if (!env) {
+    D_DEDENT("valid: ");
+    return 0;
+  }
+
+  /* *** Call Rq-In PDP */
+#if 0
+  if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
+    D("Deny %d", 0);
+    D_DEDENT("valid: ");
+    return "z";
+  }
+#endif
+  return 1;
 }
 
 /* EOF  --  zxidwsc.c */

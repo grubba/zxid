@@ -141,6 +141,7 @@ zxidsrvlet.java  - SSO helper servlet. Just configure this into Tomcat to get SS
 zxidappdemo.java - Demonstration of using zxidsrvlet to achive SSO (and WSC)
 zxidwspdemo.java - Demonstration of using servlet to act as a SOAP web service
 zxidwspleaf.java - Leaf service for recursive call demo
+zxidwscprepdemo.java - Demonstration of alternative WSC APU
 zxidwspaxismod.java  - Axis2 module for TAS3 WSP
 zxidwspaxisin.java   - In Handler used by Axis2 module for TAS3 WSP
 zxidwspaxisout.java  - Out Handler used by Axis2 module for TAS3 WSP
@@ -228,6 +229,7 @@ sg/saml-schema-assertion-2.0.sg
 sg/saml-schema-metadata-2.0.sg
 sg/saml-schema-protocol-2.0.sg
 sg/saml-schema-ecp-2.0.sg
+sg/sstc-saml-idp-discovery.sg
 sg/shibboleth-metadata-1.0.sg
 sg/liberty-paos-v2.0.sg
 sg/ws-addr-1.0.sg
@@ -352,6 +354,7 @@ c/zx-shps-data.h;  c/zx-shps-aux.c;  c/zx-shps-dec.c;  c/zx-shps-enc.c;  c/zx-sh
 c/zx-tas3-data.h;  c/zx-tas3-aux.c;  c/zx-tas3-dec.c;  c/zx-tas3-enc.c;  c/zx-tas3-getput.c
 c/zx-tas3sol-data.h; c/zx-tas3sol-aux.c; c/zx-tas3sol-dec.c; c/zx-tas3sol-enc.c; c/zx-tas3sol-getput.c
 c/zx-shibmd-data.h;  c/zx-shibmd-aux.c;  c/zx-shibmd-dec.c;  c/zx-shibmd-enc.c;  c/zx-shibmd-getput.c
+c/zx-idpdisc-data.h; c/zx-idpdisc-aux.c; c/zx-idpdisc-dec.c; c/zx-idpdisc-enc.c; c/zx-idpdisc-getput.c
 
 # Unofficial stuff
 

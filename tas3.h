@@ -43,6 +43,9 @@
 #define tas3_az_cf_ses     zxid_az_cf_ses
 #define tas3_call          zxid_call
 #define tas3_callf         zxid_callf
+#define tas3_wsc_prepare_call zxid_wsc_prepare_call
+#define tas3_wsc_prepare_callf zxid_wsc_prepare_callf
+#define tas3_wsc_valid_resp zxid_wsc_valid_resp
 #define tas3_get_epr       zxid_get_epr
 #define tas3_get_epr_url   zxid_get_epr_address
 #define tas3_get_epr_entid zxid_get_epr_entid

@@ -1058,21 +1058,21 @@ public class zxid {
     return ret;
   }
 
-  public static void zxid_conf_user_local_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_user_local_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_user_local_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_user_local_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
   public static void zxid_conf_idp_ena_set(SWIGTYPE_p_zxid_conf self, char value) {
     zxidPINVOKE.zxid_conf_idp_ena_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
 
   public static char zxid_conf_idp_ena_get(SWIGTYPE_p_zxid_conf self) {
     char ret = zxidPINVOKE.zxid_conf_idp_ena_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_as_ena_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_as_ena_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_as_ena_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_as_ena_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
@@ -1139,6 +1139,24 @@ public class zxid {
     return ret;
   }
 
+  public static void zxid_conf_wsc_sign_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_wsc_sign_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_wsc_sign_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_wsc_sign_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_wsp_sign_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_wsp_sign_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_wsp_sign_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_wsp_sign_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
   public static void zxid_conf_nameid_enc_set(SWIGTYPE_p_zxid_conf self, char value) {
     zxidPINVOKE.zxid_conf_nameid_enc_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
@@ -1190,141 +1208,6 @@ public class zxid {
 
   public static char zxid_conf_show_conf_get(SWIGTYPE_p_zxid_conf self) {
     char ret = zxidPINVOKE.zxid_conf_show_conf_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_affiliation_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_affiliation_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static string zxid_conf_affiliation_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_affiliation_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_nice_name_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_nice_name_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static string zxid_conf_nice_name_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_nice_name_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_ses_arch_dir_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_ses_arch_dir_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static string zxid_conf_ses_arch_dir_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_ses_arch_dir_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_ses_cookie_name_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_ses_cookie_name_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static string zxid_conf_ses_cookie_name_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_ses_cookie_name_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_ipport_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_ipport_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static string zxid_conf_ipport_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_ipport_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_err_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_err_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_err_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_err_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_act_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_act_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_act_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_act_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_issue_a7n_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_issue_a7n_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_issue_a7n_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_issue_a7n_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_issue_msg_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_issue_msg_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_issue_msg_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_issue_msg_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_rely_a7n_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_rely_a7n_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_rely_a7n_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_rely_a7n_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_rely_msg_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_rely_msg_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_rely_msg_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_rely_msg_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_err_in_act_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_err_in_act_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_err_in_act_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_err_in_act_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_act_in_err_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_act_in_err_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_act_in_err_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_act_in_err_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_sigfail_is_err_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_sigfail_is_err_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_sigfail_is_err_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_sigfail_is_err_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_log_level_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_log_level_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static char zxid_conf_log_level_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_log_level_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
@@ -1391,21 +1274,147 @@ public class zxid {
     return ret;
   }
 
-  public static void zxid_conf_redir_to_content_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_redir_to_content_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  public static void zxid_conf_wsp_nosig_fatal_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_wsp_nosig_fatal_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
 
-  public static char zxid_conf_redir_to_content_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_redir_to_content_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+  public static char zxid_conf_wsp_nosig_fatal_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_wsp_nosig_fatal_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
-  public static void zxid_conf_remote_user_ena_set(SWIGTYPE_p_zxid_conf self, char value) {
-    zxidPINVOKE.zxid_conf_remote_user_ena_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  public static void zxid_conf_notimestamp_fatal_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_notimestamp_fatal_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
 
-  public static char zxid_conf_remote_user_ena_get(SWIGTYPE_p_zxid_conf self) {
-    char ret = zxidPINVOKE.zxid_conf_remote_user_ena_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+  public static char zxid_conf_notimestamp_fatal_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_notimestamp_fatal_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_affiliation_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_affiliation_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_affiliation_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_affiliation_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_nice_name_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_nice_name_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_nice_name_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_nice_name_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_org_name_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_org_name_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_org_name_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_org_name_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_org_url_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_org_url_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_org_url_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_org_url_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_country_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_country_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_country_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_country_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_contact_org_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_contact_org_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_contact_org_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_contact_org_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_contact_name_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_contact_name_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_contact_name_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_contact_name_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_contact_email_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_contact_email_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_contact_email_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_contact_email_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_contact_tel_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_contact_tel_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_contact_tel_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_contact_tel_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_ses_arch_dir_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_ses_arch_dir_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_ses_arch_dir_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_ses_arch_dir_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_ses_cookie_name_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_ses_cookie_name_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_ses_cookie_name_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_ses_cookie_name_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_ipport_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_ipport_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_ipport_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_ipport_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_load_cot_cache_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_load_cot_cache_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_load_cot_cache_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_load_cot_cache_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_wspcgicmd_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_wspcgicmd_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_wspcgicmd_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_wspcgicmd_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
@@ -1443,6 +1452,15 @@ public class zxid {
 
   public static string zxid_conf_idp_pref_acs_binding_get(SWIGTYPE_p_zxid_conf self) {
     string ret = zxidPINVOKE.zxid_conf_idp_pref_acs_binding_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_mandatory_attr_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_mandatory_attr_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_mandatory_attr_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_mandatory_attr_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
@@ -1506,6 +1524,24 @@ public class zxid {
 
   public static string zxid_conf_xasp_vers_get(SWIGTYPE_p_zxid_conf self) {
     string ret = zxidPINVOKE.zxid_conf_xasp_vers_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_defaultqs_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_defaultqs_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_defaultqs_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_defaultqs_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_mod_saml_attr_prefix_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_mod_saml_attr_prefix_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_mod_saml_attr_prefix_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_mod_saml_attr_prefix_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
@@ -1609,39 +1645,21 @@ public class zxid {
     return ret;
   }
 
+  public static void zxid_conf_bootstrap_level_set(SWIGTYPE_p_zxid_conf self, int value) {
+    zxidPINVOKE.zxid_conf_bootstrap_level_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static int zxid_conf_bootstrap_level_get(SWIGTYPE_p_zxid_conf self) {
+    int ret = zxidPINVOKE.zxid_conf_bootstrap_level_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
   public static void zxid_conf_max_soap_retry_set(SWIGTYPE_p_zxid_conf self, int value) {
     zxidPINVOKE.zxid_conf_max_soap_retry_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
 
   public static int zxid_conf_max_soap_retry_get(SWIGTYPE_p_zxid_conf self) {
     int ret = zxidPINVOKE.zxid_conf_max_soap_retry_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_defaultqs_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_defaultqs_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static string zxid_conf_defaultqs_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_defaultqs_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_mod_saml_attr_prefix_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_mod_saml_attr_prefix_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static string zxid_conf_mod_saml_attr_prefix_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_mod_saml_attr_prefix_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_idp_sel_page_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_idp_sel_page_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static string zxid_conf_idp_sel_page_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_idp_sel_page_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
@@ -1708,6 +1726,15 @@ public class zxid {
     return ret;
   }
 
+  public static void zxid_conf_idp_sel_page_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_idp_sel_page_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static string zxid_conf_idp_sel_page_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_idp_sel_page_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
   public static void zxid_conf_an_page_set(SWIGTYPE_p_zxid_conf self, string value) {
     zxidPINVOKE.zxid_conf_an_page_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
@@ -1717,57 +1744,48 @@ public class zxid {
     return ret;
   }
 
-  public static void zxid_conf_an_start_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_an_start_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  public static void zxid_conf_an_templ_file_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_an_templ_file_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
 
-  public static string zxid_conf_an_start_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_an_start_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+  public static string zxid_conf_an_templ_file_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_an_templ_file_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
-  public static void zxid_conf_an_our_eid_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_an_our_eid_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  public static void zxid_conf_an_templ_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_an_templ_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
 
-  public static string zxid_conf_an_our_eid_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_an_our_eid_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+  public static string zxid_conf_an_templ_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_an_templ_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
-  public static void zxid_conf_an_tech_user_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_an_tech_user_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  public static void zxid_conf_new_user_page_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_new_user_page_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
 
-  public static string zxid_conf_an_tech_user_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_an_tech_user_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+  public static string zxid_conf_new_user_page_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_new_user_page_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
-  public static void zxid_conf_an_tech_site_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_an_tech_site_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  public static void zxid_conf_recover_passwd_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_recover_passwd_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
 
-  public static string zxid_conf_an_tech_site_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_an_tech_site_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+  public static string zxid_conf_recover_passwd_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_recover_passwd_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
-  public static void zxid_conf_an_footer_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_an_footer_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  public static void zxid_conf_atsel_page_set(SWIGTYPE_p_zxid_conf self, string value) {
+    zxidPINVOKE.zxid_conf_atsel_page_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
   }
 
-  public static string zxid_conf_an_footer_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_an_footer_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
-    return ret;
-  }
-
-  public static void zxid_conf_an_end_set(SWIGTYPE_p_zxid_conf self, string value) {
-    zxidPINVOKE.zxid_conf_an_end_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
-  }
-
-  public static string zxid_conf_an_end_get(SWIGTYPE_p_zxid_conf self) {
-    string ret = zxidPINVOKE.zxid_conf_an_end_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+  public static string zxid_conf_atsel_page_get(SWIGTYPE_p_zxid_conf self) {
+    string ret = zxidPINVOKE.zxid_conf_atsel_page_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
@@ -1822,6 +1840,150 @@ public class zxid {
 
   public static string zxid_conf_dbg_get(SWIGTYPE_p_zxid_conf self) {
     string ret = zxidPINVOKE.zxid_conf_dbg_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_err_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_err_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_err_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_err_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_act_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_act_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_act_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_act_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_issue_a7n_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_issue_a7n_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_issue_a7n_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_issue_a7n_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_issue_msg_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_issue_msg_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_issue_msg_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_issue_msg_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_rely_a7n_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_rely_a7n_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_rely_a7n_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_rely_a7n_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_rely_msg_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_rely_msg_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_rely_msg_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_rely_msg_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_err_in_act_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_err_in_act_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_err_in_act_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_err_in_act_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_act_in_err_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_act_in_err_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_act_in_err_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_act_in_err_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_sigfail_is_err_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_sigfail_is_err_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_sigfail_is_err_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_sigfail_is_err_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_log_level_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_log_level_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_log_level_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_log_level_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_user_local_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_user_local_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_user_local_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_user_local_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_redir_to_content_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_redir_to_content_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_redir_to_content_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_redir_to_content_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_remote_user_ena_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_remote_user_ena_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_remote_user_ena_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_remote_user_ena_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_show_tech_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_show_tech_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_show_tech_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_show_tech_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_bare_url_entityid_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_bare_url_entityid_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_bare_url_entityid_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_bare_url_entityid_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_conf_loguser_set(SWIGTYPE_p_zxid_conf self, char value) {
+    zxidPINVOKE.zxid_conf_loguser_set(SWIGTYPE_p_zxid_conf.getCPtr(self), value);
+  }
+
+  public static char zxid_conf_loguser_get(SWIGTYPE_p_zxid_conf self) {
+    char ret = zxidPINVOKE.zxid_conf_loguser_get(SWIGTYPE_p_zxid_conf.getCPtr(self));
     return ret;
   }
 
@@ -1898,12 +2060,12 @@ public class zxid {
     return ret;
   }
 
-  public static void zxid_cgi_pad6_set(SWIGTYPE_p_zxid_cgi self, char value) {
-    zxidPINVOKE.zxid_cgi_pad6_set(SWIGTYPE_p_zxid_cgi.getCPtr(self), value);
+  public static void zxid_cgi_atselafter_set(SWIGTYPE_p_zxid_cgi self, char value) {
+    zxidPINVOKE.zxid_cgi_atselafter_set(SWIGTYPE_p_zxid_cgi.getCPtr(self), value);
   }
 
-  public static char zxid_cgi_pad6_get(SWIGTYPE_p_zxid_cgi self) {
-    char ret = zxidPINVOKE.zxid_cgi_pad6_get(SWIGTYPE_p_zxid_cgi.getCPtr(self));
+  public static char zxid_cgi_atselafter_get(SWIGTYPE_p_zxid_cgi self) {
+    char ret = zxidPINVOKE.zxid_cgi_atselafter_get(SWIGTYPE_p_zxid_cgi.getCPtr(self));
     return ret;
   }
 
@@ -2183,6 +2345,24 @@ public class zxid {
 
   public static string zxid_cgi_ok_get(SWIGTYPE_p_zxid_cgi self) {
     string ret = zxidPINVOKE.zxid_cgi_ok_get(SWIGTYPE_p_zxid_cgi.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_cgi_sp_eid_set(SWIGTYPE_p_zxid_cgi self, string value) {
+    zxidPINVOKE.zxid_cgi_sp_eid_set(SWIGTYPE_p_zxid_cgi.getCPtr(self), value);
+  }
+
+  public static string zxid_cgi_sp_eid_get(SWIGTYPE_p_zxid_cgi self) {
+    string ret = zxidPINVOKE.zxid_cgi_sp_eid_get(SWIGTYPE_p_zxid_cgi.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_cgi_sp_dpy_name_set(SWIGTYPE_p_zxid_cgi self, string value) {
+    zxidPINVOKE.zxid_cgi_sp_dpy_name_set(SWIGTYPE_p_zxid_cgi.getCPtr(self), value);
+  }
+
+  public static string zxid_cgi_sp_dpy_name_get(SWIGTYPE_p_zxid_cgi self) {
+    string ret = zxidPINVOKE.zxid_cgi_sp_dpy_name_get(SWIGTYPE_p_zxid_cgi.getCPtr(self));
     return ret;
   }
 
@@ -2809,21 +2989,21 @@ public class zxid {
     return ret;
   }
 
-  public static void zxid_entity_eid_len_set(SWIGTYPE_p_zxid_entity self, int value) {
-    zxidPINVOKE.zxid_entity_eid_len_set(SWIGTYPE_p_zxid_entity.getCPtr(self), value);
-  }
-
-  public static int zxid_entity_eid_len_get(SWIGTYPE_p_zxid_entity self) {
-    int ret = zxidPINVOKE.zxid_entity_eid_len_get(SWIGTYPE_p_zxid_entity.getCPtr(self));
-    return ret;
-  }
-
   public static void zxid_entity_eid_set(SWIGTYPE_p_zxid_entity self, string value) {
     zxidPINVOKE.zxid_entity_eid_set(SWIGTYPE_p_zxid_entity.getCPtr(self), value);
   }
 
   public static string zxid_entity_eid_get(SWIGTYPE_p_zxid_entity self) {
     string ret = zxidPINVOKE.zxid_entity_eid_get(SWIGTYPE_p_zxid_entity.getCPtr(self));
+    return ret;
+  }
+
+  public static void zxid_entity_dpy_name_set(SWIGTYPE_p_zxid_entity self, string value) {
+    zxidPINVOKE.zxid_entity_dpy_name_set(SWIGTYPE_p_zxid_entity.getCPtr(self), value);
+  }
+
+  public static string zxid_entity_dpy_name_get(SWIGTYPE_p_zxid_entity self) {
+    string ret = zxidPINVOKE.zxid_entity_dpy_name_get(SWIGTYPE_p_zxid_entity.getCPtr(self));
     return ret;
   }
 
@@ -3098,6 +3278,11 @@ public class zxid {
     return ret;
   }
 
+  public static int zxlogusr(SWIGTYPE_p_zxid_conf cf, string uid, SWIGTYPE_p_timeval ourts, SWIGTYPE_p_timeval srcts, string ipport, SWIGTYPE_p_zx_str entid, SWIGTYPE_p_zx_str msgid, SWIGTYPE_p_zx_str a7nid, SWIGTYPE_p_zx_str nid, string sigval, string res, string op, string arg, string fmt) {
+    int ret = zxidPINVOKE.zxlogusr(SWIGTYPE_p_zxid_conf.getCPtr(cf), uid, SWIGTYPE_p_timeval.getCPtr(ourts), SWIGTYPE_p_timeval.getCPtr(srcts), ipport, SWIGTYPE_p_zx_str.getCPtr(entid), SWIGTYPE_p_zx_str.getCPtr(msgid), SWIGTYPE_p_zx_str.getCPtr(a7nid), SWIGTYPE_p_zx_str.getCPtr(nid), sigval, res, op, arg, fmt);
+    return ret;
+  }
+
   public static SWIGTYPE_p_zxid_entity zxid_get_ent_from_file(SWIGTYPE_p_zxid_conf cf, string sha1_name) {
     IntPtr cPtr = zxidPINVOKE.zxid_get_ent_from_file(SWIGTYPE_p_zxid_conf.getCPtr(cf), sha1_name);
     SWIGTYPE_p_zxid_entity ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zxid_entity(cPtr, false);
@@ -3280,6 +3465,11 @@ public class zxid {
     return ret;
   }
 
+  public static int zxid_lazy_load_sign_cert_and_pkey(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_p_X509 cert, SWIGTYPE_p_p_p_void pkey, string logkey) {
+    int ret = zxidPINVOKE.zxid_lazy_load_sign_cert_and_pkey(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_p_X509.getCPtr(cert), SWIGTYPE_p_p_p_void.getCPtr(pkey), logkey);
+    return ret;
+  }
+
   public static int zxid_set_opt(SWIGTYPE_p_zxid_conf cf, int which, int val) {
     int ret = zxidPINVOKE.zxid_set_opt(SWIGTYPE_p_zxid_conf.getCPtr(cf), which, val);
     return ret;
@@ -3444,20 +3634,20 @@ public class zxid {
     return ret;
   }
 
-  public static SWIGTYPE_p_zx_str zxid_pool_to_ldif(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_attr pool) {
-    IntPtr cPtr = zxidPINVOKE.zxid_pool_to_ldif(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_attr.getCPtr(pool));
+  public static SWIGTYPE_p_zx_str zxid_ses_to_ldif(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses) {
+    IntPtr cPtr = zxidPINVOKE.zxid_ses_to_ldif(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses));
     SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
     return ret;
   }
 
-  public static SWIGTYPE_p_zx_str zxid_pool_to_json(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_attr pool) {
-    IntPtr cPtr = zxidPINVOKE.zxid_pool_to_json(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_attr.getCPtr(pool));
+  public static SWIGTYPE_p_zx_str zxid_ses_to_json(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses) {
+    IntPtr cPtr = zxidPINVOKE.zxid_ses_to_json(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses));
     SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
     return ret;
   }
 
-  public static SWIGTYPE_p_zx_str zxid_pool_to_qs(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_attr pool) {
-    IntPtr cPtr = zxidPINVOKE.zxid_pool_to_qs(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_attr.getCPtr(pool));
+  public static SWIGTYPE_p_zx_str zxid_ses_to_qs(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses) {
+    IntPtr cPtr = zxidPINVOKE.zxid_ses_to_qs(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses));
     SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
     return ret;
   }
@@ -3466,12 +3656,12 @@ public class zxid {
     zxidPINVOKE.zxid_ses_to_pool(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses));
   }
 
-  public static void zxid_add_attr_to_pool(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, string at_name, SWIGTYPE_p_zx_str val) {
-    zxidPINVOKE.zxid_add_attr_to_pool(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), at_name, SWIGTYPE_p_zx_str.getCPtr(val));
+  public static void zxid_add_attr_to_ses(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, string at_name, SWIGTYPE_p_zx_str val) {
+    zxidPINVOKE.zxid_add_attr_to_ses(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), at_name, SWIGTYPE_p_zx_str.getCPtr(val));
   }
 
-  public static int zxid_add_qs_to_pool(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, string qs, int apply_map) {
-    int ret = zxidPINVOKE.zxid_add_qs_to_pool(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), qs, apply_map);
+  public static int zxid_add_qs_to_ses(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, string qs, int apply_map) {
+    int ret = zxidPINVOKE.zxid_add_qs_to_ses(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), qs, apply_map);
     return ret;
   }
 
@@ -3524,6 +3714,12 @@ public class zxid {
     return ret;
   }
 
+  public static SWIGTYPE_p_zx_str zxid_http_post_raw(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zx_str url, SWIGTYPE_p_zx_str data) {
+    IntPtr cPtr = zxidPINVOKE.zxid_http_post_raw(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_str.getCPtr(url), SWIGTYPE_p_zx_str.getCPtr(data));
+    SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
+    return ret;
+  }
+
   public static SWIGTYPE_p_zx_root_s zxid_soap_call_raw(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zx_str url, SWIGTYPE_p_zx_str data) {
     IntPtr cPtr = zxidPINVOKE.zxid_soap_call_raw(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_str.getCPtr(url), SWIGTYPE_p_zx_str.getCPtr(data));
     SWIGTYPE_p_zx_root_s ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_root_s(cPtr, false);
@@ -3564,8 +3760,8 @@ public class zxid {
     return ret;
   }
 
-  public static int zxid_soap_cgi_resp_body(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zx_e_Body_s body) {
-    int ret = zxidPINVOKE.zxid_soap_cgi_resp_body(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_e_Body_s.getCPtr(body));
+  public static int zxid_soap_cgi_resp_body(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zx_e_Body_s body, SWIGTYPE_p_zx_str entid) {
+    int ret = zxidPINVOKE.zxid_soap_cgi_resp_body(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_e_Body_s.getCPtr(body), SWIGTYPE_p_zx_str.getCPtr(entid));
     return ret;
   }
 
@@ -3627,6 +3823,11 @@ public class zxid {
     return ret;
   }
 
+  public static string zxid_extract_body(SWIGTYPE_p_zxid_conf cf, string enve) {
+    string ret = zxidPINVOKE.zxid_extract_body(SWIGTYPE_p_zxid_conf.getCPtr(cf), enve);
+    return ret;
+  }
+
   public static SWIGTYPE_p_zx_str zxid_idp_loc_raw(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_entity idp_meta, int svc_type, string binding, int req) {
     IntPtr cPtr = zxidPINVOKE.zxid_idp_loc_raw(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_entity.getCPtr(idp_meta), svc_type, binding, req);
     SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
@@ -3669,8 +3870,14 @@ public class zxid {
     return ret;
   }
 
-  public static SWIGTYPE_p_zx_root_s zxid_decode_redir_or_post(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_ses ses) {
-    IntPtr cPtr = zxidPINVOKE.zxid_decode_redir_or_post(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_ses.getCPtr(ses));
+  public static SWIGTYPE_p_zx_sa_Issuer_s zxid_extract_issuer(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_ses ses, SWIGTYPE_p_zx_root_s r) {
+    IntPtr cPtr = zxidPINVOKE.zxid_extract_issuer(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_root_s.getCPtr(r));
+    SWIGTYPE_p_zx_sa_Issuer_s ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_sa_Issuer_s(cPtr, false);
+    return ret;
+  }
+
+  public static SWIGTYPE_p_zx_root_s zxid_decode_redir_or_post(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_ses ses, int chk_dup) {
+    IntPtr cPtr = zxidPINVOKE.zxid_decode_redir_or_post(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_ses.getCPtr(ses), chk_dup);
     SWIGTYPE_p_zx_root_s ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_root_s(cPtr, false);
     return ret;
   }
@@ -3697,8 +3904,8 @@ public class zxid {
     return ret;
   }
 
-  public static SWIGTYPE_p_zx_str zxid_idp_dispatch(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_ses ses) {
-    IntPtr cPtr = zxidPINVOKE.zxid_idp_dispatch(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_ses.getCPtr(ses));
+  public static SWIGTYPE_p_zx_str zxid_idp_dispatch(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_ses ses, int chk_dup) {
+    IntPtr cPtr = zxidPINVOKE.zxid_idp_dispatch(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_ses.getCPtr(ses), chk_dup);
     SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
     return ret;
   }
@@ -3713,25 +3920,20 @@ public class zxid {
     return ret;
   }
 
-  public static int zxid_anoint_a7n(SWIGTYPE_p_zxid_conf cf, int sign, SWIGTYPE_p_zx_sa_Assertion_s a7n, SWIGTYPE_p_zx_str issued_to, string lk) {
-    int ret = zxidPINVOKE.zxid_anoint_a7n(SWIGTYPE_p_zxid_conf.getCPtr(cf), sign, SWIGTYPE_p_zx_sa_Assertion_s.getCPtr(a7n), SWIGTYPE_p_zx_str.getCPtr(issued_to), lk);
-    return ret;
-  }
-
   public static SWIGTYPE_p_zx_sa_Attribute_s zxid_add_ldif_attrs(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zx_sa_Attribute_s prev, int len, string p, string lk) {
     IntPtr cPtr = zxidPINVOKE.zxid_add_ldif_attrs(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_sa_Attribute_s.getCPtr(prev), len, p, lk);
     SWIGTYPE_p_zx_sa_Attribute_s ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_sa_Attribute_s(cPtr, false);
     return ret;
   }
 
-  public static SWIGTYPE_p_zx_sa_Attribute_s zxid_gen_bootstraps(SWIGTYPE_p_zxid_conf cf, string uid, string path, SWIGTYPE_p_zx_sa_Attribute_s bootstraps) {
-    IntPtr cPtr = zxidPINVOKE.zxid_gen_bootstraps(SWIGTYPE_p_zxid_conf.getCPtr(cf), uid, path, SWIGTYPE_p_zx_sa_Attribute_s.getCPtr(bootstraps));
+  public static SWIGTYPE_p_zx_sa_Attribute_s zxid_gen_boots(SWIGTYPE_p_zxid_conf cf, string uid, string path, SWIGTYPE_p_zx_sa_Attribute_s bootstraps, int add_bs_lvl) {
+    IntPtr cPtr = zxidPINVOKE.zxid_gen_boots(SWIGTYPE_p_zxid_conf.getCPtr(cf), uid, path, SWIGTYPE_p_zx_sa_Attribute_s.getCPtr(bootstraps), add_bs_lvl);
     SWIGTYPE_p_zx_sa_Attribute_s ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_sa_Attribute_s(cPtr, false);
     return ret;
   }
 
-  public static SWIGTYPE_p_zx_sa_Assertion_s zxid_mk_user_a7n_to_sp(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, string uid, SWIGTYPE_p_zx_sa_NameID_s nameid, SWIGTYPE_p_zxid_entity sp_meta, string sp_name_buf, int add_bs) {
-    IntPtr cPtr = zxidPINVOKE.zxid_mk_user_a7n_to_sp(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), uid, SWIGTYPE_p_zx_sa_NameID_s.getCPtr(nameid), SWIGTYPE_p_zxid_entity.getCPtr(sp_meta), sp_name_buf, add_bs);
+  public static SWIGTYPE_p_zx_sa_Assertion_s zxid_mk_user_a7n_to_sp(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, string uid, SWIGTYPE_p_zx_sa_NameID_s nameid, SWIGTYPE_p_zxid_entity sp_meta, string sp_name_buf, int add_bs_lvl) {
+    IntPtr cPtr = zxidPINVOKE.zxid_mk_user_a7n_to_sp(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), uid, SWIGTYPE_p_zx_sa_NameID_s.getCPtr(nameid), SWIGTYPE_p_zxid_entity.getCPtr(sp_meta), sp_name_buf, add_bs_lvl);
     SWIGTYPE_p_zx_sa_Assertion_s ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_sa_Assertion_s(cPtr, false);
     return ret;
   }
@@ -3742,8 +3944,8 @@ public class zxid {
     return ret;
   }
 
-  public static string zxid_add_fed_tok_to_epr(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zx_a_EndpointReference_s epr, string uid) {
-    string ret = zxidPINVOKE.zxid_add_fed_tok_to_epr(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_a_EndpointReference_s.getCPtr(epr), uid);
+  public static string zxid_add_fed_tok_to_epr(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zx_a_EndpointReference_s epr, string uid, int add_bs_lvl) {
+    string ret = zxidPINVOKE.zxid_add_fed_tok_to_epr(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_a_EndpointReference_s.getCPtr(epr), uid, add_bs_lvl);
     return ret;
   }
 
@@ -3831,6 +4033,17 @@ public class zxid {
     return ret;
   }
 
+  public static int zxid_as_call_ses(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_entity idp_meta, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_ses ses) {
+    int ret = zxidPINVOKE.zxid_as_call_ses(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_entity.getCPtr(idp_meta), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_ses.getCPtr(ses));
+    return ret;
+  }
+
+  public static SWIGTYPE_p_zxid_ses zxid_as_call(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_entity idp_meta, string user, string pw) {
+    IntPtr cPtr = zxidPINVOKE.zxid_as_call(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_entity.getCPtr(idp_meta), user, pw);
+    SWIGTYPE_p_zxid_ses ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zxid_ses(cPtr, false);
+    return ret;
+  }
+
   public static int zxid_sp_slo_soap(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_ses ses) {
     int ret = zxidPINVOKE.zxid_sp_slo_soap(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_ses.getCPtr(ses));
     return ret;
@@ -3881,23 +4094,23 @@ public class zxid {
     return ret;
   }
 
-  public static int zxid_pep_az_soap(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_ses ses, string pdp_url) {
-    int ret = zxidPINVOKE.zxid_pep_az_soap(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_ses.getCPtr(ses), pdp_url);
+  public static string zxid_pep_az_soap(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_cgi cgi, SWIGTYPE_p_zxid_ses ses, string pdp_url) {
+    string ret = zxidPINVOKE.zxid_pep_az_soap(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_cgi.getCPtr(cgi), SWIGTYPE_p_zxid_ses.getCPtr(ses), pdp_url);
     return ret;
   }
 
-  public static int zxid_az_cf_ses(SWIGTYPE_p_zxid_conf cf, string qs, SWIGTYPE_p_zxid_ses ses) {
-    int ret = zxidPINVOKE.zxid_az_cf_ses(SWIGTYPE_p_zxid_conf.getCPtr(cf), qs, SWIGTYPE_p_zxid_ses.getCPtr(ses));
+  public static string zxid_az_cf_ses(SWIGTYPE_p_zxid_conf cf, string qs, SWIGTYPE_p_zxid_ses ses) {
+    string ret = zxidPINVOKE.zxid_az_cf_ses(SWIGTYPE_p_zxid_conf.getCPtr(cf), qs, SWIGTYPE_p_zxid_ses.getCPtr(ses));
     return ret;
   }
 
-  public static int zxid_az_cf(SWIGTYPE_p_zxid_conf cf, string qs, string sid) {
-    int ret = zxidPINVOKE.zxid_az_cf(SWIGTYPE_p_zxid_conf.getCPtr(cf), qs, sid);
+  public static string zxid_az_cf(SWIGTYPE_p_zxid_conf cf, string qs, string sid) {
+    string ret = zxidPINVOKE.zxid_az_cf(SWIGTYPE_p_zxid_conf.getCPtr(cf), qs, sid);
     return ret;
   }
 
-  public static int zxid_az(string conf, string qs, string sid) {
-    int ret = zxidPINVOKE.zxid_az(conf, qs, sid);
+  public static string zxid_az(string conf, string qs, string sid) {
+    string ret = zxidPINVOKE.zxid_az(conf, qs, sid);
     return ret;
   }
 
@@ -4098,15 +4311,23 @@ public class zxid {
     return ret;
   }
 
-  public static SWIGTYPE_p_zx_e_Envelope_s zxid_wsf_decor(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, SWIGTYPE_p_zx_e_Envelope_s env) {
-    IntPtr cPtr = zxidPINVOKE.zxid_wsf_decor(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env));
-    SWIGTYPE_p_zx_e_Envelope_s ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_e_Envelope_s(cPtr, false);
+  public static int zxid_wsf_decor(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, SWIGTYPE_p_zx_e_Envelope_s env, int is_resp) {
+    int ret = zxidPINVOKE.zxid_wsf_decor(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env), is_resp);
     return ret;
   }
 
   public static int zxid_map_sec_mech(SWIGTYPE_p_zx_a_EndpointReference_s epr) {
     int ret = zxidPINVOKE.zxid_map_sec_mech(SWIGTYPE_p_zx_a_EndpointReference_s.getCPtr(epr));
     return ret;
+  }
+
+  public static int zxid_add_header_refs(SWIGTYPE_p_zxid_conf cf, int n_refs, SWIGTYPE_p_zxsig_ref refs, SWIGTYPE_p_zx_e_Header_s hdr) {
+    int ret = zxidPINVOKE.zxid_add_header_refs(SWIGTYPE_p_zxid_conf.getCPtr(cf), n_refs, SWIGTYPE_p_zxsig_ref.getCPtr(refs), SWIGTYPE_p_zx_e_Header_s.getCPtr(hdr));
+    return ret;
+  }
+
+  public static void zxid_wsf_sign(SWIGTYPE_p_zxid_conf cf, int sign_flags, SWIGTYPE_p_zx_wsse_Security_s sec, SWIGTYPE_p_zx_wsse_SecurityTokenReference_s str, SWIGTYPE_p_zx_e_Header_s hdr, SWIGTYPE_p_zx_e_Body_s bdy) {
+    zxidPINVOKE.zxid_wsf_sign(SWIGTYPE_p_zxid_conf.getCPtr(cf), sign_flags, SWIGTYPE_p_zx_wsse_Security_s.getCPtr(sec), SWIGTYPE_p_zx_wsse_SecurityTokenReference_s.getCPtr(str), SWIGTYPE_p_zx_e_Header_s.getCPtr(hdr), SWIGTYPE_p_zx_e_Body_s.getCPtr(bdy));
   }
 
   public static SWIGTYPE_p_zx_e_Envelope_s zxid_wsc_call(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, SWIGTYPE_p_zx_a_EndpointReference_s epr, SWIGTYPE_p_zx_e_Envelope_s env) {
@@ -4124,6 +4345,23 @@ public class zxid {
   public static SWIGTYPE_p_zx_str zxid_callf(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, string svctype, string url, string di_opt, string az_cred, string env_f) {
     IntPtr cPtr = zxidPINVOKE.zxid_callf(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), svctype, url, di_opt, az_cred, env_f);
     SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
+    return ret;
+  }
+
+  public static SWIGTYPE_p_zx_str zxid_wsc_prepare_call(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, SWIGTYPE_p_zx_a_EndpointReference_s epr, string az_cred, string enve) {
+    IntPtr cPtr = zxidPINVOKE.zxid_wsc_prepare_call(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_a_EndpointReference_s.getCPtr(epr), az_cred, enve);
+    SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
+    return ret;
+  }
+
+  public static SWIGTYPE_p_zx_str zxid_wsc_prepare_callf(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, SWIGTYPE_p_zx_a_EndpointReference_s epr, string az_cred, string env_f) {
+    IntPtr cPtr = zxidPINVOKE.zxid_wsc_prepare_callf(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_a_EndpointReference_s.getCPtr(epr), az_cred, env_f);
+    SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
+    return ret;
+  }
+
+  public static int zxid_wsc_valid_resp(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, string az_cred, string enve) {
+    int ret = zxidPINVOKE.zxid_wsc_valid_resp(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), az_cred, enve);
     return ret;
   }
 
@@ -4158,6 +4396,10 @@ public class zxid {
     return ret;
   }
 
+  public static void zxid_snarf_eprs(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses, SWIGTYPE_p_zx_a_EndpointReference_s epr) {
+    zxidPINVOKE.zxid_snarf_eprs(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_a_EndpointReference_s.getCPtr(epr));
+  }
+
   public static void zxid_snarf_eprs_from_ses(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zxid_ses ses) {
     zxidPINVOKE.zxid_snarf_eprs_from_ses(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zxid_ses.getCPtr(ses));
   }
@@ -4170,6 +4412,12 @@ public class zxid {
 
   public static SWIGTYPE_p_zx_str zxid_get_epr_entid(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zx_a_EndpointReference_s epr) {
     IntPtr cPtr = zxidPINVOKE.zxid_get_epr_entid(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_a_EndpointReference_s.getCPtr(epr));
+    SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
+    return ret;
+  }
+
+  public static SWIGTYPE_p_zx_str zxid_get_epr_desc(SWIGTYPE_p_zxid_conf cf, SWIGTYPE_p_zx_a_EndpointReference_s epr) {
+    IntPtr cPtr = zxidPINVOKE.zxid_get_epr_desc(SWIGTYPE_p_zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_a_EndpointReference_s.getCPtr(epr));
     SWIGTYPE_p_zx_str ret = (cPtr == IntPtr.Zero) ? null : new SWIGTYPE_p_zx_str(cPtr, false);
     return ret;
   }
@@ -4320,6 +4568,15 @@ public class zxid {
     return ret;
   }
 
+  public static void zxid_curl_ctx_buf_set(SWIGTYPE_p_zxid_curl_ctx self, string value) {
+    zxidPINVOKE.zxid_curl_ctx_buf_set(SWIGTYPE_p_zxid_curl_ctx.getCPtr(self), value);
+  }
+
+  public static string zxid_curl_ctx_buf_get(SWIGTYPE_p_zxid_curl_ctx self) {
+    string ret = zxidPINVOKE.zxid_curl_ctx_buf_get(SWIGTYPE_p_zxid_curl_ctx.getCPtr(self));
+    return ret;
+  }
+
   public static void zxid_curl_ctx_lim_set(SWIGTYPE_p_zxid_curl_ctx self, string value) {
     zxidPINVOKE.zxid_curl_ctx_lim_set(SWIGTYPE_p_zxid_curl_ctx.getCPtr(self), value);
   }
@@ -4412,8 +4669,10 @@ public class zxid {
   public static readonly string ZXID_COT_DIR = zxidPINVOKE.ZXID_COT_DIR_get();
   public static readonly string ZXID_DIMD_DIR = zxidPINVOKE.ZXID_DIMD_DIR_get();
   public static readonly int ZXID_MAX_USER = zxidPINVOKE.ZXID_MAX_USER_get();
-  public static readonly int ZXID_MAX_MD = zxidPINVOKE.ZXID_MAX_MD_get();
-  public static readonly int ZXID_MAX_SOAP = zxidPINVOKE.ZXID_MAX_SOAP_get();
+  public static readonly int ZXID_INIT_MD_BUF = zxidPINVOKE.ZXID_INIT_MD_BUF_get();
+  public static readonly int ZXID_INIT_SOAP_BUF = zxidPINVOKE.ZXID_INIT_SOAP_BUF_get();
+  public static readonly int ZXID_INIT_EPR_BUF = zxidPINVOKE.ZXID_INIT_EPR_BUF_get();
+  public static readonly int ZXID_MAX_CURL_BUF = zxidPINVOKE.ZXID_MAX_CURL_BUF_get();
   public static readonly int ZXID_MAX_EID = zxidPINVOKE.ZXID_MAX_EID_get();
   public static readonly int ZXID_MAX_DIR = zxidPINVOKE.ZXID_MAX_DIR_get();
   public static readonly int ZXID_AUTO_EXIT = zxidPINVOKE.ZXID_AUTO_EXIT_get();
@@ -4435,6 +4694,8 @@ public class zxid {
   public static readonly int ZXID_SSO_SIGN_A7N = zxidPINVOKE.ZXID_SSO_SIGN_A7N_get();
   public static readonly int ZXID_SSO_SIGN_RESP = zxidPINVOKE.ZXID_SSO_SIGN_RESP_get();
   public static readonly int ZXID_SSO_SIGN_A7N_SIMPLE = zxidPINVOKE.ZXID_SSO_SIGN_A7N_SIMPLE_get();
+  public static readonly int ZXID_SIGN_HDR = zxidPINVOKE.ZXID_SIGN_HDR_get();
+  public static readonly int ZXID_SIGN_BDY = zxidPINVOKE.ZXID_SIGN_BDY_get();
   public static readonly int ZXSIG_OK = zxidPINVOKE.ZXSIG_OK_get();
   public static readonly int ZXSIG_BAD_DALGO = zxidPINVOKE.ZXSIG_BAD_DALGO_get();
   public static readonly int ZXSIG_DIGEST_LEN = zxidPINVOKE.ZXSIG_DIGEST_LEN_get();
@@ -4450,6 +4711,7 @@ public class zxid {
   public static readonly string ZXLOG_A7N_KIND = zxidPINVOKE.ZXLOG_A7N_KIND_get();
   public static readonly string ZXLOG_MSG_KIND = zxidPINVOKE.ZXLOG_MSG_KIND_get();
   public static readonly string ZXLOG_WIR_KIND = zxidPINVOKE.ZXLOG_WIR_KIND_get();
+  public static readonly int ZXID_N_WSF_SIGNED_HEADERS = zxidPINVOKE.ZXID_N_WSF_SIGNED_HEADERS_get();
   public static readonly int ZXID_DAP_SCOPE_BASE = zxidPINVOKE.ZXID_DAP_SCOPE_BASE_get();
   public static readonly int ZXID_DAP_SCOPE_SINGLE = zxidPINVOKE.ZXID_DAP_SCOPE_SINGLE_get();
   public static readonly int ZXID_DAP_SCOPE_SUBTREE = zxidPINVOKE.ZXID_DAP_SCOPE_SUBTREE_get();
@@ -4681,6 +4943,7 @@ public class zxid {
   public static readonly string SB_EPUPD_COMP = zxidPINVOKE.SB_EPUPD_COMP_get();
   public static readonly string SB_EPUPD_PART = zxidPINVOKE.SB_EPUPD_PART_get();
   public static readonly string SB_EPUPD_NOCH = zxidPINVOKE.SB_EPUPD_NOCH_get();
+  public static readonly string A_ANON = zxidPINVOKE.A_ANON_get();
   public static readonly string XMLNS_CSM = zxidPINVOKE.XMLNS_CSM_get();
   public static readonly string XMLNS_LU = zxidPINVOKE.XMLNS_LU_get();
   public static readonly string XMLNS_HLO = zxidPINVOKE.XMLNS_HLO_get();
@@ -4720,6 +4983,8 @@ public class zxid {
   public static readonly string zx_xmlns_md = zxidPINVOKE.zx_xmlns_md_get();
   public static readonly int zx_xmlns_ix_shibmd = zxidPINVOKE.zx_xmlns_ix_shibmd_get();
   public static readonly string zx_xmlns_shibmd = zxidPINVOKE.zx_xmlns_shibmd_get();
+  public static readonly int zx_xmlns_ix_idpdisc = zxidPINVOKE.zx_xmlns_ix_idpdisc_get();
+  public static readonly string zx_xmlns_idpdisc = zxidPINVOKE.zx_xmlns_idpdisc_get();
   public static readonly int zx_xmlns_ix_sp11 = zxidPINVOKE.zx_xmlns_ix_sp11_get();
   public static readonly string zx_xmlns_sp11 = zxidPINVOKE.zx_xmlns_sp11_get();
   public static readonly int zx_xmlns_ix_sa11 = zxidPINVOKE.zx_xmlns_ix_sa11_get();

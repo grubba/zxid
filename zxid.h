@@ -584,6 +584,7 @@ char* zxid_version_str();
 struct zx_str* zxid_date_time(struct zxid_conf* cf, time_t secs);
 struct zx_str* zxid_mk_id(struct zxid_conf* cf, char* prefix, int bits); /* pseudo random ident. */
 
+struct zx_str* zxid_http_post_raw(struct zxid_conf* cf, int url_len, const char* url, int len, const char* data);
 struct zx_root_s* zxid_soap_call_raw(struct zxid_conf* cf, struct zx_str* url, struct zx_str* data);
 struct zx_str* zxid_lecp_check(struct zxid_conf* cf, struct zxid_cgi* cgi);
 int zxid_cdc_read(struct zxid_conf* cf, struct zxid_cgi* cgi);
@@ -741,7 +742,7 @@ struct zx_dap_Query_s* zxid_mk_dap_query(struct zxid_conf* cf, struct zx_dap_Tes
 char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* enve);
 struct zx_str* zxid_wsp_decorate(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* enve);
 struct zx_str* zxid_wsp_decoratef(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* env_f, ...);
-struct zx_e_Envelope_s* zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_e_Envelope_s* env);
+int zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_e_Envelope_s* env, int is_resp);
 
 /* zxidwsc */
 
@@ -754,6 +755,9 @@ void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security
 struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env);
 struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve);
 struct zx_str* zxid_callf(struct zxid_conf* cf, struct zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* env_f, ...);
+struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, const char* az_cred, const char* enve);
+struct zx_str* zxid_wsc_prepare_callf(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, const char* az_cred, const char* env_f, ...);
+int zxid_wsc_valid_resp(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* enve);
 
 #define ZXID_RESP_ENV(cf, tag, status_code, status_comment) zxid_new_envf((cf), "<%s><lu:Status code=\"%s\" comment=\"%s\"></lu:Status></%s>", (tag), (status_code), (status_comment), (tag))
 

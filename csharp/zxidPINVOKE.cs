@@ -931,17 +931,17 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_auto_cert_get")]
   public static extern char zxid_conf_auto_cert_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_user_local_set")]
-  public static extern void zxid_conf_user_local_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_user_local_get")]
-  public static extern char zxid_conf_user_local_get(HandleRef jarg1);
-
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_idp_ena_set")]
   public static extern void zxid_conf_idp_ena_set(HandleRef jarg1, char jarg2);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_idp_ena_get")]
   public static extern char zxid_conf_idp_ena_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_as_ena_set")]
+  public static extern void zxid_conf_as_ena_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_as_ena_get")]
+  public static extern char zxid_conf_as_ena_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_pdp_ena_set")]
   public static extern void zxid_conf_pdp_ena_set(HandleRef jarg1, char jarg2);
@@ -985,6 +985,18 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_sso_sign_get")]
   public static extern char zxid_conf_sso_sign_get(HandleRef jarg1);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_wsc_sign_set")]
+  public static extern void zxid_conf_wsc_sign_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_wsc_sign_get")]
+  public static extern char zxid_conf_wsc_sign_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_wsp_sign_set")]
+  public static extern void zxid_conf_wsp_sign_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_wsp_sign_get")]
+  public static extern char zxid_conf_wsp_sign_get(HandleRef jarg1);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_nameid_enc_set")]
   public static extern void zxid_conf_nameid_enc_set(HandleRef jarg1, char jarg2);
 
@@ -1020,96 +1032,6 @@ class zxidPINVOKE {
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_show_conf_get")]
   public static extern char zxid_conf_show_conf_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_affiliation_set")]
-  public static extern void zxid_conf_affiliation_set(HandleRef jarg1, string jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_affiliation_get")]
-  public static extern string zxid_conf_affiliation_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_nice_name_set")]
-  public static extern void zxid_conf_nice_name_set(HandleRef jarg1, string jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_nice_name_get")]
-  public static extern string zxid_conf_nice_name_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ses_arch_dir_set")]
-  public static extern void zxid_conf_ses_arch_dir_set(HandleRef jarg1, string jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ses_arch_dir_get")]
-  public static extern string zxid_conf_ses_arch_dir_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ses_cookie_name_set")]
-  public static extern void zxid_conf_ses_cookie_name_set(HandleRef jarg1, string jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ses_cookie_name_get")]
-  public static extern string zxid_conf_ses_cookie_name_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ipport_set")]
-  public static extern void zxid_conf_ipport_set(HandleRef jarg1, string jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ipport_get")]
-  public static extern string zxid_conf_ipport_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_err_set")]
-  public static extern void zxid_conf_log_err_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_err_get")]
-  public static extern char zxid_conf_log_err_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_act_set")]
-  public static extern void zxid_conf_log_act_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_act_get")]
-  public static extern char zxid_conf_log_act_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_issue_a7n_set")]
-  public static extern void zxid_conf_log_issue_a7n_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_issue_a7n_get")]
-  public static extern char zxid_conf_log_issue_a7n_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_issue_msg_set")]
-  public static extern void zxid_conf_log_issue_msg_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_issue_msg_get")]
-  public static extern char zxid_conf_log_issue_msg_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_rely_a7n_set")]
-  public static extern void zxid_conf_log_rely_a7n_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_rely_a7n_get")]
-  public static extern char zxid_conf_log_rely_a7n_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_rely_msg_set")]
-  public static extern void zxid_conf_log_rely_msg_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_rely_msg_get")]
-  public static extern char zxid_conf_log_rely_msg_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_err_in_act_set")]
-  public static extern void zxid_conf_log_err_in_act_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_err_in_act_get")]
-  public static extern char zxid_conf_log_err_in_act_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_act_in_err_set")]
-  public static extern void zxid_conf_log_act_in_err_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_act_in_err_get")]
-  public static extern char zxid_conf_log_act_in_err_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_sigfail_is_err_set")]
-  public static extern void zxid_conf_log_sigfail_is_err_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_sigfail_is_err_get")]
-  public static extern char zxid_conf_log_sigfail_is_err_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_level_set")]
-  public static extern void zxid_conf_log_level_set(HandleRef jarg1, char jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_level_get")]
-  public static extern char zxid_conf_log_level_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_sig_fatal_set")]
   public static extern void zxid_conf_sig_fatal_set(HandleRef jarg1, char jarg2);
@@ -1153,17 +1075,101 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_dup_msg_fatal_get")]
   public static extern char zxid_conf_dup_msg_fatal_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_redir_to_content_set")]
-  public static extern void zxid_conf_redir_to_content_set(HandleRef jarg1, char jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_wsp_nosig_fatal_set")]
+  public static extern void zxid_conf_wsp_nosig_fatal_set(HandleRef jarg1, char jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_redir_to_content_get")]
-  public static extern char zxid_conf_redir_to_content_get(HandleRef jarg1);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_wsp_nosig_fatal_get")]
+  public static extern char zxid_conf_wsp_nosig_fatal_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_remote_user_ena_set")]
-  public static extern void zxid_conf_remote_user_ena_set(HandleRef jarg1, char jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_notimestamp_fatal_set")]
+  public static extern void zxid_conf_notimestamp_fatal_set(HandleRef jarg1, char jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_remote_user_ena_get")]
-  public static extern char zxid_conf_remote_user_ena_get(HandleRef jarg1);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_notimestamp_fatal_get")]
+  public static extern char zxid_conf_notimestamp_fatal_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_affiliation_set")]
+  public static extern void zxid_conf_affiliation_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_affiliation_get")]
+  public static extern string zxid_conf_affiliation_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_nice_name_set")]
+  public static extern void zxid_conf_nice_name_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_nice_name_get")]
+  public static extern string zxid_conf_nice_name_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_org_name_set")]
+  public static extern void zxid_conf_org_name_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_org_name_get")]
+  public static extern string zxid_conf_org_name_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_org_url_set")]
+  public static extern void zxid_conf_org_url_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_org_url_get")]
+  public static extern string zxid_conf_org_url_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_country_set")]
+  public static extern void zxid_conf_country_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_country_get")]
+  public static extern string zxid_conf_country_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_contact_org_set")]
+  public static extern void zxid_conf_contact_org_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_contact_org_get")]
+  public static extern string zxid_conf_contact_org_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_contact_name_set")]
+  public static extern void zxid_conf_contact_name_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_contact_name_get")]
+  public static extern string zxid_conf_contact_name_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_contact_email_set")]
+  public static extern void zxid_conf_contact_email_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_contact_email_get")]
+  public static extern string zxid_conf_contact_email_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_contact_tel_set")]
+  public static extern void zxid_conf_contact_tel_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_contact_tel_get")]
+  public static extern string zxid_conf_contact_tel_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ses_arch_dir_set")]
+  public static extern void zxid_conf_ses_arch_dir_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ses_arch_dir_get")]
+  public static extern string zxid_conf_ses_arch_dir_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ses_cookie_name_set")]
+  public static extern void zxid_conf_ses_cookie_name_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ses_cookie_name_get")]
+  public static extern string zxid_conf_ses_cookie_name_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ipport_set")]
+  public static extern void zxid_conf_ipport_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_ipport_get")]
+  public static extern string zxid_conf_ipport_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_load_cot_cache_set")]
+  public static extern void zxid_conf_load_cot_cache_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_load_cot_cache_get")]
+  public static extern string zxid_conf_load_cot_cache_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_wspcgicmd_set")]
+  public static extern void zxid_conf_wspcgicmd_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_wspcgicmd_get")]
+  public static extern string zxid_conf_wspcgicmd_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_anon_ok_set")]
   public static extern void zxid_conf_anon_ok_set(HandleRef jarg1, string jarg2);
@@ -1188,6 +1194,12 @@ class zxidPINVOKE {
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_idp_pref_acs_binding_get")]
   public static extern string zxid_conf_idp_pref_acs_binding_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_mandatory_attr_set")]
+  public static extern void zxid_conf_mandatory_attr_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_mandatory_attr_get")]
+  public static extern string zxid_conf_mandatory_attr_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_before_slop_set")]
   public static extern void zxid_conf_before_slop_set(HandleRef jarg1, int jarg2);
@@ -1230,6 +1242,18 @@ class zxidPINVOKE {
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_xasp_vers_get")]
   public static extern string zxid_conf_xasp_vers_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_defaultqs_set")]
+  public static extern void zxid_conf_defaultqs_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_defaultqs_get")]
+  public static extern string zxid_conf_defaultqs_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_mod_saml_attr_prefix_set")]
+  public static extern void zxid_conf_mod_saml_attr_prefix_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_mod_saml_attr_prefix_get")]
+  public static extern string zxid_conf_mod_saml_attr_prefix_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_need_set")]
   public static extern void zxid_conf_need_set(HandleRef jarg1, HandleRef jarg2);
@@ -1291,29 +1315,17 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_localpdp_idpnid_deny_get")]
   public static extern IntPtr zxid_conf_localpdp_idpnid_deny_get(HandleRef jarg1);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_bootstrap_level_set")]
+  public static extern void zxid_conf_bootstrap_level_set(HandleRef jarg1, int jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_bootstrap_level_get")]
+  public static extern int zxid_conf_bootstrap_level_get(HandleRef jarg1);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_max_soap_retry_set")]
   public static extern void zxid_conf_max_soap_retry_set(HandleRef jarg1, int jarg2);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_max_soap_retry_get")]
   public static extern int zxid_conf_max_soap_retry_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_defaultqs_set")]
-  public static extern void zxid_conf_defaultqs_set(HandleRef jarg1, string jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_defaultqs_get")]
-  public static extern string zxid_conf_defaultqs_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_mod_saml_attr_prefix_set")]
-  public static extern void zxid_conf_mod_saml_attr_prefix_set(HandleRef jarg1, string jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_mod_saml_attr_prefix_get")]
-  public static extern string zxid_conf_mod_saml_attr_prefix_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_idp_sel_page_set")]
-  public static extern void zxid_conf_idp_sel_page_set(HandleRef jarg1, string jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_idp_sel_page_get")]
-  public static extern string zxid_conf_idp_sel_page_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_idp_sel_start_set")]
   public static extern void zxid_conf_idp_sel_start_set(HandleRef jarg1, string jarg2);
@@ -1357,47 +1369,47 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_idp_sel_end_get")]
   public static extern string zxid_conf_idp_sel_end_get(HandleRef jarg1);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_idp_sel_page_set")]
+  public static extern void zxid_conf_idp_sel_page_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_idp_sel_page_get")]
+  public static extern string zxid_conf_idp_sel_page_get(HandleRef jarg1);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_page_set")]
   public static extern void zxid_conf_an_page_set(HandleRef jarg1, string jarg2);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_page_get")]
   public static extern string zxid_conf_an_page_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_start_set")]
-  public static extern void zxid_conf_an_start_set(HandleRef jarg1, string jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_templ_file_set")]
+  public static extern void zxid_conf_an_templ_file_set(HandleRef jarg1, string jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_start_get")]
-  public static extern string zxid_conf_an_start_get(HandleRef jarg1);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_templ_file_get")]
+  public static extern string zxid_conf_an_templ_file_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_our_eid_set")]
-  public static extern void zxid_conf_an_our_eid_set(HandleRef jarg1, string jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_templ_set")]
+  public static extern void zxid_conf_an_templ_set(HandleRef jarg1, string jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_our_eid_get")]
-  public static extern string zxid_conf_an_our_eid_get(HandleRef jarg1);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_templ_get")]
+  public static extern string zxid_conf_an_templ_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_tech_user_set")]
-  public static extern void zxid_conf_an_tech_user_set(HandleRef jarg1, string jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_new_user_page_set")]
+  public static extern void zxid_conf_new_user_page_set(HandleRef jarg1, string jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_tech_user_get")]
-  public static extern string zxid_conf_an_tech_user_get(HandleRef jarg1);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_new_user_page_get")]
+  public static extern string zxid_conf_new_user_page_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_tech_site_set")]
-  public static extern void zxid_conf_an_tech_site_set(HandleRef jarg1, string jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_recover_passwd_set")]
+  public static extern void zxid_conf_recover_passwd_set(HandleRef jarg1, string jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_tech_site_get")]
-  public static extern string zxid_conf_an_tech_site_get(HandleRef jarg1);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_recover_passwd_get")]
+  public static extern string zxid_conf_recover_passwd_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_footer_set")]
-  public static extern void zxid_conf_an_footer_set(HandleRef jarg1, string jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_atsel_page_set")]
+  public static extern void zxid_conf_atsel_page_set(HandleRef jarg1, string jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_footer_get")]
-  public static extern string zxid_conf_an_footer_get(HandleRef jarg1);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_end_set")]
-  public static extern void zxid_conf_an_end_set(HandleRef jarg1, string jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_an_end_get")]
-  public static extern string zxid_conf_an_end_get(HandleRef jarg1);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_atsel_page_get")]
+  public static extern string zxid_conf_atsel_page_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_mgmt_start_set")]
   public static extern void zxid_conf_mgmt_start_set(HandleRef jarg1, string jarg2);
@@ -1434,6 +1446,102 @@ class zxidPINVOKE {
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_conf_dbg_get")]
   public static extern string zxid_conf_dbg_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_err_set")]
+  public static extern void zxid_conf_log_err_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_err_get")]
+  public static extern char zxid_conf_log_err_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_act_set")]
+  public static extern void zxid_conf_log_act_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_act_get")]
+  public static extern char zxid_conf_log_act_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_issue_a7n_set")]
+  public static extern void zxid_conf_log_issue_a7n_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_issue_a7n_get")]
+  public static extern char zxid_conf_log_issue_a7n_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_issue_msg_set")]
+  public static extern void zxid_conf_log_issue_msg_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_issue_msg_get")]
+  public static extern char zxid_conf_log_issue_msg_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_rely_a7n_set")]
+  public static extern void zxid_conf_log_rely_a7n_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_rely_a7n_get")]
+  public static extern char zxid_conf_log_rely_a7n_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_rely_msg_set")]
+  public static extern void zxid_conf_log_rely_msg_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_rely_msg_get")]
+  public static extern char zxid_conf_log_rely_msg_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_err_in_act_set")]
+  public static extern void zxid_conf_log_err_in_act_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_err_in_act_get")]
+  public static extern char zxid_conf_log_err_in_act_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_act_in_err_set")]
+  public static extern void zxid_conf_log_act_in_err_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_act_in_err_get")]
+  public static extern char zxid_conf_log_act_in_err_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_sigfail_is_err_set")]
+  public static extern void zxid_conf_log_sigfail_is_err_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_sigfail_is_err_get")]
+  public static extern char zxid_conf_log_sigfail_is_err_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_level_set")]
+  public static extern void zxid_conf_log_level_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_log_level_get")]
+  public static extern char zxid_conf_log_level_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_user_local_set")]
+  public static extern void zxid_conf_user_local_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_user_local_get")]
+  public static extern char zxid_conf_user_local_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_redir_to_content_set")]
+  public static extern void zxid_conf_redir_to_content_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_redir_to_content_get")]
+  public static extern char zxid_conf_redir_to_content_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_remote_user_ena_set")]
+  public static extern void zxid_conf_remote_user_ena_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_remote_user_ena_get")]
+  public static extern char zxid_conf_remote_user_ena_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_show_tech_set")]
+  public static extern void zxid_conf_show_tech_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_show_tech_get")]
+  public static extern char zxid_conf_show_tech_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_bare_url_entityid_set")]
+  public static extern void zxid_conf_bare_url_entityid_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_bare_url_entityid_get")]
+  public static extern char zxid_conf_bare_url_entityid_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_loguser_set")]
+  public static extern void zxid_conf_loguser_set(HandleRef jarg1, char jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_conf_loguser_get")]
+  public static extern char zxid_conf_loguser_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_new_zxid_conf")]
   public static extern IntPtr new_zxid_conf();
@@ -1483,11 +1591,11 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_enc_hint_get")]
   public static extern char zxid_cgi_enc_hint_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_pad6_set")]
-  public static extern void zxid_cgi_pad6_set(HandleRef jarg1, char jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_atselafter_set")]
+  public static extern void zxid_cgi_atselafter_set(HandleRef jarg1, char jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_pad6_get")]
-  public static extern char zxid_cgi_pad6_get(HandleRef jarg1);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_atselafter_get")]
+  public static extern char zxid_cgi_atselafter_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_pad7_set")]
   public static extern void zxid_cgi_pad7_set(HandleRef jarg1, char jarg2);
@@ -1674,6 +1782,18 @@ class zxidPINVOKE {
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_ok_get")]
   public static extern string zxid_cgi_ok_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_sp_eid_set")]
+  public static extern void zxid_cgi_sp_eid_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_sp_eid_get")]
+  public static extern string zxid_cgi_sp_eid_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_sp_dpy_name_set")]
+  public static extern void zxid_cgi_sp_dpy_name_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_sp_dpy_name_get")]
+  public static extern string zxid_cgi_sp_dpy_name_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_cgi_idp_list_set")]
   public static extern void zxid_cgi_idp_list_set(HandleRef jarg1, HandleRef jarg2);
@@ -2110,11 +2230,17 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_ZXID_MAX_USER_get")]
   public static extern int ZXID_MAX_USER_get();
 
-  [DllImport("zxid", EntryPoint="CSharp_ZXID_MAX_MD_get")]
-  public static extern int ZXID_MAX_MD_get();
+  [DllImport("zxid", EntryPoint="CSharp_ZXID_INIT_MD_BUF_get")]
+  public static extern int ZXID_INIT_MD_BUF_get();
 
-  [DllImport("zxid", EntryPoint="CSharp_ZXID_MAX_SOAP_get")]
-  public static extern int ZXID_MAX_SOAP_get();
+  [DllImport("zxid", EntryPoint="CSharp_ZXID_INIT_SOAP_BUF_get")]
+  public static extern int ZXID_INIT_SOAP_BUF_get();
+
+  [DllImport("zxid", EntryPoint="CSharp_ZXID_INIT_EPR_BUF_get")]
+  public static extern int ZXID_INIT_EPR_BUF_get();
+
+  [DllImport("zxid", EntryPoint="CSharp_ZXID_MAX_CURL_BUF_get")]
+  public static extern int ZXID_MAX_CURL_BUF_get();
 
   [DllImport("zxid", EntryPoint="CSharp_ZXID_MAX_EID_get")]
   public static extern int ZXID_MAX_EID_get();
@@ -2134,17 +2260,17 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_entity_n_cdc_get")]
   public static extern IntPtr zxid_entity_n_cdc_get(HandleRef jarg1);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_entity_eid_len_set")]
-  public static extern void zxid_entity_eid_len_set(HandleRef jarg1, int jarg2);
-
-  [DllImport("zxid", EntryPoint="CSharp_zxid_entity_eid_len_get")]
-  public static extern int zxid_entity_eid_len_get(HandleRef jarg1);
-
   [DllImport("zxid", EntryPoint="CSharp_zxid_entity_eid_set")]
   public static extern void zxid_entity_eid_set(HandleRef jarg1, string jarg2);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_entity_eid_get")]
   public static extern string zxid_entity_eid_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_entity_dpy_name_set")]
+  public static extern void zxid_entity_dpy_name_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_entity_dpy_name_get")]
+  public static extern string zxid_entity_dpy_name_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_entity_sha1_name_set")]
   public static extern void zxid_entity_sha1_name_set(HandleRef jarg1, string jarg2);
@@ -2293,6 +2419,12 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_ZXID_SSO_SIGN_A7N_SIMPLE_get")]
   public static extern int ZXID_SSO_SIGN_A7N_SIMPLE_get();
 
+  [DllImport("zxid", EntryPoint="CSharp_ZXID_SIGN_HDR_get")]
+  public static extern int ZXID_SIGN_HDR_get();
+
+  [DllImport("zxid", EntryPoint="CSharp_ZXID_SIGN_BDY_get")]
+  public static extern int ZXID_SIGN_BDY_get();
+
   [DllImport("zxid", EntryPoint="CSharp_zxsig_ref_sref_set")]
   public static extern void zxsig_ref_sref_set(HandleRef jarg1, HandleRef jarg2);
 
@@ -2407,6 +2539,9 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxlog")]
   public static extern int zxlog(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, string jarg4, HandleRef jarg5, HandleRef jarg6, HandleRef jarg7, HandleRef jarg8, string jarg9, string jarg10, string jarg11, string jarg12, string jarg13);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxlogusr")]
+  public static extern int zxlogusr(HandleRef jarg1, string jarg2, HandleRef jarg3, HandleRef jarg4, string jarg5, HandleRef jarg6, HandleRef jarg7, HandleRef jarg8, HandleRef jarg9, string jarg10, string jarg11, string jarg12, string jarg13, string jarg14);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_get_ent_from_file")]
   public static extern IntPtr zxid_get_ent_from_file(HandleRef jarg1, string jarg2);
 
@@ -2500,6 +2635,9 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_read_private_key")]
   public static extern IntPtr zxid_read_private_key(HandleRef jarg1, string jarg2);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxid_lazy_load_sign_cert_and_pkey")]
+  public static extern int zxid_lazy_load_sign_cert_and_pkey(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, string jarg4);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_set_opt")]
   public static extern int zxid_set_opt(HandleRef jarg1, int jarg2, int jarg3);
 
@@ -2590,23 +2728,23 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_find_ses")]
   public static extern int zxid_find_ses(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, HandleRef jarg4);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_pool_to_ldif")]
-  public static extern IntPtr zxid_pool_to_ldif(HandleRef jarg1, HandleRef jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_ses_to_ldif")]
+  public static extern IntPtr zxid_ses_to_ldif(HandleRef jarg1, HandleRef jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_pool_to_json")]
-  public static extern IntPtr zxid_pool_to_json(HandleRef jarg1, HandleRef jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_ses_to_json")]
+  public static extern IntPtr zxid_ses_to_json(HandleRef jarg1, HandleRef jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_pool_to_qs")]
-  public static extern IntPtr zxid_pool_to_qs(HandleRef jarg1, HandleRef jarg2);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_ses_to_qs")]
+  public static extern IntPtr zxid_ses_to_qs(HandleRef jarg1, HandleRef jarg2);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_ses_to_pool")]
   public static extern void zxid_ses_to_pool(HandleRef jarg1, HandleRef jarg2);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_add_attr_to_pool")]
-  public static extern void zxid_add_attr_to_pool(HandleRef jarg1, HandleRef jarg2, string jarg3, HandleRef jarg4);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_add_attr_to_ses")]
+  public static extern void zxid_add_attr_to_ses(HandleRef jarg1, HandleRef jarg2, string jarg3, HandleRef jarg4);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_add_qs_to_pool")]
-  public static extern int zxid_add_qs_to_pool(HandleRef jarg1, HandleRef jarg2, string jarg3, int jarg4);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_add_qs_to_ses")]
+  public static extern int zxid_add_qs_to_ses(HandleRef jarg1, HandleRef jarg2, string jarg3, int jarg4);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_parse_mni")]
   public static extern IntPtr zxid_parse_mni(HandleRef jarg1, string jarg2, HandleRef jarg3);
@@ -2635,6 +2773,9 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_mk_id")]
   public static extern IntPtr zxid_mk_id(HandleRef jarg1, string jarg2, int jarg3);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxid_http_post_raw")]
+  public static extern IntPtr zxid_http_post_raw(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_soap_call_raw")]
   public static extern IntPtr zxid_soap_call_raw(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
 
@@ -2657,7 +2798,7 @@ class zxidPINVOKE {
   public static extern IntPtr zxid_soap_call_body(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_soap_cgi_resp_body")]
-  public static extern int zxid_soap_cgi_resp_body(HandleRef jarg1, HandleRef jarg2);
+  public static extern int zxid_soap_cgi_resp_body(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_saml2_post_enc")]
   public static extern IntPtr zxid_saml2_post_enc(HandleRef jarg1, string jarg2, HandleRef jarg3, string jarg4, int jarg5, HandleRef jarg6);
@@ -2689,6 +2830,9 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_map_val")]
   public static extern IntPtr zxid_map_val(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxid_extract_body")]
+  public static extern string zxid_extract_body(HandleRef jarg1, string jarg2);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_idp_loc_raw")]
   public static extern IntPtr zxid_idp_loc_raw(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, int jarg4, string jarg5, int jarg6);
 
@@ -2710,8 +2854,11 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_sp_soap")]
   public static extern IntPtr zxid_sp_soap(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, HandleRef jarg4, int jarg5, HandleRef jarg6);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxid_extract_issuer")]
+  public static extern IntPtr zxid_extract_issuer(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, HandleRef jarg4);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_decode_redir_or_post")]
-  public static extern IntPtr zxid_decode_redir_or_post(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
+  public static extern IntPtr zxid_decode_redir_or_post(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, int jarg4);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_sp_dispatch")]
   public static extern IntPtr zxid_sp_dispatch(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
@@ -2726,7 +2873,7 @@ class zxidPINVOKE {
   public static extern IntPtr zxid_dec_a7n(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_idp_dispatch")]
-  public static extern IntPtr zxid_idp_dispatch(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
+  public static extern IntPtr zxid_idp_dispatch(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, int jarg4);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_idp_soap_dispatch")]
   public static extern int zxid_idp_soap_dispatch(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, HandleRef jarg4);
@@ -2734,14 +2881,11 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_idp_soap_parse")]
   public static extern int zxid_idp_soap_parse(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, int jarg4, string jarg5);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_anoint_a7n")]
-  public static extern int zxid_anoint_a7n(HandleRef jarg1, int jarg2, HandleRef jarg3, HandleRef jarg4, string jarg5);
-
   [DllImport("zxid", EntryPoint="CSharp_zxid_add_ldif_attrs")]
   public static extern IntPtr zxid_add_ldif_attrs(HandleRef jarg1, HandleRef jarg2, int jarg3, string jarg4, string jarg5);
 
-  [DllImport("zxid", EntryPoint="CSharp_zxid_gen_bootstraps")]
-  public static extern IntPtr zxid_gen_bootstraps(HandleRef jarg1, string jarg2, string jarg3, HandleRef jarg4);
+  [DllImport("zxid", EntryPoint="CSharp_zxid_gen_boots")]
+  public static extern IntPtr zxid_gen_boots(HandleRef jarg1, string jarg2, string jarg3, HandleRef jarg4, int jarg5);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_mk_user_a7n_to_sp")]
   public static extern IntPtr zxid_mk_user_a7n_to_sp(HandleRef jarg1, HandleRef jarg2, string jarg3, HandleRef jarg4, HandleRef jarg5, string jarg6, int jarg7);
@@ -2750,7 +2894,7 @@ class zxidPINVOKE {
   public static extern IntPtr zxid_check_fed(HandleRef jarg1, HandleRef jarg2, string jarg3, char jarg4, HandleRef jarg5, HandleRef jarg6, HandleRef jarg7, string jarg8);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_add_fed_tok_to_epr")]
-  public static extern string zxid_add_fed_tok_to_epr(HandleRef jarg1, HandleRef jarg2, string jarg3);
+  public static extern string zxid_add_fed_tok_to_epr(HandleRef jarg1, HandleRef jarg2, string jarg3, int jarg4);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_idp_sso")]
   public static extern IntPtr zxid_idp_sso(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, HandleRef jarg4);
@@ -2800,6 +2944,12 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_validate_cond")]
   public static extern int zxid_validate_cond(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, HandleRef jarg4, HandleRef jarg5, HandleRef jarg6, HandleRef jarg7);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxid_as_call_ses")]
+  public static extern int zxid_as_call_ses(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, HandleRef jarg4);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_as_call")]
+  public static extern IntPtr zxid_as_call(HandleRef jarg1, HandleRef jarg2, string jarg3, string jarg4);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_sp_slo_soap")]
   public static extern int zxid_sp_slo_soap(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
 
@@ -2828,16 +2978,16 @@ class zxidPINVOKE {
   public static extern IntPtr zxid_mni_do_ss(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, HandleRef jarg4, HandleRef jarg5);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_pep_az_soap")]
-  public static extern int zxid_pep_az_soap(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, string jarg4);
+  public static extern string zxid_pep_az_soap(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, string jarg4);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_az_cf_ses")]
-  public static extern int zxid_az_cf_ses(HandleRef jarg1, string jarg2, HandleRef jarg3);
+  public static extern string zxid_az_cf_ses(HandleRef jarg1, string jarg2, HandleRef jarg3);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_az_cf")]
-  public static extern int zxid_az_cf(HandleRef jarg1, string jarg2, string jarg3);
+  public static extern string zxid_az_cf(HandleRef jarg1, string jarg2, string jarg3);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_az")]
-  public static extern int zxid_az(string jarg1, string jarg2, string jarg3);
+  public static extern string zxid_az(string jarg1, string jarg2, string jarg3);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_find_attribute")]
   public static extern IntPtr zxid_find_attribute(HandleRef jarg1, int jarg2, string jarg3, int jarg4, string jarg5, int jarg6, string jarg7, int jarg8);
@@ -2939,10 +3089,19 @@ class zxidPINVOKE {
   public static extern IntPtr zxid_wsp_decoratef(HandleRef jarg1, HandleRef jarg2, string jarg3, string jarg4);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_wsf_decor")]
-  public static extern IntPtr zxid_wsf_decor(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
+  public static extern int zxid_wsf_decor(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, int jarg4);
+
+  [DllImport("zxid", EntryPoint="CSharp_ZXID_N_WSF_SIGNED_HEADERS_get")]
+  public static extern int ZXID_N_WSF_SIGNED_HEADERS_get();
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_map_sec_mech")]
   public static extern int zxid_map_sec_mech(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_add_header_refs")]
+  public static extern int zxid_add_header_refs(HandleRef jarg1, int jarg2, HandleRef jarg3, HandleRef jarg4);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_wsf_sign")]
+  public static extern void zxid_wsf_sign(HandleRef jarg1, int jarg2, HandleRef jarg3, HandleRef jarg4, HandleRef jarg5, HandleRef jarg6);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_wsc_call")]
   public static extern IntPtr zxid_wsc_call(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, HandleRef jarg4);
@@ -2952,6 +3111,15 @@ class zxidPINVOKE {
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_callf")]
   public static extern IntPtr zxid_callf(HandleRef jarg1, HandleRef jarg2, string jarg3, string jarg4, string jarg5, string jarg6, string jarg7);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_wsc_prepare_call")]
+  public static extern IntPtr zxid_wsc_prepare_call(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, string jarg4, string jarg5);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_wsc_prepare_callf")]
+  public static extern IntPtr zxid_wsc_prepare_callf(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3, string jarg4, string jarg5);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_wsc_valid_resp")]
+  public static extern int zxid_wsc_valid_resp(HandleRef jarg1, HandleRef jarg2, string jarg3, string jarg4);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_nice_sha1")]
   public static extern int zxid_nice_sha1(HandleRef jarg1, string jarg2, int jarg3, HandleRef jarg4, HandleRef jarg5, int jarg6);
@@ -2971,6 +3139,9 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_zxid_cache_epr")]
   public static extern int zxid_cache_epr(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
 
+  [DllImport("zxid", EntryPoint="CSharp_zxid_snarf_eprs")]
+  public static extern void zxid_snarf_eprs(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
+
   [DllImport("zxid", EntryPoint="CSharp_zxid_snarf_eprs_from_ses")]
   public static extern void zxid_snarf_eprs_from_ses(HandleRef jarg1, HandleRef jarg2);
 
@@ -2979,6 +3150,9 @@ class zxidPINVOKE {
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_get_epr_entid")]
   public static extern IntPtr zxid_get_epr_entid(HandleRef jarg1, HandleRef jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_get_epr_desc")]
+  public static extern IntPtr zxid_get_epr_desc(HandleRef jarg1, HandleRef jarg2);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_di_query")]
   public static extern IntPtr zxid_di_query(HandleRef jarg1, HandleRef jarg2, HandleRef jarg3);
@@ -3165,6 +3339,12 @@ class zxidPINVOKE {
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_curl_ctx_p_get")]
   public static extern string zxid_curl_ctx_p_get(HandleRef jarg1);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_curl_ctx_buf_set")]
+  public static extern void zxid_curl_ctx_buf_set(HandleRef jarg1, string jarg2);
+
+  [DllImport("zxid", EntryPoint="CSharp_zxid_curl_ctx_buf_get")]
+  public static extern string zxid_curl_ctx_buf_get(HandleRef jarg1);
 
   [DllImport("zxid", EntryPoint="CSharp_zxid_curl_ctx_lim_set")]
   public static extern void zxid_curl_ctx_lim_set(HandleRef jarg1, string jarg2);
@@ -3778,6 +3958,9 @@ class zxidPINVOKE {
   [DllImport("zxid", EntryPoint="CSharp_SB_EPUPD_NOCH_get")]
   public static extern string SB_EPUPD_NOCH_get();
 
+  [DllImport("zxid", EntryPoint="CSharp_A_ANON_get")]
+  public static extern string A_ANON_get();
+
   [DllImport("zxid", EntryPoint="CSharp_XMLNS_CSM_get")]
   public static extern string XMLNS_CSM_get();
 
@@ -3900,6 +4083,12 @@ class zxidPINVOKE {
 
   [DllImport("zxid", EntryPoint="CSharp_zx_xmlns_shibmd_get")]
   public static extern string zx_xmlns_shibmd_get();
+
+  [DllImport("zxid", EntryPoint="CSharp_zx_xmlns_ix_idpdisc_get")]
+  public static extern int zx_xmlns_ix_idpdisc_get();
+
+  [DllImport("zxid", EntryPoint="CSharp_zx_xmlns_idpdisc_get")]
+  public static extern string zx_xmlns_idpdisc_get();
 
   [DllImport("zxid", EntryPoint="CSharp_zx_xmlns_ix_sp11_get")]
   public static extern int zx_xmlns_ix_sp11_get();

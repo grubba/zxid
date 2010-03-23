@@ -229,6 +229,10 @@ sp     urn:oasis:names:tc:SAML:2.0:protocol
 md     urn:oasis:names:tc:SAML:2.0:metadata
 ecp    urn:oasis:names:tc:SAML:2.0:profiles:SSO:ecp
 shibmd urn:mace:shibboleth:metadata:1.0               Shibboleth 2.0 Metadata extensions
+
+idpdisc
+urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol
+SAML IdP Discovery
 paos   urn:liberty:paos:2006-08
 sa11   urn:oasis:names:tc:SAML:1.0:assertion          SAML 1.1
 sp11   urn:oasis:names:tc:SAML:1.0:protocol
