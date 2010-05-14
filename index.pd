@@ -7,8 +7,8 @@ ZXID Home - Open Source IdM - SAML SSO - Federated
 <<define: ibox300!align=right width=300 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 <<define: ibox150!align=right width=150 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 
-<<define: ZXVERS!0.52>>
-<<define: ZXNEWS!20100217 - Fixed multidiscovery, etc.>>
+<<define: ZXVERS!0.53>>
+<<define: ZXNEWS!20100323 - Shibboleth metadata extentions, IdP fixes>>
 
 <<maketitle: 1>>
 
@@ -37,6 +37,8 @@ ZXID Home - Open Source IdM - SAML SSO - Federated
 
 * *Net::SAML*: Perl module wrapping libzxid. Also zxidhlo.pl example, implementing
   SP in mod_perl environment, is supplied.
+
+* *zxididp*: Full featured Identity Provider and Discovery Service, as deployed by zxidp.org
 
 * *libzxid*: C library for SAML 2.0 federated Single Sign-On (SSO) and ID-WSF Web
   Services. Many other language bindings are supported through SWIG.
@@ -153,6 +155,7 @@ In this space we host links to IdPs that work with ZXID and to
 ZXID test sites you can use to get a feel for yourself. There is
 no guarantee that these sites stay up:
 
+* http://zxidp.org/
 * http://ssocircle.com/
 
 (*** http://cgi-service-provider.saml2.com/cgi-bin/zxid  -- An alias of ssocircle.com)
@@ -183,6 +186,7 @@ Targeted Federated Identity Standards
 * SAML 2.0 (fully done)
 * SAML 1.1 (Assertion Consumer role 60% done)
 * Liberty ID-FF 1.2 (SP role 62% done)
+* Shibboleth 2.0 (95% done)
 * WS-Federation 1.0 Basic Profile (Assertion Consumer role 40% done)
 
 Targeted ID Web Services Standards
@@ -322,6 +326,7 @@ ZXID:
 <div id="old2010">
 >>
 
+* <<link:zxid-0.52.tgz>> (20100323 - Shibboleth metadata extentions, IdP fixes)
 * <<link:zxid-0.52.tgz>> (20100217 - Fixed multidiscovery, etc.)
 * <<link:zxid-0.50.tgz>> (20100211 - Fixed multibootstrap)
 * <<link:zxid-0.49.tgz>> (20100201 - Removed many arbitrary 64KB limits. Added zxcall tool.)
@@ -332,7 +337,7 @@ ZXID:
 
 <<html:
 </div>
-<li>2008 (<a href="#" onClick="vis('old2009',1);">show </a>/<a href="#" onClick="vis('old2009',0);">hide</a>)
+<li>2009 (<a href="#" onClick="vis('old2009',1);">show </a>/<a href="#" onClick="vis('old2009',0);">hide</a>)
 <div id="old2009">
 >>
 
@@ -423,6 +428,7 @@ vis("lic",lic=0);
 * TAS3 project: www.tas3.eu
   - <<link:http://zxid.org/tas3/index.html: ZXID-TAS3 Page>>
 * Sampo's hobby: <<link:http://zxid.org/fe-aco/html/index.html: Teräsaika (iron and steel making)>>
+* Web Risk: http://zxid.org/webrisk.htm
 
 9 Acknowledgement
 =================
@@ -470,9 +476,8 @@ backdoors, and general suitability for your application.
 <<htmlpreamble: <title>ZXID Home - Open Source IdM for the Masses - SAML SSO</title>
 <style type="text/css" media="screen, projection">
 
-/* <link href="http://openliberty.org/blog/wp-content/themes/openliberty/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="http://openliberty.org/expandingMenu.js"></script>
-/* http://www.w3.org/TR/CSS2/ */
+/* <link href="http://openliberty.org/blog/wp-content/themes/openliberty/style.css" rel="stylesheet" type="text/css" /><script type="text/javascript" src="http://openliberty.org/expandingMenu.js"></script>
+ http://www.w3.org/TR/CSS2/ */
 
 body {
 background: #FFFFFF;
@@ -485,18 +490,17 @@ font-size: 76%;
 }
 
 #ctr {
-width: 763px;
+width: 765px;
 margin: 0 auto;
 text-align: left;  /* Counter demand IE work around from body */
 }
+
+/* #hdr { }   // Inherited from ctr */
 
 #payload {
 margin-left:232px;
 font-size:11px;
 line-height:18px;
-}
-       
-#hdr {
 }
 
 #ftr {
@@ -556,7 +560,7 @@ margin-left:10px;
 margin-right:10px;
 margin-top:14px;
 }
-        
+
 .secnav a {
 color: !!NAVCOLOR;
 font-weight: 600;
@@ -568,7 +572,7 @@ color: !!NAVCOLOR;
 font-weight: 600;
 text-decoration: none;
 }
-        
+
 .secnav a:hover {
 text-decoration: none;
 background-color: #F1F7CB;
@@ -715,9 +719,7 @@ font-size: 1.2em;
 border-top: 2px solid !!HCOLOR;
 }
 
-p {
-line-height: 1.4;
-}
+p { line-height: 1.4; }
 
 #content {
 padding-top: 0px;
@@ -727,7 +729,7 @@ width: 480px;
 #content_bg {
 background: #fff;
 }
-        
+
 /* Uncomment if you want to use the tagline feature (make sure you uncomment h1 above and comment the original h1) - off by default
 .tagline {
         color: #888;
@@ -737,7 +739,6 @@ background: #fff;
         }
 */
 
-        
 .clearfix:after { /* float hack used to float content correctly */
     content: "."; 
         display: block; 
@@ -887,8 +888,8 @@ color: #ffffff;
 </div><!-- payload -->
 
 <div id=sidebar>
-<table width="220" border="0" cellspacing="0" cellpadding="0">
-<tr><td width="232" rowspan="2" valign="top">
+<table width=220 border=0 cellspacing=0 cellpadding=0>
+<tr><td width=232 rowspan=2 valign=top>
 <ul class=sidenav style="padding:0px; margin-left:12px">
 <li>PROJECTS</li>
 <li style="margin-left:12px">        

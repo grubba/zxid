@@ -249,6 +249,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(struct zxid_conf* cf, struct zx
       }
     }
   }
+  D("PDP: Permit by default %d",0);
   zxid_ins_xacml_az_stmt(cf, a7n, "Permit");
   resp = zxid_mk_saml_resp(cf);
   resp->Assertion = a7n;
@@ -292,6 +293,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(struct zxid_conf* cf, struc
       }
     }
   }
+  D("PDP: Permit by default %d",0);
   zxid_ins_xacml_az_cd1_stmt(cf, a7n, "Permit");
   resp = zxid_mk_saml_resp(cf);
   resp->Assertion = a7n;

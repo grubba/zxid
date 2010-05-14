@@ -298,6 +298,15 @@ void zx_rand(char* buf, int n_bytes)
 #endif
 }
 
+static void zxid_add_subject_field(X509_NAME* subj, int typ, int nid, char* val)
+{
+  X509_NAME_ENTRY* ne;
+  if (!val || !*val)
+    return;
+  ne = X509_NAME_ENTRY_create_by_NID(0, nid, typ, val, strlen(val));
+  X509_NAME_add_entry(subj, ne, X509_NAME_entry_count(subj), 0);
+}
+
 /*() Create Self-Signed Certificate-Private Key pair and Certificate Signing Request
  * This function is invoked when AUTO_CERT is set and a certificate is missing.
  * As this is not expected to be frequent, we are cavalier about releasing
@@ -330,7 +339,6 @@ int zxid_mk_self_sig_cert(struct zxid_conf* cf, int buflen, char* buf, char* lk,
   EVP_PKEY* tmp_pkey;
   RSA*      rsa;
   X509_EXTENSION*  ext;
-  X509_NAME_ENTRY* ne;
   char      cn[256];
   char      ou[256];
 
@@ -395,19 +403,13 @@ badurl:
 
   /* Construct DN part by part. We want cn=www.site.com,o=ZXID Auto-Cert */
 
-  ne = X509_NAME_ENTRY_create_by_NID(0, NID_commonName, V_ASN1_PRINTABLESTRING, cn, strlen(cn));
-  X509_NAME_add_entry(ri->subject, ne, X509_NAME_entry_count(ri->subject), 0);
+  zxid_add_subject_field(ri->subject, V_ASN1_PRINTABLESTRING, NID_commonName, cn);
+  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_organizationalUnitName, ou);
+  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_organizationName, cf->org_name);
 
-#if 1
-  ne = X509_NAME_ENTRY_create_by_NID(0, NID_organizationalUnitName, V_ASN1_T61STRING, ou, strlen(ou));
-  X509_NAME_add_entry(ri->subject, ne, X509_NAME_entry_count(ri->subject), 0);
-#endif
-
-  ne = X509_NAME_ENTRY_create_by_NID(0, NID_organizationName, V_ASN1_T61STRING, cf->org_name, strlen(cf->org_name));
-  X509_NAME_add_entry(ri->subject, ne, X509_NAME_entry_count(ri->subject), 0);
-
-  ne = X509_NAME_ENTRY_create_by_NID(0, NID_countryName, V_ASN1_T61STRING, cf->country, strlen(cf->country));
-  X509_NAME_add_entry(ri->subject, ne, X509_NAME_entry_count(ri->subject), 0);
+  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_localityName, cf->locality);
+  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_stateOrProvinceName, cf->state);
+  zxid_add_subject_field(ri->subject, V_ASN1_T61STRING, NID_countryName, cf->country);
 
 #if 0
   X509_ATTRIBUTE*  xa;

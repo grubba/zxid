@@ -87,10 +87,14 @@
 #define ZXID_REDIRECT_HACK_IMPOSED_URL 0
 #define ZXID_REDIRECT_HACK_ZXID_URL 0
 
-/*(c) Additional Metadata Fields. Safe to leave all as NULL. */
+/*(c) Additional Metadata Fields. Safe to leave all as NULL.
+ * The LOCALITY, STATE, and COUNTRY will appear in certificates
+ * so you may want to set them to sensible values. */
 #define ZXID_ORG_NAME "Unspecified ORG_NAME"
 #define ZXID_ORG_URL  0
-#define ZXID_COUNTRY  "pt"
+#define ZXID_LOCALITY "Lisboa"
+#define ZXID_STATE    "Lisboa"
+#define ZXID_COUNTRY  "PT"
 #define ZXID_CONTACT_ORG 0
 #define ZXID_CONTACT_NAME 0
 #define ZXID_CONTACT_EMAIL 0
@@ -109,7 +113,7 @@
 #define ZXID_CDC_CHOICE ZXID_CDC_CHOICE_UI_PREF
 
 /*(c) Metadata Fetching Options (Auto-CoT)
- * Following four boolean configuration options control how (IdP) metadata
+ * Following four boolean configuration options control how metadata
  * is obtained. The metadata can be in a cache (by default directory /var/zxid/cot)
  * or it can be fetched "on the fly" using the well known location (WKL) method.
  *
@@ -117,7 +121,7 @@
  *     that ZXID was linked with libcurl. If you do not enable fetching, you
  *     will need to populate the cache manually, perhaps by using a web browser
  *     to fetch the meta data xml files from well known location URLs (or other
- *     URLs if you know better). Or you could use zxidcot.pl?op=md
+ *     URLs if you know better). Or you could use zxidcot.pl?op=md or zxcot(1) tool.
  *
  * MD_POPULATE_CACHE:: controls whether ZXID will write the metadata to
  *     the on-disk cache. This requires ZXID_MD_FETCH to be enabled

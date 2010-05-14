@@ -34,6 +34,8 @@ http://idpdemo.tas3.eu/zxididp?o=B  -- Publicly available TAS3 demo IdP
 T3-IDP-ZXID Install
 -------------------
 
+Prerequisite:: you must have CGI capable web server, such as mini_httpd, Apache, or IIS.
+
 1.  Download and unzip the package
 
 2.  ldd zxididp
@@ -47,7 +49,7 @@ T3-IDP-ZXID Install
       mkdir /var/zxid
       chown webuser /var/zxid
       su webuser
-      make dir ZXID_PATH=/var/zxid/idp
+      zxmkdir.sh /var/zxid/idp
       ls -alFR /var/zxid
 
 5.  Create configuration file /var/zxid/idpzxid.conf
@@ -76,3 +78,25 @@ T3-IDP-ZXID Install
 
     http://idp.tas3.pt:8081/zxididp?o=B
 
+T3-ZXID-SRC Compile and Install
+-------------------------------
+
+After unzipping the package, unpack the tarball contained therein, and
+read INSTALL.zxid contained in the tarball.
+
+Mapping between TAS3 API and ZXID API
+-------------------------------------
+
+* Use zxidjava/libzxidjni.so instead of tas3jni.so
+* import zxidjava.*; instead of import tas3.*;
+* System.loadLibrary("tas3jni.so");  should become           
+  System.loadLibrary("zxidjava/libzxidjni.so");
+* In class names replace "tas3" with "zxidjni", for example
+
+    tas3.wsp_validate()
+
+  becomes
+
+    zxidjni.wsp_validate()
+
+--Sampo

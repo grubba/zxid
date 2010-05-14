@@ -1,0 +1,66 @@
+ZXIDP Risk Assessment from User Perspective
+###########################################
+<<author: ZXIDP.org>>
+
+This risk assessment aims at giving the reader a realistic
+idea of the types of security and privacy threats involved
+in using this website. This assessment is not exhaustive,
+but rather our good faith effort to disclose what we think
+are the most likely and relevant risks.
+
+1. Entry points
+
+   a. Shell or root shell (or ssh) administrative login
+   b. TAS3 designed management interfaces (none yet)
+   c. Product specific management interfaces
+      - New user registration (feature to allow
+        anonymous new user to self register)
+      - Auto-CoT (fully automatic metadata exchange and trust
+        establishment with anonymous third party SPs)
+      - New service registration (feature to allow
+        anonymous 3rd party to register new services)
+   d. Web GUI
+   e. SOAP web service
+      - SSO
+      - SLO
+      - Discovery query
+
+2. Data assets
+
+   a. Private keys of the service itself
+   b. Circle-of-Trust database
+   c. Discovery Registrations
+   d. User database
+      * User names
+      * Authentication credentials (password hash, Yubikey shared secret)
+      * User's attribute data
+   e. Federation database: name id mappings
+   f. Session store
+
+3. Nonfunctional assets
+
+   a. Privacy preserving through avoidance of correlation handles
+   b. User consent and control of data release
+   c. Organizational control of data release
+   d. Nonrepudiation
+   e. Accountability
+   f. Credible authentication of users
+   g. Credible authentication of system entities
+
+4. Attacks and mitigation
+
+   a. Too numerous to describe exhaustively in one afternoon *** TBD
+   b. Generally the data assets are protected using Unix filesystem
+      permissions against shell and local Unix process access. This, of
+      course, is of little value against root. Therefore deployment
+      MUST use nonroot users for running all TAS3 related processes
+      as well as for most administrative tasks.
+   c. The TAS3 designed and product specific management interfaces
+      follow good coding practises (e.g. check for ".." in path)
+      to only allow designed access to the data assets.
+   d. Web GUI is coded such that only authorized accesses are possible
+   e. SOAP web service is coded such that only authorized accesses are possible
+   f. Appropriate crypto layer (such as TLS) is applied in Web GUI, SOAP,
+      and ssh entry points
+
+--Sampo

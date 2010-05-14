@@ -99,42 +99,9 @@ static void zxid_process_keys(struct zxid_conf* cf, struct zxid_entity* ent, str
   }
 }
 
-/*() Parse Metadata, see [SAML2meta]. This function is quite low level
- * and assumes it is processing a buffer (which may contain multiple
- * instances of various metadata).
- *
- * cf:: ZXID configuration object, used here mainly for memory allocation
- * md:: Value-result parameter. Pointer to char pointer pointing to the
- *     beginning of the metadata. As metadata is scanned and parsed, this
- *     pointer will be advanced
- * lim:: End of the metadata buffer
- * return:: Entity data structure composed from the metadata. */
-
-/* Called by:  zxid_addmd, zxid_get_ent_from_file, zxid_get_meta, zxid_lscot_line */
-struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
+static struct zxid_entity* zxid_mk_ent(struct zxid_conf* cf, struct zx_md_EntityDescriptor_s* ed)
 {
-  struct zxid_entity* ent;
-  struct zx_md_EntityDescriptor_s* ed;
-  struct zx_root_s* r;
-
-  LOCK(cf->ctx->mx, "parse meta");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, *md, lim);
-  r = zx_DEC_root(cf->ctx, 0, 5);
-  UNLOCK(cf->ctx->mx, "parse meta");
-  *md = cf->ctx->p;
-  if (!r)
-    return 0;
-  if (r->EntityDescriptor) {
-    ed = r->EntityDescriptor;
-  } else if (r->EntitiesDescriptor) {
-    if (!r->EntitiesDescriptor->EntityDescriptor)
-      goto bad_md;
-    ed = r->EntitiesDescriptor->EntityDescriptor;
-    ZX_FREE(cf->ctx, r->EntitiesDescriptor);
-  } else
-    goto bad_md;
-  ZX_FREE(cf->ctx, r);  /* N.B Shallow free only, do not free the descriptor. */
-  ent = ZX_ZALLOC(cf->ctx, struct zxid_entity);
+  struct zxid_entity* ent = ZX_ZALLOC(cf->ctx, struct zxid_entity);
   ent->ed = ed;
   if (!ed->entityID)
     goto bad_md;
@@ -152,7 +119,55 @@ struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
     zxid_process_keys(cf, ent, ed->SPSSODescriptor->KeyDescriptor, "SP SSO");
 
   return ent;
-  
+ bad_md:
+  ERR("Bad metadata. EntityDescriptor was corrupt. %d", 0);
+  zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "BADMD", 0, "");
+  return 0;
+}
+
+/*() Parse Metadata, see [SAML2meta]. This function is quite low level
+ * and assumes it is processing a buffer (which may contain multiple
+ * instances of various metadata).
+ *
+ * cf:: ZXID configuration object, used here mainly for memory allocation
+ * md:: Value-result parameter. Pointer to char pointer pointing to the
+ *     beginning of the metadata. As metadata is scanned and parsed, this
+ *     pointer will be advanced
+ * lim:: End of the metadata buffer
+ * return:: Entity data structure composed from the metadata. If more than
+ *     one EntityDescriptor is found, then a linked list is returned. */
+
+/* Called by:  zxid_addmd, zxid_get_ent_from_file, zxid_get_meta, zxid_lscot_line */
+struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
+{
+  struct zxid_entity* ee;
+  struct zxid_entity* ent;
+  struct zx_md_EntityDescriptor_s* ed;
+  struct zx_root_s* r;
+
+  LOCK(cf->ctx->mx, "parse meta");
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, *md, lim);
+  r = zx_DEC_root(cf->ctx, 0, 5);
+  UNLOCK(cf->ctx->mx, "parse meta");
+  *md = cf->ctx->p;
+  if (!r)
+    return 0;
+  if (r->EntityDescriptor) {
+    ed = r->EntityDescriptor;
+    ZX_FREE(cf->ctx, r);  /* N.B Shallow free only, do not free the descriptor. */
+    return zxid_mk_ent(cf, ed);
+  } else if (r->EntitiesDescriptor) {
+    if (!r->EntitiesDescriptor->EntityDescriptor)
+      goto bad_md;
+    for (ed = r->EntitiesDescriptor->EntityDescriptor; ed; ed = (struct zx_md_EntityDescriptor_s*)ZX_NEXT(ed)) {
+      ent = zxid_mk_ent(cf, ed);
+      ent->n = ee;
+      ee = ent;
+    }
+    ZX_FREE(cf->ctx, r->EntitiesDescriptor);
+    ZX_FREE(cf->ctx, r);  /* N.B Shallow free only, do not free the descriptors. */
+    return ee;
+  }  
  bad_md:
   ERR("Bad metadata. EntityDescriptor could not be found or was corrupt. MD(%.*s) %d chars parsed.", lim-cf->ctx->base, cf->ctx->base, *md - cf->ctx->base);
   zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "BADMD", 0, "chars_parsed(%d)", *md - cf->ctx->base);
@@ -189,6 +204,8 @@ int zxid_write_ent_to_cache(struct zxid_conf* cf, struct zxid_entity* ent)
  * is safe base64 encoded SHA1 digest hash over the EntityID. This
  * is used to ensure unique file name for each entity. However,
  * this function will in fact read from any file name supplied.
+ * If the file contains multiple EntityDescriptor elements, they
+ * are all added to the cot. Also EntitiesDesciptor is handled.
  *
  * See also zxid_get_ent_from_cache() which will compute the sha1_name
  * and then read the metadata. */
@@ -200,7 +217,9 @@ struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name
   fdtype fd;
   char* md_buf;
   char* p;
+  struct zxid_entity* first = 0;
   struct zxid_entity* ent;
+  struct zxid_entity* ee;
   
   DD("sha1_name(%s)", sha1_name);
   fd = open_fd_from_path(O_RDONLY, 0, "get_ent_from_file", "%s" ZXID_COT_DIR "%s", cf->path, sha1_name);
@@ -235,21 +254,27 @@ struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name
   DD("md_buf(%.*s) got=%d siz=%d md_buf(%s)", got, md_buf, got, siz, sha1_name);
   
   p = md_buf;
-  while (p < md_buf+got) {
+  while (p < md_buf+got) {   /* Loop over concatenated descriptors. */
     ent = zxid_parse_meta(cf, &p, md_buf+got);
+    if (!first)
+      first = ent;
     DD("++++++++++++sha1_name(%s)", sha1_name);
     if (!ent) {
       ZX_FREE(cf->ctx, md_buf);
       ERR("***** Parsing metadata failed for sha1_name(%s)", sha1_name);
-      return 0;
+      return first;
     }
     LOCK(cf->mx, "add ent to cot");
-    ent->n = cf->cot;
-    cf->cot = ent;
+    while (ent) {
+      ee = ent->n;
+      ent->n = cf->cot;
+      cf->cot = ent;
+      ent = ee;
+    }
     UNLOCK(cf->mx, "add ent to cot");
-    D("GOT META sha1_name(%s) eid(%s)", sha1_name, ent->eid);
+    D("GOT META sha1_name(%s) eid(%s)", sha1_name, first?first->eid:"?");
   }
-  return ent;
+  return first;
 
 readerr:
   perror("read metadata");
@@ -263,23 +288,24 @@ LOCK_STATIC(zxid_ent_cache_mx);
 /* Called by:  zxid_get_ent_from_cache, zxid_load_cot_cache */
 static void zxid_load_cot_cache_from_file(struct zxid_conf* cf)
 {
+  struct zxid_entity* ee;  
   if (!cf->load_cot_cache)
     return;
   LOCK(zxid_ent_cache_mx, "get ent from cache");
   LOCK(cf->mx, "check cot");
-  if (!cf->cot) {
-    UNLOCK(cf->mx, "check cot");
+  ee = cf->cot;
+  UNLOCK(cf->mx, "check cot");
+  if (!ee) {
     D("Loading cot cache from(%s)", cf->load_cot_cache);
     zxid_get_ent_from_file(cf, cf->load_cot_cache);
     D("CoT cache loaded from(%s)", cf->load_cot_cache);
-  } else {
-    UNLOCK(cf->mx, "check cot");
   }
   UNLOCK(zxid_ent_cache_mx, "get ent from cache");
 }
 
-/*() Compute sha1_name for an entity and then read the metadata from
-* the CoT metadata cache directory, e.g. /var/zxit/cot. */
+/*() Search cot datastructure by entity id. Failing to find,
+ * compute sha1_name for an entity and then read the metadata from
+ * the CoT metadata cache directory, e.g. /var/zxid/cot */
 
 /* Called by:  main x5, zxid_get_ent_ss x2 */
 struct zxid_entity* zxid_get_ent_from_cache(struct zxid_conf* cf, struct zx_str* eid)
@@ -287,21 +313,18 @@ struct zxid_entity* zxid_get_ent_from_cache(struct zxid_conf* cf, struct zx_str*
   struct zxid_entity* ent;
   char sha1_name[28];
   zxid_load_cot_cache_from_file(cf);
-  LOCK(cf->mx, "scan cache");
   for (ent = cf->cot; ent; ent = ent->n)  /* Check in memory cache. */
     if (eid->len == strlen(ent->eid) && !memcmp(eid->s, ent->eid, eid->len)) {
       D("GOT FROM MEM eid(%s)", ent->eid);
-      UNLOCK(cf->mx, "scan cache");
       return ent;
     }
-  UNLOCK(cf->mx, "scan cache");
   sha1_safe_base64(sha1_name, eid->len, eid->s);
   sha1_name[27] = 0;
   return zxid_get_ent_from_file(cf, sha1_name);
 }
 
 /*(i) Get metadata for entity, either from cache or network (using WKL), depending
- * on configuration options.
+ * on configuration options. Main work horse for getting entity metadata.
  *
  * cf:: ZXID configuration object
  * eid:: Entity ID whose metadata is desired
@@ -310,7 +333,10 @@ struct zxid_entity* zxid_get_ent_from_cache(struct zxid_conf* cf, struct zx_str*
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_chk_sig, zxid_decode_redir_or_post, zxid_get_ent, zxid_get_ses_idp, zxid_idp_dispatch, zxid_idp_sso, zxid_slo_resp_redir, zxid_sp_dispatch, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
 struct zxid_entity* zxid_get_ent_ss(struct zxid_conf* cf, struct zx_str* eid)
 {
+  struct zxid_entity* old_cot;
   struct zxid_entity* ent;
+  struct zxid_entity* ee;
+  struct zxid_entity* match = 0;
   
   D("eid(%.*s) path(%.*s) cf->magic=%x, md_cache_first(%d), cot(%p)", eid->len, eid->s, cf->path_len, cf->path, cf->magic, cf->md_cache_first, cf->cot);
   if (cf->md_cache_first) {
@@ -322,14 +348,37 @@ struct zxid_entity* zxid_get_ent_ss(struct zxid_conf* cf, struct zx_str* eid)
   if (cf->md_fetch) {
     ent = zxid_get_meta_ss(cf, eid);
     if (ent) {
-      LOCK(cf->mx, "add fetched ent to cot");
-      ent->n = cf->cot;
-      cf->cot = ent;
-      UNLOCK(cf->mx, "add fetched ent to cot");
+      LOCK(cf->mx, "read cot");
+      old_cot = cf->cot;
+      UNLOCK(cf->mx, "read cot");
+      while (ent) {
+	if (eid->len == strlen(ent->eid) && !memcmp(eid->s, ent->eid, eid->len)) {
+	  match = ent;
+	}
+	/* Check whether entity is already in the cache. */
+	if (zxid_get_ent_from_cache(cf, ent->ed->entityID)) {
+	  INFO("While fetching metadata for eid(%.*s) got metadata for eid(%s), but the metadata was already in the cache. New metadata ignored.", eid->len, eid->s, ent->eid);
+	  ent = ent->n;
+	} else {
+	  INFO("While fetching metadata for eid(%.*s) got metadata for eid(%s). New metadata cached.", eid->len, eid->s, ent->eid);
+	  ee = ent->n;
+	  LOCK(cf->mx, "add fetched ent to cot");
+	  ent->n = cf->cot;
+	  cf->cot = ent;
+	  UNLOCK(cf->mx, "add fetched ent to cot");
+	  ent = ee;
+	}
+      }
       
-      if (cf->md_populate_cache)
-        zxid_write_ent_to_cache(cf, ent);
-      return ent;
+      if (cf->md_populate_cache) {
+	LOCK(cf->mx, "read cot");
+	ent = cf->cot;
+	UNLOCK(cf->mx, "read cot");
+	for (; ent != old_cot; ent = ent->n)
+	  zxid_write_ent_to_cache(cf, ent);
+      }
+      if (match)
+	return match;
     }
   }
   

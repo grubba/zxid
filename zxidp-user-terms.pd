@@ -2,7 +2,7 @@ Terms and Conditions for the Users of ZXIDP
 ###########################################
 <<author: ZXIDP.org>>
 
-Document ID: zxidp-user-terms.pd (1.0)
+Document ID: zxidp-user-terms.pd (1.2)
 
 1.  ZXIDP.org is provided as a free service by Mercnet, Lda. ("ZXIDP")
     without any warranty or guarantee. ZXIDP accepts no liability
@@ -15,7 +15,7 @@ Document ID: zxidp-user-terms.pd (1.0)
     or inaction, you agree to hold harmless and indemnify
     ZXIDP for any damages resulting from such action. ZXIDP
     adopts common carrier stance and is not responsible
-    for actions of its users.
+    for actions of its Users or associated Service Providers.
 
 3.  ZXIDP may terminate your account without notice at its
     sole discretion.
@@ -26,8 +26,10 @@ Document ID: zxidp-user-terms.pd (1.0)
     you must answer truthfully.
 
 5.  You agree to not share your authentication credentials
-    with anyone. You accept full responsibility for
-    any actions taken using your authentication credentials
+    with anyone. If password is used, you agree to choose
+    strong and difficult to guess password and you agree not
+    to use this same password on any other website. You accept full
+    responsibility for any actions taken using your authentication credentials
     or in a session started with them.
 
 6.  Based on the identity proofing and quality of the
@@ -85,6 +87,8 @@ Document ID: zxidp-user-terms.pd (1.0)
         Authentication method is one time password
         token (e.g. yubikey).
 
+    ZXIDP.org may, from time to time, add assurance levels.
+
 7.  By registering as a user you consent to ZXIDP storing and
     handing your personal data. You also consent to ZXIDP
     passing this data to Service Providers that are members
@@ -93,13 +97,17 @@ Document ID: zxidp-user-terms.pd (1.0)
     your actions in its audit trail and retain this data
     to the maximum extent permitted by law.
 
-8.  If you have any questions, please do not hesitate
+8.  You acknowledge and agree to the <a href="zxidp-user-risk.pd">risk assessment</a> made
+    by ZXIDP and agree to adjust your behaviour and expectations
+    accordingly.
+
+9.  If you have any questions, please do not hesitate
     to write to
 
        Mercnet, Lda
        ZXIDP.org department
        c/o Sampo Kellomäki
-       Lg. Sta Marinha 11-1.
+       Lg. Stª Marinha 11-1.
        1100 Lisboa, Portugal
        zxidp@zxidp.org
 

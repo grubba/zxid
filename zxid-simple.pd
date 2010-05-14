@@ -928,6 +928,11 @@ returns:: 0 if deny (for any reason, e.g. indeterminate), or 1 if permit
 The XACML request is constructed by applying ~PEPMAP~ configuration
 to the attributes in the session. 
 
+5 Miscellaneous Function Documentation
+======================================
+
+<<img: meta-fetch: Relevant parts of the call graph for metadata fetching.>>
+
 <<if: ZXIDBOOK>>
 <<else: >>
 <<doc-end.pd>>

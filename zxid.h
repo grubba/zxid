@@ -110,7 +110,9 @@ struct zxid_conf {
   char* nice_name;           /* Human readable "nice" name. Used in AuthnReq->ProviderName */
   char* org_name;
   char* org_url;
-  char* country;             /* Used for CSR country field. */
+  char* locality;            /* Used for CSR locality (L) field. */
+  char* state;               /* Used for CSR state (ST) field. */
+  char* country;             /* Used for CSR country (C) field. */
   char* contact_org;
   char* contact_name;
   char* contact_email;
@@ -516,7 +518,6 @@ struct zx_sa_Issuer_s* zxid_my_issuer(struct zxid_conf* cf);
 
 /* zxidconf */
 
-void  zxid_sha1_file(struct zxid_conf* cf, char* name, char* sha1);
 X509* zxid_extract_cert(char* buf, char* name);
 RSA*  zxid_extract_private_key(char* buf, char* name);
 X509* zxid_read_cert(struct zxid_conf* cf, char* name);
@@ -635,8 +636,6 @@ struct zx_sa_Assertion_s* zxid_dec_a7n(struct zxid_conf* cf, struct zx_sa_Assert
 /* zxididpx */
 
 struct zx_str* zxid_idp_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int chk_dup);
-int zxid_idp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_root_s* r);
-int zxid_idp_soap_parse(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int len, char* buf);
 
 /* zxidpsso - IdP side of SSO: generating A7N */
 

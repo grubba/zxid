@@ -245,6 +245,8 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   cf->nice_name = ZXID_NICE_NAME;
   cf->org_name = ZXID_ORG_NAME;
   cf->org_url = ZXID_ORG_URL;
+  cf->locality = ZXID_LOCALITY;
+  cf->state = ZXID_STATE;
   cf->country = ZXID_COUNTRY;
   cf->contact_org = ZXID_CONTACT_ORG;
   cf->contact_name = ZXID_CONTACT_NAME;
@@ -981,6 +983,7 @@ scan_end:
       if (!strcmp(n, "LOCALPDP_IDPNID_PERMIT")) { cf->localpdp_idpnid_permit = zxid_load_cstr_list(cf, cf->localpdp_idpnid_permit, v); break; }
       if (!strcmp(n, "LOCALPDP_IDPNID_DENY"))   { cf->localpdp_idpnid_deny   = zxid_load_cstr_list(cf, cf->localpdp_idpnid_deny, v);   break; }
       if (!strcmp(n, "LOAD_COT_CACHE"))   { cf->load_cot_cache = v; break; }
+      if (!strcmp(n, "LOCALITY"))         { cf->locality = v; break; }
       goto badcf;
     case 'M':  /* MD_FETCH, MD_POPULATE_CACHE, MD_CACHE_FIRST, MD_CACHE_LAST */
       if (!strcmp(n, "MANDATORY_ATTR"))    { cf->mandatory_attr = v; break; }
@@ -1081,6 +1084,7 @@ scan_end:
       if (!strcmp(n, "SSO_SOAP_RESP_SIGN"))  { SCAN_INT(v, cf->sso_soap_resp_sign); break; }
       if (!strcmp(n, "SHOW_CONF"))      { SCAN_INT(v, cf->show_conf); break; }
       if (!strcmp(n, "SHOW_TECH"))      { SCAN_INT(v, cf->show_tech); break; }
+      if (!strcmp(n, "STATE"))          { cf->state = v; break; }
       goto badcf;
     case 'T':  /* TIMEOUT_FATAL */
       if (!strcmp(n, "TIMEOUT_FATAL"))  { SCAN_INT(v, cf->timeout_fatal); break; }
@@ -1267,6 +1271,8 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 "NICE_NAME=%s\n"
 "ORG_NAME=%s\n"
 "ORG_URL=%s\n"
+"LOCALITY=%s\n"
+"STATE=%s\n"
 "COUNTRY=%s\n"
 "CONTACT_ORG=%s\n"
 "CONTACT_NAME=%s\n"
@@ -1409,6 +1415,8 @@ struct zx_str* zxid_show_conf(struct zxid_conf* cf)
 		 STRNULLCHK(cf->nice_name),
 		 STRNULLCHK(cf->org_name),
 		 STRNULLCHK(cf->org_url),
+		 STRNULLCHK(cf->locality),
+		 STRNULLCHK(cf->state),
 		 STRNULLCHK(cf->country),
 		 STRNULLCHK(cf->contact_org),
 		 STRNULLCHK(cf->contact_name),

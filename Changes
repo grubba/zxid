@@ -47,6 +47,11 @@ https://idp.testshib.org/idp/shibboleth
     - zxid_pw_authn() should not report scary error message when checking .ykspent in
       not spent case
 
+zxid-0.54:: 22.4.2010
+    NOTPUB
+    - Add ability to absorb multiple EntityDescriptor elements from EntitiesDescriptor, as often happens in Shibboleth federations
+    - Fixed an infinite loop in zxcot -n -a
+    - Removed from zxid.h unused functions zxid_idp_soap_dispatch(), zxid_idp_soap_parse(), zxid_sha1_file(). Reported by Eric Rybski
 zxid-0.53:: 23.3.2010
     - Fixed case where last item (null return) of cached multi discovery would trigger yet another discovery
     - Added logging of issued discovery messages
@@ -57,6 +62,7 @@ zxid-0.53:: 23.3.2010
     - Added SAML idp-discovery extention to metadata
     - Changed templating system for IdP an page (other pages may be changed later to use the same)
     - Added zxidnewuser.pl and other IdP mangement web GUI scripts
+    - Added zxid_wsc_prepare_call() and zxid_wsc_valid_resp() APIs, see zxidwscprepdemo.java for usage
 zxid-0.52:: 15.2.2010
     - Log session create and destroy
     - Relax error checking in SLO: missing NameID ok if sesix supplied

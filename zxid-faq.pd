@@ -1,9 +1,14 @@
 <<if: ZXIDBOOK>>
-<<else: >>97 FAQ
+<<else: >>97 ZXID FAQ
 ======
 
 > N.B. Some of these FAQs are repeated in the topic specific documentation,
 > e.g. zxid-java.pd.
+
+1.1 Other documents
+-------------------
+
+<<doc-inc.pd>>
 
 <<fi: >>
 
@@ -547,6 +552,17 @@ do not need to support o=B.
 
 See also zxid-idp.pd for registration of EPR and bootstrap.
 
+97.4 API Questions
+------------------
+
+1. *Q*: What do I need to pass in as +enve+ argument to zxidjni.wsc_prepare_call()?
+
+   *A*: zxidjni.wsc_prepare_call() has some auto detection. If you pass entire
+   SOAP <e:Envelope>, then it will just add some headers. If you pass <e:Body>
+   it will add <e:Envelope> and headers. If you pass anything else, it
+   assumes that is meant to be content of the body and will add
+   <e:Envelope><e:Headers>...</><e:Body>your stuff</></>
+
 97.4 Common Mistakes
 --------------------
 
@@ -662,14 +678,14 @@ See also zxid-idp.pd for registration of EPR and bootstrap.
     zxidconf.h and recompile.
 
 
-97.3.2 Doubts
+97.4.2 Doubts
 ~~~~~~~~~~~~~
 
 How to decode auto_flags
 
   0x1d54   1 = debug; d = FORMT + FORMF + MGMTC; 5 = METAC + LOGINC; 4 = SOAPC
 
-97.4 Consent
+97.5 Consent
 ------------
 
 A frequent concern among the business people and lawyer types is
@@ -788,7 +804,7 @@ following:
    invite. Further consent may be obtained
    by Bob's own IdP, see bullet 2.
 
-97.5 Deployment Planning
+97.6 Deployment Planning
 ------------------------
 
 Here is a rudimentary decision tree for deployment planning
@@ -812,10 +828,10 @@ Here is a rudimentary decision tree for deployment planning
 
 To be continued...
 
-97.6 Use of Signing and Crypto, Security Concerns
+97.7 Use of Signing and Crypto, Security Concerns
 -------------------------------------------------
 
-97.7 Audit Trail
+97.8 Audit Trail
 ----------------
 
 1. How can I see what attributes the single sign on assertion contains?
@@ -865,10 +881,10 @@ To be continued...
          grep -l AWTILy8_0yre96om7n4H-4fMW /var/zxid/log/rely/*/a7n/* \
             | xargs cat | ./xml-pretty.pl
 
-97.7 Vendor products
+97.9 Vendor products
 --------------------
 
-97.7.1 Symlabs Federated Identity Suite (SFIS)
+97.9.1 Symlabs Federated Identity Suite (SFIS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Metadata import to IdP?
@@ -910,8 +926,8 @@ this off by editing slimidp.ldif:
 If this is not done, the SSO will fail (with what appears like signature
 error).1x
 
-97.8 Known Bugs
----------------
+97.10 Known Bugs
+----------------
 
 Following are known limitations. We document them here
 because we do not plan to fix them in foreseeable future.
@@ -926,8 +942,8 @@ because we do not plan to fix them in foreseeable future.
 
 2. Namespace qualified XML attributes have underscore instead of colon
 
-97.9 Mysterious Error Messages
-------------------------------
+97.11 Mysterious Error Messages
+-------------------------------
 
 "Random number generator not seeded!!!"
 
@@ -952,8 +968,44 @@ means with this command:
 
      /usr/local/ssl/bin/ssleay errstr 02001002
 
-97.9.1 Password is being asked for private key
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+97.11.1 snprintf() multibyte character related errors in log
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is due to locale setting. Try
+
+  export LANG=C
+
+This will disable any UTF-8 processing in sprintf().
+
+97.11.2 My own messages are redirected back to me
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In several SAML profiles a HTTP redirect is performed to
+send the user to other party, usually with a request or
+response in the query string.
+
+A mysterious error is when you see yourself receiving
+as input the stuff that was supposed to be sent to the
+other. The way this happens is if for some reason the
+other party's URL can not be determined, then the
+Location header will only consist of the query string
+that you are trying to send. Without domain name part
+of the URL, the browser will redirect back to the
+web site where the redirection came from. This is
+called "local redirect" and is usually the cause
+of you receiving your own output as input.
+
+To fix this, make sure you have the other site's metadata
+and make sure it parses and loads correctly. If that
+does not resolve the problem, see if the metadata
+has any binding for the operation you are trying.
+No binding will result in no URL.
+
+97.12 Certificates and Private Keys
+-----------------------------------
+
+97.12.1 Password is being asked for private key
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This is normal behaviour if your private key is encrypted. Either
 you have to supply the password or you have to use unencrypted
@@ -971,8 +1023,8 @@ accomplish this.
 Scan OpenSSL.org for the FAQ for full explanation on how to
 remove password from the private key.
 
-97.9.2 Quick command for looking at certificate
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+97.12.2 Quick command for looking at certificate
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (*** also appears in zxid-cot.pd)
 
@@ -986,8 +1038,8 @@ check this with
 If the domain name is different, then you need to obtain a certificate
 with correct domain name, see next question.
 
-97.9.3 Self signed certificate
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+97.12.3 Self signed certificate
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (*** also appears in zxid-cot.pd)
 
@@ -1023,40 +1075,58 @@ and the private key in same file for ZXID to understand it.
 > to fetch it from the Well Known Location URL (i.e. the Entity ID
 > of your SP). ZXID will never leak the private key to the metadata.
 
-97.9.4 snprintf() multibyte character related errors in log
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+97.12.4 Installing CA Certificates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This is due to locale setting. Try
+Some versions of libcurl apparently do not respect setting
+CURLOPT_SSL_VERIFYHOST to 0 and thus require a CA certificate to be
+trusted. This may result SSL connection error messages like
 
-  export LANG=C
+  CURLcode(35) CURLerr(SSL connect error)
 
-This will disable any UTF-8 processing in sprintf().
+See: http://gagravarr.org/writing/openssl-certs/others.shtml#ca-openssl
 
-97.9.5 My own messages are redirected back to me
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To fix this
 
-In several SAML profiles a HTTP redirect is performed to
-send the user to other party, usually with a request or
-response in the query string.
+1.  Determine what is your OpenSSL library's directory ("OPENSSLDIR")
 
-A mysterious error is when you see yourself receiving
-as input the stuff that was supposed to be sent to the
-other. The way this happens is if for some reason the
-other party's URL can not be determined, then the
-Location header will only consist of the query string
-that you are trying to send. Without domain name part
-of the URL, the browser will redirect back to the
-web site where the redirection came from. This is
-called "local redirect" and is usually the cause
-of you receiving your own output as input.
+      strace -e file openssl version 2>&1 | grep openssl.cnf
 
-To fix this, make sure you have the other site's metadata
-and make sure it parses and loads correctly. If that
-does not resolve the problem, see if the metadata
-has any binding for the operation you are trying.
-No binding will result in no URL.
+    may result
 
-97.10 Author's Pet Peeves
+     open("/apps/openssl/0.9.8g/ssl/openssl.cnf", O_RDONLY|O_LARGEFILE) = 3
+
+    Here the /apps/openssl/0.9.8g/ssl/ is the ~OPENSSLDIR~.
+
+2.  Download from the certificate authority their certificate
+    in PEM format ("Apache" format) and save it in OPENSSLDIR/cert.pem
+
+
+3.  Check
+
+      openssl verify -CApath OPENSSLDIR/certs/ OPENSSLDIR/cert.pem
+
+    which should in successful case print
+
+      /apps/openssl/0.9.8g/ssl/certs/the_ca.pem: OK
+
+    If the hash is not right, it will print something like
+
+      /apps/openssl/0.9.8g/ssl/certs/the_ca.pem: /C=US/O=TheCA/OU=TheCA
+      error 18 at 0 depth lookup:self signed certificate
+      OK
+
+4.  Alternative approach using certs/ directory with hashes. Save the
+    certificate under OPENSSLDIR/certs with any name (say, the_ca.pem)
+
+5.  Create a hash
+
+      cd OPENSSLDIR
+      ln -s the_ca.pem `openssl x509 -hash -noout -in the_ca.pem`.0
+
+6.  Check: see step 3, substituting cert.pem with the_ca.pem.
+
+97.13 Author's Pet Peeves
 -------------------------
 
 1. What is Schema Grammar (.sg) and why are you using it?
@@ -1120,8 +1190,8 @@ No binding will result in no URL.
      inhabitants of the irrelevant systems can support themselves, probably
      learning a great deal on the side.
 
-97.11 What does ZXID aim at - an answer
----------------------------------------
+97.13.1 What does ZXID aim at - an answer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A recent (Sept 2006) conversation that touched on the aims of ZXID project:
 
@@ -1188,11 +1258,11 @@ of ID-DAP as well as ID-HR-XML have been implemented. Discovery client
 was implemented as well. This means the generic WSC and WSP support is
 there.>>
 
-97.12 Annoyances and improvement ideas
---------------------------------------
+97.13.2 Annoyances and improvement ideas
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There is a lot of commonality that is not leveraged, especially in the
-way service end points are chose given the metadata.  The descriptors
+way service end points are chosen given the metadata.  The descriptors
 are nearly identical so casting them to one should work.
 
 Many of the SAML2 responses are nearly identical. Rather than
@@ -1207,8 +1277,8 @@ schema the same. It seems to be fairly common that the schema
 changes are so minor that there is no justification for two
 different decoding engines.
 
-97.13 Non-obvious SAML
-----------------------
+97.13.3 Non-obvious SAML
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 1.  Destination XML attribute is needed in redirect and POST bindings.
 
@@ -1296,8 +1366,8 @@ different decoding engines.
     see above. Downside is that the payload can't really be
     binary, unless you base64 encode twice.
 
-97.14 Non-obvious ID-WSF
-------------------------
+97.13.4 Non-obvious ID-WSF
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1.  Should you include Sender SOAP header? Conor says usually
     not. But how do you then know SOAP request issuer? Perhaps
@@ -1376,12 +1446,12 @@ representing 128 bits of key information.
 The value is not hashed, salted, or nonced, so it needs to be carefully
 protected by the filesystem permissions.
 
-97.15.9 Legal
+97.16.9 Legal
 ~~~~~~~~~~~~~
 
 Microsoft promises to not sue you: http://www.microsoft.com/interop/osp/default.mspx
 
-97.16 Attributes
+97.17 Attributes
 ----------------
 
 Q:: I want to read the attributes that come in the assertion. how do I do that?
@@ -1423,6 +1493,43 @@ A:: Re ldif cached: the logic is supposed to be that the zxid_simple() will
     If you do not call it every time, but instead bootstrap some sort of
     app specific session, then you would strore the LDIF (or the attributes
     parsed out of it) to that app specific session.
+
+97.17 SOAP Binding
+------------------
+
+97.17.1 Axis2 wants wsa:Action header
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The recommended course of action is to change Axis2 config such that it does not
+require wsa:Action header. All the necessary information for dispatch of
+the SOAP message is already available on the top child element of SOAP Body element.
+
+HTTP Action header and the wsa:Action SOAP header are historical design errors
+as they effectively duplicate information from the top child of the Body. Exactly
+how this duplication is to be done is poorly specified and great source of
+interoperability problems.
+
+Please point me to a specification document (with line number or section reference)
+where wsa:Action is specified as mandatory. Remember that Axis2 is just an implementation
+and just because Axis2 happens to want it, does not make it required by any standard.
+If you can show it to be mandatory, then point me to document that specifies what
+the proper value would be.
+
+Historically many web service specs have been silent on the value of wsa:Action as
+they were designed not to use wsa:Action. When people the try to use wsa:Action,
+they end up inventing the value themselves and, voila, you have an interoperability
+mess.
+
+If you really want to have a wsa:Action  header, you can generate one yourself:
+
+zxid_call(...,"<e:Envelope><e:Header><a:Action>...</a:Action></e:Header><e:Body>...</e:Body></e:Envelope>", ...)
+
+In other words, the zxid_call() family of functions will accept full SOAP envelope if
+you give it one. It will then add the TAS3 specific headers to it, but it will preserve
+the headers you supplied as long as there is no conflict.
+
+Cheers,
+--Sampo
 
 98 Support
 ==========

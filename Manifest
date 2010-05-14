@@ -33,6 +33,7 @@ zxid-ref.pd      - Comprehensive list of literature references for ZXID project
 doc-end.pd       - Formatting code include for documents
 doc-inc.pd       - Navigation code include for documents
 ref-inc.pd       - Navigation code include for generated reference
+meta-fetch.dot   - Call graph for metadata fetching
 COPYING          - Copyright and license statement (referencing LICENSE-2.0
 LICENSE-2.0.txt  - Apache License v2.0
 ca.crt           - Certification Authority certificate for zxid.pem

@@ -106,7 +106,7 @@ static void opt(int* argc, char*** argv, char*** env)
 	continue;
       case '\0':
 	++regsvc;
-	uiddir  = ZXID_PATH "idp" ZXID_UID_DIR;
+	dimddir  = ZXID_PATH "idp" ZXID_DIMD_DIR;
 	continue;
       }
       break;
@@ -229,6 +229,8 @@ static void opt(int* argc, char*** argv, char*** env)
   }
 }
 
+/* --------------- reg_svc --------------- */
+
 /*() IdP and Discovery. Register service metadata to /var/zxid/idpdimd/XX,
  * and possibly boostrap to /var/zxid/idpuid/.all/.bs/YY */
 
@@ -244,7 +246,7 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
   struct zx_a_EndpointReference_s* epr;
   struct zx_str* ss;
   
-  read_all_fd(0, buf, sizeof(buf)-1, &got);
+  read_all_fd(0, buf, sizeof(buf)-1, &got);  /* Read EPR */
   buf[got] = 0;
   p = buf;
   
@@ -351,6 +353,8 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
   return 0;
 }
 
+/* --------------- addmd --------------- */
+
 /*() Add metadata of a partner to the Circle-of-Trust, represented by the CoT dir */
 
 /* Called by:  zxcot_main */
@@ -374,32 +378,36 @@ static int zxid_addmd(struct zxid_conf* cf, char* mdurl, int dry_run, const char
     ERR("***** Parsing metadata failed %d", 0);
     return 1;
   }
+
+  for (; ent; ent = ent->n) {
+    ss = zx_EASY_ENC_SO_md_EntityDescriptor(cf->ctx, ent->ed);
+    if (!ss)
+      return 2;
   
-  ss = zx_EASY_ENC_SO_md_EntityDescriptor(cf->ctx, ent->ed);
-  if (!ss)
-    return 2;
+    if (verbose)
+      fprintf(stderr, "Writing ent(%s) to %s%s\n", ent->eid, dcot, ent->sha1_name);
+    if (dry_run) {
+      write_all_fd(1, ss->s, ss->len);
+      zx_str_free(cf->ctx, ss);
+      continue;
+    }
   
-  if (verbose)
-    fprintf(stderr, "Writing ent(%s) to %s%s\n", ent->eid, dcot, ent->sha1_name);
-  if (dry_run) {
-    write_all_fd(1, ss->s, ss->len);
+    fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -a", "%s%s", dcot, ent->sha1_name);
+    if (fd == BADFD) {
+      perror("open metadata for writing metadata to cache");
+      ERR("Failed to open file for writing: sha1_name(%s) to metadata cache", ent->sha1_name);
+      zx_str_free(cf->ctx, ss);
+      return 1;
+    }
+    
+    write_all_fd(fd, ss->s, ss->len);
     zx_str_free(cf->ctx, ss);
-    return 0;
+    close_file(fd, (const char*)__FUNCTION__);
   }
-  
-  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -a", "%s%s", dcot, ent->sha1_name);
-  if (fd == BADFD) {
-    perror("open metadata for writing metadata to cache");
-    ERR("Failed to open file for writing: sha1_name(%s) to metadata cache", ent->sha1_name);
-    zx_str_free(cf->ctx, ss);
-    return 0;
-  }
-  
-  write_all_fd(fd, ss->s, ss->len);
-  zx_str_free(cf->ctx, ss);
-  close_file(fd, (const char*)__FUNCTION__);
   return 0;
 }
+
+/* --------------- lscot --------------- */
 
 /*() Print a line of Circle-of-Trust listing */
 
@@ -419,13 +427,16 @@ static int zxid_lscot_line(struct zxid_conf* cf, int col_swap, const char* dcot,
     ERR("***** Parsing metadata failed for(%s%s)", dcot, den);
     return 2;
   }
-  switch (col_swap) {
-  case 1:  printf("%-50s %s%s %s\n", ent->eid, dcot, den, STRNULLCHKD(ent->dpy_name)); break;
-  case 2:  printf("%s\n",       ent->eid); break;
-  default: printf("%s%s %-50s %s\n", dcot, den, ent->eid, STRNULLCHKD(ent->dpy_name));
+  while (ent) {
+    switch (col_swap) {
+    case 1:  printf("%-50s %s%s %s\n", ent->eid, dcot, den, STRNULLCHKD(ent->dpy_name)); break;
+    case 2:  printf("%s\n",       ent->eid); break;
+    default: printf("%s%s %-50s %s\n", dcot, den, ent->eid, STRNULLCHKD(ent->dpy_name));
+    }
+    if (strcmp(*den?den:dcot, ent->sha1_name))
+      fprintf(stderr, "Filename(%s) does not match sha1_name(%s)\n", *den?den:dcot, ent->sha1_name);
+    ent = ent->n;
   }
-  if (strcmp(*den?den:dcot, ent->sha1_name))
-    fprintf(stderr, "Filename(%s) does not match sha1_name(%s)\n", *den?den:dcot, ent->sha1_name);
   return 0;
 }
 
@@ -463,6 +474,8 @@ static int zxid_lscot(struct zxid_conf* cf, int col_swap, const char* dcot)
   }
   return 0;
 }
+
+/* ============== MAIN ============ */
 
 #ifndef zxcot_main
 #define zxcot_main main

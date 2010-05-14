@@ -37,9 +37,10 @@ default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool
 
 all: default precheck_apache samlmod phpzxid javazxid apachezxid smime
 
-### This is the authorative spot to set version number. c/zxidvers.h is generated from these.
-ZXIDVERSION=0x000053
-ZXIDREL=0.53
+### This is the authorative spot to set version number. Document in Changes file.
+### c/zxidvers.h is generated from these, see `make updatevers'
+ZXIDVERSION=0x000056
+ZXIDREL=0.56
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -233,10 +234,10 @@ ifeq ($(TARGET),xmingw)
 
 SYSROOT=/apps/gcc/mingw/sysroot
 CROSS_COMPILE=1
-CC=i586-pc-mingw32-gcc
-LD=i586-pc-mingw32-gcc
-AR=i586-pc-mingw32-ar -crs
-ARX=i586-pc-mingw32-ar -x
+CC=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
+LD=/apps/gcc/mingw/bin/i586-pc-mingw32-gcc
+AR=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -crs
+ARX=/apps/binutils/mingw/bin/i586-pc-mingw32-ar -x
 CDEF+=-DMINGW -DUSE_LOCK=flock -DCURL_STATICLIB
 CURL_ROOT=/apps/gcc/mingw/sysroot
 OPENSSL_ROOT=/apps/gcc/mingw/sysroot
@@ -1111,8 +1112,9 @@ TAS3JAVA=T3-SSO-ZXID-JAVA_$(ZXIDREL)
 tas3javapkg: zxidjava/libzxidjni.so zxidjava/zxidjni.class
 	rm -rf $(TAS3JAVA) $(TAS3JAVA).zip
 	mkdir $(TAS3JAVA)
+	mkdir $(TAS3JAVA)/zxidjava
 	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' <Manifest.T3-SSO-ZXID-JAVA >$(TAS3JAVA)/Manifest
-	cp zxidjava/libzxidjni.so zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3JAVA)
+	cp zxidjava/libzxidjni.so zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3JAVA)/zxidjava
 	cp $(TAS3COMMONFILES) $(TAS3JAVA)
 	zip -r $(TAS3JAVA).zip $(TAS3JAVA)
 
@@ -1131,11 +1133,12 @@ TAS3LINUXX86=T3-ZXID-LINUX-X86_$(ZXIDREL)
 tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/php_zxid.so zxidjava/libzxidjni.so zxidjava/zxidjni.class
 	rm -rf $(TAS3LINUXX86) $(TAS3LINUXX86).zip
 	mkdir $(TAS3LINUXX86)
+	mkdir $(TAS3LINUXX86)/zxidjava
 	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
 	cp mod_auth_saml.so $(TAS3LINUXX86)
 	cp *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
 	cp zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
-	cp zxidjava/libzxidjni.so zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3LINUXX86)
+	cp zxidjava/libzxidjni.so zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3LINUXX86)/zxidjava
 	cp $(TAS3COMMONFILES) $(TAS3LINUXX86)
 	zip -r $(TAS3LINUXX86).zip $(TAS3LINUXX86)
 
@@ -1154,6 +1157,9 @@ tas3srcpkg: zxid-$(ZXIDREL).tgz
 #	scp $(TAS3SRC).zip $(TAS3IDP).zip $(TAS3JAVA).zip $(TAS3PHP).zip $(TAS3MAS).zip tas3repo:pool-in
 
 tas3rel: tas3linuxx86pkg tas3srcpkg
+
+# tas3pool T3-ZXID-SRC_0.54.zip && tas3pool -u T3-ZXID-SRC_0.54.zip
+# tas3pool T3-ZXID-LINUX-X86_0.54.zip && tas3pool -u T3-ZXID-LINUX-X86_0.54.zip
 
 tas3copyrel: tas3rel
 	scp $(TAS3SRC).zip $(TAS3LINUXX86).zip tas3repo:pool-in
@@ -1174,7 +1180,12 @@ precheck/chk-curl: precheck/chk-curl.o
 precheck/chk-apache: precheck/chk-apache.o
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBS)
 
-
+ifeq ($(CROSS_COMPILE),1)
+precheck: precheck/chk-zlib.o precheck/chk-zlib precheck/chk-openssl.o precheck/chk-openssl \
+          precheck/chk-curl.o precheck/chk-curl
+	@$(ECHO) "Cross compile simplified precheck ok."
+	@$(ECHO)
+else
 precheck: precheck/chk-zlib.o precheck/chk-zlib precheck/chk-openssl.o precheck/chk-openssl \
           precheck/chk-curl.o precheck/chk-curl
 	precheck/chk-zlib
@@ -1182,6 +1193,7 @@ precheck: precheck/chk-zlib.o precheck/chk-zlib precheck/chk-openssl.o precheck/
 	precheck/chk-curl
 	@$(ECHO) "Precheck ok."
 	@$(ECHO)
+endif
 
 precheckclean:
 	rm -f precheck/*.o
@@ -1363,7 +1375,7 @@ winbindist:
 #   make winbindist
 #   make winbinrel
 #   make tas3rel
-#   make tas3copyrel
+#   make tas3copyrel    # tas3pool -u T3-ZXID-LINUX-X86_0.54.zip
 #   make gen ENA_GEN=1
 # zxid.user@lists.unh.edu
 
@@ -1382,7 +1394,7 @@ tex/README.zxid.pdf: README.zxid
 html/README.zxid.html: README.zxid doc-inc.pd doc-end.pd
 	pd2tex -noref -nortf -nodbx -notex README.zxid
 
-DOC= html/README.zxid.html html/index.html html/apache.html html/mod_auth_saml.html html/zxid-simple.html html/zxid-install.html html/zxid-conf.html html/zxid-cot.html html/zxid-java.html html/zxid-log.html html/zxid-perl.html html/zxid-php.html html/zxid-raw.html html/zxid-wsf.html html/zxid-idp.html html/schemata.html
+DOC= html/README.zxid.html html/index.html html/apache.html html/mod_auth_saml.html html/zxid-simple.html html/zxid-install.html html/zxid-conf.html html/zxid-cot.html html/zxid-java.html html/zxid-log.html html/zxid-perl.html html/zxid-php.html html/zxid-raw.html html/zxid-wsf.html html/zxid-idp.html html/zxid-faq.html html/schemata.html
 
 doc: $(DOC)
 
@@ -1392,7 +1404,7 @@ cleandoc:
 	rm -f $(DOC)
 
 release:
-	scp $(DOC) tex/README.zxid.pdf html/README.zxid-win32.html html/i-*.png zxid-frame.html sampo@zxid.org:zxid.org
+	scp tex/README.zxid.pdf html/README.zxid-win32.html html/i-*.png zxid-frame.html sampo@zxid.org:zxid.org
 
 winbinrel:
 	scp zxid-$(ZXIDREL)-win32-bin.zip sampo@zxid.org:zxid.org
@@ -1400,11 +1412,17 @@ winbinrel:
 indexrel: html/index.html
 	scp $< sampo@zxid.org:zxid.org
 
+reldoc:
+	scp $(DOC) sampo@zxid.org:zxid.org/html
+
 relhtml:
 	scp html/* sampo@zxid.org:zxid.org/html
 
 refhtml:
 	scp ref/html/* sampo@zxid.org:zxid.org/ref/html
+
+zxidpcopytc: html/zxidp-user-terms.html html/zxidp-sp-terms.html
+	scp html/zxidp-user-terms.html html/zxidp-sp-terms.html root@zxidp.org:/var/zxid/webroot/html
 
 rsynclite:
 	cd ..; rsync -a '--exclude=*.o' '--exclude=*.zip' '--exclude=TAGS' '--exclude=*.tgz' '--exclude=*.class' '--exclude=*.so' '--exclude=*.a'  '--exclude=zxlogview' '--exclude=zxidsimple'  '--exclude=zxidhlowsf'  '--exclude=zxidhlo' '--exclude=zxidsp' zxid mesozoic.homeip.net:

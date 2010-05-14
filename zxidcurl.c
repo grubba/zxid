@@ -154,8 +154,7 @@ struct zxid_entity* zxid_get_meta(struct zxid_conf* cf, char* url)
   
   ent = zxid_parse_meta(cf, &rc.p, rc.lim);
   if (!ent) {
-    ERR("Failed to parse metadata response url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",
-	url, res, CURL_EASY_STRERR(res), rc.lim-rc.buf, rc.buf);
+    ERR("Failed to parse metadata response url(%s) CURLcode(%d) CURLerr(%s) buf(%.*s)",	url, res, CURL_EASY_STRERR(res), rc.lim-rc.buf, rc.buf);
     ZX_FREE(cf->ctx, rc.buf);
     return 0;
   }
@@ -190,12 +189,15 @@ struct zxid_entity* zxid_get_meta_ss(struct zxid_conf* cf, struct zx_str* url)
 struct zx_str* zxid_http_post_raw(struct zxid_conf* cf, int url_len, const char* url, int len, const char* data)
 {
 #ifdef USE_CURL
+  int i;
   struct zx_str* ret;
   CURLcode res;
   struct zxid_curl_ctx rc;
   struct zxid_curl_ctx wc;
   struct curl_slist content_type;
   struct curl_slist SOAPaction;
+  struct curl_slist *slist;
+  struct curl_certinfo* ci;
   char* urli;
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
@@ -207,13 +209,14 @@ struct zx_str* zxid_http_post_raw(struct zxid_conf* cf, int url_len, const char*
   curl_easy_setopt(cf->curl, CURLOPT_MAXREDIRS, 110);
   curl_easy_setopt(cf->curl, CURLOPT_SSL_VERIFYPEER, 0);  /* *** arrange verification */
   curl_easy_setopt(cf->curl, CURLOPT_SSL_VERIFYHOST, 0);  /* *** arrange verification */
+  //curl_easy_setopt(cf->curl, CURLOPT_CERTINFO, 1);
 
   if (url_len == -1)
     url_len = strlen(url);
   urli = ZX_ALLOC(cf->ctx, url_len+1);
   memcpy(urli, url, url_len);
   urli[url_len] = 0;
-  D("urli(%s) len=%d", urli, len);
+  DD("urli(%s) len=%d", urli, len);
   curl_easy_setopt(cf->curl, CURLOPT_URL, urli);
   
   if (len == -1)
@@ -241,8 +244,27 @@ struct zx_str* zxid_http_post_raw(struct zxid_conf* cf, int url_len, const char*
   curl_easy_setopt(cf->curl, CURLOPT_HTTPHEADER, &SOAPaction);
   
   D("------------------------ url(%s) ------------------------", urli);
-  D("SOAP_CALL post(%.*s) len=%d", len, data, len);
+  D("SOAP_CALL post(%.*s) len=%d\n", len, data, len);
   res = curl_easy_perform(cf->curl);  /* <========= Actual call, blocks. */
+  switch (res) {
+  case 0: break;
+  case CURLE_SSL_CONNECT_ERROR:
+    ERR("Is the URL(%s) really an https url? Check that certificate of the server is valid and that certification authority is known to the client. CURLcode(%d) CURLerr(%s)", urli, res, CURL_EASY_STRERR(res));
+    DD("buf(%.*s)", rc.lim-rc.buf, rc.buf);
+#if 0
+    res = curl_easy_getinfo(cf->curl, CURLINFO_CERTINFO, &ci);  /* CURLINFO_SSL_VERIFYRESULT */
+    if (!res && ci) {
+      D("%d certs", ci->num_of_certs);
+      for (i = 0; i < ci->num_of_certs; ++i)
+	for (slist = ci->certinfo[i]; slist; slist = slist->next)
+	  D("%d: %s", i, slist->data);
+    }
+#endif
+    break;
+  default:
+    ERR("Failed post to url(%s) CURLcode(%d) CURLerr(%s)", urli, res, CURL_EASY_STRERR(res));
+    DD("buf(%.*s)", rc.lim-rc.buf, rc.buf);
+  }
   UNLOCK(cf->curl_mx, "curl soap");
   ZX_FREE(cf->ctx, urli);
   rc.lim = rc.p;
