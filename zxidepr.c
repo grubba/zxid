@@ -135,7 +135,7 @@ int zxid_epr_path(struct zxid_conf* cf, char* dir, char* sid,
  * return:: 1 on success, 0 on failure */
 
 /* Called by:  main, zxid_get_epr, zxid_snarf_eprs */
-int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr)
+int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr)
 {
   fdtype fd;
   struct zx_str* ss;
@@ -180,12 +180,12 @@ int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_Endpo
  * Typical name /var/zxid/ses/SESID/SVCTYPE,SHA1 */
 
 /* Called by:  zxid_as_call_ses, zxid_snarf_eprs_from_ses */
-void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr)
+void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr)
 {
   struct zx_str* ss;
   struct zx_str* urlss;
   int wsf20 = 0;
-  for (; epr; epr = (struct zx_a_EndpointReference_s*)epr->gg.g.n) {
+  for (; epr; epr = (zxid_epr*)epr->gg.g.n) {
     ss = epr->Metadata->ServiceType->content;
     urlss = epr->Address->gg.content;
     D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
@@ -268,7 +268,7 @@ void zxid_snarf_eprs_from_ses(struct zxid_conf* cf, struct zxid_ses* ses)
  * return:: EPR data structure (or linked list of EPRs) on success, 0 on failure */
 
 /* Called by:  main x2, zxid_get_epr x2 */
-struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
+zxid_epr* zxid_find_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   struct zx_root_s* r;
   int len, epr_len, siz = ZXID_INIT_EPR_BUF;
@@ -276,7 +276,7 @@ struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid
   char* epr_buf;  /* MUST NOT come from stack. */
   DIR* dir;
   struct dirent * de;
-  struct zx_a_EndpointReference_s* epr = 0;
+  zxid_epr* epr = 0;
   struct zx_a_Metadata_s* md = 0;  
   D_INDENT("find_epr: ");
 
@@ -411,13 +411,13 @@ struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid
  */
 
 /* Called by:  main x5 */
-struct zx_a_EndpointReference_s* zxid_get_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
+zxid_epr* zxid_get_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   int wsf20 = 0;
   struct zx_str* ss;
   struct zx_str* urlss;
   struct zx_e_Envelope_s* env;
-  struct zx_a_EndpointReference_s* epr;
+  zxid_epr* epr;
   epr = zxid_find_epr(cf, ses, svc, url, di_opt, action, n);
   if (epr)
     return epr;
@@ -437,7 +437,7 @@ struct zx_a_EndpointReference_s* zxid_get_epr(struct zxid_conf* cf, struct zxid_
   env = zxid_wsc_call(cf, ses, epr, env);
   if (env && env->Body) {
     if (env->Body->QueryResponse) {
-      for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = (struct zx_a_EndpointReference_s*)ZX_NEXT(epr)) {
+      for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = (zxid_epr*)ZX_NEXT(epr)) {
 	ss = epr->Metadata->ServiceType->content;
 	urlss = epr->Address->gg.content;
 	D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
@@ -462,29 +462,54 @@ struct zx_a_EndpointReference_s* zxid_get_epr(struct zxid_conf* cf, struct zxid_
 /*() Accessor function for extracting endpoint address URL. */
 
 /* Called by: */
-struct zx_str* zxid_get_epr_address(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr) {
+struct zx_str* zxid_get_epr_address(struct zxid_conf* cf, zxid_epr* epr) {
   return epr->Address->gg.content;
 }
 
 /*() Accessor function for extracting endpoint ProviderID. */
 
 /* Called by: */
-struct zx_str* zxid_get_epr_entid(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr) {
+struct zx_str* zxid_get_epr_entid(struct zxid_conf* cf, zxid_epr* epr) {
   return epr->Metadata->ProviderID->content;
 }
 
 /*() Accessor function for extracting endpoint Description (Abstract). */
 
 /* Called by: */
-struct zx_str* zxid_get_epr_desc(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr) {
+struct zx_str* zxid_get_epr_desc(struct zxid_conf* cf, zxid_epr* epr) {
   return epr->Metadata->Abstract->content;
+}
+
+/*() Constructor for "blank". Such EPR lacks security context so it is
+ * not directly usable for identity web service calls. However, it could
+ * be useful as a building block, or for non-idenity web service.
+ * Also id, actor, and mustUnderstand fields need to be filled in by
+ * other means (we may eventually have defaults for some of these). */
+
+zxid_epr* zxid_new_epr(struct zxid_conf* cf, char* address, char* desc, char* entid, char* svctype)
+{
+  zxid_epr* epr = zx_NEW_a_EndpointReference(cf->ctx);
+  if (address) {
+    epr->Address = zx_NEW_a_Address(cf->ctx);
+    epr->Address->gg.content = zx_dup_str(cf->ctx, address);
+  }
+  if (desc || entid || svctype) {
+    epr->Metadata = zx_NEW_a_Metadata(cf->ctx);
+    if (desc)
+      epr->Metadata->Abstract = zx_dup_simple_elem(cf->ctx, desc);
+    if (entid)
+      epr->Metadata->ProviderID = zx_dup_simple_elem(cf->ctx, entid);
+    if (svctype)
+      epr->Metadata->ServiceType = zx_dup_simple_elem(cf->ctx, svctype);
+  }
+  return epr;
 }
 
 #if 0
 /*() Accessor function for extracting endpoint's SAML2 assertion token. */
 
 /* Called by: */
-struct zx_str* zxid_get_epr_a7n(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr) {
+struct zx_str* zxid_get_epr_a7n(struct zxid_conf* cf, zxid_epr* epr) {
   return epr->Metadata->SecurityContext->Token->Assertion;
 }
 #endif

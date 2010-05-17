@@ -46,7 +46,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_A
   struct zx_elem_s* el;
   struct zx_a_Metadata_s* md = 0;  
   struct zx_str* addr = 0;  
-  struct zx_a_EndpointReference_s* epr = 0;
+  zxid_epr* epr = 0;
   D_INDENT("di_query: ");
 
   //resp->ID = zxid_mk_id(cf, "DIR", ZXID_ID_BITS);

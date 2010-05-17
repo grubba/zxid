@@ -33,14 +33,14 @@
 vpath %.c ../zxid
 vpath %.h ../zxid
 
-default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall zxidwspcgi
+default: seehelp precheck zxid zxidhlo zxididp zxidhlowsf zxidsimple zxidwsctool zxlogview zxidhrxmlwsc zxidhrxmlwsp zxdecode zxcot zxpasswd zxcall
 
-all: default precheck_apache samlmod phpzxid javazxid apachezxid smime
+all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcgi
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000056
-ZXIDREL=0.56
+ZXIDVERSION=0x000057
+ZXIDREL=0.57
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -249,8 +249,14 @@ JNILIB=dll
 WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
 LIBS= -mconsole $(WIN_LIBS)
 #SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-reloc -Wl,-whole-archive
-SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition -Wl,--output-def,zxiddll.def,--out-implib,libzxiddll.a
+SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition -Wl,--output-def,zxiddll.def,--out-implib,libzxiddll.a
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing  -mno-cygwin
+
+# java.lang.UnsatisfiedLinkError: Given procedure could not be found
+# -mno-cygwin -mrtd -Wl,--kill-at -Wl,--add-stdcall-alias
+# http://www.inonit.com/cygwin/jni/helloWorld/c.html
+# http://www.1702.org/jniswigdll.html
+# http://maba.wordpress.com/2004/07/28/generating-dll-files-for-jni-under-windowscygwingcc/
 
 else
 ifeq ($(TARGET),mingw)
@@ -260,7 +266,7 @@ CURL_ROOT=/usr/local
 OPENSSL_ROOT=/usr/local/ssl
 WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
 LIBS= -mconsole $(WIN_LIBS)
-SHARED_FLAGS=-shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,-whole-archive -Wl,--allow-multiple-definition
+SHARED_FLAGS=-Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,-whole-archive -Wl,--allow-multiple-definition
 CFLAGS=-g -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-strict-aliasing -mno-cygwin
 JNILIB=dll
 
@@ -918,11 +924,18 @@ zxidwspleaf.class: zxidwspleaf.java zxidjava/zxidjni.class
 zxidwscprepdemo.class: zxidwscprepdemo.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java zxidwscprepdemo.java
 
-
 zxidjava.jar: zxidjava/*.class
-	$(JAR) cf zxidjava.jar $<
+	$(JAR) cf zxidjava.jar $^
 
-javazxid: zxidjava/libzxidjni.$(JNILIB) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class
+zxiddemo.war: zxidjava.jar
+	mkdir -p zxidservlet/WEB-INF/classes/zxidjava/
+	cp -f zxidjava.jar ./zxidservlet/WEB-INF/classes/
+	cp -f ./servlet/WEB-INF/web.xml ./zxidservlet/WEB-INF/
+	cp -f zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
+	cd ./zxidservlet ; $(JAR) cf ../zxidservlet.war *; cd ../
+	rm -rf zxidservlet
+
+javazxid: zxidjava/libzxidjni.$(JNILIB) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidjava.jar zxiddemo.war
 
 javazxid_install: zxidjava/libzxidjni.so
 	@$(ECHO) "javazxid_install: Work in Progress. See zxid-java.pd"
@@ -1142,6 +1155,29 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 	cp $(TAS3COMMONFILES) $(TAS3LINUXX86)
 	zip -r $(TAS3LINUXX86).zip $(TAS3LINUXX86)
 
+TAS3WIN32=T3-ZXID-WIN32_$(ZXIDREL)
+
+#tas3win32pkg: mod_auth_saml.so php/php_zxid.so
+#	cp mod_auth_saml.so $(TAS3LINUXX86)
+#	cp *.php php/php_zxid.dll php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
+
+tas3win32pkg: zxididp zxpasswd zxcot zxdecode zxlogview zxidjava/libzxidjni.dll zxidjava/zxidjni.class zxidappdemo.class
+	rm -rf $(TAS3WIN32) $(TAS3WIN32).zip
+	mkdir $(TAS3WIN32)
+	mkdir $(TAS3WIN32)/zxidjava
+	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-ZXID-WIN32 > $(TAS3WIN32)/Manifest
+	cp zxididp $(TAS3WIN32)/zxididp.exe
+	cp zxpasswd $(TAS3WIN32)/zxpasswd.exe
+	cp zxcot $(TAS3WIN32)/zxcot.exe
+	cp zxdecode $(TAS3WIN32)/zxdecode.exe
+	cp zxlogview $(TAS3WIN32)/zxlogview.exe
+	cp zxid-idp.pd $(TAS3WIN32)
+	cp zxidjava/libzxidjni.dll $(TAS3WIN32)/zxidjava/zxidjni.dll
+	cp zxidjava/libzxidjni.dll zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3WIN32)/zxidjava
+	cp *.jave *.class $(TAS3WIN32)
+	cp $(TAS3COMMONFILES) $(TAS3WIN32)
+	zip -r $(TAS3WIN32).zip $(TAS3WIN32)
+
 TAS3SRC=T3-ZXID-SRC_$(ZXIDREL)
 
 tas3srcpkg: zxid-$(ZXIDREL).tgz
@@ -1160,6 +1196,7 @@ tas3rel: tas3linuxx86pkg tas3srcpkg
 
 # tas3pool T3-ZXID-SRC_0.54.zip && tas3pool -u T3-ZXID-SRC_0.54.zip
 # tas3pool T3-ZXID-LINUX-X86_0.54.zip && tas3pool -u T3-ZXID-LINUX-X86_0.54.zip
+# tas3pool T3-ZXID-WIN32_0.56.zip
 
 tas3copyrel: tas3rel
 	scp $(TAS3SRC).zip $(TAS3LINUXX86).zip tas3repo:pool-in

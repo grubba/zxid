@@ -187,7 +187,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
 {
   struct timeval srcts = {0,501000};
   struct zx_sa_Attribute_s* at;
-  struct zx_a_EndpointReference_s* epr;
+  zxid_epr* epr;
   struct zx_root_s* r;
   DIR* dir;
   struct dirent * de;
@@ -467,7 +467,7 @@ void zxid_mk_transient_nid(struct zxid_conf* cf, struct zx_sa_NameID_s* nameid, 
  * was issued. Returns static string describing the nature of token, for logging purposes. */
 
 /* Called by:  zxid_di_query, zxid_gen_boots x2 */
-char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr, const char* uid, int bs_lvl)
+char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, zxid_epr* epr, const char* uid, int bs_lvl)
 {
   struct timeval srcts = {0,501000};
   struct zx_sa_NameID_s* nameid;

@@ -27,7 +27,7 @@
 /*() Try to map security mechanisms across different frame works. Low level function. */
 
 /* Called by:  zxid_wsc_call, zxid_wsf_decor */
-int zxid_map_sec_mech(struct zx_a_EndpointReference_s* epr)
+int zxid_map_sec_mech(zxid_epr* epr)
 {
   int len;
   char* s;
@@ -375,7 +375,7 @@ void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security
   }
 }
 
-static int zxid_wsc_prep(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env)
+static int zxid_wsc_prep(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   struct zx_e_Header_s* hdr;
   if (!zxid_wsf_decor(cf, ses, env, 0))
@@ -410,7 +410,7 @@ static int zxid_wsc_prep(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a
   return 1;
 }
 
-static int zxid_wsc_prep_secmech(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env)
+static int zxid_wsc_prep_secmech(struct zxid_conf* cf, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   int secmech;
   struct zx_wsse_Security_s* sec;
@@ -493,7 +493,7 @@ static int zxid_wsc_prep_secmech(struct zxid_conf* cf, struct zx_a_EndpointRefer
  * will add Liberty ID-WSF specific SOAP headers. */
 
 /* Called by:  main x9, zxid_call, zxid_get_epr */
-struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env)
+struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   int i, res;
   struct zx_root_s* root;
@@ -649,7 +649,7 @@ struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char*
 {
   struct zx_str* ret;
   struct zx_e_Envelope_s* env;
-  struct zx_a_EndpointReference_s* epr;
+  zxid_epr* epr;
 
   if (!cf || !ses || !enve) {
     ERR("Missing mandatory arguments ses=%p", ses);
@@ -745,7 +745,7 @@ struct zx_str* zxid_callf(struct zxid_conf* cf, struct zxid_ses* ses, const char
  * return:: SOAP Envelope ready to be sent to the WSP. You can pass this to HTTP client. */
 
 /* Called by:  zxcall_main, zxid_callf */
-struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, const char* az_cred, const char* enve)
+struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve)
 {
   struct zx_str* ret;
   struct zx_e_Envelope_s* env;
@@ -788,7 +788,7 @@ struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses,
  * See zxid_wsc_prepare_call() for more documentation. */
 
 /* Called by:  main */
-struct zx_str* zxid_wsc_prepare_callf(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, const char* az_cred, const char* env_f, ...)
+struct zx_str* zxid_wsc_prepare_callf(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* env_f, ...)
 {
   char* s;
   va_list ap;

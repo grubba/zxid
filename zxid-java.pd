@@ -623,6 +623,16 @@ library can not be used twice, e.g. due to two instances of same
 application. Most trivial way around this is to create two copies
 of the libzxidjni.so with different names.
 
+
+9.7.5 Win32 Java loanLibrary() error
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  java.lang.UnsatisfiedLinkError: Given procedure could not be found
+
+
+-mno-cygwin
+-Wl,--add-stdcall-alias
+
 9.8 Logging and Debugging Tips
 ------------------------------
 

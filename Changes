@@ -46,9 +46,16 @@ https://idp.testshib.org/idp/shibboleth
     - zxpasswd should have user federation listing mode
     - zxid_pw_authn() should not report scary error message when checking .ykspent in
       not spent case
-
-zxid-0.54:: 22.4.2010
     NOTPUB
+
+zxid-0.57:: 14.5.2010
+    NOTPUB
+    - Introduced .jar and .war as std binary distribution items
+zxid-0.56:: 14.5.2010
+    - Re-tested Windows compile
+zxid-0.55:: 26.4.2010
+    - Fixes in zxididp code
+zxid-0.54:: 22.4.2010
     - Add ability to absorb multiple EntityDescriptor elements from EntitiesDescriptor, as often happens in Shibboleth federations
     - Fixed an infinite loop in zxcot -n -a
     - Removed from zxid.h unused functions zxid_idp_soap_dispatch(), zxid_idp_soap_parse(), zxid_sha1_file(). Reported by Eric Rybski

@@ -1,0 +1,16 @@
+#!/bin/sh
+# 20100503, Sampo Kellomaki (sampo@iki.fi)
+#
+# Perform git commit and git push, and also update version number file.
+# This is a solution to git's lack of $Id$ keyword expansion.
+#
+# git tag -a -m 'Tag description' 3.0
+# git describe
+
+git describe
+sed -i "s/\$Id[^\$]*/\$Id: `git describe` `date +%Y%m%d-%H%M%S` $USER@$HOST /g" zxrev
+#exit
+git commit -a -m "$1."
+git push
+
+#EOF

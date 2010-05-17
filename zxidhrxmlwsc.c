@@ -115,7 +115,7 @@ int main(int argc, char** argv)
   struct zxid_ses* ses;
   struct zx_root_s* r;
   struct zx_e_Envelope_s* env;
-  struct zx_a_EndpointReference_s* epr;
+  zxid_epr* epr;
   struct zx_str* ss;
   char* p;
   char* sid;

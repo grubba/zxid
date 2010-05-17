@@ -283,7 +283,8 @@ readerr:
   return 0;
 }
 
-LOCK_STATIC(zxid_ent_cache_mx);
+/*LOCK_STATIC(zxid_ent_cache_mx);*/
+pthread_mutex_t zxid_ent_cache_mx;
 
 /* Called by:  zxid_get_ent_from_cache, zxid_load_cot_cache */
 static void zxid_load_cot_cache_from_file(struct zxid_conf* cf)

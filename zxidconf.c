@@ -216,6 +216,9 @@ void zxid_url_set(struct zxid_conf* cf, char* url)
   cf->url = zx_dup_cstr(cf->ctx, url);
 }
 
+pthread_mutex_t zxid_ent_cache_mx;
+int zxid_ent_cache_mx_init = 0;
+
 /*(i) Initialize configuration object, which must have already been
  * allocated, to factory defaults (i.e. compiled in defaults, see
  * zxidconf.h).
@@ -382,6 +385,10 @@ int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
   
   LOCK_INIT(cf->mx);
   LOCK_INIT(cf->curl_mx);
+  if (!zxid_ent_cache_mx_init) {
+    LOCK_INIT(zxid_ent_cache_mx);
+    zxid_ent_cache_mx_init = 1;
+  }
   
 #if 1
   DD("path(%.*s) cf->magic=%x", cf->path_len, cf->path, cf->magic);

@@ -1377,6 +1377,123 @@ different decoding engines.
     env->Header->Security->SecurityTokenReference->KeyIdentifier
     populated (normally it would be populated from Assertion->ID)?
 
+97.13.5 I do not want to know service type, but I want to call the service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ if possible i would be able to create a new structure zx_a_EndpointReference_s
+[11:50:11] ? from scratch where i can set the url that can be get from
+[11:50:21] ? zxidjni.get_epr_address(cf, epr);
+[11:59:00] sampo.kellomaki: Hmm. EPRs are complex objects. Even if you created a blank EPR with just URL in it, it would not be all that useful without the <Metadata> and especially <SecurityContext> with token within.
+[11:59:52] Gulyx: ok i see
+[12:00:05] ? however as we discussed in sophia
+[12:00:35] ? the statement : SWIGTYPE_p_zx_a_EndpointReference_s epr = zxidjni.get_epr(cf, zxses, &quot;x-recurs&quot;, null, null, null, 1);
+[12:00:52] ? may be moven from the axis2 zxid module
+[12:00:59] ? to the application level
+[12:01:23] ? in this way the developer can choose
+[12:01:27] sampo.kellomaki: It is also suboptimal that the datatype is as ugly as zx_a_EndpointReference_s. Since EPRs clearly have arisen to be a concept that user of the API actively have to known about, I should typedef that to be zxid_epr or something.
+[12:02:01] Gulyx: ...
+[12:02:07] ? sorry i am lost
+[12:03:48] ? what i am saying is that a developer of a web service client can explicitely define a url, or may use your disco in order to look for the most appropriate one
+[12:04:07] sampo.kellomaki: I am saying that EPR, being common documented concept, should not be SWIGTYPE_p_zx_a_EndpointReference_s, but should be named zxid_epr.
+[12:04:30] Gulyx: ok
+[12:04:51] sampo.kellomaki: Explicitly defining URL is inadequate unless you also define the security token to access the service.
+[12:05:28] ? Generally creating security token without consulting discovery (or ID Mapper service in more general context) is not feasible.
+[12:05:45] ? THerefore having a simple constructor for EPR accomplishes very little.
+[12:06:36] Gulyx: mmm
+[12:07:15] ? what i am saying is that is due to the developer of a web service client choose
+[12:07:17] sampo.kellomaki: If you know the URL (and the service has been registered to discovery), then you can get the EPR with zxidjni.get_epr(cf, ses, svc_type, URL, null, null, 1).
+[12:07:29] Gulyx: an explicit url or look for one from a disco
+[12:07:58] ? thus this part of the zxidapi should be used (in case) at the application layer
+[12:08:05] sampo.kellomaki: Rather than look for URL from disco, why not just get the EPR from disco, i.e. call get_epr()?
+[12:08:08] Gulyx: and not in the zxid security module
+[12:09:01] sampo.kellomaki: What would you do with the EPR created by the constructor?
+[12:09:30] Gulyx: well it is ok to use  &quot;zxidjni.get_epr(cf, ses, svc_type, URL, null, null, 1).&quot;
+[12:09:59] ? however is not always given that &quot;svc_type&quot; is known/available
+[12:10:13] ? what happen if it is not provided?
+[12:10:21] ? that it may be possible
+[12:10:45] ? i understand that is important from a discovery point of view
+[12:11:23] ? but the coould be the case in which the developer of a web service client do not want to use it or does not know it
+[12:11:39] ? he would only contat that URL
+[12:11:54] sampo.kellomaki: If you do not know service type, how do you know what kind of SOAP body you are supposed to send to the service?
+[12:12:47] ? Developer of the web service ultimately is the authority that decides what the service type URI. If he does not know it, he can just invent it.
+[12:13:03] Gulyx: for example because i am executing a RPC and i got all the information from the wsdl
+[12:13:29] ? in this case i simply need a URL
+[12:14:00] ? isn&apos;t it ?
+[12:14:17] sampo.kellomaki: As a general rule, if web service developer has poor imagination in inventing a service type URI, I recommend using the namespace URI of the top level element in the SOAP body.
+[12:14:45] Gulyx: sampo i am not saying that what you are proposing is wrong
+[12:15:03] ? i am just sayin that in some cases people does not use the service type
+[12:15:03] sampo.kellomaki: To speak RPC, you do need to know how to format the SOAP body according to the RPC marshalling conventions.
+[12:15:22] ? CLearly you need to know what the body looks like, therefore you should know its namespace.
+[12:15:33] Gulyx: and the zxid module in axis shuould support both
+[12:15:59] sampo.kellomaki: If people do not use service type, then they can not get registered in discovery.
+[12:16:14] Gulyx: so the case in which the developer (at the application level) specified the service type and the case when he does not
+[12:16:22] sampo.kellomaki: If they are not registered in discovery, how do you propose to generate the token for accessing the web service?
+[12:16:59] Gulyx: &quot;[15.18.49] sampo.kellomaki: If people do not use service type, then they can not get registered in discovery.&quot; ????
+[12:17:20] ? should a client be registered to a disco?
+[12:17:27] sampo.kellomaki: That's right. Registering without service type is not possible.
+[12:17:38] Gulyx: no sorry
+[12:17:59] ? probably i was
+[12:18:06] ? saying something in the wrong manner
+[12:18:16] ? let&apos;s start again
+[12:18:27] ? service MUST have a service type
+[12:18:39] ? service MUST register to a disco with a service type
+[12:19:12] ? clients SHOULD know the service type and MAY use it in order to look for a service
+[12:19:33] ? client MAY contact directly a service without knowing a service type
+[12:19:49] ? client MAY not be registered to the disco
+[12:19:55] ? ok?
+[12:22:11] sampo.kellomaki: Client is need not be registered in Disco.
+[12:22:22] Gulyx: ok
+[12:22:25] ? perfect
+[12:22:37] sampo.kellomaki: However, I claim that client can not contact the service without knowing what the SOAP body looks like.
+[12:23:08] Gulyx: of course
+[12:23:40] ? but they can also do it from the wsdl
+[12:23:59] ? ?
+[12:24:01] ? as i said above
+[12:24:45] sampo.kellomaki: Yes, knowing WSDL constitutes knowing what the SOAP body is.
+[12:25:02] Gulyx: ok
+[12:25:08] sampo.kellomaki: If you know WSDL, you know what the namespace URI of the top level element of the SOAP body is.
+[12:25:25] ? Now if you follow the convention that the namespace is the service-type, then you are done.
+[12:25:37] Gulyx: so a client may not know the service type
+[12:25:56] sampo.kellomaki: If the service developer chose  a service type different from the namespace, then you have to find out from the documentation the service developer provided.
+[12:25:59] Gulyx: (i am not saying that is the most appropriate or the only way to do it)
+[12:26:07] ? yes
+[12:26:11] ? of course
+[12:26:33] ? i am only proposing to include into the zxid axis2 module
+[12:26:38] ? both the possibility
+[12:26:43] ? possibilities
+[12:26:49] ? with and without service type
+[12:27:30] ? (sorry i got a call back to you soon)
+[12:32:59] sampo.kellomaki: If you want to support the without service type case, then you should program in the axis2 module automatic derivation of the service type using the rule that the namespace of the top level element is the service type.
+[12:37:41] Gulyx: (back)
+[12:39:38] ? well if is it possible to forge from the service url an &quot;appropriate&quot; epr that i can pass to the zxidjni.wsc_prepare_call
+[12:39:56] ? i would prefere
+[12:40:15] ? what do you think?
+[12:40:24] sampo.kellomaki: If you "forge" wrong, then things will not work.
+[12:41:04] Gulyx: if the automatic derivation is wrong ,  then things will not work too :-D
+[12:41:07] sampo.kellomaki: Having a default rule like using top level namespace as service type will work if that indeed was the convention everybody uses.
+[12:41:25] ? But there is no universal agreement that this is always the convention.
+[12:41:36] Gulyx: exactely
+[12:41:38] sampo.kellomaki: In practise in Liberty it has been the convention, but there is no guarantee.
+[12:42:38] Gulyx: so having something like &quot;zxidjni.get_defaultEpr(URL)&quot;
+[12:42:43] sampo.kellomaki: Why are you so hell bent in not wanting to know the service type?
+[12:42:47] Gulyx: would be useful
+[12:42:53] sampo.kellomaki: What service type do you not know?
+[12:43:00] Gulyx: i want service type
+[12:43:20] ? and i am almost supporting it into the module
+[12:43:49] ? i am just saying that people that i hope would use the module
+[12:44:15] ? may not use service type
+[12:44:40] sampo.kellomaki: If the people want to play in TAS3, they need to know the service type. Knowing it is a requirement to join TAS3.
+[12:44:43] Gulyx: so i would that the module supports both the cases
+[12:44:51] ? yes yes
+[12:44:55] ? ok
+[12:45:04] ? i was referring people out of tas3
+[12:45:14] ? i mean if we realese the zxid module for apache
+[12:45:27] ? i assume that axis2 users may
+[12:45:34] ? prefer zxid module instead of rampart
+[12:45:51] ? so i would include this feature into the module too
+[12:47:31] sampo.kellomaki: Ok, if you do not want to make TAS3 web service calls and do not want to use identities or security tokens, then plain EPR with just URL would be good enough.
+[12:47:57] Gulyx: right
+
 97.14 Best Practises
 --------------------
 

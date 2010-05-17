@@ -116,18 +116,18 @@ static void opt(int* argc, char*** argv, char*** env)
       case '\0':
 	if ((*argc) < 4) break;
 	printf(
-"<wsa:EndpointReference xmlns:wsa=\"http://www.w3.org/2005/08/addressing\" "
+"<a:EndpointReference xmlns:a=\"http://www.w3.org/2005/08/addressing\" "
 "xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\" "
     "notOnOrAfter=\"2037-01-05T23:03:59.001Z\" "
     "wsu:Id=\"EPRID92lFPo3ZNEt_3rHtJFoU\">"
-  "<wsa:Address>%s</wsa:Address>"
-  "<wsa:Metadata>"
+  "<a:Address>%s</a:Address>"
+  "<a:Metadata>"
     "<di:Abstract xmlns:di=\"urn:liberty:disco:2006-08\">%s</di:Abstract>"
     "<sbf:Framework xmlns:sbf=\"urn:liberty:sb\" version=\"2.0\"></sbf:Framework>"
     "<di:ProviderID xmlns:di=\"urn:liberty:disco:2006-08\">%s</di:ProviderID>"
     "<di:ServiceType xmlns:di=\"urn:liberty:disco:2006-08\">%s</di:ServiceType>"
-  "</wsa:Metadata>"
-"</wsa:EndpointReference>", (*argv)[1], (*argv)[2], (*argv)[3], (*argv)[4]);
+  "</a:Metadata>"
+"</a:EndpointReference>", (*argv)[1], (*argv)[2], (*argv)[3], (*argv)[4]);
 	exit(0);
       }
       break;
@@ -243,7 +243,7 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
   char* uiddir;
   int got, fd;
   struct zx_root_s* r;
-  struct zx_a_EndpointReference_s* epr;
+  zxid_epr* epr;
   struct zx_str* ss;
   
   read_all_fd(0, buf, sizeof(buf)-1, &got);  /* Read EPR */

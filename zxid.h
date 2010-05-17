@@ -36,6 +36,7 @@
 
 #include "c/zx-data.h"  /* Generated. If missing, run `make dep ENA_GEN=1' */
 #include "platform.h"
+#include "zx.h"
 
 #define ZXID_CONF_MAGIC 0x900dc07f
 #define ZXID_CGI_MAGIC  0x900d0c91
@@ -297,6 +298,8 @@ struct zxid_ses {
   pthread_mutex_t mx;
 #endif
 };
+
+typedef struct zx_a_EndpointReference_s zxid_epr; /* Nice name for EPR. May eventually evolve to struct */
 
 /*(s) Attribute node */
 
@@ -643,7 +646,7 @@ struct zx_sa_Attribute_s* zxid_add_ldif_attrs(struct zxid_conf* cf, struct zx_sa
 struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, char* path, struct zx_sa_Attribute_s* bootstraps, int add_bs_lvl);
 struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zxid_ses* ses, const char* uid, struct zx_sa_NameID_s* nameid, struct zxid_entity* sp_meta, const char* sp_name_buf, int add_bs_lvl);
 struct zx_sa_NameID_s* zxid_check_fed(struct zxid_conf* cf, struct zx_str* affil, const char* uid, char allow_create, struct timeval* srcts, struct zx_str* issuer, struct zx_str* req_id, const char* sp_name_buf);
-char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr, const char* uid, int add_bs_lvl);
+char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, zxid_epr* epr, const char* uid, int add_bs_lvl);
 struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sp_AuthnRequest_s* ar);
 struct zx_as_SASLResponse_s* zxid_idp_as_do(struct zxid_conf* cf, struct zx_as_SASLRequest_s* req);
 
@@ -747,15 +750,15 @@ int zxid_wsf_decor(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_e_Envel
 
 #define ZXID_N_WSF_SIGNED_HEADERS 40  /* Max number of signed SOAP headers. */
 
-int zxid_map_sec_mech(struct zx_a_EndpointReference_s* epr);
+int zxid_map_sec_mech(zxid_epr* epr);
 int zxid_add_header_refs(struct zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_e_Header_s* hdr);
 void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy);
 
-struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, struct zx_e_Envelope_s* env);
+struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env);
 struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve);
 struct zx_str* zxid_callf(struct zxid_conf* cf, struct zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* env_f, ...);
-struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, const char* az_cred, const char* enve);
-struct zx_str* zxid_wsc_prepare_callf(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr, const char* az_cred, const char* env_f, ...);
+struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve);
+struct zx_str* zxid_wsc_prepare_callf(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* env_f, ...);
 int zxid_wsc_valid_resp(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* enve);
 
 #define ZXID_RESP_ENV(cf, tag, status_code, status_comment) zxid_new_envf((cf), "<%s><lu:Status code=\"%s\" comment=\"%s\"></lu:Status></%s>", (tag), (status_code), (status_comment), (tag))
@@ -788,14 +791,15 @@ int zxid_wsc_valid_resp(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
 int zxid_nice_sha1(struct zxid_conf* cf, char* buf, int buf_len, struct zx_str* name, struct zx_str* contint, int ign_prefix);
 void zxid_fold_svc(char* path, int len);
 int zxid_epr_path(struct zxid_conf* cf, char* dir, char* sid, char* buf, int buf_len, struct zx_str* svc, struct zx_str* cont);
-struct zx_a_EndpointReference_s* zxid_get_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n);
-struct zx_a_EndpointReference_s* zxid_find_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n);
-int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr);
-void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_a_EndpointReference_s* epr);
+zxid_epr* zxid_get_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n);
+zxid_epr* zxid_find_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n);
+int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr);
+void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr);
 void zxid_snarf_eprs_from_ses(struct zxid_conf* cf, struct zxid_ses* ses);
-struct zx_str* zxid_get_epr_address(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr);
-struct zx_str* zxid_get_epr_entid(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr);
-struct zx_str* zxid_get_epr_desc(struct zxid_conf* cf, struct zx_a_EndpointReference_s* epr);
+struct zx_str* zxid_get_epr_address(struct zxid_conf* cf, zxid_epr* epr);
+struct zx_str* zxid_get_epr_entid(struct zxid_conf* cf, zxid_epr* epr);
+struct zx_str* zxid_get_epr_desc(struct zxid_conf* cf, zxid_epr* epr);
+zxid_epr* zxid_new_epr(struct zxid_conf* cf, char* address, char* desc, char* entid, char* svctype);
 
 /* zxiddi -  Discovery Service */
 

@@ -25,7 +25,6 @@
 #include <windows.h>
 #define MS_LONG LONG
 #define MKDIR(d,p) mkdir(d)
-#define pthread_self() GetCurrentThreadId()
 #define GETTIMEOFDAY(tv, tz) ((tv) ? (((tv)->tv_sec = time(0)) && ((tv)->tv_usec = 0)) : -1)
 #define GMTIME_R(secs,stm) do { struct tm* stx_tm = gmtime(&(secs)); if (stx_tm) memcpy(&stm, stx_tm, sizeof(struct tm)); } while(0)   /* *** still not thread safe */
 
@@ -370,7 +369,7 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
 /* =============== pthread locking =============== */
 
 #ifdef USE_PTHREAD
-#define LOCK_STATIC(l) pthread_mutex_t l = PTHREAD_MUTEX_INITIALIZER
+/*#define LOCK_STATIC(l) pthread_mutex_t l = PTHREAD_MUTEX_INITIALIZER  do not use */
 #define LOCK_INIT(l) pthread_mutex_init(&(l), 0)
 #define LOCK(l,lk)   if (pthread_mutex_lock(&(l)))   NEVERNEVER("DEADLOCK(%s)", (lk))
 #define UNLOCK(l,lk) if (pthread_mutex_unlock(&(l))) NEVERNEVER("UNLOCK-TWICE(%s)", (lk))

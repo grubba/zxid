@@ -31,6 +31,8 @@
 #define RSA void*
 #endif
 
+#include "platform.h"
+
 #ifndef const
 #define const  /* const causes swig java to break */
 #endif
