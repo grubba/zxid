@@ -9,6 +9,7 @@
 
 #include <windows.h>
 
+#define fdstdout STDOUT_FILENO
 #define fdtype HANDLE
 #define BADFD (INVALID_HANDLE_VALUE)
 #define closefile(x) (CloseHandle(x)?0:-1)
@@ -40,6 +41,7 @@
 
 #else
 
+#define fdstdout 1
 #define fdtype int
 #define BADFD (-1)
 #define closefile(x) close(x)

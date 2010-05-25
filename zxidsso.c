@@ -514,6 +514,7 @@ int zxid_sp_sso_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid
   /*ses->sigres = ZXSIG_NO_SIG; set earlier, do not overwrite */
   ses->a7n = a7n;
   ses->rs = cgi->rs;
+  ses->ssores = 1;
   GETTIMEOFDAY(&ourts, 0);
   
   D_INDENT("ssof: ");
@@ -552,13 +553,19 @@ int zxid_sp_sso_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid
   }
   
   subj = ses->nameid->gg.content;
-  ses->nid = ses->tgt = zx_str_to_c(cf->ctx, subj);
+  ses->nid = zx_str_to_c(cf->ctx, subj);
   if (ses->nameid->Format && !memcmp(ses->nameid->Format->s, SAML2_TRANSIENT_NID_FMT, ses->nameid->Format->len)) {
-    ses->nidfmt = ses->tgtfmt = 0;
+    ses->nidfmt = 0;
   } else {
-    ses->nidfmt = ses->tgtfmt = 1;  /* anything nontransient may be a federation */
+    ses->nidfmt = 1;  /* anything nontransient may be a federation */
   }
-  
+
+  /* In SSO the acting identity and the target identity are the same */
+  ses->tgta7n = ses->a7n;
+  ses->tgtnameid = ses->nameid;
+  ses->tgt = ses->nid;
+  ses->tgtfmt = ses->nidfmt;
+
   if (a7n->AuthnStatement->SessionIndex)
     ses->sesix = zx_str_to_c(cf->ctx, a7n->AuthnStatement->SessionIndex);
   
@@ -623,6 +630,7 @@ int zxid_sp_sso_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid
     }
   }
   DD("Creating session... %d", 0);
+  ses->ssores = 0;
   zxid_put_ses(cf, ses);
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
   cgi->msg = "SSO completed and session created.";

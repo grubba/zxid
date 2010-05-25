@@ -122,7 +122,7 @@ static int pool2apache(struct zxid_conf* cf, request_rec* r, struct zxid_attr* p
       for (av = at->nv; av; av = av->n)
 	apr_table_set(r->subprocess_env, name, av->val);
     }
-    if (     !strcmp(at->name, "rs"))        rs = at->val;
+    if (     !strcmp(at->name, "rs"))        rs = at->val;        /* Capture special */
     else if (!strcmp(at->name, "idpnid"))    idpnid = at->val;
     else if (!strcmp(at->name, "setcookie")) setcookie = at->val;
     else if (!strcmp(at->name, "cookie"))    cookie = at->val;

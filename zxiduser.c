@@ -77,6 +77,25 @@ struct zx_sa_NameID_s* zxid_parse_mni(struct zxid_conf* cf, char* buf, char** pm
   return nameid;
 }
 
+/*() Formulate NameID based directory name for the user */
+
+void zxid_user_sha1_name(struct zxid_conf* cf, struct zx_str* qualif, struct zx_str* nid, char* sha1_name)
+{
+  struct zx_str* ss;
+  if (!nid) {
+    memset(sha1_name, 0, 28);
+    return;
+  }
+  if (qualif) {
+    ss = zx_strf(cf->ctx, "%.*s|%.*s", qualif->len, qualif->s, nid->len, nid->s);
+    sha1_safe_base64(sha1_name, ss->len, ss->s);
+    zx_str_free(cf->ctx, ss);
+  } else {
+    sha1_safe_base64(sha1_name, nid->len, nid->s);
+  }
+  sha1_name[27] = 0;
+}
+
 /*() Locate user file using a NameID, which may be old or current. If old,
  * chase the MNIptr fields until current is found. Mainly used to support MNI. */
 
@@ -87,20 +106,12 @@ struct zx_sa_NameID_s* zxid_get_user_nameid(struct zxid_conf* cf, struct zx_sa_N
   char* buf;
   char* mniptr;
   int iter = 1000;
-  struct zx_str* ss;
   struct zx_sa_NameID_s* nameid;
   
   if (!cf->user_local)
     return oldnid;
   
-  if (!oldnid->NameQualifier) {
-    sha1_safe_base64(sha1_name, oldnid->gg.content->len, oldnid->gg.content->s);
-  } else {
-    ss = zx_strf(cf->ctx, "%.*s|%.*s", oldnid->NameQualifier->len, oldnid->NameQualifier->s, oldnid->gg.content->len, oldnid->gg.content->s);
-    sha1_safe_base64(sha1_name, ss->len, ss->s);
-    zx_str_free(cf->ctx, ss);
-  }
-  sha1_name[27] = 0;
+  zxid_user_sha1_name(cf, oldnid->NameQualifier, oldnid->gg.content, sha1_name);
   buf = ZX_ALLOC(cf->ctx, ZXID_MAX_USER);
   mniptr = sha1_name;
 
@@ -123,18 +134,8 @@ struct zx_sa_NameID_s* zxid_get_user_nameid(struct zxid_conf* cf, struct zx_sa_N
 /* Called by:  zxid_mni_do */
 void zxid_user_change_nameid(struct zxid_conf* cf, struct zx_sa_NameID_s* oldnid, struct zx_str* newnym)
 {
-  struct zx_str* ss;
   char sha1_name[28];
-
-  if (!oldnid->NameQualifier) {
-    sha1_safe_base64(sha1_name, newnym->len, newnym->s);
-  } else {
-    ss = zx_strf(cf->ctx, "%.*s|%.*s", oldnid->NameQualifier->len, oldnid->NameQualifier->s, newnym->len, newnym->s);
-    sha1_safe_base64(sha1_name, ss->len, ss->s);
-    zx_str_free(cf->ctx, ss);
-  }
-  sha1_name[27] = 0;
-
+  zxid_user_sha1_name(cf, oldnid->NameQualifier, newnym, sha1_name);
   zxid_put_user(cf, oldnid->Format, oldnid->NameQualifier, oldnid->SPNameQualifier, newnym, 0);
   zxid_put_user(cf, oldnid->Format, oldnid->NameQualifier, oldnid->SPNameQualifier, oldnid->gg.content, sha1_name);
 }
@@ -147,7 +148,6 @@ int zxid_put_user(struct zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* id
   char sha1_name[28];
   char dir[ZXID_MAX_BUF];
   char* buf;
-  struct zx_str* ss;
   
   if (!cf->user_local)
     return 0;
@@ -157,15 +157,7 @@ int zxid_put_user(struct zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* id
     return 0;
   }
   
-  if (!idpent) {
-    sha1_safe_base64(sha1_name, idpnid->len, idpnid->s);
-  } else {
-    ss = zx_strf(cf->ctx, "%.*s|%.*s", idpent->len, idpent->s, idpnid->len, idpnid->s);
-    sha1_safe_base64(sha1_name, ss->len, ss->s);
-    zx_str_free(cf->ctx, ss);
-  }
-  sha1_name[27] = 0;
-  
+  zxid_user_sha1_name(cf, idpent, idpnid, sha1_name);
   name_from_path(dir, sizeof(dir), "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
   if (MKDIR(dir, 0777) && errno != EEXIST) {
     perror("mkdir for user");

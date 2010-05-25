@@ -8,6 +8,23 @@ you would do in your .java file:
 
   import zxidjava.*;
 
+The Java stuff lives in
+
+  zxidjava.jar            Classes to use zxid
+  zxiddemo.war            Demonstration servlet ready to deploy
+
+The Java JNI interface also needs the C library (which must be
+found by dynamic linker):
+
+  libzxidjni.so           C library implementing ZXID JNI interface
+  zxidjni.dll             Windows version of the JNI
+  zxid.dll                Windows version of ZXID core
+
+> N.B. The .jar (or .war) DOES NOT contain libzxidjni.so.  You need to
+> download and copy this file separately.  The .jar is platform
+> independent. The libzxidjni.so (or zxidjni.dll) is platform
+> dependent.
+
 Please see for further information
 
   zxid.org
@@ -24,7 +41,11 @@ Install
   make dep
   make                   # creates libzxid
   make javazxid
-  make javazxid_install
+  make zxiddemo.war      # also builds zxidjava.jar
+  cp zxiddemo.war ../apache-tomcat-5.5.20/webapps/
+  # copy libzxidjni.so to place where dynamic linking finds it
+  cp libzxidjni.so ../apache-tomcat-5.5.20/bin/
+  # On Windows you need to copy zxid.dll and zxidjni.dll
 
 Rather than program directly with the module, you probably
 want to deploy it as a Servlet, e.g. in Tomcat. For this
@@ -39,5 +60,11 @@ If you get compilation errors, check SERVLET_PATH and other variables
 in Makefile (see zxid-java.pd and zxid-install.pd for details).
 
 See zxid-java.pd (or html) for further information.
+
+Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
+Author: Sampo Kellomaki (sampo@iki.fi)
+NO WARRANTY, not even implied warranties.
+Licensed under Apache License 2.0, see file COPYING.
 
 --Sampo

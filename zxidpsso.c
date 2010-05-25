@@ -146,6 +146,7 @@ static struct zx_str* zxid_anoint_sso_resp(struct zxid_conf* cf, int sign, struc
 }
 
 /*() Parse LDIF format and insert attributes to linked list. Return new head of the list.
+ * The input is temporarily modified and then restored. Do not pass const string.
  * *** illegal input causes corrupt pointer. For example query string input causes corruption. */
 
 /* Called by:  zxid_mk_user_a7n_to_sp x4 */
@@ -172,7 +173,7 @@ struct zx_sa_Attribute_s* zxid_add_ldif_attrs(struct zxid_conf* cf, struct zx_sa
     prev = at;
 
     val[-2] = ':'; /* restore */
-    if (*p)
+    if (p)
       *p = '\n';
   }
   return at;
@@ -286,6 +287,9 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
 }
 
 /*(i) Construct an assertion given user's attribute and bootstrap configuration.
+ * This involves addedn attributes in user's .bs/.at, SP specific .at, as well as
+ * .all/.bs/.at and .all's SP specific attributes. Then the bootstrap EPRs are added.
+ *
  * bs_lvl:: 0: DI (do not add any bs), 1: add all bootstraps at sso level,
  *     <= cf->bootstrap_level: add all boostraps, > cf->bootstrap_level: only add di BS. */
 

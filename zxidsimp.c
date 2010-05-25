@@ -636,7 +636,7 @@ char* zxid_simple_ab_pep(struct zxid_conf* cf, struct zxid_ses* ses, int* res_le
     return "z";
   }
 
-  if (cf->pdp_url) {
+  if (cf->pdp_url && *cf->pdp_url) {
     //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
     //zxid_add_attr_to_pool(cf, ses, "URL", zx_dup_str(cf->ctx, ses->rs));
     if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {

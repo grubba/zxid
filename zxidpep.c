@@ -74,8 +74,8 @@ char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses&&ses->nameid?ses->nameid->gg.content:0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
   
-  if (!pdp_url) {
-    ERR("No PDP_URL or PDP_CALL_URL set. Deny. %d", 0);
+  if (!pdp_url || !*pdp_url) {
+    ERR("No PDP_URL or PDP_CALL_URL set. Deny. %p", pdp_url);
     return 0;
   }
 

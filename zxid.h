@@ -277,14 +277,15 @@ struct zxid_ses {
   char* an_ctx;        /* Authentication Context (esp in IdP. On SP look inside a7n). */
   char  nidfmt;        /* Subject nameid format: 0=tmp NameID, 1=persistent */
   char  tgtfmt;        /* Target nameid format: 0=tmp NameID, 1=persistent */
-  char  sigres;
-  char  pad3;
+  char  sigres;        /* Signature validation code */
+  char  ssores;        /* Overall success of SSO 0==OK */
   char* sso_a7n_path;  /* Reference to the SSO assertion (needed for SLO) */
   char* tgt_a7n_path;  /* Reference to target identity assertion */
   char* setcookie;     /* If set, the content rendering should include set-cookie header. */
   char* cookie;        /* Cookie seen by downstream internal requests after SSO. */
   char* rs;            /* RelayState at SSO. mod_auth_saml uses this as URI after SSO. */
   struct zx_sa_NameID_s* nameid;      /* From a7n or EncryptedID */
+  struct zx_sa_NameID_s* tgtnameid;   /* From a7n or EncryptedID */
   struct zx_sa_Assertion_s*   a7n;    /* SAML 2.0 for Subject */
   struct zx_sa_Assertion_s*   tgta7n; /* SAML 2.0 for Target */
   struct zx_sa11_Assertion_s* a7n11;
@@ -576,6 +577,7 @@ int zxid_add_qs_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* qs, int
 /* zxiduser */
 
 struct zx_sa_NameID_s* zxid_parse_mni(struct zxid_conf* cf, char* buf, char** pmniptr);
+void zxid_user_sha1_name(struct zxid_conf* cf, struct zx_str* qualif, struct zx_str* nid, char* sha1_name);
 int zxid_put_user(struct zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, struct zx_str* spqual, struct zx_str* idpnid, char* mniptr);
 struct zx_sa_NameID_s* zxid_get_user_nameid(struct zxid_conf* cf, struct zx_sa_NameID_s* oldnid);
 void zxid_user_change_nameid(struct zxid_conf* cf, struct zx_sa_NameID_s* oldnid, struct zx_str* newnym);
@@ -890,6 +892,7 @@ fdtype open_fd_from_path(int flags, int mode, const char* logkey, const char* na
 int read_all_fd(fdtype fd, char* p, int want, int* got_all);
 int write_all_fd(fdtype fd, const char* p, int pending);
 int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_fmt, const char* prepath, const char* postpath, const char* data_fmt, ...);
+int copy_file(const char* from, const char* to, const char* logkey, int may_link);
 int close_file(fdtype fd, const char* logkey);
 
 struct zxid_curl_ctx {

@@ -110,7 +110,7 @@ struct zx_str* zxid_sp_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, stru
     switch (ret) {
     case ZXID_OK:     return zx_dup_str(cf->ctx, "K");
     case ZXID_SSO_OK: return zx_dup_str(cf->ctx, "O");
-    case ZXID_FAIL:   D("*** FAIL, should send back to IdP select %d", 0);
+    case ZXID_FAIL:   D("*** FAIL, should send back to IdP select %d", 0); return zx_dup_str(cf->ctx, "* ERR");
     }
     return zx_dup_str(cf->ctx, "M");
   }

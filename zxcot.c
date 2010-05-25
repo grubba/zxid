@@ -312,7 +312,7 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
 	      "You may also want to\n"
 	      "  touch %s.all/.bs/%s,%s\n\n", ddimd, path, sha1_name, uiddir, path, sha1_name);
     fflush(stdin);
-    write_all_fd(1, ss->s, ss->len);
+    write_all_fd(fdstdout, ss->s, ss->len);
     zx_str_free(cf->ctx, ss);
     return 0;
   }
@@ -387,7 +387,7 @@ static int zxid_addmd(struct zxid_conf* cf, char* mdurl, int dry_run, const char
     if (verbose)
       fprintf(stderr, "Writing ent(%s) to %s%s\n", ent->eid, dcot, ent->sha1_name);
     if (dry_run) {
-      write_all_fd(1, ss->s, ss->len);
+      write_all_fd(fdstdout, ss->s, ss->len);
       zx_str_free(cf->ctx, ss);
       continue;
     }

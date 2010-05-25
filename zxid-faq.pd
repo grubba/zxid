@@ -359,7 +359,7 @@ http://www.freshports.org/security/zxid/
   make zxid.dll TARGET=xmingw    # Cross compile on Linux host (best supported)
   make zxid.dll TARGET=mingw     # Native compile for mingw target in Cygwin environment
 
-Eitherway, the net result is native Windows DLL that does not have
+Either way, the net result is native Windows DLL that does not have
 Cygwin library dependencies or GPL encumberation.
 
 See Makefile for further mingw notes.
@@ -562,6 +562,28 @@ See also zxid-idp.pd for registration of EPR and bootstrap.
    it will add <e:Envelope> and headers. If you pass anything else, it
    assumes that is meant to be content of the body and will add
    <e:Envelope><e:Headers>...</><e:Body>your stuff</></>
+
+2. *Q*: What exactly is a "sha1 name"?
+
+   *A*: Since ZXID (originally) uses filesystem as backend, a method
+   for generating filesystem-safe strings, to be used as filenames,
+   was needed. Further, there was occasionally requirement that each
+   different file have different name. Solution to these problems
+   is to hash the whatever part that is unique and use safe base64 [RFC3548]
+   encoding of the hash as the filename.
+
+   They are not very human friendly, but they are filesystem safe
+   and unique as required. They are also constant width, which tends
+   to make directory listing prettier, and also handles anomalously
+   long Entity IDs gracefully.
+
+   sha1 hashing is much less error prone than trying to escape or squash
+   the various Entity IDs, Name IDs, and who-know-what to be filesystem
+   safe. Add to the squasing  bugs, the convolutions of ensuring uniqueness
+   and dealing with too long input and you should see why sha1 names are
+   the most secure, easiest to implement, approach.
+
+   See also sha1_safe_base64() in zxutil.c
 
 97.4 Common Mistakes
 --------------------

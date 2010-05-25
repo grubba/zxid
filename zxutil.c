@@ -1,4 +1,5 @@
 /* zxutil.c  -  Utility functions
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -9,6 +10,7 @@
  *
  * 15.4.2006, created over Easter holiday --Sampo
  * 7.10.2008, added documentation --Sampo
+ * 21.5.2010, added file copy --Sampo
  */
 
 #include "errmac.h"
@@ -340,6 +342,101 @@ int close_file(fdtype fd, const char* logkey)
   return res;
 }
 
+/*() Copy contents of a file, i.e. first read a file, then write a file.
+ * Many places use copy_file() as opposed to hardlinking file because
+ * actually copying file is more portable. Even in Unix hardlinking
+ * can be troublesome if the from and to are on different file systems. */
+
+int copy_file(const char* from, const char* to, const char* logkey, int may_link)
+{
+  fdtype fd_from;
+  fdtype fd_to;
+  int ret, pending, wrote;
+  char buf[4096];
+  char* p;
+
+#ifndef MINGW
+  switch (may_link) {
+  case 2:
+    ret = symlink(from, to);
+    goto linkrest;
+  case 1:
+    ret = link(from, to);
+linkrest:
+    if (ret) {
+      perror("{hard|sym}link");
+      ERR("%s: Error linking(%d) from(%s) to(%s) euid=%d egid=%d", logkey, may_link, from, to, geteuid(), getegid());
+      return -1;
+    }
+    return 0;
+  }
+#endif
+  fd_from = openfile_ro(from);
+  if (fd_from == BADFD) {
+      perror("openfile_ro");
+      ERR("%s: Error opening from(%s) euid=%d egid=%d", logkey, from, geteuid(), getegid());
+      return BADFD;
+
+  }
+#ifdef MINGW
+  fd_to = CreateFile(buf, MINGW_RW_PERM, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+#else
+  fd_to = open(buf, O_WRONLY | O_CREAT, 0666);
+#endif
+  if (fd_to == BADFD) {
+      perror("openfile_ro");
+      ERR("%s: Error opening from(%s) euid=%d egid=%d", logkey, from, geteuid(), getegid());
+      return BADFD;
+
+  }
+
+#ifdef USE_STDIO
+  while (1) {
+    pending = fread(buf, 1, sizeof(buf), (FILE*)fd_from);
+    if (pending <= 0) break; /* EOF */
+    p = buf;
+    while (pending) {
+      wrote = fwrite(p, 1, pending, fd_to);
+      if (wrote <= 0) return 0;
+      pending -= wrote;
+      p += wrote;
+    }
+  }
+#elif defined(MINGW)
+  while (1) {
+    DWORD wrot;
+    DWORD pend;
+    if (!ReadFile(fd_from, buf, sizeof(buf), &pend, 0))
+      return -1;
+    if (!pend)
+      break;
+    p = buf;
+    while (pend) {
+      if (!WriteFile(fd_to, p, pend, &wrot, 0))
+	return BADFD;
+      pend -= wrot;
+      p += wrot;
+    }
+  }
+  FlushFileBuffers(fd_to);
+#else
+  while (1) {
+    pending = read(fd_from, buf, sizeof(buf));
+    if (!pending) break; /* EOF */
+    p = buf;
+    while (pending) {
+      wrote = write(fd_to, p, pending);
+      if (wrote <= 0) return 0;
+      pending -= wrote;
+      p += wrote;
+    }
+  }
+#endif
+
+  close_file(fd_to, logkey);
+  closefile(fd_from);
+}
+
 /*() Output a hexdump to stderr. Used for debugging purposes. */
 
 /* Called by:  hexdmp, zxsig_data_rsa_sha1 x2, zxsig_verify_data_rsa_sha1 x4 */
@@ -549,10 +646,10 @@ char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char*
 
 /*() The out_buf should be 28 chars in length. The buffer is not automatically nul termianated.
  * There will be 27 characters of payload, plus one termination character "." (which
- * you can overwrite with nul if you like).
+ * caller can overwrite with nul, if you like).
  *
- * out_buf:: Buffer where result will be written. It must be 28 characters long and already allocated.
- * len:: Length of data
+ * out_buf:: Buffer where result will be written. It must be 28 characters long and already allocated. The buffer will not be null terminated.
+ * len:: Length of data. -1=use strlen(data)
  * data:: Data to be digested
  * return:: Pointer one past last character written */
 
@@ -560,6 +657,8 @@ char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char*
 char* sha1_safe_base64(char* out_buf, int len, const char* data)
 {
   char sha1[20];
+  if (len == -1)
+    len = strlen(data);
   SHA1(data, len, sha1);
   return base64_fancy_raw(sha1, 20, out_buf, safe_basis_64, 1<<31, 0, 0, '.');
 }

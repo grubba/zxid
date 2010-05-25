@@ -574,6 +574,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(struct zxid_conf* cf, const char*
 {
   struct zx_e_Envelope_s* env;
   struct zx_root_s* r;
+#if 1
   if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
     for (enve += sizeof("<?xml "); *enve && !(enve[0] == '?' && enve[1] == '>'); ++enve) ;
     if (*enve)
@@ -589,7 +590,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(struct zxid_conf* cf, const char*
       enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_open, enve, zx_env_close);
     }
   } /* else <e:Envelope> provided */
-
+#endif
   LOCK(cf->ctx->mx, "add_env");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
   r = zx_DEC_root(cf->ctx, 0, 1);
@@ -598,6 +599,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(struct zxid_conf* cf, const char*
     ERR("Malformed XML enve(%s)", enve);
     return 0;
   }
+  //if (r->Envelope) { }
   env = r->Envelope;
   ZX_FREE(cf->ctx, r);
   if (!env)
@@ -674,10 +676,12 @@ struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char*
 
   /* *** Call Rq-Out PDP */
 #if 0
-  if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
-    D("Deny %d", 0);
-    D_DEDENT("ab_pep: ");
-    return "z";
+  if (cf->pdp_url && *cf->pdp_url) {
+    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
+      D("Deny %d", 0);
+      D_DEDENT("ab_pep: ");
+      return "z";
+    }
   }
 #endif
 
@@ -690,10 +694,12 @@ struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char*
   
   /* *** Call Rq-In PDP */
 #if 0
-  if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
-    D("Deny %d", 0);
-    D_DEDENT("ab_pep: ");
-    return "z";
+  if (cf->pdp_url && *cf->pdp_url) {
+    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
+      D("Deny %d", 0);
+      D_DEDENT("ab_pep: ");
+      return "z";
+    }
   }
 #endif
   
@@ -773,10 +779,12 @@ struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses,
   }
   /* *** Call Rq-Out PDP */
 #if 0
-  if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
-    D("Deny %d", 0);
-    D_DEDENT("prep: ");
-    return 0;
+  if (cf->pdp_url && *cf->pdp_url) {
+    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
+      D("Deny %d", 0);
+      D_DEDENT("prep: ");
+      return 0;
+    }
   }
 #endif
   ret = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
@@ -818,10 +826,12 @@ int zxid_wsc_valid_resp(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
 
   /* *** Call Rq-In PDP */
 #if 0
-  if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
-    D("Deny %d", 0);
-    D_DEDENT("valid: ");
-    return "z";
+  if (cf->pdp_url && *cf->pdp_url) {
+    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
+      D("Deny %d", 0);
+      D_DEDENT("valid: ");
+      return "z";
+    }
   }
 #endif
   return 1;

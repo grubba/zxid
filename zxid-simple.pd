@@ -91,43 +91,105 @@ What happens here:
      sesid: S12aF3Xi4A
      cn: Joe Doe
 
-   where
+2.1.1 Attributes Returned in the SSO
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   dn:: LDAP distinguished name (part of LDIF format). Always first.
+In the returned LDIF entry some attributes, such as ~cn~, are as they
+came from the IdP (you need to consult your IdP configuration and
+documentation to alter them). Other attributes are always created by
+zxid_simple(), albeit sometimes based on values received from the
+IdP. They have the following meaning:
 
-   objectclass:: Part of LDIF format.
+dn:: LDAP distinguished name (part of LDIF format). Always first.
 
-   affid:: Specifies which IdP was used for SSO
+objectclass:: Part of LDIF format.
 
-   idpnid:: The federated ID, or pseudonym (IdP assigned NameID)
+eid:: The Entity ID of the SP
 
-   authnctxlevel:: Rough indication of how IdP authenticated user
+issuer:: The Entity ID of the authority that issued SSO assertion.
 
-   sesid:: Session ID, as may be stored in cookie or used for
-       file name in the session cache (/var/zxid/ses)
+affid:: Specifies which IdP was used for SSO. More accurately, this describes the
+    affiliation namespace in which the ~idpnid~ and ~tgtnid~ attributes are meaningful.
 
-   setcookie:: If this field is not empty and not equal to '-' (single dash),
-       then the controlling application should take the necessary actions
-       to set the cookie as specified. Namely, the controlling application
-       should create 'Set-Cookie' HTTP response header whose value is the value
-       of the +setcookie+ field. How this is done is environment dependent.
+idpinfo:: Human readable description of which IdP was used.
 
-   cookie:: The ZXIDSES (or other, as configured) cookie value. For reference.
+idpnid:: The federated ID, or pseudonym (IdP assigned NameID) of the user performing action
 
-   cn:: Common Name. This attribute just exemplifies how any
-       additional attributes the IdP may have set will appear.
-       Typically the LDAP attribute names are used.
+nidfmt:: The format (category) of value returned in idpnid. P=persistent
 
-   The ~dn~ line will always be the first. All other lines may appear
-   in any order. String representation of LDIF was chosen
-   as it is easy to parse in most programming languages.
+localpath:: Path to acting user's local account directory. The application can create its own
+    user specific files here. Please note that the directory may not be automatically
+    created.
+
+ssoa7npath:: Path to the raw data of the Single Sign-On assertion in the local audit trail
+
+tgtnid:: The federated ID, or pseudonym (IdP assigned NameID) of the
+    user targeted by the action. This indicates the resource owner.
+
+tgtfmt:: The format (category) of value returned in tgtnid. P=persistent
+
+tgta7npath:: Path to the raw data of the target identity assertion in the local audit trail
+
+tgtpath:: Path to targetted user's local account directory. The application can create its own
+    user specific files here. Please note that the directory may not be automatically
+    created.
+
+authnctxlevel:: Rough indication of how IdP authenticated user
+
+sesid:: Session ID, as may be stored in cookie or used for
+    file name in the session cache (/var/zxid/ses)
+
+sespath:: Directory corresponding to local ZXID session. This may
+    allow your application to access the raw data behind the ZXID session,
+    or it could allow you to add new data to the session. However, beware
+    that just altering the files in this directory may not be enough
+    to update values cached in memory. If session backend is not filesystem,
+    the contents of this attribute may be URI appropriate for accessing
+    the session, or this attribute may not be populated at all.
+
+sigres:: Signature validation error code, if any. 0=OK. For other
+    codes see ZXSIG_* definitions in the source.
+
+ssores:: Error code for most recent operation. 0=OK
+
+setcookie:: If this field is not empty and not equal to '-' (single dash),
+    then the controlling application should take the necessary actions
+    to set the cookie as specified. Namely, the controlling application
+    should create 'Set-Cookie' HTTP response header whose value is the value
+    of the +setcookie+ field. How this is done is environment dependent.
+
+cookie:: The ZXIDSES (or other, as configured) cookie value. For reference.
+
+tgt_*:: Any attribute starting by "tgt_" refers to the target identity
+    and was retrieved from local attribute authority (typically a user
+    specific directory inside /var/zxid/user, see ~tgtpath~).
+    They are prefixed so that their provenance is clear. SP administrator
+    can add these attributes by editing tgtpath/.bs/.at file, which is in LDIF format.
+
+    It is also possible to define SP site global attributes in /var/zxid/user/.all/.bs/.at
+    file, in LDIF format. Since these are common to all users of SP, there is
+    no prefix.
+
+local_*:: Any attribute starting by "local_" refers to the acting user's identity
+    and was retrieved from local attribute authority (typically a user
+    specific directory inside /var/zxid/user, see ~localpath~).
+    They are prefixed so that their provenance is clear. SP administrator
+    can add these attributes by editing localpath/.bs/.at file, which is in LDIF format.
+
+cn:: Common Name. This attribute just exemplifies how any
+    additional attributes the IdP may have set will appear.
+    Typically the LDAP attribute names are used.
+
+The ~dn~ line will always be the first. All other lines may appear
+in any order. String representation of LDIF was chosen
+as it is easy to parse in most programming languages.
 
 <<ignore: Some people have advocated JSON representation and it indeed seems
 reasonable. But there is no compelling argument why it would be better
 than LDIF. It clearly is better for JavaScript programs, but it is
 more complicated for most other scripting languages. Keep the feedback coming.>>
 
-2.1.1 Configuration Options
+2.1.2 Configuration Options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (*** This section also appears in zxid-conf.pd)
@@ -156,7 +218,7 @@ URL:: The URL of the SP
 CDC_URL:: The Common Domain URL (optional, if omitted
     the Common Domain Cookie processing is disabled)
 
-2.1.2 AUTO options (auto flags)
+2.1.3 AUTO options (auto flags)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (*** THis section also appears in zxid-conf.pd)
@@ -223,7 +285,7 @@ as follows
   10  JSON
   11  Reserved
 
-2.1.3 Configuration options for customizing HTML
+2.1.4 Configuration options for customizing HTML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (*** This section also appears in zxid-conf.pd)

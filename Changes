@@ -5,12 +5,11 @@
 Usual suspects: zxid.user@lists.unh.edu
 
 To do:
-    - Limited SP local attribute authority
     - Add Trust and Privacy Negotiation capability to discovery
     - Add Az calls to zxid_wsp_validate() and zxid_wsp_decorate()
     - Do proper signature validation in zxid_wsp_validate()
     - Wishlist of built-in attributes
-      1. HTTP method (GET, POS, HEAD, etc.)
+      1. HTTP method (GET, POST, HEAD, etc.)
       2. Full URL including the hostname part (currently only local URL is passed)
       3. Indication of which virtual server
       4. If SOAP, the name of the first direct child element of the SOAP Body
@@ -48,9 +47,15 @@ https://idp.testshib.org/idp/shibboleth
       not spent case
     NOTPUB
 
-zxid-0.57:: 14.5.2010
-    NOTPUB
+zxid-0.57:: 18.5.2010
     - Introduced .jar and .war as std binary distribution items
+    - Check for empty PDP_URL and disable Az in that case
+    - Added to session localpath, tgtpath, sespath so that application layer can uses ZXID storage for its own purposes.
+    - Fixed SSO failure case
+    - Added to session sigres and ssores.
+    - Added SP local attribute authority, see zxid_ses_to_pool()
+    - Added local EPR feature to SP local attribute authority, i.e. upon
+      SSO local EPRs get copied to the new session's EPR cache
 zxid-0.56:: 14.5.2010
     - Re-tested Windows compile
 zxid-0.55:: 26.4.2010
@@ -61,7 +66,7 @@ zxid-0.54:: 22.4.2010
     - Removed from zxid.h unused functions zxid_idp_soap_dispatch(), zxid_idp_soap_parse(), zxid_sha1_file(). Reported by Eric Rybski
 zxid-0.53:: 23.3.2010
     - Fixed case where last item (null return) of cached multi discovery would trigger yet another discovery
-    - Added logging of issued discovery messages
+    - Added logging of the issued discovery messages
     - Feature improvements to zxidappdemo.java
     - Added ENA_PG and coverage targets to the Makefile (current coverage 47%)
     - Process session in validate

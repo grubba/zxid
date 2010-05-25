@@ -579,6 +579,41 @@ of the files in zxid/c directory. For example
 > with the paths of that machine. Just remove the deps.dep
 > to solve this issue.
 
+5.5 Known Warnings
+------------------
+
+1.  __FUNCTION__ definition incompatible with char*. Ignore.
+
+2.  const char **file incompatible with &((const char*)file
+
+      zxsig.c:314: warning: passing arg 1 of `ERR_get_error_line_data' from incompatible pointer type
+      zxsig.c:314: warning: passing arg 3 of `ERR_get_error_line_data' from incompatible pointer type
+
+    This probably is due to const being or notbeing defined differently.
+
+    Ignore.
+
+3.  On Windows fdtype is really a HANDLE. Thus passing integer 1 for stdout is
+    not correct.
+
+zxcot.c: In function `zxid_reg_svc':
+zxcot.c:315: warning: passing arg 1 of `write_all_fd' makes pointer from integer without a cast
+zxcot.c:322: warning: assignment makes integer from pointer without a cast
+zxcot.c:323: warning: comparison between pointer and integer
+zxcot.c:330: warning: passing arg 1 of `write_all_fd' makes pointer from integer without a cast
+zxcot.c:332: warning: passing arg 1 of `close_file' makes pointer from integer without a cast
+zxcot.c:340: warning: assignment makes integer from pointer without a cast
+zxcot.c:341: warning: comparison between pointer and integer
+zxcot.c:347: warning: passing arg 1 of `write_all_fd' makes pointer from integer without a cast
+zxcot.c:348: warning: passing arg 1 of `close_file' makes pointer from integer without a cast
+zxcot.c: In function `zxid_addmd':
+zxcot.c:390: warning: passing arg 1 of `write_all_fd' makes pointer from integer without a cast
+zxcot.c:395: warning: assignment makes integer from pointer without a cast
+zxcot.c:396: warning: comparison between pointer and integer
+zxcot.c:403: warning: passing arg 1 of `write_all_fd' makes pointer from integer without a cast
+zxcot.c:405: warning: passing arg 1 of `close_file' makes pointer from integer without a cast
+
+
 5.5 Tough Compilation Errors
 ----------------------------
 
