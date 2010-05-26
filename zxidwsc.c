@@ -24,31 +24,55 @@
 
 #define BOOL_STR_TEST(x) ((x) && (x) != '0')
 
-/*() Try to map security mechanisms across different frame works. Low level function. */
+/*() Try to map security mechanisms across different frame works. Low level
+ * function. This also makes some elementary checks as to whether the
+ * EPR is even capable of supporting the sec mech. */
 
 /* Called by:  zxid_wsc_call, zxid_wsf_decor */
 int zxid_map_sec_mech(zxid_epr* epr)
 {
   int len;
-  char* s;
-  if (!epr)
-    return 0;
-  if (!epr->Metadata)
-    return 0;
-  if (!epr->Metadata->SecurityContext)
-    return 0;
-  if (!epr->Metadata->SecurityContext->SecurityMechID)
-    return 0;
-  
-  len = epr->Metadata->SecurityContext->SecurityMechID->content->len;
-  s = epr->Metadata->SecurityContext->SecurityMechID->content->s;
+  const char* s;
+  struct zx_elem_s* secmechid;
+  if (!epr || !epr->Metadata || !epr->Metadata->SecurityContext) {
+    INFO("EPR lacks Metadata or SecurityContext. Forcing X509. %p", epr->Metadata);
+    return ZXID_SEC_MECH_X509;
+  }
+  secmechid = epr->Metadata->SecurityContext->SecurityMechID;
+  if (!secmechid || !secmechid->content
+      || !secmechid->content->s || !secmechid->content->len) {
+    if (epr->Metadata->SecurityContext->Token) {
+      INFO("EPR does not specify sec mech id. Forcing Bearer. %p", secmechid);
+      return ZXID_SEC_MECH_BEARER;
+    } else {
+      INFO("EPR lacks Token. Forcing X509. %p", secmechid);
+      return ZXID_SEC_MECH_X509;
+    }
+  }
 
-  if (!len || !s)
-    return 0;
+  len = secmechid->content->len;
+  s = secmechid->content->s;
 
   D("mapping secmec(%.*s)", len, s);
 
 #define SEC_MECH_TEST(ret, val) if (len == sizeof(val)-1 && !memcmp(s, val, sizeof(val)-1)) return ret;
+
+  SEC_MECH_TEST(ZXID_SEC_MECH_X509, WSF11_SEC_MECH_NULL_X509);
+  SEC_MECH_TEST(ZXID_SEC_MECH_X509, WSF11_SEC_MECH_TLS_X509);
+  SEC_MECH_TEST(ZXID_SEC_MECH_X509, WSF11_SEC_MECH_CLTLS_X509);
+  
+  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF11_SEC_MECH_NULL_NULL);
+  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF11_SEC_MECH_TLS_NULL);
+  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF11_SEC_MECH_CLTLS_NULL);
+  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF20_SEC_MECH_NULL_NULL);
+  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF20_SEC_MECH_TLS_NULL);
+
+  SEC_MECH_TEST(ZXID_SEC_MECH_PEERS, WSF20_SEC_MECH_CLTLS_PEERS2);
+
+  if (epr->Metadata->SecurityContext->Token) {
+      INFO("EPR lacks Token despite not being NULL or X509. Forcing X509. %.*s", len, s);
+      return ZXID_SEC_MECH_X509;
+  }
   
   SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF10_SEC_MECH_NULL_BEARER);
   SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF10_SEC_MECH_TLS_BEARER);
@@ -58,24 +82,12 @@ int zxid_map_sec_mech(zxid_epr* epr)
   SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF20_SEC_MECH_NULL_BEARER);
   SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF20_SEC_MECH_TLS_BEARER);
      
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF11_SEC_MECH_NULL_NULL);
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF11_SEC_MECH_TLS_NULL);
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF11_SEC_MECH_CLTLS_NULL);
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF20_SEC_MECH_NULL_NULL);
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF20_SEC_MECH_TLS_NULL);
-
-  SEC_MECH_TEST(ZXID_SEC_MECH_X509, WSF11_SEC_MECH_NULL_X509);
-  SEC_MECH_TEST(ZXID_SEC_MECH_X509, WSF11_SEC_MECH_TLS_X509);
-  SEC_MECH_TEST(ZXID_SEC_MECH_X509, WSF11_SEC_MECH_CLTLS_X509);
-  
   SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF11_SEC_MECH_NULL_SAML);
   SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF11_SEC_MECH_TLS_SAML);
   SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF11_SEC_MECH_CLTLS_SAML);
   SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF20_SEC_MECH_NULL_SAML2);
   SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF20_SEC_MECH_TLS_SAML2);
   SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF20_SEC_MECH_CLTLS_SAML2);
-     
-  SEC_MECH_TEST(ZXID_SEC_MECH_PEERS, WSF20_SEC_MECH_CLTLS_PEERS2);
 
   ERR("Unknown security mechanism(%.*s), taking a guess...", len, s);
   
@@ -86,7 +98,8 @@ int zxid_map_sec_mech(zxid_epr* epr)
   if (len >= sizeof("X509")-1 && zx_memmem(s, len, "X509", sizeof("X509")-1))
     return ZXID_SEC_MECH_BEARER;
   
-  return 0;
+  ERR("Unknown security mechanism(%.*s), uable to guess.", len, s);
+  return ZXID_SEC_MECH_NULL;
 }
 
 /*() For purposes of signing, add references and canon forms of all known SOAP headers */
@@ -416,10 +429,20 @@ static int zxid_wsc_prep_secmech(struct zxid_conf* cf, zxid_epr* epr, struct zx_
   struct zx_wsse_Security_s* sec;
   struct zx_wsse_SecurityTokenReference_s* str;
   struct zx_e_Header_s* hdr;
+  struct zx_sec_Token_s* tok;
+  
+  if (!epr || !env) {
+    ERR("MUST supply epr %p and envelope as arguments", epr);
+    return 0;
+  }
 
   hdr = env->Header;
   hdr->MessageID->gg.content = zxid_mk_id(cf, "urn:M", ZXID_ID_BITS);
   sec = hdr->Security;
+  if (!sec || !sec->Timestamp || !sec->Timestamp->Created) {
+    ERR("MUST supply wsse:Security and Timestamp", sec);
+    return 0;
+  }
   sec->Timestamp->Created->gg.content = zxid_date_time(cf, time(0));
     
   /* Clear away any credentials from previous iteration, if any. */
@@ -432,17 +455,16 @@ static int zxid_wsc_prep_secmech(struct zxid_conf* cf, zxid_epr* epr, struct zx_
     
   /* Sign all Headers that have Id set. See wsc_sign_sec_mech() */
   secmech = zxid_map_sec_mech(epr);
-  if (!secmech)
-    secmech = ZXID_SEC_MECH_BEARER;
   switch (secmech) {
   case ZXID_SEC_MECH_NULL:
     D("secmech null %d", secmech);
     break;
   case ZXID_SEC_MECH_BEARER:
-    if (epr->Metadata->SecurityContext->Token->EncryptedAssertion)
-      sec->EncryptedAssertion = epr->Metadata->SecurityContext->Token->EncryptedAssertion;
-    else if (epr->Metadata->SecurityContext->Token->Assertion)
-      sec->Assertion = epr->Metadata->SecurityContext->Token->Assertion;
+    tok = epr->Metadata->SecurityContext->Token;
+    if (tok->EncryptedAssertion)
+      sec->EncryptedAssertion = tok->EncryptedAssertion;
+    else if (tok->Assertion)
+      sec->Assertion = tok->Assertion;
     str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx);
     str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx);
     str->KeyIdentifier->ValueType = zx_ref_str(cf->ctx, SAMLID_TOK_PROFILE);
@@ -451,15 +473,13 @@ static int zxid_wsc_prep_secmech(struct zxid_conf* cf, zxid_epr* epr, struct zx_
     /* *** In case of encrypted assertion, how is the KeyIdentifier populated? */
     
     zxid_wsf_sign(cf, cf->wsc_sign, sec, str, hdr, env->Body);
-    
     D("secmech bearer %d", secmech);
     break;
   case ZXID_SEC_MECH_SAML:
-    if (epr->Metadata->SecurityContext->Token->EncryptedAssertion)
-      sec->EncryptedAssertion
-	= epr->Metadata->SecurityContext->Token->EncryptedAssertion;
-    else if (epr->Metadata->SecurityContext->Token->Assertion)
-      sec->Assertion = epr->Metadata->SecurityContext->Token->Assertion;
+    if (tok->EncryptedAssertion)
+      sec->EncryptedAssertion = tok->EncryptedAssertion;
+    else if (tok->Assertion)
+      sec->Assertion = tok->Assertion;
     /* *** Sign SEC, MID, TO, ACT (if any) */
     zxid_wsf_sign(cf, cf->wsc_sign, sec, 0, hdr, env->Body);
     D("secmech saml hok %d", secmech);
@@ -574,22 +594,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(struct zxid_conf* cf, const char*
 {
   struct zx_e_Envelope_s* env;
   struct zx_root_s* r;
-#if 1
-  if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
-    for (enve += sizeof("<?xml "); *enve && !(enve[0] == '?' && enve[1] == '>'); ++enve) ;
-    if (*enve)
-      enve += 2;
-  }
-  
-  if (memcmp(enve, "<e:Envelope", sizeof("<e:Envelope")-1)) {
-    if (memcmp(enve, "<e:Body", sizeof("<e:Body")-1)) {
-      /* Must be just payload */
-      enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_body_open, enve, zx_env_body_close);
-    } else {
-      /* <e:Body> provided */
-      enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_open, enve, zx_env_close);
-    }
-  } /* else <e:Envelope> provided */
+#if 0
 #endif
   LOCK(cf->ctx->mx, "add_env");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
@@ -599,8 +604,38 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(struct zxid_conf* cf, const char*
     ERR("Malformed XML enve(%s)", enve);
     return 0;
   }
-  //if (r->Envelope) { }
   env = r->Envelope;
+  if (env) {
+    if (!env->Body)
+      env->Body = zx_NEW_e_Body(cf->ctx);
+    if (!env->Header)
+      env->Header = zx_NEW_e_Header(cf->ctx);
+  } else if (r->Body) {
+    env = zx_NEW_e_Envelope(cf->ctx);
+    if (r->Header)
+      env->Header = r->Header;
+    else
+      env->Header = zx_NEW_e_Header(cf->ctx);
+    env->Body = r->Body;
+  } else { /* Resort to stringwise attempt to add envelope. */
+    ZX_FREE(cf->ctx, r);
+    if (!memcmp(enve, "<?xml ", sizeof("<?xml ")-1)) {  /* Ignore common, but unnecessary decl. */
+      for (enve += sizeof("<?xml "); *enve && !(enve[0] == '?' && enve[1] == '>'); ++enve) ;
+      if (*enve)
+	enve += 2;
+    }
+    /* Must be just payload */
+    enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_body_open, enve, zx_env_body_close);
+    LOCK(cf->ctx->mx, "add_env2");
+    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
+    r = zx_DEC_root(cf->ctx, 0, 1);
+    UNLOCK(cf->ctx->mx, "add_env2");
+    if (!r) {
+      ERR("Malformed XML enve(%s)", enve);
+      return 0;
+    }
+    env = r->Envelope;
+  }
   ZX_FREE(cf->ctx, r);
   if (!env)
     ERR("No <e:Envelope> found in input argument. enve(%s)", enve);

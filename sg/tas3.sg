@@ -10,6 +10,7 @@ ns(sa11,     urn:oasis:names:tc:SAML:1.0:assertion)
 ns(ff12,     urn:liberty:iff:2003-08)
 ns(xa,       urn:oasis:names:tc:xacml:2.0:policy:schema:os)
 ns(xac,      urn:oasis:names:tc:xacml:2.0:context:schema:os)
+import(lu,  urn:liberty:util:2006-08, liberty-idwsf-utility-v2.0.xsd)
 
 Credentials -> %tas3:CredentialsType
 %CredentialsType:
@@ -41,6 +42,12 @@ ESLRef -> %tas3:ESLRefType
 %ESLRefType:
   @ref?   -> %xs:anyURI
   @xpath? -> %xs:string
+  ;
+
+Status -> %tas3:StatusType
+%StatusType: base(lu:StatusType)
+  @ctlpt?
+  &@b:hdr
   ;
 
 #EOF

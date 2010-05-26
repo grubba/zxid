@@ -23,11 +23,25 @@
 #include <memory.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "errmac.h"
 #include "zx.h"
 #include "c/zx-data.h"  /* Also generic zx_simple_elem, etc. */
+
+/*() Format error message describing an XML parse error. The buf argument
+ * should be at leaset 256 bytes for satisfactory results. */
+
+int zx_format_parse_error(struct zx_ctx* ctx, char* buf, int siz, char* logkey)
+{
+  int at, end, start, len;
+  end = ctx->lim - ctx->base;
+  at = MIN(ctx->p - ctx->base, end);
+  start = MAX(0,at-30);
+  len = MIN(at+30, end) - start;    
+  return snprintf(buf, siz, "%s: Parse error at char %d/%d (prev char, char, next char: 0x%02x 0x%02x 0x%02x)\n%.*s\n%.*s^\n", logkey, at, end, at > 0 ? cf->ctx->p[-1]:0, cf->ctx->p, at < end ? cf->ctx->p[1]:0, len, cf->ctx->base + start, at-start, "-----------------------------------------------");
+}
 
 /*() ZX implementation of memmem(3) for platforms that do not have this. */
 

@@ -401,6 +401,7 @@ void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
 /* Called by:  zxid_sp_sso_finalize, zxid_wsp_validate */
 int zxid_validate_cond(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sa_Assertion_s* a7n, struct zx_str* myentid, struct timeval* ourts, char** err)
 {
+  struct timeval tsbuf;
   struct zx_sa_AudienceRestriction_s* audr;
   struct zx_elem_s* aud;
   int secs;
@@ -408,6 +409,11 @@ int zxid_validate_cond(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
   if (!a7n || !a7n->Conditions) {
     INFO("Assertion does not have Conditions. %p", a7n);
     return ZXSIG_OK;
+  }
+
+  if (!ourts) {
+    GETTIMEOFDAY(&tsbuf, 0);
+    ourts = &tsbuf;
   }
 
   if (a7n->Conditions->AudienceRestriction) {
@@ -427,7 +433,8 @@ int zxid_validate_cond(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
     if (ses)
       ses->sigres = ZXSIG_AUDIENCE;
     if (cf->audience_fatal) {
-      *err = "P";
+      if (err)
+	*err = "P";
       return ZXSIG_AUDIENCE;
     }
   } else {
@@ -447,7 +454,8 @@ int zxid_validate_cond(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
 	if (ses)
 	  ses->sigres = ZXSIG_TIMEOUT;
 	if (cf->timeout_fatal) {
-	  *err = "P";
+	  if (err)
+	    *err = "P";
 	  return ZXSIG_TIMEOUT;
 	}
       } else {
@@ -472,7 +480,8 @@ int zxid_validate_cond(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
 	if (ses)
 	  ses->sigres = ZXSIG_TIMEOUT;
 	if (cf->timeout_fatal) {
-	  *err = "P";
+	  if (err)
+	    *err = "P";
 	  return ZXSIG_TIMEOUT;
 	}
       } else {

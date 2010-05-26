@@ -241,6 +241,8 @@ struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, char* prefix, ch
 struct zx_ns_s* zx_scan_xmlns(struct zx_ctx* c);
 void  zx_pop_seen(struct zx_ns_s* ns);
 
+int zx_format_parse_error(struct zx_ctx* ctx, char* buf, int siz, char* logkey);
+
 /* zxcrypto.c - Glue to OpenSSL low level */
 
 struct zx_str* zx_raw_cipher(struct zx_ctx* c, char* algo, int encp, struct zx_str* key, int len, char* s, int iv_len, char* iv);

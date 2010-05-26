@@ -39,8 +39,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcg
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000057
-ZXIDREL=0.57
+ZXIDVERSION=0x000058
+ZXIDREL=0.58
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)

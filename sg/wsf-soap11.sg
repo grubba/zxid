@@ -23,6 +23,7 @@ ns(b,     urn:liberty:sb:2006-08)
 ns(b12,   urn:liberty:sb:2003-08)
 ns(di,    urn:liberty:disco:2006-08)
 ns(di12,  urn:liberty:disco:2003-08)
+ns(lu,    urn:liberty:util:2006-08)
 ns(dap,   urn:liberty:id-sis-dap:2006-08:dst-2.1)
 ns(ps,    urn:liberty:ps:2006-08)
 ns(im,    urn:liberty:ims:2006-08)
@@ -86,6 +87,7 @@ Header -> %e:Header
   b12:UsageDirective?
   mm7:TransactionID?
   wsse:Security?
+  tas3:Status?
   tas3:Credentials?
   tas3:ESLPolicies?
   @id? -> %xs:ID
@@ -340,6 +342,7 @@ Fault	 -> %e:Fault
   ;
 
 %detail:
+  lu:Status*
   any*
   @any
   ;

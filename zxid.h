@@ -292,6 +292,8 @@ struct zxid_ses {
   struct zx_sa11_Assertion_s* tgta7n11;
   struct zx_ff12_Assertion_s* a7n12;
   struct zx_ff12_Assertion_s* tgta7n12;
+  struct zx_e_Fault_s* curflt;  /* SOAP fault, if any, reported by zxid_wsp_validate() */
+  struct zx_tas3_Status_s* curstatus;  /* TAS3 status header, if any. */
   char* sesbuf;
   char* sso_a7n_buf;
   struct zxid_attr* at; /* Attributes extracted from a7n and translated using inmap. Linked list */
@@ -301,6 +303,7 @@ struct zxid_ses {
 };
 
 typedef struct zx_a_EndpointReference_s zxid_epr; /* Nice name for EPR. May eventually evolve to struct */
+typedef struct zx_tas3_Status_s zxid_tas3_status; /* Nice name for TAS3 status */
 
 /*(s) Attribute node */
 
@@ -336,7 +339,7 @@ struct zxid_map {
   char* ext;
 };
 
-/*(s) Used for maintaning whitelists and blacklists */
+/*(s) Used for maintaining whitelists and blacklists */
 
 struct zxid_cstr_list {
   struct zxid_cstr_list* n;
@@ -728,7 +731,27 @@ struct zx_sa_Attribute_s* zxid_mk_attribute(struct zxid_conf* cf, char* name, ch
 
 /* zxidmkwsf */
 
-struct zx_lu_Status_s* zxid_mk_lu_Status(struct zxid_conf* cf, char* sc1, char* sc2, char* msg, char* ref);
+struct zx_lu_Status_s* zxid_mk_lu_Status(struct zxid_conf* cf, const char* sc1, const char* sc2, const char* msg, const char* ref);
+struct zx_tas3_Status_s* zxid_mk_tas3_Status(struct zxid_conf* cf, const char* ctlpt, const char* sc1, const char* sc2, const char* msg, const char* ref);
+struct zx_e_Fault_s* zxid_mk_fault(struct zxid_conf* cf, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref);
+
+void zxid_set_fault(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_e_Fault_s* flt);
+struct zx_e_Fault_s*  zxid_get_fault(struct zxid_conf* cf, struct zxid_ses* ses);
+
+char* zxid_get_tas3_fault_sc1(struct zxid_conf* cf, struct zx_e_Fault_s* flt);
+char* zxid_get_tas3_fault_sc2(struct zxid_conf* cf, struct zx_e_Fault_s* flt);
+char* zxid_get_tas3_fault_comment(struct zxid_conf* cf, struct zx_e_Fault_s* flt);
+char* zxid_get_tas3_fault_ref(struct zxid_conf* cf, struct zx_e_Fault_s* flt);
+char* zxid_get_tas3_fault_actor(struct zxid_conf* cf, struct zx_e_Fault_s* flt);
+
+void zxid_set_tas3_status(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_tas3_Status_s* status);
+struct zx_tas3_Status_s* zxid_get_tas3_status(struct zxid_conf* cf, struct zxid_ses* ses);
+
+char* zxid_get_tas3_status_sc1(struct zxid_conf* cf, zxid_tas3_status* st);
+char* zxid_get_tas3_status_sc2(struct zxid_conf* cf, zxid_tas3_status* st);
+char* zxid_get_tas3_status_comment(struct zxid_conf* cf, zxid_tas3_status* st);
+char* zxid_get_tas3_status_ref(struct zxid_conf* cf, zxid_tas3_status* st);
+char* zxid_get_tas3_status_ctlpt(struct zxid_conf* cf, zxid_tas3_status* st);
 
 struct zx_di_Query_s* zxid_mk_di_query(struct zxid_conf* cf, const char* svc_type, const char* url, const char* di_opt, const char* action);
 struct zx_a_Address_s* zxid_mk_addr(struct zxid_conf* cf, struct zx_str* url);

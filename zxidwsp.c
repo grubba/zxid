@@ -216,6 +216,107 @@ struct zx_str* zxid_wsp_decoratef(struct zxid_conf* cf, struct zxid_ses* ses, co
   return zxid_wsp_decorate(cf, ses, az_cred, s);
 }
 
+#define TAS3_PEP_RQ_OUT "urn:tas3:ctlpt:pep:rq:out"
+#define TAS3_PEP_RQ_IN  "urn:tas3:ctlpt:pep:rq:in"
+#define TAS3_PEP_RS_OUT "urn:tas3:ctlpt:pep:rs:out"
+#define TAS3_PEP_RS_IN  "urn:tas3:ctlpt:pep:rs:in"
+
+int zxid_wsf_validate_a7n(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_sa_Assertion_s* a7n) {
+
+    ses->nameid = zxid_decrypt_nameid(cf, a7n->Subject->NameID, a7n->Subject->EncryptedID);
+    if (!ses->nameid || !ses->nameid->gg.content) {
+      ERR("Assertion does not have Subject->NameID. %p", ses->nameid);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "Assertion does not have Subject->NameID.", "IDStarMsgNotUnderstood", 0, 0, 0));
+      D_DEDENT("valid: ");
+      return 0;
+    }
+    
+    subj = ses->nameid->gg.content;
+    ses->nid = ses->tgt = zx_str_to_c(cf->ctx, subj);
+    if (ses->nameid->Format && !memcmp(ses->nameid->Format->s, SAML2_TRANSIENT_NID_FMT, ses->nameid->Format->len)) {
+      ses->nidfmt = ses->tgtfmt = 0;
+    } else {
+      ses->nidfmt = ses->tgtfmt = 1;  /* anything nontransient may be a federation */
+    }
+
+#if 1
+    D("A7N received. NID(%s) FMT(%d) SESIX(%s)", ses->nid, ses->nidfmt, STRNULLCHK(ses->sesix));
+    
+    /* Validate signature (*** add Issuer trusted check, CA validation, etc.) */
+    
+    idp_meta = zxid_get_ent_ss(cf, issuer);
+    if (!idp_meta) {
+      ses->sigres = ZXSIG_NO_SIG;
+      if (!cf->nosig_fatal) {
+	ERR("Unable to find metadata for Assertion Issuer(%.*s).", issuer->len, issuer->s);
+	zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No unable to find SAML metadata for Assertion Issuer.", "ProviderIDNotValid", 0, 0, 0));
+	D_DEDENT("valid: ");
+	return 0;
+      } else {
+	INFO("Unable to find metadata for Assertion Issuer(%.*s), but configured to ignore this problem.", issuer->len, issuer->s);
+      }
+    } else {
+      if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
+	refs.sref = a7n->Signature->SignedInfo->Reference;
+	refs.blob = (struct zx_elem_s*)a7n;
+	ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, a7n->Signature, 1, &refs);
+	zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
+      } else {
+	if (cf->msg_sig_ok && !ses->sigres) {
+	  INFO("Assertion without signature accepted due to message level signature (SimpleSign) %d", 0);
+	} else {
+	  ses->sigres = ZXSIG_NO_SIG;
+	  if (!cf->nosig_fatal) {
+	    ERR("Assertion not signed. Sigval(%s) %p", STRNULLCHKNULL(cgi->sigval), a7n->Signature);
+	    zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "Assertion not signed.", "urn:tas3:status:nosig", 0, 0, 0));
+	    D_DEDENT("valid: ");
+	    return 0;
+	  } else {
+	    INFO("SSO warn: assertion not signed, but configured to ignore this problem. Sigval(%s) %p", STRNULLCHKNULL(cgi->sigval), a7n->Signature);
+	  }
+	}
+      }
+    }
+    if (cf->sig_fatal && ses->sigres) {
+      ERR("Fail due to failed assertion signature sigres=%d", ses->sigres);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "Assertion signature did not validate.", "urn:tas3:status:badsig", 0, 0, 0));
+      D_DEDENT("valid: ");
+      return 0;
+    }
+    
+    if (zxid_validate_cond(cf, cgi, ses, a7n, zxid_my_entity_id(cf), &ourts, &err)) {
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "Conditions did not validate.", "urn:tas3:status:badcond", 0, 0, 0));
+      D_DEDENT("valid: ");
+      return 0;
+    }
+#endif
+    
+    if (cf->log_rely_a7n) {
+      DD("Logging... %d", 0);
+      logpath = zxlog_path(cf, issuer, a7n->ID, ZXLOG_RELY_DIR, ZXLOG_A7N_KIND, 1);
+      if (logpath) {
+	ses->sso_a7n_path = ses->tgt_a7n_path = zx_str_to_c(cf->ctx, logpath);
+	a7nss = zx_EASY_ENC_WO_sa_Assertion(cf->ctx, a7n);
+	if (zxlog_dup_check(cf, logpath, "SSO assertion")) {
+	  if (cf->dup_a7n_fatal) {
+	    zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validade dup err");
+	    D_DEDENT("valid: ");
+	    return 0;
+	  }
+	}
+	zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validate");
+	zxlog(cf, 0, &srcts, 0, issuer, 0, a7n->ID, subj, "N", "K", "A7N VALID", logpath->s, 0);  /* *** not yet validating */
+      }
+    }
+    DD("Creating session... %d", 0);  /* *** */
+    zxid_put_ses(cf, ses);
+    zxid_ses_to_pool(cf, ses);
+    zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
+    zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);
+    zxlog(cf, 0, &srcts, 0, issuer, 0, ses->a7n->ID, subj, "N", "K", "PNEWSES", ses->sid, 0);
+
+}
+
 /*(i) Validate SOAP request (envelope), specified by the string.
  *
  * If the string starts by "<e:Envelope", then string
@@ -259,6 +360,8 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
   struct zxid_cgi cgi;
 
   D_INDENT("valid: ");
+  zxid_set_fault(cf, ses, 0);
+  zxid_set_tas3_status(cf, ses, 0);
   
   ss.s = enve;
   ss.len = strlen(enve);
@@ -267,13 +370,23 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
   r = zx_DEC_root(cf->ctx, 0, 1);
   UNLOCK(cf->ctx->mx, "valid");
   if (!r) {
+    char* msg[256];
+    char* p;
     ERR("Malformed XML enve(%s)", enve);
+    zx_format_parse_error(cf->ctx, msg, sizeof(msg), "valid");
+    ERR("Detail: %s", msg);
+    /* Squash " to ' because the message will appear in XML attribute value delimited by " */
+    for (p = msg; *p; ++p)
+      if (*p == '"')
+	*p == '\'';
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "Malformed XML", "IDStarMsgNotUnderstood", 0, msg, 0));
     D_DEDENT("valid: ");
     return 0;
   }
   env = r->Envelope;
   if (!env) {
     ERR("No <e:Envelope> found. enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No SOAP Envelope found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
@@ -281,11 +394,13 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
 
   if (!env->Header) {
     ERR("No <e:Header> found. enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No SOAP Header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
   if (!env->Header->MessageID) {
     ERR("No <a:MessageID> found. enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No MessageID header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
@@ -294,6 +409,7 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
   if (!env->Header->Sender || !env->Header->Sender->providerID
       && !env->Header->Sender->affiliationID) {
     ERR("No <b:Sender> found (or missing providerID or affiliationID). enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No b:Sender header found (or missing providerID or affiliationID).", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
@@ -301,55 +417,51 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
 
   if (!(sec = env->Header->Security)) {
     ERR("No <wsse:Security> found. enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No wsse:Security header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
 
-  if (!sec->Signature) {
+  if (!sec->Signature || !sec->Signature->SignedInfo || !sec->Signature->SignedInfo->Reference) {
+    ses->sigres = ZXSIG_NO_SIG;
     if (cf->wsp_nosig_fatal) {
-      ERR("No Security/Signature found. enve(%s)", enve);
+      ERR("No Security/Signature found. enve(%s) %p", enve, sec->Signature);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No wsse:Security/ds:Signature found.", "urn:tas3:status:nosig", 0, 0, 0));
       D_DEDENT("valid: ");
       return 0;
     } else {
-      INFO("No Security/Signature found. enve(%s)", enve);
+      INFO("No Security/Signature found, but configured to ignore this problem. %d", sec->Signature);
+      D("No sig OK enve(%s)", enve);
     }
   }
-
+  
   /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   
   wsc_meta = zxid_get_ent_ss(cf, issuer);
   if (!wsc_meta) {
-    ERR("Unable to find metadata for Sender(%.*s).", issuer->len, issuer->s);
-    D_DEDENT("valid: ");
-    return 0;
-    //cgi->sigval = "I";
-    //cgi->sigmsg = "Issuer of Assertion unknown.";
-    //ses->sigres = ZXSIG_NO_SIG;
-    //if (cf->nosig_fatal) {  err = "P";  goto erro; }
+    ses->sigres = ZXSIG_NO_SIG;
+    if (cf->nosig_fatal) {
+      INFO("Unable to find SAML metadata for Sender(%.*s), but configured to ignore this problem.", issuer->len, issuer->s);
+    } else {
+      ERR("Unable to find SAML metadata for Sender(%.*s).", issuer->len, issuer->s);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No unable to find SAML metadata for sender.", "ProviderIDNotValid", 0, 0, 0));
+      D_DEDENT("valid: ");
+      return 0;
+    }
   }
 
-#if 0
-    n_refs = zxid_add_header_refs(cf, n_refs, env->Header);
-
-    if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
-      refs.sref = a7n->Signature->SignedInfo->Reference;
-      refs.blob = (struct zx_elem_s*)a7n;
-      ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, a7n->Signature, 1, &refs);
-      zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
-    } else {
-      if (cf->msg_sig_ok && !ses->sigres) {
-	INFO("Assertion without signature accepted due to message level signature (SimpleSign) %d", 0);
-      } else {
-	ERR("SSO warn: assertion not signed. Sigval(%s) %p", STRNULLCHKNULL(cgi->sigval), a7n->Signature);
-	cgi->sigval = "N";
-	cgi->sigmsg = "Assertion was not signed.";
-	ses->sigres = ZXSIG_NO_SIG;
-	if (cf->nosig_fatal) {
-	  err = "P";
-	  goto erro;
-	}
-      }
-    }
+#if 1
+  n_refs = zxid_add_header_refs(cf, n_refs, refs, env->Header);
+  /*refs.sref = a7n->Signature->SignedInfo->Reference;
+    refs.blob = (struct zx_elem_s*)a7n;*/
+  ses->sigres = zxsig_validate(cf->ctx, wsc_meta->sign_cert, sec->Signature, n_refs, &refs);
+  zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
+  if (cf->sig_fatal && ses->sigres) {
+    ERR("Fail due to failed message signature sigres=%d", ses->sigres);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "Message signature did not validate.", "urn:tas3:status:badsig", 0, 0, 0));
+    D_DEDENT("valid: ");
+    return 0;
+  }
 #endif
 
   if (sec->Timestamp && sec->Timestamp->Created && sec->Timestamp->Created->gg.content
@@ -358,105 +470,25 @@ char* zxid_wsp_validate(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
   } else {
     if (cf->notimestamp_fatal) {
       ERR("No Security/Timestamp found. enve(%s)", enve);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No unable to find wsse:Security/Timestamp.", "StaleMsg", 0, 0, 0));
       D_DEDENT("valid: ");
       return 0;
     } else {
-      INFO("No Security/Timestamp found. enve(%s)", enve);
+      INFO("No Security/Timestamp found, but configured to ignore this. %d", 0);
+      D("No ts OK enve(%s)", enve);
     }
   }
 
   /* See zxid_sp_sso_finalize() for similar code.  *** consider factoring out commonality */
 
-  ses->a7n = zxid_dec_a7n(cf, env->Header->Security->Assertion,
-			  env->Header->Security->EncryptedAssertion);
+  ses->a7n = zxid_dec_a7n(cf, sec->Assertion, sec->EncryptedAssertion);
   if (ses->a7n && ses->a7n->Subject) {
 
-    ses->nameid = zxid_decrypt_nameid(cf, ses->a7n->Subject->NameID, ses->a7n->Subject->EncryptedID);
-    if (!ses->nameid || !ses->nameid->gg.content) {
-      ERR("SSO failed: assertion does not have Subject->NameID. %p", ses->nameid);
-      D_DEDENT("valid: ");
-      return 0;
-    }
-    
-    subj = ses->nameid->gg.content;
-    ses->nid = ses->tgt = zx_str_to_c(cf->ctx, subj);
-    if (ses->nameid->Format && !memcmp(ses->nameid->Format->s, SAML2_TRANSIENT_NID_FMT, ses->nameid->Format->len)) {
-      ses->nidfmt = ses->tgtfmt = 0;
-    } else {
-      ses->nidfmt = ses->tgtfmt = 1;  /* anything nontransient may be a federation */
-    }
+    int zxid_wsf_validate_a7n(cf, ses, ses->a7n); // ***
 
-#if 0
-    D("SSOA7N received. NID(%s) FMT(%d) SESIX(%s)", ses->nid, ses->nidfmt, STRNULLCHK(ses->sesix));
-    
-    /* Validate signature (*** add Issuer trusted check, CA validation, etc.) */
-    
-    idp_meta = zxid_get_ent_ss(cf, issuer);
-    if (!idp_meta) {
-      ERR("Unable to find metadata for Issuer(%.*s).", issuer->len, issuer->s);
-      cgi->sigval = "I";
-      cgi->sigmsg = "Issuer of Assertion unknown.";
-      ses->sigres = ZXSIG_NO_SIG;
-      if (cf->nosig_fatal) {
-	err = "P";
-	goto erro;
-      }
-    } else {
-      if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
-	refs.sref = a7n->Signature->SignedInfo->Reference;
-	refs.blob = (struct zx_elem_s*)a7n;
-	ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, a7n->Signature, 1, &refs);
-	zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
-      } else {
-	if (cf->msg_sig_ok && !ses->sigres) {
-	  INFO("Assertion without signature accepted due to message level signature (SimpleSign) %d", 0);
-	} else {
-	  ERR("SSO warn: assertion not signed. Sigval(%s) %p", STRNULLCHKNULL(cgi->sigval), a7n->Signature);
-	  cgi->sigval = "N";
-	  cgi->sigmsg = "Assertion was not signed.";
-	  ses->sigres = ZXSIG_NO_SIG;
-	  if (cf->nosig_fatal) {
-	    err = "P";
-	    goto erro;
-	  }
-	}
-      }
-    }
-    if (cf->sig_fatal && ses->sigres) {
-      ERR("Fail SSO due to failed signeture sigres=%d", ses->sigres);
-      err = "P";
-      goto erro;
-    }
-    
-    if (zxid_validate_cond(cf, cgi, ses, a7n, zxid_my_entity_id(cf), &ourts, &err))
-      goto erro;    
-#endif
-    
-    if (cf->log_rely_a7n) {
-      DD("Logging... %d", 0);
-      logpath = zxlog_path(cf, issuer, ses->a7n->ID, ZXLOG_RELY_DIR, ZXLOG_A7N_KIND, 1);
-      if (logpath) {
-	ses->sso_a7n_path = ses->tgt_a7n_path = zx_str_to_c(cf->ctx, logpath);
-	a7nss = zx_EASY_ENC_WO_sa_Assertion(cf->ctx, ses->a7n);
-	if (zxlog_dup_check(cf, logpath, "SSO assertion")) {
-	  if (cf->dup_a7n_fatal) {
-	    zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validade dup err");
-	    D_DEDENT("valid: ");
-	    return 0;
-	  }
-	}
-	zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validate");
-	zxlog(cf, 0, &srcts, 0, issuer, 0, ses->a7n->ID, subj, "N", "K", "A7N VALID", logpath->s, 0);  /* *** not yet validating */
-      }
-    }
-    DD("Creating session... %d", 0);
-    zxid_put_ses(cf, ses);
-    zxid_ses_to_pool(cf, ses);
-    zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
-    zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);
-    zxlog(cf, 0, &srcts, 0, issuer, 0, ses->a7n->ID, subj, "N", "K", "PNEWSES", ses->sid, 0);
   } else {
     ERR("No <sa:Assertion> found. enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, "e:Client", "No assertion found.", "urn:tas3:status:badcond", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }

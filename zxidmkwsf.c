@@ -1,4 +1,5 @@
 /* zxidmkwsf.c  -  Handwritten nitty-gritty functions for constructing various elems
+ * Copyright (c) 2010 Sampo Kellomaki <sampo@iki.fi>, All Rights Reserved.
  * Copyright (c) 2007-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -10,6 +11,7 @@
  * 12.1.2007, created --Sampo
  * 7.10.2008, added documentation --Sampo
  * 15.11.2009, added ID-WSF <lu:Status> --Sampo
+ * 25.5.2010, added SOAP fault, tas3:Status, error formatting --Sampo
  */
 
 #include "errmac.h"
@@ -26,13 +28,21 @@
  * service. All other complicated options and multi service queries
  * will come in later releases. */
 
-/*() Create ID-WSF protocol <lu:Status> element, given various levels of error input. */
+/*() Create ID-WSF protocol <lu:Status> element, given various levels of error input.
+ *
+ * sc1:: First level status code
+ * sc2:: Second level status code, if any
+ * msg:: First level status message
+ * ref:: First level Status/@ref. Ref is used to point to culprit XML element, if any.
+ * returns:: lu:Status data structure with fields populated.
+ *
+ * See also: zxid_mk_fault() */
 
 /* Called by:  zxid_di_query x4, zxid_idp_as_do x3, zxid_mk_lu_Status */
-struct zx_lu_Status_s* zxid_mk_lu_Status(struct zxid_conf* cf, char* sc1, char* sc2, char* msg, char* ref)
+struct zx_lu_Status_s* zxid_mk_lu_Status(struct zxid_conf* cf, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
   struct zx_lu_Status_s* st = zx_NEW_lu_Status(cf->ctx);
-  st->code = zx_dup_str(cf->ctx, sc1);
+  st->code = zx_dup_str(cf->ctx, STRNULLCHKQ(sc1));
   if (msg)
     st->comment = zx_dup_str(cf->ctx, msg);
   if (ref)
@@ -40,6 +50,137 @@ struct zx_lu_Status_s* zxid_mk_lu_Status(struct zxid_conf* cf, char* sc1, char* 
   if (sc2)
     st->Status = zxid_mk_lu_Status(cf, sc2, 0, 0, 0);
   return st;
+}
+
+/*() Create TAS3 application level Status (error) header. */
+
+struct zx_tas3_Status_s* zxid_mk_tas3_Status(struct zxid_conf* cf, const char* ctlpt, const char* sc1, const char* sc2, const char* msg, const char* ref)
+{
+  struct zx_tas3_Status_s* st = zx_NEW_tas3_Status(cf->ctx);
+  if (ctlpt)
+    st->ctlpt = zx_dup_str(cf->ctx, ctlpt);
+  st->code = zx_dup_str(cf->ctx, STRNULLCHKQ(sc1));
+  if (msg)
+    st->comment = zx_dup_str(cf->ctx, msg);
+  if (ref)
+    st->ref = zx_dup_str(cf->ctx, ref);
+  if (sc2)
+    st->Status = zxid_mk_lu_Status(cf, sc2, 0, 0, 0);
+  st->mustUnderstand = zx_dup_str(cf->ctx, "0");
+  return st;
+}
+
+/*() Create SOAP Fault element (see Table 2 of [SOAPBind2], pp.12-13)
+ *
+ * fa:: Optional fault actor.
+ * fc:: Fault code. Should be "e:Client" or "e:Server".
+ * fs:: Fault string. Human readable string explanation of the fault.
+ * sc1:: First level status code (to be placed inside <detail> element)
+ * sc2:: Second level status code, if any
+ * msg:: First level status message
+ * ref:: First level Status/@ref. Ref is used to point to culprit XML element, if any.
+ * returns:: Fault data structure with fields populated.
+ *
+ * See also: zxid_mk_lu_Status()
+ */
+
+struct zx_e_Fault_s* zxid_mk_fault(struct zxid_conf* cf, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref)
+{
+  struct zx_e_Fault_s* flt = zx_NEW_e_Fault(cf->ctx);
+  if (fa)
+    flt->faultActor = zx_dup_simple_elem(cf->ctx, fa);
+  flt->faultCode = zx_dup_simple_elem(cf->ctx, fc?fc:"e:Client");
+  if (fs)
+    flt->faultString = zx_dup_simple_elem(cf->ctx, fs);
+  if (sc1) {
+    flt->detail = zx_NEW_e_detail(cf->ctx);
+    flt->detail->Status = zxid_mk_lu_Status(cf, sc1, sc2, msg, ref);
+  }
+  return flt;
+}
+
+/*() Set current fault of the session. If current fault is set, the zxid_wsp_decorate()
+ * function will generate a SOAP Fault response instead of normal SOAP response. If
+ * you wish to return application response in situation where fault has been
+ * detected, you can use this function to reset the current fault to null. */
+
+void zxid_set_fault(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_e_Fault_s* flt) {
+  if (ses->curflt) /* Free the previous fault */
+    zx_FREE_e_Fault(cf->ctx, ses->curflt, 1);
+  ses->curflt = flt;
+}
+
+/*() Read current fault of the session. NULL return means that there was no fault. */
+
+struct zx_e_Fault_s* zxid_get_fault(struct zxid_conf* cf, struct zxid_ses* ses) {
+  return ses->curflt;
+}
+
+char* zxid_get_tas3_fault_sc1(struct zxid_conf* cf, struct zx_e_Fault_s* flt) {
+  if (!flt || !flt->faultcode || !flt->faultcode->gg.content || !flt->faultcode->gg.content->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, flt->faultcode->gg.content);
+}
+char* zxid_get_tas3_fault_sc2(struct zxid_conf* cf, struct zx_e_Fault_s* flt) {
+  if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->code || !flt->detail->Status->code->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, flt->detail->Status->code);
+}
+char* zxid_get_tas3_fault_comment(struct zxid_conf* cf, struct zx_e_Fault_s* flt) {
+  if (!flt || !flt->faultstring || !flt->faultstring->gg.content || !flt->faultstring->gg.content->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, flt->faultstring->gg.content);
+}
+char* zxid_get_tas3_fault_ref(struct zxid_conf* cf, struct zx_e_Fault_s* flt) {
+  if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->ref || !flt->detail->Status->ref->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, flt->detail->Status->ref);
+}
+char* zxid_get_tas3_fault_actor(struct zxid_conf* cf, struct zx_e_Fault_s* flt) {
+  if (!flt || !flt->faultactor || !flt->faultactor->gg.content || !flt->faultactor->gg.content->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, flt->faultactor->gg.content);
+}
+
+/*() Set current TAS3 Status of the session. If current Status is set, the zxid_wsp_decorate()
+ * function will generate a TAS3 status header. */
+
+void zxid_set_tas3_status(struct zxid_conf* cf, struct zxid_ses* ses, zxid_tas3_status* status) {
+  if (ses->curstatus) /* Free the previous fault */
+    zx_FREE_tas3_Status(cf->ctx, ses->curstatus, 1);
+  ses->curstatus = status;
+}
+
+/*() Read current fault of the session. NULL return means that there was no fault. */
+
+zxid_tas3_status* zxid_get_tas3_status(struct zxid_conf* cf, struct zxid_ses* ses) {
+  return ses->curstatus;
+}
+
+char* zxid_get_tas3_status_sc1(struct zxid_conf* cf, zxid_tas3_status* st) {
+  if (!st || !st->code || !st->code->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, st->code);
+}
+char* zxid_get_tas3_status_sc2(struct zxid_conf* cf, zxid_tas3_status* st) {
+  if (!st || !st->Status || !st->Status->code || !st->Status->code->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, st->Status->code);
+}
+char* zxid_get_tas3_status_comment(struct zxid_conf* cf, zxid_tas3_status* st) {
+  if (!st || !st->comment || !st->comment->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, st->comment);
+}
+char* zxid_get_tas3_status_ref(struct zxid_conf* cf, zxid_tas3_status* st) {
+  if (!st || !st->ref || !st->ref->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, st->ref);
+}
+char* zxid_get_tas3_status_ctlpt(struct zxid_conf* cf, zxid_tas3_status* st) {
+  if (!st || !st->ctlpt || !st->ctlpt->s)
+    return 0;
+  return zx_str_to_c(cf->ctx, st->ctlpt);
 }
 
 /*() Low level constructor for discovery <di:RequestedService>. */
