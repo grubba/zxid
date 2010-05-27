@@ -69,7 +69,7 @@ int zxid_map_sec_mech(zxid_epr* epr)
 
   SEC_MECH_TEST(ZXID_SEC_MECH_PEERS, WSF20_SEC_MECH_CLTLS_PEERS2);
 
-  if (epr->Metadata->SecurityContext->Token) {
+  if (!epr->Metadata->SecurityContext->Token) {
       INFO("EPR lacks Token despite not being NULL or X509. Forcing X509. %.*s", len, s);
       return ZXID_SEC_MECH_X509;
   }

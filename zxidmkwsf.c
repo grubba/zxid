@@ -55,9 +55,9 @@ struct zx_lu_Status_s* zxid_mk_lu_Status(zxid_conf* cf, const char* sc1, const c
 /*() Create TAS3 application level Status (error) header. */
 
 /* Called by: */
-struct zx_tas3_Status_s* zxid_mk_tas3_Status(zxid_conf* cf, const char* ctlpt, const char* sc1, const char* sc2, const char* msg, const char* ref)
+zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, const char* ctlpt, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
-  struct zx_tas3_Status_s* st = zx_NEW_tas3_Status(cf->ctx);
+  zxid_tas3_status* st = zx_NEW_tas3_Status(cf->ctx);
   if (ctlpt)
     st->ctlpt = zx_dup_str(cf->ctx, ctlpt);
   st->code = zx_dup_str(cf->ctx, STRNULLCHKQ(sc1));
