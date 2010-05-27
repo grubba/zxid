@@ -72,7 +72,7 @@ char* url = 0;
 char* di  = 0;
 char* az  = 0;
 char* bdy = 0;
-struct zxid_conf* cf;
+zxid_conf* cf;
 
 /* Called by:  main x8, zxcall_main, zxcot_main */
 static void opt(int* argc, char*** argv, char*** env)
@@ -252,8 +252,8 @@ int zxcall_main(int argc, char** argv, char** env)
   int siz, got, n;
   char* p;
   struct zx_str* ss;
-  struct zxid_ses* ses;
-  struct zxid_entity* idp_meta;
+  zxid_ses* ses;
+  zxid_entity* idp_meta;
   
   strncpy(zx_instance, "\tzxcall", sizeof(zx_instance));
   cf = zxid_new_conf_to_cf(0);

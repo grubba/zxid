@@ -208,7 +208,7 @@ static void opt(int* argc, char*** argv, char*** env)
 static void test_mode(int* argc, char*** argv, char*** env)
 {
   int gotall;
-  struct zxid_conf* cf = zxid_new_conf(0);
+  zxid_conf* cf = zxid_new_conf(0);
 
   ++(*argv); --(*argc);
   if (*argc) {  /* Signature verification certificate (logsign-nopw-cert.pem) */
@@ -248,7 +248,7 @@ static void test_mode(int* argc, char*** argv, char*** env)
 }
 
 /* Called by:  main x3 */
-static void zxlog_zsig_verify_print(struct zxid_conf* cf, int len, char* buf, char* se, char* p)
+static void zxlog_zsig_verify_print(zxid_conf* cf, int len, char* buf, char* se, char* p)
 {
   char sha1[20];
   char* sig;
@@ -309,7 +309,7 @@ int main(int argc, char** argv, char** env)
   char ses[16];
   char sha1[20];
   struct aes_key_st aes_key;
-  struct zxid_conf* cf = zxid_new_conf(0);
+  zxid_conf* cf = zxid_new_conf(0);
   opt(&argc, &argv, &env);
   
   while (1) {

@@ -106,9 +106,9 @@ size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp)
  */
 
 /* Called by:  opt x3, zxid_addmd, zxid_get_meta_ss */
-struct zxid_entity* zxid_get_meta(struct zxid_conf* cf, char* url)
+zxid_entity* zxid_get_meta(zxid_conf* cf, char* url)
 {
-  struct zxid_entity* ent;
+  zxid_entity* ent;
 #ifdef USE_CURL
   CURLcode res;
   struct zxid_curl_ctx rc;
@@ -169,7 +169,7 @@ struct zxid_entity* zxid_get_meta(struct zxid_conf* cf, char* url)
 
 /*() Wrapper for zxid_get_meta() so you can provide the URL as ~zx_str~. */
 /* Called by:  zxid_get_ent_ss */
-struct zxid_entity* zxid_get_meta_ss(struct zxid_conf* cf, struct zx_str* url)
+zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url)
 {
   return zxid_get_meta(cf, zx_str_to_c(cf->ctx, url));
 }
@@ -186,18 +186,16 @@ struct zxid_entity* zxid_get_meta_ss(struct zxid_conf* cf, struct zx_str* url)
  * data:: HTTP body for the POST
  * returns:: HTTP body of the response */
 
-struct zx_str* zxid_http_post_raw(struct zxid_conf* cf, int url_len, const char* url, int len, const char* data)
+/* Called by:  zxid_soap_call_raw */
+struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data)
 {
 #ifdef USE_CURL
-  int i;
   struct zx_str* ret;
   CURLcode res;
   struct zxid_curl_ctx rc;
   struct zxid_curl_ctx wc;
   struct curl_slist content_type;
   struct curl_slist SOAPaction;
-  struct curl_slist *slist;
-  struct curl_certinfo* ci;
   char* urli;
   rc.buf = rc.p = ZX_ALLOC(cf->ctx, ZXID_INIT_SOAP_BUF+1);
   rc.lim = rc.buf + ZXID_INIT_SOAP_BUF;
@@ -252,8 +250,11 @@ struct zx_str* zxid_http_post_raw(struct zxid_conf* cf, int url_len, const char*
     ERR("Is the URL(%s) really an https url? Check that certificate of the server is valid and that certification authority is known to the client. CURLcode(%d) CURLerr(%s)", urli, res, CURL_EASY_STRERR(res));
     DD("buf(%.*s)", rc.lim-rc.buf, rc.buf);
 #if 0
+    struct curl_certinfo* ci;
     res = curl_easy_getinfo(cf->curl, CURLINFO_CERTINFO, &ci);  /* CURLINFO_SSL_VERIFYRESULT */
     if (!res && ci) {
+      int i;
+      struct curl_slist *slist;
       D("%d certs", ci->num_of_certs);
       for (i = 0; i < ci->num_of_certs; ++i)
 	for (slist = ci->certinfo[i]; slist; slist = slist->next)
@@ -300,7 +301,7 @@ struct zx_str* zxid_http_post_raw(struct zxid_conf* cf, int url_len, const char*
  */
 
 /* Called by:  zxid_soap_call_envelope, zxid_soap_call_hdr_body */
-struct zx_root_s* zxid_soap_call_raw(struct zxid_conf* cf, struct zx_str* url, struct zx_str* data)
+struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_str* data)
 {
 #ifdef USE_CURL
   struct zx_root_s* r;

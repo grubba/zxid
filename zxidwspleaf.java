@@ -98,6 +98,10 @@ public class zxidwspleaf extends HttpServlet {
 	    got = req.getInputStream().read(b, here, len - here);
 	buf = new String(b, 0, len);
 
+	// Simulate deny
+
+	zxidjni.set_tas3_status(cf, ses, zxidjni.());
+
 	// Check the input for correct ID-WSF compliance
 
 	System.err.print("Validating buf("+buf+")\n");	

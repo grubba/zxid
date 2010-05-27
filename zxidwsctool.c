@@ -62,9 +62,9 @@ Usage: zxidwsctool [options] sesid svc\n\
 /* Called by: */
 int main(int argc, char** argv)
 {
-  struct zxid_ses sess;
-  struct zxid_conf* cf;
-  struct zxid_ses* ses;
+  zxid_ses sess;
+  zxid_conf* cf;
+  zxid_ses* ses;
   //struct zx_root_s* r;
   struct zx_e_Envelope_s* env;
   zxid_epr* epr;

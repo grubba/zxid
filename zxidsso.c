@@ -49,7 +49,7 @@
  * variables. */
 
 /* Called by:  zxid_start_sso_url */
-int zxid_pick_sso_profile(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_entity* idp_meta)
+int zxid_pick_sso_profile(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta)
 {
   /* More sophisticated policy may eventually go here. */
   return ZXID_SAML2_ART;
@@ -133,13 +133,13 @@ char* zxid_saml2_map_authn_ctx(char* c)
  * return:: Redirect URL as zx_str. Caller should eventually free this memory.
  */
 /* Called by:  zxid_start_sso, zxid_start_sso_location */
-struct zx_str* zxid_start_sso_url(struct zxid_conf* cf, struct zxid_cgi* cgi)
+struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_md_SingleSignOnService_s* sso_svc;
   struct zx_sp_AuthnRequest_s* ar;
   struct zx_str* ars;
   int sso_profile_ix;
-  struct zxid_entity* idp_meta;
+  zxid_entity* idp_meta;
   D_INDENT("start_sso: ");
   D("start_sso: cgi=%p cgi->eid=%p eid(%s)", cgi, cgi->eid, cgi->eid?cgi->eid:"-");
   if (!cgi->pr_ix || !cgi->eid || !cgi->eid[0]) {
@@ -198,7 +198,7 @@ struct zx_str* zxid_start_sso_url(struct zxid_conf* cf, struct zxid_cgi* cgi)
 /*() Wrapper for zxid_start_sso_url(), used in CGI scripts. */
 
 /* Called by:  main x2, zxid_simple_no_ses_cf */
-int zxid_start_sso(struct zxid_conf* cf, struct zxid_cgi* cgi)
+int zxid_start_sso(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_str* url = zxid_start_sso_url(cf, cgi);
   if (!url)
@@ -211,7 +211,7 @@ int zxid_start_sso(struct zxid_conf* cf, struct zxid_cgi* cgi)
  * return:: Location header as zx_str. Caller should eventually free this memory. */
 
 /* Called by:  zxid_simple_no_ses_cf */
-struct zx_str* zxid_start_sso_location(struct zxid_conf* cf, struct zxid_cgi* cgi)
+struct zx_str* zxid_start_sso_location(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_str* ss;
   struct zx_str* url = zxid_start_sso_url(cf, cgi);
@@ -230,12 +230,12 @@ struct zx_str* zxid_start_sso_location(struct zxid_conf* cf, struct zxid_cgi* cg
  * zxid_parse_cgi()>> where SAMLart query string argument is parsed. */
 
 /* Called by:  main x2, zxid_simple_no_ses_cf */
-int zxid_sp_deref_art(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses)
+int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   struct zx_md_ArtifactResolutionService_s* ar_svc;
   struct zx_e_Body_s* body;
   struct zx_root_s* r;
-  struct zxid_entity* idp_meta;
+  zxid_entity* idp_meta;
   int len;
   char end_pt_ix[16];
   char* raw_succinct_id;
@@ -320,7 +320,7 @@ int zxid_sp_deref_art(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_se
 
 /*() Map ZXSIG constant to letter for log and string message. */
 
-/* Called by:  zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
+/* Called by:  zxid_chk_sig, zxid_decode_redir_or_post, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */
 void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
 {
   switch (sigres) {
@@ -398,8 +398,8 @@ void zxid_sigres_map(int sigres, char** sigval, char** sigmsg)
  *     string will be a constant and MUST NOT be freed by the caller.
  * return::  0 (ZXSIG_OK) if validation was successful, otherwise a ZXSIG error code. */
 
-/* Called by:  zxid_sp_sso_finalize, zxid_wsp_validate */
-int zxid_validate_cond(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sa_Assertion_s* a7n, struct zx_str* myentid, struct timeval* ourts, char** err)
+/* Called by:  zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
+int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7n, struct zx_str* myentid, struct timeval* ourts, char** err)
 {
   struct timeval tsbuf;
   struct zx_sa_AudienceRestriction_s* audr;
@@ -509,7 +509,7 @@ struct zx_str unknown_str = {{0,0,0,0,0}, 1, "??"};  /* Static string used as du
  * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
 /* Called by:  main, zxid_sp_dig_sso_a7n */
-int zxid_sp_sso_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sa_Assertion_s* a7n)
+int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7n)
 {
   char* err = "S"; /* See: RES in zxid-log.pd, section "ZXID Log Format" */
   struct timeval ourts;
@@ -519,7 +519,7 @@ int zxid_sp_sso_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid
   struct zx_str* subj = &unknown_str;
   struct zx_str* ss;
   struct zxsig_ref refs;
-  struct zxid_entity* idp_meta;
+  zxid_entity* idp_meta;
   /*ses->sigres = ZXSIG_NO_SIG; set earlier, do not overwrite */
   ses->a7n = a7n;
   ses->rs = cgi->rs;
@@ -671,7 +671,7 @@ erro:
  * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
 /* Called by:  zxid_sp_dig_sso_a7n */
-int zxid_sp_anon_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses)
+int zxid_sp_anon_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   D_INDENT("anoan_ssof: ");
   cgi->sigval = "N";
@@ -701,7 +701,7 @@ int zxid_sp_anon_finalize(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
  */
 
 /* Called by:  zxid_as_call */
-int zxid_as_call_ses(struct zxid_conf* cf, struct zxid_entity* idp_meta, struct zxid_cgi* cgi, struct zxid_ses* ses)
+int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_ses* ses)
 {
   int len;
   struct zx_root_s* r;
@@ -814,10 +814,10 @@ int zxid_as_call_ses(struct zxid_conf* cf, struct zxid_entity* idp_meta, struct 
 }
 
 /* Called by:  zxcall_main */
-struct zxid_ses* zxid_as_call(struct zxid_conf* cf, struct zxid_entity* idp_meta, const char* user, const char* pw)
+zxid_ses* zxid_as_call(zxid_conf* cf, zxid_entity* idp_meta, const char* user, const char* pw)
 {
-  struct zxid_ses* ses = zxid_alloc_ses(cf);
-  struct zxid_cgi cgi;
+  zxid_ses* ses = zxid_alloc_ses(cf);
+  zxid_cgi cgi;
   memset(&cgi, 0, sizeof(cgi));
   cgi.uid = user;
   cgi.pw = pw;

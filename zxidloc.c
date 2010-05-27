@@ -32,8 +32,8 @@
  * request. See zxid_idp_loc() for full description. */
 
 /* Called by:  zxid_idp_loc x3, zxid_slo_resp_redir, zxid_sp_dispatch */
-struct zx_str* zxid_idp_loc_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
-				struct zxid_entity* idp_meta, int svc_type, char* binding, int req)
+struct zx_str* zxid_idp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
+				zxid_entity* idp_meta, int svc_type, char* binding, int req)
 {
   struct zx_str* loc;
   struct zx_md_SingleLogoutService_s* slo_svc;
@@ -101,8 +101,8 @@ struct zx_str* zxid_idp_loc_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
  * this function. */
 
 /* Called by:  zxid_idp_soap, zxid_sp_mni_redir, zxid_sp_slo_redir */
-struct zx_str* zxid_idp_loc(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses,
-			    struct zxid_entity* idp_meta, int svc_type, char* binding)
+struct zx_str* zxid_idp_loc(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
+			    zxid_entity* idp_meta, int svc_type, char* binding)
 {
   zxid_get_ses_sso_a7n(cf, ses);
   
@@ -134,8 +134,8 @@ struct zx_str* zxid_idp_loc(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
  * return:: XML data structure for Body element of the SOAP call response. */
 
 /* Called by:  zxid_pep_az_soap, zxid_sp_mni_soap, zxid_sp_slo_soap */
-struct zx_root_s* zxid_idp_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses,
-				struct zxid_entity* idp_meta, int svc_type, struct zx_e_Body_s* body)
+struct zx_root_s* zxid_idp_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
+				zxid_entity* idp_meta, int svc_type, struct zx_e_Body_s* body)
 {
   struct zx_root_s* r;
   struct zx_str* loc = zxid_idp_loc(cf, cgi, ses, idp_meta, svc_type, SAML2_SOAP);
@@ -151,15 +151,15 @@ struct zx_root_s* zxid_idp_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, stru
 /* *** figure out a way to leverage commonality. */
 
 /* Called by:  zxid_idp_sso */
-struct zx_str* zxid_sp_loc_by_index_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
-					struct zxid_entity* sp_meta, int svc_type,
+struct zx_str* zxid_sp_loc_by_index_raw(zxid_conf* cf, zxid_cgi* cgi,
+					zxid_entity* sp_meta, int svc_type,
 					struct zx_str* ix, int* binding)
 {
   struct zx_str* loc;
   struct zx_md_AssertionConsumerService_s* acs_svc;
   
   if (!sp_meta || !sp_meta->eid || !sp_meta->ed->SPSSODescriptor) {
-    ERR("Entity(%s) does not have SP SSO Descriptor (metadata problem)", sp_meta?STRNULLCHKQ(sp_meta->eid):'-');
+    ERR("Entity(%s) does not have SP SSO Descriptor (metadata problem)", sp_meta?STRNULLCHKQ(sp_meta->eid):"-");
     return 0;
   }
 
@@ -193,8 +193,8 @@ struct zx_str* zxid_sp_loc_by_index_raw(struct zxid_conf* cf, struct zxid_cgi* c
  * return:: URL for the protocol end point, or 0 on failure */
 
 /* Called by:  zxid_idp_dispatch, zxid_idp_sso x2, zxid_slo_resp_redir, zxid_sp_loc x3 */
-struct zx_str* zxid_sp_loc_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
-				struct zxid_entity* sp_meta, int svc_type, char* binding, int req)
+struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
+				zxid_entity* sp_meta, int svc_type, char* binding, int req)
 {
   struct zx_str* loc;
   struct zx_md_SingleLogoutService_s* slo_svc;
@@ -202,7 +202,7 @@ struct zx_str* zxid_sp_loc_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
   struct zx_md_AssertionConsumerService_s* acs_svc;
   
   if (!sp_meta || !sp_meta->eid || !sp_meta->ed->SPSSODescriptor) {
-    ERR("Entity(%s) does not have SP SSO Descriptor (metadata problem)", sp_meta?STRNULLCHKQ(sp_meta->eid):'-');
+    ERR("Entity(%s) does not have SP SSO Descriptor (metadata problem)", sp_meta?STRNULLCHKQ(sp_meta->eid):"-");
     return 0;
   }
   
@@ -277,8 +277,8 @@ struct zx_str* zxid_sp_loc_raw(struct zxid_conf* cf, struct zxid_cgi* cgi,
  * this function. */
 
 /* Called by:  zxid_sp_soap */
-struct zx_str* zxid_sp_loc(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses,
-			    struct zxid_entity* sp_meta, int svc_type, char* binding)
+struct zx_str* zxid_sp_loc(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
+			    zxid_entity* sp_meta, int svc_type, char* binding)
 {
   zxid_get_ses_sso_a7n(cf, ses);
   
@@ -310,8 +310,8 @@ struct zx_str* zxid_sp_loc(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx
  * return:: XML data structure for Body element of the SOAP call response. */
 
 /* Called by: */
-struct zx_root_s* zxid_sp_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses,
-				struct zxid_entity* sp_meta, int svc_type, struct zx_e_Body_s* body)
+struct zx_root_s* zxid_sp_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses,
+			       zxid_entity* sp_meta, int svc_type, struct zx_e_Body_s* body)
 {
   struct zx_root_s* r;
   struct zx_str* loc = zxid_sp_loc(cf, cgi, ses, sp_meta, svc_type, SAML2_SOAP);

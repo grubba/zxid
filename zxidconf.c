@@ -50,7 +50,7 @@
  *     buffer will be modified in place by this function. */
 
 /* Called by:  zxid_init_conf */
-void zxid_sha1_file(struct zxid_conf* cf, char* name, char* sha1)
+void zxid_sha1_file(zxid_conf* cf, char* name, char* sha1)
 {
   int gotall;
   char buf[4096];
@@ -126,7 +126,7 @@ RSA* zxid_extract_private_key(char* buf, char* name)
 /*() Extract a certificate from PEM encoded file. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxid_sp_sso_desc x2, zxlog_write_line */
-X509* zxid_read_cert(struct zxid_conf* cf, char* name)
+X509* zxid_read_cert(zxid_conf* cf, char* name)
 {
   char buf[4096];
   int got = read_all(sizeof(buf), buf, "read_cert", "%s" ZXID_PEM_DIR "%s", cf->path, name);
@@ -138,7 +138,7 @@ X509* zxid_read_cert(struct zxid_conf* cf, char* name)
 /*() Extract a private key from PEM encoded file. */
 
 /* Called by:  test_ibm_cert_problem x2, test_ibm_cert_problem_enc_dec x2, zxenc_privkey_dec, zxid_init_conf x3, zxid_lazy_load_sign_cert_and_pkey, zxlog_write_line x2 */
-RSA* zxid_read_private_key(struct zxid_conf* cf, char* name)
+RSA* zxid_read_private_key(zxid_conf* cf, char* name)
 {
   char buf[4096];
   int got = read_all(sizeof(buf), buf, "read_private_key", "%s" ZXID_PEM_DIR "%s", cf->path, name);
@@ -152,8 +152,8 @@ RSA* zxid_read_private_key(struct zxid_conf* cf, char* name)
  * generated on disk and the read. Once read from disk, they will be cached in
  * memory. */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_pep_az_soap x3, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_wsf_sign */
-int zxid_lazy_load_sign_cert_and_pkey(struct zxid_conf* cf, X509** cert, RSA** pkey, const char* logkey)
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_pep_az_soap x3, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x6, zxid_wsf_sign */
+int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, RSA** pkey, const char* logkey)
 {
   LOCK(cf->mx, logkey);
   if (cert) {
@@ -175,8 +175,8 @@ int zxid_lazy_load_sign_cert_and_pkey(struct zxid_conf* cf, X509** cert, RSA** p
  * way the unsupported activity will happen in one controlled place where
  * it can be ignored, if need to be. You have been warned. */
 
-/* Called by:  zxid_an_page_cf, zxid_fed_mgmt_cf, zxid_idp_list_cf_cgi, zxid_simple_cf_ses */
-int zxid_set_opt(struct zxid_conf* cf, int which, int val)
+/* Called by:  zxid_fed_mgmt_cf, zxid_idp_list_cf_cgi, zxid_simple_cf_ses */
+int zxid_set_opt(zxid_conf* cf, int which, int val)
 {
   switch (which) {
   case 1: zx_debug = val; return val;
@@ -191,7 +191,7 @@ int zxid_set_opt(struct zxid_conf* cf, int which, int val)
  * it can be ignored, if need to be. You have been warned. */
 
 /* Called by: */
-char* zxid_set_opt_cstr(struct zxid_conf* cf, int which, char* val)
+char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val)
 {
   switch (which) {
   case 2: strncpy(zx_instance, val, sizeof(zx_instance)); return zx_instance;
@@ -206,7 +206,7 @@ char* zxid_set_opt_cstr(struct zxid_conf* cf, int which, char* val)
  * special cases encountered in scripting language bindings. */
 
 /* Called by:  main x2, zxidwspcgi_main */
-void zxid_url_set(struct zxid_conf* cf, char* url)
+void zxid_url_set(zxid_conf* cf, char* url)
 {
   if (!cf || !url) {
     ERR("NULL pointer as cf or url argument cf=%p url=%p", cf, url);
@@ -237,7 +237,7 @@ int zxid_ent_cache_mx_init = 0;
  */
 
 /* Called by:  zxid_conf_to_cf_len, zxid_init_conf_ctx */
-int zxid_init_conf(struct zxid_conf* cf, char* zxid_path)
+int zxid_init_conf(zxid_conf* cf, char* zxid_path)
 {
   DD("Initconf with path(%s)", zxid_path);
   cf->magic = ZXID_CONF_MAGIC;
@@ -440,7 +440,7 @@ struct zx_ctx* zx_init_ctx()
  * that memory allocation against the context should work. */
 
 /* Called by:  zxcot_main, zxid_conf_to_cf_len, zxid_new_conf */
-struct zxid_conf* zxid_init_conf_ctx(struct zxid_conf* cf, char* zxid_path)
+zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, char* zxid_path)
 {
 #if 0
   fprintf(stderr, "Waiting 60 secs for gdb attach...\n");
@@ -467,12 +467,12 @@ struct zxid_conf* zxid_init_conf_ctx(struct zxid_conf* cf, char* zxid_path)
  * See: zxid_new_conf_to_cf() for a more complete solution. */
 
 /* Called by:  main x6, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode */
-struct zxid_conf* zxid_new_conf(const char* zxid_path)
+zxid_conf* zxid_new_conf(const char* zxid_path)
 {
   /* *** unholy malloc()s: should use our own allocator! */
-  struct zxid_conf* cf = malloc(sizeof(struct zxid_conf));
+  zxid_conf* cf = malloc(sizeof(zxid_conf));
   if (!cf) {
-    ERR("out-of-memory %d", sizeof(struct zxid_conf));
+    ERR("out-of-memory %d", sizeof(zxid_conf));
     exit(1);
   }
   return zxid_init_conf_ctx(cf, zxid_path);
@@ -485,7 +485,7 @@ struct zxid_conf* zxid_new_conf(const char* zxid_path)
 /*() Create new (common pool) attribute and add it to a linked list */
 
 /* Called by:  zxid_add_at_values x3, zxid_add_attr_to_ses x2, zxid_add_qs_to_ses, zxid_load_atsrc, zxid_load_need */
-struct zxid_attr* zxid_new_at(struct zxid_conf* cf, struct zxid_attr* at, int name_len, char* name, int val_len, char* val, char* lk)
+struct zxid_attr* zxid_new_at(zxid_conf* cf, struct zxid_attr* at, int name_len, char* name, int val_len, char* val, char* lk)
 {
   struct zxid_attr* aa = ZX_ZALLOC(cf->ctx, struct zxid_attr);
   aa->n = at;
@@ -502,7 +502,7 @@ struct zxid_attr* zxid_new_at(struct zxid_conf* cf, struct zxid_attr* at, int na
  */
 
 /* Called by:  zxid_init_conf x3, zxid_parse_conf_raw x3 */
-struct zxid_map* zxid_load_map(struct zxid_conf* cf, struct zxid_map* map, char* v)
+struct zxid_map* zxid_load_map(zxid_conf* cf, struct zxid_map* map, char* v)
 {
   char* ns;
   char* A;
@@ -594,7 +594,7 @@ struct zxid_map* zxid_load_map(struct zxid_conf* cf, struct zxid_map* map, char*
  */
 
 /* Called by:  zxid_init_conf x2, zxid_parse_conf_raw x2 */
-struct zxid_need* zxid_load_need(struct zxid_conf* cf, struct zxid_need* need, char* v)
+struct zxid_need* zxid_load_need(zxid_conf* cf, struct zxid_need* need, char* v)
 {
   char* attrs;
   char* usage;
@@ -680,7 +680,7 @@ struct zxid_need* zxid_load_need(struct zxid_conf* cf, struct zxid_need* need, c
  */
 
 /* Called by:  zxid_init_conf x4, zxid_parse_conf_raw x4 */
-struct zxid_cstr_list* zxid_load_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* l, char* p)
+struct zxid_cstr_list* zxid_load_cstr_list(zxid_conf* cf, struct zxid_cstr_list* l, char* p)
 {
   char* q;
   struct zxid_cstr_list* cs;
@@ -703,7 +703,7 @@ struct zxid_cstr_list* zxid_load_cstr_list(struct zxid_conf* cf, struct zxid_cst
  */
 
 /* Called by:  zxid_init_conf, zxid_parse_conf_raw */
-struct zxid_atsrc* zxid_load_atsrc(struct zxid_conf* cf, struct zxid_atsrc* atsrc, char* v)
+struct zxid_atsrc* zxid_load_atsrc(zxid_conf* cf, struct zxid_atsrc* atsrc, char* v)
 {
   char* ns;
   char* attrs;
@@ -891,7 +891,7 @@ struct zxid_attr* zxid_find_at(struct zxid_attr* pool, char* name)
  * return:: -1 on failure, 0 on success */
 
 /* Called by:  zxid_conf_to_cf_len x2, zxid_parse_conf, zxid_parse_conf_raw */
-int zxid_parse_conf_raw(struct zxid_conf* cf, int qs_len, char* qs)
+int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
 {
   int i, len;
   char *p, *n, *v, *val, *name, *buf;
@@ -1125,7 +1125,7 @@ scan_end:
 /*() Wrapper with initial error checking for zxid_parse_conf_raw(), which see. */
 
 /* Called by:  opt x7, set_zxid_conf */
-int zxid_parse_conf(struct zxid_conf* cf, char* qs)
+int zxid_parse_conf(zxid_conf* cf, char* qs)
 {
   if (!cf || !qs)
     return -1;
@@ -1137,7 +1137,7 @@ int zxid_parse_conf(struct zxid_conf* cf, char* qs)
 /*() Pretty print need or want chain. */
 
 /* Called by:  zxid_show_conf x2 */
-static struct zx_str* zxid_show_need(struct zxid_conf* cf, struct zxid_need* np)
+static struct zx_str* zxid_show_need(zxid_conf* cf, struct zxid_need* np)
 {
   struct zxid_attr* ap;
   struct zx_str* ss;
@@ -1164,7 +1164,7 @@ static struct zx_str* zxid_show_need(struct zxid_conf* cf, struct zxid_need* np)
 /*() Pretty print map chain. */
 
 /* Called by:  zxid_show_conf x3 */
-static struct zx_str* zxid_show_map(struct zxid_conf* cf, struct zxid_map* mp)
+static struct zx_str* zxid_show_map(zxid_conf* cf, struct zxid_map* mp)
 {
   struct zx_str* inmap = zx_dup_str(cf->ctx, "");
   for (; mp; mp = mp->n) {
@@ -1181,7 +1181,7 @@ static struct zx_str* zxid_show_map(struct zxid_conf* cf, struct zxid_map* mp)
 /*() Pretty print cstr list as used in local PDP. */
 
 /* Called by:  zxid_show_conf x4 */
-static struct zx_str* zxid_show_cstr_list(struct zxid_conf* cf, struct zxid_cstr_list* cp)
+static struct zx_str* zxid_show_cstr_list(zxid_conf* cf, struct zxid_cstr_list* cp)
 {
   struct zx_str* ss = zx_dup_str(cf->ctx, "");
   for (; cp; cp = cp->n) {
@@ -1197,7 +1197,7 @@ static struct zx_str* zxid_show_cstr_list(struct zxid_conf* cf, struct zxid_cstr
 /*() Generate our SP CARML and return it as a string. */
 
 /* Called by:  opt, zxid_simple_show_conf */
-struct zx_str* zxid_show_conf(struct zxid_conf* cf)
+struct zx_str* zxid_show_conf(zxid_conf* cf)
 {
   char* p;
   struct zxid_attr* ap;

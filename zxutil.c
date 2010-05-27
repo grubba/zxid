@@ -167,7 +167,7 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
  * buf:: Result parameter. This buffer will be populated with data from the file.
  * return:: actual total length. The buffer will always be nul terminated. */
 
-/* Called by:  list_user x5, list_users x2, main x4, opt x10, test_mode x2, zxid_check_fed, zxid_conf_to_cf_len, zxid_di_query x2, zxid_find_epr x2, zxid_gen_boots, zxid_get_ses, zxid_get_ses_sso_a7n, zxid_get_user_nameid, zxid_lscot_line, zxid_mk_user_a7n_to_sp x4, zxid_parse_conf_raw, zxid_pw_authn x3, zxid_read_cert, zxid_read_private_key, zxid_sha1_file, zxlog_write_line */
+/* Called by:  list_user x5, list_users x2, main x4, opt x10, test_mode x2, zxid_check_fed, zxid_conf_to_cf_len, zxid_di_query x2, zxid_find_epr x2, zxid_gen_boots, zxid_get_ses, zxid_get_ses_sso_a7n, zxid_get_user_nameid, zxid_lscot_line, zxid_mk_user_a7n_to_sp x4, zxid_parse_conf_raw, zxid_pw_authn x3, zxid_read_cert, zxid_read_private_key, zxid_ses_to_pool x3, zxid_sha1_file, zxid_template_page_cf, zxlog_write_line */
 int read_all(int maxlen, char* buf, const char* logkey, const char* name_fmt, ...)
 {
   va_list ap;
@@ -331,7 +331,7 @@ badopen:
  * from close is important because in NFS environments you may not know
  * that your write has failed until you actually attempt to close the file. */
 
-/* Called by:  main x2, read_all x2, write2_or_append_lock_c_path x6, write_all_path_fmt x2, zxid_addmd, zxid_cache_epr, zxid_get_ent_from_file x3, zxid_reg_svc x2, zxid_write_ent_to_cache */
+/* Called by:  copy_file, main x2, read_all x2, write2_or_append_lock_c_path x6, write_all_path_fmt x2, zxid_addmd, zxid_cache_epr, zxid_get_ent_from_file x3, zxid_reg_svc x2, zxid_write_ent_to_cache */
 int close_file(fdtype fd, const char* logkey)
 {
   int res = closefile(fd);
@@ -347,6 +347,7 @@ int close_file(fdtype fd, const char* logkey)
  * actually copying file is more portable. Even in Unix hardlinking
  * can be troublesome if the from and to are on different file systems. */
 
+/* Called by:  zxid_copy_user_eprs_to_ses */
 int copy_file(const char* from, const char* to, const char* logkey, int may_link)
 {
   fdtype fd_from;
@@ -599,7 +600,7 @@ unsigned char zx_std_index_64[256] = {
  * Returns pointer one past last output char written. Does not nul terminate.
  * Never fails. See also SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(). */
 
-/* Called by:  decode, main x5, zxenc_privkey_dec, zxenc_symkey_dec, zxid_cdc_check, zxid_decode_redir_or_post x2, zxid_extract_cert, zxid_extract_private_key, zxid_idp_as_do, zxid_map_val x3, zxid_process_keys, zxid_simple_idp_pw_authn, zxid_sp_deref_art, zxsig_validate x2 */
+/* Called by:  decode, main x5, zxenc_privkey_dec, zxenc_symkey_dec, zxid_cdc_check, zxid_decode_redir_or_post x2, zxid_decode_ssoreq, zxid_extract_cert, zxid_extract_private_key, zxid_idp_as_do, zxid_map_val x3, zxid_process_keys, zxid_sp_deref_art, zxsig_validate x2 */
 char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char* index_64)
 {
   int i;
@@ -653,7 +654,7 @@ char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char*
  * data:: Data to be digested
  * return:: Pointer one past last character written */
 
-/* Called by:  zxcot_main, zxid_decode_redir_or_post x2, zxid_get_ent_from_cache, zxid_get_user_nameid x2, zxid_nice_sha1, zxid_parse_meta, zxid_put_user x2, zxid_reg_svc, zxid_user_change_nameid x2, zxlog_path x2, zxlog_write_line */
+/* Called by:  zxcot_main, zxid_decode_redir_or_post x2, zxid_get_ent_from_cache, zxid_mk_ent, zxid_nice_sha1, zxid_reg_svc, zxid_user_sha1_name x2, zxlog_path x2, zxlog_write_line */
 char* sha1_safe_base64(char* out_buf, int len, const char* data)
 {
   char sha1[20];
@@ -724,7 +725,7 @@ char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in, int* out
  * should allow safe nul termination (but the decompressed data itself
  * may contain any number of nuls). Caveat: RFC1951 is not same a gzip. */
 
-/* Called by:  decode x2, zxid_decode_redir_or_post, zxid_map_val, zxid_simple_idp_pw_authn, zxlog_zsig_verify_print */
+/* Called by:  decode x2, zxid_decode_redir_or_post, zxid_decode_ssoreq, zxid_map_val, zxlog_zsig_verify_print */
 char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out_len)
 {
   int ret, dlen, iter = 30;

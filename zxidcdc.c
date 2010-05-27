@@ -29,7 +29,7 @@
  * The SAML CDC is a standards based method for SSO IdP discovery. */
 
 /* Called by:  main x2, zxid_simple_no_ses_cf */
-int zxid_cdc_read(struct zxid_conf* cf, struct zxid_cgi* cgi)
+int zxid_cdc_read(zxid_conf* cf, zxid_cgi* cgi)
 {
   char* p;
   char* cdc = 0;
@@ -72,10 +72,10 @@ int zxid_cdc_read(struct zxid_conf* cf, struct zxid_cgi* cgi)
  * The SAML CDC is a standards based method for SSO IdP discovery. */
 
 /* Called by:  main x2, zxid_simple_no_ses_cf */
-int zxid_cdc_check(struct zxid_conf* cf, struct zxid_cgi* cgi)
+int zxid_cdc_check(zxid_conf* cf, zxid_cgi* cgi)
 {
   int len;
-  struct zxid_entity* ent;
+  zxid_entity* ent;
   char* p;
   char* q;
   char eid[ZXID_MAX_EID];

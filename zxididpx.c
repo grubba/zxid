@@ -27,10 +27,10 @@
  * return:: a string (such as Location: header) and let the caller output it. */
 
 /* Called by:  zxid_simple_ses_active_cf */
-struct zx_str* zxid_idp_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int chk_dup)
+struct zx_str* zxid_idp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int chk_dup)
 {
   struct zx_sp_LogoutRequest_s* req;
-  struct zxid_entity* sp_meta;
+  zxid_entity* sp_meta;
   struct zx_str* loc;
   struct zx_str* ss;
   struct zx_str* ss2;
@@ -99,7 +99,7 @@ struct zx_str* zxid_idp_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, str
  * *** NOT CALLED FROM ANYWHERE. See zxid_sp_soap_dispatch() for real action */
 
 /* Called by: */
-int zxid_idp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_root_s* r)
+int zxid_idp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_root_s* r)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -161,7 +161,7 @@ int zxid_idp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx
 /*() Return 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
 /* Called by: */
-int zxid_idp_soap_parse(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int len, char* buf)
+int zxid_idp_soap_parse(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int len, char* buf)
 {
   struct zx_root_s* r;
   LOCK(cf->ctx->mx, "idp soap parse");

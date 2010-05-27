@@ -51,10 +51,10 @@ Usage: zxidhrxmlwsp [options]   (when used as CGI, no options can be supplied)\n
 int main(int argc, char** argv)
 {
   struct zx_ctx ctx;
-  struct zxid_conf cfs;
-  struct zxid_conf* cf;
-  struct zxid_ses sess;
-  struct zxid_ses* ses = &sess;
+  zxid_conf cfs;
+  zxid_conf* cf;
+  zxid_ses sess;
+  zxid_ses* ses = &sess;
   struct zx_root_s* r;
   //struct zx_e_Envelope_s* env;
   //zxid_epr* epr;
@@ -68,7 +68,7 @@ int main(int argc, char** argv)
   int got, fd, cl=0;
   char* qs;
   char* qs2;
-  memset(ses, 0, sizeof(struct zxid_ses));
+  memset(ses, 0, sizeof(zxid_ses));
   
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
@@ -103,7 +103,7 @@ int main(int argc, char** argv)
 
 #if 1
   zx_reset_ctx(&ctx);
-  memset(&cfs, 0, sizeof(struct zxid_conf));
+  memset(&cfs, 0, sizeof(zxid_conf));
   cfs.ctx = &ctx;
   cf = &cfs;
   zxid_conf_to_cf_len(cf, -1, CONF);

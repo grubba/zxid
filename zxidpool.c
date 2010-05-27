@@ -32,7 +32,7 @@
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by: */
-static struct zx_str* zxid_pool_to_ldif(struct zxid_conf* cf, struct zxid_attr* pool)
+static struct zx_str* zxid_pool_to_ldif(zxid_conf* cf, struct zxid_attr* pool)
 {
   char* p;
   char* name;
@@ -179,7 +179,7 @@ static struct zx_str* zxid_pool_to_ldif(struct zxid_conf* cf, struct zxid_attr* 
  * *** Need to check escaping JSON values, e.g. " or \n */
 
 /* Called by:  zxid_ses_to_json */
-static struct zx_str* zxid_pool_to_json(struct zxid_conf* cf, struct zxid_attr* pool)
+static struct zx_str* zxid_pool_to_json(zxid_conf* cf, struct zxid_attr* pool)
 {
   char* p;
   char* name;
@@ -316,7 +316,7 @@ static struct zx_str* zxid_pool_to_json(struct zxid_conf* cf, struct zxid_attr* 
  *     other returns, like redirect. Perhaps arrange dn field always first? */
 
 /* Called by:  zxid_ses_to_qs */
-static struct zx_str* zxid_pool_to_qs(struct zxid_conf* cf, struct zxid_attr* pool)
+static struct zx_str* zxid_pool_to_qs(zxid_conf* cf, struct zxid_attr* pool)
 {
   char* p;
   char* name;
@@ -419,28 +419,28 @@ static struct zx_str* zxid_pool_to_qs(struct zxid_conf* cf, struct zxid_attr* po
 /*() Convert attributes from session to LDIF, applying OUTMAP. */
 
 /* Called by: */
-struct zx_str* zxid_ses_to_ldif(struct zxid_conf* cf, struct zxid_ses* ses) {
+struct zx_str* zxid_ses_to_ldif(zxid_conf* cf, zxid_ses* ses) {
   return zxid_pool_to_ldif(cf, ses?ses->at:0);
 }
 
 /*() Convert attributes from session to JSON, applying OUTMAP. */
 
 /* Called by:  zxid_simple_ab_pep */
-struct zx_str* zxid_ses_to_json(struct zxid_conf* cf, struct zxid_ses* ses) {
+struct zx_str* zxid_ses_to_json(zxid_conf* cf, zxid_ses* ses) {
   return zxid_pool_to_json(cf, ses?ses->at:0);
 }
 
 /*() Convert attributes from session to query string, applying OUTMAP. */
 
 /* Called by:  zxid_simple_ab_pep */
-struct zx_str* zxid_ses_to_qs(struct zxid_conf* cf, struct zxid_ses* ses) {
+struct zx_str* zxid_ses_to_qs(zxid_conf* cf, zxid_ses* ses) {
   return zxid_pool_to_qs(cf, ses?ses->at:0);
 }
 
 /*() Add values, applying NEED, WANT, and INMAP */
 
 /* Called by:  zxid_add_a7n_at_to_pool x2 */
-static int zxid_add_at_values(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_sa_Attribute_s* at, char* name, struct zx_str* issuer)
+static int zxid_add_at_values(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribute_s* at, char* name, struct zx_str* issuer)
 {
   struct zx_str* ss;
   struct zxid_map* map;
@@ -489,7 +489,7 @@ static int zxid_add_at_values(struct zxid_conf* cf, struct zxid_ses* ses, struct
 /*() Add Attribute Statements of an Assertion to pool, applying NEED, WANT, and INMAP */
 
 /* Called by:  zxid_ses_to_pool */
-static void zxid_add_a7n_at_to_pool(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_sa_Assertion_s* a7n)
+static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
 {
   struct zx_sa_Attribute_s* at;
   struct zx_sa_AttributeStatement_s* as;
@@ -508,8 +508,8 @@ static void zxid_add_a7n_at_to_pool(struct zxid_conf* cf, struct zxid_ses* ses, 
 
 /*() Add simple attribute to pool, applying NEED, WANT, and INMAP */
 
-/* Called by:  zxid_add_qs_to_ses, zxid_ses_to_pool x14 */
-void zxid_add_attr_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* at_name, struct zx_str* val)
+/* Called by:  zxid_add_ldif_attrs_to_ses, zxid_add_qs_to_ses, zxid_ses_to_pool x23 */
+void zxid_add_attr_to_ses(zxid_conf* cf, zxid_ses* ses, char* at_name, struct zx_str* val)
 {
   struct zxid_map* map;
   if (!val)
@@ -534,8 +534,8 @@ void zxid_add_attr_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* at_n
 /*() Parse LDIF format and insert attributes to linked list. Return new head of the list.
  * *** illegal input causes corrupt pointer. For example query string input causes corruption. */
 
-/* Called by:  zxid_mk_user_a7n_to_sp x4 */
-static void zxid_add_ldif_attrs_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, const char* prefix, char* p, char* lk)
+/* Called by:  zxid_ses_to_pool x3 */
+static void zxid_add_ldif_attrs_to_ses(zxid_conf* cf, zxid_ses* ses, const char* prefix, char* p, char* lk)
 {
   char* name;
   char* val;
@@ -581,7 +581,8 @@ static void zxid_add_ldif_attrs_to_ses(struct zxid_conf* cf, struct zxid_ses* se
  * path:: Path to the user directory (in /var/zxid/user/<sha1_safe_base64(idpnid)>/)
  */
 
-static void zxid_copy_user_eprs_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, struct zx_str* path)
+/* Called by:  zxid_ses_to_pool x3 */
+static void zxid_copy_user_eprs_to_ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* path)
 {
   char bs_dir[ZXID_MAX_BUF];
   char ses_path[ZXID_MAX_BUF];
@@ -613,8 +614,8 @@ static void zxid_copy_user_eprs_to_ses(struct zxid_conf* cf, struct zxid_ses* se
  * rendering to LDIF (or JSON). This function also implements
  * local attribute authority. */
 
-/* Called by:  zxid_as_call_ses, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsp_validate */
-void zxid_ses_to_pool(struct zxid_conf* cf, struct zxid_ses* ses)
+/* Called by:  zxid_as_call_ses, zxid_fetch_ses, zxid_simple_ab_pep, zxid_wsf_validate_a7n */
+void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
 {
   char* src;
   char* dst;
@@ -716,7 +717,7 @@ void zxid_ses_to_pool(struct zxid_conf* cf, struct zxid_ses* ses)
  * Returns 1 on success, 0 on failure (return value often not checked). */
 
 /* Called by:  zxid_az_cf_ses */
-int zxid_add_qs_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* qs, int apply_map)
+int zxid_add_qs_to_ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
 {
   char *p, *n, *v, *val, *name;
   if (!qs || !ses)
@@ -766,7 +767,7 @@ int zxid_add_qs_to_ses(struct zxid_conf* cf, struct zxid_ses* ses, char* qs, int
  * are reserved. */
 
 /* Called by: */
-struct zx_str* zxid_get_at(struct zxid_conf* cf, struct zxid_ses* ses, char* atname, int ix, int apply_map)
+struct zx_str* zxid_get_at(zxid_conf* cf, zxid_ses* ses, char* atname, int ix, int apply_map)
 {
   struct zxid_attr* at;
   struct zxid_attr* av;

@@ -27,9 +27,9 @@
 /*() Server side  Discovery Service Query processing. See also zxid_gen_bootstraps() */
 
 /* Called by:  zxid_sp_soap_dispatch */
-struct zx_di_QueryResponse_s* zxid_di_query(struct zxid_conf* cf, struct zx_sa_Assertion_s* a7n, struct zx_di_Query_s* req)
+struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req)
 {
-  struct zx_sa_NameID_s* nameid;
+  zxid_nid* nameid;
   struct zx_di_RequestedService_s* rs;
   struct zx_di_QueryResponse_s* resp = zx_NEW_di_QueryResponse(cf->ctx);
   struct zx_root_s* r;

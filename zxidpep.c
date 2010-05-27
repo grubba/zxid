@@ -45,8 +45,8 @@
  * For simpler API, see zxid_az() family of functions.
  */
 
-/* Called by:  zxid_az_cf_ses, zxid_call x2, zxid_simple_ab_pep, zxid_simple_ses_active_cf */
-char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, const char* pdp_url)
+/* Called by:  zxid_az_cf_ses, zxid_call x2, zxid_simple_ab_pep, zxid_simple_ses_active_cf, zxid_wsc_prepare_call, zxid_wsc_valid_resp */
+char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -278,7 +278,7 @@ char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
   return 0;
 }
 
-/*int zxid_az_cf_cgi_ses(struct zxid_conf* cf,  struct zxid_cgi* cgi, struct zxid_ses* ses);*/
+/*int zxid_az_cf_cgi_ses(zxid_conf* cf,  zxid_cgi* cgi, zxid_ses* ses);*/
 
 /*(i) Call Policy Decision Point (PDP) to obtain an authorization decision
  * about a contemplated action on a resource. The attributes from the session
@@ -298,12 +298,12 @@ char* zxid_pep_az_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_s
  */
 
 /* Called by:  zxcall_main, zxid_az_cf */
-char* zxid_az_cf_ses(struct zxid_conf* cf, const char* qs, struct zxid_ses* ses)
+char* zxid_az_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
 {
   char* ret;
-  struct zxid_cgi cgi;
+  zxid_cgi cgi;
   D_INDENT("az: ");
-  memset(&cgi, 0 , sizeof(struct zxid_cgi));
+  memset(&cgi, 0 , sizeof(cgi));
   zxid_parse_cgi(&cgi, "");
   DD("qs(%s) ses=%p", STRNULLCHKD(qs), ses);
   if (qs && ses)
@@ -331,10 +331,10 @@ char* zxid_az_cf_ses(struct zxid_conf* cf, const char* qs, struct zxid_ses* ses)
  */
 
 /* Called by:  zxid_az */
-char* zxid_az_cf(struct zxid_conf* cf, const char* qs, const char* sid)
+char* zxid_az_cf(zxid_conf* cf, const char* qs, const char* sid)
 {
-  struct zxid_ses ses;
-  memset(&ses, 0 , sizeof(struct zxid_ses));
+  zxid_ses ses;
+  memset(&ses, 0 , sizeof(zxid_ses));
   if (sid && sid[0])
     zxid_get_ses(cf, &ses, sid);
   return zxid_az_cf_ses(cf, qs, &ses);
@@ -347,9 +347,9 @@ char* zxid_az_cf(struct zxid_conf* cf, const char* qs, const char* sid)
 char* zxid_az(const char* conf, const char* qs, const char* sid)
 {
   struct zx_ctx ctx;
-  struct zxid_conf cf;
+  zxid_conf cf;
   zx_reset_ctx(&ctx);
-  memset(&cf, 0, sizeof(struct zxid_conf));
+  memset(&cf, 0, sizeof(zxid_conf));
   cf.ctx = &ctx;
   zxid_conf_to_cf_len(&cf, -1, conf);
   return zxid_az_cf(&cf, qs, sid);

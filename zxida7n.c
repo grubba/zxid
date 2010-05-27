@@ -46,7 +46,7 @@
  * return:: Data structure representing the matching attribute.
  */
 
-struct zx_sa_Attribute_s* zxid_find_attribute(struct zx_sa_Assertion_s* a7n, int nfmt_len, char* nfmt, int name_len, char* name, int friendly_len, char* friendly, int n)
+struct zx_sa_Attribute_s* zxid_find_attribute(zxid_a7n* a7n, int nfmt_len, char* nfmt, int name_len, char* name, int friendly_len, char* friendly, int n)
 {
   struct zx_sa_Attribute_s* at;
   struct zx_sa_AttributeStatement_s* as;

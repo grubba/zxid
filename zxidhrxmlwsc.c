@@ -108,11 +108,11 @@ int hrxml_parse_cgi(struct hrxml_cgi* cgi, char* qs)
 int main(int argc, char** argv)
 {
   struct zx_ctx ctx;
-  struct zxid_conf cfs;
+  zxid_conf cfs;
   struct hrxml_cgi cgi;
-  struct zxid_conf* cf;
-  struct zxid_ses sess;
-  struct zxid_ses* ses;
+  zxid_conf* cf;
+  zxid_ses sess;
+  zxid_ses* ses;
   struct zx_root_s* r;
   struct zx_e_Envelope_s* env;
   zxid_epr* epr;
@@ -159,7 +159,7 @@ int main(int argc, char** argv)
 
 #if 1
   zx_reset_ctx(&ctx);
-  memset(&cfs, 0, sizeof(struct zxid_conf));
+  memset(&cfs, 0, sizeof(zxid_conf));
   cfs.ctx = &ctx;
   cf = &cfs;
   zxid_conf_to_cf_len(cf, -1, CONF);

@@ -28,7 +28,7 @@
  * function. This also makes some elementary checks as to whether the
  * EPR is even capable of supporting the sec mech. */
 
-/* Called by:  zxid_wsc_call, zxid_wsf_decor */
+/* Called by:  zxid_wsc_prep_secmech */
 int zxid_map_sec_mech(zxid_epr* epr)
 {
   int len;
@@ -105,7 +105,7 @@ int zxid_map_sec_mech(zxid_epr* epr)
 /*() For purposes of signing, add references and canon forms of all known SOAP headers */
 
 /* Called by:  zxid_wsf_sign, zxid_wsp_validate */
-int zxid_add_header_refs(struct zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_e_Header_s* hdr)
+int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_e_Header_s* hdr)
 {
   /* Addressing and Security Headers */
 
@@ -351,8 +351,8 @@ int zxid_add_header_refs(struct zxid_conf* cf, int n_refs, struct zxsig_ref* ref
   return n_refs;
 }
 
-/* Called by:  zxid_wsc_call x3, zxid_wsf_decor */
-void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy)
+/* Called by:  zxid_wsc_prep_secmech x3, zxid_wsf_decor */
+void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -388,7 +388,8 @@ void zxid_wsf_sign(struct zxid_conf* cf, int sign_flags, struct zx_wsse_Security
   }
 }
 
-static int zxid_wsc_prep(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
+/* Called by:  zxid_wsc_call */
+static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   struct zx_e_Header_s* hdr;
   if (!zxid_wsf_decor(cf, ses, env, 0))
@@ -423,7 +424,8 @@ static int zxid_wsc_prep(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* e
   return 1;
 }
 
-static int zxid_wsc_prep_secmech(struct zxid_conf* cf, zxid_epr* epr, struct zx_e_Envelope_s* env)
+/* Called by:  zxid_wsc_call */
+static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   int secmech;
   struct zx_wsse_Security_s* sec;
@@ -440,7 +442,7 @@ static int zxid_wsc_prep_secmech(struct zxid_conf* cf, zxid_epr* epr, struct zx_
   hdr->MessageID->gg.content = zxid_mk_id(cf, "urn:M", ZXID_ID_BITS);
   sec = hdr->Security;
   if (!sec || !sec->Timestamp || !sec->Timestamp->Created) {
-    ERR("MUST supply wsse:Security and Timestamp", sec);
+    ERR("MUST supply wsse:Security and Timestamp %p", sec);
     return 0;
   }
   sec->Timestamp->Created->gg.content = zxid_date_time(cf, time(0));
@@ -513,7 +515,7 @@ static int zxid_wsc_prep_secmech(struct zxid_conf* cf, zxid_epr* epr, struct zx_
  * will add Liberty ID-WSF specific SOAP headers. */
 
 /* Called by:  main x9, zxid_call, zxid_get_epr */
-struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
+struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   int i, res;
   struct zx_root_s* root;
@@ -576,8 +578,10 @@ struct zx_e_Envelope_s* zxid_wsc_call(struct zxid_conf* cf, struct zxid_ses* ses
 
 static char zx_env_body_open[]  = "<e:Envelope xmlns:e=\""zx_xmlns_e"\"><e:Header></e:Header><e:Body>";
 static char zx_env_body_close[] = "</e:Body></e:Envelope>";
+#if 0
 static char zx_env_open[]  = "<e:Envelope xmlns:e=\""zx_xmlns_e"\"><e:Header></e:Header>";
 static char zx_env_close[] = "</e:Envelope>";
+#endif
 
 /*() Convenience helper function to parse SOAP Envelope input string.
  * If the specified envelope is incomplete, it is completed.
@@ -590,7 +594,8 @@ static char zx_env_close[] = "</e:Envelope>";
  * payload content of the <e:Body> and the rest of the SOAP envelope is added.
  */
 
-struct zx_e_Envelope_s* zxid_add_env_if_needed(struct zxid_conf* cf, const char* enve)
+/* Called by:  zxid_call, zxid_wsc_prepare_call, zxid_wsc_valid_resp, zxid_wsp_decorate */
+struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
 {
   struct zx_e_Envelope_s* env;
   struct zx_root_s* r;
@@ -682,7 +687,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(struct zxid_conf* cf, const char*
  *     content. */
 
 /* Called by:  zxcall_main, zxid_callf */
-struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve)
+struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve)
 {
   struct zx_str* ret;
   struct zx_e_Envelope_s* env;
@@ -746,7 +751,7 @@ struct zx_str* zxid_call(struct zxid_conf* cf, struct zxid_ses* ses, const char*
 /*() Call web service, printf style. See zxid_call() for more documentation. */
 
 /* Called by:  main */
-struct zx_str* zxid_callf(struct zxid_conf* cf, struct zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* env_f, ...)
+struct zx_str* zxid_callf(zxid_conf* cf, zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* env_f, ...)
 {
   char* s;
   va_list ap;
@@ -785,8 +790,8 @@ struct zx_str* zxid_callf(struct zxid_conf* cf, struct zxid_ses* ses, const char
  * env:: XML payload as a string
  * return:: SOAP Envelope ready to be sent to the WSP. You can pass this to HTTP client. */
 
-/* Called by:  zxcall_main, zxid_callf */
-struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve)
+/* Called by:  zxid_wsc_prepare_callf */
+struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve)
 {
   struct zx_str* ret;
   struct zx_e_Envelope_s* env;
@@ -830,8 +835,8 @@ struct zx_str* zxid_wsc_prepare_call(struct zxid_conf* cf, struct zxid_ses* ses,
 /*() Prepare a web service call, printf style.
  * See zxid_wsc_prepare_call() for more documentation. */
 
-/* Called by:  main */
-struct zx_str* zxid_wsc_prepare_callf(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* env_f, ...)
+/* Called by: */
+struct zx_str* zxid_wsc_prepare_callf(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* env_f, ...)
 {
   char* s;
   va_list ap;
@@ -843,7 +848,8 @@ struct zx_str* zxid_wsc_prepare_callf(struct zxid_conf* cf, struct zxid_ses* ses
 
 /*() Validate a response to web service call. Return: 1=valid. */
 
-int zxid_wsc_valid_resp(struct zxid_conf* cf, struct zxid_ses* ses, const char* az_cred, const char* enve)
+/* Called by: */
+int zxid_wsc_valid_resp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve)
 {
   struct zx_e_Envelope_s* env;
 

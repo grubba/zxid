@@ -53,7 +53,7 @@
  * This function is considered internal. Do not use unless you know what you are doing. */
 
 /* Called by:  zxlog_write_line x3 */
-static char* zxlog_alloc_zbuf(struct zxid_conf* cf, int *zlen, char* zbuf, int len, char* sig, int nonce)
+static char* zxlog_alloc_zbuf(zxid_conf* cf, int *zlen, char* zbuf, int len, char* sig, int nonce)
 {
   char* p;
   p = ZX_ALLOC(cf->ctx, nonce + 2 + len + *zlen);
@@ -84,7 +84,7 @@ static char* zxlog_alloc_zbuf(struct zxid_conf* cf, int *zlen, char* zbuf, int l
 */
 
 /* Called by:  test_mode x12 */
-void zxlog_write_line(struct zxid_conf* cf, char* c_path, int encflags, int n, const char* logbuf)
+void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const char* logbuf)
 {
   RSA* log_sign_pkey;
   struct rsa_st* rsa_pkey;
@@ -253,7 +253,7 @@ void zxlog_write_line(struct zxid_conf* cf, char* c_path, int encflags, int n, c
 
 /*() Helper function for formatting all kinds of logs. */
 
-static int zxlog_fmt(struct zxid_conf* cf,   /* 1 */
+static int zxlog_fmt(zxid_conf* cf,   /* 1 */
 		     int len, char* logbuf,
 		     struct timeval* ourts,  /* 2 null allowed, will use current time */
 		     struct timeval* srcts,  /* 3 null allowed, will use start of unix epoch... */
@@ -386,7 +386,7 @@ static int zxlog_fmt(struct zxid_conf* cf,   /* 1 */
  */
 
 /* Called by:  zxid_an_page_cf, zxid_anoint_sso_a7n, zxid_anoint_sso_resp, zxid_chk_sig, zxid_decode_redir_or_post x2, zxid_fed_mgmt_cf, zxid_get_ent_by_sha1_name, zxid_get_ent_ss, zxid_get_meta x2, zxid_idp_dispatch, zxid_idp_select_zxstr_cf_cgi, zxid_idp_soap_dispatch x2, zxid_idp_soap_parse, zxid_parse_conf_raw, zxid_parse_meta, zxid_saml_ok x2, zxid_simple_render_ses, zxid_simple_ses_active_cf, zxid_sp_anon_finalize, zxid_sp_deref_art x5, zxid_sp_dig_sso_a7n x2, zxid_sp_dispatch, zxid_sp_meta, zxid_sp_mni_redir, zxid_sp_mni_soap, zxid_sp_slo_redir, zxid_sp_slo_soap, zxid_sp_soap_dispatch x2, zxid_sp_soap_parse, zxid_sp_sso_finalize x2, zxid_start_sso_url x3 */
-int zxlog(struct zxid_conf* cf,   /* 1 */
+int zxlog(zxid_conf* cf,   /* 1 */
 	  struct timeval* ourts,  /* 2 null allowed, will use current time */
 	  struct timeval* srcts,  /* 3 null allowed, will use start of unix epoch + 501 usec */
 	  const char* ipport,     /* 4 null allowed, -:- or cf->ipport if not given */
@@ -434,7 +434,7 @@ int zxlog(struct zxid_conf* cf,   /* 1 */
 
 /*() Log user specific data */
 
-int zxlogusr(struct zxid_conf* cf,   /* 1 */
+int zxlogusr(zxid_conf* cf,   /* 1 */
 	     const char* uid,
 	     struct timeval* ourts,  /* 2 null allowed, will use current time */
 	     struct timeval* srcts,  /* 3 null allowed, will use start of unix epoch + 501 usec */
@@ -487,8 +487,8 @@ int zxlogusr(struct zxid_conf* cf,   /* 1 */
  *     is to write a file to the computed path. Usually 0 if the intent is to read.
  * return:: The path, as zx_str or 0 if failure */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
-struct zx_str* zxlog_path(struct zxid_conf* cf,
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_soap_cgi_resp_body, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */
+struct zx_str* zxlog_path(zxid_conf* cf,
 			  struct zx_str* entid,  /* issuer or target entity ID */
 			  struct zx_str* objid,  /* AssertionID or MessageID */
 			  const char* dir,       /* rely/ or issue/ */
@@ -584,8 +584,8 @@ struct zx_str* zxlog_path(struct zxid_conf* cf,
  * return::  0 if no duplicate (success), 1 if duplicate (failure)
  */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
-int zxlog_dup_check(struct zxid_conf* cf, struct zx_str* path, const char* logkey)
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_decode_redir_or_post x2, zxid_saml2_post_enc, zxid_saml2_redir_enc, zxid_soap_cgi_resp_body, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */
+int zxlog_dup_check(zxid_conf* cf, struct zx_str* path, const char* logkey)
 {
   struct stat st;
   /* We need a c path, but get zx_str. However, the zx_str will come from zxlog_path()
@@ -627,8 +627,8 @@ int zxlog_dup_check(struct zxid_conf* cf, struct zx_str* path, const char* logke
  * captures both the original and the duplicate assertion (the logging is an append),
  * which may have forensic value. */
 
-/* Called by:  zxid_anoint_a7n x2, zxid_anoint_sso_resp x2, zxid_decode_redir_or_post x2, zxid_saml2_post_enc x2, zxid_saml2_redir_enc x2, zxid_sp_sso_finalize x2, zxid_wsp_validate x4 */
-int zxlog_blob(struct zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* blob, const char* lk)
+/* Called by:  zxid_anoint_a7n x2, zxid_anoint_sso_resp x2, zxid_decode_redir_or_post x2, zxid_saml2_post_enc x2, zxid_saml2_redir_enc x2, zxid_soap_cgi_resp_body x2, zxid_sp_sso_finalize x2, zxid_wsf_validate_a7n x2, zxid_wsp_validate x2 */
+int zxlog_blob(zxid_conf* cf, int logflag, struct zx_str* path, struct zx_str* blob, const char* lk)
 {
   if (!logflag || !blob)
     return 0;

@@ -298,6 +298,7 @@ void zx_rand(char* buf, int n_bytes)
 #endif
 }
 
+/* Called by:  zxid_mk_self_sig_cert x6 */
 static void zxid_add_subject_field(X509_NAME* subj, int typ, int nid, char* val)
 {
   X509_NAME_ENTRY* ne;
@@ -321,7 +322,7 @@ static void zxid_add_subject_field(X509_NAME* subj, int typ, int nid, char* val)
  * See also: keygen() in keygen.c */
 
 /* Called by:  zxid_read_cert, zxid_read_private_key */
-int zxid_mk_self_sig_cert(struct zxid_conf* cf, int buflen, char* buf, char* lk, char* name)
+int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, char* lk, char* name)
 {
 #ifdef USE_OPENSSL
   BIO* wbio_cert;

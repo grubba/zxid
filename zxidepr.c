@@ -62,7 +62,7 @@ void zxid_fold_svc(char* p, int len)
  * return:: 0 on success (the real return value is returned via ~buf~ result parameter) */
 
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_di_query, zxid_epr_path, zxid_idp_sso */
-int zxid_nice_sha1(struct zxid_conf* cf, char* buf, int buf_len,
+int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len,
 		   struct zx_str* name, struct zx_str* cont, int ign_prefix)
 {
   char* p;
@@ -112,7 +112,7 @@ int zxid_nice_sha1(struct zxid_conf* cf, char* buf, int buf_len,
  * especially if you get errors about multibyte characters. */
 
 /* Called by:  zxid_cache_epr, zxid_snarf_eprs_from_ses */
-int zxid_epr_path(struct zxid_conf* cf, char* dir, char* sid,
+int zxid_epr_path(zxid_conf* cf, char* dir, char* sid,
 		  char* buf, int buf_len, struct zx_str* svc, struct zx_str* cont)
 {
   int len = snprintf(buf, buf_len, "%s%s%s/", cf->path, dir, sid);
@@ -135,7 +135,7 @@ int zxid_epr_path(struct zxid_conf* cf, char* dir, char* sid,
  * return:: 1 on success, 0 on failure */
 
 /* Called by:  main, zxid_get_epr, zxid_snarf_eprs */
-int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr)
+int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
 {
   fdtype fd;
   struct zx_str* ss;
@@ -180,7 +180,7 @@ int zxid_cache_epr(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr)
  * Typical name /var/zxid/ses/SESID/SVCTYPE,SHA1 */
 
 /* Called by:  zxid_as_call_ses, zxid_snarf_eprs_from_ses */
-void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr)
+void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
 {
   struct zx_str* ss;
   struct zx_str* urlss;
@@ -207,8 +207,8 @@ void zxid_snarf_eprs(struct zxid_conf* cf, struct zxid_ses* ses, zxid_epr* epr)
  * that looks like an EPR and that is strcturally in right place will work.
  * Typical name /var/zxid/ses/SESID/SVCTYPE,SHA1 */
 
-/* Called by:  zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsp_validate */
-void zxid_snarf_eprs_from_ses(struct zxid_conf* cf, struct zxid_ses* ses)
+/* Called by:  zxid_sp_anon_finalize, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
+void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 {
   struct zx_sa_AttributeStatement_s* as;
   struct zx_sa_Attribute_s* at;
@@ -268,7 +268,7 @@ void zxid_snarf_eprs_from_ses(struct zxid_conf* cf, struct zxid_ses* ses)
  * return:: EPR data structure (or linked list of EPRs) on success, 0 on failure */
 
 /* Called by:  main x2, zxid_get_epr x2 */
-zxid_epr* zxid_find_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
+zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   struct zx_root_s* r;
   int len, epr_len, siz = ZXID_INIT_EPR_BUF;
@@ -411,7 +411,7 @@ zxid_epr* zxid_find_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* 
  */
 
 /* Called by:  main x5 */
-zxid_epr* zxid_get_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
+zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   int wsf20 = 0;
   struct zx_str* ss;
@@ -462,21 +462,21 @@ zxid_epr* zxid_get_epr(struct zxid_conf* cf, struct zxid_ses* ses, const char* s
 /*() Accessor function for extracting endpoint address URL. */
 
 /* Called by: */
-struct zx_str* zxid_get_epr_address(struct zxid_conf* cf, zxid_epr* epr) {
+struct zx_str* zxid_get_epr_address(zxid_conf* cf, zxid_epr* epr) {
   return epr->Address->gg.content;
 }
 
 /*() Accessor function for extracting endpoint ProviderID. */
 
 /* Called by: */
-struct zx_str* zxid_get_epr_entid(struct zxid_conf* cf, zxid_epr* epr) {
+struct zx_str* zxid_get_epr_entid(zxid_conf* cf, zxid_epr* epr) {
   return epr->Metadata->ProviderID->content;
 }
 
 /*() Accessor function for extracting endpoint Description (Abstract). */
 
 /* Called by: */
-struct zx_str* zxid_get_epr_desc(struct zxid_conf* cf, zxid_epr* epr) {
+struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr) {
   return epr->Metadata->Abstract->content;
 }
 
@@ -486,7 +486,8 @@ struct zx_str* zxid_get_epr_desc(struct zxid_conf* cf, zxid_epr* epr) {
  * Also id, actor, and mustUnderstand fields need to be filled in by
  * other means (we may eventually have defaults for some of these). */
 
-zxid_epr* zxid_new_epr(struct zxid_conf* cf, char* address, char* desc, char* entid, char* svctype)
+/* Called by: */
+zxid_epr* zxid_new_epr(zxid_conf* cf, char* address, char* desc, char* entid, char* svctype)
 {
   zxid_epr* epr = zx_NEW_a_EndpointReference(cf->ctx);
   if (address) {
@@ -509,7 +510,7 @@ zxid_epr* zxid_new_epr(struct zxid_conf* cf, char* address, char* desc, char* en
 /*() Accessor function for extracting endpoint's SAML2 assertion token. */
 
 /* Called by: */
-struct zx_str* zxid_get_epr_a7n(struct zxid_conf* cf, zxid_epr* epr) {
+struct zx_str* zxid_get_epr_a7n(zxid_conf* cf, zxid_epr* epr) {
   return epr->Metadata->SecurityContext->Token->Assertion;
 }
 #endif

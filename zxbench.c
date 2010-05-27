@@ -263,8 +263,8 @@ int main(int argc, char** argv, char** env)
   struct zx_str* eid;
   struct zx_root_s* r;
   struct zxsig_ref refs;
-  struct zxid_entity* ent;
-  struct zxid_conf* cf;
+  zxid_entity* ent;
+  zxid_conf* cf;
   int got_all, len_so, len_wo, res;
   char buf[256*1024];
   char out[256*1024];

@@ -29,7 +29,7 @@
 
 /* N.B. Contrary to the documentation the type field in all of the following four maps
  * must match the original, i.e. struct zx_str*, rather than one of the intermediary
- * types (errornously documented that way). */
+ * types (errornously documented in SWIG documentation that way). */
 %typemap (jni)     struct zx_str* "jstring"             // Affects zxid_wrap.c
 %typemap (jtype)   struct zx_str* "String"              // Affects zxidjniJNI.java
 %typemap (jstype)  struct zx_str* "String"              // Affects zxidjni.java
@@ -69,6 +69,8 @@
   //     on whether the zxid API will take reference to the string.
 %}
 %typemap (freearg) (int len, const char* s) "(*jenv)->ReleaseStringUTFChars(jenv, (jstring)$input, $2);"
+
+//#define ZXID_FIX_SWIGJAVA 1
 
 %include "zx.h"
 %include "zxid.h"

@@ -235,7 +235,7 @@ static void opt(int* argc, char*** argv, char*** env)
  * and possibly boostrap to /var/zxid/idpuid/.all/.bs/YY */
 
 /* Called by:  zxcot_main */
-static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const char* ddimd, const char* duid)
+static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddimd, const char* duid)
 {
   char sha1_name[28];
   char path[ZXID_MAX_BUF];
@@ -358,11 +358,11 @@ static int zxid_reg_svc(struct zxid_conf* cf, int bs_reg, int dry_run, const cha
 /*() Add metadata of a partner to the Circle-of-Trust, represented by the CoT dir */
 
 /* Called by:  zxcot_main */
-static int zxid_addmd(struct zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
+static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
 {
   int got, fd;
   char* p;
-  struct zxid_entity* ent;
+  zxid_entity* ent;
   struct zx_str* ss;
   
   if (mdurl) {
@@ -412,9 +412,9 @@ static int zxid_addmd(struct zxid_conf* cf, char* mdurl, int dry_run, const char
 /*() Print a line of Circle-of-Trust listing */
 
 /* Called by:  zxid_lscot x2 */
-static int zxid_lscot_line(struct zxid_conf* cf, int col_swap, const char* dcot, const char* den)
+static int zxid_lscot_line(zxid_conf* cf, int col_swap, const char* dcot, const char* den)
 {
-  struct zxid_entity* ent;
+  zxid_entity* ent;
   char* p;
   int got = read_all(ZXID_MAX_MD, buf, "zxcot line", "%s%s", dcot, den);
   if (!got) {
@@ -444,7 +444,7 @@ static int zxid_lscot_line(struct zxid_conf* cf, int col_swap, const char* dcot,
  * in various formats. */
 
 /* Called by:  zxcot_main */
-static int zxid_lscot(struct zxid_conf* cf, int col_swap, const char* dcot)
+static int zxid_lscot(zxid_conf* cf, int col_swap, const char* dcot)
 {
   int got, ret;
   char* p;
@@ -486,7 +486,7 @@ static int zxid_lscot(struct zxid_conf* cf, int col_swap, const char* dcot)
 /* Called by: */
 int zxcot_main(int argc, char** argv, char** env)
 {
-  struct zxid_conf cf;
+  zxid_conf cf;
 
   strncpy(zx_instance, "\tzxcot", sizeof(zx_instance));
   memset(&cf, 0, sizeof(cf));

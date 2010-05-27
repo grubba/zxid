@@ -37,8 +37,8 @@
  *     CGI arguments are simply ignored with assumption that some other processing
  *     layer will pick them up - hence no need to flag error. */
 
-/* Called by:  chkuid x3, main x4, zxid_az_cf_ses, zxid_new_cgi, zxid_simple_cf_ses x3, zxid_simple_idp_pw_authn */
-int zxid_parse_cgi(struct zxid_cgi* cgi, char* qs)
+/* Called by:  chkuid x3, main x4, zxid_az_cf_ses, zxid_decode_ssoreq, zxid_new_cgi, zxid_simple_cf_ses x3 */
+int zxid_parse_cgi(zxid_cgi* cgi, char* qs)
 {
   char *p, *n, *v, *val, *name;
   DD("qs(%s) len=%d", STRNULLCHK(qs), qs?strlen(qs):-1);
@@ -206,9 +206,9 @@ set_eid:
 }
 
 /* Called by: */
-struct zxid_cgi* zxid_new_cgi(struct zxid_conf* cf, char* qs)
+zxid_cgi* zxid_new_cgi(zxid_conf* cf, char* qs)
 {
-  struct zxid_cgi* cgi = ZX_ZALLOC(cf->ctx, struct zxid_cgi);
+  zxid_cgi* cgi = ZX_ZALLOC(cf->ctx, zxid_cgi);
   cgi->magic = ZXID_CGI_MAGIC;
   if (qs) {
     char* qqs;
@@ -234,7 +234,7 @@ struct zxid_cgi* zxid_new_cgi(struct zxid_conf* cf, char* qs)
  */
 
 /* Called by:  chkuid, zxid_simple_cf_ses */
-void zxid_get_sid_from_cookie(struct zxid_conf* cf, struct zxid_cgi* cgi, const char* cookie)
+void zxid_get_sid_from_cookie(zxid_conf* cf, zxid_cgi* cgi, const char* cookie)
 {
   char* q;
   int len;

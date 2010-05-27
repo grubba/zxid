@@ -39,6 +39,7 @@ Sender	 -> %b:SenderType
 TargetIdentity	 -> %b:TargetIdentityType
 %TargetIdentityType:
   sa:Assertion?
+  sa:EncryptedAssertion?
   sa11:Assertion?
   ff12:Assertion?
   any*  processContents(lax)

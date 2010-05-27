@@ -45,7 +45,7 @@
 #include "http_request.h"
 
 #define srv_cf(s) (struct zxid_srv_cf*)ap_get_module_config((s)->module_config, &auth_saml_module)
-#define dir_cf(r) (struct zxid_conf*)ap_get_module_config((r)->per_dir_config, &auth_saml_module)
+#define dir_cf(r) (zxid_conf*)ap_get_module_config((r)->per_dir_config, &auth_saml_module)
 
 /* This extern variable is used as first argument to LoadModule in httpd.conf,
  * E.g: LoadModule auth_saml_module modules/mod_auth_saml.so */
@@ -79,7 +79,7 @@ static void chldinit(apr_pool_t* p, server_rec* s)
  * You should not call this directly, unless you know what you are doing. */
 
 /* Called by:  chkuid */
-static int pool2apache(struct zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
+static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 {
   int ret = OK;
   char* name;
@@ -168,7 +168,7 @@ static int pool2apache(struct zxid_conf* cf, request_rec* r, struct zxid_attr* p
  * You should not call this directly, unless you know what you are doing. */
 
 /* Called by:  chkuid */
-static int send_res(struct zxid_conf* cf, request_rec* r, char* res)
+static int send_res(zxid_conf* cf, request_rec* r, char* res)
 {
   int len;
   char* p;
@@ -206,7 +206,7 @@ static int send_res(struct zxid_conf* cf, request_rec* r, char* res)
  * You should not call this directly, unless you know what you are doing. */
 
 /* Called by:  chkuid */
-static char* read_post(struct zxid_conf* cf, request_rec* r)
+static char* read_post(zxid_conf* cf, request_rec* r)
 {
   int len, ret;
   char* res;
@@ -268,11 +268,11 @@ static int chkuid(request_rec* r)
   const char* cookie_hdr;
   const char* cur_auth;
   struct zx_str* ss;
-  struct zxid_conf* cf = dir_cf(r);
-  struct zxid_cgi cgi;
-  struct zxid_ses ses;
-  memset(&cgi, 0, sizeof(struct zxid_cgi));
-  memset(&ses, 0, sizeof(struct zxid_ses));
+  zxid_conf* cf = dir_cf(r);
+  zxid_cgi cgi;
+  zxid_ses ses;
+  memset(&cgi, 0, sizeof(zxid_cgi));
+  memset(&ses, 0, sizeof(zxid_ses));
 
   D("START %s req=%p uri(%s) args(%s)", ZXID_REL, r, r?STRNULLCHK(r->uri):"", r?STRNULLCHK(r->args):"");
   
@@ -444,7 +444,7 @@ static const char* set_debug(cmd_parms* cmd, void* st, const char* arg) {
 static const char* set_zxid_conf(cmd_parms* cmd, void* st, const char* arg) {
   int len;
   char* buf;
-  struct zxid_conf* cf = (struct zxid_conf*)st;
+  zxid_conf* cf = (zxid_conf*)st;
   D("arg(%s) cf=%p", arg, cf);
   len = strlen(arg);
   buf = ZX_ALLOC(cf->ctx, len+1);
@@ -474,8 +474,8 @@ const command_rec zxid_apache_commands[] = {
 /* Called by: */
 static void* dirconf(apr_pool_t* p, char* d)
 {
-  struct zxid_conf* cf = apr_palloc(p, sizeof(struct zxid_conf));
-  memset(cf, 0, sizeof(struct zxid_conf));
+  zxid_conf* cf = apr_palloc(p, sizeof(zxid_conf));
+  memset(cf, 0, sizeof(zxid_conf));
   cf->ctx = apr_palloc(p, sizeof(struct zx_ctx));
   zx_reset_ctx(cf->ctx);
   D("cf=%p ctx=%p d(%s)", cf, cf->ctx, STRNULLCHKD(d));

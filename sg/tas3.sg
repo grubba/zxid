@@ -46,7 +46,7 @@ ESLRef -> %tas3:ESLRefType
 
 Status -> %tas3:StatusType
 %StatusType: base(lu:StatusType)
-  @ctlpt?
+  @ctlpt? -> %xs:string
   &@b:hdr
   ;
 

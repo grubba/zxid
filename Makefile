@@ -642,7 +642,8 @@ c/zx-const.h: c/zx-attrs.c c/zx-elems.c
 
 c/license.c: LICENSE-2.0.txt
 	$(ECHO) 'char* license = ' >$@
-	$(ECHO) '"Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\' >>$@ #'
+	$(ECHO) '"Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\' >>$@ #'
+	$(ECHO) 'Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\' >>$@ #'
 	$(ECHO) 'Author: Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\' >>$@ #'
 	$(SED) -e 's/"/\\"/g' -e 's/$$/\\n\\/' LICENSE-2.0.txt >>$@
 	$(ECHO) '";' >>$@
@@ -896,6 +897,18 @@ zxidjava/zxid_wrap.c: $(ZX_GEN_H) zxid.h javazxid.i
 	mv zxidjava/SWIGTYPE_p_zxid_conf.java zxidjava/zxid_conf.java
 	$(PERL) -pi -e 's/SWIGTYPE_p_zxid_ses/zxid_ses/g' zxidjava/*.java
 	mv zxidjava/SWIGTYPE_p_zxid_ses.java zxidjava/zxid_ses.java
+	$(PERL) -pi -e 's/SWIGTYPE_p_zxid_cgi/zxid_cgi/g' zxidjava/*.java
+	mv zxidjava/SWIGTYPE_p_zxid_cgi.java zxidjava/zxid_cgi.java
+	$(PERL) -pi -e 's/SWIGTYPE_p_zxid_entity/zxid_entity/g' zxidjava/*.java
+	mv zxidjava/SWIGTYPE_p_zxid_entity.java zxidjava/zxid_entity.java
+	$(PERL) -pi -e 's/SWIGTYPE_p_zx_sa_Assertion_s/zxid_a7n/g' zxidjava/*.java
+	mv zxidjava/SWIGTYPE_p_zx_sa_Assertion_s.java zxidjava/zxid_a7n.java
+	$(PERL) -pi -e 's/SWIGTYPE_p_zx_sa_NameID_s/zxid_nid/g' zxidjava/*.java
+	mv zxidjava/SWIGTYPE_p_zx_sa_NameID_s.java zxidjava/zxid_nid.java
+	$(PERL) -pi -e 's/SWIGTYPE_p_zx_a_EndpointReference_s/zxid_epr/g' zxidjava/*.java
+	mv zxidjava/SWIGTYPE_p_zx_a_EndpointReference_s.java zxidjava/zxid_epr.java
+	$(PERL) -pi -e 's/SWIGTYPE_p_zx_tas3_Status_s/zxid_tas3_status/g' zxidjava/*.java
+	mv zxidjava/SWIGTYPE_p_zx_tas3_Status_s.java zxidjava/zxid_tas3_status.java
 	$(PERL) -pi -e 's/(public static \w+ )zxid_/$$1/' zxidjava/zxidjni.java
 
 endif

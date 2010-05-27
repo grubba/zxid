@@ -269,7 +269,7 @@ public class zxidappdemo extends HttpServlet {
 	if (qs.equals("multidi")) {
 	    out.print("<h4>Multidiscovery</h4>\n");
 	    
-	    SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
+	    zxid_epr epr[] = new zxid_epr[100];
 	    
 	    for (int i=1; i<100; ++i) {
 		epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);
@@ -310,7 +310,7 @@ public class zxidappdemo extends HttpServlet {
 	if (qs.equals("multi") || qs.equals("all")) {
 	    out.print("<h4>Multidiscovery and Call</h4>\n");
 	    
-	    SWIGTYPE_p_zx_a_EndpointReference_s epr[] = new SWIGTYPE_p_zx_a_EndpointReference_s[100];
+	    zxid_epr epr[] = new zxid_epr[100];
 	    
 	    for (int i=1; i<100; ++i) {
 		epr[i] = zxidjni.get_epr(cf, zxses, "urn:x-foobar", null, null, null, i);

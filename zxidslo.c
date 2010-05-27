@@ -31,7 +31,7 @@
  * return:: 1 if successful. 0 upon failure. */
 
 /* Called by:  zxid_mgmt, zxid_simple_ses_active_cf */
-int zxid_sp_slo_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses)
+int zxid_sp_slo_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -42,7 +42,7 @@ int zxid_sp_slo_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
     struct zx_root_s* r;
     struct zx_e_Body_s* body;
     struct zx_str* ses_ix;
-    struct zxid_entity* idp_meta;
+    zxid_entity* idp_meta;
     
     ses_ix = ses->a7n->AuthnStatement?ses->a7n->AuthnStatement->SessionIndex:0;
     if (cf->log_level>0)
@@ -88,14 +88,14 @@ int zxid_sp_slo_soap(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses
  * return:: location string if successful. "* ERR" upon failure. */
 
 /* Called by:  zxid_mgmt, zxid_simple_ses_active_cf */
-struct zx_str* zxid_sp_slo_redir(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses)
+struct zx_str* zxid_sp_slo_redir(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   zxid_get_ses_sso_a7n(cf, ses);
   if (ses->a7n) {
     struct zx_sp_LogoutRequest_s* r;
     struct zx_str* rs;
     struct zx_str* loc;
-    struct zxid_entity* idp_meta;
+    zxid_entity* idp_meta;
     struct zx_str* ses_ix;
 
     ses_ix = ses->a7n->AuthnStatement?ses->a7n->AuthnStatement->SessionIndex:0;
@@ -129,10 +129,10 @@ struct zx_str* zxid_sp_slo_redir(struct zxid_conf* cf, struct zxid_cgi* cgi, str
  * done somewhere else, i.e. this is just the final protocol phase of the SLO. */
 
 /* Called by:  zxid_idp_dispatch, zxid_sp_dispatch */
-struct zx_str* zxid_slo_resp_redir(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx_sp_LogoutRequest_s* req)
+struct zx_str* zxid_slo_resp_redir(zxid_conf* cf, zxid_cgi* cgi, struct zx_sp_LogoutRequest_s* req)
 {
   struct zx_sp_LogoutResponse_s* res;
-  struct zxid_entity* meta;
+  zxid_entity* meta;
   struct zx_str* loc;
   struct zx_str* ss;
   struct zx_str* ss2;
@@ -158,7 +158,7 @@ struct zx_str* zxid_slo_resp_redir(struct zxid_conf* cf, struct zxid_cgi* cgi, s
 /*() Process SP SLO request. */
 
 /* Called by:  zxid_idp_dispatch, zxid_sp_dispatch, zxid_sp_soap_dispatch */
-int zxid_sp_slo_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sp_LogoutRequest_s* req)
+int zxid_sp_slo_do(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_LogoutRequest_s* req)
 {
   struct zx_str* sesix = req->SessionIndex&&req->SessionIndex->content&&req->SessionIndex->content->len&&req->SessionIndex->content->s?req->SessionIndex->content:0;
 
@@ -186,7 +186,7 @@ int zxid_sp_slo_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* 
  * manageable. */
 
 /* Called by:  zxid_idp_dispatch, zxid_idp_soap_dispatch, zxid_sp_dispatch */
-int zxid_idp_slo_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sp_LogoutRequest_s* req)
+int zxid_idp_slo_do(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_LogoutRequest_s* req)
 {
   struct zx_str* sesix = req->SessionIndex&&req->SessionIndex->content&&req->SessionIndex->content->len&&req->SessionIndex->content->s?req->SessionIndex->content:0;
 

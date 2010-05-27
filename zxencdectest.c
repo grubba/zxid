@@ -76,7 +76,7 @@ char buf[256*1024];
 void test_ibm_cert_problem()
 {
   int got_all, len_so;
-  struct zxid_conf* cf;
+  zxid_conf* cf;
   struct zx_root_s* r;
   struct zx_sp_LogoutRequest_s* req;
 
@@ -107,10 +107,10 @@ void test_ibm_cert_problem()
 /* Called by:  opt */
 void test_ibm_cert_problem_enc_dec()
 {
-  struct zxid_conf* cf;
+  zxid_conf* cf;
   struct zx_sp_LogoutRequest_s* req;
-  struct zx_sa_NameID_s* nameid;
-  struct zxid_entity* idp_meta;
+  zxid_nid* nameid;
+  zxid_entity* idp_meta;
 
   cf = zxid_new_conf("/var/zxid/");
 

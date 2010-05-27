@@ -61,7 +61,7 @@ int child_out_fds[2];  /* Parent in */
 /*() Send data to script using child process */
 
 /* Called by:  zxidwspcgi_main */
-static int zxidwspcgi_child(struct zxid_conf* cf, int len, char* buf, char* sid, char* nid)
+static int zxidwspcgi_child(zxid_conf* cf, int len, char* buf, char* sid, char* nid)
 {
   int status;
   pid_t pid;
@@ -103,7 +103,7 @@ static int zxidwspcgi_child(struct zxid_conf* cf, int len, char* buf, char* sid,
 /*() Read from script using parent, and send resp. */
 
 /* Called by:  zxidwspcgi_main */
-static int zxidwspcgi_parent(struct zxid_conf* cf, struct zxid_ses* ses, int pid)
+static int zxidwspcgi_parent(zxid_conf* cf, zxid_ses* ses, int pid)
 {
   struct zx_str* ss;
   int got_all;
@@ -135,9 +135,9 @@ static int zxidwspcgi_parent(struct zxid_conf* cf, struct zxid_ses* ses, int pid
 /* Called by: */
 int zxidwspcgi_main(int argc, char** argv)
 {
-  struct zxid_conf* cf;
-  struct zxid_ses sess;
-  struct zxid_ses* ses = &sess;
+  zxid_conf* cf;
+  zxid_ses sess;
+  zxid_ses* ses = &sess;
   char* nid;
   char* p;
   char* res;
@@ -146,7 +146,7 @@ int zxidwspcgi_main(int argc, char** argv)
   char* qs;
   char* qs2;
   pid_t pid;
-  memset(ses, 0, sizeof(struct zxid_ses));
+  memset(ses, 0, sizeof(zxid_ses));
 
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */

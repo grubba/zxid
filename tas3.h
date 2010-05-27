@@ -27,10 +27,10 @@
 
 /* Map data types to TAS3 equivalents */
 
-#define tas3_conf          struct zxid_conf
-#define tas3_ses           struct zxid_ses
+#define tas3_conf          zxid_conf
+#define tas3_ses           zxid_ses
 #define tas3_str           struct zx_str
-#define tas3_epr           struct zx_a_EndpointReference_s
+#define tas3_epr           zxid_epr
 
 /* Map ZXID functions to TAS3 equivalents */
 

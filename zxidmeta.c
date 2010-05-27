@@ -55,8 +55,8 @@
  * Since one entity can be both IdP and SP, this function may
  * be called twice per entity, with different kd argument. */
 
-/* Called by:  zxid_parse_meta x2 */
-static void zxid_process_keys(struct zxid_conf* cf, struct zxid_entity* ent, struct zx_md_KeyDescriptor_s* kd, char* logkey)
+/* Called by:  zxid_mk_ent x2 */
+static void zxid_process_keys(zxid_conf* cf, zxid_entity* ent, struct zx_md_KeyDescriptor_s* kd, char* logkey)
 {
   int len;
   char* pp;
@@ -99,9 +99,10 @@ static void zxid_process_keys(struct zxid_conf* cf, struct zxid_entity* ent, str
   }
 }
 
-static struct zxid_entity* zxid_mk_ent(struct zxid_conf* cf, struct zx_md_EntityDescriptor_s* ed)
+/* Called by:  zxid_parse_meta x2 */
+static zxid_entity* zxid_mk_ent(zxid_conf* cf, struct zx_md_EntityDescriptor_s* ed)
 {
-  struct zxid_entity* ent = ZX_ZALLOC(cf->ctx, struct zxid_entity);
+  zxid_entity* ent = ZX_ZALLOC(cf->ctx, zxid_entity);
   ent->ed = ed;
   if (!ed->entityID)
     goto bad_md;
@@ -138,10 +139,10 @@ static struct zxid_entity* zxid_mk_ent(struct zxid_conf* cf, struct zx_md_Entity
  *     one EntityDescriptor is found, then a linked list is returned. */
 
 /* Called by:  zxid_addmd, zxid_get_ent_from_file, zxid_get_meta, zxid_lscot_line */
-struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
+zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
 {
-  struct zxid_entity* ee;
-  struct zxid_entity* ent;
+  zxid_entity* ee;
+  zxid_entity* ent;
   struct zx_md_EntityDescriptor_s* ed;
   struct zx_root_s* r;
 
@@ -179,7 +180,7 @@ struct zxid_entity* zxid_parse_meta(struct zxid_conf* cf, char** md, char* lim)
  * the entity identified by cf. Mainly used by Auto-CoT. */
 
 /* Called by:  opt x3, zxid_get_ent_ss */
-int zxid_write_ent_to_cache(struct zxid_conf* cf, struct zxid_entity* ent)
+int zxid_write_ent_to_cache(zxid_conf* cf, zxid_entity* ent)
 {
   struct zx_str* ss;
   fdtype fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "write_ent_to_cache", "%s" ZXID_COT_DIR "%s", cf->path, ent->sha1_name);
@@ -211,15 +212,15 @@ int zxid_write_ent_to_cache(struct zxid_conf* cf, struct zxid_entity* ent)
  * and then read the metadata. */
 
 /* Called by:  main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_from_cache, zxid_load_cot_cache_from_file */
-struct zxid_entity* zxid_get_ent_from_file(struct zxid_conf* cf, char* sha1_name)
+zxid_entity* zxid_get_ent_from_file(zxid_conf* cf, char* sha1_name)
 {
   int n, got, gotty, siz = ZXID_INIT_MD_BUF;
   fdtype fd;
   char* md_buf;
   char* p;
-  struct zxid_entity* first = 0;
-  struct zxid_entity* ent;
-  struct zxid_entity* ee;
+  zxid_entity* first = 0;
+  zxid_entity* ent;
+  zxid_entity* ee;
   
   DD("sha1_name(%s)", sha1_name);
   fd = open_fd_from_path(O_RDONLY, 0, "get_ent_from_file", "%s" ZXID_COT_DIR "%s", cf->path, sha1_name);
@@ -287,9 +288,9 @@ readerr:
 extern pthread_mutex_t zxid_ent_cache_mx;
 
 /* Called by:  zxid_get_ent_from_cache, zxid_load_cot_cache */
-static void zxid_load_cot_cache_from_file(struct zxid_conf* cf)
+static void zxid_load_cot_cache_from_file(zxid_conf* cf)
 {
-  struct zxid_entity* ee;  
+  zxid_entity* ee;  
   if (!cf->load_cot_cache)
     return;
   LOCK(zxid_ent_cache_mx, "get ent from cache");
@@ -308,10 +309,10 @@ static void zxid_load_cot_cache_from_file(struct zxid_conf* cf)
  * compute sha1_name for an entity and then read the metadata from
  * the CoT metadata cache directory, e.g. /var/zxid/cot */
 
-/* Called by:  main x5, zxid_get_ent_ss x2 */
-struct zxid_entity* zxid_get_ent_from_cache(struct zxid_conf* cf, struct zx_str* eid)
+/* Called by:  main x5, zxid_get_ent_ss x3 */
+zxid_entity* zxid_get_ent_from_cache(zxid_conf* cf, struct zx_str* eid)
 {
-  struct zxid_entity* ent;
+  zxid_entity* ent;
   char sha1_name[28];
   zxid_load_cot_cache_from_file(cf);
   for (ent = cf->cot; ent; ent = ent->n)  /* Check in memory cache. */
@@ -331,13 +332,13 @@ struct zxid_entity* zxid_get_ent_from_cache(struct zxid_conf* cf, struct zx_str*
  * eid:: Entity ID whose metadata is desired
  * return:: Entity data structure, including the metadata */
 
-/* Called by:  zxid_add_fed_tok_to_epr, zxid_chk_sig, zxid_decode_redir_or_post, zxid_get_ent, zxid_get_ses_idp, zxid_idp_dispatch, zxid_idp_sso, zxid_slo_resp_redir, zxid_sp_dispatch, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
-struct zxid_entity* zxid_get_ent_ss(struct zxid_conf* cf, struct zx_str* eid)
+/* Called by:  zxid_add_fed_tok_to_epr, zxid_chk_sig, zxid_decode_redir_or_post, zxid_get_ent, zxid_get_ses_idp, zxid_idp_dispatch, zxid_idp_sso, zxid_simple_idp_show_an, zxid_slo_resp_redir, zxid_sp_dispatch, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */
+zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 {
-  struct zxid_entity* old_cot;
-  struct zxid_entity* ent;
-  struct zxid_entity* ee;
-  struct zxid_entity* match = 0;
+  zxid_entity* old_cot;
+  zxid_entity* ent;
+  zxid_entity* ee;
+  zxid_entity* match = 0;
   
   D("eid(%.*s) path(%.*s) cf->magic=%x, md_cache_first(%d), cot(%p)", eid->len, eid->s, cf->path_len, cf->path, cf->magic, cf->md_cache_first, cf->cot);
   if (cf->md_cache_first) {
@@ -396,7 +397,7 @@ struct zxid_entity* zxid_get_ent_ss(struct zxid_conf* cf, struct zx_str* eid)
 /*() Wrapper for zxid_get_ent_ss(), which see. */
 
 /* Called by:  zxcall_main, zxid_cdc_check x2, zxid_start_sso_url */
-struct zxid_entity* zxid_get_ent(struct zxid_conf* cf, char* eid)
+zxid_entity* zxid_get_ent(zxid_conf* cf, char* eid)
 {
   struct zx_str ss;
   if (!eid)
@@ -410,9 +411,9 @@ struct zxid_entity* zxid_get_ent(struct zxid_conf* cf, char* eid)
 /*() Given sha1_name, check in memory cache and if not, the disk cache. Do not try net (WKL). */
 
 /* Called by:  zxid_get_ent_by_succinct_id, zxid_load_cot_cache */
-struct zxid_entity* zxid_get_ent_by_sha1_name(struct zxid_conf* cf, char* sha1_name)
+zxid_entity* zxid_get_ent_by_sha1_name(zxid_conf* cf, char* sha1_name)
 {
-  struct zxid_entity* ent;
+  zxid_entity* ent;
   LOCK(cf->mx, "scan cache by sha1_name");
   for (ent = cf->cot; ent; ent = ent->n)  /* Check in-memory cache. */
     if (!strcmp(sha1_name, ent->sha1_name)) {
@@ -431,7 +432,7 @@ struct zxid_entity* zxid_get_ent_by_sha1_name(struct zxid_conf* cf, char* sha1_n
  * and disk caches will be tried. No network connection (WKL) will be initiated. */
 
 /* Called by:  zxid_sp_deref_art */
-struct zxid_entity* zxid_get_ent_by_succinct_id(struct zxid_conf* cf, char* raw_succinct_id)
+zxid_entity* zxid_get_ent_by_succinct_id(zxid_conf* cf, char* raw_succinct_id)
 {
   char sha1_name[28];
   base64_fancy_raw(raw_succinct_id, 20, sha1_name, safe_basis_64, 1<<31, 0, 0, '.');
@@ -449,9 +450,9 @@ struct zxid_entity* zxid_get_ent_by_succinct_id(struct zxid_conf* cf, char* raw_
  * return:: Linked list of Entity objects (metadata) for CoT partners */
 
 /* Called by:  main x2, zxid_idp_list_cf_cgi, zxid_mk_idp_list */
-struct zxid_entity* zxid_load_cot_cache(struct zxid_conf* cf)
+zxid_entity* zxid_load_cot_cache(zxid_conf* cf)
 {
-  struct zxid_entity* ent;
+  zxid_entity* ent;
   struct dirent* de;
   DIR* dir;
   char buf[4096];
@@ -492,7 +493,7 @@ struct zxid_entity* zxid_load_cot_cache(struct zxid_conf* cf)
  * In the metadata the PEM start/end cert markers are NOT used. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_KeyDescriptor_s* zxid_key_desc(struct zxid_conf* cf, char* use, X509* x)
+struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, char* use, X509* x)
 {
   int len;
   char* dd;
@@ -536,7 +537,7 @@ struct zx_md_KeyDescriptor_s* zxid_key_desc(struct zxid_conf* cf, char* use, X50
 /*() Generate XML-DSIG key info given X509 certificate. */
 
 /* Called by:  zxenc_pubkey_enc, zxid_key_desc */
-struct zx_ds_KeyInfo_s* zxid_key_info(struct zxid_conf* cf, X509* x)
+struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, X509* x)
 {
   int len;
   char* dd;
@@ -569,7 +570,7 @@ struct zx_ds_KeyInfo_s* zxid_key_info(struct zxid_conf* cf, X509* x)
 /*() Generate key descriptor metadata fragment given X509 certificate [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_KeyDescriptor_s* zxid_key_desc(struct zxid_conf* cf, char* use, X509* x)
+struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, char* use, X509* x)
 {
   struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx);
   kd->use = zx_ref_str(cf->ctx, use);
@@ -580,7 +581,7 @@ struct zx_md_KeyDescriptor_s* zxid_key_desc(struct zxid_conf* cf, char* use, X50
 /*() Generate Artifact Resolution (AR) Descriptor idp metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc */
-struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(struct zxid_conf* cf,
+struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf,
 						       char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_ArtifactResolutionService_s* d = zx_NEW_md_ArtifactResolutionService(cf->ctx);
@@ -594,7 +595,7 @@ struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(struct zxid_conf* cf,
 /*() Generate Single SignOn (SSO) Descriptor idp metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc */
-struct zx_md_SingleSignOnService_s* zxid_sso_desc(struct zxid_conf* cf,
+struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf,
 						  char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_SingleSignOnService_s* d = zx_NEW_md_SingleSignOnService(cf->ctx);
@@ -608,7 +609,7 @@ struct zx_md_SingleSignOnService_s* zxid_sso_desc(struct zxid_conf* cf,
 /*() Generate Single Logout (SLO) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_SingleLogoutService_s* zxid_slo_desc(struct zxid_conf* cf,
+struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf,
 						  char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_SingleLogoutService_s* d = zx_NEW_md_SingleLogoutService(cf->ctx);
@@ -622,7 +623,7 @@ struct zx_md_SingleLogoutService_s* zxid_slo_desc(struct zxid_conf* cf,
 /*() Generate Manage Name Id (MNI) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_ManageNameIDService_s* zxid_mni_desc(struct zxid_conf* cf,
+struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf,
 						  char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_ManageNameIDService_s* d = zx_NEW_md_ManageNameIDService(cf->ctx);
@@ -636,7 +637,7 @@ struct zx_md_ManageNameIDService_s* zxid_mni_desc(struct zxid_conf* cf,
 /*() Generate Assertion Consumer Service (SSO) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_sso_desc x5 */
-struct zx_md_AssertionConsumerService_s* zxid_ac_desc(struct zxid_conf* cf,
+struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf,
 						      char* binding, char* loc, char* ix)
 {
   struct zx_md_AssertionConsumerService_s* d = zx_NEW_md_AssertionConsumerService(cf->ctx);
@@ -649,7 +650,7 @@ struct zx_md_AssertionConsumerService_s* zxid_ac_desc(struct zxid_conf* cf,
 /*() Generate SP SSO Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_meta */
-struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(struct zxid_conf* cf)
+struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf)
 {
   struct zx_md_AssertionConsumerService_s* za;
   struct zx_elem_s* ze;
@@ -736,7 +737,7 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(struct zxid_conf* cf)
 /*() Generate IdP SSO Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_meta */
-struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(struct zxid_conf* cf)
+struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf)
 {
   /*struct zx_md_ArtifactResolutionService_s* z5;*/
   struct zx_elem_s* ze;
@@ -814,7 +815,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(struct zxid_conf* cf)
 /*() Generate Organization metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_meta */
-struct zx_md_Organization_s* zxid_org_desc(struct zxid_conf* cf)
+struct zx_md_Organization_s* zxid_org_desc(zxid_conf* cf)
 {
   struct zx_md_Organization_s* org = zx_NEW_md_Organization(cf->ctx);
   org->OrganizationDisplayName = zx_NEW_md_OrganizationDisplayName(cf->ctx);
@@ -841,7 +842,7 @@ struct zx_md_Organization_s* zxid_org_desc(struct zxid_conf* cf)
 /*() Generate Contact Person metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_meta */
-struct zx_md_ContactPerson_s* zxid_contact_desc(struct zxid_conf* cf)
+struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf)
 {
   struct zx_md_ContactPerson_s* contact = zx_NEW_md_ContactPerson(cf->ctx);
 
@@ -874,8 +875,8 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(struct zxid_conf* cf)
  * cf:: ZXID configuration object, used to compute EntityID and also for memory allocation
  * return:: Entity ID as zx_str */
 
-/* Called by:  main x2, zxid_an_page_cf, zxid_check_fed, zxid_di_query, zxid_idp_select_zxstr_cf_cgi, zxid_mk_ecp_Request_hdr, zxid_mk_subj, zxid_my_issuer, zxid_ses_to_pool, zxid_show_conf, zxid_sp_meta, zxid_sp_sso_finalize, zxid_validate_cond, zxid_wsc_call, zxid_wsf_decor, zxid_wsp_validate */
-struct zx_str* zxid_my_entity_id(struct zxid_conf* cf)
+/* Called by:  main x2, zxid_check_fed, zxid_di_query, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mk_ecp_Request_hdr, zxid_mk_subj, zxid_my_issuer, zxid_ses_to_pool, zxid_show_conf, zxid_sp_meta, zxid_sp_sso_finalize, zxid_validate_cond, zxid_wsf_decor, zxid_wsf_validate_a7n */
+struct zx_str* zxid_my_entity_id(zxid_conf* cf)
 {
   if (cf->non_standard_entityid) {
     D("my_entity_id non_standard_entytid(%s)", cf->non_standard_entityid);
@@ -892,7 +893,7 @@ struct zx_str* zxid_my_entity_id(struct zxid_conf* cf)
 /*() Dynamically determine our Common Domain Cookie (IdP discovery) URL. */
 
 /* Called by: */
-struct zx_str* zxid_my_cdc_url(struct zxid_conf* cf)
+struct zx_str* zxid_my_cdc_url(zxid_conf* cf)
 {
   return zx_strf(cf->ctx, "%s?o=C", cf->cdc_url);
 }
@@ -902,7 +903,7 @@ struct zx_str* zxid_my_cdc_url(struct zxid_conf* cf)
  * you would want to use zxid_my_issuer(). */
 
 /* Called by:  zxid_my_issuer */
-struct zx_sa_Issuer_s* zxid_issuer(struct zxid_conf* cf, struct zx_str* nameid, char* affiliation)
+struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_str* nameid, char* affiliation)
 {
   struct zx_sa_Issuer_s* is = zx_NEW_sa_Issuer(cf->ctx);
   is->gg.content = nameid;
@@ -916,14 +917,14 @@ struct zx_sa_Issuer_s* zxid_issuer(struct zxid_conf* cf, struct zx_str* nameid, 
  * it will be affiliation ID. */
 
 /* Called by:  zxid_mk_a7n, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_ecp_Request_hdr, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp */
-struct zx_sa_Issuer_s* zxid_my_issuer(struct zxid_conf* cf) {
+struct zx_sa_Issuer_s* zxid_my_issuer(zxid_conf* cf) {
   return zxid_issuer(cf, zxid_my_entity_id(cf), cf->affiliation);
 }
 
 /*() Generate our SP metadata and return it as a string. */
 
 /* Called by:  zxid_send_sp_meta, zxid_simple_show_meta */
-struct zx_str* zxid_sp_meta(struct zxid_conf* cf, struct zxid_cgi* cgi)
+struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_md_EntityDescriptor_s* ed;
   
@@ -947,7 +948,7 @@ struct zx_str* zxid_sp_meta(struct zxid_conf* cf, struct zxid_cgi* cgi)
  *     methods for getting metadat without this limitation, e.g. zxid_sp_meta() */
 
 /* Called by:  main x2, opt x2 */
-int zxid_send_sp_meta(struct zxid_conf* cf, struct zxid_cgi* cgi)
+int zxid_send_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_str* ss = zxid_sp_meta(cf, cgi);
   if (!ss)
@@ -963,7 +964,7 @@ int zxid_send_sp_meta(struct zxid_conf* cf, struct zxid_cgi* cgi)
 /*() Generate our SP CARML and return it as a string. */
 
 /* Called by:  zxid_simple_show_carml */
-struct zx_str* zxid_sp_carml(struct zxid_conf* cf)
+struct zx_str* zxid_sp_carml(zxid_conf* cf)
 {
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "MYCARML", 0, 0);

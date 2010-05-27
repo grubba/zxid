@@ -34,7 +34,7 @@
  * failure (i.e. duplicate), 1 on success. */
 
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso x3 */
-static int zxid_anoint_a7n(struct zxid_conf* cf, int sign, struct zx_sa_Assertion_s* a7n, struct zx_str* issued_to, const char* lk, const char* uid)
+static int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -95,7 +95,7 @@ static int zxid_anoint_a7n(struct zxid_conf* cf, int sign, struct zx_sa_Assertio
  * may be useful for caller to send further and should be freed by the caller. */
 
 /* Called by:  zxid_idp_sso x4 */
-static struct zx_str* zxid_anoint_sso_resp(struct zxid_conf* cf, int sign, struct zx_sp_Response_s* resp, struct zx_sp_AuthnRequest_s* ar)
+static struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Response_s* resp, struct zx_sp_AuthnRequest_s* ar)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -150,7 +150,7 @@ static struct zx_str* zxid_anoint_sso_resp(struct zxid_conf* cf, int sign, struc
  * *** illegal input causes corrupt pointer. For example query string input causes corruption. */
 
 /* Called by:  zxid_mk_user_a7n_to_sp x4 */
-struct zx_sa_Attribute_s* zxid_add_ldif_attrs(struct zxid_conf* cf, struct zx_sa_Attribute_s* prev, int len, char* p, char* lk)
+struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attribute_s* prev, int len, char* p, char* lk)
 {
   struct zx_sa_Attribute_s* at;
   char* name;
@@ -184,7 +184,7 @@ struct zx_sa_Attribute_s* zxid_add_ldif_attrs(struct zxid_conf* cf, struct zx_sa
 /*() Process .bs directory. See also zxid_di_query() */
 
 /* Called by:  zxid_idp_as_do x2, zxid_mk_user_a7n_to_sp x2 */
-struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, char* path, struct zx_sa_Attribute_s* bootstraps, int bs_lvl)
+struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* path, struct zx_sa_Attribute_s* bootstraps, int bs_lvl)
 {
   struct timeval srcts = {0,501000};
   struct zx_sa_Attribute_s* at;
@@ -294,9 +294,9 @@ struct zx_sa_Attribute_s* zxid_gen_boots(struct zxid_conf* cf, const char* uid, 
  *     <= cf->bootstrap_level: add all boostraps, > cf->bootstrap_level: only add di BS. */
 
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso */
-struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zxid_ses* ses, const char* uid, struct zx_sa_NameID_s* nameid, struct zxid_entity* sp_meta, const char* sp_name_buf, int bs_lvl)
+zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int bs_lvl)
 {
-  struct zx_sa_Assertion_s* a7n;
+  zxid_a7n* a7n;
   struct zx_sa_Subject_s* subj;
   struct zx_sa_AuthnStatement_s* an_stmt;
   struct zx_sa_AttributeStatement_s* at_stmt;
@@ -349,12 +349,12 @@ struct zx_sa_Assertion_s* zxid_mk_user_a7n_to_sp(struct zxid_conf* cf, struct zx
 /*(i) Check federation, create federation if appropriate. */
 
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso */
-struct zx_sa_NameID_s* zxid_check_fed(struct zxid_conf* cf, struct zx_str* affil, const char* uid, char allow_create, struct timeval* srcts, struct zx_str* issuer, struct zx_str* req_id, const char* sp_name_buf)
+zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, char allow_create, struct timeval* srcts, struct zx_str* issuer, struct zx_str* req_id, const char* sp_name_buf)
 {
   int got;
   char buf[ZXID_MAX_USER];
   char dir[ZXID_MAX_DIR];
-  struct zx_sa_NameID_s* nameid;
+  zxid_nid* nameid;
   struct zx_str* nid;
   struct zx_str* idp_eid;
 
@@ -434,7 +434,7 @@ struct zx_sa_NameID_s* zxid_check_fed(struct zxid_conf* cf, struct zx_str* affil
 /*() Change NameID to be transient and record corresponding mapping. */
 
 /* Called by:  zxid_add_fed_tok_to_epr x2, zxid_idp_sso x2 */
-void zxid_mk_transient_nid(struct zxid_conf* cf, struct zx_sa_NameID_s* nameid, const char* sp_name_buf, const char* uid)
+void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_buf, const char* uid)
 {
   struct zx_str* nid;
   char buf[ZXID_MAX_USER];
@@ -471,12 +471,12 @@ void zxid_mk_transient_nid(struct zxid_conf* cf, struct zx_sa_NameID_s* nameid, 
  * was issued. Returns static string describing the nature of token, for logging purposes. */
 
 /* Called by:  zxid_di_query, zxid_gen_boots x2 */
-char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, zxid_epr* epr, const char* uid, int bs_lvl)
+char* zxid_add_fed_tok_to_epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int bs_lvl)
 {
   struct timeval srcts = {0,501000};
-  struct zx_sa_NameID_s* nameid;
-  struct zx_sa_Assertion_s* a7n;
-  struct zxid_entity* sp_meta;
+  zxid_nid* nameid;
+  zxid_a7n* a7n;
+  zxid_entity* sp_meta;
   struct zx_str* affil;
   char sp_name_buf[1024];
   char* logop;
@@ -553,21 +553,21 @@ char* zxid_add_fed_tok_to_epr(struct zxid_conf* cf, zxid_epr* epr, const char* u
  * logged in by the time this is called. */
 
 /* Called by:  zxid_idp_dispatch */
-struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sp_AuthnRequest_s* ar)
+struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_AuthnRequest_s* ar)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
   int binding = 0;
   struct zxsig_ref refs;
-  struct zxid_entity* sp_meta;
+  zxid_entity* sp_meta;
   struct zx_str* acsurl = 0;
   struct zx_str tmpss;
   struct zx_str* ss;
   struct zx_str* affil;
   struct zx_str* payload;
   struct timeval srcts = {0,501000};
-  struct zx_sa_NameID_s* nameid;
-  struct zx_sa_Assertion_s* a7n;
+  zxid_nid* nameid;
+  zxid_a7n* a7n;
   struct zx_sp_NameIDPolicy_s* nidpol;
   struct zx_sp_Response_s* resp;
   struct zx_e_Envelope_s* e;
@@ -805,10 +805,10 @@ struct zx_str* zxid_idp_sso(struct zxid_conf* cf, struct zxid_cgi* cgi, struct z
  */
 
 /* Called by:  zxid_sp_soap_dispatch */
-struct zx_as_SASLResponse_s* zxid_idp_as_do(struct zxid_conf* cf, struct zx_as_SASLRequest_s* req)
+struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequest_s* req)
 {
-  struct zxid_cgi cgi;
-  struct zxid_ses ses;
+  zxid_cgi cgi;
+  zxid_ses ses;
   struct zx_as_SASLResponse_s* res = zx_NEW_as_SASLResponse(cf->ctx);
   struct zx_sa_Attribute_s* at;
   char* q;

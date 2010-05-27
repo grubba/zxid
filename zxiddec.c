@@ -25,8 +25,8 @@
 
 /*() Look for issuer in all messages we support. */
 
-/* Called by:  zxid_decode_redir_or_post */
-struct zx_sa_Issuer_s* zxid_extract_issuer(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_root_s* r)
+/* Called by:  zxid_decode_redir_or_post, zxid_simple_idp_show_an */
+struct zx_sa_Issuer_s* zxid_extract_issuer(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_root_s* r)
 {
   struct zx_sa_Issuer_s* issuer = 0;
   if      (r->Response)             issuer = r->Response->Issuer;
@@ -57,11 +57,11 @@ struct zx_sa_Issuer_s* zxid_extract_issuer(struct zxid_conf* cf, struct zxid_cgi
  * 0x01  =  Check dup
  * 0x02  =  Avoid sig check and logging */
 
-/* Called by:  zxid_idp_dispatch, zxid_sp_dispatch */
-struct zx_root_s* zxid_decode_redir_or_post(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int chk_dup)
+/* Called by:  zxid_idp_dispatch, zxid_simple_idp_show_an, zxid_sp_dispatch */
+struct zx_root_s* zxid_decode_redir_or_post(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int chk_dup)
 {
   struct zx_sa_Issuer_s* issuer = 0;
-  struct zxid_entity* meta;
+  zxid_entity* meta;
   struct zx_str* ss;
   struct zx_str* logpath;
   struct zx_root_s* r = 0;

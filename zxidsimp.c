@@ -39,7 +39,7 @@
 /*() Convert configuration string ~conf~ to configuration object ~cf~. */
 
 /* Called by:  dirconf, main x2, zxid_az, zxid_fed_mgmt_len, zxid_idp_list_len, zxid_idp_select_len, zxid_new_conf_to_cf, zxid_simple_len */
-int zxid_conf_to_cf_len(struct zxid_conf* cf, int conf_len, const char* conf)
+int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
 {
 #if 1
   if (!cf->ctx) {
@@ -98,15 +98,15 @@ int zxid_conf_to_cf_len(struct zxid_conf* cf, int conf_len, const char* conf)
  * return:: Configuration object */
 
 /* Called by:  main x6, zxcall_main, zxidwspcgi_main x2 */
-struct zxid_conf* zxid_new_conf_to_cf(const char* conf)
+zxid_conf* zxid_new_conf_to_cf(const char* conf)
 {
-  struct zxid_conf* cf = malloc(sizeof(struct zxid_conf));  /* *** direct use of malloc */
-  D("malloc %p size=%d", cf, sizeof(struct zxid_conf));
+  zxid_conf* cf = malloc(sizeof(zxid_conf));  /* *** direct use of malloc */
+  D("malloc %p size=%d", cf, sizeof(zxid_conf));
   if (!cf) {
-    ERR("out-of-memory %d", sizeof(struct zxid_conf));
+    ERR("out-of-memory %d", sizeof(zxid_conf));
     exit(1); /* *** perhaps too severe! */
   }
-  cf = memset(cf, 0, sizeof(struct zxid_conf));
+  cf = memset(cf, 0, sizeof(zxid_conf));
   zxid_conf_to_cf_len(cf, -1, conf);
   return cf;
 }
@@ -123,7 +123,7 @@ struct zxid_conf* zxid_new_conf_to_cf(const char* conf)
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  zxid_fed_mgmt_len, zxid_simple_ses_active_cf */
-char* zxid_fed_mgmt_cf(struct zxid_conf* cf, int* res_len, int sid_len, char* sid, int auto_flags)
+char* zxid_fed_mgmt_cf(zxid_conf* cf, int* res_len, int sid_len, char* sid, int auto_flags)
 {
   char* res;
   struct zx_str* ss;
@@ -218,7 +218,7 @@ char* zxid_fed_mgmt_cf(struct zxid_conf* cf, int* res_len, int sid_len, char* si
 
 /* Called by:  zxid_fed_mgmt */
 char* zxid_fed_mgmt_len(int conf_len, char* conf, int* res_len, char* sid, int auto_flags) {
-  struct zxid_conf cf;
+  zxid_conf cf;
   zxid_conf_to_cf_len(&cf, conf_len, conf);
   return zxid_fed_mgmt_cf(&cf, 0, -1, sid, auto_flags);
 }
@@ -234,7 +234,8 @@ char* zxid_fed_mgmt(char* conf, char* sid, int auto_flags) {
 
 /*() Bang-bang expansions (!!VAR) understood in the templates. */
 
-static char* zxid_map_bangbang(struct zxid_conf* cf, struct zxid_cgi* cgi, const char* key, const char* lim)
+/* Called by:  zxid_template_page_cf */
+static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, const char* lim)
 {
   char* s;
   struct zx_str* ss;
@@ -275,7 +276,8 @@ static char* zxid_map_bangbang(struct zxid_conf* cf, struct zxid_cgi* cgi, const
 
 /*() Expand a template. */
 
-static struct zx_str* zxid_template_page_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, const char* templ_path, const char* default_templ)
+/* Called by:  zxid_simple_idp_show_an */
+static struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ)
 {
   char buf[8192];
   char* p;
@@ -326,15 +328,15 @@ static struct zx_str* zxid_template_page_cf(struct zxid_conf* cf, struct zxid_cg
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  zxid_idp_list_cf, zxid_idp_select_zxstr_cf_cgi */
-char* zxid_idp_list_cf_cgi(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   int i;
   char* s;
   char mark[32];
   struct zx_str* ss;
   struct zx_str* dd;
-  struct zxid_entity* idp;
-  struct zxid_entity* idp_cdc;
+  zxid_entity* idp;
+  zxid_entity* idp_cdc;
   if (auto_flags & ZXID_AUTO_DEBUG) zxid_set_opt(cf, 1, 1);
   idp = zxid_load_cot_cache(cf);
   if (!idp) {
@@ -424,13 +426,13 @@ char* zxid_idp_list_cf_cgi(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_
 }
 
 /* Called by:  zxid_idp_list_len */
-char* zxid_idp_list_cf(struct zxid_conf* cf, int* res_len, int auto_flags) {
+char* zxid_idp_list_cf(zxid_conf* cf, int* res_len, int auto_flags) {
   return zxid_idp_list_cf_cgi(cf, 0, res_len, auto_flags);
 }
 
 /* Called by:  zxid_idp_list */
 char* zxid_idp_list_len(int conf_len, char* conf, int* res_len, int auto_flags) {
-  struct zxid_conf cf;
+  zxid_conf cf;
   zxid_conf_to_cf_len(&cf, conf_len, conf);
   return zxid_idp_list_cf(&cf, 0, auto_flags);
 }
@@ -449,7 +451,7 @@ char* zxid_idp_list(char* conf, int auto_flags) {
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  zxid_idp_select_zxstr_cf, zxid_simple_show_idp_sel */
-struct zx_str* zxid_idp_select_zxstr_cf_cgi(struct zxid_conf* cf, struct zxid_cgi* cgi, int auto_flags)
+struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int auto_flags)
 {
   struct zx_str* eid=0;
   struct zx_str* ss;
@@ -537,12 +539,12 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(struct zxid_conf* cf, struct zxid_cg
 }
 
 /* Called by:  zxid_idp_select_cf */
-struct zx_str* zxid_idp_select_zxstr_cf(struct zxid_conf* cf, int auto_flags) {
+struct zx_str* zxid_idp_select_zxstr_cf(zxid_conf* cf, int auto_flags) {
   return zxid_idp_select_zxstr_cf_cgi(cf, 0, auto_flags);
 }
 
 /* Called by:  zxid_idp_select_len */
-char* zxid_idp_select_cf(struct zxid_conf* cf, int* res_len, int auto_flags) {
+char* zxid_idp_select_cf(zxid_conf* cf, int* res_len, int auto_flags) {
   char* s;
   struct zx_str* ss = zxid_idp_select_zxstr_cf(cf, auto_flags);
   s = ss->s;
@@ -554,7 +556,7 @@ char* zxid_idp_select_cf(struct zxid_conf* cf, int* res_len, int auto_flags) {
 
 /* Called by:  zxid_idp_select */
 char* zxid_idp_select_len(int conf_len, char* conf, int* res_len, int auto_flags) {
-  struct zxid_conf cf;
+  zxid_conf cf;
   zxid_conf_to_cf_len(&cf, conf_len, conf);
   return zxid_idp_select_cf(&cf, 0, auto_flags);
 }
@@ -570,7 +572,7 @@ char* zxid_idp_select(char* conf, int auto_flags) {
  * Return: 0 for Deny and 1 for Permit.  */
 
 /* Called by:  zxid_simple_ab_pep */
-static int zxid_localpdp(struct zxid_conf* cf, struct zxid_ses* ses)
+static int zxid_localpdp(zxid_conf* cf, zxid_ses* ses)
 {
   struct zxid_attr* at;
 
@@ -622,7 +624,7 @@ static int zxid_localpdp(struct zxid_conf* cf, struct zxid_ses* ses)
  * decide on authorization. */
 
 /* Called by:  chkuid, zxid_simple_cf_ses, zxid_simple_no_ses_cf x2, zxid_simple_ses_active_cf */
-char* zxid_simple_ab_pep(struct zxid_conf* cf, struct zxid_ses* ses, int* res_len, int auto_flags)
+char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_flags)
 {
   char* res;
   struct zx_str* ss;
@@ -671,7 +673,7 @@ char* zxid_simple_ab_pep(struct zxid_conf* cf, struct zxid_ses* ses, int* res_le
  * page is in ss. */
 
 /* Called by:  zxid_simple_idp_show_an, zxid_simple_show_carml, zxid_simple_show_conf, zxid_simple_show_idp_sel, zxid_simple_show_meta */
-static char* zxid_simple_show_page(struct zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags)
+static char* zxid_simple_show_page(zxid_conf* cf, struct zx_str* ss, int c_mask, int h_mask, char* rets, char* cont_type, int* res_len, int auto_flags)
 {
   char* res;
   struct zx_str* ss2;
@@ -715,8 +717,8 @@ static char* zxid_simple_show_page(struct zxid_conf* cf, struct zx_str* ss, int 
 
 /*() Helper function to redirect according to auto flags. */
 
-/* Called by:  zxid_simple_idp_show_an, zxid_simple_show_idp_sel */
-static char* zxid_simple_redir_page(struct zxid_conf* cf, char* redir, char* rs, int* res_len, int auto_flags)
+/* Called by:  zxid_simple_idp_an_ok_do_rest, zxid_simple_idp_new_user, zxid_simple_idp_recover_password, zxid_simple_idp_show_an, zxid_simple_show_idp_sel */
+static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* res_len, int auto_flags)
 {
   char* res;
   struct zx_str* ss;
@@ -742,7 +744,7 @@ static char* zxid_simple_redir_page(struct zxid_conf* cf, char* redir, char* rs,
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf x5 */
-static char* zxid_simple_show_idp_sel(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+static char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* ss;
   D("cf=%p cgi=%p", cf, cgi);
@@ -763,8 +765,8 @@ static char* zxid_simple_show_idp_sel(struct zxid_conf* cf, struct zxid_cgi* cgi
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
-static char* zxid_simple_show_meta(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+/* Called by:  zxid_simple_no_ses_cf x2, zxid_simple_ses_active_cf x2 */
+static char* zxid_simple_show_meta(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* meta = zxid_sp_meta(cf, cgi);
   return zxid_simple_show_page(cf, meta, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
@@ -774,7 +776,7 @@ static char* zxid_simple_show_meta(struct zxid_conf* cf, struct zxid_cgi* cgi, i
 /*() Emit CARML declaration for SP. Corresponds to "o=c" query string. */
 
 /* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
-static char* zxid_simple_show_carml(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+static char* zxid_simple_show_carml(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* carml = zxid_sp_carml(cf);
   return zxid_simple_show_page(cf, carml, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
@@ -784,7 +786,7 @@ static char* zxid_simple_show_carml(struct zxid_conf* cf, struct zxid_cgi* cgi, 
 /*() Dump internal info and configuration. Corresponds to "o=d" query string. */
 
 /* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
-static char* zxid_simple_show_conf(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+static char* zxid_simple_show_conf(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* ss = zxid_show_conf(cf);
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
@@ -795,7 +797,8 @@ static char* zxid_simple_show_conf(struct zxid_conf* cf, struct zxid_cgi* cgi, i
 
 /*() Decode ssoreq (ar=), i.e. the preserved original AuthnReq */
 
-static int zxid_decode_ssoreq(struct zxid_conf* cf, struct zxid_cgi* cgi)
+/* Called by:  zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
+static int zxid_decode_ssoreq(zxid_conf* cf, zxid_cgi* cgi)
 {
   int len;
   char* buf;
@@ -825,7 +828,7 @@ static int zxid_decode_ssoreq(struct zxid_conf* cf, struct zxid_cgi* cgi)
  * show the IdP management screen. */
 
 /* Called by:  zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
-static char* zxid_simple_idp_an_ok_do_rest(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int* res_len, int auto_flags)
+static char* zxid_simple_idp_an_ok_do_rest(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
   struct zx_str* ss;
   char* p;
@@ -855,8 +858,8 @@ static char* zxid_simple_idp_an_ok_do_rest(struct zxid_conf* cf, struct zxid_cgi
  *
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
-/* Called by:  zxid_simple_idp_pw_authn, zxid_simple_no_ses_cf */
-static char* zxid_simple_idp_show_an(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+/* Called by:  zxid_simple_idp_new_user, zxid_simple_idp_pw_authn, zxid_simple_idp_recover_password, zxid_simple_no_ses_cf */
+static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   int zlen, len;
   char* zbuf;
@@ -864,10 +867,10 @@ static char* zxid_simple_idp_show_an(struct zxid_conf* cf, struct zxid_cgi* cgi,
   char* p;
   char* ar;
   struct zx_sa_Issuer_s* issuer;
-  struct zxid_entity* meta;
+  zxid_entity* meta;
   struct zx_root_s* r;
   struct zx_str* ss;
-  struct zxid_ses sess;
+  zxid_ses sess;
   memset(&sess, 0 , sizeof(sess));
   D("cf=%p cgi=%p", cf, cgi);
   
@@ -961,9 +964,9 @@ static char* zxid_simple_idp_show_an(struct zxid_conf* cf, struct zxid_cgi* cgi,
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  zxid_simple_no_ses_cf */
-static char* zxid_simple_idp_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+static char* zxid_simple_idp_pw_authn(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
-  struct zxid_ses sess;
+  zxid_ses sess;
   D("cf=%p cgi=%p", cf, cgi);
  
   if (!zxid_decode_ssoreq(cf, cgi))
@@ -979,7 +982,8 @@ static char* zxid_simple_idp_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi
 
 /*() Redirect user to new user creation page. */
 
-static char* zxid_simple_idp_new_user(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+/* Called by:  zxid_simple_no_ses_cf */
+static char* zxid_simple_idp_new_user(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   char* p;
   struct zx_str* ss;
@@ -1007,7 +1011,8 @@ static char* zxid_simple_idp_new_user(struct zxid_conf* cf, struct zxid_cgi* cgi
 
 /*() Redirect user to recover password page. */
 
-static char* zxid_simple_idp_recover_password(struct zxid_conf* cf, struct zxid_cgi* cgi, int* res_len, int auto_flags)
+/* Called by:  zxid_simple_no_ses_cf */
+static char* zxid_simple_idp_recover_password(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   char* p;
   struct zx_str* ss;
@@ -1042,7 +1047,7 @@ static char* zxid_simple_idp_recover_password(struct zxid_conf* cf, struct zxid_
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  chkuid x2, zxid_simple_cf_ses, zxid_simple_idp_an_ok_do_rest */
-char* zxid_simple_ses_active_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int* res_len, int auto_flags)
+char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
   struct zx_str* accr;
   char* p;
@@ -1209,7 +1214,7 @@ res_zx_str:
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  chkuid, zxid_simple_cf_ses */
-char* zxid_simple_no_ses_cf(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int* res_len, int auto_flags)
+char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags)
 {
   char* res = 0;
   struct zx_str* ss;
@@ -1363,14 +1368,14 @@ res_zx_str:
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  zxid_simple_cf */
-char* zxid_simple_cf_ses(struct zxid_conf* cf, int qs_len, char* qs, struct zxid_ses* ses, int* res_len, int auto_flags)
+char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int* res_len, int auto_flags)
 {
   int got, ret;
   char* remote_addr;
   char* cont_len;
   char* buf = 0;
   char* res = 0;
-  struct zxid_cgi cgi;
+  zxid_cgi cgi;
   memset(&cgi, 0, sizeof(cgi));
   
   if (!cf || !ses) {
@@ -1488,9 +1493,9 @@ done:
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  main x3, zxid_simple_len, zxidwspcgi_main */
-char* zxid_simple_cf(struct zxid_conf* cf, int qs_len, char* qs, int* res_len, int auto_flags)
+char* zxid_simple_cf(zxid_conf* cf, int qs_len, char* qs, int* res_len, int auto_flags)
 {
-  struct zxid_ses ses;
+  zxid_ses ses;
   memset(&ses, 0, sizeof(ses));
   return zxid_simple_cf_ses(cf, qs_len, qs, &ses, res_len, auto_flags);
 }
@@ -1505,9 +1510,9 @@ char* zxid_simple_cf(struct zxid_conf* cf, int qs_len, char* qs, int* res_len, i
 char* zxid_simple_len(int conf_len, char* conf, int qs_len, char* qs, int* res_len, int auto_flags)
 {
   struct zx_ctx ctx;
-  struct zxid_conf cf;
+  zxid_conf cf;
   zx_reset_ctx(&ctx);
-  memset(&cf, 0, sizeof(struct zxid_conf));
+  memset(&cf, 0, sizeof(zxid_conf));
   cf.ctx = &ctx;
   zxid_conf_to_cf_len(&cf, conf_len, conf);
   return zxid_simple_cf(&cf, qs_len, qs, res_len, auto_flags);

@@ -30,9 +30,9 @@
 /*() Parse a line from .mni and form a NameID, unless there is mniptr */
 
 /* Called by:  zxid_check_fed, zxid_get_user_nameid */
-struct zx_sa_NameID_s* zxid_parse_mni(struct zxid_conf* cf, char* buf, char** pmniptr)
+zxid_nid* zxid_parse_mni(zxid_conf* cf, char* buf, char** pmniptr)
 {
-  struct zx_sa_NameID_s* nameid;
+  zxid_nid* nameid;
   char* p;
   char* idpent = 0;
   char* spqual = 0;
@@ -79,7 +79,8 @@ struct zx_sa_NameID_s* zxid_parse_mni(struct zxid_conf* cf, char* buf, char** pm
 
 /*() Formulate NameID based directory name for the user */
 
-void zxid_user_sha1_name(struct zxid_conf* cf, struct zx_str* qualif, struct zx_str* nid, char* sha1_name)
+/* Called by:  zxid_get_user_nameid, zxid_put_user, zxid_ses_to_pool x2, zxid_user_change_nameid */
+void zxid_user_sha1_name(zxid_conf* cf, struct zx_str* qualif, struct zx_str* nid, char* sha1_name)
 {
   struct zx_str* ss;
   if (!nid) {
@@ -100,13 +101,13 @@ void zxid_user_sha1_name(struct zxid_conf* cf, struct zx_str* qualif, struct zx_
  * chase the MNIptr fields until current is found. Mainly used to support MNI. */
 
 /* Called by:  zxid_sp_mni_redir, zxid_sp_mni_soap, zxid_sp_slo_redir, zxid_sp_slo_soap */
-struct zx_sa_NameID_s* zxid_get_user_nameid(struct zxid_conf* cf, struct zx_sa_NameID_s* oldnid)
+zxid_nid* zxid_get_user_nameid(zxid_conf* cf, zxid_nid* oldnid)
 {
   char sha1_name[28];
   char* buf;
   char* mniptr;
   int iter = 1000;
-  struct zx_sa_NameID_s* nameid;
+  zxid_nid* nameid;
   
   if (!cf->user_local)
     return oldnid;
@@ -132,7 +133,7 @@ struct zx_sa_NameID_s* zxid_get_user_nameid(struct zxid_conf* cf, struct zx_sa_N
 /*() Change a NameID to newnym. Old NameID's user entry is rewritten to have mniptr */
 
 /* Called by:  zxid_mni_do */
-void zxid_user_change_nameid(struct zxid_conf* cf, struct zx_sa_NameID_s* oldnid, struct zx_str* newnym)
+void zxid_user_change_nameid(zxid_conf* cf, zxid_nid* oldnid, struct zx_str* newnym)
 {
   char sha1_name[28];
   zxid_user_sha1_name(cf, oldnid->NameQualifier, newnym, sha1_name);
@@ -142,8 +143,8 @@ void zxid_user_change_nameid(struct zxid_conf* cf, struct zx_sa_NameID_s* oldnid
 
 /*() Create new user object in file system. */
 
-/* Called by:  zxid_sp_sso_finalize, zxid_user_change_nameid x2, zxid_wsp_validate */
-int zxid_put_user(struct zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, struct zx_str* spqual, struct zx_str* idpnid, char* mniptr)
+/* Called by:  zxid_sp_sso_finalize, zxid_user_change_nameid x2, zxid_wsf_validate_a7n */
+int zxid_put_user(zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, struct zx_str* spqual, struct zx_str* idpnid, char* mniptr)
 {
   char sha1_name[28];
   char dir[ZXID_MAX_BUF];
@@ -192,7 +193,7 @@ static char* login_failed = "Login failed. Check username and password. Make sur
  * return:: 0 on failure and sets cgi->err; 1 on success  */
 
 /* Called by:  zxid_idp_as_do, zxid_simple_idp_pw_authn, zxid_simple_idp_show_an */
-int zxid_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses)
+int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   const char* meth = "??";
   struct zx_str* ss;
@@ -306,7 +307,7 @@ int zxid_pw_authn(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* s
 
   /* Successful login. Establish session. */
 
-  memset(ses, 0, sizeof(struct zxid_ses));
+  memset(ses, 0, sizeof(zxid_ses));
   ses->magic = ZXID_SES_MAGIC;
   ses->an_ctx = cf->issue_authnctx_pw;  /* *** Should also depend on how user was registered */
   ss = zxid_mk_id(cf, "MSES", ZXID_ID_BITS);  /* Master session. Each pairwise SSO should have its own to avoid correlation. */

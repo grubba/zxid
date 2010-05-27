@@ -218,7 +218,8 @@ public class zxidwscprepdemo extends HttpServlet {
 	    }
 	}
 	if (qs.equals("leafprep") || qs.equals("all")) {
-	    SWIGTYPE_p_zx_a_EndpointReference_s epr = zxidjni.get_epr(cf, zxses, "x-recurs", null, null, null, 1);
+	    //SWIGTYPE_p_zx_a_EndpointReference_s epr = zxidjni.get_epr(cf, zxses, "x-recurs", null, null, null, 1);
+	    zxid_epr epr = zxidjni.get_epr(cf, zxses, "x-recurs", null, null, null, 1);
 	    if (epr != null) {
 		String url = zxidjni.get_epr_address(cf, epr);
 		System.err.print("URL("+url+")\n");

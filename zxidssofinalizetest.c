@@ -247,9 +247,9 @@ void opt(int* argc, char*** argv, char*** env)
 /* Called by: */
 int main(int argc, char** argv, char** env)
 {
-  struct zxid_conf* cf;
-  struct zxid_cgi cgi;
-  struct zxid_ses ses;
+  zxid_conf* cf;
+  zxid_cgi cgi;
+  zxid_ses ses;
   struct zx_root_s* r;
   int ret, got_all, len_so;
   char buf[256*1024];

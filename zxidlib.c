@@ -47,7 +47,7 @@ int zxid_version()
  * used for runtime version display. For compile time you
  * should check the value of the ~ZXID_VERSION~ macro. */
 
-/* Called by:  main x7, opt x2, zxid_an_page_cf, zxid_fed_mgmt_cf, zxid_idp_select_zxstr_cf_cgi, zxid_mgmt */
+/* Called by:  main x7, opt x2, zxid_fed_mgmt_cf, zxid_idp_select_zxstr_cf_cgi, zxid_map_bangbang, zxid_mgmt */
 char* zxid_version_str()
 {
   return ZXID_REL " " ZXID_COMPILE_DATE " libzxid (zxid.org)";
@@ -62,8 +62,8 @@ char* zxid_version_str()
  *     bits should be multiple of 24 (3 bytes expands to 4 safe base64 chars)
  * return:: The identifier as zx_str. Caller should eventually free this memory.
  */
-/* Called by:  zxid_check_fed, zxid_di_query, zxid_mk_a7n, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_dap_query_item, zxid_mk_dap_resquery, zxid_mk_dap_subscription, zxid_mk_dap_test_item, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_mk_subj, zxid_mk_transient_nid, zxid_put_ses, zxid_pw_authn, zxid_wsc_call, zxid_wsf_decor */
-struct zx_str* zxid_mk_id(struct zxid_conf* cf, char* prefix, int bits)
+/* Called by:  zxid_check_fed, zxid_di_query, zxid_mk_a7n, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_dap_query_item, zxid_mk_dap_resquery, zxid_mk_dap_subscription, zxid_mk_dap_test_item, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_mk_subj, zxid_mk_transient_nid, zxid_put_ses, zxid_pw_authn, zxid_wsc_prep_secmech, zxid_wsf_decor */
+struct zx_str* zxid_mk_id(zxid_conf* cf, char* prefix, int bits)
 {
   char bit_buf[ZXID_ID_MAX_BITS/8];
   char base64_buf[ZXID_ID_MAX_BITS/6 + 1];
@@ -83,8 +83,8 @@ struct zx_str* zxid_mk_id(struct zxid_conf* cf, char* prefix, int bits)
  * without milliseconds form. Some other softwares are buggy and fail to
  * accept the without milliseconds form. You can change the format at compile time.
  */
-/* Called by:  zxid_mk_a7n x3, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_wsc_call, zxid_wsf_decor */
-struct zx_str* zxid_date_time(struct zxid_conf* cf, time_t secs)
+/* Called by:  zxid_mk_a7n x3, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_wsc_prep_secmech, zxid_wsf_decor */
+struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs)
 {
   struct tm t;
   secs += cf->timeskew;
@@ -114,7 +114,7 @@ struct zx_str* zxid_date_time(struct zxid_conf* cf, time_t secs)
  * return:: XML data structure representing the response  */
 
 /* Called by:  zxid_wsc_call */
-struct zx_root_s* zxid_soap_call_envelope(struct zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env)
+struct zx_root_s* zxid_soap_call_envelope(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env)
 {
   struct zx_root_s* r;
   struct zx_str* ss;
@@ -138,7 +138,7 @@ struct zx_root_s* zxid_soap_call_envelope(struct zxid_conf* cf, struct zx_str* u
  * return:: XML data structure representing the response  */
 
 /* Called by:  zxid_pep_az_soap, zxid_soap_call_body */
-struct zx_root_s* zxid_soap_call_hdr_body(struct zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body)
+struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Header_s* hdr, struct zx_e_Body_s* body)
 {
   struct zx_root_s* r;
   struct zx_str* ss;
@@ -163,7 +163,7 @@ struct zx_root_s* zxid_soap_call_hdr_body(struct zxid_conf* cf, struct zx_str* u
  * return:: XML data structure representing the response  */
 
 /* Called by:  zxid_as_call_ses, zxid_idp_soap, zxid_sp_deref_art, zxid_sp_soap */
-struct zx_root_s* zxid_soap_call_body(struct zxid_conf* cf, struct zx_str* url, struct zx_e_Body_s* body)
+struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Body_s* body)
 {
   /*return zxid_soap_call_hdr_body(cf, url, zx_NEW_e_Header(cf->ctx), body);*/
   return zxid_soap_call_hdr_body(cf, url, 0, body);
@@ -177,8 +177,8 @@ struct zx_root_s* zxid_soap_call_body(struct zxid_conf* cf, struct zx_str* url, 
  * body::   XML data structure representing the request
  * return:: 0 if fail, ZXID_REDIR_OK if success. */
 
-/* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x5 */
-int zxid_soap_cgi_resp_body(struct zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid)
+/* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x6 */
+int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid)
 {
   struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx);
   struct zx_str* ss;
@@ -235,7 +235,7 @@ int zxid_soap_cgi_resp_body(struct zxid_conf* cf, struct zx_e_Body_s* body, stru
  *     0 on failure.  */
 
 /* Called by:  zxid_idp_sso x3 */
-struct zx_str* zxid_saml2_post_enc(struct zxid_conf* cf, char* field, struct zx_str* payload, char* relay_state, int sign, struct zx_str* action_url)
+struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* payload, char* relay_state, int sign, struct zx_str* action_url)
 {
   RSA* sign_pkey;
   struct zx_str id_str;
@@ -357,7 +357,7 @@ struct zx_str zxstr_unknown = { {0,0,0,0,0}, sizeof("UNKNOWN")-1, "UNKNOWN" };
  * return::      Query string encoding of the request. The memory should be freed by the caller. */
 
 /* Called by:  zxid_saml2_redir, zxid_saml2_redir_url, zxid_saml2_resp_redir */
-struct zx_str* zxid_saml2_redir_enc(struct zxid_conf* cf, char* field, struct zx_str* pay_load, char* relay_state)
+struct zx_str* zxid_saml2_redir_enc(zxid_conf* cf, char* field, struct zx_str* pay_load, char* relay_state)
 {
   RSA* sign_pkey;
   struct zx_str* logpath;
@@ -459,7 +459,7 @@ struct zx_str* zxid_saml2_redir_enc(struct zxid_conf* cf, char* field, struct zx
  * return::      URL suitable for redirection as ~zx_str~. The memory should be freed by the caller. */
 
 /* Called by:  zxid_start_sso_url */
-struct zx_str* zxid_saml2_redir_url(struct zxid_conf* cf, struct zx_str* loc, struct zx_str* pay_load, char* relay_state)
+struct zx_str* zxid_saml2_redir_url(zxid_conf* cf, struct zx_str* loc, struct zx_str* pay_load, char* relay_state)
 {
   struct zx_str* ss;
   struct zx_str* rse = zxid_saml2_redir_enc(cf, "SAMLRequest=", pay_load, relay_state);
@@ -487,7 +487,7 @@ struct zx_str* zxid_saml2_redir_url(struct zxid_conf* cf, struct zx_str* loc, st
  * return::      HTTP Location header as ~zx_str~. The memory should be freed by the caller. */
 
 /* Called by:  zxid_sp_mni_redir, zxid_sp_slo_redir */
-struct zx_str* zxid_saml2_redir(struct zxid_conf* cf, struct zx_str* loc, struct zx_str* pay_load, char* relay_state)
+struct zx_str* zxid_saml2_redir(zxid_conf* cf, struct zx_str* loc, struct zx_str* pay_load, char* relay_state)
 {
   struct zx_str* ss;
   struct zx_str* rse = zxid_saml2_redir_enc(cf, "SAMLRequest=", pay_load, relay_state);
@@ -514,7 +514,7 @@ struct zx_str* zxid_saml2_redir(struct zxid_conf* cf, struct zx_str* loc, struct
  * return::      HTTP Location header as ~zx_str~. The memory should be freed by the caller. */
 
 /* Called by:  zxid_idp_dispatch, zxid_slo_resp_redir, zxid_sp_dispatch */
-struct zx_str* zxid_saml2_resp_redir(struct zxid_conf* cf, struct zx_str* loc, struct zx_str* pay_load, char* relay_state)
+struct zx_str* zxid_saml2_resp_redir(zxid_conf* cf, struct zx_str* loc, struct zx_str* pay_load, char* relay_state)
 {
   struct zx_str* ss;
   struct zx_str* rse = zxid_saml2_redir_enc(cf, "SAMLResponse=", pay_load, relay_state);
@@ -540,7 +540,7 @@ struct zx_str* zxid_saml2_resp_redir(struct zxid_conf* cf, struct zx_str* loc, s
  * return:: 1 of SAML message is OK, 0 if message is not OK. */
 
 /* Called by:  zxid_idp_dispatch x2, zxid_idp_soap_dispatch, zxid_pep_az_soap, zxid_sp_dispatch x3, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x3 */
-int zxid_saml_ok(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx_sp_Status_s* st, char* what)
+int zxid_saml_ok(zxid_conf* cf, zxid_cgi* cgi, struct zx_sp_Status_s* st, char* what)
 {
   struct zx_str* ss;
   struct zx_str* m = 0;
@@ -591,8 +591,8 @@ int zxid_saml_ok(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zx_sp_Status
  *     structure is decrypted and its contents returned as the Name ID
  * return:: XML data structure corresponding to (possibly decrypted) Name ID */
 
-/* Called by:  test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, zxid_di_query, zxid_idp_slo_do, zxid_mni_do, zxid_sp_slo_do, zxid_sp_sso_finalize, zxid_wsp_validate */
-struct zx_sa_NameID_s* zxid_decrypt_nameid(struct zxid_conf* cf, struct zx_sa_NameID_s* nid, struct zx_sa_EncryptedID_s* encid)
+/* Called by:  test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, zxid_di_query, zxid_idp_slo_do, zxid_mni_do, zxid_sp_slo_do, zxid_sp_sso_finalize, zxid_wsf_validate_a7n */
+zxid_nid* zxid_decrypt_nameid(zxid_conf* cf, zxid_nid* nid, struct zx_sa_EncryptedID_s* encid)
 {
   struct zx_str* ss;
   struct zx_root_s* r;
@@ -628,7 +628,7 @@ struct zx_sa_NameID_s* zxid_decrypt_nameid(struct zxid_conf* cf, struct zx_sa_Na
  * return:: XML data structure corresponding to (possibly decrypted) new Name ID */
 
 /* Called by:  zxid_mni_do */
-struct zx_str* zxid_decrypt_newnym(struct zxid_conf* cf, struct zx_str* newnym, struct zx_sp_NewEncryptedID_s* encid)
+struct zx_str* zxid_decrypt_newnym(zxid_conf* cf, struct zx_str* newnym, struct zx_sp_NewEncryptedID_s* encid)
 {
   struct zx_str* ss;
   struct zx_root_s* r;
@@ -674,12 +674,12 @@ struct zx_str* zxid_decrypt_newnym(struct zxid_conf* cf, struct zx_str* newnym, 
  * manually and then call zxsig_validate() with correctly populate refs array.
  */
 
-/* Called by:  zxid_idp_slo_do, zxid_mni_do, zxid_sp_dig_sso_a7n, zxid_sp_slo_do, zxid_xacml_az_do */
-int zxid_chk_sig(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, const char* lk)
+/* Called by:  zxid_idp_slo_do, zxid_mni_do, zxid_sp_dig_sso_a7n, zxid_sp_slo_do, zxid_xacml_az_cd1_do, zxid_xacml_az_do */
+int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, const char* lk)
 {
   struct zx_str* issuer = 0;
   struct zxsig_ref refs;
-  struct zxid_entity* idp_meta;
+  zxid_entity* idp_meta;
   char* err = "S"; /* See: RES in zxid-log.pd, section "ZXID Log Format" */
   
   if (!sig) { D("No signature in %s", lk); return 1; /* Not an error */ }
@@ -735,7 +735,7 @@ erro:
 /*() Transform content according to map. The returned zx_str will be nul terminated. */
 
 /* Called by:  pool2apache x2, zxid_add_at_values, zxid_pep_az_soap x2, zxid_pool_to_json x2, zxid_pool_to_ldif x2, zxid_pool_to_qs x2 */
-struct zx_str* zxid_map_val(struct zxid_conf* cf, struct zxid_map* map, struct zx_str* val)
+struct zx_str* zxid_map_val(zxid_conf* cf, struct zxid_map* map, struct zx_str* val)
 {
   struct zx_str* ss = val;
   char* bin;
@@ -801,7 +801,7 @@ struct zx_str* zxid_map_val(struct zxid_conf* cf, struct zxid_map* map, struct z
 /*() Extract from a string representing SOAP envelope, the payload part in the body. */
 
 /* Called by:  zxcall_main */
-char* zxid_extract_body(struct zxid_conf* cf, char* enve)
+char* zxid_extract_body(zxid_conf* cf, char* enve)
 {
   char* p;
   char* q;

@@ -32,7 +32,7 @@
 /*() Extract an assertion, decrypting EncryptedAssertion if needed. */
 
 /* Called by:  zxid_sp_dig_sso_a7n, zxid_sp_soap_dispatch, zxid_wsp_validate */
-struct zx_sa_Assertion_s* zxid_dec_a7n(struct zxid_conf* cf, struct zx_sa_Assertion_s* a7n, struct zx_sa_EncryptedAssertion_s* enca7n)
+zxid_a7n* zxid_dec_a7n(zxid_conf* cf, zxid_a7n* a7n, struct zx_sa_EncryptedAssertion_s* enca7n)
 {
   struct zx_str* ss;
   struct zx_root_s* r;
@@ -59,9 +59,9 @@ struct zx_sa_Assertion_s* zxid_dec_a7n(struct zxid_conf* cf, struct zx_sa_Assert
 /*() Extract an assertion from Request, decrypting EncryptedAssertion if needed, and perform SSO */
 
 /* Called by:  zxid_idp_soap_dispatch, zxid_sp_dispatch, zxid_sp_soap_dispatch x3 */
-static int zxid_sp_dig_sso_a7n(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_sp_Response_s* resp)
+static int zxid_sp_dig_sso_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_Response_s* resp)
 {
-  struct zx_sa_Assertion_s* a7n;
+  zxid_a7n* a7n;
 
   if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)resp, resp->Signature, resp->Issuer, "Response"))
     return 0;
@@ -87,10 +87,10 @@ static int zxid_sp_dig_sso_a7n(struct zxid_conf* cf, struct zxid_cgi* cgi, struc
  *     strings such as "Location: ..." should be freed by caller. */
 
 /* Called by:  main x3, zxid_mgmt, zxid_simple_no_ses_cf, zxid_simple_ses_active_cf */
-struct zx_str* zxid_sp_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses)
+struct zx_str* zxid_sp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 {
   struct zx_sp_LogoutRequest_s* req;
-  struct zxid_entity* idp_meta;
+  zxid_entity* idp_meta;
   struct zx_str* loc;
   struct zx_str* ss;
   struct zx_str* ss2;
@@ -170,7 +170,7 @@ struct zx_str* zxid_sp_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, stru
 /*() Create Authorization Decision */
 
 /* Called by:  zxid_xacml_az_do x2 */
-static void zxid_ins_xacml_az_stmt(struct zxid_conf* cf, struct zx_sa_Assertion_s* a7n, char* deci)
+static void zxid_ins_xacml_az_stmt(zxid_conf* cf, zxid_a7n* a7n, char* deci)
 {
   /* Two ways of doing assertion with XACMLAuthzDecisionStatement:
    * 1. Explicitly include such statement in assertion
@@ -189,7 +189,8 @@ static void zxid_ins_xacml_az_stmt(struct zxid_conf* cf, struct zx_sa_Assertion_
 #endif
 }
 
-static void zxid_ins_xacml_az_cd1_stmt(struct zxid_conf* cf, struct zx_sa_Assertion_s* a7n, char* deci)
+/* Called by:  zxid_xacml_az_cd1_do x2 */
+static void zxid_ins_xacml_az_cd1_stmt(zxid_conf* cf, zxid_a7n* a7n, char* deci)
 {
   /* Two ways of doing assertion with XACMLAuthzDecisionStatement:
    * 1. Explicitly include such statement in assertion
@@ -212,10 +213,10 @@ static void zxid_ins_xacml_az_cd1_stmt(struct zxid_conf* cf, struct zx_sa_Assert
  * SAML assertion containing Authorization Decision Statement. */
 
 /* Called by:  zxid_sp_soap_dispatch */
-static struct zx_sp_Response_s* zxid_xacml_az_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_xasp_XACMLAuthzDecisionQuery_s* azq)
+static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_xasp_XACMLAuthzDecisionQuery_s* azq)
 {
   struct zx_sp_Response_s* resp;
-  struct zx_sa_Assertion_s* a7n;
+  zxid_a7n* a7n;
   struct zx_str* affil;
   struct zx_str* subj;
   struct zx_xac_Attribute_s* xac_at;
@@ -256,10 +257,11 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(struct zxid_conf* cf, struct zx
   return resp;
 }
 
-static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* azq)
+/* Called by:  zxid_sp_soap_dispatch */
+static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* azq)
 {
   struct zx_sp_Response_s* resp;
-  struct zx_sa_Assertion_s* a7n;
+  zxid_a7n* a7n;
   struct zx_str* affil;
   struct zx_str* subj;
   struct zx_xac_Attribute_s* xac_at;
@@ -307,7 +309,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(struct zxid_conf* cf, struc
  * Return 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
 /* Called by:  zxid_idp_soap_parse, zxid_sp_deref_art, zxid_sp_soap_parse */
-int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, struct zx_root_s* r)
+int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_root_s* r)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -401,7 +403,7 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
     }
 
     if (r->Envelope->Body->Query) { /* Discovery 2.0 Query */
-      struct zx_sa_Assertion_s* a7n;
+      zxid_a7n* a7n;
       struct zx_di_QueryResponse_s* di_resp;
 
       if (!r->Envelope->Header || !r->Envelope->Header->Security
@@ -478,7 +480,7 @@ int zxid_sp_soap_dispatch(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxi
 /*() Return 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
 /* Called by:  chkuid, main x6, zxid_simple_cf_ses */
-int zxid_sp_soap_parse(struct zxid_conf* cf, struct zxid_cgi* cgi, struct zxid_ses* ses, int len, char* buf)
+int zxid_sp_soap_parse(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int len, char* buf)
 {
   struct zx_root_s* r;
   LOCK(cf->ctx->mx, "sp soap parse");

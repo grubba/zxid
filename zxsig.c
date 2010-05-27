@@ -73,7 +73,7 @@
  *       FK6X9qO8qZntp3CeFbA7gpG9n9rWyJWlzSXy0vKNspwMGdl8HPfOGcXEs2Ts=</></>
  */
 
-/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_pep_az_soap x3, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x5, zxid_wsf_sign */
+/* Called by:  zxid_anoint_a7n, zxid_anoint_sso_resp, zxid_idp_soap_dispatch x2, zxid_idp_sso, zxid_mk_art_deref, zxid_pep_az_soap x3, zxid_sp_mni_soap, zxid_sp_slo_soap, zxid_sp_soap_dispatch x6, zxid_wsf_sign */
 struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* sref, X509* cert, RSA* priv_key)
 {
   char sha1[20];
@@ -153,7 +153,7 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
  * sref::   An array of (reference, xml data structure) tuples that are referenced by the signature
  * return:: ZXSIG value. 0 (ZXSIG_OK) means success. Any other value is some soft of failure */
 
-/* Called by:  main x5, zxid_chk_sig, zxid_sp_sso_finalize, zxid_wsp_validate x2 */
+/* Called by:  main x5, zxid_chk_sig, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */
 int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, int n, struct zxsig_ref* sref)
 {
   EVP_PKEY* evp_pkey;
@@ -416,7 +416,7 @@ int zxsig_verify_data_rsa_sha1(int len, char* data, int siglen, char* sig, X509*
  * return:: Decrypted data as zx_str. Caller should free this memory. */
 
 /* Called by:  zxenc_privkey_dec */
-struct zx_str* zxenc_symkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedData_s* ed, struct zx_str* symkey)
+struct zx_str* zxenc_symkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* ed, struct zx_str* symkey)
 {
   struct zx_str raw;
   struct zx_str* ss;
@@ -486,7 +486,7 @@ struct zx_str* zxenc_symkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedDa
  * return:: Decrypted data as zx_str. Caller should free this memory. */
 
 /* Called by:  zxid_dec_a7n, zxid_decrypt_nameid, zxid_decrypt_newnym, zxid_get_ses_sso_a7n */
-struct zx_str* zxenc_privkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedData_s* ed, struct zx_xenc_EncryptedKey_s* ek)
+struct zx_str* zxenc_privkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* ed, struct zx_xenc_EncryptedKey_s* ek)
 {
   RSA* enc_pkey;
   struct zx_str raw;
@@ -582,7 +582,7 @@ struct zx_str* zxenc_privkey_dec(struct zxid_conf* cf, struct zx_xenc_EncryptedD
  */
 
 /* Called by:  zxenc_pubkey_enc */
-struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(struct zxid_conf* cf, struct zx_str* data, struct zx_str* ed_id, struct zx_str* symkey, struct zx_str* symkey_id)
+struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_str* ed_id, struct zx_str* symkey, struct zx_str* symkey_id)
 {
   struct zx_str* ss;
   struct zx_str* b64;
@@ -620,7 +620,7 @@ struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(struct zxid_conf* cf, struct zx
  * return:: Encrypted data as XML data structure. Caller should free this memory. */
 
 /* Called by:  zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni */
-struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(struct zxid_conf* cf, struct zx_str* data, struct zx_xenc_EncryptedKey_s** ekp, X509* cert, char* idsuffix)
+struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_xenc_EncryptedKey_s** ekp, X509* cert, char* idsuffix)
 {
   struct rsa_st* rsa_pkey;
   char symkey[128/8];
