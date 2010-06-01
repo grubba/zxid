@@ -905,13 +905,13 @@ char* zxid_fed_mgmt(char* conf, char* sid, int auto_flags)
 ---------------------------------------------------------------
 
 Although a simple PEP functionality is built-in to zxid_simple() API
-through configuration options like ~PEPMAP~, ~LOCALPDP_*~ family, and
-~PDP_URL~, it is sometimes desireable to implement a Policy Enforcement
-Point at application layer where full particluars of the request or
+through configuration options like ~PEPMAP~, LOCALPDP_* family, and
+~PDP_URL~, it is sometimes desirable to implement a Policy Enforcement
+Point (PEP) at application layer where full particluars of the request or
 response are available. To assist in this, the simple API provides
-authrorization client, which we term PEP because at protocol layer it
+authorization client, which we term PEP because at protocol layer it
 is a XACML PEP, which your application code can call to implement the
-protocols specifics of a PDP. However, your own code still needs to
+protocols specifics of calling a PDP. However, your own code still needs to
 implement the actual enforcement or filtering logic.
 
 4.5.1 zxid_az(conf, qs, sesid)

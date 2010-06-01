@@ -225,11 +225,6 @@ struct zx_str* zxid_wsp_decoratef(zxid_conf* cf, zxid_ses* ses, const char* az_c
   return zxid_wsp_decorate(cf, ses, az_cred, s);
 }
 
-#define TAS3_PEP_RQ_OUT "urn:tas3:ctlpt:pep:rq:out"
-#define TAS3_PEP_RQ_IN  "urn:tas3:ctlpt:pep:rq:in"
-#define TAS3_PEP_RS_OUT "urn:tas3:ctlpt:pep:rs:out"
-#define TAS3_PEP_RS_IN  "urn:tas3:ctlpt:pep:rs:in"
-
 /*() Perform necessary validation steps to check either requester or target identity
  * assertion. Also log the assertion and extract from assertion relevant information
  * into the session. The two types of assertion are distinguished by lk == "req" or "tgt".
@@ -283,7 +278,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No unable to find SAML metadata for Assertion Issuer.", "ProviderIDNotValid", 0, lk, 0));
       return 0;
     } else {
-      INFO("%s: Unable to find metadata for Assertion Issuer(%.*s), but configured to ignore this problem.", lk, issuer->len, issuer->s);
+      INFO("%s: Unable to find metadata for Assertion Issuer(%.*s), but configured to ignore this problem (NOSIG_FATAL=0).", lk, issuer->len, issuer->s);
     }
   } else {
     if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
@@ -301,7 +296,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
 	  zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Assertion not signed.", "urn:tas3:status:nosig", 0, lk, 0));
 	  return 0;
 	} else {
-	  INFO("SSO warn: assertion not signed, but configured to ignore this problem. Sigval(%s) %p", STRNULLCHKNULL(cgi.sigval), a7n->Signature);
+	  INFO("SSO warn: assertion not signed, but configured to ignore this problem (NOSIG_FATAL=0). Sigval(%s) %p", STRNULLCHKNULL(cgi.sigval), a7n->Signature);
 	}
       }
     }
@@ -454,7 +449,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
       D_DEDENT("valid: ");
       return 0;
     } else {
-      INFO("No Security/Signature found, but configured to ignore this problem. %p", sec->Signature);
+      INFO("No Security/Signature found, but configured to ignore this problem (NOSIG_FATAL=0). %p", sec->Signature);
       D("No sig OK enve(%s)", enve);
     }
   }
@@ -463,7 +458,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   if (!wsc_meta) {
     ses->sigres = ZXSIG_NO_SIG;
     if (cf->nosig_fatal) {
-      INFO("Unable to find SAML metadata for Sender(%.*s), but configured to ignore this problem.", issuer->len, issuer->s);
+      INFO("Unable to find SAML metadata for Sender(%.*s), but configured to ignore this problem (NOSIG_FATAL=0).", issuer->len, issuer->s);
     } else {
       ERR("Unable to find SAML metadata for Sender(%.*s).", issuer->len, issuer->s);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No unable to find SAML metadata for sender.", "ProviderIDNotValid", 0, 0, 0));

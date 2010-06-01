@@ -46,12 +46,14 @@
 #define ZXID_PATH "/var/zxid/"
 
 /*(c) SP Nickname for IdP User Interface
+ * IMPORTANT: You should really configure this option.
  * The nice name may be used by IdP user interface to refer to the SP. It
  * is usually a short human readable name or description. It will also
  * appear in metadata as Organization/OrganizationDisplayName */
 #define ZXID_NICE_NAME "ZXID CONF NICE_NAME: Set this to describe your site to humans"
 
 /*(c) Web Site URL - root of EntityID
+ * IMPORTANT: Failure to config this option may block zxid from operating.
  * URL for most zxid operations. It must end in whatever triggers
  * the ZXID functionality in the web server. The hostname
  * and port number should match the server under which zxid CGI is accessible.
@@ -71,7 +73,6 @@
 #define ZXID_NON_STANDARD_ENTITYID 0
 
 /*(c) Allow omission of o=B, i.e. make the URL be the entity ID. */
-
 #define ZXID_BARE_URL_ENTITYID 0
 
 /*(c) Illadviced ACS URL Hack
@@ -122,6 +123,9 @@
  *     to fetch the meta data xml files from well known location URLs (or other
  *     URLs if you know better). Or you could use zxidcot.pl?op=md or zxcot(1) tool.
  *
+ *     N.B. Even if fetching is enabled, the fetch can still fail due to
+ *     network connectivity issues or due to other end not supporting it.
+ *
  * MD_POPULATE_CACHE:: controls whether ZXID will write the metadata to
  *     the on-disk cache. This requires ZXID_MD_FETCH to be enabled
  *     and the file system permissions of the cache directory (e.g. /var/zxid/cot)
@@ -148,16 +152,16 @@
  * of the Circle of Trust. Some real world federations distribute their
  * metadata this way. Setting this to 0 disables the feature (default).
  * Setting this to file name or path enables this feature. */
-
 #define ZXID_LOAD_COT_CACHE 0
 
 /*(c) Automatic Self-signed Cert Generation (Auto-Cert)
- * If ZXID does not find one of the certificate plus private key
- * pairs it needs to operate, it will generate automatically
- * a self-signed certificate and private key and populate it to
- * the assigned place. The certificate will be valid for 30 years.
- * If you do not want this to happen, you should disable this option
- * and install the certificate - private key pairs manually to
+ * If ZXID does not find one of the certificate plus private key pairs
+ * it needs to operate, it will generate automatically a self-signed
+ * certificate and private key and populate it to the assigned
+ * place. The certificate will be valid until the end of the Unix
+ * epoch (2037).  If you do not want this to happen, you should
+ * disable this option and install the certificate - private key pairs
+ * manually to
  *
  *   /var/zxid/pem/enc-nopw-cert.pem
  *   /var/zxid/pem/sign-nopw-cert.pem
@@ -167,7 +171,6 @@
  *
  * Hint: you can use same certificate - private key pair for
  * all purposes. Just copy the file. */
-
 #define ZXID_AUTO_CERT 1
 
 /*(c) Authentication Request Signing
@@ -198,12 +201,10 @@
  * Whether SLO and MNI requests emitted by ZXID will encrypt the
  * NameID (on received requests ZXID accepts either plain or encrypted
  * automatically and without configuration). (*** doc) */
-
 #define ZXID_NAMEID_ENC 0x0f
 
 /*(c) Assertion Encryption in POST
  * Whether to encrypt assertions when using POST bindings. */
-
 #define ZXID_POST_A7N_ENC 1
 
 /*(c) Controls whether new fedarations can be created during discovery. */
@@ -219,7 +220,7 @@
 
 /*(c) Control how many levels of bootstraps are added to assertions. Normally
  * only first level is added, i.e. all available bootstraps are embedded in
- * the assertion are , but the assertions of the embedded bootstraps only
+ * the assertion, but the assertions of the embedded bootstraps only
  * get discovery bootstrap. 2 would cause the assertions of the first order
  * boostraps to have further bootstraps embedded, etc. Since bootstrap
  * generation tends to be expensive and wasteful, you should use discovery
@@ -250,15 +251,15 @@
  * such that it produces nice unpadded base64 string, i.e. multiple of 24 bits.
  * Longer IDs reduce chances of random collision (most code does not
  * check uniqueness of ID) and may increase security. For security purposes
- * 144 bits is probably good enugh. The unguessability of ID has security
+ * 144 bits is probably good enough. The unguessability of ID has security
  * implications, among others, in session IDs. You may want to use less than
  * 144 bits if your application could benefit from shorter IDs (e.g. you target
  * browsers with length constrained URLs) and does not need to be
  * secure against attacks with government level resources.
- * E.g:  24 bits ==  3 bytes ==  4 base64 chars,
- *       48 bits ==  6 bytes ==  8 base64 chars,
- *      120 bits == 15 bytes == 20 base64 chars,
- *      144 bits == 18 bytes == 24 base64 chars */
+ * E.g:  24 bits ==  3 bytes ==  4 safe_base64 chars,
+ *       48 bits ==  6 bytes ==  8 safe_base64 chars,
+ *      120 bits == 15 bytes == 20 safe_base64 chars,
+ *      144 bits == 18 bytes == 24 safe_base64 chars */
 #define ZXID_ID_BITS 144      /* (compile) */
 #define ZXID_ID_MAX_BITS 168  /* used for static buffer allocation (compile) */
 
@@ -271,7 +272,7 @@
  * problematic because if not enough randomness is available, the
  * system will block (stop) until enough randomness arrives. Generally
  * true randomness is not feasible in a server environment unless
- * you have hardware random number generator. */
+ * you have a hardware random number generator. */
 #define ZXID_TRUE_RAND 0  /* (compile) */
 
 /*(c) Session Archival Directory
@@ -279,7 +280,7 @@
  * dead sessions are moved (sessions are files). This directory
  * must be on the same file system as active session directory,
  * usually /var/zxid/ses, for example /var/zxid/oldses.
- * You may want to archieve old sessions because they contain
+ * You may want to archive old sessions because they contain
  * the SSO assertions that allowed the users to log in. This
  * may have legal value for your application, you may even be required
  * by law to keep this audit trail.
@@ -303,7 +304,7 @@
  * This is optional unless you require IdP
  * initiated ManageNameID requests to work. Local user account management
  * may be useful on its own right if your application does not yet have
- * such system. If it has, you probably want to continue to use
+ * such system. If it already has, you probably want to continue to use
  * the application's own system. Local accounts are stored under
  * /var/zxid/user/SHA1 */
 #define ZXID_USER_LOCAL 1
@@ -312,11 +313,11 @@
  * Whether limited IdP functionality is enabled. Affects generated metadata. */
 #define ZXID_IDP_ENA 0
 
-/*(c) Mini IdP
+/*(c) Mini Authentication Service
  * Whether limited Authentication Service functionality is enabled.
  * Please note that the AuthenticationService impmenetation at present (2010)
- * is incomplete and fails to properly authenticate and authorize the caller,
- * i.e. anyone who knows a username and password can call it. */
+ * is incomplete and fails to properly authenticate and authorize the caller
+ * system entity, i.e. anyone who knows a username and password can call it. */
 #define ZXID_AS_ENA 0
 
 /*(c) Dummy PDP
@@ -416,7 +417,6 @@
 /*(c) Per user activity logging.
  * This option enables logging in /var/zxid/idpuid/UID/.log some key
  * events such as authentication, SSO, and SLO. */
-
 #define ZXID_LOGUSER 1
 
 /*(c) Assertion validation options.
@@ -428,8 +428,8 @@
 #define ZXID_MSG_SIG_OK     1 /* Message layer signature (e.g. SimpleSign) is sufficeint when assertion signature is missing. */
 #define ZXID_AUDIENCE_FATAL 1 /* Whether AudienceRestriction is checked. */
 #define ZXID_TIMEOUT_FATAL  1 /* Whether NotBefore and NotOnOrAfter are checked */
-#define ZXID_DUP_A7N_FATAL  1 /* Whether duplication of AssertionID is considered fatal. */
-#define ZXID_DUP_MSG_FATAL  1 /* Whether duplication of MessageID or message is considered fatal. */
+#define ZXID_DUP_A7N_FATAL  1 /* Whether duplicate AssertionID is considered fatal. */
+#define ZXID_DUP_MSG_FATAL  1 /* Whether duplicate MessageID or message is considered fatal. */
 #define ZXID_RELTO_FATAL    1 /* Whether failure to correlate RelatesTo to MessageID, or total lack of RelatesTo, is considered fatal. */
 
 /*(c) Web service request and response validation options. For the token
@@ -442,7 +442,8 @@
  * to be perfect, not to speak of timezone misconfigurations and the
  * dreaded officially introduced time errors (e.g. daylight "savings" time),
  * you can configure some slop in how the timeout is evaluated. For production
- * use something like 60 seconds could be a good value. 3600 = 1 hour, 86400 = 1 day. */
+ * use something like 60 seconds could be a good value. 3600 = 1 hour, 86400 = 1 day.
+ * Slop is used in assessing validity of assertions as well as message timestamps. */
 #define ZXID_BEFORE_SLOP    86400  /* Number of seconds before that is acceptable. */
 #define ZXID_AFTER_SLOP     86400  /* Number of seconds after that is acceptable. */
 

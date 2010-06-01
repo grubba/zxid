@@ -106,6 +106,7 @@ struct zx_as_SASLRequest_s;
 struct zx_di_Query_s;
 struct zx_di_QueryResponse_s;
 struct zx_lu_Status_s;
+struct zx_wsu_Timestamp_s;
 struct zx_wsse_Security_s;
 struct zx_wsse_SecurityTokenReference_s;
 struct zx_dap_Select_s;
@@ -880,7 +881,7 @@ int zxid_map_sec_mech(zxid_epr* epr);
 int zxid_hunt_sig_parts(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_ds_Reference_s* sref, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy);
 int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_e_Header_s* hdr);
 void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy);
-int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* ts, struct timeval* ourts, struct timeval* ourts, const char* ctlpt, const char* faultactor);
+int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* ts, struct timeval* ourts, struct timeval* srcts, const char* ctlpt, const char* faultactor);
 
 /* zxidwsp */
 

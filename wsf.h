@@ -203,4 +203,11 @@
 #define LIBERTY_CONSENT_OBTAINED "urn:liberty:consent:obtained"
 #define XMLNS_DAP      "urn:liberty:id-sis-dap:2006-02:dst-2.1"
 
+/* TAS3 specific */
+
+#define TAS3_PEP_RQ_OUT "urn:tas3:ctlpt:pep:rq:out"
+#define TAS3_PEP_RQ_IN  "urn:tas3:ctlpt:pep:rq:in"
+#define TAS3_PEP_RS_OUT "urn:tas3:ctlpt:pep:rs:out"
+#define TAS3_PEP_RS_IN  "urn:tas3:ctlpt:pep:rs:in"
+
 #endif

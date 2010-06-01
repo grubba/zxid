@@ -22,8 +22,10 @@
 #include "c/zx-const.h"
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
+#include "c/zx-e-data.h"
 
-/*() WSC response validation work horse.
+/*() WSC response validation work horse. This check the ID-WSF [SOAPbind2] specified
+ * criteria, as well as additional criteria and calls PDP, if configured.
  *
  * cf:: ZXID configuration object, see zxid_new_conf()
  * ses:: Session object, used for attributes passed to az, and for recording errors
@@ -42,17 +44,14 @@
  *
  * See also: zxid_wsp_validate() */
 
-static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env)
+static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env, const char* enve)
 {
   int n_refs = 0;
   struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];
   struct timeval ourts;
   struct timeval srcts = {0,501000};
-  struct zx_root_s* r;
   zxid_entity* wsc_meta;
-  struct zx_e_Envelope_s* env;
   struct zx_wsse_Security_s* sec;
-  //zxid_a7n* a7n;
   struct zx_str* issuer;
   struct zx_str* logpath;
   struct zx_str  ss;
@@ -63,17 +62,17 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   zxid_set_tas3_status(cf, ses, 0);
   
   if (!env) {
-    ERR("No <e:Envelope> found. enve(%s)", enve);
+    ERR("No <e:Envelope> found. enve(%s)", STRNULLCHK(enve));
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No SOAP Envelope found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
   if (!env->Header) {
-    ERR("No <e:Header> found. enve(%s)", enve);
+    ERR("No <e:Header> found. enve(%s)", STRNULLCHK(enve));
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No SOAP Header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
   if (!ZX_SIMPLE_ELEM_CHK(env->Header->MessageID)) {
-    ERR("No <a:MessageID> found. enve(%s)", enve);
+    ERR("No <a:MessageID> found. enve(%s)", STRNULLCHK(enve));
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No MessageID header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
@@ -99,18 +98,18 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     }
   } else {
     if (cf->relto_fatal) {
-      ERR("No <a:RelatesTo> found. enve(%s)", enve);
+      ERR("No <a:RelatesTo> found. enve(%s)", STRNULLCHK(enve));
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No RelatesTo header found in reply.", "IDStarMsgNotUnderstood", 0, 0, 0));
       return 0;
     } else {
       INFO("No <a:RelatesTo> found, but configured to ignore this (RELTO_FATAL=0). %d", 0);
-      D("No RelTo OK enve(%s)", enve);
+      D("No RelTo OK enve(%s)", STRNULLCHK(enve));
     }
   }
 
   if (!env->Header->Sender || !env->Header->Sender->providerID
       && !env->Header->Sender->affiliationID) {
-    ERR("No <b:Sender> found (or missing providerID or affiliationID). enve(%s)", enve);
+    ERR("No <b:Sender> found (or missing providerID or affiliationID). enve(%s)", STRNULLCHK(enve));
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No b:Sender header found (or missing providerID or affiliationID).", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
@@ -119,7 +118,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   
   if (!(sec = env->Header->Security)) {
-    ERR("No <wsse:Security> found. enve(%s)", enve);
+    ERR("No <wsse:Security> found. enve(%s)", STRNULLCHK(enve));
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
@@ -127,12 +126,12 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   if (!sec->Signature || !sec->Signature->SignedInfo || !sec->Signature->SignedInfo->Reference) {
     ses->sigres = ZXSIG_NO_SIG;
     if (cf->wsp_nosig_fatal) {
-      ERR("No Security/Signature found. enve(%s) %p", enve, sec->Signature);
+      ERR("No Security/Signature found. enve(%s) %p", STRNULLCHK(enve), sec->Signature);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security/ds:Signature found.", "urn:tas3:status:nosig", 0, 0, 0));
       return 0;
     } else {
       INFO("No Security/Signature found, but configured to ignore this problem. %p", sec->Signature);
-      D("No sig OK enve(%s)", enve);
+      D("No sig OK enve(%s)", STRNULLCHK(enve));
     }
   }
   
@@ -140,7 +139,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   if (!wsc_meta) {
     ses->sigres = ZXSIG_NO_SIG;
     if (cf->nosig_fatal) {
-      INFO("Unable to find SAML metadata for Sender(%.*s), but configured to ignore this problem.", issuer->len, issuer->s);
+      INFO("Unable to find SAML metadata for Sender(%.*s), but configured to ignore this problem (NOSIG_FATAL=0).", issuer->len, issuer->s);
     } else {
       ERR("Unable to find SAML metadata for Sender(%.*s).", issuer->len, issuer->s);
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No unable to find SAML metadata for sender.", "ProviderIDNotValid", 0, 0, 0));
@@ -538,7 +537,7 @@ struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, cons
     ERR("Web services call failed svctype(%s)", svctype);
     /* Let validate report the error so that tas3 status gets set correctly */
   }
-  if (zxid_wsc_validate_resp_env(cf, ses, az_cred, env) != 1) {
+  if (zxid_wsc_validate_resp_env(cf, ses, az_cred, env, enve) != 1) {
     D_DEDENT("call: ");
     return 0;
   }
@@ -662,7 +661,7 @@ int zxid_wsc_valid_resp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
 
   D_INDENT("valid: ");
   env = zxid_add_env_if_needed(cf, enve);
-  ret = zxid_wsc_validate_resp_env(cf, ses, az_cred, env);
+  ret = zxid_wsc_validate_resp_env(cf, ses, az_cred, env, enve);
   D_DEDENT("valid: ");
   return ret;
 }

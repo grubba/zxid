@@ -643,32 +643,32 @@ void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec
  * The validity is controlled by configuration parameters BEFORE_SLOP and AFTER_SLOP.
  * returns 1 on success, 0 on failure. */
 
-int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* ts, struct timeval* ourts, struct timeval* ourts, const char* ctlpt, const char* faultactor)
+int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* ts, struct timeval* ourts, struct timeval* srcts, const char* ctlpt, const char* faultactor)
 {
   if (ts && ZX_SIMPLE_ELEM_CHK(ts->Created)) {
     srcts->tv_sec = zx_date_time_to_secs(ts->Created->gg.content->s);
      
     if (srcts->tv_sec >= ourts->tv_sec - cf->before_slop
 	&& srcts->tv_sec <= ourts->tv_sec + cf->after_slop) {
-      D("Timestamp accepted src=%d our=%d before_slop=%d after_slop=%d", srcts->tv_sec, ourts->tv_sec, cf->before_slop, cf->after_slop);
+      D("Timestamp accepted src=%d our=%d before_slop=%d after_slop=%d", (int)srcts->tv_sec, (int)ourts->tv_sec, cf->before_slop, cf->after_slop);
     } else {
       if (cf->notimestamp_fatal) {
-	ERR("Timestamp rejected: src=%d our=%d before_slop=%d after_slop=%d secs", srcts->tv_sec, ourts->tv_sec, cf->before_slop, cf->after_slop);
-	zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, faultactor, "Message signature did not validate.", "StaleMsg", 0, 0, 0));
+	ERR("Timestamp rejected: src=%d our=%d before_slop=%d after_slop=%d secs", (int)srcts->tv_sec, (int)ourts->tv_sec, cf->before_slop, cf->after_slop);
+	zxid_set_fault(cf, ses, zxid_mk_fault(cf, ctlpt, faultactor, "Message signature did not validate.", "StaleMsg", 0, 0, 0));
 	return 0;
       } else {
-	INFO("Timestamp rejected: src=%d our=%d before_slop=%d after_slop=%d secs, but configured to ignore this (NOTIMESTAMPFATAL=0)", srcts->tv_sec, ourts->tv_sec, cf->before_slop, cf->after_slop);
+	INFO("Timestamp rejected: src=%d our=%d before_slop=%d after_slop=%d secs, but configured to ignore this (NOTIMESTAMPFATAL=0)", (int)srcts->tv_sec, (int)ourts->tv_sec, cf->before_slop, cf->after_slop);
       }
     }
 
   } else {
     if (cf->notimestamp_fatal) {
-      ERR("No Security/Timestamp found. enve(%s)", enve);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, faultactor, "No unable to find wsse:Security/Timestamp.", "StaleMsg", 0, 0, 0));
+      ERR("No Security/Timestamp found. %p", ts);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, ctlpt, faultactor, "No unable to find wsse:Security/Timestamp.", "StaleMsg", 0, 0, 0));
       return 0;
     } else {
-      INFO("No Security/Timestamp found, but configured to ignore this (NOTIMESTAMP_FATAL=0). %d", 0);
-      D("No ts OK enve(%s)", enve);
+      INFO("No Security/Timestamp found, but configured to ignore this (NOTIMESTAMP_FATAL=0). %p", ts);
+      D("No ts OK %p", ts);
     }
   }
   return 1;
