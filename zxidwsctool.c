@@ -29,6 +29,7 @@
 #include <zx/wsf.h>
 #include <zx/c/zxidvers.h>
 #include <zx/c/zx-ns.h>
+#include <zx/c/zx-e-data.h>
 
 char* help =
 "zxidwsctool  - Command Line ID-WSF WSC - R" ZXID_REL "\n\

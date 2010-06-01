@@ -43,6 +43,7 @@
 #include "zxidconf.h"
 #include "c/zxidvers.h"
 #include "c/zx-ns.h"
+#include "c/zx-md-data.h"
 
 CU8* help =
 "zxid  -  SAML 2.0 SP CGI - R" ZXID_REL "\n\

@@ -51,7 +51,9 @@ zxid-0.58:: 25.5.2010
     - added SOAP fault and tas3:Status
     - Improved XML parse error formatting 
     - Fixed seg fault in zxid_wsc_prepare() in case the EPR lacks Metadata
-    - Do proper signature validation in zxid_wsp_validate()
+    - Do proper signature validation in zxid_wsp_validate() and zxid_wsc_validate_resp_env()
+    - Do proper timestamp check in zxid_wsp_validate() and zxid_wsc_validate_resp_env()
+    - Added RelatesTo correlation check in  zxid_wsc_validate_resp_env()
     - Added concept of current fault and current tas3 status
     - Added accessor functions for faults and tas3 status
 zxid-0.57:: 18.5.2010

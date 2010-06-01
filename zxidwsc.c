@@ -11,6 +11,7 @@
  * 7.1.2007,  created --Sampo
  * 7.10.2008, added documentation --Sampo
  * 7.1.2010,  added WSC signing --Sampo
+ * 31.5.2010, added WSC sig validation --Sampo
  */
 
 #include "errmac.h"
@@ -22,371 +23,175 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-#define BOOL_STR_TEST(x) ((x) && (x) != '0')
+/*() WSC response validation work horse.
+ *
+ * cf:: ZXID configuration object, see zxid_new_conf()
+ * ses:: Session object, used for attributes passed to az, and for recording errors
+ * az_cred:: (Optional) Additional authorization credentials or
+ *     attributes, query string format. These credentials will be populated
+ *     to the attribute pool in addition to the ones obtained from token and
+ *     other sources. Then a PDP is called to get an authorization
+ *     decision (matching obligations we support to those in the request,
+ *     and obligations pleged by caller to those we insist on). See
+ *     also PEPMAP configuration option. This implements generalized
+ *     (application independent) Responder In PEP. To implement
+ *     application dependent PEP features you should call zxid_az() directly.
+ * env:: Entire SOAP envelope as a data structure
+ * return:: 1 on success, 0 on validation failure. Exact reason of the failure is
+ *     available from ses->curflt and ses->curstatus.
+ *
+ * See also: zxid_wsp_validate() */
 
-/*() Try to map security mechanisms across different frame works. Low level
- * function. This also makes some elementary checks as to whether the
- * EPR is even capable of supporting the sec mech. */
-
-/* Called by:  zxid_wsc_prep_secmech */
-int zxid_map_sec_mech(zxid_epr* epr)
+static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* az_cred, struct zx_e_Envelope_s* env)
 {
-  int len;
-  const char* s;
-  struct zx_elem_s* secmechid;
-  if (!epr || !epr->Metadata || !epr->Metadata->SecurityContext) {
-    INFO("EPR lacks Metadata or SecurityContext. Forcing X509. %p", epr->Metadata);
-    return ZXID_SEC_MECH_X509;
+  int n_refs = 0;
+  struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];
+  struct timeval ourts;
+  struct timeval srcts = {0,501000};
+  struct zx_root_s* r;
+  zxid_entity* wsc_meta;
+  struct zx_e_Envelope_s* env;
+  struct zx_wsse_Security_s* sec;
+  //zxid_a7n* a7n;
+  struct zx_str* issuer;
+  struct zx_str* logpath;
+  struct zx_str  ss;
+  zxid_cgi cgi;
+
+  GETTIMEOFDAY(&ourts, 0);
+  zxid_set_fault(cf, ses, 0);
+  zxid_set_tas3_status(cf, ses, 0);
+  
+  if (!env) {
+    ERR("No <e:Envelope> found. enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No SOAP Envelope found.", "IDStarMsgNotUnderstood", 0, 0, 0));
+    return 0;
   }
-  secmechid = epr->Metadata->SecurityContext->SecurityMechID;
-  if (!secmechid || !secmechid->content
-      || !secmechid->content->s || !secmechid->content->len) {
-    if (epr->Metadata->SecurityContext->Token) {
-      INFO("EPR does not specify sec mech id. Forcing Bearer. %p", secmechid);
-      return ZXID_SEC_MECH_BEARER;
+  if (!env->Header) {
+    ERR("No <e:Header> found. enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No SOAP Header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
+    return 0;
+  }
+  if (!ZX_SIMPLE_ELEM_CHK(env->Header->MessageID)) {
+    ERR("No <a:MessageID> found. enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No MessageID header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
+    return 0;
+  }
+  if (ZX_SIMPLE_ELEM_CHK(env->Header->RelatesTo)) {
+    if (ses->wsc_msgid) {
+      if (strlen(ses->wsc_msgid) == env->Header->RelatesTo->gg.content->len
+	  && !memcmp(ses->wsc_msgid,
+		     env->Header->RelatesTo->gg.content->s,
+		     env->Header->RelatesTo->gg.content->len)) {
+	D("RelatesTo check OK %d",1);
+      } else {
+	/* N.B. [SOAPBinding2] p.27, ll.818-822 indicates RelatesTo checking as SHOULD. */
+	if (cf->relto_fatal) {
+	  ERR("<a:RelatesTo> (%.*s) does not match request msgid(%s).", env->Header->RelatesTo->gg.content->len, env->Header->RelatesTo->gg.content->s, ses->wsc_msgid);
+	  zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "RelatesTo in response does not match request MessageID.", "InvalidRefToMsgID", 0, 0, 0));
+	  return 0;
+	} else {
+	  INFO("<a:RelatesTo> (%.*s) does not match request msgid(%s), but configured to ignore this error (RELTO_FATAL=0).", env->Header->RelatesTo->gg.content->len, env->Header->RelatesTo->gg.content->s, ses->wsc_msgid);
+	}
+      }
     } else {
-      INFO("EPR lacks Token. Forcing X509. %p", secmechid);
-      return ZXID_SEC_MECH_X509;
+      INFO("Session does not have wsc_msgid. Skipping <a:RelatesTo> check. %d",0);
+    }
+  } else {
+    if (cf->relto_fatal) {
+      ERR("No <a:RelatesTo> found. enve(%s)", enve);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No RelatesTo header found in reply.", "IDStarMsgNotUnderstood", 0, 0, 0));
+      return 0;
+    } else {
+      INFO("No <a:RelatesTo> found, but configured to ignore this (RELTO_FATAL=0). %d", 0);
+      D("No RelTo OK enve(%s)", enve);
     }
   }
 
-  len = secmechid->content->len;
-  s = secmechid->content->s;
-
-  D("mapping secmec(%.*s)", len, s);
-
-#define SEC_MECH_TEST(ret, val) if (len == sizeof(val)-1 && !memcmp(s, val, sizeof(val)-1)) return ret;
-
-  SEC_MECH_TEST(ZXID_SEC_MECH_X509, WSF11_SEC_MECH_NULL_X509);
-  SEC_MECH_TEST(ZXID_SEC_MECH_X509, WSF11_SEC_MECH_TLS_X509);
-  SEC_MECH_TEST(ZXID_SEC_MECH_X509, WSF11_SEC_MECH_CLTLS_X509);
-  
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF11_SEC_MECH_NULL_NULL);
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF11_SEC_MECH_TLS_NULL);
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF11_SEC_MECH_CLTLS_NULL);
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF20_SEC_MECH_NULL_NULL);
-  SEC_MECH_TEST(ZXID_SEC_MECH_NULL, WSF20_SEC_MECH_TLS_NULL);
-
-  SEC_MECH_TEST(ZXID_SEC_MECH_PEERS, WSF20_SEC_MECH_CLTLS_PEERS2);
-
-  if (!epr->Metadata->SecurityContext->Token) {
-      INFO("EPR lacks Token despite not being NULL or X509. Forcing X509. %.*s", len, s);
-      return ZXID_SEC_MECH_X509;
+  if (!env->Header->Sender || !env->Header->Sender->providerID
+      && !env->Header->Sender->affiliationID) {
+    ERR("No <b:Sender> found (or missing providerID or affiliationID). enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No b:Sender header found (or missing providerID or affiliationID).", "IDStarMsgNotUnderstood", 0, 0, 0));
+    return 0;
   }
+  issuer = env->Header->Sender->providerID;
   
-  SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF10_SEC_MECH_NULL_BEARER);
-  SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF10_SEC_MECH_TLS_BEARER);
-  SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF11_SEC_MECH_NULL_BEARER);
-  SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF11_SEC_MECH_TLS_BEARER);
-  SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF11_SEC_MECH_CLTLS_BEARER);
-  SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF20_SEC_MECH_NULL_BEARER);
-  SEC_MECH_TEST(ZXID_SEC_MECH_BEARER, WSF20_SEC_MECH_TLS_BEARER);
-     
-  SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF11_SEC_MECH_NULL_SAML);
-  SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF11_SEC_MECH_TLS_SAML);
-  SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF11_SEC_MECH_CLTLS_SAML);
-  SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF20_SEC_MECH_NULL_SAML2);
-  SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF20_SEC_MECH_TLS_SAML2);
-  SEC_MECH_TEST(ZXID_SEC_MECH_SAML, WSF20_SEC_MECH_CLTLS_SAML2);
-
-  ERR("Unknown security mechanism(%.*s), taking a guess...", len, s);
+  /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   
-  if (len >= sizeof("Bearer")-1 && zx_memmem(s, len, "Bearer", sizeof("Bearer")-1))
-    return ZXID_SEC_MECH_BEARER;
-  if (len >= sizeof("SAML")-1 && zx_memmem(s, len, "SAML", sizeof("SAML")-1))
-    return ZXID_SEC_MECH_BEARER;
-  if (len >= sizeof("X509")-1 && zx_memmem(s, len, "X509", sizeof("X509")-1))
-    return ZXID_SEC_MECH_BEARER;
-  
-  ERR("Unknown security mechanism(%.*s), uable to guess.", len, s);
-  return ZXID_SEC_MECH_NULL;
-}
-
-/*() For purposes of signing, add references and canon forms of all known SOAP headers */
-
-/* Called by:  zxid_wsf_sign, zxid_wsp_validate */
-int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_e_Header_s* hdr)
-{
-  /* Addressing and Security Headers */
-
-  if (hdr->Framework) {
-    if (!hdr->Framework->Id)
-      hdr->Framework->Id = zx_ref_str(cf->ctx, "FWK");
-    refs[n_refs].id = hdr->Framework->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_sbf_Framework(cf->ctx, hdr->Framework);
-    ++n_refs;
-  }
-  
-  if (hdr->Security && hdr->Security->Timestamp) {
-    if (!hdr->Security->Timestamp->Id)
-      hdr->Security->Timestamp->Id = zx_ref_str(cf->ctx, "TS");
-    refs[n_refs].id = hdr->Security->Timestamp->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_wsu_Timestamp(cf->ctx, hdr->Security->Timestamp);
-    ++n_refs;
+  if (!(sec = env->Header->Security)) {
+    ERR("No <wsse:Security> found. enve(%s)", enve);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
+    return 0;
   }
 
-  if (hdr->MessageID) {
-    if (!hdr->MessageID->Id)
-      hdr->MessageID->Id = zx_ref_str(cf->ctx, "MID");
-    refs[n_refs].id = hdr->MessageID->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_MessageID(cf->ctx, hdr->MessageID);
-    ++n_refs;
+  if (!sec->Signature || !sec->Signature->SignedInfo || !sec->Signature->SignedInfo->Reference) {
+    ses->sigres = ZXSIG_NO_SIG;
+    if (cf->wsp_nosig_fatal) {
+      ERR("No Security/Signature found. enve(%s) %p", enve, sec->Signature);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security/ds:Signature found.", "urn:tas3:status:nosig", 0, 0, 0));
+      return 0;
+    } else {
+      INFO("No Security/Signature found, but configured to ignore this problem. %p", sec->Signature);
+      D("No sig OK enve(%s)", enve);
+    }
   }
   
-  if (hdr->RelatesTo) {
-    if (!hdr->RelatesTo->Id)
-      hdr->RelatesTo->Id = zx_ref_str(cf->ctx, "REL");
-    refs[n_refs].id = hdr->RelatesTo->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_RelatesTo(cf->ctx, hdr->RelatesTo);
-    ++n_refs;
-  }
-  
-  if (hdr->Action) {
-    if (!hdr->Action->Id)
-      hdr->Action->Id = zx_ref_str(cf->ctx, "ACT");
-    refs[n_refs].id = hdr->Action->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_Action(cf->ctx, hdr->Action);
-    ++n_refs;
-  }
-
-  if (hdr->To) {
-    if (!hdr->To->Id)
-      hdr->To->Id = zx_ref_str(cf->ctx, "TO");
-    refs[n_refs].id = hdr->To->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_To(cf->ctx, hdr->To);
-    ++n_refs;
+  wsc_meta = zxid_get_ent_ss(cf, issuer);
+  if (!wsc_meta) {
+    ses->sigres = ZXSIG_NO_SIG;
+    if (cf->nosig_fatal) {
+      INFO("Unable to find SAML metadata for Sender(%.*s), but configured to ignore this problem.", issuer->len, issuer->s);
+    } else {
+      ERR("Unable to find SAML metadata for Sender(%.*s).", issuer->len, issuer->s);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No unable to find SAML metadata for sender.", "ProviderIDNotValid", 0, 0, 0));
+      return 0;
+    }
   }
 
-  if (hdr->ReplyTo) {
-    if (!hdr->ReplyTo->Id)
-      hdr->ReplyTo->Id = zx_ref_str(cf->ctx, "REP");
-    refs[n_refs].id = hdr->ReplyTo->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_ReplyTo(cf->ctx, hdr->ReplyTo);
-    ++n_refs;
+  n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, env->Header, env->Body);
+  /* *** Consider adding BDY and STR */
+  ses->sigres = zxsig_validate(cf->ctx, wsc_meta->sign_cert, sec->Signature, n_refs, refs);
+  zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
+  if (cf->sig_fatal && ses->sigres) {
+    ERR("Fail due to failed message signature sigres=%d", ses->sigres);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "Message signature did not validate.", "urn:tas3:status:badsig", 0, 0, 0));
+    return 0;
   }
+
+  if (!zxid_wsf_timestamp_check(cf, ses, sec->Timestamp, &ourts,&srcts,TAS3_PEP_RS_IN,"e:Server"))
+    return 0;
+
+  zxid_ses_to_pool(cf, ses);
+  zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
   
-  if (hdr->From) {
-    if (!hdr->From->Id)
-      hdr->From->Id = zx_ref_str(cf->ctx, "FRM");
-    refs[n_refs].id = hdr->From->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_From(cf->ctx, hdr->From);
-    ++n_refs;
-  }
-  
-  if (hdr->Sender) {
-    if (!hdr->Sender->Id)
-      hdr->Sender->Id = zx_ref_str(cf->ctx, "PRV");
-    refs[n_refs].id = hdr->Sender->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_Sender(cf->ctx, hdr->Sender);
-    ++n_refs;
-  }
-  
-  if (hdr->FaultTo) {
-    if (!hdr->FaultTo->Id)
-      hdr->FaultTo->Id = zx_ref_str(cf->ctx, "FLT");
-    refs[n_refs].id = hdr->FaultTo->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_FaultTo(cf->ctx, hdr->FaultTo);
-    ++n_refs;
-  }
-  
-  if (hdr->ReferenceParameters) {
-    if (!hdr->ReferenceParameters->Id)
-      hdr->ReferenceParameters->Id = zx_ref_str(cf->ctx, "PAR");
-    refs[n_refs].id = hdr->ReferenceParameters->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_a_ReferenceParameters(cf->ctx, hdr->ReferenceParameters);
-    ++n_refs;
-  }
-  
-  /* ID-WSF headers */
-  
-  if (hdr->TargetIdentity) {
-    if (!hdr->TargetIdentity->Id)
-      hdr->TargetIdentity->Id = zx_ref_str(cf->ctx, "TRG");
-    refs[n_refs].id = hdr->TargetIdentity->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_TargetIdentity(cf->ctx, hdr->TargetIdentity);
-    ++n_refs;
-  }
-  
-  if (hdr->UsageDirective) {
-    if (!hdr->UsageDirective->Id)
-      hdr->UsageDirective->Id = zx_ref_str(cf->ctx, "UD");
-    refs[n_refs].id = hdr->UsageDirective->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_UsageDirective(cf->ctx, hdr->UsageDirective);
-    ++n_refs;
-  }
-  
-  if (hdr->UserInteraction) {
-    if (!hdr->UserInteraction->Id)
-      hdr->UserInteraction->Id = zx_ref_str(cf->ctx, "UI");
-    refs[n_refs].id = hdr->UserInteraction->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_UserInteraction(cf->ctx, hdr->UserInteraction);
-    ++n_refs;
-  }
-  
-  if (hdr->ProcessingContext) {
-    if (!hdr->ProcessingContext->Id)
-      hdr->ProcessingContext->Id = zx_ref_str(cf->ctx, "PC");
-    refs[n_refs].id = hdr->ProcessingContext->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_ProcessingContext(cf->ctx, hdr->ProcessingContext);
-    ++n_refs;
-  }
-  
-  if (hdr->EndpointUpdate) {
-    if (!hdr->EndpointUpdate->Id)
-      hdr->EndpointUpdate->Id = zx_ref_str(cf->ctx, "EP");
-    refs[n_refs].id = hdr->EndpointUpdate->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_EndpointUpdate(cf->ctx, hdr->EndpointUpdate);
-    ++n_refs;
-  }
-  
-  if (hdr->Timeout) {
-    if (!hdr->Timeout->Id)
-      hdr->Timeout->Id = zx_ref_str(cf->ctx, "TI");
-    refs[n_refs].id = hdr->Timeout->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_Timeout(cf->ctx, hdr->Timeout);
-    ++n_refs;
-  }
-  
-  if (hdr->Consent) {
-    if (!hdr->Consent->Id)
-      hdr->Consent->Id = zx_ref_str(cf->ctx, "CON");
-    refs[n_refs].id = hdr->Consent->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_Consent(cf->ctx, hdr->Consent);
-    ++n_refs;
-  }
-  
-  if (hdr->ApplicationEPR) {
-    if (!hdr->ApplicationEPR->Id)
-      hdr->ApplicationEPR->Id = zx_ref_str(cf->ctx, "AEP");
-    refs[n_refs].id = hdr->ApplicationEPR->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_ApplicationEPR(cf->ctx, hdr->ApplicationEPR);
-    ++n_refs;
-  }
-  
-  if (hdr->RedirectRequest) {
-    if (!hdr->RedirectRequest->Id)
-      hdr->RedirectRequest->Id = zx_ref_str(cf->ctx, "RR");
-    refs[n_refs].id = hdr->RedirectRequest->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_RedirectRequest(cf->ctx, hdr->RedirectRequest);
-    ++n_refs;
-  }
-  
-  if (hdr->CredentialsContext) {
-    if (!hdr->CredentialsContext->Id)
-      hdr->CredentialsContext->Id = zx_ref_str(cf->ctx, "CCX");
-    refs[n_refs].id = hdr->CredentialsContext->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b_CredentialsContext(cf->ctx, hdr->CredentialsContext);
-    ++n_refs;
-  }
-  
-  /* TAS3 specifics */
-  
-  if (hdr->Credentials) {
-    if (!hdr->Credentials->Id)
-      hdr->Credentials->Id = zx_ref_str(cf->ctx, "CRED");
-    refs[n_refs].id = hdr->Credentials->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_tas3_Credentials(cf->ctx, hdr->Credentials);
-    ++n_refs;
-  }
-  
-  if (hdr->ESLPolicies) {
-    if (!hdr->ESLPolicies->Id)
-      hdr->ESLPolicies->Id = zx_ref_str(cf->ctx, "ESL");
-    refs[n_refs].id = hdr->ESLPolicies->Id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_tas3_ESLPolicies(cf->ctx, hdr->ESLPolicies);
-    ++n_refs;
-  }
-  
-  /* Old ID-WSF 1.2 Headers and App specific headers */
-  
-  if (hdr->Correlation) {
-    if (!hdr->Correlation->id)
-      hdr->Correlation->id = zx_ref_str(cf->ctx, "COR");
-    refs[n_refs].id = hdr->Correlation->id;
-    refs[n_refs].canon
-      = zx_EASY_ENC_SO_b12_Correlation(cf->ctx, hdr->Correlation);
-    ++n_refs;
-  }
-  
-  if (hdr->Provider) {
-    if (!hdr->Provider->id)
-      hdr->Provider->id = zx_ref_str(cf->ctx, "PC12");
-    refs[n_refs].id = hdr->Provider->id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b12_Provider(cf->ctx, hdr->Provider);
-    ++n_refs;
-  }
-  
-  if (hdr->b12_ProcessingContext) {
-    if (!hdr->b12_ProcessingContext->id)
-      hdr->b12_ProcessingContext->id = zx_ref_str(cf->ctx, "PC12");
-    refs[n_refs].id = hdr->b12_ProcessingContext->id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b12_ProcessingContext(cf->ctx, hdr->b12_ProcessingContext);
-    ++n_refs;
-  }
-  
-  if (hdr->b12_Consent) {
-    if (!hdr->b12_Consent->id)
-      hdr->b12_Consent->id = zx_ref_str(cf->ctx, "CON12");
-    refs[n_refs].id = hdr->b12_Consent->id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b12_Consent(cf->ctx, hdr->b12_Consent);
-    ++n_refs;
-  }
-  
-  if (hdr->b12_UsageDirective) {
-    if (!hdr->b12_UsageDirective->id)
-      hdr->b12_UsageDirective->id = zx_ref_str(cf->ctx, "UD12");
-    refs[n_refs].id = hdr->b12_UsageDirective->id;
-    refs[n_refs].canon = zx_EASY_ENC_SO_b12_UsageDirective(cf->ctx, hdr->b12_UsageDirective);
-    ++n_refs;
-  }
+  /* *** Call Rq-In PDP */
 #if 0
-  if (hdr->TransactionID) {
-    if (!hdr->TransactionID->id)
-      hdr->TransactionID->id = zx_ref_str(cf->ctx, "MM7TX");
-    refs[n_refs].id = hdr->TransactionID->id;  /* *** mm7:TransactionID does not have id or Id */
-    refs[n_refs].canon = zx_EASY_ENC_SO_mm7_TransactionID(cf->ctx, hdr->TransactionID);
-    ++n_refs;
+  if (cf->pdp_url && *cf->pdp_url) {
+    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
+      D("Deny %d", 0);
+      return "z";
+    }
   }
 #endif
-  return n_refs;
-}
 
-/* Called by:  zxid_wsc_prep_secmech x3, zxid_wsf_decor */
-void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy)
-{
-  X509* sign_cert;
-  RSA*  sign_pkey;
-  int n_refs;
-  struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];
-      
-  if (sign_flags) {
-    n_refs = 0;
-    
-    if (sign_flags & ZXID_SIGN_HDR)
-      n_refs = zxid_add_header_refs(cf, n_refs, refs, hdr);
-    
-    if (str) {
-      if (!str->Id)
-	str->Id = zx_ref_str(cf->ctx, "STR");
-      refs[n_refs].id = str->Id;
-      refs[n_refs].canon = zx_EASY_ENC_SO_wsse_SecurityTokenReference(cf->ctx, str);
-      ++n_refs;
+  logpath = zxlog_path(cf, issuer, env->Header->MessageID->gg.content,
+		       ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
+  if (zxlog_dup_check(cf, logpath, "validate request")) {
+    if (cf->dup_msg_fatal) {
+      zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request dup err");
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "Duplicate Message.", "DuplicateMsg", 0, 0, 0));
+      return 0;
+    } else {
+      INFO("Duplicate message detected, but configured to ignore this (DUP_MSG_FATAL=0). %d",0);
     }
-    
-    if (bdy && (sign_flags & ZXID_SIGN_BDY)) {
-      if (!bdy->id)
-	bdy->id = zx_ref_str(cf->ctx, "BDY");
-      refs[n_refs].id = bdy->id;
-      refs[n_refs].canon = zx_EASY_ENC_SO_e_Body(cf->ctx, bdy);
-      ++n_refs;
-    }
-   
-    ASSERTOP(n_refs, <=, ZXID_N_WSF_SIGNED_HEADERS);
-
-    if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert wsc"))
-      sec->Signature = zxsig_sign(cf->ctx, n_refs, refs, sign_cert, sign_pkey);
   }
+  zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate response");
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "VALID", logpath->s, 0);
+  
+  return 1;
 }
+
+/*() Prepare some headers for WSC call */
 
 /* Called by:  zxid_wsc_call */
 static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
@@ -423,6 +228,8 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
 #endif
   return 1;
 }
+
+/*() Perform security mechanism related processing for a WSC call */
 
 /* Called by:  zxid_wsc_call */
 static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_epr* epr, struct zx_e_Envelope_s* env)
@@ -533,6 +340,7 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
       D_DEDENT("wsc_call: ");
       return 0;
     }
+    ses->wsc_msgid = zx_str_to_c(cf->ctx, env->Header->MessageID->gg.content);
     
     root = zxid_soap_call_envelope(cf, epr->Address->gg.content, env);
     if (!root || !root->Envelope || !root->Envelope->Body) {
@@ -728,20 +536,12 @@ struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, cons
   env = zxid_wsc_call(cf, ses, epr, env);
   if (!env) {
     ERR("Web services call failed svctype(%s)", svctype);
+    /* Let validate report the error so that tas3 status gets set correctly */
+  }
+  if (zxid_wsc_validate_resp_env(cf, ses, az_cred, env) != 1) {
     D_DEDENT("call: ");
     return 0;
   }
-  
-  /* *** Call Rq-In PDP */
-#if 0
-  if (cf->pdp_url && *cf->pdp_url) {
-    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
-      D("Deny %d", 0);
-      D_DEDENT("ab_pep: ");
-      return "z";
-    }
-  }
-#endif
   
   ret = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
   D_DEDENT("call: ");
@@ -817,6 +617,7 @@ struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr
     D_DEDENT("prep: ");
     return 0;
   }
+  ses->wsc_msgid = zx_str_to_c(cf->ctx, env->Header->MessageID->gg.content);
   /* *** Call Rq-Out PDP */
 #if 0
   if (cf->pdp_url && *cf->pdp_url) {
@@ -846,36 +647,24 @@ struct zx_str* zxid_wsc_prepare_callf(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
   return zxid_wsc_prepare_call(cf, ses, epr, az_cred, s);
 }
 
-/*() Validate a response to web service call. Return: 1=valid. */
+/*(i) Validate a response to web service call. Return: 1=valid. */
 
 /* Called by: */
 int zxid_wsc_valid_resp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve)
 {
+  int ret;
   struct zx_e_Envelope_s* env;
 
   if (!cf || !ses || !enve) {
-    ERR("Missing mandatory arguments ses=%p", ses);
+    ERR("Missing mandatory arguments ses=%p enve=%p", ses, enve);
     return 0;
   }
 
   D_INDENT("valid: ");
   env = zxid_add_env_if_needed(cf, enve);
-  if (!env) {
-    D_DEDENT("valid: ");
-    return 0;
-  }
-
-  /* *** Call Rq-In PDP */
-#if 0
-  if (cf->pdp_url && *cf->pdp_url) {
-    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
-      D("Deny %d", 0);
-      D_DEDENT("valid: ");
-      return "z";
-    }
-  }
-#endif
-  return 1;
+  ret = zxid_wsc_validate_resp_env(cf, ses, az_cred, env);
+  D_DEDENT("valid: ");
+  return ret;
 }
 
 /* EOF  --  zxidwsc.c */

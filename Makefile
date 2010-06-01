@@ -304,9 +304,10 @@ CFLAGS+= $(CDEF) $(CDIR)
 ### targets (mortals can look, but should not edit).
 ###
 
+ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
 ZXID_LIB_OBJ=zxidsimp.o zxidpool.o zxidpsso.o zxidsso.o zxidslo.o zxiddec.o zxidspx.o zxididpx.o zxidmni.o zxidpep.o zxidmk.o zxida7n.o zxidses.o zxiduser.o zxidcgi.o zxidconf.o zxidecp.o zxidcdc.o zxidloc.o zxidlib.o zxidmeta.o zxidcurl.o zxidepr.o zxida7n.o ykcrc.o ykaes.o
 ZX_OBJ=zxlib.o zxns.o zxutil.o zxlog.o zxsig.o zxcrypto.o c/license.o c/zx-attrs.o c/zx-elems.o
-WSF_OBJ=zxidmkwsf.o zxidwsc.o zxidwsp.o zxiddi.o
+WSF_OBJ=zxidmkwsf.o zxidwsf.o zxidwsc.o zxidwsp.o zxiddi.o
 SMIME_LIB_OBJ=certauth.o keygen.o pkcs12.o smime-enc.o smime-qry.o smime-vfy.o smimemime.o smimeutil.o
 
 ifeq ($(PULVER),1)
@@ -1106,8 +1107,8 @@ endif
 libzxid.so.0.0: libzxid.a
 	$(LD) -o libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE)
 
-zxid.dll libzxiddll.a: libzxid.a
-	$(LD) -o zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxiddll.def,--out-implib,libzxiddll.a $^ $(SHARED_CLOSE) $(WIN_LIBS)
+zxid.dll zxid.lib: libzxid.a
+	$(LD) -o zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxid.lib $^ $(SHARED_CLOSE) $(WIN_LIBS)
 
 # N.B. Failing to supply -Wl,-no-whole-archive above will cause
 # /apps/gcc/mingw/sysroot/lib/libmingw32.a(main.o):main.c:(.text+0x106): undefined reference to `WinMain@16'
@@ -1168,10 +1169,14 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 	rm -rf $(TAS3LINUXX86) $(TAS3LINUXX86).zip
 	mkdir $(TAS3LINUXX86)
 	mkdir $(TAS3LINUXX86)/zxidjava
+	mkdir $(TAS3LINUXX86)/include
+	mkdir $(TAS3LINUXX86)/include/zx
 	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
 	cp mod_auth_saml.so $(TAS3LINUXX86)
 	cp *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
 	cp zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
+	cp libzxid.a $(TAS3LINUXX86)
+	cp $(ZXIDHDRS) $(TAS3LINUXX86)/include/zx
 	cp $(ZXIDJNI_SO) zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3LINUXX86)/zxidjava
 	cp $(TAS3COMMONFILES) $(TAS3LINUXX86)
 	zip -r $(TAS3LINUXX86).zip $(TAS3LINUXX86)
@@ -1185,8 +1190,11 @@ TAS3WIN32=T3-ZXID-WIN32_$(ZXIDREL)
 tas3win32pkg: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidappdemo.class zxidjava.jar zxiddemo.war
 	rm -rf $(TAS3WIN32) $(TAS3WIN32).zip
 	mkdir $(TAS3WIN32)
+	mkdir $(TAS3WIN32)/include
+	mkdir $(TAS3WIN32)/include/zx
 	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-ZXID-WIN32 > $(TAS3WIN32)/Manifest
-	cp zxid.dll $(TAS3WIN32)/
+	cp zxid.dll zxid.lib $(TAS3WIN32)/
+	cp $(ZXIDHDRS) $(TAS3WIN32)/include/zx
 	cp zxididp $(TAS3WIN32)/zxididp.exe
 	cp zxpasswd $(TAS3WIN32)/zxpasswd.exe
 	cp zxcot $(TAS3WIN32)/zxcot.exe

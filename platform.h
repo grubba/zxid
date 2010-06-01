@@ -10,7 +10,7 @@
 #include <windows.h>
 
 #define fdstdout STDOUT_FILENO
-#define fdtype HANDLE
+/*#define fdtype HANDLE   see zxid.h */
 #define BADFD (INVALID_HANDLE_VALUE)
 #define closefile(x) (CloseHandle(x)?0:-1)
 #define openfile_ro(path) CreateFile((path), GENERIC_READ, FILE_SHARE_READ, 0 /*security*/, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0)
@@ -31,7 +31,7 @@
 
 /* Win32 CRITICAL SECTION based solution (supposedly faster when mutex is only used
  * in one process, especially on uniprocessor machines). */
-#define pthread_mutex_t CRITICAL_SECTION
+/*#define pthread_mutex_t CRITICAL_SECTION  see zxid.h */
 #define PTHREAD_MUTEX_INITIALIZER     (0) /* All instances of MUTEX_INITIALIZER must be converted to call to pthread_mutex_init() early in main() (zxidmeta.c) */
 #define pthread_mutex_init(mutex, ma) (InitializeCriticalSection(mutex),0) /* dsvmcall.c, dsconfig.c, io.c, dsmem.c */
 #define pthread_mutex_destroy(mutex)  (DeleteCriticalSection(mutex),0) /* dsvmcall.c */
@@ -42,7 +42,7 @@
 #else
 
 #define fdstdout 1
-#define fdtype int
+/*#define fdtype int   see zxid.h */
 #define BADFD (-1)
 #define closefile(x) close(x)
 #define openfile_ro(path) open((path),O_RDONLY)

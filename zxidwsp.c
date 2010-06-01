@@ -134,10 +134,12 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     sec->ff12_Assertion = 0;
     
 #if 1
-    hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx);
-    hdr->RelatesTo->gg.content = zx_ref_str(cf->ctx, ses->msgid);
-    hdr->RelatesTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-    hdr->RelatesTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+    if (ses->wsp_msgid && *ses->wsp_msgid) {
+      hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx);
+      hdr->RelatesTo->gg.content = zx_ref_str(cf->ctx, ses->wsp_msgid);
+      hdr->RelatesTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+      hdr->RelatesTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+    }
 #endif
 
     zxid_wsf_sign(cf, cf->wsp_sign, sec, 0, hdr, env->Body);
@@ -356,13 +358,16 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
  *     is populated to the session object, from where it can be retrieved).
  *     NULL if the validation fails. The target identity is still retrievable
  *     from the session, should there be desire to process the message despite
- *     the validation failure. */
+ *     the validation failure.
+ *
+ * See also: zxid_wsc_validate_resp_env() */
 
 /* Called by:  main, zxidwspcgi_main */
 char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve)
 {
   int n_refs = 0;
   struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];
+  struct timeval ourts;
   struct timeval srcts = {0,501000};
   struct zx_root_s* r;
   zxid_entity* wsc_meta;
@@ -375,6 +380,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   zxid_cgi cgi;
 
   D_INDENT("valid: ");
+  GETTIMEOFDAY(&ourts, 0);
   zxid_set_fault(cf, ses, 0);
   zxid_set_tas3_status(cf, ses, 0);
   
@@ -413,14 +419,15 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     D_DEDENT("valid: ");
     return 0;
   }
-  if (!env->Header->MessageID) {
+  if (!ZX_SIMPLE_ELEM_CHK(env->Header->MessageID)) {
     ERR("No <a:MessageID> found. enve(%s)", enve);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No MessageID header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
-  ses->msgid = zx_str_to_c(cf->ctx, env->Header->MessageID->gg.content);
-
+  /* Remember MessageID for generating RelatesTo in Response */
+  ses->wsp_msgid = zx_str_to_c(cf->ctx, env->Header->MessageID->gg.content);
+  
   if (!env->Header->Sender || !env->Header->Sender->providerID
       && !env->Header->Sender->affiliationID) {
     ERR("No <b:Sender> found (or missing providerID or affiliationID). enve(%s)", enve);
@@ -429,7 +436,9 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     return 0;
   }
   issuer = env->Header->Sender->providerID;
-
+  
+  /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
+  
   if (!(sec = env->Header->Security)) {
     ERR("No <wsse:Security> found. enve(%s)", enve);
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No wsse:Security header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
@@ -445,12 +454,10 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
       D_DEDENT("valid: ");
       return 0;
     } else {
-      INFO("No Security/Signature found, but configured to ignore this problem. %d", sec->Signature);
+      INFO("No Security/Signature found, but configured to ignore this problem. %p", sec->Signature);
       D("No sig OK enve(%s)", enve);
     }
   }
-  
-  /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   
   wsc_meta = zxid_get_ent_ss(cf, issuer);
   if (!wsc_meta) {
@@ -465,9 +472,9 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     }
   }
 
-  n_refs = zxid_add_header_refs(cf, n_refs, refs, env->Header);
+  n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, env->Header, env->Body);
   /* *** Consider adding BDY and STR */
-  ses->sigres = zxsig_validate(cf->ctx, wsc_meta->sign_cert, sec->Signature, n_refs, &refs);
+  ses->sigres = zxsig_validate(cf->ctx, wsc_meta->sign_cert, sec->Signature, n_refs, refs);
   zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
   if (cf->sig_fatal && ses->sigres) {
     ERR("Fail due to failed message signature sigres=%d", ses->sigres);
@@ -476,20 +483,10 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     return 0;
   }
 
-  if (sec->Timestamp && sec->Timestamp->Created && sec->Timestamp->Created->gg.content
-      && sec->Timestamp->Created->gg.content->s) {
-    srcts.tv_sec = zx_date_time_to_secs(sec->Timestamp->Created->gg.content->s);
-  } else {
-    if (cf->notimestamp_fatal) {
-      ERR("No Security/Timestamp found. enve(%s)", enve);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No unable to find wsse:Security/Timestamp.", "StaleMsg", 0, 0, 0));
-      D_DEDENT("valid: ");
-      return 0;
-    } else {
-      INFO("No Security/Timestamp found, but configured to ignore this. %d", 0);
-      D("No ts OK enve(%s)", enve);
-    }
-  }
+  if (!zxid_wsf_timestamp_check(cf, ses, sec->Timestamp,&ourts,&srcts,TAS3_PEP_RQ_IN,"e:Client"))
+    return 0;
+  
+  /* Check Requester Identity */
 
   ses->a7n = zxid_dec_a7n(cf, sec->Assertion, sec->EncryptedAssertion);
   if (ses->a7n && ses->a7n->Subject) {
@@ -504,6 +501,8 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     D_DEDENT("valid: ");
     return 0;
   }
+
+  /* Check Target Identity */
 
   if (env->Header->TargetIdentity) {
     ses->tgta7n = zxid_dec_a7n(cf, env->Header->TargetIdentity->Assertion, env->Header->TargetIdentity->EncryptedAssertion);
@@ -533,7 +532,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   zxid_ses_to_pool(cf, ses);
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
   zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);
-  zxlog(cf, 0, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "PNEWSES", ses->sid, 0);
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "PNEWSES", ses->sid, 0);
   
   /* *** Call Rs-In PDP */
 
@@ -542,12 +541,15 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   if (zxlog_dup_check(cf, logpath, "validate request")) {
     if (cf->dup_msg_fatal) {
       zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request dup err");
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Client", "Duplicate Message.", "DuplicateMsg", 0, 0, 0));
       D_DEDENT("valid: ");
       return 0;
+    } else {
+      INFO("Duplicate message detected, but configured to ignore this (DUP_MSG_FATAL=0). %d",0);
     }
   }
   zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request");
-  zxlog(cf, 0, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "VALID", logpath->s, 0);
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "VALID", logpath->s, 0);
   
   D_DEDENT("valid: ");
   return ses->tgt;

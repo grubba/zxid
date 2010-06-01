@@ -1,4 +1,5 @@
 /* zxida7n.c  -  Handwritten functions for Assertion handling
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2007-2008 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -20,6 +21,7 @@
 #include "zxidconf.h"
 #include "saml2.h"
 #include "c/zx-ns.h"
+#include "c/zx-sa-data.h"
 
 /*() Look into attribute statement(s) of an assertion and scan
  * for nth occurance of named attribute. Ordering of attributes

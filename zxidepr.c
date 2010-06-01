@@ -34,6 +34,7 @@
 #include "zxidconf.h"
 #include "saml2.h"
 #include "c/zx-ns.h"
+#include "c/zx-a-data.h"
 
 /*() Fold service type (or any URN or URL) to file name. */
 

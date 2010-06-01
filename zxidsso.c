@@ -472,7 +472,7 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
     secs = zx_date_time_to_secs(a7n->Conditions->NotBefore->s);
     if (secs > ourts->tv_sec) {
       if (secs - cf->before_slop > ourts->tv_sec) {
-	ERR("NotBefore rejected with slop of %d. Time to validity %ld secs", cf->after_slop, secs - ourts->tv_sec);
+	ERR("NotBefore rejected with slop of %d. Time to validity %ld secs", cf->before_slop, secs - ourts->tv_sec);
 	if (cgi) {
 	  cgi->sigval = "V";
 	  cgi->sigmsg = "Assertion is not valid yet (too soon).";
@@ -485,7 +485,7 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
 	  return ZXSIG_TIMEOUT;
 	}
       } else {
-	D("NotBefore accepted with slop of %d. Time to validity %ld secs", cf->after_slop, secs - ourts->tv_sec);
+	D("NotBefore accepted with slop of %d. Time to validity %ld secs", cf->before_slop, secs - ourts->tv_sec);
       }
     } else {
       D("NotBefore ok. Time from validity %ld secs", ourts->tv_sec - secs);

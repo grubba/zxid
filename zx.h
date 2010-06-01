@@ -142,6 +142,7 @@ struct zx_elem_s* zx_ref_len_simple_elem(struct zx_ctx* c, int len, const char* 
 struct zx_elem_s* zx_ref_simple_elem(struct zx_ctx* c, const char* s);
 struct zx_elem_s* zx_dup_len_simple_elem(struct zx_ctx* c, int len, const char* s);
 struct zx_elem_s* zx_dup_simple_elem(struct zx_ctx* c, const char* s);
+#define ZX_SIMPLE_ELEM_CHK(el) ((el) && (el)->gg.content && (el)->gg.content->len && (el)->gg.content->s && (el)->gg.content->s[0])
 
 /* All attributes are represented as a string, as follows. */
 

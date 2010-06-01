@@ -23,7 +23,7 @@
 #ifndef _TAS3_H
 #define _TAS3_H 0x20091224  /* TAS3 API version. 20091224 corresponds to first issue of D2.4 */
 
-#include <zxid.h>
+#include <zx/zxid.h>
 
 /* Map data types to TAS3 equivalents */
 

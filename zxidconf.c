@@ -325,6 +325,7 @@ int zxid_init_conf(zxid_conf* cf, char* zxid_path)
   cf->audience_fatal = ZXID_AUDIENCE_FATAL;
   cf->dup_a7n_fatal  = ZXID_DUP_A7N_FATAL;
   cf->dup_msg_fatal  = ZXID_DUP_MSG_FATAL;
+  cf->relto_fatal    = ZXID_RELTO_FATAL;
   cf->wsp_nosig_fatal = ZXID_WSP_NOSIG_FATAL;
   cf->notimestamp_fatal = ZXID_NOTIMESTAMP_FATAL;
   cf->anon_ok        = ZXID_ANON_OK;
@@ -1080,6 +1081,7 @@ scan_end:
 	break;
       }
       if (!strcmp(n, "RECOVER_PASSWD")) { cf->recover_passwd = v; break; }
+      if (!strcmp(n, "RELTO_FATAL"))    { SCAN_INT(v, cf->relto_fatal); break; }
       goto badcf;
     case 'S':  /* SES_ARCH_DIR, SIGFAIL_IS_ERR, SIG_FATAL */
       if (!strcmp(n, "SES_ARCH_DIR"))   { cf->ses_arch_dir = (v[0]=='0' && !v[1]) ? 0 : v; break; }
@@ -1350,6 +1352,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "AUDIENCE_FATAL=%d\n"
 "DUP_A7N_FATAL=%d\n"
 "DUP_MSG_FATAL=%d\n"
+"RELTO_FATAL=%d\n"
 "WSP_NOSIG_FATAL=%d\n"
 "NOTIMESTAMP_FATAL=%d\n"
 "REDIR_TO_CONTENT=%d\n"
@@ -1494,6 +1497,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->audience_fatal,
 		 cf->dup_a7n_fatal,
 		 cf->dup_msg_fatal,
+		 cf->relto_fatal,
 		 cf->wsp_nosig_fatal,
 		 cf->notimestamp_fatal,
 		 cf->redir_to_content,

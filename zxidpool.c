@@ -23,6 +23,7 @@
 #include "zx.h"
 #include "zxid.h"
 #include "zxidconf.h"
+#include "c/zx-sa-data.h"
 
 /*(i) Convert attributes from (session) pool to LDIF entry, applying OUTMAP.
  * This is used by zxid_simple() SSO successful code to generate return
@@ -695,7 +696,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   zxid_add_attr_to_ses(cf, ses, "sesix",      zx_dup_str(cf->ctx, STRNULLCHK(ses->sesix)));
   zxid_add_attr_to_ses(cf, ses, "setcookie",  zx_dup_str(cf->ctx, STRNULLCHK(ses->setcookie)));
   zxid_add_attr_to_ses(cf, ses, "cookie",     zx_dup_str(cf->ctx, STRNULLCHK(ses->cookie)));
-  zxid_add_attr_to_ses(cf, ses, "msgid",      zx_dup_str(cf->ctx, STRNULLCHK(ses->msgid)));
+  zxid_add_attr_to_ses(cf, ses, "msgid",      zx_dup_str(cf->ctx, STRNULLCHK(ses->wsp_msgid)));
 
   zxid_add_attr_to_ses(cf, ses, "rs",         zx_dup_str(cf->ctx, STRNULLCHK(ses->rs)));
   src = dst = ses->at->val;

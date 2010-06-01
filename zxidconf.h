@@ -49,7 +49,7 @@
  * The nice name may be used by IdP user interface to refer to the SP. It
  * is usually a short human readable name or description. It will also
  * appear in metadata as Organization/OrganizationDisplayName */
-#define ZXID_NICE_NAME "ZXID Demo SP"
+#define ZXID_NICE_NAME "ZXID CONF NICE_NAME: Set this to describe your site to humans"
 
 /*(c) Web Site URL - root of EntityID
  * URL for most zxid operations. It must end in whatever triggers
@@ -58,8 +58,7 @@
  * N.B. There is no explicit way to configure Entity ID (Provider ID) for
  * the zxid SP. The Entity ID is always of form ZXID_URL?o=B, for example
  *   https://sp1.zxidsp.org:8443/zxid?o=B */
-#define ZXID_URL "https://sp1.zxidsp.org:8443/zxid"
-/*#define ZXID_URL "https://a-sp.liberty-iop.org:8443/zxid"*/
+#define ZXID_URL "https://sp1.zxidconf-you-should-set-URL-conf-variable-to-some-useful-and-site-dependent-value.org:8443/zxid"
 
 /*(c) Override standard EntityID Construction
  * The best practise is that SP Entity ID is chosen by the SP (and not
@@ -90,7 +89,7 @@
 /*(c) Additional Metadata Fields. Safe to leave all as NULL.
  * The LOCALITY, STATE, and COUNTRY will appear in certificates
  * so you may want to set them to sensible values. */
-#define ZXID_ORG_NAME "Unspecified ORG_NAME"
+#define ZXID_ORG_NAME "Unspecified ORG_NAME conf variable"
 #define ZXID_ORG_URL  0
 #define ZXID_LOCALITY "Lisboa"
 #define ZXID_STATE    "Lisboa"
@@ -298,7 +297,6 @@
  * generally the need to set a cookie is expressed by presence of
  * setcookie attribute in the LDIF entry. setcookie specifies what
  * should appear in the Set-Cookie HTTP header of HTTP response). */
-
 #define ZXID_SES_COOKIE_NAME "ZXIDSES"
 
 /*(c) Local user account management.
@@ -308,7 +306,6 @@
  * such system. If it has, you probably want to continue to use
  * the application's own system. Local accounts are stored under
  * /var/zxid/user/SHA1 */
-
 #define ZXID_USER_LOCAL 1
 
 /*(c) Mini IdP
@@ -433,6 +430,7 @@
 #define ZXID_TIMEOUT_FATAL  1 /* Whether NotBefore and NotOnOrAfter are checked */
 #define ZXID_DUP_A7N_FATAL  1 /* Whether duplication of AssertionID is considered fatal. */
 #define ZXID_DUP_MSG_FATAL  1 /* Whether duplication of MessageID or message is considered fatal. */
+#define ZXID_RELTO_FATAL    1 /* Whether failure to correlate RelatesTo to MessageID, or total lack of RelatesTo, is considered fatal. */
 
 /*(c) Web service request and response validation options. For the token
  * in the request, the assertion validation options apply. */

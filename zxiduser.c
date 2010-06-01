@@ -26,6 +26,7 @@
 #include "zxid.h"
 #include "zxidconf.h"
 #include "yubikey.h"   /* from libyubikey-1.5 */
+#include "c/zx-sa-data.h"
 
 /*() Parse a line from .mni and form a NameID, unless there is mniptr */
 

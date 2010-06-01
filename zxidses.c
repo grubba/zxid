@@ -33,6 +33,7 @@
 #include "zxidconf.h"
 #include "saml2.h"
 #include "c/zx-ns.h"
+#include "c/zx-e-data.h"
 
 /* ============== Sessions ============== */
 

@@ -35,6 +35,7 @@
 #include "zxid.h"
 #include "zxidconf.h"
 #include "c/zxidvers.h"
+#include "c/zx-md-data.h"
 
 /*() Convert configuration string ~conf~ to configuration object ~cf~. */
 

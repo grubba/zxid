@@ -28,6 +28,7 @@
 #include <zx/wsf.h>
 #include <zx/c/zxidvers.h>
 #include <zx/c/zx-ns.h>
+#include <zx/c/zx-data.h>
 
 char* help =
 "zxidhrxmlwsp  -  SAML 2.0 WSP CGI - R" ZXID_REL "\n\

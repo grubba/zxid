@@ -26,21 +26,16 @@
 #include <openssl/sha.h>
 #include <zlib.h>
 
+#ifdef MINGW
+#include <windows.h>
+#define fdtype HANDLE
+#else
+#define fdtype int
+#endif
+
 #include "zx.h"
 #include "zxidconf.h"
 #include "platform.h"
-
-//#ifdef MINGW
-//#define fdtype HANDLE
-//#define BADFD (INVALID_HANDLE_VALUE)
-//#define closefile(x) (CloseHandle(x)?1:-1)
-//#define openfile_ro(path) CreateFile((path), GENERIC_READ, FILE_SHARE_READ, 0 /*security*/, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0)
-//#else
-//#define fdtype int
-//#define BADFD (-1)
-//#define closefile(x) close(x)
-//#define openfile_ro(path) open((path),O_RDONLY)
-//#endif
 
 #if !defined(USE_STDIO) && !defined(MINGW)
 /* *** Static initialization of struct flock is suspect since man fcntl() documentation
@@ -344,7 +339,7 @@ int close_file(fdtype fd, const char* logkey)
 
 /*() Copy contents of a file, i.e. first read a file, then write a file.
  * Many places use copy_file() as opposed to hardlinking file because
- * actually copying file is more portable. Even in Unix hardlinking
+ * actually copying file is more portable. Even in Unix, hardlinking
  * can be troublesome if the from and to are on different file systems. */
 
 /* Called by:  zxid_copy_user_eprs_to_ses */
@@ -388,7 +383,6 @@ linkrest:
       perror("openfile_ro");
       ERR("%s: Error opening from(%s) euid=%d egid=%d", logkey, from, geteuid(), getegid());
       return BADFD;
-
   }
 
 #ifdef USE_STDIO
@@ -436,6 +430,7 @@ linkrest:
 
   close_file(fd_to, logkey);
   closefile(fd_from);
+  return 0;
 }
 
 /*() Output a hexdump to stderr. Used for debugging purposes. */

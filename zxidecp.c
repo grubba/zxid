@@ -25,6 +25,7 @@
 #include "zxid.h"
 #include "zxidconf.h"
 #include "saml2.h"
+#include "c/zx-paos-data.h"
 
 extern char **environ;
 

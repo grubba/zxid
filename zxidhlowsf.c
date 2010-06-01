@@ -27,6 +27,7 @@
 #include <zx/zxidconf.h>  /* Default and compile-time configuration options. */
 #include <zx/wsf.h>
 #include <zx/c/zxidvers.h>
+#include <zx/c/zx-e-data.h>
 
 char* help =
 "zxidhlowsf  -  SAML 2.0 SP + WSC CGI - R" ZXID_REL "\n\

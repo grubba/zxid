@@ -816,23 +816,23 @@ nobody:
       return 0;
     }
     if (p > enve && ONE_OF_2(p[-1], '<', ':') && ONE_OF_5(p[4], '>', ' ', '\t', '\r', '\n'))
-      break;
+      break; /* Opening <Body> detected. */
   }
   if (!p)
     goto nobody;
   
-  for (p += 4; *p && *p != '>'; ++p) ;
+  for (p += 4; *p && *p != '>'; ++p) ;  /* Scan for close of opening <Body */
   if (!*p)
     goto nobody;
   
   for (q = ++p; q; q+=5) {
     q = strstr(q, "Body>");
     if (!q)
-      goto nobody;
+      goto nobody;  /* Missing closing </Body> tag */
     if (ONE_OF_2(q[-1], '<', ':'))
       break;
   }
-  for (q; *q != '<'; --q) ;
+  for (--q; *q != '<'; --q) ;  /* Scan for the start of </Body>, skipping any namespace prefix */
 
   enve = ZX_ALLOC(cf->ctx, q-p+1);
   memcpy(enve, p, q-p);

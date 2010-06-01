@@ -42,7 +42,8 @@
  *
  * c::        ZX context. Used for memory allocation.
  * n::        Number of elements in the sref array
- * sref::     An array of (reference, xml data structure) tuples that are to be signed
+ * sref::     An array of <reference id, xml canon> tuples that are
+ *     to be signed. See zxid_add_header_refs() for preparing sref array.
  * cert::     Certificate (public key) used for signing
  * priv_key:: Private key used for signing
  * return::   Signature as XML data, or 0 if failure.
@@ -150,7 +151,8 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
  * cert::   Signing party's certificate (public key), typically from metadata
  * sig::    Parsed XML-DSIG data structure
  * n::      Number of elements in the sref array
- * sref::   An array of (reference, xml data structure) tuples that are referenced by the signature
+ * sref::   An array of <reference sref, xml data structure blob> tuples that are
+ *     referenced by the signature
  * return:: ZXSIG value. 0 (ZXSIG_OK) means success. Any other value is some soft of failure */
 
 /* Called by:  main x5, zxid_chk_sig, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */

@@ -20,6 +20,7 @@
 #include "c/zx-const.h"
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
+#include "c/zx-e-data.h"
 
 #if 0
 #define XS_STRING "xs:string"
