@@ -305,7 +305,7 @@ CFLAGS+= $(CDEF) $(CDIR)
 ###
 
 ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
-ZXID_LIB_OBJ=zxidsimp.o zxidpool.o zxidpsso.o zxidsso.o zxidslo.o zxiddec.o zxidspx.o zxididpx.o zxidmni.o zxidpep.o zxidmk.o zxida7n.o zxidses.o zxiduser.o zxidcgi.o zxidconf.o zxidecp.o zxidcdc.o zxidloc.o zxidlib.o zxidmeta.o zxidcurl.o zxidepr.o zxida7n.o ykcrc.o ykaes.o
+ZXID_LIB_OBJ=zxidsimp.o zxidpool.o zxidpsso.o zxidsso.o zxidslo.o zxiddec.o zxidspx.o zxididpx.o zxidmni.o zxidpep.o zxidpdp.o zxidmk.o zxida7n.o zxidses.o zxiduser.o zxidcgi.o zxidconf.o zxidecp.o zxidcdc.o zxidloc.o zxidlib.o zxidmeta.o zxidcurl.o zxidepr.o zxida7n.o ykcrc.o ykaes.o
 ZX_OBJ=zxlib.o zxns.o zxutil.o zxlog.o zxsig.o zxcrypto.o c/license.o c/zx-attrs.o c/zx-elems.o
 WSF_OBJ=zxidmkwsf.o zxidwsf.o zxidwsc.o zxidwsp.o zxiddi.o
 SMIME_LIB_OBJ=certauth.o keygen.o pkcs12.o smime-enc.o smime-qry.o smime-vfy.o smimemime.o smimeutil.o
@@ -1577,7 +1577,7 @@ API_REF_SRC=aux-templ.c dec-templ.c enc-templ.c getput-templ.c \
  mod_auth_saml.c \
  zxcrypto.c zxida7n.c zxidcdc.c zxidcgi.c zxidconf.c zxidcurl.c \
  zxidecp.c zxidepr.c zxidlib.c zxidloc.c \
- zxidmeta.c zxidmk.c zxidmkwsf.c zxidmni.c zxidpep.c \
+ zxidmeta.c zxidmk.c zxidmkwsf.c zxidmni.c zxidpep.c zxidpdp.c \
  zxidses.c zxidsimp.c zxidpool.c zxidslo.c zxidspx.c zxididpx.c zxiddec.c \
  zxidsso.c zxidpsso.c zxiddi.c \
  zxiduser.c zxidwsc.c zxidwsp.c \

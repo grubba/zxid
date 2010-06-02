@@ -372,6 +372,12 @@ is handled as follows:
 7. Comply with obligations (large part of this responsibility rests
    with the subprocesses and can not be automatically enforced)
 
+> N.B. For an attribute to be available, four conditions must be
+> met: (i) it must actually exist, (ii) it must be specified in NEED
+> (or WANT, if no absolute guarantee of availability is necessary),
+> (iii) it must pass INMAP, and (iv) it must pass OUTMAP or purpose
+> specific map like PEPMAP.
+
 4.1 Attribute Broker Configuration Directives
 ---------------------------------------------
 
@@ -471,6 +477,20 @@ AAPMLref:: Reference to AAPML declaration about policies applying
 otherLim:: Description of additional policies applying to this attribute source
 ext:: Extensions
 
+In a Web Service call, on Web Service Provider's side, the implicit
+attribute sources include
+
+* Requester token (assertion). This attribute source will
+  use as namespace the issuer's entity ID. Essentially this is
+  similar to the Single Sign-On assertion treatment.
+* Target Identity token (assertion). This attribute source will
+  use as namespace the issuer's entity ID. Further, the actual
+  attributes are prefixed with "tgt_".
+* Attributes passed in SOL (Simple Obligations Language) formatted
+  UsageDirective. This attribute source will use as namespace the
+  entity ID of the message signer, i.e. the WSC that pledges
+  to respect the obligations.
+
 4.1.4 INMAP specification
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -536,12 +556,12 @@ to all attributes just before +out-map+ stage):
   SUPPRESS=A,B,C
 >>
 
-5 ZXID XACML PEP
-================
+5 ZXID XACML PEP (and local PDP)
+================================
 
 > *Important*: You need a functioning XACML PDP (Policy Decision Point
 > to use this functionality. zxididp includes a PDP that always
-> returns "Permit", unless ~role~ is "deny" - you need to aquire
+> returns "Permit", unless ~role~ is "deny" - you need to acquire
 > and configure a real PDP, such as commercial (e.g. Axiomatics or
 > Symlabs XACML PDP) or a third party open source PDP (e.g. PERMIS or Sun).
 
@@ -574,17 +594,24 @@ If whitelist exists, anyone not listed is denied. If blacklist
 exists, anyone listed is denied. If both lists exist, then white
 is applied first and black then, i.e. blacklist overrides whitelist.
 
-The lists accumulate over defalut configuration and repeated instances
+The lists accumulate over default configuration and repeated instances
 of the configuration directive. The special value "reset" can be used
 to reset any of the lists.
 
-5.2 Configuring XACML PEP
--------------------------
+The local PDP authority is consulted at all PEPs, i.e. at SSO, RQOUT1,
+RQIN2, RSOUT3, and RSIN4.
+
+> N.B. It is expected that local PDP will grow in ritchness to address
+> additional common cases, but if you have complex requirements,
+> you should be using an external PDP.
+
+5.2 Configuring XACML PEP for Single Sign-On
+--------------------------------------------
 
 XACML2 PEP (client) functionality allows an external XACML2 PDP
-(server) to be queried for the authorization decision.  The attributes
-gathered by the Attribute Broker phase are available for formulating
-the XACML request.
+(server) to be queried for the authorization decision, permitting
+Single Sign-On to happen.  The attributes gathered by the Attribute
+Broker phase are available for formulating the XACML request.
 
 Since the XACML PDP may expect attributes names differently from the
 +Common Namespace+, an additional mapping directive, ~PEPMAP~, is provided.
@@ -596,6 +623,66 @@ is used for indicating whether the attribute is
 * "rsrc": Resource Attributes (default: URL=url of page)
 * "act":  Action Attributes   (default: Action=access)
 * "env":  Environment Attributes (default: ZXID_PEPvers)
+
+5.3 Configuring XACML PEPs for Web Service Calls
+------------------------------------------------
+
+ZXID implements a four points of control PEP model for
+web service calls. This is adopted from the TAS3 project.
+
+<<dia: stackable-filter-master-pdp:bg,rules,pdp: Four PEP Control Points on the Web Service call path.>>
+
+Each control point extracts the attributes from the common namespace
+of the pool using directives similar to ~PEPMAP~ as follows:
+
+PEPMAP_RQOUT:: Request outbound enforement point on Web
+    Service Client (WSC) side, see (1) in the diagram.
+    Typically this enforcement point can be used to control whether
+    WSC is allowed to talk to the Web Service
+    Provider (WSP). It can also be used to control whether the
+    data whose submission to WSP is contemplated, is allwed
+    to leave the WSC, and if so, under which obligations
+    or usage directives. Finally, this control point can be
+    used to formulate pledges about which obligations the WSC
+    is willing to honour. Again, such pledges are passed
+    as a usage directive on the wire.
+
+PEPMAP_RQIN:: Request inbound  enforcement point on WSP side,
+    see (2) in the diagram. This is the main PEP that filters
+    the requests "at the gate" before they get in. When
+    most people think about a PEP, they think about this type
+    of PEP. The ~PEPMAP_RQIN~ can implement tests on
+    requesting identity attributes, target identity (resource
+    owner) attributes, obligations requirements and
+    obligations pledges conveyed in the usage directives,
+    as well as the actual operation contemplated and data
+    in the operation.
+
+PEPMAP_RSOUT:: Response outbound enforcement point on WSP side,
+    see (3) in the diagram. This PEP is in position to
+    filter outbound data before it is returned to the WSC.
+    It can also attach obligations to this data, as usage
+    directives.
+
+PEPMAP_RSIN:: Response inbound enforcement point on WSC side,
+    see (4) in the diagram. This PEP is mainly useful for
+    checking whether the usage directives and obligations
+    attached to the data are acceptable. If not, the
+    data can be rejected at this point.
+
+5.4 Configuring UsageDirectives, including obligations pledges and requests
+---------------------------------------------------------------------------
+
+All ID-WSF messages, requests and responses, are able to carry
+a UsageDirectives SOAP header, but unfortunately the content and meaning
+of this header is not well specified (as of 2010). In essence, the header can
+carry obligations imposed on the sent data, or it can carry
+a pledge to respect obligations if data is returned. While
+Liberty ID-WSF UsageDirective has no way of separating between
+the two cases, we can make the distinction at the level of the
+XACML <xa:Oblication> tag's ~FullfillOn~ XML attribute. (*** specify values)
+
+
 
 6 Full Configuration Option Reference
 =====================================

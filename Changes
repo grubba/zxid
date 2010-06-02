@@ -48,7 +48,7 @@ https://idp.testshib.org/idp/shibboleth
 
 zxid-0.58:: 25.5.2010
     - Make add-envelope processing more tolerant of different namespaces
-    - added SOAP fault and tas3:Status
+    - Added SOAP fault and tas3:Status
     - Improved XML parse error formatting 
     - Fixed seg fault in zxid_wsc_prepare() in case the EPR lacks Metadata
     - Do proper signature validation in zxid_wsp_validate() and zxid_wsc_validate_resp_env()
@@ -56,6 +56,8 @@ zxid-0.58:: 25.5.2010
     - Added RelatesTo correlation check in  zxid_wsc_validate_resp_env()
     - Added concept of current fault and current tas3 status
     - Added accessor functions for faults and tas3 status
+    - Added local PDP call to all 4 web service call control points
+    - Added remote PDP call to all 4 web service call control points
 zxid-0.57:: 18.5.2010
     - Introduced .jar and .war as std binary distribution items
     - Check for empty PDP_URL and disable Az in that case

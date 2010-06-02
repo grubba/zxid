@@ -538,7 +538,7 @@
  * the end of SSO, i.e. by zxid_simple().
  * PDP_CALL_URL is used if zxid_az() family of functions
  * are called. If PDP_CALL_URL is not set, but PDP_URL is
- * set, the latter value will be used by zxid_az(). If you
+ * set, the PDP_URL value will be used by zxid_az(). If you
  * always want to explicitly call zxid_az() and do not want
  * zxid_simple() to make implicit calls to PDP, just set
  * PDP_CALL_URL and leave PDP_URL as 0. */
@@ -549,21 +549,39 @@
 
 #define ZXID_XASP_VERS "2.0"
 
-/*(c) XACML Attributes ns$A$rule$b$ext */
-
+/*(c) Specify XACML Attributes for SSO PEP in format ns$A$rule$b$ext */
 #define ZXID_PEPMAP "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+
+/*(c) Specify XACML Attributes for Request Outbound PEP at WSC (1) in format ns$A$rule$b$ext */
+#define ZXID_PEPMAP_RQOUT "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+
+/*(c) Specify XACML Attributes for Request Inbound PEP at WSP (2) in format ns$A$rule$b$ext */
+#define ZXID_PEPMAP_RQIN  "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+
+/*(c) Specify XACML Attributes for Response Outbound PEP at WSP (3) in format ns$A$rule$b$ext */
+#define ZXID_PEPMAP_RSOUT "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
+
+/*(c) Specify XACML Attributes for Response Inbound PEP at WSC (4) in format ns$A$rule$b$ext */
+#define ZXID_PEPMAP_RSIN  "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
 
 //#define ZXID_XACML2_SUBJ  "idpnid=$idpnid&role=$role"
 //#define ZXID_XACML2_RSRC  "URL=$URL"
 //#define ZXID_XACML2_ACT   "Action=$Action"
 //#define ZXID_XACML2_ENV   "ZXID_PEPVers"
 
-/*(c) Whitelists and blacklists for the primitive local PDP. Comma separated lists. */
+/*(c) Whitelists and blacklists for the primitive SSO local PDP. Comma separated lists. */
 
 #define ZXID_LOCALPDP_ROLE_PERMIT 0   /* Whitelist of roles (empty: anything goes) */
 #define ZXID_LOCALPDP_ROLE_DENY   "local_deny"      /* Blacklist of roles */
 #define ZXID_LOCALPDP_IDPNID_PERMIT 0 /* Whitelist of permitted users (empty: anything goes) */
 #define ZXID_LOCALPDP_IDPNID_DENY "denynid" /* Blacklist of denied users */
+
+/*(c) Obligations we are willing to respect (unless an explicit UsageDirectives header
+ * is specified by caller), require, generate, and accept. */
+#define ZXID_WSC_LOCALPDP_OBL_PLEDGE  0  /* String: WSC pledged obligations in SOL notation */
+#define ZXID_WSP_LOCALPDP_OBL_REQ     0  /* String: WSP required obligations in SOL notation */
+#define ZXID_WSP_LOCALPDP_OBL_EMIT    0  /* String: WSP obligations emitted on resp */
+#define ZXID_WSC_LOCALPDP_OBL_ACCEPT  0  /* String: WSC acceptable obligations in SOL notation */
 
 /* ----------------------------------------------------------------------------- */
 /*(c) Simple API HTML customization.

@@ -11,6 +11,7 @@
  * 24.8.2009, created --Sampo
  * 10.10.2009, added zxid_az() family --Sampo
  * 12.2.2010,  added locking to lazy loading --Sampo
+ * 31.5.2010,  generalized to several PEPs model --Sampo
  */
 
 #include "errmac.h"
@@ -40,14 +41,14 @@
  * cgi:: if non-null, will receive error and status codes
  * ses:: all attributes are obtained from the session. You may wish
  *     to add additional attributes that are not known by SSO.
+ * pepmap:: The map used to extract the attributes from the pool to the XACML request
  * returns:: 0 on deny (for any reason, e.g. indeterminate), or string
  *     containing the obligations on permit.
  *
  * For simpler API, see zxid_az() family of functions.
  */
 
-/* Called by:  zxid_az_cf_ses, zxid_call x2, zxid_simple_ab_pep, zxid_simple_ses_active_cf, zxid_wsc_prepare_call, zxid_wsc_valid_resp */
-char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url)
+char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -81,7 +82,7 @@ char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* 
   }
 
   for (at = ses?ses->at:0; at; at = at->n) {
-    map = zxid_find_map(cf->pepmap, at->name);
+    map = zxid_find_map(pepmap, at->name);
     if (map) {
       if (map->rule == ZXID_MAP_RULE_DEL) {
 	D("attribute(%s) filtered out by del rule in PEPMAP", at->name);
@@ -277,6 +278,14 @@ char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* 
   /*if (resp->Assertion->AuthzDecisionStatement) {  }*/
   D("Deny %d",0);
   return 0;
+}
+
+/*() Call Policy Decision Point (PDP) to obtain an authorization decision.
+ * Uses default PEPMAP to call zxid_pep_az_soap_pepmap(). */
+
+/* Called by:  zxid_az_cf_ses, zxid_call x2, zxid_simple_ab_pep, zxid_simple_ses_active_cf, zxid_wsc_prepare_call, zxid_wsc_valid_resp */
+char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url) {
+  return zxid_pep_az_soap(cf, cgi, ses, pdp_url, cf->pepmap);
 }
 
 /*int zxid_az_cf_cgi_ses(zxid_conf* cf,  zxid_cgi* cgi, zxid_ses* ses);*/

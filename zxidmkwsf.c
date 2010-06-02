@@ -73,7 +73,7 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, const char* ctlpt, const ch
 
 /*() Create SOAP Fault element (see Table 2 of [SOAPBind2], pp.12-13)
  *
- * fa:: Optional fault actor.
+ * fa:: Optional fault actor, such as one of the TAS3 control points (ctlpt)
  * fc:: Fault code. Should be "e:Client" or "e:Server".
  * fs:: Fault string. Human readable string explanation of the fault.
  * sc1:: First level status code (to be placed inside <detail> element)

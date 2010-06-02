@@ -262,11 +262,20 @@ struct zxid_conf {
   struct zxid_map*   inmap;
   struct zxid_map*   outmap;
   struct zxid_map*   pepmap;
+  struct zxid_map*   pepmap_rqout;
+  struct zxid_map*   pepmap_rqin;
+  struct zxid_map*   pepmap_rsout;
+  struct zxid_map*   pepmap_rsin;
 
   struct zxid_cstr_list* localpdp_role_permit;
   struct zxid_cstr_list* localpdp_role_deny;
   struct zxid_cstr_list* localpdp_idpnid_permit;
   struct zxid_cstr_list* localpdp_idpnid_deny;
+
+  struct zxid_cstr_list* wsc_localpdp_obl_pledge;
+  struct zxid_cstr_list* wsp_localpdp_obl_req;
+  struct zxid_cstr_list* wsp_localpdp_obl_emit;
+  struct zxid_cstr_list* wsc_localpdp_obl_accept;
   
   int   bootstrap_level;     /* How many layers of bootstraps are generated. */
   int   max_soap_retry;      /* How many times a ID-WSF SOAP call can be retried (update EPR) */
@@ -538,7 +547,6 @@ char* zxid_idp_select_len(int conf_len, char* conf, int* res_len, int auto_flags
 char* zxid_fed_mgmt_len(int conf_len, char* conf, int* res_len, char* sid, int auto_flags);
 struct zx_str* zxid_idp_select_zxstr_cf(zxid_conf* cf, int auto_flags);
 
-char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_flags);
 char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
 char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
 
@@ -804,10 +812,16 @@ struct zx_str* zxid_mni_do_ss(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struc
 
 /* zxidpep */
 
+char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap);
 char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url);
 char* zxid_az_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses);
 char* zxid_az_cf(zxid_conf* cf, const char* qs, const char* sid);
 char* zxid_az(const char* conf, const char* qs, const char* sid);
+
+/* zxidpdp */
+
+int zxid_localpdp(zxid_conf* cf, zxid_ses* ses);
+char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_flags);
 
 /* zxida7n */
 

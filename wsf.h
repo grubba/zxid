@@ -205,9 +205,20 @@
 
 /* TAS3 specific */
 
+/* control point enumerators */
+
 #define TAS3_PEP_RQ_OUT "urn:tas3:ctlpt:pep:rq:out"
 #define TAS3_PEP_RQ_IN  "urn:tas3:ctlpt:pep:rq:in"
 #define TAS3_PEP_RS_OUT "urn:tas3:ctlpt:pep:rs:out"
 #define TAS3_PEP_RS_IN  "urn:tas3:ctlpt:pep:rs:in"
+
+/* status and fault codes */
+
+#define TAS3_STATUS_OK      "OK"                      /* Usually omitted */
+#define TAS3_STATUS_PERMIT  "urn:tas3:status:permit"  /* Usually omitted */
+#define TAS3_STATUS_DENY    "urn:tas3:status:deny"
+#define TAS3_STATUS_NOSIG   "urn:tas3:status:nosig"
+#define TAS3_STATUS_BADSIG  "urn:tas3:status:badsig"
+#define TAS3_STATUS_BADCOND "urn:tas3:status:badcond"
 
 #endif

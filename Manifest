@@ -93,6 +93,7 @@ zxidmk.c         - Handwritten constructors for SSO
 zxidmni.c        - NameID Management
 zxidslo.c        - Single Logout and other management functions
 zxidpep.c        - Policy Enforcement Point functions
+zxidpdp.c        - Local Policy Decision Point functions
 zxidpsso.c       - Single Sign-On functions for IdP: Generate A7N
 zxidsso.c        - Single Sign-On functions for SP: Consume A7N
 zxida7n.c        - Functions for querying assertions

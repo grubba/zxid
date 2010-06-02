@@ -11,7 +11,7 @@
  * 7.1.2007,  created --Sampo
  * 7.10.2008, added documentation --Sampo
  * 7.1.2010,  added WSC signing --Sampo
- * 31.5.2010, added WSC sig validation --Sampo
+ * 31.5.2010, added WSC sig validation and PDP calls --Sampo
  */
 
 #include "errmac.h"
@@ -127,7 +127,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     ses->sigres = ZXSIG_NO_SIG;
     if (cf->wsp_nosig_fatal) {
       ERR("No Security/Signature found. enve(%s) %p", STRNULLCHK(enve), sec->Signature);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security/ds:Signature found.", "urn:tas3:status:nosig", 0, 0, 0));
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security/ds:Signature found.", TAS3_STATUS_NOSIG, 0, 0, 0));
       return 0;
     } else {
       INFO("No Security/Signature found, but configured to ignore this problem. %p", sec->Signature);
@@ -153,7 +153,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
   if (cf->sig_fatal && ses->sigres) {
     ERR("Fail due to failed message signature sigres=%d", ses->sigres);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "Message signature did not validate.", "urn:tas3:status:badsig", 0, 0, 0));
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "Message signature did not validate.", TAS3_STATUS_BADSIG, 0, 0, 0));
     return 0;
   }
 
@@ -163,16 +163,23 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   zxid_ses_to_pool(cf, ses);
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
   
-  /* *** Call Rq-In PDP */
-#if 0
-  if (cf->pdp_url && *cf->pdp_url) {
-    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
-      D("Deny %d", 0);
-      return "z";
+  /* Call Rs-In PDP */
+  
+  if (!zxid_localpdp(cf, ses)) {
+    ERR("RSIN4 Deny by local PDP %d",0);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Client", "Response denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
+    return 0;
+  } else if (cf->pdp_url && *cf->pdp_url) {
+    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsin)) {
+      ERR("RSIN4 Deny %d", 0);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Client", "Response denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
+      return 0;
     }
   }
-#endif
-
+  
+  /* *** execute (or store for future execution) the obligations. */
+  
   logpath = zxlog_path(cf, issuer, env->Header->MessageID->gg.content,
 		       ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
   if (zxlog_dup_check(cf, logpath, "validate request")) {
@@ -186,7 +193,6 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   }
   zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate response");
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "VALID", logpath->s, 0);
-  
   return 1;
 }
 
@@ -491,7 +497,8 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
  * env:: XML payload
  * return:: SOAP Envelope of the response, as a string. You can parse this
  *     string to obtain all returned SOAP headers as well as the Body and its
- *     content. */
+ *     content. NULL on failure. ses->curflt and/or ses->curstatus contain
+ *     more detailed error information. */
 
 /* Called by:  zxcall_main, zxid_callf */
 struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve)
@@ -521,16 +528,24 @@ struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, cons
     return 0;
   }
 
-  /* *** Call Rq-Out PDP */
-#if 0
-  if (cf->pdp_url && *cf->pdp_url) {
-    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
-      D("Deny %d", 0);
-      D_DEDENT("ab_pep: ");
-      return "z";
+  /* Call Rq-Out PDP */
+  
+  if (!zxid_localpdp(cf, ses)) {
+    ERR("RQOUT1 Deny by local PDP %d",0);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
+    D_DEDENT("call: ");
+    return 0;
+  } else if (cf->pdp_url && *cf->pdp_url) {
+    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqout)) {
+      ERR("RQOUT1 Deny %d", 0);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
+      D_DEDENT("call: ");
+      return 0;
     }
   }
-#endif
+
+  /* *** add usage directives */
 
   env = zxid_wsc_call(cf, ses, epr, env);
   if (!env) {
@@ -617,16 +632,26 @@ struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr
     return 0;
   }
   ses->wsc_msgid = zx_str_to_c(cf->ctx, env->Header->MessageID->gg.content);
-  /* *** Call Rq-Out PDP */
-#if 0
-  if (cf->pdp_url && *cf->pdp_url) {
-    if (!zxid_pep_az_soap(cf, 0, ses, cf->pdp_url)) {
-      D("Deny %d", 0);
+
+  /* Call Rq-Out PDP */
+  
+  if (!zxid_localpdp(cf, ses)) {
+    ERR("RQOUT1 Deny by local PDP %d",0);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
+    D_DEDENT("prep: ");
+    return 0;
+  } else if (cf->pdp_url && *cf->pdp_url) {
+    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqout)) {
+      ERR("RQOUT1 Deny %d", 0);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Request denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
       D_DEDENT("prep: ");
       return 0;
     }
   }
-#endif
+  
+  /* *** add usage directives */
+
   ret = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
   D_DEDENT("prep: ");
   return ret;

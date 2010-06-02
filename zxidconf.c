@@ -17,7 +17,8 @@
  * 4.9.2009,  added NEED, WANT, INMAP, PEPMAP, OUTMAP, and ATTRSRC --Sampo
  * 15.11.2009, added SHOW_CONF (o=d) option --Sampo
  * 7.1.2010,  added WSC and WSP signing options --Sampo
- * 12.2.2010,  added pthread locking --Sampo
+ * 12.2.2010, added pthread locking --Sampo
+ * 31.5.2010, added 4 web service call PEPs --Sampo
  */
 
 #include <memory.h>
@@ -348,6 +349,10 @@ int zxid_init_conf(zxid_conf* cf, char* zxid_path)
   cf->inmap          = zxid_load_map(cf, 0, ZXID_INMAP);
   cf->outmap         = zxid_load_map(cf, 0, ZXID_OUTMAP);
   cf->pepmap         = zxid_load_map(cf, 0, ZXID_PEPMAP);
+  cf->pepmap_rqout   = zxid_load_map(cf, 0, ZXID_PEPMAP_RQOUT);
+  cf->pepmap_rqin    = zxid_load_map(cf, 0, ZXID_PEPMAP_RQIN);
+  cf->pepmap_rsout   = zxid_load_map(cf, 0, ZXID_PEPMAP_RSOUT);
+  cf->pepmap_rsin    = zxid_load_map(cf, 0, ZXID_PEPMAP_RSIN);
 
   cf->localpdp_role_permit   = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_ROLE_PERMIT);
   cf->localpdp_role_deny     = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_ROLE_DENY);
@@ -1047,6 +1052,10 @@ scan_end:
       if (!strcmp(n, "PDP_URL"))        { cf->pdp_url = v; break; }
       if (!strcmp(n, "PDP_CALL_URL"))   { cf->pdp_call_url = v; break; }
       if (!strcmp(n, "PEPMAP"))         { cf->pepmap = zxid_load_map(cf, cf->pepmap, v); break; }
+      if (!strcmp(n, "PEPMAP_RQOUT"))   { cf->pepmap_rqout = zxid_load_map(cf, cf->pepmap_rqout, v); break; }
+      if (!strcmp(n, "PEPMAP_RQIN"))    { cf->pepmap_rqin  = zxid_load_map(cf, cf->pepmap_rqin,  v); break; }
+      if (!strcmp(n, "PEPMAP_RSOUT"))   { cf->pepmap_rsout = zxid_load_map(cf, cf->pepmap_rsout, v); break; }
+      if (!strcmp(n, "PEPMAP_RSIN"))    { cf->pepmap_rsin  = zxid_load_map(cf, cf->pepmap_rsin,  v); break; }
       if (!strcmp(n, "POST_A7N_ENC"))   { SCAN_INT(v, cf->post_a7n_enc); break; }
       goto badcf;
     case 'R':  /* RELY_A7N, RELY_MSG */
@@ -1212,6 +1221,10 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
   struct zx_str* inmap;
   struct zx_str* outmap;
   struct zx_str* pepmap;
+  struct zx_str* pepmap_rqout;
+  struct zx_str* pepmap_rqin;
+  struct zx_str* pepmap_rsout;
+  struct zx_str* pepmap_rsin;
   struct zx_str* localpdp_role_permit;
   struct zx_str* localpdp_role_deny;
   struct zx_str* localpdp_idpnid_permit;
@@ -1259,6 +1272,10 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
   inmap = zxid_show_map(cf, cf->inmap);
   outmap = zxid_show_map(cf, cf->outmap);
   pepmap = zxid_show_map(cf, cf->pepmap);
+  pepmap_rqout = zxid_show_map(cf, cf->pepmap_rqout);
+  pepmap_rqin  = zxid_show_map(cf, cf->pepmap_rqin);
+  pepmap_rsout = zxid_show_map(cf, cf->pepmap_rsout);
+  pepmap_rsin  = zxid_show_map(cf, cf->pepmap_rsin);
 
   localpdp_role_permit   = zxid_show_cstr_list(cf, cf->localpdp_role_permit);
   localpdp_role_deny     = zxid_show_cstr_list(cf, cf->localpdp_role_deny);
@@ -1411,6 +1428,10 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "INMAP=\n%s\n"
 "OUTMAP=\n%s\n"
 "PEPMAP=\n%s\n"
+"PEPMAP_RQOUT=\n%s\n"
+"PEPMAP_RQIN=\n%s\n"
+"PEPMAP_RSOUT=\n%s\n"
+"PEPMAP_RSIN=\n%s\n"
 "LOCALPDP_ROLE_PERMIT=\n%s\n"
 "LOCALPDP_ROLE_DENY=\n%s\n"
 "LOCALPDP_IDPNID_PERMIT=\n%s\n"
@@ -1552,6 +1573,10 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 inmap->s,
 		 outmap->s,
 		 pepmap->s,
+		 pepmap_rqout->s,
+		 pepmap_rqin->s,
+		 pepmap_rsout->s,
+		 pepmap_rsin->s,
 		 localpdp_role_permit->s,
 		 localpdp_role_deny->s,
 		 localpdp_idpnid_permit->s,

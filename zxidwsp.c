@@ -8,8 +8,9 @@
  * Licensed under Apache License 2.0, see file COPYING.
  * $Id: zxidwsc.c,v 1.16 2009-11-20 20:27:13 sampo Exp $
  *
- * 22.11.2009,  created --Sampo
- * 7.1.2010,    added WSP signing --Sampo
+ * 22.11.2009, created --Sampo
+ * 7.1.2010,   added WSP signing --Sampo
+ * 31.5.2010,  reworked PEPs extensively --Sampo
  */
 
 #include "errmac.h"
@@ -170,7 +171,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
  *     attributes, query string format. These credentials will be populated
  *     to the attribute pool in addition to the ones obtained from token and
  *     other sources. Then a PDP is called to get an authorization
- *     decision (generating obligations). See also PEPMAP configuration
+ *     decision (generating obligations). See also PEPMAP_RSOUT configuration
  *     option. This implements generalized (application independent)
  *     Responder Out PEP. To implement application dependent PEP features
  *     you should call zxid_az() directly.
@@ -190,15 +191,30 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
     D_DEDENT("decor: ");
     return 0;
   }
-
-  if (ses->curflt) {
-    env->Body->Fault = ses->curflt;
-    /* *** Delete any other body content */
-  }
   
   //*** Needs thought and development
+
+  /* Call Rs-Out PDP */
+
+  if (!zxid_localpdp(cf, ses)) {
+    ERR("RSOUT3 Deny by local PDP %d",0);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_OUT, "e:Server", "Response denied by WSP local policy", TAS3_STATUS_DENY, 0, 0, 0));
+    /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
+  } else if (cf->pdp_url && *cf->pdp_url) {
+    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsout)) {
+      ERR("RSOUT3 Deny %d", 0);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_OUT, "e:Server", "Response denied by WSP policy", TAS3_STATUS_DENY, 0, 0, 0));
+      /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
+    }
+  }
   
-  /* *** Call Rs-Out PDP */
+  if (ses->curflt) {
+    D("Detected curflt, abandoning previous Body content. %d", 0);
+    /* *** LEAK: Should free previous body content */
+    env->Body = zx_NEW_e_Body(cf->ctx);
+    env->Body->Fault = ses->curflt;
+  }
   
   if (!zxid_wsf_decor(cf, ses, env, 1)) {
     ERR("Response decoration failed %p", env);
@@ -293,7 +309,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
 	ses->sigres = ZXSIG_NO_SIG;
 	if (!cf->nosig_fatal) {
 	  ERR("Assertion not signed. Sigval(%s) %p", STRNULLCHKNULL(cgi.sigval), a7n->Signature);
-	  zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Assertion not signed.", "urn:tas3:status:nosig", 0, lk, 0));
+	  zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Assertion not signed.", TAS3_STATUS_NOSIG, 0, lk, 0));
 	  return 0;
 	} else {
 	  INFO("SSO warn: assertion not signed, but configured to ignore this problem (NOSIG_FATAL=0). Sigval(%s) %p", STRNULLCHKNULL(cgi.sigval), a7n->Signature);
@@ -303,12 +319,12 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
   }
   if (cf->sig_fatal && ses->sigres) {
     ERR("Fail due to failed assertion signature sigres=%d", ses->sigres);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Assertion signature did not validate.", "urn:tas3:status:badsig", 0, lk, 0));
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Assertion signature did not validate.", TAS3_STATUS_BADSIG, 0, lk, 0));
     return 0;
   }
   
   if (zxid_validate_cond(cf, &cgi, ses, a7n, zxid_my_entity_id(cf), 0, 0)) {
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Conditions did not validate.", "urn:tas3:status:badcond", 0, lk, 0));
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Conditions did not validate.", TAS3_STATUS_BADCOND, 0, lk, 0));
     return 0;
   }
   
@@ -445,7 +461,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     ses->sigres = ZXSIG_NO_SIG;
     if (cf->wsp_nosig_fatal) {
       ERR("No Security/Signature found. enve(%s) %p", enve, sec->Signature);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No wsse:Security/ds:Signature found.", "urn:tas3:status:nosig", 0, 0, 0));
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No wsse:Security/ds:Signature found.", TAS3_STATUS_NOSIG, 0, 0, 0));
       D_DEDENT("valid: ");
       return 0;
     } else {
@@ -473,7 +489,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
   if (cf->sig_fatal && ses->sigres) {
     ERR("Fail due to failed message signature sigres=%d", ses->sigres);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Message signature did not validate.", "urn:tas3:status:badsig", 0, 0, 0));
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Message signature did not validate.", TAS3_STATUS_BADSIG, 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
@@ -492,7 +508,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   } else {
     /* *** should there be absolute requirement for a requester assertion to exist? */
     ERR("No Requester <sa:Assertion> found. enve(%s)", enve);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No assertion found.", "urn:tas3:status:badcond", 0, 0, 0));
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No assertion found.", TAS3_STATUS_BADCOND, 0, 0, 0));
     D_DEDENT("valid: ");
     return 0;
   }
@@ -508,7 +524,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
       }
     } else {
       ERR("No TargetIdentity <sa:Assertion> found. enve(%s)", enve);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No TargetIdentity Assertion found.", "urn:tas3:status:badcond", 0, 0, 0));
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "No TargetIdentity Assertion found.", TAS3_STATUS_BADCOND, 0, 0, 0));
       D_DEDENT("valid: ");
       return 0;
     }
@@ -522,6 +538,8 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     ses->tgt_a7n_path = ses->sso_a7n_path;
   }
 
+  /* *** extract usage directive */
+
   DD("Creating session... %d", 0);  /* *** */
   zxid_put_ses(cf, ses);
   zxid_ses_to_pool(cf, ses);
@@ -529,8 +547,22 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "PNEWSES", ses->sid, 0);
   
-  /* *** Call Rs-In PDP */
-
+  /* Call Rq-In PDP */
+  
+  if (!zxid_localpdp(cf, ses)) {
+    ERR("RQIN2 Deny by local PDP %d",0);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_OUT, "e:Server", "Request denied by WSP local policy", TAS3_STATUS_DENY, 0, 0, 0));
+    /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
+  } else if (cf->pdp_url && *cf->pdp_url) {
+    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqin)) {
+      ERR("RQIN2 Deny %d", 0);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Server", "Request denied by WSP policy", TAS3_STATUS_DENY, 0, 0, 0));
+      D_DEDENT("valid: ");
+      return 0;
+    }
+  }
+  
   logpath = zxlog_path(cf, issuer, env->Header->MessageID->gg.content,
 		       ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
   if (zxlog_dup_check(cf, logpath, "validate request")) {
