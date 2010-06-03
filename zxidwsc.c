@@ -162,6 +162,14 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
 
   zxid_ses_to_pool(cf, ses);
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
+
+  if (env->Header->Status && env->Header->Status->code
+      && (env->Header->Status->code->len != 2
+	  || env->Header->Status->code->s[0] != 'O'
+	  || env->Header->Status->code->s[1] != 'K')) {
+    ERR("TAS3 or app level error code(%.*s)", env->Header->Status->code->len, env->Header->Status->code->s);
+    return 0;
+  }
   
   /* Call Rs-In PDP */
   
@@ -173,7 +181,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
     if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsin)) {
       ERR("RSIN4 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Client", "Response denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Client", "Response denied by WSC policy at PDP", TAS3_STATUS_DENY, 0, 0, 0));
       return 0;
     }
   }
@@ -231,6 +239,8 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
   hdr->FaultTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
   hdr->FaultTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
 #endif
+
+  zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_PLEDGE, cf->wsc_localpdp_obl_pledge);
   return 1;
 }
 

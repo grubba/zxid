@@ -204,7 +204,7 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
     //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
     if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rsout)) {
       ERR("RSOUT3 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_OUT, "e:Server", "Response denied by WSP policy", TAS3_STATUS_DENY, 0, 0, 0));
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_OUT, "e:Server", "Response denied by WSP policy at PDP", TAS3_STATUS_DENY, 0, 0, 0));
       /* Fall through, letting zxid_wsf_decor() pick up the fault and package it as response. */
     }
   }
@@ -216,12 +216,14 @@ struct zx_str* zxid_wsp_decorate(zxid_conf* cf, zxid_ses* ses, const char* az_cr
     env->Body->Fault = ses->curflt;
   }
   
+  zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_REQUIRE, cf->wsp_localpdp_obl_emit);
+  
   if (!zxid_wsf_decor(cf, ses, env, 1)) {
     ERR("Response decoration failed %p", env);
     D_DEDENT("decor: ");
     return 0;
   }
-
+  
   ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
   D("DECOR len=%d envelope(%.*s)", ss->len, ss->len, ss->s);
   D_DEDENT("decor: ");
@@ -538,7 +540,10 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     ses->tgt_a7n_path = ses->sso_a7n_path;
   }
 
-  /* *** extract usage directive */
+  if (env->Header->UsageDirective && env->Header->UsageDirective->Obligation
+      && ZX_STR_EQ(env->Header->UsageDirective->Obligation->ObligationId, TAS3_SOL1_ENGINE)) {
+    /* *** extract usage directive */
+  }
 
   DD("Creating session... %d", 0);  /* *** */
   zxid_put_ses(cf, ses);

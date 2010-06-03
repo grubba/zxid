@@ -221,4 +221,13 @@
 #define TAS3_STATUS_BADSIG  "urn:tas3:status:badsig"
 #define TAS3_STATUS_BADCOND "urn:tas3:status:badcond"
 
+/* Special value for ObligationId to identify the SOL1 processing engine. */
+
+#define TAS3_SOL1_ENGINE    "urn:tas3:sol1"
+
+/* AttributeId special values for SOL */
+
+#define TAS3_PLEDGE     "urn:tas3:sol1:pledge"
+#define TAS3_REQUIRE    "urn:tas3:sol1:require"
+
 #endif

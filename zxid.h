@@ -272,10 +272,10 @@ struct zxid_conf {
   struct zxid_cstr_list* localpdp_idpnid_permit;
   struct zxid_cstr_list* localpdp_idpnid_deny;
 
-  struct zxid_cstr_list* wsc_localpdp_obl_pledge;
-  struct zxid_cstr_list* wsp_localpdp_obl_req;
-  struct zxid_cstr_list* wsp_localpdp_obl_emit;
-  struct zxid_cstr_list* wsc_localpdp_obl_accept;
+  char* wsc_localpdp_obl_pledge;
+  char* wsp_localpdp_obl_req;
+  char* wsp_localpdp_obl_emit;
+  char* wsc_localpdp_obl_accept;
   
   int   bootstrap_level;     /* How many layers of bootstraps are generated. */
   int   max_soap_retry;      /* How many times a ID-WSF SOAP call can be retried (update EPR) */
@@ -896,6 +896,7 @@ int zxid_hunt_sig_parts(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struc
 int zxid_add_header_refs(zxid_conf* cf, int n_refs, struct zxsig_ref* refs, struct zx_e_Header_s* hdr);
 void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec, struct zx_wsse_SecurityTokenReference_s* str, struct zx_e_Header_s* hdr, struct zx_e_Body_s* bdy);
 int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* ts, struct timeval* ourts, struct timeval* srcts, const char* ctlpt, const char* faultactor);
+void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, const char* attrid, const char* obl);
 
 /* zxidwsp */
 

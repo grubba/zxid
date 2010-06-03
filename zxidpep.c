@@ -172,7 +172,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
 
   body = zx_NEW_e_Body(cf->ctx);
   if (!strcmp(cf->xasp_vers, "xac-soap")) {
-    body->xac_Request = zxid_mk_az_cd1(cf, subj, rsrc, act, env);
+    body->xac_Request = zxid_mk_az_cd1(cf, subj, rsrc, act, env); /* *** warning: assignment from incompatible pointer type */
 #if 0
     /* *** xac:Response does not have signature field */
     if (cf->sso_soap_sign) {
@@ -285,7 +285,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
 
 /* Called by:  zxid_az_cf_ses, zxid_call x2, zxid_simple_ab_pep, zxid_simple_ses_active_cf, zxid_wsc_prepare_call, zxid_wsc_valid_resp */
 char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url) {
-  return zxid_pep_az_soap(cf, cgi, ses, pdp_url, cf->pepmap);
+  return zxid_pep_az_soap_pepmap(cf, cgi, ses, pdp_url, cf->pepmap);
 }
 
 /*int zxid_az_cf_cgi_ses(zxid_conf* cf,  zxid_cgi* cgi, zxid_ses* ses);*/

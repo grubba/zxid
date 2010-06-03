@@ -354,10 +354,15 @@ int zxid_init_conf(zxid_conf* cf, char* zxid_path)
   cf->pepmap_rsout   = zxid_load_map(cf, 0, ZXID_PEPMAP_RSOUT);
   cf->pepmap_rsin    = zxid_load_map(cf, 0, ZXID_PEPMAP_RSIN);
 
-  cf->localpdp_role_permit   = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_ROLE_PERMIT);
-  cf->localpdp_role_deny     = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_ROLE_DENY);
-  cf->localpdp_idpnid_permit = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_IDPNID_PERMIT);
-  cf->localpdp_idpnid_deny   = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_IDPNID_DENY);
+  cf->localpdp_role_permit    = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_ROLE_PERMIT);
+  cf->localpdp_role_deny      = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_ROLE_DENY);
+  cf->localpdp_idpnid_permit  = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_IDPNID_PERMIT);
+  cf->localpdp_idpnid_deny    = zxid_load_cstr_list(cf, 0, ZXID_LOCALPDP_IDPNID_DENY);
+
+  cf->wsc_localpdp_obl_pledge = ZXID_WSC_LOCALPDP_OBL_PLEDGE;
+  cf->wsp_localpdp_obl_req    = ZXID_WSP_LOCALPDP_OBL_REQ;
+  cf->wsp_localpdp_obl_emit   = ZXID_WSP_LOCALPDP_OBL_EMIT;
+  cf->wsc_localpdp_obl_accept = ZXID_WSC_LOCALPDP_OBL_ACCEPT;
 
   cf->redir_to_content  = ZXID_REDIR_TO_CONTENT;
   cf->remote_user_ena   = ZXID_REMOTE_USER_ENA;
@@ -1120,6 +1125,10 @@ scan_end:
       if (!strcmp(n, "WSP_SIGN"))       { SCAN_INT(v, cf->wsp_sign); break; }
       if (!strcmp(n, "WSPCGICMD"))      { cf->wspcgicmd = v; break; }
       if (!strcmp(n, "WSP_NOSIG_FATAL")) { SCAN_INT(v, cf->wsp_nosig_fatal); break; }
+      if (!strcmp(n, "WSC_LOCALPDP_OBL_PLEDGE"))  { cf->wsc_localpdp_obl_pledge = v;   break; }
+      if (!strcmp(n, "WSP_LOCALPDP_OBL_REQ"))     { cf->wsp_localpdp_obl_req    = v;   break; }
+      if (!strcmp(n, "WSP_LOCALPDP_OBL_EMIT"))    { cf->wsp_localpdp_obl_emit   = v;   break; }
+      if (!strcmp(n, "WSC_LOCALPDP_OBL_ACCEPT"))  { cf->wsc_localpdp_obl_accept = v;   break; }
       goto badcf;
     case 'X':  /* XASP_VERS */
       if (!strcmp(n, "XASP_VERS"))      { cf->xasp_vers = v; break; }
@@ -1436,6 +1445,10 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "LOCALPDP_ROLE_DENY=\n%s\n"
 "LOCALPDP_IDPNID_PERMIT=\n%s\n"
 "LOCALPDP_IDPNID_DENY=\n%s\n"
+"WSC_LOCALPDP_OBL_PLEDGE=%s\n"
+"WSP_LOCALPDP_OBL_REQ=%s\n"
+"WSP_LOCALPDP_OBL_EMIT=%s\n"
+"WSC_LOCALPDP_OBL_ACCEPT=%s\n"
 "</pre>",
 		 cf->url, ss->s,
 		 cf->path,
@@ -1580,7 +1593,11 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 localpdp_role_permit->s,
 		 localpdp_role_deny->s,
 		 localpdp_idpnid_permit->s,
-		 localpdp_idpnid_deny->s
+		 localpdp_idpnid_deny->s,
+		 STRNULLCHK(cf->wsc_localpdp_obl_pledge),
+		 STRNULLCHK(cf->wsp_localpdp_obl_req),
+		 STRNULLCHK(cf->wsp_localpdp_obl_emit),
+		 STRNULLCHK(cf->wsc_localpdp_obl_accept)
 	 );
 }
 

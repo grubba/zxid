@@ -123,7 +123,7 @@ zxid_entity* zxid_get_meta(zxid_conf* cf, char* url)
     int fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "get_meta TEST", "%s" ZXID_COT_DIR "test", cf->path);
     if (fd == -1) {
       perror("open meta to write");
-      UNLOCK(cf->curl_mx, "curl get_meta");
+      /*UNLOCK(cf->curl_mx, "curl get_meta");*/
       ERR("Failed to open file(%s) for writing metadata", url);
       return 0;
     }

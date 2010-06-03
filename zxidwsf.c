@@ -23,6 +23,7 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
+#define XS_STRING "http://www.w3.org/2001/XMLSchema#string"
 #define BOOL_STR_TEST(x) ((x) && (x) != '0')
 
 /*() Try to map security mechanisms across different frame works. Low level
@@ -672,6 +673,43 @@ int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timesta
     }
   }
   return 1;
+}
+
+/*() Attach a SOL usage directive, unless the envelope already has UsageDirective
+ * header. If you wish to add other UsageDirectives, you must provide all of the
+ * usage directives to zxid_call() envelope argument.
+ * The ud argument typically comes from cf->wsc_localpdp_obl_pledge
+ * or cf->wsp_localpdp_obl_emit */
+
+void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, const char* attrid, const char* obl)
+{
+  struct zx_b_UsageDirective_s* ud;
+  if (!env || !env->Header) {
+    ERR("Malformed envelope %p", env);
+    return;
+  }
+  if (!attrid || !*attrid) {
+    ERR("attrid argument must be supplied %p", attrid);
+    return;
+  }
+  if (env->Header->UsageDirective) {
+    INFO("UsageDirective already set by caller %d",0);
+    return;
+  }
+  if (!obl || !*obl)
+    return;
+
+  env->Header->UsageDirective = ud = zx_NEW_b_UsageDirective(cf->ctx);
+  ud->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+  ud->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  ud->Obligation = zx_NEW_xa_Obligation(cf->ctx);
+  ud->Obligation->ObligationId = zx_dup_str(cf->ctx, TAS3_SOL1_ENGINE);
+  ud->Obligation->FulfillOn = zx_dup_str(cf->ctx, "Permit");
+  ud->Obligation->AttributeAssignment = zx_NEW_xa_AttributeAssignment(cf->ctx);
+  ud->Obligation->AttributeAssignment->AttributeId = zx_dup_str(cf->ctx, attrid);
+  ud->Obligation->AttributeAssignment->DataType = zx_dup_str(cf->ctx, XS_STRING);
+  ud->Obligation->AttributeAssignment->gg.content = zx_dup_str(cf->ctx, obl);
+  D("Attached (%s) obligations(%s)", attrid, obl);
 }
 
 /* EOF  --  zxidwsf.c */

@@ -11,6 +11,7 @@ import(e,    http://schemas.xmlsoap.org/soap/envelope/)
 import(sa11, urn:oasis:names:tc:SAML:1.0:assertion)
 import(sa,   urn:oasis:names:tc:SAML:2.0:assertion)
 import(ff12, urn:liberty:iff:2003-08)
+import(xa,   urn:oasis:names:tc:xacml:2.0:policy:schema:os, http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd)
 import(tas3sol, http://tas3.eu/tas3sol/200911/)
 
 &@hdr:
@@ -83,13 +84,15 @@ Consent	 -> %b:ConsentType
 
 UsageDirective	 -> %b:UsageDirectiveType
 %UsageDirectiveType:
-  tas3sol:Obligations?
+  xa:Obligation*
   tas3sol:Dict?
   any+  ns(##other)  processContents(lax)
   @ref	 -> %xs:IDREF
   &@b:hdr        # Added by Sampo
   @any
   ;
+
+#  tas3sol:Obligations?
 
 ApplicationEPR	 -> %a:EndpointReferenceType
 
