@@ -15,6 +15,7 @@
 #include <dirent.h>
 #include <errno.h>
 
+#include "platform.h"
 #include "errmac.h"
 #include "zx.h"
 #include "zxid.h"

@@ -26,12 +26,21 @@
 #include <stdarg.h>
 
 #ifdef USE_OPENSSL
+#include <openssl/x509.h>
 #include <openssl/rsa.h>
 #else
-#define RSA void*
+#define X509 void
+#define RSA void
 #endif
 
-#include "platform.h"
+#ifdef MINGW
+#include <windows.h>
+#define pthread_mutex_t CRITICAL_SECTION
+#define fdtype HANDLE
+#else
+#include <pthread.h>
+#define fdtype int
+#endif
 
 #ifndef const
 #define const  /* const causes swig java to break */

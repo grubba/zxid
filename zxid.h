@@ -27,23 +27,6 @@
 #ifdef USE_CURL
 #include <curl/curl.h>
 #endif
-#ifdef USE_OPENSSL
-#include <openssl/x509.h>
-#include <openssl/rsa.h>
-#endif
-
-#ifndef const
-#define const  /* const causes swig java to break */
-#endif
-
-#ifdef MINGW
-#include <windows.h>
-#define pthread_mutex_t CRITICAL_SECTION
-#define fdtype HANDLE
-#else
-#include <pthread.h>
-#define fdtype int
-#endif
 
 #include <zx/zx.h>
 
