@@ -98,6 +98,7 @@ CFLAGS=-g -fpic -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-s
 CFLAGS += -Wall -Wno-parentheses -DMAYBE_UNUSED='__attribute__ ((unused))'
 #LDFLAGS += -Wl,--gc-sections
 LIBZXID=-L. -lzxid
+OBJ_SUFFIX=o
 
 ifeq ($(ENA_PG),1)
 
@@ -286,10 +287,27 @@ OPENSSL_ROOT=/usr/local/ssl
 MOD_AUTH_SAML_LIBS=-lapr-1 -lhttpd2core
 
 else
+ifeq ($(TARGET),win32cl)
+
+# Compilation with Microsoft Visual C++ compiler's command line (experimental)
+
+CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB
+CURL_ROOT=/usr/local
+OPENSSL_ROOT=/usr/local/ssl
+WIN_LIBS= -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz -lwinmm -lwsock32 -lgdi32 -lkernel32
+LIBS= -mconsole $(WIN_LIBS)
+SHARED_FLAGS=-LDd -MDd -Wl,--add-stdcall-alias -shared --export-all-symbols -Wl,-whole-archive -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc -Wl,--allow-multiple-definition
+CFLAGS=-Yd -Zi -WL
+ZXIDJNI_SO=zxidjava/zxidjni.dll
+ifeq ($(SHARED),1)
+LIBZXID=-L. -lzxiddll
+endif
+else
 
 # Flags for Linux 2.6 native compile (gcc + gnu binutils)
 CDEF+=-DLINUX
 
+endif
 endif
 endif
 endif
@@ -523,6 +541,32 @@ ifeq ($(ENA_TAS3),1)
 
 ZX_SG += sg/tas3.sg sg/tas3sol.sg
 
+endif
+
+ifeq ($(TARGET),win32cl)
+ZXID_OBJ_SUFFIX=obj
+ZXID_LIB_OBJ=$(ZXID_LIB_OBJ:.o=.obj)
+ZX_OBJ=$(ZX_OBJ:.o=.obj)
+WSF_OBJ=$(WSF_OBJ:.o=.obj)
+SMIME_LIB_OBJ=$(SMIME_LIB_OBJ:.o=.obj)
+
+ZXID_OBJ=$(ZXID_OBJ:.o=.obj)
+ZXIDWSCTOOL_OBJ=$(ZXIDWSCTOOL_OBJ:.o=.obj)
+ZXIDSP_OBJ=$(ZXIDSP_OBJ:.o=.obj)
+ZXIDHLO_OBJ=$(ZXIDHLO_OBJ:.o=.obj)
+ZXIDGSA_OBJ=$(ZXIDGSA_OBJ:.o=.obj)
+ZXIDHLOWSF_OBJ=$(ZXIDHLOWSF_OBJ:.o=.obj)
+ZXIDSIMPLE_OBJ=$(ZXIDSIMPLE_OBJ:.o=.obj)
+ZXBENCH_OBJ=$(ZXBENCH_OBJ:.o=.obj)
+ZXIDSSOFINALIZETEST_OBJ=$(ZXIDSSOFINALIZETEST_OBJ:.o=.obj)
+ZXENCDECTEST_OBJ=$(ZXENCDECTEST_OBJ:.o=.obj)
+SFIS_OBJ=$(SFIS_OBJ:.o=.obj)
+SFISGSA_OBJ=$(SFISGSA_OBJ:.o=.obj)
+ZXIDXMLTOOL_OBJ=$(ZXIDXMLTOOL_OBJ:.o=.obj)
+ZXLOGVIEW_OBJ=$(ZXLOGVIEW_OBJ:.o=.obj)
+ZXIDHRXMLWSC_OBJ=$(ZXIDHRXMLWSC_OBJ:.o=.obj)
+ZXIDHRXMLWSP_OBJ=$(ZXIDHRXMLWSP_OBJ:.o=.obj)
+ZXIDIDP_OBJ=$(ZXIDIDP_OBJ:.o=.obj)
 endif
 
 #
@@ -914,10 +958,10 @@ zxidjava/zxid_wrap.c: $(ZX_GEN_H) zxid.h javazxid.i
 
 endif
 
-zxidjava/zxid_wrap.o: zxidjava/zxid_wrap.c
+zxidjava/zxid_wrap.$(OBJ_SUFFIX): zxidjava/zxid_wrap.c
 	$(CC) -c -o $@ $(JNI_INC) $(CFLAGS) $<
 
-$(ZXIDJNI_SO): zxidjava/zxid_wrap.o libzxid.a
+$(ZXIDJNI_SO): zxidjava/zxid_wrap.$(OBJ_SUFFIX) libzxid.a
 	$(LD) $(LDFLAGS) -o $@ $(SHARED_FLAGS) $< $(LIBZXID) $(LIBS) $(SHARED_CLOSE)
 
 zxidjava/zxidjni.class: zxidjava/zxidjni.java
@@ -974,7 +1018,7 @@ javazxid_war:
 #  mv zxidservlet.war $(WEBAPPS_PATH)/
 
 javaclean:
-	rm -rf zxidjava/*.o zxidjava/*~ zxidjava/*.so zxidjava/*.class *.class
+	rm -rf zxidjava/*.o zxidjava/*.obj zxidjava/*~ zxidjava/*.so zxidjava/*.class *.class
 
 javacleaner: javaclean
 	rm -rf zxidjava/*.java zxidjava/zxid_wrap.c
@@ -983,8 +1027,8 @@ javacleaner: javaclean
 ### Apache authentication module
 ###
 
-mod_auth_saml.so: mod_auth_saml.o libzxid.a
-	$(LD) $(LDFLAGS) -o mod_auth_saml.so $(SHARED_FLAGS) mod_auth_saml.o $(SHARED_CLOSE) $(LIBZXID) $(LIBS) $(MOD_AUTH_SAML_LIBS)
+mod_auth_saml.so: mod_auth_saml.$(OBJ_SUFFIX) libzxid.a
+	$(LD) $(LDFLAGS) -o mod_auth_saml.so $(SHARED_FLAGS) mod_auth_saml.$(OBJ_SUFFIX) $(SHARED_CLOSE) $(LIBZXID) $(LIBS) $(MOD_AUTH_SAML_LIBS)
 
 mod_auth_saml.dll: mod_auth_saml.so
 	mv mod_auth_saml.so mod_auth_saml.dll
@@ -992,7 +1036,7 @@ mod_auth_saml.dll: mod_auth_saml.so
 mod_auth_saml:
 	@$(ECHO) "mod_auth_saml: not an official target. Use make apachezxid"
 
-precheck_apache:  precheck/chk-apache.o precheck/chk-apache
+precheck_apache:  precheck/chk-apache.$(OBJ_SUFFIX) precheck/chk-apache
 	precheck/chk-apache
 
 apachezxid: precheck_apache precheck mod_auth_saml.so
@@ -1007,19 +1051,19 @@ apachezxid_install: mod_auth_saml.so
 zxid: $(ZXID_OBJ) libzxid.a
 	$(LD) $(LDFLAGS) -o zxid $(ZXID_OBJ) $(LIBZXID) $(LIBS)
 
-zxcot: zxcot.o libzxid.a
+zxcot: zxcot.$(OBJ_SUFFIX) libzxid.a
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBZXID) $(LIBS)
 
-zxdecode: zxdecode.o libzxid.a
+zxdecode: zxdecode.$(OBJ_SUFFIX) libzxid.a
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBZXID) $(LIBS)
 
-zxpasswd: zxpasswd.o libzxid.a
+zxpasswd: zxpasswd.$(OBJ_SUFFIX) libzxid.a
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBZXID) $(LIBS)
 
-zxcall: zxcall.o libzxid.a
+zxcall: zxcall.$(OBJ_SUFFIX) libzxid.a
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBZXID) $(LIBS)
 
-zxidwspcgi: zxidwspcgi.o libzxid.a
+zxidwspcgi: zxidwspcgi.$(OBJ_SUFFIX) libzxid.a
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBZXID) $(LIBS)
 
 zxidwsctool: $(ZXIDWSCTOOL_OBJ) libzxid.a
@@ -1072,7 +1116,7 @@ zxidhrxmlwsp: $(ZXIDHRXMLWSP_OBJ) libzxid.a
 
 zxidhrxml: zxidhrxmlwsc zxidhrxmlwsp
 
-smime: smime.o libzxid.a
+smime: smime.$(OBJ_SUFFIX) libzxid.a
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBZXID) $(LIBS)
 
 sizeof:
@@ -1099,9 +1143,13 @@ libzxid.a: $(ZXID_LIB_OBJ) $(ZX_OBJ)
 
 else
 
+ifeq ($(TARGET),win32cl)
+libzxid.a: $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+	$(AR) zxid.lib $^
+else
 libzxid.a: $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) libzxid.a $^
-
+endif
 endif
 
 libzxid.so.0.0: libzxid.a
@@ -1236,26 +1284,26 @@ tas3copyrel: tas3rel
 ### Precheck to help analyse compilation problems
 ###
 
-precheck/chk-zlib: precheck/chk-zlib.o
+precheck/chk-zlib: precheck/chk-zlib.$(OBJ_SUFFIX)
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBS)
 
-precheck/chk-openssl: precheck/chk-openssl.o
+precheck/chk-openssl: precheck/chk-openssl.$(OBJ_SUFFIX)
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBS)
 
-precheck/chk-curl: precheck/chk-curl.o
+precheck/chk-curl: precheck/chk-curl.$(OBJ_SUFFIX)
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBS)
 
-precheck/chk-apache: precheck/chk-apache.o
+precheck/chk-apache: precheck/chk-apache.$(OBJ_SUFFIX)
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBS)
 
 ifeq ($(CROSS_COMPILE),1)
-precheck: precheck/chk-zlib.o precheck/chk-zlib precheck/chk-openssl.o precheck/chk-openssl \
-          precheck/chk-curl.o precheck/chk-curl
+precheck: precheck/chk-zlib.$(OBJ_SUFFIX) precheck/chk-zlib precheck/chk-openssl.$(OBJ_SUFFIX) precheck/chk-openssl \
+          precheck/chk-curl.$(OBJ_SUFFIX) precheck/chk-curl
 	@$(ECHO) "Cross compile simplified precheck ok."
 	@$(ECHO)
 else
-precheck: precheck/chk-zlib.o precheck/chk-zlib precheck/chk-openssl.o precheck/chk-openssl \
-          precheck/chk-curl.o precheck/chk-curl
+precheck: precheck/chk-zlib.$(OBJ_SUFFIX) precheck/chk-zlib precheck/chk-openssl.$(OBJ_SUFFIX) precheck/chk-openssl \
+          precheck/chk-curl.$(OBJ_SUFFIX) precheck/chk-curl
 	precheck/chk-zlib
 	precheck/chk-openssl
 	precheck/chk-curl
@@ -1264,7 +1312,7 @@ precheck: precheck/chk-zlib.o precheck/chk-zlib precheck/chk-openssl.o precheck/
 endif
 
 precheckclean:
-	rm -f precheck/*.o
+	rm -f precheck/*.o precheck/*.obj
 	rm -f precheck/chk-zlib	precheck/chk-openssl precheck/chk-curl precheck/chk-apache
 
 ###
@@ -1286,10 +1334,10 @@ t/wsp2cot:
 test: t/cot t/idp t/wsp t/wsp2 zxencdectest zxcall zxididp
 	$(PERL) zxtest.pl -a
 
-#test: test.o
+#test: test.$(OBJ_SUFFIX)
 #	$(CC) -o $@ $< $(LIBZXID) $(LIBS)
 
-win32loadlibtest.exe: win32loadlibtest.o
+win32loadlibtest.exe: win32loadlibtest.$(OBJ_SUFFIX)
 	$(CC) -o $@ $<
 
 ### Test dynamic link library loading (on Windows)
@@ -1297,16 +1345,16 @@ win32loadlibtest.exe: win32loadlibtest.o
 zxidjava/testjni.class: zxidjava/testjni.java
 	cd zxidjava; $(JAVAC) $(JAVAC_FLAGS) test*.java
 
-zxidjava/testjni.o: zxidjava/testjni.c
+zxidjava/testjni.$(OBJ_SUFFIX): zxidjava/testjni.c
 	$(CC) -c -o $@ $(JNI_INC) $(CFLAGS) $<
 
-zxidjava/libtestjni.a: zxidjava/testjni.o
+zxidjava/libtestjni.a: zxidjava/testjni.$(OBJ_SUFFIX)
 	$(AR) $@ $^
 
 zxidjava/testjni.dll: zxidjava/libtestjni.a
 	$(LD) -o $@ $(SHARED_FLAGS) $^ $(SHARED_CLOSE)
 
-zxidjava/testmain: zxidjava/testmain.o
+zxidjava/testmain: zxidjava/testmain.$(OBJ_SUFFIX)
 	$(LD) $(LDFLAGS) -o $@ $< $(LIBS)
 
 testmain.class: testmain.java
@@ -1321,7 +1369,7 @@ testdll.tar: testdll
 	tar cf $@ zxidjava/testmain zxidjava/testjni.dll testmain.class testmain.java zxidjava/test*.class zxidjava/test*.java
 
 testdllclean:
-	rm -rf testmain.class zxidjava/test*.class zxidjava/test*.o zxidjava/testmain zxidjava/libtestjni.a zxidjava/test*.dll
+	rm -rf testmain.class zxidjava/test*.class zxidjava/test*.$(OBJ_SUFFIX) zxidjava/testmain zxidjava/libtestjni.a zxidjava/test*.dll
 
 testclean:
 	rm -rf t/*ses t/*user t/*/uid t/*nid t/*log t/*cot t/*pem tmp/*.out tmp/*.err
@@ -1401,7 +1449,7 @@ cleanbin:
 
 miniclean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean
 	@$(ECHO) ------------------ Making miniclean
-	rm -f *.o zxid zxlogview zxbench zxencdectest libzxid.a libzxid.so* sizeof zxid.stderr
+	rm -f *.o *.obj zxid zxlogview zxbench zxencdectest libzxid.a libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
 	rm -f mod_auth_saml.so zxididp
 	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar afr.*
@@ -1426,7 +1474,7 @@ regen: clean perlcleaner phpcleaner pycleaner rubycleaner csharpcleaner javaclea
 #      zxid to be built without the tools needed to generate those files.
 clean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean cleanbin
 	@$(ECHO) ------------------ Making clean
-	rm -f *.o c/*.o
+	rm -f *.o c/*.o *.obj c/*.obj
 	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar afr.*
 
 # zxcot -n -g http://federation.njedge.net/metadata/njedge-fed-metadata.xml
