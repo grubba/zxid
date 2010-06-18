@@ -27,7 +27,16 @@ USAGE
 die $USAGE if $ARGV[0] =~ /^-[Hh?]/;
 $ascii = shift if $ARGV[0] eq '-a';
 
-$dir = '/var/zxid/idp';
+$path = '/var/zxid/idp';
+
+$bot = <<HTML;
+<div class=zxbot>
+<a class=zx href="http://zxid.org/">ZXID.org</a>
+| <a class=zx href="http://www.tas3.eu/">TAS3.eu</a>
+- <i></i>
+</div>
+HTML
+    ;
 
 use Data::Dumper;
 
@@ -94,18 +103,13 @@ sub redirect {
 
 ### Metadata
 
-if ($cgi{'okmd'}) {
-    system "./zxcot -e '$cgi{'endpoint'}' '$cgi{'abstract'}' '$cgi{'eid'}' '$cgi{'svctype'}' | ./zxcot -b /var/zxid/idpdimd/";
-    redirect('/');
-}
-
 if ($cgi{'op'} eq 'md') {
     syswrite STDOUT, "Content-Type: text/html\r\n\r\n".<<HTML;
-<title>ZXID IdP Circle of Trust Manager</title>
+<title>ZXID IdP CoT Mgr: MD Reg</title>
 <link type="text/css" rel=stylesheet href="an.css">
 <h1 class=zxtop>ZXID IdP Circle of Trust Manager</h1>
 
-<h3>Metadata Registration</h3>
+<h3>Service Provider Metadata Registration</h3>
 
 <form method=post xaction="zxidcot.pl">
 Paste metadata here:<br>
@@ -113,32 +117,74 @@ Paste metadata here:<br>
 </textarea><br>
 <input type=submit name="okmd" value="Submit Metadata">
 </form>
-
-<div class=zxbot>
-<a class=zx href="http://zxid.org/">ZXID.org</a>
-| <a class=zx href="http://www.tas3.eu/">TAS3.eu</a>
-- <i></i>
-</div>
+$bot
 HTML
     ;
     exit;
 }
 
-### Discovery Registration
-
-if ($cgi{'okdireg'}) {
-    warn "./zxcot -e '$cgi{'endpoint'}' '$cgi{'abstract'}' '$cgi{'eid'}' '$cgi{'svctype'}' | ./zxcot -b /var/zxid/idpdimd/";
-    system "./zxcot -e '$cgi{'endpoint'}' '$cgi{'abstract'}' '$cgi{'eid'}' '$cgi{'svctype'}' | ./zxcot -b /var/zxid/idpdimd/";
-    redirect('/');
+if ($cgi{'okmd'}) {
+    (undef, $eid) = $cgi{'mdxml'} =~ /entityID=([\"\']?)([^\"\' >]+)$1/;
+    open COT, "|./zxcot -a ${path}cot/" or die "Cant write pipe zxcot -a ${path}cot/: $! $?";
+    print COT $cgi{'mdxml'};
+    close COT;
+    open COT, "./zxcot -p '$eid'|" or die "Cant read pipe zxcot -p $eid: $! $?";
+    $cgi{'sha1name'} = <COT>;
+    close COT;
+    chomp $cgi{'sha1name'};
+    $cgi{'msg'} = "<span class=zxmsg>Metadata for $eid added.</span>";
+    $cgi{'op'}  = 'viewcot';  # Fall thru to viewcot
 }
+
+if ($cgi{'op'} eq 'viewcot') {
+    open COT, "./zxcot ${path}cot/|" or die "Cant read pipe zxcot ${path}cot/: $! $?";
+    while ($line = <COT>) {
+	($mdpath, $eid, $desc) = split /\s+/, $line, 3;
+	($sha1name) = $mdpath =~ /\/([A-Za-z0-9_-]+)$/;
+	$ts = gmtime((stat($mdpath))[9]);
+	if ($sha1name eq $cgi{'sha1name'}) {
+	    $splist .= "<tr><td><a href=\"$eid\">$eid</a></td><td><b><a href=\"?op=viewmd&sha1name=$sha1name\">$sha1name</a></b></td><td>$ts</td><td>$desc</td></tr>\n";
+	} else {
+	    $splist .= "<tr><td><a href=\"$eid\">$eid</a></td><td><a href=\"?op=viewmd&sha1name=$sha1name\">$sha1name</a></td><td>$ts</td><td>$desc</td></tr>\n";
+	}
+    }
+    close COT;
+    syswrite STDOUT, "Content-Type: text/html\r\n\r\n".<<HTML;
+<title>ZXID IdP CoT Mgr: SP List</title>
+<link type="text/css" rel=stylesheet href="an.css">
+<h1 class=zxtop>ZXID IdP Circle of Trust Manager</h1>
+$cgi{'msg'}
+<h3>Service Provider Metadata Listing</h3>
+<i>This listing reflects the Service Providers known to us, i.e. in our Circle of Trust.</i>
+
+<table>
+<tr><th>EntityID</th><th>Metadata (sha1name)</th><th>Last updated</th><th>Description</th></tr>
+$splist
+</table>
+
+$bot
+HTML
+    ;
+    exit;
+}
+
+if ($cgi{'op'} eq 'viewmd') {   # View one metadata
+    $fn = $cgi{'sha1name'};
+    die "Malicious sha1name($fn)" unless $fn =~ /^[A-Za-z0-9_-]+$/;
+    $md = readall("${path}cot/$fn");
+    syswrite STDOUT, "Content-Type: text/xml\r\n\r\n".$md;
+    exit;
+}
+
+### Discovery Registration
 
 if ($cgi{'op'} eq 'direg') {
     syswrite STDOUT, "Content-Type: text/html\r\n\r\n".<<HTML;
-<title>ZXID IdP Circle of Trust Manager</title>
+<title>ZXID IdP CoT Mgr: DI Reg</title>
 <link type="text/css" rel=stylesheet href="an.css">
 <h1 class=zxtop>ZXID IdP Circle of Trust Manager</h1>
 
-<h3>Discovery Registration</h3>
+<h3>Web Service Discovery Registration</h3>
 
 <form method=post xaction="zxidcot.pl">
 
@@ -150,17 +196,60 @@ if ($cgi{'op'} eq 'direg') {
 </table>
 <p><input type=submit name="okdireg" value="Submit Discovery Registration">
 </form>
-
-<div class=zxbot>
-<a class=zx href="http://zxid.org/">ZXID.org</a>
-| <a class=zx href="http://www.tas3.eu/">TAS3.eu</a>
-- <i></i>
-</div>
+$bot
 HTML
     ;
     exit;
 }
 
-show_templ("cot-main.html", $cgi);
+if ($cgi{'okdireg'}) {
+    warn "./zxcot -e '$cgi{'endpoint'}' '$cgi{'abstract'}' '$cgi{'eid'}' '$cgi{'svctype'}' | ./zxcot -b ${path}dimd/";
+    system "./zxcot -e '$cgi{'endpoint'}' '$cgi{'abstract'}' '$cgi{'eid'}' '$cgi{'svctype'}' | ./zxcot -b ${path}dimd/";
+    $cgi{'msg'} = "<span class=zxmsg>Registration for $cgi{'eid'} added.</span>";
+    $cgi{'op'} = 'viewreg';  # Fall through to viewreg
+}
+
+if ($cgi{'op'} eq 'viewreg') {
+    #open COT, "./zxcot ${path}dimd/|" or die "Cant read pipe zxcot ${path}dimd/: $! $?";
+    opendir DIMD, "${path}dimd/" or die "Cant read dir ${path}dimd/ $!";
+    while ($fn = readdir DIMD) {
+	next if $fn =~ /^\./;
+	$data = readall("${path}dimd/$fn");
+	(undef, undef, $svctype) = $data =~ /<((\w+:)?ServiceType)[^>]+>([^<]*)</$1>/;
+	(undef, undef, $eid)  = $data =~ /<((\w+:)?ProviderID)[^>]+>([^<]*)</$1>/;
+	(undef, undef, $desc) = $data =~ /<((\w+:)?Abstract)[^>]+>([^<]*)</$1>/;
+	(undef, undef, $url)  = $data =~ /<((\w+:)?Address)[^>]+>([^<]*)</$1>/;
+	push @{$by_type{$svctype}}, $fn;
+	$ts = gmtime((stat("${path}dimd/$fn"))[9]);
+	$line{$fn} = "<tr><td><a href=\"$eid\">$eid</a></td><td><a href=\"?op=view1reg&sha1name=$fn\">$fn</a></td><td>$ts</td><td><a href=\"$url\">$url</a></td><td>$desc</td></tr>\n";	
+    }
+    close COT;
+
+    for $svctype (sort keys %by_type) {
+	$reglist .= "<tr><th colspan=5>$svctype</th></tr>"
+	    . join('', sort @{$by_type{$svctype}});
+    }
+    
+    syswrite STDOUT, "Content-Type: text/html\r\n\r\n".<<HTML;
+<title>ZXID IdP CoT Mgr: SP List</title>
+<link type="text/css" rel=stylesheet href="an.css">
+<h1 class=zxtop>ZXID IdP Circle of Trust Manager</h1>
+$cgi{'msg'}
+<h3>Web Service Discovery Registration Listing</h3>
+<i>This listing reflects the web services known to us, i.e. the ones that are discoverable.</i>
+
+<table>
+<tr><th>Service Type / EntityID</th><th>Registration (sha1name)</th><th>Last updated</th><th>URL</th><th>Description</th></tr>
+$reglist
+</table>
+
+$bot
+HTML
+    ;
+    exit;
+}
+
+warn "Unsupported op($cgi{'op'})";
+redirect('/?err=unsupported-op');
 
 __END__

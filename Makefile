@@ -1553,26 +1553,29 @@ docpdf: $(DOC:html/%.html=tex/%.pdf)
 cleandoc:
 	rm -f $(DOC)
 
+#WEBROOT=sampo@zxid.org:zxid.org
+WEBROOT=sampo@zxidp.org:/var/zxid/webroot
+
 release:
-	scp tex/README.zxid.pdf html/README.zxid-win32.html html/i-*.png zxid-frame.html sampo@zxid.org:zxid.org
+	scp tex/README.zxid.pdf html/README.zxid-win32.html html/i-*.png zxid-frame.html $(WEBROOT)
 
 winbinrel:
-	scp zxid-$(ZXIDREL)-win32-bin.zip sampo@zxid.org:zxid.org
+	scp zxid-$(ZXIDREL)-win32-bin.zip $(WEBROOT)
 
 indexrel: html/index.html
-	scp $< sampo@zxid.org:zxid.org
+	scp $< $(WEBROOT)
 
 reldoc:
-	scp $(DOC) sampo@zxid.org:zxid.org/html
+	scp $(DOC)  $(WEBROOT)/html
 
 relhtml:
-	scp html/* sampo@zxid.org:zxid.org/html
+	scp html/*  $(WEBROOT)/html
 
 refhtml:
-	scp ref/html/* sampo@zxid.org:zxid.org/ref/html
+	scp ref/html/*  $(WEBROOT)/ref/html
 
 zxidpcopytc: html/zxidp-user-terms.html html/zxidp-sp-terms.html
-	scp html/zxidp-user-terms.html html/zxidp-sp-terms.html root@zxidp.org:/var/zxid/webroot/html
+	scp html/zxidp-user-terms.html html/zxidp-sp-terms.html $(WEBROOT)/html
 
 rsynclite:
 	cd ..; rsync -a '--exclude=*.o' '--exclude=*.zip' '--exclude=TAGS' '--exclude=*.tgz' '--exclude=*.class' '--exclude=*.so' '--exclude=*.a'  '--exclude=zxlogview' '--exclude=zxidsimple'  '--exclude=zxidhlowsf'  '--exclude=zxidhlo' '--exclude=zxidsp' zxid mesozoic.homeip.net:

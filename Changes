@@ -37,6 +37,14 @@ yet another worry.
 
 https://idp.testshib.org/idp/shibboleth
 
+Google Apps Integration
+
+http://code.google.com/googleapps/domain/sso/saml_reference_implementation.html
+
+Here are example docs for SimpleSAMLPHP, or Shibboleth:
+* http://simplesamlphp.org/docs/1.5/simplesamlphp-googleapps
+* https://shibboleth.usc.edu/docs/google-apps/
+
     - zxcall should have sso only mode
     - zxcall should have discovery only mode and iteration option
     - zxcall should have EPR cache and session listing mode -s SID -l
@@ -44,6 +52,10 @@ https://idp.testshib.org/idp/shibboleth
     - zxpasswd should have user federation listing mode
     - zxid_pw_authn() should not report scary error message when checking .ykspent in
       not spent case
+    - ID Mapper to be used by Delegation Service
+    - zxid_select_tgt()
+    - Each credential as its own a7n
+    - X509 attr certs
     NOTPUB
 
 zxid-0.58:: 25.5.2010
