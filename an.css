@@ -12,4 +12,5 @@ a.zx:link    { color: #ffccff; }
 a.zx:visited { color: #aa44aa; }
 a.zx:active  { color: #ff0000; }
 a.zx:hover   { color: #ffffff; }
-th { text-align: left; }
+th { background: #ffbbff; text-align: left; }
+td { background: #ffddff; }

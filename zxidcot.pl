@@ -33,7 +33,11 @@ $bot = <<HTML;
 <div class=zxbot>
 <a class=zx href="http://zxid.org/">ZXID.org</a>
 | <a class=zx href="http://www.tas3.eu/">TAS3.eu</a>
-- <i></i>
+-- <a class=zx href="/index-idp.html">Top</a>
+| <a class=zx href="?op=md">Register Metadata</a>
+| <a class=zx href="?op=viewcot">View Metadata</a>
+| <a class=zx href="?op=direg">Register Web Service</a>
+| <a class=zx href="?op=viewreg">View Discovery</a>
 </div>
 HTML
     ;
@@ -143,12 +147,13 @@ if ($cgi{'op'} eq 'viewcot') {
 	($sha1name) = $mdpath =~ /\/([A-Za-z0-9_-]+)$/;
 	$ts = gmtime((stat($mdpath))[9]);
 	if ($sha1name eq $cgi{'sha1name'}) {
-	    $splist .= "<tr><td><a href=\"$eid\">$eid</a></td><td><b><a href=\"?op=viewmd&sha1name=$sha1name\">$sha1name</a></b></td><td>$ts</td><td>$desc</td></tr>\n";
+	    push @splist, "<tr><td><a href=\"$eid\">$eid</a></td><td><b><a href=\"?op=view1md&sha1name=$sha1name\">$sha1name</a></b></td><td>$ts</td><td>$desc</td></tr>\n";
 	} else {
-	    $splist .= "<tr><td><a href=\"$eid\">$eid</a></td><td><a href=\"?op=viewmd&sha1name=$sha1name\">$sha1name</a></td><td>$ts</td><td>$desc</td></tr>\n";
+	    push @splist, "<tr><td><a href=\"$eid\">$eid</a></td><td><a href=\"?op=view1md&sha1name=$sha1name\">$sha1name</a></td><td>$ts</td><td>$desc</td></tr>\n";
 	}
     }
     close COT;
+    $splist = join '', sort @splist;
     syswrite STDOUT, "Content-Type: text/html\r\n\r\n".<<HTML;
 <title>ZXID IdP CoT Mgr: SP List</title>
 <link type="text/css" rel=stylesheet href="an.css">
@@ -168,7 +173,7 @@ HTML
     exit;
 }
 
-if ($cgi{'op'} eq 'viewmd') {   # View one metadata
+if ($cgi{'op'} eq 'view1md') {   # View one metadata
     $fn = $cgi{'sha1name'};
     die "Malicious sha1name($fn)" unless $fn =~ /^[A-Za-z0-9_-]+$/;
     $md = readall("${path}cot/$fn");
@@ -215,19 +220,20 @@ if ($cgi{'op'} eq 'viewreg') {
     while ($fn = readdir DIMD) {
 	next if $fn =~ /^\./;
 	$data = readall("${path}dimd/$fn");
-	(undef, undef, $svctype) = $data =~ /<((\w+:)?ServiceType)[^>]+>([^<]*)</$1>/;
-	(undef, undef, $eid)  = $data =~ /<((\w+:)?ProviderID)[^>]+>([^<]*)</$1>/;
-	(undef, undef, $desc) = $data =~ /<((\w+:)?Abstract)[^>]+>([^<]*)</$1>/;
-	(undef, undef, $url)  = $data =~ /<((\w+:)?Address)[^>]+>([^<]*)</$1>/;
+	(undef, undef, $svctype) = $data =~ /<((\w+:)?ServiceType)[^>]*>([^<]*)<\/\1>/;
+	(undef, undef, $eid)  = $data =~ /<((\w+:)?ProviderID)[^>]*>([^<]*)<\/\1>/;
+	(undef, undef, $desc) = $data =~ /<((\w+:)?Abstract)[^>]*>([^<]*)<\/\1>/;
+	(undef, undef, $url)  = $data =~ /<((\w+:)?Address)[^>]*>([^<]*)<\/\1>/;
+	#$dbg .= "\n===== $fn =====\n" . $data . "\n---- svctype($svctype) eid($eid) desc($desc) url($url)";
 	push @{$by_type{$svctype}}, $fn;
 	$ts = gmtime((stat("${path}dimd/$fn"))[9]);
-	$line{$fn} = "<tr><td><a href=\"$eid\">$eid</a></td><td><a href=\"?op=view1reg&sha1name=$fn\">$fn</a></td><td>$ts</td><td><a href=\"$url\">$url</a></td><td>$desc</td></tr>\n";	
+	$line{$fn} = "<tr><td>EntityID:<br>Endpoint:<br>File:</td><td><a href=\"$eid\">$eid</a><br><a href=\"$url\">$url</a><br><a href=\"?op=view1reg&sha1name=$fn\">$fn</a></td><td>$ts</td><td>$desc</td></tr>\n";	
     }
     close COT;
 
     for $svctype (sort keys %by_type) {
-	$reglist .= "<tr><th colspan=5>$svctype</th></tr>"
-	    . join('', sort @{$by_type{$svctype}});
+	$reglist .= "<tr><th colspan=4>$svctype</th></tr>\n"
+	    . join('', sort map($line{$_}, @{$by_type{$svctype}}));
     }
     
     syswrite STDOUT, "Content-Type: text/html\r\n\r\n".<<HTML;
@@ -239,13 +245,21 @@ $cgi{'msg'}
 <i>This listing reflects the web services known to us, i.e. the ones that are discoverable.</i>
 
 <table>
-<tr><th>Service Type / EntityID</th><th>Registration (sha1name)</th><th>Last updated</th><th>URL</th><th>Description</th></tr>
+<tr><th colspan=2>Service Type / EntityID / Endpoint URL / sha1name</th><th>Last updated</th><th>Description</th></tr>
 $reglist
 </table>
-
 $bot
 HTML
     ;
+#<textarea cols=100 rows=40>$dbg</textarea>
+    exit;
+}
+
+if ($cgi{'op'} eq 'view1reg') {   # View one metadata
+    $fn = $cgi{'sha1name'};
+    die "Malicious sha1name($fn)" if $fn =~ /\.\./;
+    $reg = readall("${path}dimd/$fn");
+    syswrite STDOUT, "Content-Type: text/xml\r\n\r\n".$reg;
     exit;
 }
 
