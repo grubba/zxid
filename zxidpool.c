@@ -622,7 +622,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   char* dst;
   char* lim;
   int got;
-  struct zx_str* issuer;
+  struct zx_str* issuer = 0;
   struct zx_str* affid;
   struct zx_str* nid;
   struct zx_str* tgtissuer;
@@ -630,35 +630,30 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   struct zx_str* tgtnid;
   struct zx_str* accr;
   struct zx_str* path;
+  struct zx_sa_Assertion_s* a7n;
+  struct zx_sa_Assertion_s* tgta7n;
   char buf[ZXID_MAX_USER];
   char sha1_name[28];
 
   D_INDENT("ses_to_pool: ");
   zxid_get_ses_sso_a7n(cf, ses);
-  D("adding a7n %p to pool", ses->a7n);
-  zxid_add_a7n_at_to_pool(cf, ses, ses->a7n);
+  a7n = ses->a7n;
+  D("adding a7n %p to pool", a7n);
+  zxid_add_a7n_at_to_pool(cf, ses, a7n);
   
   /* Format some pseudo attributes that describe the SSO */
+
+  if (a7n)
+    issuer = a7n->Issuer&&a7n->Issuer->gg.content?a7n->Issuer->gg.content:0;
+  zxid_add_attr_to_ses(cf, ses, "issuer", issuer);
+  zxid_add_attr_to_ses(cf, ses, "ssoa7npath",zx_dup_str(cf->ctx, STRNULLCHK(ses->sso_a7n_path)));
   
-  issuer = ses->a7n&&ses->a7n->Issuer&&ses->a7n->Issuer->gg.content?ses->a7n->Issuer->gg.content:0;
   affid = ses->nameid&&ses->nameid->NameQualifier?ses->nameid->NameQualifier:0;
   nid = ses->nameid&&ses->nameid->gg.content?ses->nameid->gg.content:0;
-  zxid_add_attr_to_ses(cf, ses, "issuer", issuer);
-  zxid_add_attr_to_ses(cf, ses, "affid", affid);
-
-  tgtissuer = ses->tgta7n&&ses->tgta7n->Issuer&&ses->tgta7n->Issuer->gg.content?ses->tgta7n->Issuer->gg.content:0;
-  tgtaffid = ses->tgtnameid&&ses->tgtnameid->NameQualifier?ses->tgtnameid->NameQualifier:0;
-  tgtnid = ses->tgtnameid&&ses->tgtnameid->gg.content?ses->tgtnameid->gg.content:0;
-  zxid_add_attr_to_ses(cf, ses, "tgtissuer", tgtissuer);
-  zxid_add_attr_to_ses(cf, ses, "tgtaffid", tgtaffid);
-
-  accr = ses->a7n&&ses->a7n->AuthnStatement&&ses->a7n->AuthnStatement->AuthnContext&&ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef&&ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content&&ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content?ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content:0;
-  zxid_add_attr_to_ses(cf, ses, "authnctxlevel", accr);
-
-  if (ses->nid && *ses->nid) {  
-    zxid_add_attr_to_ses(cf, ses, "idpnid",    nid);
-    zxid_add_attr_to_ses(cf, ses, "nidfmt",    zx_dup_str(cf->ctx, ses->nidfmt?"P":"T"));
-    zxid_add_attr_to_ses(cf, ses, "ssoa7npath",zx_dup_str(cf->ctx, STRNULLCHK(ses->sso_a7n_path)));
+  zxid_add_attr_to_ses(cf, ses, "affid",  affid);
+  zxid_add_attr_to_ses(cf, ses, "idpnid", nid);
+  zxid_add_attr_to_ses(cf, ses, "nidfmt", zx_dup_str(cf->ctx, ses->nidfmt?"P":"T"));
+  if (nid) {  
     zxid_user_sha1_name(cf, affid, nid, sha1_name);
     path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
     zxid_add_attr_to_ses(cf, ses, "localpath",   path);
@@ -667,11 +662,25 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
       zxid_add_ldif_attrs_to_ses(cf, ses, "local_", buf, "splocal_user_at");
     zxid_copy_user_eprs_to_ses(cf, ses, path);
   }
+
+  /* Format pseudo attrs that describe the target, defaulting to the SSO identity. */
   
-  if (ses->tgt && *ses->tgt) {
-    zxid_add_attr_to_ses(cf, ses, "tgtnid",    tgtnid);
-    zxid_add_attr_to_ses(cf, ses, "tgtfmt",    zx_dup_str(cf->ctx, ses->tgtfmt?"P":"T"));
-    zxid_add_attr_to_ses(cf, ses, "tgta7npath",zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt_a7n_path)));
+  if (!ses->tgta7n)
+    tgta7n = a7n;
+  if (tgta7n)
+    tgtissuer = tgta7n->Issuer&&tgta7n->Issuer->gg.content?tgta7n->Issuer->gg.content:0;
+  zxid_add_attr_to_ses(cf, ses, "tgtissuer", tgtissuer);
+  zxid_add_attr_to_ses(cf, ses, "tgta7npath",zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt_a7n_path)));
+
+  tgtaffid = ses->tgtnameid&&ses->tgtnameid->NameQualifier?ses->tgtnameid->NameQualifier:0;
+  tgtnid = ses->tgtnameid&&ses->tgtnameid->gg.content?ses->tgtnameid->gg.content:0;
+  if (!tgtissuer) tgtissuer = issuer;  /* Default: requestor is the target */
+  if (!tgtaffid)  tgtaffid = affid;
+  if (!tgtnid)    tgtnid = nid;
+  zxid_add_attr_to_ses(cf, ses, "tgtaffid",  tgtaffid);
+  zxid_add_attr_to_ses(cf, ses, "tgtnid",    tgtnid);
+  zxid_add_attr_to_ses(cf, ses, "tgtfmt",    zx_dup_str(cf->ctx, ses->tgtfmt?"P":"T"));
+  if (tgtnid) {
     zxid_user_sha1_name(cf, tgtaffid, tgtnid, sha1_name);
     path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
     zxid_add_attr_to_ses(cf, ses, "tgtpath",   path);
@@ -680,7 +689,10 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
       zxid_add_ldif_attrs_to_ses(cf, ses, "tgt_", buf, "sptgt_user_at");
     zxid_copy_user_eprs_to_ses(cf, ses, path);
   }
-
+  
+  accr = a7n&&a7n->AuthnStatement&&a7n->AuthnStatement->AuthnContext&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content?a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content:0;
+  zxid_add_attr_to_ses(cf, ses, "authnctxlevel", accr);
+  
   got = read_all(sizeof(buf)-1, buf, "splocal.all", "%s" ZXID_USER_DIR ".all/.bs/.at" , cf->path);
   if (got)
     zxid_add_ldif_attrs_to_ses(cf, ses, 0, buf, "splocal.all");
