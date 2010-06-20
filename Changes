@@ -56,6 +56,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxid_select_tgt()
     - Each credential as its own a7n
     - X509 attr certs
+    - Use post screen as confirmation screen
     NOTPUB
 
 zxid-0.58:: 25.5.2010

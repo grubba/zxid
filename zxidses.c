@@ -109,6 +109,7 @@ int zxid_get_ses_sso_a7n(zxid_conf* cf, zxid_ses* ses)
       }
     } else
       ses->nid = zx_str_to_c(cf->ctx, subj);
+    ses->tgtnid = ses->nid;
   } else
     ERR("Session sid(%s) SSO assertion in path(%s) did not have Name ID. a7n data(%.*s)",
 	STRNULLCHK(ses->sid), ses->sso_a7n_path, gotall, ses->sso_a7n_buf);
