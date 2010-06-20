@@ -111,6 +111,7 @@ struct zx_root_s* zxid_decode_redir_or_post(zxid_conf* cf, zxid_cgi* cgi, zxid_s
     p = m2;
     simplesig = 1;
   } else {
+    D("Detected compressed payload. m2(%c) %x p2(%c) %x", *m2, *m2, *p2, *p2);
     p = zx_zlib_raw_inflate(cf->ctx, p-msg, msg, &len);  /* Redir uses compressed payload. */
     ZX_FREE(cf->ctx, msg);
   }

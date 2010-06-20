@@ -560,9 +560,9 @@ static void zxid_add_ldif_attrs_to_ses(zxid_conf* cf, zxid_ses* ses, const char*
 
     val = p+2;
     p = strchr(val, '\n');  /* *** parsing LDIF is fragile if values are multiline */
-
-    D("%s: ATTR(%s)=VAL(%s)", lk, name_buf, val);
-    zxid_add_attr_to_ses(cf, ses, name_buf,  zx_dup_len_str(cf->ctx, p?(p-val):strlen(val), val));
+    len = p?(p-val):strlen(val);
+    D("%s: ATTR(%s)=VAL(%.*s)", lk, name_buf, len, val);
+    zxid_add_attr_to_ses(cf, ses, name_buf,  zx_dup_len_str(cf->ctx, len, val));
   }
 }
 
@@ -665,7 +665,9 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
 
   /* Format pseudo attrs that describe the target, defaulting to the SSO identity. */
   
-  if (!ses->tgta7n)
+  if (ses->tgta7n)
+    tgta7n = ses->tgta7n;
+  else
     tgta7n = a7n;
   if (tgta7n)
     tgtissuer = tgta7n->Issuer&&tgta7n->Issuer->gg.content?tgta7n->Issuer->gg.content:0;

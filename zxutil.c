@@ -769,7 +769,7 @@ char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out
       break;
     default:
       inflateEnd(&z);
-      ERR("zlib inflate failed with error code %d. Most probably the input data is empty, corrupt, or not in RFC1951 (zlib deflate) format. iter=%d in_len=%d dlen=%d", ret, iter, in_len, dlen);
+      ERR("zlib inflate failed with error code %d. Most probably the input data is empty, corrupt, or not in RFC1951 (zlib deflate) format. A common error is incomplete data (due to read(2) not returing all data on first iteration) resulting a failed detection of uncompressed data (the detection looks for '<' in beginning and '>' in end of base64 decoded data - often the latter is missing in incomplete data). iter=%d in_len=%d dlen=%d", ret, iter, in_len, dlen);
       return 0;
     }
   }
