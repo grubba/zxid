@@ -7,8 +7,8 @@ ZXID Home - Open Source IdM - SAML SSO - Federated
 <<define: ibox300!align=right width=300 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 <<define: ibox150!align=right width=150 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 
-<<define: ZXVERS!0.58>>
-<<define: ZXNEWS!20100617 - Extensive new features, due TAS3>>
+<<define: ZXVERS!0.59>>
+<<define: ZXNEWS!20100623 - Stabilization release>>
 
 <<maketitle: 1>>
 
@@ -325,6 +325,8 @@ ZXID:
 <li>2010 (<a href="#" onClick="vis('old2010',1);">show</a>/<a href="#" onClick="vis('old2010',0);">hide</a>)
 <div id="old2010">
 >>
+
+* <<link:zxid-0.59.tgz>> (20100623 - Stabilization release)
 * <<link:zxid-0.58.tgz>> (20100617 - Extensive new features, due to TAS3)
 * <<link:zxid-0.53.tgz>> (20100323 - Shibboleth metadata extentions, IdP fixes)
 * <<link:zxid-0.52.tgz>> (20100217 - Fixed multidiscovery, etc.)

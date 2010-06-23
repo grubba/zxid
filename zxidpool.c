@@ -625,7 +625,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   struct zx_str* issuer = 0;
   struct zx_str* affid;
   struct zx_str* nid;
-  struct zx_str* tgtissuer;
+  struct zx_str* tgtissuer = 0;
   struct zx_str* tgtaffid;
   struct zx_str* tgtnid;
   struct zx_str* accr;
@@ -671,7 +671,8 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
     tgta7n = a7n;
   if (tgta7n)
     tgtissuer = tgta7n->Issuer&&tgta7n->Issuer->gg.content?tgta7n->Issuer->gg.content:0;
-  zxid_add_attr_to_ses(cf, ses, "tgtissuer", tgtissuer);
+  if (tgtissuer)
+    zxid_add_attr_to_ses(cf, ses, "tgtissuer", tgtissuer);
   zxid_add_attr_to_ses(cf, ses, "tgta7npath",zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt_a7n_path)));
 
   tgtaffid = ses->tgtnameid&&ses->tgtnameid->NameQualifier?ses->tgtnameid->NameQualifier:0;

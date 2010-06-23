@@ -28,7 +28,9 @@
 #include <sys/stat.h>
 //#include <sys/wait.h>
 //#include <pthread.h>
+#ifndef WIN32CL
 #include <stdint.h>
+#endif
 #include <signal.h>
 #include <fcntl.h>
 //#include <netdb.h>

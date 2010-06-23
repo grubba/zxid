@@ -60,7 +60,7 @@ public class zxidwspdemo extends HttpServlet {
 	System.err.print("url("+url+")\n");	
 	zxidjni.url_set(cf, url);  // Virtual host support
 	
-	if (qs != null && qs.equals("o=B")) {  // Metadata check
+	if (qs != null && (qs.equals("o=B") || qs.equals("o=d"))) {  // Metadata check
 	    String ret = zxidjni.simple_cf(cf, -1, qs, null, 0x3d54);  // QS response requested
 	    System.err.print(ret);
 	    switch (ret.charAt(0)) {

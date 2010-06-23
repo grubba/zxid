@@ -417,7 +417,6 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
   }
 
   if (a7n->Conditions->AudienceRestriction) {
-    myentid = zxid_my_entity_id(cf);
     for (audr = a7n->Conditions->AudienceRestriction; audr; audr = (struct zx_sa_AudienceRestriction_s*)audr->gg.g.n)
       for (aud = audr->Audience; aud; aud = (struct zx_elem_s*)aud->g.n)
 	if (aud->content->len == myentid->len
@@ -425,7 +424,6 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
 	  D("Found audience. %d", 0);
 	  goto found_audience;
 	}
-    ERR("SSO warn: AudienceRestriction wrong. %d", 0);
     if (cgi) {
       cgi->sigval = "V";
       cgi->sigmsg = "This SP not included in the Assertion Audience.";
@@ -433,9 +431,12 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
     if (ses)
       ses->sigres = ZXSIG_AUDIENCE;
     if (cf->audience_fatal) {
+      ERR("SSO error: AudienceRestriction wrong. My entityID(%.*s)", myentid->len, myentid->s);
       if (err)
 	*err = "P";
       return ZXSIG_AUDIENCE;
+    } else {
+      INFO("SSO warn: AudienceRestriction wrong. My entityID(%.*s). Configured to ignore this (AUDIENCE_FATAL=0).", myentid->len, myentid->s);
     }
   } else {
     INFO("Assertion does not have AudienceRestriction. %d", 0);

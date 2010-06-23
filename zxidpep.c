@@ -318,7 +318,7 @@ char* zxid_az_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
   DD("qs(%s) ses=%p", STRNULLCHKD(qs), ses);
   if (qs && ses)
     zxid_add_qs_to_ses(cf, ses, zx_dup_cstr(cf->ctx, qs), 1);
-  ret =  zxid_pep_az_soap(cf, &cgi, ses, cf->pdp_call_url?cf->pdp_call_url:cf->pdp_url);
+  ret =  zxid_pep_az_soap(cf, &cgi, ses, (cf->pdp_call_url&&*cf->pdp_call_url)?cf->pdp_call_url:cf->pdp_url);
   D_DEDENT("az: ");
   return ret;
 }

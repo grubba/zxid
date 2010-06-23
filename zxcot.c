@@ -32,13 +32,16 @@ NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
-Usage: zxcot [options] [dir]\n\
+Usage: zxcot [options] [dir]         # Gives listing of metadata\n\
        zxcot -a [options] [dir] <meta.xml\n\
        zxcot -b [options] [dir] <epr.xml\n\
        curl https://site.com/metadata.xml | zxcot -a [options] [dir]\n\
        zxcot -g https://site.com/metadata.xml [options] [dir]\n\
+       zxcot -m [options] >meta.xml  # Generate our own metadata\n\
        zxcot -p https://site.com/metadata.xml\n\
   [dir]            CoT directory. Default /var/zxid/cot\n\
+  -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
+                   Most of the configuration is read from /var/zxid/zxid.conf\n\
   -a               Add metadata from stdin\n\
   -b               Register Web Service, add Service EPR from stdin\n\
   -bs              Register Web Service and Bootstrap, add Service EPR from stdin\n\
@@ -46,6 +49,7 @@ Usage: zxcot [options] [dir]\n\
   -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)\n\
   -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.\n\
   -s               Swap columns, for easier sorting by URL\n\
+  -m               Output metadata of this installation (our own metadata)\n\
   -p ENTID         Print sha1 name corresponding to an entity ID.\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
@@ -62,6 +66,7 @@ int swap = 0;
 int addmd = 0;
 int regsvc = 0;
 int regbs = 0;
+int genmd = 0;
 int dryrun = 0;
 int inflate_flag = 2;  /* Auto */
 int verbose = 1;
@@ -71,11 +76,14 @@ char* entid = 0;
 char* cotdir  = ZXID_PATH ZXID_COT_DIR;
 char* dimddir = ZXID_PATH ZXID_DIMD_DIR;
 char* uiddir  = ZXID_PATH ZXID_UID_DIR;
+zxid_conf* cf = 0;
 
 /* Called by:  main x8, zxcall_main, zxcot_main */
 static void opt(int* argc, char*** argv, char*** env)
 {
   int len;
+  struct zx_str* ss;
+  
   if (*argc <= 1) return;
   
   while (1) {
@@ -108,6 +116,16 @@ static void opt(int* argc, char*** argv, char*** env)
       case '\0':
 	++regsvc;
 	dimddir  = ZXID_PATH "idp" ZXID_DIMD_DIR;
+	continue;
+      }
+      break;
+
+    case 'c':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++(*argv); --(*argc);
+	if ((*argc) < 1) break;
+	zxid_parse_conf(cf, (*argv)[0]);
 	continue;
       }
       break;
@@ -149,6 +167,10 @@ static void opt(int* argc, char*** argv, char*** env)
       case '\0':
 	++zx_debug;
 	continue;
+      case 'c':
+	ss = zxid_show_conf(cf);
+	fprintf(stderr, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
+	continue;
       }
       break;
 
@@ -166,6 +188,14 @@ static void opt(int* argc, char*** argv, char*** env)
 	++(*argv); --(*argc);
 	if ((*argc) < 1) break;
 	entid = (*argv)[0];
+	continue;
+      }
+      break;
+
+    case 'm':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++genmd;
 	continue;
       }
       break;
@@ -210,7 +240,7 @@ static void opt(int* argc, char*** argv, char*** env)
 
     } 
     /* fall thru means unrecognized flag */
-    D("HERE");
+    DD("HERE");
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
     fprintf(stderr, help);
@@ -408,6 +438,20 @@ static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
   return 0;
 }
 
+/* --------------- genmd --------------- */
+
+/*() Generate our own metadata */
+
+/* Called by:  zxcot_main */
+static int zxid_genmd(zxid_conf* cf, int dry_run, const char* dcot)
+{
+  zxid_cgi cgi;
+  struct zx_str* meta = zxid_sp_meta(cf, &cgi);
+  memset(&cgi, 0, sizeof(cgi));
+  printf("%.*s", meta->len, meta->s);
+  return 0;
+}
+
 /* --------------- lscot --------------- */
 
 /*() Print a line of Circle-of-Trust listing */
@@ -487,10 +531,8 @@ static int zxid_lscot(zxid_conf* cf, int col_swap, const char* dcot)
 /* Called by: */
 int zxcot_main(int argc, char** argv, char** env)
 {
-  zxid_conf cf;
-
   strncpy(zx_instance, "\tzxcot", sizeof(zx_instance));
-  memset(&cf, 0, sizeof(cf));
+  cf = zxid_new_conf_to_cf(0);
 
   opt(&argc, &argv, &env);
   
@@ -501,16 +543,17 @@ int zxcot_main(int argc, char** argv, char** env)
     printf("%s\n", sha1_name);
     return 0;
   }
-  
-  zxid_init_conf_ctx(&cf, ZXID_PATH);
-  
+    
   if (addmd)
-    return zxid_addmd(&cf, mdurl, dryrun, cotdir);
+    return zxid_addmd(cf, mdurl, dryrun, cotdir);
   
   if (regsvc)
-    return zxid_reg_svc(&cf, regbs, dryrun, dimddir, uiddir);
+    return zxid_reg_svc(cf, regbs, dryrun, dimddir, uiddir);
+
+  if (genmd)
+    return zxid_genmd(cf, dryrun, cotdir);
   
-  return zxid_lscot(&cf, swap, cotdir);
+  return zxid_lscot(cf, swap, cotdir);
 }
 
 /* EOF  --  zxcot.c */

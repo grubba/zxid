@@ -117,7 +117,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 	path[len] = 0;
 	zxid_fold_svc(path, len);
 	if (memcmp(de->d_name, path, len) || de->d_name[len] != ',') {
-	  D("%d: rejected due to prefix(%s) file(%s)", n_discovered, path, de->d_name);
+	  D("%d:     rejected due to prefix(%s) file(%s)", n_discovered, path, de->d_name);
 	  goto next_file;
 	}
       }

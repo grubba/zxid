@@ -59,6 +59,11 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Use post screen as confirmation screen
     NOTPUB
 
+zxid-0.59:: 22.6.2010
+    - Added zxcot -m to generate our own metadata (previously only available using WKL method)
+    - Fixed segv on signature validation when wsc_meta is missing, but NOSIG_FATAL=0
+    - Improved zxidcot.pl with metadata and registration listings
+    - Tightened cgi parsing to check lengths of options (avoids false detection)
 zxid-0.58:: 25.5.2010
     - Make add-envelope processing more tolerant of different namespaces
     - Added SOAP fault and tas3:Status

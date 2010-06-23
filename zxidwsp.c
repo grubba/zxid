@@ -275,7 +275,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
     fmt = 1;  /* anything nontransient may be a federation */
   }
 
-  D("A7N received. NID(%s) FMT(%d) SESIX(%s)", ses->nid, ses->nidfmt, STRNULLCHK(ses->sesix));
+  D("A7N received. NID(%s) FMT(%d) SESIX(%s)", STRNULLCHKQ(ses->nid), ses->nidfmt, STRNULLCHK(ses->sesix));
   if (!strcmp(lk, "tgt")) {
     ses->tgtnameid = nameid;
     ses->tgt = zx_str_to_c(cf->ctx, nameid->gg.content);
@@ -473,7 +473,18 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   }
   
   wsc_meta = zxid_get_ent_ss(cf, issuer);
-  if (!wsc_meta) {
+  if (wsc_meta) {
+    n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, env->Header, env->Body);
+    /* *** Consider adding BDY and STR */
+    ses->sigres = zxsig_validate(cf->ctx, wsc_meta->sign_cert, sec->Signature, n_refs, refs);
+    zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
+    if (cf->sig_fatal && ses->sigres) {
+      ERR("Fail due to failed message signature sigres=%d", ses->sigres);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Message signature did not validate.", TAS3_STATUS_BADSIG, 0, 0, 0));
+      D_DEDENT("valid: ");
+      return 0;
+    }
+  } else {
     ses->sigres = ZXSIG_NO_SIG;
     if (cf->nosig_fatal) {
       INFO("Unable to find SAML metadata for Sender(%.*s), but configured to ignore this problem (NOSIG_FATAL=0).", issuer->len, issuer->s);
@@ -483,17 +494,6 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
       D_DEDENT("valid: ");
       return 0;
     }
-  }
-
-  n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, env->Header, env->Body);
-  /* *** Consider adding BDY and STR */
-  ses->sigres = zxsig_validate(cf->ctx, wsc_meta->sign_cert, sec->Signature, n_refs, refs);
-  zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
-  if (cf->sig_fatal && ses->sigres) {
-    ERR("Fail due to failed message signature sigres=%d", ses->sigres);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_IN, "e:Client", "Message signature did not validate.", TAS3_STATUS_BADSIG, 0, 0, 0));
-    D_DEDENT("valid: ");
-    return 0;
   }
 
   if (!zxid_wsf_timestamp_check(cf, ses, sec->Timestamp,&ourts,&srcts,TAS3_PEP_RQ_IN,"e:Client"))
