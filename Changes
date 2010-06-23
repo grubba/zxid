@@ -6,7 +6,6 @@ Usual suspects: zxid.user@lists.unh.edu
 
 To do:
     - Add Trust and Privacy Negotiation capability to discovery
-    - Add Az calls to zxid_wsp_validate() and zxid_wsp_decorate()
     - Wishlist of built-in attributes
       1. HTTP method (GET, POST, HEAD, etc.)
       2. Full URL including the hostname part (currently only local URL is passed)
@@ -59,11 +58,14 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Use post screen as confirmation screen
     NOTPUB
 
+zxid-0.60:: 23.6.2010
+    - TAS3 package version number synchronization
 zxid-0.59:: 22.6.2010
     - Added zxcot -m to generate our own metadata (previously only available using WKL method)
     - Fixed segv on signature validation when wsc_meta is missing, but NOSIG_FATAL=0
     - Improved zxidcot.pl with metadata and registration listings
     - Tightened cgi parsing to check lengths of options (avoids false detection)
+    - Add Az calls to zxid_wsp_validate() and zxid_wsp_decorate()
 zxid-0.58:: 25.5.2010
     - Make add-envelope processing more tolerant of different namespaces
     - Added SOAP fault and tas3:Status
