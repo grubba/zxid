@@ -947,52 +947,54 @@ color: #ffffff;
 
 <ul class="sidebox">
 <li>Download Source</li>
-<li style="margin-left:20px;"><a href="/zxid-!!ZXVERS.tgz">zxid-!!ZXVERS.tgz</a><br><span class=sideminitxt>!!ZXNEWS</span></li>
+<li style="margin-left:10px;"><a href="/zxid-!!ZXVERS.tgz">zxid-!!ZXVERS.tgz</a><br><span class=sideminitxt>!!ZXNEWS</span></li>
+<li>Anon GIT</li>
+<li style="margin-left:10px;"><span class=sideminitxt><a href="git://zxid.org/zxid">git clone git://zxid.org/zxid</a><br><a href="git://zxid.org/pd">git clone git://zxid.org/pd</a><br><i>Please write author for commit access.</i></span></li>
 <li>Win32 Binary</li>
-<li style="margin-left:20px;"><a href="/zxid-0.41-win32-bin.zip">zxid-0.41-win32-bin.zip</a><br><span class=sideminitxt>20091122, standalone and Java</span></li>
+<li style="margin-left:10px;"><a href="/zxid-0.41-win32-bin.zip">zxid-0.41-win32-bin.zip</a><br><span class=sideminitxt>20091122, standalone and Java</span></li>
 </ul>
 
 <ul class="sidebox">
 <li>Support</li>
-<li style="margin-left:20px;"><a href="http://listproc.unh.edu/archives/zxid.user">ZXID mailing list</a><br><span class=sideminitxt>zxid.user@lists.unh.edu archives</span></li>
-<li style="margin-left:20px;"><a href="http://www.tas3.eu/">TAS3</a>, <a href="tas3/">ZXID-TAS3</a></li>
+<li style="margin-left:10px;"><a href="http://listproc.unh.edu/archives/zxid.user">ZXID mailing list</a><br><span class=sideminitxt>zxid.user@lists.unh.edu archives</span></li>
+<li style="margin-left:10px;"><a href="http://www.tas3.eu/">TAS3</a>, <a href="tas3/">ZXID-TAS3</a></li>
 </ul>
 
 <ul class="sidebox">
 <li>Documentation</li>
 
-<li style="margin-left:20px;"><a href="html/mod_auth_saml.html">mod_auth_saml</a><br><span class=sideminitxt>Deploy SAML on Apache without programming</span></li>
+<li style="margin-left:10px;"><a href="html/mod_auth_saml.html">mod_auth_saml</a><br><span class=sideminitxt>Deploy SAML on Apache without programming</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-conf.html">Configuration</a><br><span class=sideminitxt>Nitty gritty on all options</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-conf.html">Configuration</a><br><span class=sideminitxt>Nitty gritty on all options</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-cot.html">Circle of Trust</a><br><span class=sideminitxt>Set up a Circle of Trust (aka Trust Network or Federation)</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-cot.html">Circle of Trust</a><br><span class=sideminitxt>Set up a Circle of Trust (aka Trust Network or Federation)</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-install.html">Compile</a><br><span class=sideminitxt>Install from package or source</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-install.html">Compile</a><br><span class=sideminitxt>Install from package or source</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-simple.html">zxid_simple()</a><br><span class=sideminitxt>Easy API for SAML</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-simple.html">zxid_simple()</a><br><span class=sideminitxt>Easy API for SAML</span></li>
 
-<li style="margin-left:20px;"><a href="ref/html/index.html">API Reference</a><br><span class=sideminitxt>Every Function</span></li>
+<li style="margin-left:10px;"><a href="ref/html/index.html">API Reference</a><br><span class=sideminitxt>Every Function</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-raw.html">ZXID Raw API</a><br><span class=sideminitxt>Program like pros (and fix your own problems).</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-raw.html">ZXID Raw API</a><br><span class=sideminitxt>Program like pros (and fix your own problems).</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-wsf.html">ZXID ID-WSF API</a><br><span class=sideminitxt>Make Identity Web Services Calls using ID-WSF</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-wsf.html">ZXID ID-WSF API</a><br><span class=sideminitxt>Make Identity Web Services Calls using ID-WSF</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-log.html">Secure Logging</a><br><span class=sideminitxt>Digitally signed logging facility</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-log.html">Secure Logging</a><br><span class=sideminitxt>Digitally signed logging facility</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-java.html">Java</a><br><span class=sideminitxt>Using ZXID from Java</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-java.html">Java</a><br><span class=sideminitxt>Using ZXID from Java</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-perl.html">Net::SAML</a><br><span class=sideminitxt>Using ZXID from Perl</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-perl.html">Net::SAML</a><br><span class=sideminitxt>Using ZXID from Perl</span></li>
 
-<li style="margin-left:20px;"><a href="html/zxid-php.html">php_zxid</a><br><span class=sideminitxt>Using ZXID from PHP</span></li>
+<li style="margin-left:10px;"><a href="html/zxid-php.html">php_zxid</a><br><span class=sideminitxt>Using ZXID from PHP</span></li>
 
-<li style="margin-left:20px;"><a href="README.smime">README.smime</a><br><span class=sideminitxt>Crypto and Cert Tutorial</span></li>
+<li style="margin-left:10px;"><a href="README.smime">README.smime</a><br><span class=sideminitxt>Crypto and Cert Tutorial</span></li>
 
 </ul>
 
 <ul class="sidebox">
 <li>Links
-<li style="margin-left:20px;"><a href="http://freshmeat.net/zxid" class=sideminilink>http://freshmeat.net/zxid</a>
-<li style="margin-left:20px;"><a title="Get a Yubikey" href="http://www.yubico.com/o.php?refid=109&rno=749864514" target=_new><img border=0 src="http://forum.yubico.com/includes/affiliate/images/yubico.jpg" width=89 height=50></a>
+<li style="margin-left:10px;"><a href="http://freshmeat.net/zxid" class=sideminilink>http://freshmeat.net/zxid</a>
+<li style="margin-left:10px;"><a title="Get a Yubikey" href="http://www.yubico.com/o.php?refid=109&rno=749864514" target=_new><img border=0 src="http://forum.yubico.com/includes/affiliate/images/yubico.jpg" width=89 height=50></a>
 </ul>
 
 </td></tr>
