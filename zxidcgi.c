@@ -1,4 +1,5 @@
 /* zxidcgi.c  -  Handwritten functions for parsing SP specific CGI options
+ * Copyright (c) 20010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -156,15 +157,15 @@ set_eid:
       }
       break;
     case 'a':
-      if (!n[1] || n[2]) goto unknown;
+      if (!n[1]) goto unknown;
       switch (n[1]) {
-      case 'l': cgi->op = n[2];           break;
-      case 'u': if (v[0] || !cgi->uid) cgi->uid = v; break;
-      case 'p': cgi->pw = v;              break;
-      case 'r': cgi->ssoreq = v;          break;
-      case 'n': cgi->op = 'N';            break;
-      case 'w': cgi->op = 'W';            break;
-      case 't': cgi->atselafter = 1;      break;
+      case 'l': if (n[3]) goto unknown;  cgi->op = n[2];           break;
+      case 'u': if (n[2]) goto unknown;  if (v[0] || !cgi->uid) cgi->uid = v; break;
+      case 'p': if (n[2]) goto unknown;  cgi->pw = v;              break;
+      case 'r': if (n[2]) goto unknown;  cgi->ssoreq = v;          break;
+      case 'n': if (n[2]) goto unknown;  cgi->op = 'N';            break;
+      case 'w': if (n[2]) goto unknown;  cgi->op = 'W';            break;
+      case 't': if (n[2]) goto unknown;  cgi->atselafter = 1;      break;
       }
       break;
     case 'z':
