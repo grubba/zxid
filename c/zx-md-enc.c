@@ -146,9 +146,9 @@ int zx_LEN_WO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_Addit
 char* zx_ENC_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AdditionalMetadataLocation");
   if (c->inc_ns)
@@ -185,9 +185,9 @@ char* zx_ENC_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_Add
 char* zx_ENC_WO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_AdditionalMetadataLocation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -410,9 +410,9 @@ int zx_LEN_WO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_Affiliatio
 char* zx_ENC_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AffiliationDescriptor");
   if (c->inc_ns)
@@ -470,9 +470,9 @@ char* zx_ENC_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_Affiliat
 char* zx_ENC_WO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_AffiliationDescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -664,9 +664,9 @@ int zx_LEN_WO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_Artifa
 char* zx_ENC_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:ArtifactResolutionService");
   if (c->inc_ns)
@@ -707,9 +707,9 @@ char* zx_ENC_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_Arti
 char* zx_ENC_WO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_ArtifactResolutionService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -902,9 +902,9 @@ int zx_LEN_WO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_Asserti
 char* zx_ENC_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AssertionConsumerService");
   if (c->inc_ns)
@@ -945,9 +945,9 @@ char* zx_ENC_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_Asser
 char* zx_ENC_WO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_AssertionConsumerService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1140,9 +1140,9 @@ int zx_LEN_WO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_Assert
 char* zx_ENC_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AssertionIDRequestService");
   if (c->inc_ns)
@@ -1183,9 +1183,9 @@ char* zx_ENC_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_Asse
 char* zx_ENC_WO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_AssertionIDRequestService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1468,9 +1468,9 @@ int zx_LEN_WO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_Att
 char* zx_ENC_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AttributeAuthorityDescriptor");
   if (c->inc_ns)
@@ -1556,9 +1556,9 @@ char* zx_ENC_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_A
 char* zx_ENC_WO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AttributeAuthorityDescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1775,9 +1775,9 @@ int zx_LEN_WO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_Attrib
 char* zx_ENC_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AttributeConsumingService");
   if (c->inc_ns)
@@ -1830,9 +1830,9 @@ char* zx_ENC_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_Attr
 char* zx_ENC_WO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_AttributeConsumingService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2022,9 +2022,9 @@ int zx_LEN_WO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeServic
 char* zx_ENC_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AttributeService");
   if (c->inc_ns)
@@ -2065,9 +2065,9 @@ char* zx_ENC_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeServ
 char* zx_ENC_WO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2336,9 +2336,9 @@ int zx_LEN_WO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAu
 char* zx_ENC_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AuthnAuthorityDescriptor");
   if (c->inc_ns)
@@ -2417,9 +2417,9 @@ char* zx_ENC_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_Authn
 char* zx_ENC_WO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAuthorityDescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2612,9 +2612,9 @@ int zx_LEN_WO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryServ
 char* zx_ENC_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AuthnQueryService");
   if (c->inc_ns)
@@ -2655,9 +2655,9 @@ char* zx_ENC_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQuerySe
 char* zx_ENC_WO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2850,9 +2850,9 @@ int zx_LEN_WO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x )
 char* zx_ENC_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:AuthzService");
   if (c->inc_ns)
@@ -2893,9 +2893,9 @@ char* zx_ENC_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x
 char* zx_ENC_WO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3110,9 +3110,9 @@ int zx_LEN_WO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x
 char* zx_ENC_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:ContactPerson");
   if (c->inc_ns)
@@ -3164,9 +3164,9 @@ char* zx_ENC_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s*
 char* zx_ENC_WO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3355,9 +3355,9 @@ int zx_LEN_WO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMetho
 char* zx_ENC_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:EncryptionMethod");
   if (c->inc_ns)
@@ -3398,9 +3398,9 @@ char* zx_ENC_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMet
 char* zx_ENC_WO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMethod_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3629,9 +3629,9 @@ int zx_LEN_WO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescr
 char* zx_ENC_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:EntitiesDescriptor");
   if (c->inc_ns)
@@ -3692,9 +3692,9 @@ char* zx_ENC_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDes
 char* zx_ENC_WO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -4006,9 +4006,9 @@ int zx_LEN_WO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescripto
 char* zx_ENC_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:EntityDescriptor");
   if (c->inc_ns)
@@ -4109,9 +4109,9 @@ char* zx_ENC_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescrip
 char* zx_ENC_WO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -4323,9 +4323,9 @@ int zx_LEN_WO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x )
 char* zx_ENC_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:Extensions");
   if (c->inc_ns)
@@ -4376,9 +4376,9 @@ char* zx_ENC_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, ch
 char* zx_ENC_WO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -4698,9 +4698,9 @@ int zx_LEN_WO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescripto
 char* zx_ENC_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:IDPSSODescriptor");
   if (c->inc_ns)
@@ -4807,9 +4807,9 @@ char* zx_ENC_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescrip
 char* zx_ENC_WO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -5015,9 +5015,9 @@ int zx_LEN_WO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x
 char* zx_ENC_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:KeyDescriptor");
   if (c->inc_ns)
@@ -5064,9 +5064,9 @@ char* zx_ENC_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s*
 char* zx_ENC_WO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -5255,9 +5255,9 @@ int zx_LEN_WO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameID
 char* zx_ENC_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:ManageNameIDService");
   if (c->inc_ns)
@@ -5298,9 +5298,9 @@ char* zx_ENC_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageName
 char* zx_ENC_WO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameIDService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -5493,9 +5493,9 @@ int zx_LEN_WO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappi
 char* zx_ENC_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:NameIDMappingService");
   if (c->inc_ns)
@@ -5536,9 +5536,9 @@ char* zx_ENC_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMap
 char* zx_ENC_WO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappingService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -5761,9 +5761,9 @@ int zx_LEN_WO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x )
 char* zx_ENC_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:Organization");
   if (c->inc_ns)
@@ -5819,9 +5819,9 @@ char* zx_ENC_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x
 char* zx_ENC_WO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -6005,9 +6005,9 @@ int zx_LEN_WO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_Organiza
 char* zx_ENC_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:OrganizationDisplayName");
   if (c->inc_ns)
@@ -6046,9 +6046,9 @@ char* zx_ENC_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_Organi
 char* zx_ENC_WO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_OrganizationDisplayName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -6235,9 +6235,9 @@ int zx_LEN_WO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationNam
 char* zx_ENC_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:OrganizationName");
   if (c->inc_ns)
@@ -6276,9 +6276,9 @@ char* zx_ENC_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationN
 char* zx_ENC_WO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -6465,9 +6465,9 @@ int zx_LEN_WO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_
 char* zx_ENC_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:OrganizationURL");
   if (c->inc_ns)
@@ -6506,9 +6506,9 @@ char* zx_ENC_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationUR
 char* zx_ENC_WO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -6775,9 +6775,9 @@ int zx_LEN_WO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x
 char* zx_ENC_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:PDPDescriptor");
   if (c->inc_ns)
@@ -6856,9 +6856,9 @@ char* zx_ENC_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s*
 char* zx_ENC_WO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -7059,9 +7059,9 @@ int zx_LEN_WO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttr
 char* zx_ENC_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:RequestedAttribute");
   if (c->inc_ns)
@@ -7106,9 +7106,9 @@ char* zx_ENC_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAt
 char* zx_ENC_WO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttribute_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -7352,9 +7352,9 @@ int zx_LEN_WO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s*
 char* zx_ENC_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:RoleDescriptor");
   if (c->inc_ns)
@@ -7421,9 +7421,9 @@ char* zx_ENC_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_
 char* zx_ENC_WO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -7726,9 +7726,9 @@ int zx_LEN_WO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_
 char* zx_ENC_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:SPSSODescriptor");
   if (c->inc_ns)
@@ -7824,9 +7824,9 @@ char* zx_ENC_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescripto
 char* zx_ENC_WO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -8017,9 +8017,9 @@ int zx_LEN_WO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescri
 char* zx_ENC_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:ServiceDescription");
   if (c->inc_ns)
@@ -8058,9 +8058,9 @@ char* zx_ENC_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDesc
 char* zx_ENC_WO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescription_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -8247,9 +8247,9 @@ int zx_LEN_WO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x )
 char* zx_ENC_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:ServiceName");
   if (c->inc_ns)
@@ -8288,9 +8288,9 @@ char* zx_ENC_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, 
 char* zx_ENC_WO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -8481,9 +8481,9 @@ int zx_LEN_WO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogout
 char* zx_ENC_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:SingleLogoutService");
   if (c->inc_ns)
@@ -8524,9 +8524,9 @@ char* zx_ENC_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogo
 char* zx_ENC_WO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogoutService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -8719,9 +8719,9 @@ int zx_LEN_WO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOn
 char* zx_ENC_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<md:SingleSignOnService");
   if (c->inc_ns)
@@ -8762,9 +8762,9 @@ char* zx_ENC_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSign
 char* zx_ENC_WO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOnService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

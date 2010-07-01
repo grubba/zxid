@@ -160,9 +160,9 @@ int zx_LEN_WO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x )
 char* zx_ENC_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<paos:Request");
   if (c->inc_ns)
@@ -205,9 +205,9 @@ char* zx_ENC_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x, char
 char* zx_ENC_WO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -406,9 +406,9 @@ int zx_LEN_WO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x )
 char* zx_ENC_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<paos:Response");
   if (c->inc_ns)
@@ -449,9 +449,9 @@ char* zx_ENC_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x, ch
 char* zx_ENC_WO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

@@ -192,9 +192,9 @@ int zx_LEN_WO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToke
 char* zx_ENC_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<wsc:DerivedKeyToken");
   if (c->inc_ns)
@@ -254,9 +254,9 @@ char* zx_ENC_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyTo
 char* zx_ENC_WO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -438,9 +438,9 @@ int zx_LEN_WO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x )
 char* zx_ENC_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<wsc:Properties");
   if (c->inc_ns)
@@ -476,9 +476,9 @@ char* zx_ENC_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, 
 char* zx_ENC_WO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -662,9 +662,9 @@ int zx_LEN_WO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityC
 char* zx_ENC_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<wsc:SecurityContextToken");
   if (c->inc_ns)
@@ -703,9 +703,9 @@ char* zx_ENC_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_Securit
 char* zx_ENC_WO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

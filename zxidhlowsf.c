@@ -119,7 +119,7 @@ int main(int argc, char** argv)
   env->Body = zx_NEW_e_Body(cf->ctx);
   env->Body->Query = zxid_mk_di_query(cf, XMLNS_DAP, 0,0,0);
   epr = zxid_find_epr(cf, ses, XMLNS_DISCO_2_0, 0,0,0, 1);
-  env = zxid_wsc_call(cf, ses, epr, env);
+  env = zxid_wsc_call(cf, ses, epr, env, 0);
 
 #if 0
   /* Call ID-DAP */

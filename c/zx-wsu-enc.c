@@ -152,9 +152,9 @@ int zx_LEN_WO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x )
 char* zx_ENC_SO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<wsu:Created");
   if (c->inc_ns)
@@ -194,9 +194,9 @@ char* zx_ENC_SO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x, char* 
 char* zx_ENC_WO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -386,9 +386,9 @@ int zx_LEN_WO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x )
 char* zx_ENC_SO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<wsu:Expires");
   if (c->inc_ns)
@@ -428,9 +428,9 @@ char* zx_ENC_SO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x, char* 
 char* zx_ENC_WO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -640,9 +640,9 @@ int zx_LEN_WO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x )
 char* zx_ENC_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<wsu:Timestamp");
   if (c->inc_ns)
@@ -692,9 +692,9 @@ char* zx_ENC_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x, ch
 char* zx_ENC_WO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

@@ -435,7 +435,7 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
     ERR("EPR for svc(%s) not found in cache and no discovery EPR in cache, thus no way to discover the svc.", STRNULLCHK(svc));
     return 0;
   }
-  env = zxid_wsc_call(cf, ses, epr, env);
+  env = zxid_wsc_call(cf, ses, epr, env, 0);
   if (env && env->Body) {
     if (env->Body->QueryResponse) {
       for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = (zxid_epr*)ZX_NEXT(epr)) {

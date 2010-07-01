@@ -2400,9 +2400,9 @@ int zx_LEN_WO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x )
 char* zx_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<e:Body");
   if (c->inc_ns)
@@ -3566,9 +3566,9 @@ char* zx_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, char* p )
 char* zx_ENC_WO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3769,9 +3769,9 @@ int zx_LEN_WO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x )
 char* zx_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<e:Envelope");
   if (c->inc_ns)
@@ -3818,9 +3818,9 @@ char* zx_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, char* p 
 char* zx_ENC_WO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -4021,9 +4021,9 @@ int zx_LEN_WO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x )
 char* zx_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<e:Fault");
   if (c->inc_ns)
@@ -4070,9 +4070,9 @@ char* zx_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, char* p )
 char* zx_ENC_WO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -4612,9 +4612,9 @@ int zx_LEN_WO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x )
 char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<e:Header");
   if (c->inc_ns)
@@ -4831,9 +4831,9 @@ char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p )
 char* zx_ENC_WO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -5022,9 +5022,9 @@ int zx_LEN_WO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x )
 char* zx_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<e:detail");
   if (c->inc_ns)
@@ -5065,9 +5065,9 @@ char* zx_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, char* p )
 char* zx_ENC_WO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

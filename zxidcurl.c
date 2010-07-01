@@ -288,6 +288,7 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
  * cf:: ZXID configuration object, also used for memory allocation
  * url:: Where the request will be sent
  * data:: Serialized XML data to be sent
+ * ret_enve:: result parameter allows upper layers to see the message as string
  * return:: XML data structure representing the response, or 0 upon failure
  *
  * The underlying HTTP client is libcurl. While libcurl is documented to
@@ -301,11 +302,15 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
  */
 
 /* Called by:  zxid_soap_call_envelope, zxid_soap_call_hdr_body */
-struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_str* data)
+struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_str* data, char** ret_enve)
 {
 #ifdef USE_CURL
   struct zx_root_s* r;
   struct zx_str* ret = zxid_http_post_raw(cf, url->len, url->s, data->len, data->s);
+  if (ret_enve)
+    *ret_enve = ret?ret->s:0;
+  if (!ret)
+    return 0;
   
   LOCK(cf->ctx->mx, "soap_call");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ret->s, ret->s + ret->len);

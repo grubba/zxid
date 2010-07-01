@@ -124,9 +124,9 @@ ELEMS_WO_LEN;
 char* TXENC_SO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, char* p SIMPLETAGLENNS)
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<ELNSCELTAG");
   if (c->inc_ns)
@@ -161,9 +161,9 @@ ELEMS_SO_ENC;
 char* TXENC_WO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, char* p SIMPLETAGLEN)
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

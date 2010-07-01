@@ -168,9 +168,9 @@ int zx_LEN_WO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x )
 char* zx_ENC_SO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Confirm");
   if (c->inc_ns)
@@ -218,9 +218,9 @@ char* zx_ENC_SO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x, char
 char* zx_ENC_WO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -419,9 +419,9 @@ int zx_LEN_WO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_Encrypte
 char* zx_ENC_SO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_EncryptedResourceID_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:EncryptedResourceID");
   if (c->inc_ns)
@@ -467,9 +467,9 @@ char* zx_ENC_SO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_Encryp
 char* zx_ENC_WO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_EncryptedResourceID_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -647,9 +647,9 @@ int zx_LEN_WO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x )
 char* zx_ENC_SO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Extension");
   if (c->inc_ns)
@@ -685,9 +685,9 @@ char* zx_ENC_SO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x, 
 char* zx_ENC_WO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -871,9 +871,9 @@ int zx_LEN_WO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x )
 char* zx_ENC_SO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Help");
   if (c->inc_ns)
@@ -912,9 +912,9 @@ char* zx_ENC_SO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x, char* p )
 char* zx_ENC_WO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1139,9 +1139,9 @@ int zx_LEN_WO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x )
 char* zx_ENC_SO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Inquiry");
   if (c->inc_ns)
@@ -1199,9 +1199,9 @@ char* zx_ENC_SO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x, char
 char* zx_ENC_WO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1409,9 +1409,9 @@ int zx_LEN_WO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_Interacti
 char* zx_ENC_SO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_InteractionRequest_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:InteractionRequest");
   if (c->inc_ns)
@@ -1461,9 +1461,9 @@ char* zx_ENC_SO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_Interac
 char* zx_ENC_WO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_InteractionRequest_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1675,9 +1675,9 @@ int zx_LEN_WO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_Interact
 char* zx_ENC_SO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_InteractionResponse_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:InteractionResponse");
   if (c->inc_ns)
@@ -1728,9 +1728,9 @@ char* zx_ENC_SO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_Intera
 char* zx_ENC_WO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_InteractionResponse_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1954,9 +1954,9 @@ int zx_LEN_WO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_Interacti
 char* zx_ENC_SO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_InteractionService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:InteractionService");
   if (c->inc_ns)
@@ -2015,9 +2015,9 @@ char* zx_ENC_SO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_Interac
 char* zx_ENC_WO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_InteractionService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2218,9 +2218,9 @@ int zx_LEN_WO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_Interac
 char* zx_ENC_SO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_InteractionStatement_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:InteractionStatement");
   if (c->inc_ns)
@@ -2267,9 +2267,9 @@ char* zx_ENC_SO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_Inter
 char* zx_ENC_WO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_InteractionStatement_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2455,9 +2455,9 @@ int zx_LEN_WO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x )
 char* zx_ENC_SO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Item");
   if (c->inc_ns)
@@ -2497,9 +2497,9 @@ char* zx_ENC_SO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x, char* p )
 char* zx_ENC_WO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2683,9 +2683,9 @@ int zx_LEN_WO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x )
 char* zx_ENC_SO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Parameter");
   if (c->inc_ns)
@@ -2723,9 +2723,9 @@ char* zx_ENC_SO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x, 
 char* zx_ENC_WO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2907,9 +2907,9 @@ int zx_LEN_WO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequ
 char* zx_ENC_SO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequest_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:RedirectRequest");
   if (c->inc_ns)
@@ -2946,9 +2946,9 @@ char* zx_ENC_SO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRe
 char* zx_ENC_WO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequest_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3129,9 +3129,9 @@ int zx_LEN_WO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x )
 char* zx_ENC_SO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:ResourceID");
   if (c->inc_ns)
@@ -3168,9 +3168,9 @@ char* zx_ENC_SO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x
 char* zx_ENC_WO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3385,9 +3385,9 @@ int zx_LEN_WO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x )
 char* zx_ENC_SO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Select");
   if (c->inc_ns)
@@ -3441,9 +3441,9 @@ char* zx_ENC_SO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x, char* 
 char* zx_ENC_WO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3639,9 +3639,9 @@ int zx_LEN_WO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x )
 char* zx_ENC_SO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Status");
   if (c->inc_ns)
@@ -3685,9 +3685,9 @@ char* zx_ENC_SO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x, char* 
 char* zx_ENC_WO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3898,9 +3898,9 @@ int zx_LEN_WO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x )
 char* zx_ENC_SO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Text");
   if (c->inc_ns)
@@ -3951,9 +3951,9 @@ char* zx_ENC_SO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x, char* p )
 char* zx_ENC_WO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -4165,9 +4165,9 @@ int zx_LEN_WO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteract
 char* zx_ENC_SO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteraction_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:UserInteraction");
   if (c->inc_ns)
@@ -4217,9 +4217,9 @@ char* zx_ENC_SO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserIntera
 char* zx_ENC_WO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteraction_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

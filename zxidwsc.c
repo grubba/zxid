@@ -39,6 +39,7 @@
  *     (application independent) Responder In PEP. To implement
  *     application dependent PEP features you should call zxid_az() directly.
  * env:: Entire SOAP envelope as a data structure
+ * enve:: SOAP envelope as string
  * return:: 1 on success, 0 on validation failure. Exact reason of the failure is
  *     available from ses->curflt and ses->curstatus.
  *
@@ -54,7 +55,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   struct zx_wsse_Security_s* sec;
   struct zx_str* issuer;
   struct zx_str* logpath;
-  struct zx_str  ss;
+  struct zx_str ss;
   zxid_cgi cgi;
 
   GETTIMEOFDAY(&ourts, 0);
@@ -188,11 +189,13 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   
   /* *** execute (or store for future execution) the obligations. */
   
+  ss.s = enve;
+  ss.len = strlen(enve);
   logpath = zxlog_path(cf, issuer, env->Header->MessageID->gg.content,
 		       ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
-  if (zxlog_dup_check(cf, logpath, "validate request")) {
+  if (zxlog_dup_check(cf, logpath, "validate response")) {
     if (cf->dup_msg_fatal) {
-      zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request dup err");
+      zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate response dup err");
       zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "Duplicate Message.", "DuplicateMsg", 0, 0, 0));
       return 0;
     } else {
@@ -200,7 +203,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     }
   }
   zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate response");
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "VALID", logpath->s, 0);
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n?ses->a7n->ID:0, ses->nameid?ses->nameid->gg.content:0, "N", "K", "VALID", logpath->s, 0);
   return 1;
 }
 
@@ -337,7 +340,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_epr* epr, struct zx_e_Envel
  * will add Liberty ID-WSF specific SOAP headers. */
 
 /* Called by:  main x9, zxid_call, zxid_get_epr */
-struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
+struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env, char** ret_enve)
 {
   int i, res;
   struct zx_root_s* root;
@@ -357,7 +360,7 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
     }
     ses->wsc_msgid = zx_str_to_c(cf->ctx, env->Header->MessageID->gg.content);
     
-    root = zxid_soap_call_envelope(cf, epr->Address->gg.content, env);
+    root = zxid_soap_call_envelope(cf, epr->Address->gg.content, env, ret_enve);
     if (!root || !root->Envelope || !root->Envelope->Body) {
       ERR("soap call returned empty or seriously flawed response %p", root);
       D_DEDENT("wsc_call: ");
@@ -513,6 +516,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
 /* Called by:  zxcall_main, zxid_callf */
 struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve)
 {
+  char* ret_enve;
   struct zx_str* ret;
   struct zx_e_Envelope_s* env;
   zxid_epr* epr;
@@ -557,12 +561,12 @@ struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, cons
 
   /* *** add usage directives */
 
-  env = zxid_wsc_call(cf, ses, epr, env);
+  env = zxid_wsc_call(cf, ses, epr, env, &ret_enve);
   if (!env) {
     ERR("Web services call failed svctype(%s)", svctype);
     /* Let validate report the error so that tas3 status gets set correctly */
   }
-  if (zxid_wsc_validate_resp_env(cf, ses, az_cred, env, enve) != 1) {
+  if (zxid_wsc_validate_resp_env(cf, ses, az_cred, env, ret_enve) != 1) {
     D_DEDENT("call: ");
     return 0;
   }

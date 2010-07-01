@@ -232,9 +232,9 @@ int zx_LEN_WO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd
 char* zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<xaspcd1:XACMLAuthzDecisionQuery");
   if (c->inc_ns)
@@ -314,9 +314,9 @@ char* zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xasp
 char* zx_ENC_WO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -584,9 +584,9 @@ int zx_LEN_WO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACML
 char* zx_ENC_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLPolicyQuery_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<xaspcd1:XACMLPolicyQuery");
   if (c->inc_ns)
@@ -663,9 +663,9 @@ char* zx_ENC_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XAC
 char* zx_ENC_WO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLPolicyQuery_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

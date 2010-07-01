@@ -49,8 +49,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxcall should have EPR cache and session listing mode -s SID -l
     - zxcot should have idpdimd listing mode
     - zxpasswd should have user federation listing mode
-    - zxid_pw_authn() should not report scary error message when checking .ykspent in
-      not spent case
+    - zxid_pw_authn() should not report scary error message when
+      checking .ykspent in not spent case
     - ID Mapper to be used by Delegation Service
     - zxid_select_tgt()
     - Each credential as its own a7n
@@ -58,6 +58,11 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Use post screen as confirmation screen
     NOTPUB
 
+zxid-0.63:: 2.7.2010
+zxid-0.62:: 1.7.2010
+    - Fix IdP authentication template (runaway HTML comment)
+zxid-0.61:: 25.6.2010
+    - Fixed a crash in case NOSIG_FATAL and indeed no sig
 zxid-0.60:: 23.6.2010
     - TAS3 package version number synchronization
 zxid-0.59:: 22.6.2010

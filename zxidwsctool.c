@@ -111,7 +111,7 @@ int main(int argc, char** argv)
     env->Body = zx_NEW_e_Body(cf->ctx);
     env->Body->Query = zxid_mk_di_query(cf, svc, 0,0,0);
     epr = zxid_find_epr(cf, ses, XMLNS_DISCO_2_0, 0,0,0, 1);
-    env = zxid_wsc_call(cf, ses, epr, env);
+    env = zxid_wsc_call(cf, ses, epr, env, 0);
     if (env->Body->QueryResponse)
       for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = ZX_NEXT(epr))
 	zxid_cache_epr(cf, ses, epr);
@@ -221,7 +221,7 @@ int main(int argc, char** argv)
 						     "http://host/notif_sink")
 			    );
 #endif
-      env = zxid_wsc_call(cf, ses, epr, env);
+      env = zxid_wsc_call(cf, ses, epr, env, 0);
       if (env)
 	if (env->Body->dap_QueryResponse)
 	  D("Result is LDIF(%.*s)",
@@ -251,7 +251,7 @@ int main(int argc, char** argv)
       env->Body->GetObjectListRequest = zx_NEW_demomed_GetObjectListRequest(cf->ctx);
       env->Body->GetObjectListRequest->ObjectSearchParm = zx_NEW_demomed_ObjectSearchParm(cf->ctx);
 
-      env = zxid_wsc_call(cf, ses, epr, env);
+      env = zxid_wsc_call(cf, ses, epr, env, 0);
 
       if (env)
 	if (env->Body->GetObjectListResponse) {
@@ -284,7 +284,7 @@ int main(int argc, char** argv)
       env->Body->GetObjectRequest = zx_NEW_demomed_GetObjectRequest(cf->ctx);
       env->Body->GetObjectRequest->ObjectID = zx_new_simple_elem(cf->ctx, first_objinfo->objectID);
 
-      env = zxid_wsc_call(cf, ses, epr, env);
+      env = zxid_wsc_call(cf, ses, epr, env, 0);
 
       if (env)
 	if (env->Body->GetObjectResponse) {

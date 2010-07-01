@@ -146,9 +146,9 @@ int zx_LEN_WO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_Inclusiv
 char* zx_ENC_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<exca:InclusiveNamespaces");
   if (c->inc_ns)
@@ -185,9 +185,9 @@ char* zx_ENC_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_Inclus
 char* zx_ENC_WO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

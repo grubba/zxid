@@ -27921,11 +27921,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_soap_call_raw) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   struct zx_str *arg2 = (struct zx_str *) 0 ;
   struct zx_str *arg3 = (struct zx_str *) 0 ;
-  zval **args[3];
+  char **arg4 = (char **) 0 ;
+  zval **args[4];
   struct zx_root_s *result = 0 ;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
@@ -27944,7 +27945,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_soap_call_raw) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_soap_call_raw. Expected SWIGTYPE_p_zx_str");
     }
   }
-  result = (struct zx_root_s *)zxid_soap_call_raw(arg1,arg2,arg3);
+  {
+    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_p_char, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zxid_soap_call_raw. Expected SWIGTYPE_p_p_char");
+    }
+  }
+  result = (struct zx_root_s *)zxid_soap_call_raw(arg1,arg2,arg3,arg4);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zx_root_s, 0);
   
@@ -28053,11 +28059,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_soap_call_envelope) {
   zxid_conf *arg1 = (zxid_conf *) 0 ;
   struct zx_str *arg2 = (struct zx_str *) 0 ;
   struct zx_e_Envelope_s *arg3 = (struct zx_e_Envelope_s *) 0 ;
-  zval **args[3];
+  char **arg4 = (char **) 0 ;
+  zval **args[4];
   struct zx_root_s *result = 0 ;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
@@ -28076,7 +28083,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_soap_call_envelope) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zxid_soap_call_envelope. Expected SWIGTYPE_p_zx_e_Envelope_s");
     }
   }
-  result = (struct zx_root_s *)zxid_soap_call_envelope(arg1,arg2,arg3);
+  {
+    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_p_char, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zxid_soap_call_envelope. Expected SWIGTYPE_p_p_char");
+    }
+  }
+  result = (struct zx_root_s *)zxid_soap_call_envelope(arg1,arg2,arg3,arg4);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zx_root_s, 0);
   
@@ -34091,11 +34103,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_wsc_call) {
   zxid_ses *arg2 = (zxid_ses *) 0 ;
   zxid_epr *arg3 = (zxid_epr *) 0 ;
   struct zx_e_Envelope_s *arg4 = (struct zx_e_Envelope_s *) 0 ;
-  zval **args[4];
+  char **arg5 = (char **) 0 ;
+  zval **args[5];
   struct zx_e_Envelope_s *result = 0 ;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
@@ -34119,7 +34132,12 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_wsc_call) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zxid_wsc_call. Expected SWIGTYPE_p_zx_e_Envelope_s");
     }
   }
-  result = (struct zx_e_Envelope_s *)zxid_wsc_call(arg1,arg2,arg3,arg4);
+  {
+    if(SWIG_ConvertPtr(*args[4], (void **) &arg5, SWIGTYPE_p_p_char, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 5 of zxid_wsc_call. Expected SWIGTYPE_p_p_char");
+    }
+  }
+  result = (struct zx_e_Envelope_s *)zxid_wsc_call(arg1,arg2,arg3,arg4,arg5);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zx_e_Envelope_s, 0);
   

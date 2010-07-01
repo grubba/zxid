@@ -31339,18 +31339,21 @@ XS(_wrap_zxid_soap_call_raw) {
     zxid_conf *arg1 = (zxid_conf *) 0 ;
     struct zx_str *arg2 = (struct zx_str *) 0 ;
     struct zx_str *arg3 = (struct zx_str *) 0 ;
+    char **arg4 = (char **) 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
     int res2 = 0 ;
     void *argp3 = 0 ;
     int res3 = 0 ;
+    void *argp4 = 0 ;
+    int res4 = 0 ;
     int argvi = 0;
     struct zx_root_s *result = 0 ;
     dXSARGS;
     
-    if ((items < 3) || (items > 3)) {
-      SWIG_croak("Usage: zxid_soap_call_raw(cf,url,data);");
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: zxid_soap_call_raw(cf,url,data,ret_enve);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
@@ -31367,13 +31370,20 @@ XS(_wrap_zxid_soap_call_raw) {
       SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "zxid_soap_call_raw" "', argument " "3"" of type '" "struct zx_str *""'"); 
     }
     arg3 = (struct zx_str *)(argp3);
-    result = (struct zx_root_s *)zxid_soap_call_raw(arg1,arg2,arg3);
+    res4 = SWIG_ConvertPtr(ST(3), &argp4,SWIGTYPE_p_p_char, 0 |  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "zxid_soap_call_raw" "', argument " "4"" of type '" "char **""'"); 
+    }
+    arg4 = (char **)(argp4);
+    result = (struct zx_root_s *)zxid_soap_call_raw(arg1,arg2,arg3,arg4);
     ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_zx_root_s, 0 | 0); argvi++ ;
+    
     
     
     
     XSRETURN(argvi);
   fail:
+    
     
     
     
@@ -31508,18 +31518,21 @@ XS(_wrap_zxid_soap_call_envelope) {
     zxid_conf *arg1 = (zxid_conf *) 0 ;
     struct zx_str *arg2 = (struct zx_str *) 0 ;
     struct zx_e_Envelope_s *arg3 = (struct zx_e_Envelope_s *) 0 ;
+    char **arg4 = (char **) 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
     int res2 = 0 ;
     void *argp3 = 0 ;
     int res3 = 0 ;
+    void *argp4 = 0 ;
+    int res4 = 0 ;
     int argvi = 0;
     struct zx_root_s *result = 0 ;
     dXSARGS;
     
-    if ((items < 3) || (items > 3)) {
-      SWIG_croak("Usage: zxid_soap_call_envelope(cf,url,env);");
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: zxid_soap_call_envelope(cf,url,env,ret_enve);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
@@ -31536,13 +31549,20 @@ XS(_wrap_zxid_soap_call_envelope) {
       SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "zxid_soap_call_envelope" "', argument " "3"" of type '" "struct zx_e_Envelope_s *""'"); 
     }
     arg3 = (struct zx_e_Envelope_s *)(argp3);
-    result = (struct zx_root_s *)zxid_soap_call_envelope(arg1,arg2,arg3);
+    res4 = SWIG_ConvertPtr(ST(3), &argp4,SWIGTYPE_p_p_char, 0 |  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "zxid_soap_call_envelope" "', argument " "4"" of type '" "char **""'"); 
+    }
+    arg4 = (char **)(argp4);
+    result = (struct zx_root_s *)zxid_soap_call_envelope(arg1,arg2,arg3,arg4);
     ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_zx_root_s, 0 | 0); argvi++ ;
+    
     
     
     
     XSRETURN(argvi);
   fail:
+    
     
     
     
@@ -38963,6 +38983,7 @@ XS(_wrap_zxid_wsc_call) {
     zxid_ses *arg2 = (zxid_ses *) 0 ;
     zxid_epr *arg3 = (zxid_epr *) 0 ;
     struct zx_e_Envelope_s *arg4 = (struct zx_e_Envelope_s *) 0 ;
+    char **arg5 = (char **) 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -38971,12 +38992,14 @@ XS(_wrap_zxid_wsc_call) {
     int res3 = 0 ;
     void *argp4 = 0 ;
     int res4 = 0 ;
+    void *argp5 = 0 ;
+    int res5 = 0 ;
     int argvi = 0;
     struct zx_e_Envelope_s *result = 0 ;
     dXSARGS;
     
-    if ((items < 4) || (items > 4)) {
-      SWIG_croak("Usage: zxid_wsc_call(cf,ses,epr,env);");
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: zxid_wsc_call(cf,ses,epr,env,ret_enve);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
@@ -38998,14 +39021,21 @@ XS(_wrap_zxid_wsc_call) {
       SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "zxid_wsc_call" "', argument " "4"" of type '" "struct zx_e_Envelope_s *""'"); 
     }
     arg4 = (struct zx_e_Envelope_s *)(argp4);
-    result = (struct zx_e_Envelope_s *)zxid_wsc_call(arg1,arg2,arg3,arg4);
+    res5 = SWIG_ConvertPtr(ST(4), &argp5,SWIGTYPE_p_p_char, 0 |  0 );
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "zxid_wsc_call" "', argument " "5"" of type '" "char **""'"); 
+    }
+    arg5 = (char **)(argp5);
+    result = (struct zx_e_Envelope_s *)zxid_wsc_call(arg1,arg2,arg3,arg4,arg5);
     ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_zx_e_Envelope_s, 0 | 0); argvi++ ;
+    
     
     
     
     
     XSRETURN(argvi);
   fail:
+    
     
     
     

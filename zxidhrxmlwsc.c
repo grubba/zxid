@@ -253,7 +253,7 @@ int main(int argc, char** argv)
     env->Body->idhrxml_Create->CreateItem->NewData->Candidate = r->Candidate;
     
     D("Here %p", epr);
-    env = zxid_wsc_call(cf, ses, epr, env);
+    env = zxid_wsc_call(cf, ses, epr, env, 0);
     if (!env) {
       ERR("Web services call failed %p", env);
       break;
@@ -285,7 +285,7 @@ int main(int argc, char** argv)
     env->Body->idhrxml_Query->QueryItem = zx_NEW_idhrxml_QueryItem(cf->ctx);
     env->Body->idhrxml_Query->QueryItem->Select = zx_ref_simple_elem(cf->ctx, cgi.select);
         
-    env = zxid_wsc_call(cf, ses, epr, env);
+    env = zxid_wsc_call(cf, ses, epr, env, 0);
     D("HERE env=%p", env);
     if (!env) {
       ERR("Web services call failed %d", 0);
@@ -328,7 +328,7 @@ int main(int argc, char** argv)
       break;
     }
     //env = zxid_new_envf(cf, "<idhrxml:Delete><idhrxml:DeleteItem><idhrxml:Select>%s</idhrxml:Select></idhrxml:DeleteItem></idhrxml:Delete>", cgi.select);
-    env = zxid_wsc_call(cf, ses, epr, env);
+    env = zxid_wsc_call(cf, ses, epr, env, 0);
     D("HERE env=%p", env);
     if (!env) {
       ERR("Web services call failed %p", env);

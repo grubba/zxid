@@ -899,11 +899,11 @@ class zxidjniJNI {
   public final static native String zxid_date_time(long jarg1, long jarg2);
   public final static native String zxid_mk_id(long jarg1, String jarg2, int jarg3);
   public final static native String zxid_http_post_raw(long jarg1, int jarg2, String jarg3, int jarg4, String jarg5);
-  public final static native long zxid_soap_call_raw(long jarg1, String jarg2, String jarg3);
+  public final static native long zxid_soap_call_raw(long jarg1, String jarg2, String jarg3, long jarg4);
   public final static native String zxid_lecp_check(long jarg1, long jarg2);
   public final static native int zxid_cdc_read(long jarg1, long jarg2);
   public final static native int zxid_cdc_check(long jarg1, long jarg2);
-  public final static native long zxid_soap_call_envelope(long jarg1, String jarg2, long jarg3);
+  public final static native long zxid_soap_call_envelope(long jarg1, String jarg2, long jarg3, long jarg4);
   public final static native long zxid_soap_call_hdr_body(long jarg1, String jarg2, long jarg3, long jarg4);
   public final static native long zxid_soap_call_body(long jarg1, String jarg2, long jarg3);
   public final static native int zxid_soap_cgi_resp_body(long jarg1, long jarg2, String jarg3);
@@ -1029,7 +1029,7 @@ class zxidjniJNI {
   public final static native String zxid_wsp_decoratef(long jarg1, long jarg2, String jarg3, String jarg4);
   public final static native int zxid_wsf_decor(long jarg1, long jarg2, long jarg3, int jarg4);
   public final static native long zxid_add_env_if_needed(long jarg1, String jarg2);
-  public final static native long zxid_wsc_call(long jarg1, long jarg2, long jarg3, long jarg4);
+  public final static native long zxid_wsc_call(long jarg1, long jarg2, long jarg3, long jarg4, long jarg5);
   public final static native String zxid_call(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6, String jarg7);
   public final static native String zxid_callf(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6, String jarg7);
   public final static native String zxid_wsc_prepare_call(long jarg1, long jarg2, long jarg3, String jarg4, String jarg5);

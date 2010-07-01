@@ -699,6 +699,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   got = read_all(sizeof(buf)-1, buf, "splocal.all", "%s" ZXID_USER_DIR ".all/.bs/.at" , cf->path);
   if (got)
     zxid_add_ldif_attrs_to_ses(cf, ses, 0, buf, "splocal.all");
+  path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR ".all", cf->path);
   zxid_copy_user_eprs_to_ses(cf, ses, path);
   
   zxid_add_attr_to_ses(cf, ses, "eid",        zxid_my_entity_id(cf));

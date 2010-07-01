@@ -3256,8 +3256,8 @@ public class zxidjni implements zxidjniConstants {
 
   public static String http_post_raw(zxid_conf cf, int url_len, String url, int len, String data) { return zxidjniJNI.zxid_http_post_raw(zxid_conf.getCPtr(cf), url_len, url, len, data); }
 
-  public static SWIGTYPE_p_zx_root_s soap_call_raw(zxid_conf cf, String url, String data) {
-    long cPtr = zxidjniJNI.zxid_soap_call_raw(zxid_conf.getCPtr(cf), url, data);
+  public static SWIGTYPE_p_zx_root_s soap_call_raw(zxid_conf cf, String url, String data, SWIGTYPE_p_p_char ret_enve) {
+    long cPtr = zxidjniJNI.zxid_soap_call_raw(zxid_conf.getCPtr(cf), url, data, SWIGTYPE_p_p_char.getCPtr(ret_enve));
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_root_s(cPtr, false);
   }
 
@@ -3271,8 +3271,8 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_cdc_check(zxid_conf.getCPtr(cf), zxid_cgi.getCPtr(cgi));
   }
 
-  public static SWIGTYPE_p_zx_root_s soap_call_envelope(zxid_conf cf, String url, SWIGTYPE_p_zx_e_Envelope_s env) {
-    long cPtr = zxidjniJNI.zxid_soap_call_envelope(zxid_conf.getCPtr(cf), url, SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env));
+  public static SWIGTYPE_p_zx_root_s soap_call_envelope(zxid_conf cf, String url, SWIGTYPE_p_zx_e_Envelope_s env, SWIGTYPE_p_p_char ret_enve) {
+    long cPtr = zxidjniJNI.zxid_soap_call_envelope(zxid_conf.getCPtr(cf), url, SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env), SWIGTYPE_p_p_char.getCPtr(ret_enve));
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_root_s(cPtr, false);
   }
 
@@ -3777,8 +3777,8 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_e_Envelope_s(cPtr, false);
   }
 
-  public static SWIGTYPE_p_zx_e_Envelope_s wsc_call(zxid_conf cf, zxid_ses ses, zxid_epr epr, SWIGTYPE_p_zx_e_Envelope_s env) {
-    long cPtr = zxidjniJNI.zxid_wsc_call(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), zxid_epr.getCPtr(epr), SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env));
+  public static SWIGTYPE_p_zx_e_Envelope_s wsc_call(zxid_conf cf, zxid_ses ses, zxid_epr epr, SWIGTYPE_p_zx_e_Envelope_s env, SWIGTYPE_p_p_char ret_enve) {
+    long cPtr = zxidjniJNI.zxid_wsc_call(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), zxid_epr.getCPtr(epr), SWIGTYPE_p_zx_e_Envelope_s.getCPtr(env), SWIGTYPE_p_p_char.getCPtr(ret_enve));
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_e_Envelope_s(cPtr, false);
   }
 

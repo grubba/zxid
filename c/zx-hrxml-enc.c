@@ -146,9 +146,9 @@ int zx_LEN_WO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingC
 char* zx_ENC_SO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:AccountingCode");
   if (c->inc_ns)
@@ -185,9 +185,9 @@ char* zx_ENC_SO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_Accountin
 char* zx_ENC_WO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingCode_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -390,9 +390,9 @@ int zx_LEN_WO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s*
 char* zx_ENC_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Achievement");
   if (c->inc_ns)
@@ -440,9 +440,9 @@ char* zx_ENC_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_
 char* zx_ENC_WO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -630,9 +630,9 @@ int zx_LEN_WO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_
 char* zx_ENC_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Achievements");
   if (c->inc_ns)
@@ -673,9 +673,9 @@ char* zx_ENC_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievement
 char* zx_ENC_WO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -869,9 +869,9 @@ int zx_LEN_WO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_
 char* zx_ENC_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:AffirmativeActionPlanJobGroupId");
   if (c->inc_ns)
@@ -915,9 +915,9 @@ char* zx_ENC_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct z
 char* zx_ENC_WO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1100,9 +1100,9 @@ int zx_LEN_WO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x )
 char* zx_ENC_SO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Affix");
   if (c->inc_ns)
@@ -1139,9 +1139,9 @@ char* zx_ENC_SO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x, char* 
 char* zx_ENC_WO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1362,9 +1362,9 @@ int zx_LEN_WO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateS
 char* zx_ENC_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:AlternateScript");
   if (c->inc_ns)
@@ -1421,9 +1421,9 @@ char* zx_ENC_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_Alternat
 char* zx_ENC_WO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateScript_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1618,9 +1618,9 @@ int zx_LEN_WO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x )
 char* zx_ENC_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Area");
   if (c->inc_ns)
@@ -1664,9 +1664,9 @@ char* zx_ENC_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, char* p 
 char* zx_ENC_WO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -1915,9 +1915,9 @@ int zx_LEN_WO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x )
 char* zx_ENC_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Article");
   if (c->inc_ns)
@@ -1988,9 +1988,9 @@ char* zx_ENC_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, ch
 char* zx_ENC_WO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2216,9 +2216,9 @@ int zx_LEN_WO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s*
 char* zx_ENC_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Association");
   if (c->inc_ns)
@@ -2278,9 +2278,9 @@ char* zx_ENC_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_
 char* zx_ENC_WO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2469,9 +2469,9 @@ int zx_LEN_WO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_
 char* zx_ENC_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Associations");
   if (c->inc_ns)
@@ -2512,9 +2512,9 @@ char* zx_ENC_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Association
 char* zx_ENC_WO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2696,9 +2696,9 @@ int zx_LEN_WO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_Attach
 char* zx_ENC_SO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:AttachmentReference");
   if (c->inc_ns)
@@ -2736,9 +2736,9 @@ char* zx_ENC_SO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_Atta
 char* zx_ENC_WO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_AttachmentReference_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -2938,9 +2938,9 @@ int zx_LEN_WO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Availabi
 char* zx_ENC_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:AvailabilityDates");
   if (c->inc_ns)
@@ -2986,9 +2986,9 @@ char* zx_ENC_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Availa
 char* zx_ENC_WO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_AvailabilityDates_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3186,9 +3186,9 @@ int zx_LEN_WO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availabil
 char* zx_ENC_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:AvailabilityInfo");
   if (c->inc_ns)
@@ -3234,9 +3234,9 @@ char* zx_ENC_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availab
 char* zx_ENC_WO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_AvailabilityInfo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3428,9 +3428,9 @@ int zx_LEN_WO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClass
 char* zx_ENC_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:BKZClassification");
   if (c->inc_ns)
@@ -3473,9 +3473,9 @@ char* zx_ENC_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZCla
 char* zx_ENC_WO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassification_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3669,9 +3669,9 @@ int zx_LEN_WO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x )
 char* zx_ENC_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:BKZId");
   if (c->inc_ns)
@@ -3715,9 +3715,9 @@ char* zx_ENC_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, char* 
 char* zx_ENC_WO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -3910,9 +3910,9 @@ int zx_LEN_WO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x )
 char* zx_ENC_SO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:BasePay");
   if (c->inc_ns)
@@ -3954,9 +3954,9 @@ char* zx_ENC_SO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x, ch
 char* zx_ENC_WO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -4208,9 +4208,9 @@ int zx_LEN_WO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x )
 char* zx_ENC_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Benefits");
   if (c->inc_ns)
@@ -4282,9 +4282,9 @@ char* zx_ENC_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, 
 char* zx_ENC_WO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -4530,9 +4530,9 @@ int zx_LEN_WO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Biol
 char* zx_ENC_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:BiologicalDescriptors");
   if (c->inc_ns)
@@ -4602,9 +4602,9 @@ char* zx_ENC_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Bi
 char* zx_ENC_WO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_BiologicalDescriptors_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -4850,9 +4850,9 @@ int zx_LEN_WO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x )
 char* zx_ENC_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Book");
   if (c->inc_ns)
@@ -4922,9 +4922,9 @@ char* zx_ENC_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, char* p 
 char* zx_ENC_WO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -5172,9 +5172,9 @@ int zx_LEN_WO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x )
 char* zx_ENC_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Candidate");
   if (c->inc_ns)
@@ -5245,9 +5245,9 @@ char* zx_ENC_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x
 char* zx_ENC_WO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -5542,9 +5542,9 @@ int zx_LEN_WO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candidate
 char* zx_ENC_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:CandidateProfile");
   if (c->inc_ns)
@@ -5637,9 +5637,9 @@ char* zx_ENC_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candida
 char* zx_ENC_WO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateProfile_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -5840,9 +5840,9 @@ int zx_LEN_WO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Candid
 char* zx_ENC_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:CandidateRecordInfo");
   if (c->inc_ns)
@@ -5888,9 +5888,9 @@ char* zx_ENC_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Cand
 char* zx_ENC_WO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_CandidateRecordInfo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -6114,9 +6114,9 @@ int zx_LEN_WO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candidat
 char* zx_ENC_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:CandidateSupplier");
   if (c->inc_ns)
@@ -6175,9 +6175,9 @@ char* zx_ENC_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candid
 char* zx_ENC_WO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_CandidateSupplier_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -6364,9 +6364,9 @@ int zx_LEN_WO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_
 char* zx_ENC_SO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ChildrenInfo");
   if (c->inc_ns)
@@ -6406,9 +6406,9 @@ char* zx_ENC_SO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInf
 char* zx_ENC_WO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -6588,9 +6588,9 @@ int zx_LEN_WO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x )
 char* zx_ENC_SO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ClassRank");
   if (c->inc_ns)
@@ -6627,9 +6627,9 @@ char* zx_ENC_SO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x
 char* zx_ENC_WO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -6832,9 +6832,9 @@ int zx_LEN_WO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x )
 char* zx_ENC_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Commute");
   if (c->inc_ns)
@@ -6882,9 +6882,9 @@ char* zx_ENC_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, ch
 char* zx_ENC_WO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -7076,9 +7076,9 @@ int zx_LEN_WO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x )
 char* zx_ENC_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Company");
   if (c->inc_ns)
@@ -7121,9 +7121,9 @@ char* zx_ENC_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, ch
 char* zx_ENC_WO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -7313,9 +7313,9 @@ int zx_LEN_WO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehi
 char* zx_ENC_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:CompanyVehicle");
   if (c->inc_ns)
@@ -7357,9 +7357,9 @@ char* zx_ENC_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVe
 char* zx_ENC_WO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehicle_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -7572,9 +7572,9 @@ int zx_LEN_WO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_
 char* zx_ENC_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Compensation");
   if (c->inc_ns)
@@ -7627,9 +7627,9 @@ char* zx_ENC_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensatio
 char* zx_ENC_WO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -7873,9 +7873,9 @@ int zx_LEN_WO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x
 char* zx_ENC_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Competency");
   if (c->inc_ns)
@@ -7944,9 +7944,9 @@ char* zx_ENC_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s*
 char* zx_ENC_WO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -8175,9 +8175,9 @@ int zx_LEN_WO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Compete
 char* zx_ENC_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:CompetencyEvidence");
   if (c->inc_ns)
@@ -8237,9 +8237,9 @@ char* zx_ENC_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Compe
 char* zx_ENC_WO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_CompetencyEvidence_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -8440,9 +8440,9 @@ int zx_LEN_WO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_
 char* zx_ENC_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:CompetencyId");
   if (c->inc_ns)
@@ -8486,9 +8486,9 @@ char* zx_ENC_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyI
 char* zx_ENC_WO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -8695,9 +8695,9 @@ int zx_LEN_WO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Competenc
 char* zx_ENC_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:CompetencyWeight");
   if (c->inc_ns)
@@ -8746,9 +8746,9 @@ char* zx_ENC_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Compete
 char* zx_ENC_WO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_CompetencyWeight_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -8949,9 +8949,9 @@ int zx_LEN_WO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceD
 char* zx_ENC_SO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ConferenceDate");
   if (c->inc_ns)
@@ -8998,9 +8998,9 @@ char* zx_ENC_SO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_Conferenc
 char* zx_ENC_WO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceDate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -9237,9 +9237,9 @@ int zx_LEN_WO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conference
 char* zx_ENC_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ConferencePaper");
   if (c->inc_ns)
@@ -9304,9 +9304,9 @@ char* zx_ENC_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conferen
 char* zx_ENC_WO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferencePaper_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -9528,9 +9528,9 @@ int zx_LEN_WO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerati
 char* zx_ENC_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Considerations");
   if (c->inc_ns)
@@ -9588,9 +9588,9 @@ char* zx_ENC_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considera
 char* zx_ENC_WO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerations_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -9787,9 +9787,9 @@ int zx_LEN_WO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x )
 char* zx_ENC_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ContactId");
   if (c->inc_ns)
@@ -9833,9 +9833,9 @@ char* zx_ENC_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x
 char* zx_ENC_WO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -10036,9 +10036,9 @@ int zx_LEN_WO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s*
 char* zx_ENC_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ContactInfo");
   if (c->inc_ns)
@@ -10084,9 +10084,9 @@ char* zx_ENC_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_
 char* zx_ENC_WO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -10344,9 +10344,9 @@ int zx_LEN_WO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMetho
 char* zx_ENC_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ContactMethod");
   if (c->inc_ns)
@@ -10422,9 +10422,9 @@ char* zx_ENC_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMet
 char* zx_ENC_WO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -10654,9 +10654,9 @@ int zx_LEN_WO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s*
 char* zx_ENC_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ContactName");
   if (c->inc_ns)
@@ -10718,9 +10718,9 @@ char* zx_ENC_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_
 char* zx_ENC_WO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -10913,9 +10913,9 @@ int zx_LEN_WO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x )
 char* zx_ENC_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Copyright");
   if (c->inc_ns)
@@ -10958,9 +10958,9 @@ char* zx_ENC_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x
 char* zx_ENC_WO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -11158,9 +11158,9 @@ int zx_LEN_WO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDa
 char* zx_ENC_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:CopyrightDates");
   if (c->inc_ns)
@@ -11206,9 +11206,9 @@ char* zx_ENC_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_Copyright
 char* zx_ENC_WO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDates_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -11412,9 +11412,9 @@ int zx_LEN_WO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfA
 char* zx_ENC_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DatesOfAttendance");
   if (c->inc_ns)
@@ -11463,9 +11463,9 @@ char* zx_ENC_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesO
 char* zx_ENC_WO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAttendance_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -11666,9 +11666,9 @@ int zx_LEN_WO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfServ
 char* zx_ENC_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DatesOfService");
   if (c->inc_ns)
@@ -11714,9 +11714,9 @@ char* zx_ENC_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfSe
 char* zx_ENC_WO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfService_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -11994,9 +11994,9 @@ int zx_LEN_WO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x )
 char* zx_ENC_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Degree");
   if (c->inc_ns)
@@ -12082,9 +12082,9 @@ char* zx_ENC_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, char
 char* zx_ENC_WO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -12285,9 +12285,9 @@ int zx_LEN_WO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_Degre
 char* zx_ENC_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DegreeClassification");
   if (c->inc_ns)
@@ -12333,9 +12333,9 @@ char* zx_ENC_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_Deg
 char* zx_ENC_WO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_DegreeClassification_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -12535,9 +12535,9 @@ int zx_LEN_WO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x
 char* zx_ENC_SO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DegreeDate");
   if (c->inc_ns)
@@ -12584,9 +12584,9 @@ char* zx_ENC_SO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s*
 char* zx_ENC_WO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -12787,9 +12787,9 @@ int zx_LEN_WO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s*
 char* zx_ENC_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DegreeMajor");
   if (c->inc_ns)
@@ -12836,9 +12836,9 @@ char* zx_ENC_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_
 char* zx_ENC_WO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -13062,9 +13062,9 @@ int zx_LEN_WO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasur
 char* zx_ENC_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DegreeMeasure");
   if (c->inc_ns)
@@ -13123,9 +13123,9 @@ char* zx_ENC_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeas
 char* zx_ENC_WO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -13318,9 +13318,9 @@ int zx_LEN_WO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s*
 char* zx_ENC_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DegreeMinor");
   if (c->inc_ns)
@@ -13363,9 +13363,9 @@ char* zx_ENC_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_
 char* zx_ENC_WO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -13547,9 +13547,9 @@ int zx_LEN_WO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x
 char* zx_ENC_SO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DegreeName");
   if (c->inc_ns)
@@ -13587,9 +13587,9 @@ char* zx_ENC_SO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s*
 char* zx_ENC_WO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -13789,9 +13789,9 @@ int zx_LEN_WO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAd
 char* zx_ENC_SO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DeliveryAddress");
   if (c->inc_ns)
@@ -13837,9 +13837,9 @@ char* zx_ENC_SO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_Delivery
 char* zx_ENC_WO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAddress_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -14071,9 +14071,9 @@ int zx_LEN_WO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_Dem
 char* zx_ENC_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DemographicDescriptors");
   if (c->inc_ns)
@@ -14136,9 +14136,9 @@ char* zx_ENC_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_D
 char* zx_ENC_WO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_DemographicDescriptors_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -14322,9 +14322,9 @@ int zx_LEN_WO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s*
 char* zx_ENC_SO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Description");
   if (c->inc_ns)
@@ -14363,9 +14363,9 @@ char* zx_ENC_SO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_
 char* zx_ENC_WO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -14554,9 +14554,9 @@ int zx_LEN_WO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x )
 char* zx_ENC_SO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Details");
   if (c->inc_ns)
@@ -14596,9 +14596,9 @@ char* zx_ENC_SO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x, ch
 char* zx_ENC_WO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -14796,9 +14796,9 @@ int zx_LEN_WO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityI
 char* zx_ENC_SO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DisabilityInfo");
   if (c->inc_ns)
@@ -14842,9 +14842,9 @@ char* zx_ENC_SO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_Disabilit
 char* zx_ENC_WO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityInfo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -15024,9 +15024,9 @@ int zx_LEN_WO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s*
 char* zx_ENC_SO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DistanceMax");
   if (c->inc_ns)
@@ -15063,9 +15063,9 @@ char* zx_ENC_SO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_
 char* zx_ENC_WO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -15254,9 +15254,9 @@ int zx_LEN_WO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_
 char* zx_ENC_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DistributeTo");
   if (c->inc_ns)
@@ -15297,9 +15297,9 @@ char* zx_ENC_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeT
 char* zx_ENC_WO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -15483,9 +15483,9 @@ int zx_LEN_WO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusin
 char* zx_ENC_SO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DoingBusinessAs");
   if (c->inc_ns)
@@ -15524,9 +15524,9 @@ char* zx_ENC_SO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBus
 char* zx_ENC_WO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusinessAs_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -15709,9 +15709,9 @@ int zx_LEN_WO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x )
 char* zx_ENC_SO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DressCode");
   if (c->inc_ns)
@@ -15748,9 +15748,9 @@ char* zx_ENC_SO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x
 char* zx_ENC_WO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -15931,9 +15931,9 @@ int zx_LEN_WO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x
 char* zx_ENC_SO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:DunsNumber");
   if (c->inc_ns)
@@ -15970,9 +15970,9 @@ char* zx_ENC_SO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s*
 char* zx_ENC_WO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -16159,9 +16159,9 @@ int zx_LEN_WO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCat
 char* zx_ENC_SO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EEOCJobCategory");
   if (c->inc_ns)
@@ -16201,9 +16201,9 @@ char* zx_ENC_SO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobC
 char* zx_ENC_WO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCategory_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -16391,9 +16391,9 @@ int zx_LEN_WO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_Education
 char* zx_ENC_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EducationHistory");
   if (c->inc_ns)
@@ -16434,9 +16434,9 @@ char* zx_ENC_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_Educati
 char* zx_ENC_WO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationHistory_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -16650,9 +16650,9 @@ int zx_LEN_WO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educati
 char* zx_ENC_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EducationalMeasure");
   if (c->inc_ns)
@@ -16706,9 +16706,9 @@ char* zx_ENC_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educa
 char* zx_ENC_WO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_EducationalMeasure_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -16906,9 +16906,9 @@ int zx_LEN_WO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDat
 char* zx_ENC_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EffectiveDate");
   if (c->inc_ns)
@@ -16954,9 +16954,9 @@ char* zx_ENC_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveD
 char* zx_ENC_WO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -17176,9 +17176,9 @@ int zx_LEN_WO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Employ
 char* zx_ENC_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EmployerContactInfo");
   if (c->inc_ns)
@@ -17235,9 +17235,9 @@ char* zx_ENC_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Empl
 char* zx_ENC_WO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_EmployerContactInfo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -17452,9 +17452,9 @@ int zx_LEN_WO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s*
 char* zx_ENC_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EmployerOrg");
   if (c->inc_ns)
@@ -17508,9 +17508,9 @@ char* zx_ENC_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_
 char* zx_ENC_WO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -17699,9 +17699,9 @@ int zx_LEN_WO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Employme
 char* zx_ENC_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EmploymentHistory");
   if (c->inc_ns)
@@ -17742,9 +17742,9 @@ char* zx_ENC_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Employ
 char* zx_ENC_WO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_EmploymentHistory_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -17944,9 +17944,9 @@ int zx_LEN_WO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x )
 char* zx_ENC_SO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EndDate");
   if (c->inc_ns)
@@ -17993,9 +17993,9 @@ char* zx_ENC_SO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x, ch
 char* zx_ENC_WO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -18182,9 +18182,9 @@ int zx_LEN_WO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingC
 char* zx_ENC_SO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EndingCompensation");
   if (c->inc_ns)
@@ -18224,9 +18224,9 @@ char* zx_ENC_SO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_Endin
 char* zx_ENC_WO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingCompensation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -18424,9 +18424,9 @@ int zx_LEN_WO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentI
 char* zx_ENC_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EnvironmentId");
   if (c->inc_ns)
@@ -18470,9 +18470,9 @@ char* zx_ENC_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_Environmen
 char* zx_ENC_WO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -18659,9 +18659,9 @@ int zx_LEN_WO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x
 char* zx_ENC_SO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:EvidenceId");
   if (c->inc_ns)
@@ -18700,9 +18700,9 @@ char* zx_ENC_SO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s*
 char* zx_ENC_WO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -18891,9 +18891,9 @@ int zx_LEN_WO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_Expatri
 char* zx_ENC_SO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ExpatriateBenefits");
   if (c->inc_ns)
@@ -18933,9 +18933,9 @@ char* zx_ENC_SO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_Expat
 char* zx_ENC_WO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_ExpatriateBenefits_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -19117,9 +19117,9 @@ int zx_LEN_WO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x
 char* zx_ENC_SO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:FamilyName");
   if (c->inc_ns)
@@ -19157,9 +19157,9 @@ char* zx_ENC_SO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s*
 char* zx_ENC_WO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -19343,9 +19343,9 @@ int zx_LEN_WO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x )
 char* zx_ENC_SO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Fax");
   if (c->inc_ns)
@@ -19383,9 +19383,9 @@ char* zx_ENC_SO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x, char* p )
 char* zx_ENC_WO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -19585,9 +19585,9 @@ int zx_LEN_WO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssue
 char* zx_ENC_SO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:FirstIssuedDate");
   if (c->inc_ns)
@@ -19634,9 +19634,9 @@ char* zx_ENC_SO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIss
 char* zx_ENC_WO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssuedDate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -19817,9 +19817,9 @@ int zx_LEN_WO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_
 char* zx_ENC_SO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:FormattedPublicationDescription");
   if (c->inc_ns)
@@ -19856,9 +19856,9 @@ char* zx_ENC_SO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct z
 char* zx_ENC_WO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_hrxml_FormattedPublicationDescription_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -20039,9 +20039,9 @@ int zx_LEN_WO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x )
 char* zx_ENC_SO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Height");
   if (c->inc_ns)
@@ -20078,9 +20078,9 @@ char* zx_ENC_SO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x, char
 char* zx_ENC_WO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -20279,9 +20279,9 @@ int zx_LEN_WO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Highe
 char* zx_ENC_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:HighestPossibleValue");
   if (c->inc_ns)
@@ -20327,9 +20327,9 @@ char* zx_ENC_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Hig
 char* zx_ENC_WO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_HighestPossibleValue_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -20507,9 +20507,9 @@ int zx_LEN_WO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_Horizon
 char* zx_ENC_SO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:HorizontalAccuracy");
   if (c->inc_ns)
@@ -20545,9 +20545,9 @@ char* zx_ENC_SO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_Horiz
 char* zx_ENC_WO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_HorizontalAccuracy_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -20741,9 +20741,9 @@ int zx_LEN_WO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x )
 char* zx_ENC_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Id");
   if (c->inc_ns)
@@ -20787,9 +20787,9 @@ char* zx_ENC_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, char* p )
 char* zx_ENC_WO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -20972,9 +20972,9 @@ int zx_LEN_WO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x )
 char* zx_ENC_SO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:IdValue");
   if (c->inc_ns)
@@ -21011,9 +21011,9 @@ char* zx_ENC_SO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x, ch
 char* zx_ENC_WO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -21196,9 +21196,9 @@ int zx_LEN_WO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_
 char* zx_ENC_SO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:IndustryCode");
   if (c->inc_ns)
@@ -21236,9 +21236,9 @@ char* zx_ENC_SO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCod
 char* zx_ENC_WO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -21420,9 +21420,9 @@ int zx_LEN_WO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x )
 char* zx_ENC_SO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Insurance");
   if (c->inc_ns)
@@ -21459,9 +21459,9 @@ char* zx_ENC_SO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x
 char* zx_ENC_WO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -21642,9 +21642,9 @@ int zx_LEN_WO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_Interne
 char* zx_ENC_SO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:InternetDomainName");
   if (c->inc_ns)
@@ -21681,9 +21681,9 @@ char* zx_ENC_SO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_Inter
 char* zx_ENC_WO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_InternetDomainName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -21866,9 +21866,9 @@ int zx_LEN_WO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x )
 char* zx_ENC_SO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Inventors");
   if (c->inc_ns)
@@ -21906,9 +21906,9 @@ char* zx_ENC_SO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x
 char* zx_ENC_WO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -22088,9 +22088,9 @@ int zx_LEN_WO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAu
 char* zx_ENC_SO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:IssuingAuthority");
   if (c->inc_ns)
@@ -22127,9 +22127,9 @@ char* zx_ENC_SO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_Issuing
 char* zx_ENC_WO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAuthority_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -22340,9 +22340,9 @@ int zx_LEN_WO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s*
 char* zx_ENC_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:JobCategory");
   if (c->inc_ns)
@@ -22394,9 +22394,9 @@ char* zx_ENC_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_
 char* zx_ENC_WO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -22590,9 +22590,9 @@ int zx_LEN_WO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_
 char* zx_ENC_SO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:JobLevelInfo");
   if (c->inc_ns)
@@ -22636,9 +22636,9 @@ char* zx_ENC_SO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInf
 char* zx_ENC_WO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -22842,9 +22842,9 @@ int zx_LEN_WO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x )
 char* zx_ENC_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Language");
   if (c->inc_ns)
@@ -22893,9 +22893,9 @@ char* zx_ENC_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, 
 char* zx_ENC_WO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -23073,9 +23073,9 @@ int zx_LEN_WO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_
 char* zx_ENC_SO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:LanguageCode");
   if (c->inc_ns)
@@ -23111,9 +23111,9 @@ char* zx_ENC_SO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCod
 char* zx_ENC_WO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -23301,9 +23301,9 @@ int zx_LEN_WO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x )
 char* zx_ENC_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Languages");
   if (c->inc_ns)
@@ -23344,9 +23344,9 @@ char* zx_ENC_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x
 char* zx_ENC_WO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -23524,9 +23524,9 @@ int zx_LEN_WO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x )
 char* zx_ENC_SO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Latitude");
   if (c->inc_ns)
@@ -23562,9 +23562,9 @@ char* zx_ENC_SO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x, 
 char* zx_ENC_WO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -23746,9 +23746,9 @@ int zx_LEN_WO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalC
 char* zx_ENC_SO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:LegalClassification");
   if (c->inc_ns)
@@ -23786,9 +23786,9 @@ char* zx_ENC_SO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_Lega
 char* zx_ENC_WO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalClassification_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -23984,9 +23984,9 @@ int zx_LEN_WO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x )
 char* zx_ENC_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:LegalId");
   if (c->inc_ns)
@@ -24030,9 +24030,9 @@ char* zx_ENC_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, ch
 char* zx_ENC_WO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -24261,9 +24261,9 @@ int zx_LEN_WO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIden
 char* zx_ENC_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:LegalIdentifiers");
   if (c->inc_ns)
@@ -24323,9 +24323,9 @@ char* zx_ENC_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalId
 char* zx_ENC_WO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdentifiers_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -24547,9 +24547,9 @@ int zx_LEN_WO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_Lic
 char* zx_ENC_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:LicenseOrCertification");
   if (c->inc_ns)
@@ -24607,9 +24607,9 @@ char* zx_ENC_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_L
 char* zx_ENC_WO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_LicenseOrCertification_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -24797,9 +24797,9 @@ int zx_LEN_WO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_
 char* zx_ENC_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:LicensesAndCertifications");
   if (c->inc_ns)
@@ -24840,9 +24840,9 @@ char* zx_ENC_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxm
 char* zx_ENC_WO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_LicensesAndCertifications_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -25024,9 +25024,9 @@ int zx_LEN_WO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x )
 char* zx_ENC_SO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:List");
   if (c->inc_ns)
@@ -25064,9 +25064,9 @@ char* zx_ENC_SO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x, char* p 
 char* zx_ENC_WO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -25264,9 +25264,9 @@ int zx_LEN_WO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_h
 char* zx_ENC_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:LocalInstitutionClassification");
   if (c->inc_ns)
@@ -25312,9 +25312,9 @@ char* zx_ENC_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx
 char* zx_ENC_WO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hrxml_LocalInstitutionClassification_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -25508,9 +25508,9 @@ int zx_LEN_WO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSu
 char* zx_ENC_SO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:LocationSummary");
   if (c->inc_ns)
@@ -25554,9 +25554,9 @@ char* zx_ENC_SO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_Location
 char* zx_ENC_WO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSummary_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -25734,9 +25734,9 @@ int zx_LEN_WO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x )
 char* zx_ENC_SO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Longitude");
   if (c->inc_ns)
@@ -25772,9 +25772,9 @@ char* zx_ENC_SO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x
 char* zx_ENC_WO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -25972,9 +25972,9 @@ int zx_LEN_WO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Lowest
 char* zx_ENC_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:LowestPossibleValue");
   if (c->inc_ns)
@@ -26020,9 +26020,9 @@ char* zx_ENC_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Lowe
 char* zx_ENC_WO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestPossibleValue_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -26216,9 +26216,9 @@ int zx_LEN_WO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObj
 char* zx_ENC_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:MatchedObjectId");
   if (c->inc_ns)
@@ -26262,9 +26262,9 @@ char* zx_ENC_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedO
 char* zx_ENC_WO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObjectId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -26455,9 +26455,9 @@ int zx_LEN_WO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x )
 char* zx_ENC_SO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Measure");
   if (c->inc_ns)
@@ -26498,9 +26498,9 @@ char* zx_ENC_SO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x, ch
 char* zx_ENC_WO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -26721,9 +26721,9 @@ int zx_LEN_WO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHi
 char* zx_ENC_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:MilitaryHistory");
   if (c->inc_ns)
@@ -26780,9 +26780,9 @@ char* zx_ENC_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_Military
 char* zx_ENC_WO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHistory_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -26962,9 +26962,9 @@ int zx_LEN_WO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitarySta
 char* zx_ENC_SO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:MilitaryStatus");
   if (c->inc_ns)
@@ -27001,9 +27001,9 @@ char* zx_ENC_SO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryS
 char* zx_ENC_WO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryStatus_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -27188,9 +27188,9 @@ int zx_LEN_WO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x )
 char* zx_ENC_SO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Mobile");
   if (c->inc_ns)
@@ -27229,9 +27229,9 @@ char* zx_ENC_SO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x, char
 char* zx_ENC_WO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -27432,9 +27432,9 @@ int zx_LEN_WO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentD
 char* zx_ENC_SO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:MostRecentDate");
   if (c->inc_ns)
@@ -27481,9 +27481,9 @@ char* zx_ENC_SO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecen
 char* zx_ENC_WO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentDate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -27688,9 +27688,9 @@ int zx_LEN_WO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_
 char* zx_ENC_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:NonXMLResume");
   if (c->inc_ns)
@@ -27739,9 +27739,9 @@ char* zx_ENC_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResum
 char* zx_ENC_WO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -27927,9 +27927,9 @@ int zx_LEN_WO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_
 char* zx_ENC_SO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:NumericValue");
   if (c->inc_ns)
@@ -27969,9 +27969,9 @@ char* zx_ENC_SO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValu
 char* zx_ENC_WO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -28169,9 +28169,9 @@ int zx_LEN_WO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s*
 char* zx_ENC_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OrgIndustry");
   if (c->inc_ns)
@@ -28215,9 +28215,9 @@ char* zx_ENC_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_
 char* zx_ENC_WO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -28420,9 +28420,9 @@ int zx_LEN_WO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x )
 char* zx_ENC_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OrgInfo");
   if (c->inc_ns)
@@ -28470,9 +28470,9 @@ char* zx_ENC_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, ch
 char* zx_ENC_WO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -28666,9 +28666,9 @@ int zx_LEN_WO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x )
 char* zx_ENC_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OrgName");
   if (c->inc_ns)
@@ -28712,9 +28712,9 @@ char* zx_ENC_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, ch
 char* zx_ENC_WO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -28893,9 +28893,9 @@ int zx_LEN_WO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_
 char* zx_ENC_SO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Organization");
   if (c->inc_ns)
@@ -28931,9 +28931,9 @@ char* zx_ENC_SO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organizatio
 char* zx_ENC_WO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -29127,9 +29127,9 @@ int zx_LEN_WO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organizatio
 char* zx_ENC_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OrganizationId");
   if (c->inc_ns)
@@ -29173,9 +29173,9 @@ char* zx_ENC_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organizat
 char* zx_ENC_WO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_OrganizationId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -29360,9 +29360,9 @@ int zx_LEN_WO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_Organizat
 char* zx_ENC_SO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OrganizationUnit");
   if (c->inc_ns)
@@ -29400,9 +29400,9 @@ char* zx_ENC_SO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_Organiz
 char* zx_ENC_WO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationUnit_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -29680,9 +29680,9 @@ int zx_LEN_WO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Organiz
 char* zx_ENC_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OrganizationalUnit");
   if (c->inc_ns)
@@ -29767,9 +29767,9 @@ char* zx_ENC_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Organ
 char* zx_ENC_WO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnit_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -29965,9 +29965,9 @@ int zx_LEN_WO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Organ
 char* zx_ENC_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OrganizationalUnitId");
   if (c->inc_ns)
@@ -30011,9 +30011,9 @@ char* zx_ENC_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Org
 char* zx_ENC_WO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_OrganizationalUnitId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -30216,9 +30216,9 @@ int zx_LEN_WO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_
 char* zx_ENC_SO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OriginalDate");
   if (c->inc_ns)
@@ -30265,9 +30265,9 @@ char* zx_ENC_SO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDat
 char* zx_ENC_WO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -30448,9 +30448,9 @@ int zx_LEN_WO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefit
 char* zx_ENC_SO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OtherBenefits");
   if (c->inc_ns)
@@ -30487,9 +30487,9 @@ char* zx_ENC_SO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenef
 char* zx_ENC_WO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefits_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -30674,9 +30674,9 @@ int zx_LEN_WO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCom
 char* zx_ENC_SO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OtherCompensation");
   if (c->inc_ns)
@@ -30715,9 +30715,9 @@ char* zx_ENC_SO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherC
 char* zx_ENC_WO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCompensation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -30920,9 +30920,9 @@ int zx_LEN_WO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDesc
 char* zx_ENC_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OtherDescriptors");
   if (c->inc_ns)
@@ -30969,9 +30969,9 @@ char* zx_ENC_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDe
 char* zx_ENC_WO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescriptors_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -31151,9 +31151,9 @@ int zx_LEN_WO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s*
 char* zx_ENC_SO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OtherHonors");
   if (c->inc_ns)
@@ -31190,9 +31190,9 @@ char* zx_ENC_SO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_
 char* zx_ENC_WO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -31393,9 +31393,9 @@ int zx_LEN_WO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x )
 char* zx_ENC_SO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OtherPay");
   if (c->inc_ns)
@@ -31442,9 +31442,9 @@ char* zx_ENC_SO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x, 
 char* zx_ENC_WO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -31687,9 +31687,9 @@ int zx_LEN_WO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPubl
 char* zx_ENC_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:OtherPublication");
   if (c->inc_ns)
@@ -31756,9 +31756,9 @@ char* zx_ENC_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPu
 char* zx_ENC_WO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPublication_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -31941,9 +31941,9 @@ int zx_LEN_WO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x )
 char* zx_ENC_SO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Pager");
   if (c->inc_ns)
@@ -31981,9 +31981,9 @@ char* zx_ENC_SO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x, char* 
 char* zx_ENC_WO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -32167,9 +32167,9 @@ int zx_LEN_WO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_Parkin
 char* zx_ENC_SO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ParkingInstructions");
   if (c->inc_ns)
@@ -32208,9 +32208,9 @@ char* zx_ENC_SO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_Park
 char* zx_ENC_WO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_ParkingInstructions_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -32429,9 +32429,9 @@ int zx_LEN_WO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x )
 char* zx_ENC_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Patent");
   if (c->inc_ns)
@@ -32486,9 +32486,9 @@ char* zx_ENC_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, char
 char* zx_ENC_WO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -32686,9 +32686,9 @@ int zx_LEN_WO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_
 char* zx_ENC_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PatentDetail");
   if (c->inc_ns)
@@ -32734,9 +32734,9 @@ char* zx_ENC_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetai
 char* zx_ENC_WO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -32924,9 +32924,9 @@ int zx_LEN_WO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistor
 char* zx_ENC_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PatentHistory");
   if (c->inc_ns)
@@ -32967,9 +32967,9 @@ char* zx_ENC_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHist
 char* zx_ENC_WO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -33171,9 +33171,9 @@ int zx_LEN_WO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMile
 char* zx_ENC_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PatentMilestone");
   if (c->inc_ns)
@@ -33221,9 +33221,9 @@ char* zx_ENC_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMi
 char* zx_ENC_WO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMilestone_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -33461,9 +33461,9 @@ int zx_LEN_WO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDe
 char* zx_ENC_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PersonDescriptors");
   if (c->inc_ns)
@@ -33529,9 +33529,9 @@ char* zx_ENC_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_Person
 char* zx_ENC_WO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDescriptors_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -33725,9 +33725,9 @@ int zx_LEN_WO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x )
 char* zx_ENC_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PersonId");
   if (c->inc_ns)
@@ -33771,9 +33771,9 @@ char* zx_ENC_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, 
 char* zx_ENC_WO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -33980,9 +33980,9 @@ int zx_LEN_WO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalI
 char* zx_ENC_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PersonLegalId");
   if (c->inc_ns)
@@ -34031,9 +34031,9 @@ char* zx_ENC_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLega
 char* zx_ENC_WO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -34259,9 +34259,9 @@ int zx_LEN_WO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_
 char* zx_ENC_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PersonMember");
   if (c->inc_ns)
@@ -34317,9 +34317,9 @@ char* zx_ENC_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMembe
 char* zx_ENC_WO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -34549,9 +34549,9 @@ int zx_LEN_WO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x
 char* zx_ENC_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PersonName");
   if (c->inc_ns)
@@ -34613,9 +34613,9 @@ char* zx_ENC_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s*
 char* zx_ENC_WO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -34820,9 +34820,9 @@ int zx_LEN_WO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x
 char* zx_ENC_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PersonRole");
   if (c->inc_ns)
@@ -34871,9 +34871,9 @@ char* zx_ENC_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s*
 char* zx_ENC_WO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -35102,9 +35102,9 @@ int zx_LEN_WO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_
 char* zx_ENC_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PersonalData");
   if (c->inc_ns)
@@ -35165,9 +35165,9 @@ char* zx_ENC_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalDat
 char* zx_ENC_WO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -35413,9 +35413,9 @@ int zx_LEN_WO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalL
 char* zx_ENC_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PhysicalLocation");
   if (c->inc_ns)
@@ -35485,9 +35485,9 @@ char* zx_ENC_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_Physica
 char* zx_ENC_WO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLocation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -35801,9 +35801,9 @@ int zx_LEN_WO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHi
 char* zx_ENC_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PositionHistory");
   if (c->inc_ns)
@@ -35907,9 +35907,9 @@ char* zx_ENC_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_Position
 char* zx_ENC_WO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHistory_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -36127,9 +36127,9 @@ int zx_LEN_WO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionL
 char* zx_ENC_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PositionLocation");
   if (c->inc_ns)
@@ -36184,9 +36184,9 @@ char* zx_ENC_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_Positio
 char* zx_ENC_WO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLocation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -36511,9 +36511,9 @@ int zx_LEN_WO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionM
 char* zx_ENC_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PositionMatching");
   if (c->inc_ns)
@@ -36622,9 +36622,9 @@ char* zx_ENC_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_Positio
 char* zx_ENC_WO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMatching_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -36840,9 +36840,9 @@ int zx_LEN_WO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPo
 char* zx_ENC_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PositionPosting");
   if (c->inc_ns)
@@ -36897,9 +36897,9 @@ char* zx_ENC_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_Position
 char* zx_ENC_WO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPosting_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -37079,9 +37079,9 @@ int zx_LEN_WO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionS
 char* zx_ENC_SO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PositionSchedule");
   if (c->inc_ns)
@@ -37118,9 +37118,9 @@ char* zx_ENC_SO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_Positio
 char* zx_ENC_WO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionSchedule_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -37337,9 +37337,9 @@ int zx_LEN_WO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddres
 char* zx_ENC_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PostalAddress");
   if (c->inc_ns)
@@ -37394,9 +37394,9 @@ char* zx_ENC_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddr
 char* zx_ENC_WO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -37575,9 +37575,9 @@ int zx_LEN_WO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_Preferre
 char* zx_ENC_SO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PreferredLanguage");
   if (c->inc_ns)
@@ -37613,9 +37613,9 @@ char* zx_ENC_SO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_Prefer
 char* zx_ENC_WO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_PreferredLanguage_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -37949,9 +37949,9 @@ int zx_LEN_WO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Preferre
 char* zx_ENC_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PreferredPosition");
   if (c->inc_ns)
@@ -38065,9 +38065,9 @@ char* zx_ENC_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Prefer
 char* zx_ENC_WO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_PreferredPosition_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -38285,9 +38285,9 @@ int zx_LEN_WO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Prehir
 char* zx_ENC_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PrehireRemuneration");
   if (c->inc_ns)
@@ -38343,9 +38343,9 @@ char* zx_ENC_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Preh
 char* zx_ENC_WO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_PrehireRemuneration_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -38523,9 +38523,9 @@ int zx_LEN_WO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLan
 char* zx_ENC_SO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PrimaryLanguage");
   if (c->inc_ns)
@@ -38561,9 +38561,9 @@ char* zx_ENC_SO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryL
 char* zx_ENC_WO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLanguage_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -38751,9 +38751,9 @@ int zx_LEN_WO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_P
 char* zx_ENC_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ProfessionalAssociations");
   if (c->inc_ns)
@@ -38794,9 +38794,9 @@ char* zx_ENC_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml
 char* zx_ENC_WO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_ProfessionalAssociations_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -38990,9 +38990,9 @@ int zx_LEN_WO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x )
 char* zx_ENC_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ProfileId");
   if (c->inc_ns)
@@ -39036,9 +39036,9 @@ char* zx_ENC_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x
 char* zx_ENC_WO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -39235,9 +39235,9 @@ int zx_LEN_WO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x )
 char* zx_ENC_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ProgramId");
   if (c->inc_ns)
@@ -39281,9 +39281,9 @@ char* zx_ENC_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x
 char* zx_ENC_WO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -39486,9 +39486,9 @@ int zx_LEN_WO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_Publicatio
 char* zx_ENC_SO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PublicationDate");
   if (c->inc_ns)
@@ -39535,9 +39535,9 @@ char* zx_ENC_SO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_Publicat
 char* zx_ENC_WO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_PublicationDate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -39766,9 +39766,9 @@ int zx_LEN_WO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Publica
 char* zx_ENC_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PublicationHistory");
   if (c->inc_ns)
@@ -39829,9 +39829,9 @@ char* zx_ENC_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Publi
 char* zx_ENC_WO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_PublicationHistory_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -40009,9 +40009,9 @@ int zx_LEN_WO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_Public
 char* zx_ENC_SO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:PublicationLanguage");
   if (c->inc_ns)
@@ -40047,9 +40047,9 @@ char* zx_ENC_SO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_Publ
 char* zx_ENC_WO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_PublicationLanguage_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -40241,9 +40241,9 @@ int zx_LEN_WO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualificati
 char* zx_ENC_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Qualifications");
   if (c->inc_ns)
@@ -40286,9 +40286,9 @@ char* zx_ENC_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifica
 char* zx_ENC_WO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifications_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -40474,9 +40474,9 @@ int zx_LEN_WO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_
 char* zx_ENC_SO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:RankAchieved");
   if (c->inc_ns)
@@ -40516,9 +40516,9 @@ char* zx_ENC_SO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieve
 char* zx_ENC_WO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -40748,9 +40748,9 @@ int zx_LEN_WO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_
 char* zx_ENC_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:RankedResult");
   if (c->inc_ns)
@@ -40812,9 +40812,9 @@ char* zx_ENC_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResul
 char* zx_ENC_WO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -41002,9 +41002,9 @@ int zx_LEN_WO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_Ranked
 char* zx_ENC_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:RankedSearchResults");
   if (c->inc_ns)
@@ -41045,9 +41045,9 @@ char* zx_ENC_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_Rank
 char* zx_ENC_WO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedSearchResults_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -41253,9 +41253,9 @@ int zx_LEN_WO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x )
 char* zx_ENC_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Recipient");
   if (c->inc_ns)
@@ -41305,9 +41305,9 @@ char* zx_ENC_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x
 char* zx_ENC_WO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -41515,9 +41515,9 @@ int zx_LEN_WO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x )
 char* zx_ENC_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Reference");
   if (c->inc_ns)
@@ -41568,9 +41568,9 @@ char* zx_ENC_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x
 char* zx_ENC_WO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -41759,9 +41759,9 @@ int zx_LEN_WO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x
 char* zx_ENC_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:References");
   if (c->inc_ns)
@@ -41802,9 +41802,9 @@ char* zx_ENC_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s*
 char* zx_ENC_WO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -42154,9 +42154,9 @@ int zx_LEN_WO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Relate
 char* zx_ENC_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:RelatedOrganization");
   if (c->inc_ns)
@@ -42278,9 +42278,9 @@ char* zx_ENC_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Rela
 char* zx_ENC_WO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_RelatedOrganization_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -42561,9 +42561,9 @@ int zx_LEN_WO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_
 char* zx_ENC_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:RelatedOrganizationalUnit");
   if (c->inc_ns)
@@ -42650,9 +42650,9 @@ char* zx_ENC_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxm
 char* zx_ENC_WO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_RelatedOrganizationalUnit_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -42844,9 +42844,9 @@ int zx_LEN_WO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_Re
 char* zx_ENC_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:RelatedPositionPostings");
   if (c->inc_ns)
@@ -42887,9 +42887,9 @@ char* zx_ENC_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_
 char* zx_ENC_WO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_RelatedPositionPostings_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -43073,9 +43073,9 @@ int zx_LEN_WO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x
 char* zx_ENC_SO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Relocation");
   if (c->inc_ns)
@@ -43114,9 +43114,9 @@ char* zx_ENC_SO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s*
 char* zx_ENC_WO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -43307,9 +43307,9 @@ int zx_LEN_WO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Reloc
 char* zx_ENC_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:RelocationAssistance");
   if (c->inc_ns)
@@ -43351,9 +43351,9 @@ char* zx_ENC_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Rel
 char* zx_ENC_WO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_RelocationAssistance_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -43572,9 +43572,9 @@ int zx_LEN_WO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Remune
 char* zx_ENC_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:RemunerationPackage");
   if (c->inc_ns)
@@ -43630,9 +43630,9 @@ char* zx_ENC_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Remu
 char* zx_ENC_WO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_RemunerationPackage_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -43854,9 +43854,9 @@ int zx_LEN_WO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x )
 char* zx_ENC_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Resume");
   if (c->inc_ns)
@@ -43914,9 +43914,9 @@ char* zx_ENC_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, char
 char* zx_ENC_WO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -44119,9 +44119,9 @@ int zx_LEN_WO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Resum
 char* zx_ENC_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ResumeAdditionalItem");
   if (c->inc_ns)
@@ -44168,9 +44168,9 @@ char* zx_ENC_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Res
 char* zx_ENC_WO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItem_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -44359,9 +44359,9 @@ int zx_LEN_WO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_Resu
 char* zx_ENC_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ResumeAdditionalItems");
   if (c->inc_ns)
@@ -44402,9 +44402,9 @@ char* zx_ENC_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_Re
 char* zx_ENC_WO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_ResumeAdditionalItems_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -44598,9 +44598,9 @@ int zx_LEN_WO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x )
 char* zx_ENC_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:RoleId");
   if (c->inc_ns)
@@ -44644,9 +44644,9 @@ char* zx_ENC_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, char
 char* zx_ENC_WO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -44885,9 +44885,9 @@ int zx_LEN_WO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhy
 char* zx_ENC_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SEPPhysicalLocation");
   if (c->inc_ns)
@@ -44952,9 +44952,9 @@ char* zx_ENC_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPP
 char* zx_ENC_WO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhysicalLocation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -45134,9 +45134,9 @@ int zx_LEN_WO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEqui
 char* zx_ENC_SO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SafetyEquipment");
   if (c->inc_ns)
@@ -45173,9 +45173,9 @@ char* zx_ENC_SO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEq
 char* zx_ENC_WO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEquipment_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -45380,9 +45380,9 @@ int zx_LEN_WO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x )
 char* zx_ENC_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:School");
   if (c->inc_ns)
@@ -45431,9 +45431,9 @@ char* zx_ENC_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, char
 char* zx_ENC_WO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -45628,9 +45628,9 @@ int zx_LEN_WO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x )
 char* zx_ENC_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SchoolId");
   if (c->inc_ns)
@@ -45674,9 +45674,9 @@ char* zx_ENC_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, 
 char* zx_ENC_WO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -45969,9 +45969,9 @@ int zx_LEN_WO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_School
 char* zx_ENC_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SchoolOrInstitution");
   if (c->inc_ns)
@@ -46063,9 +46063,9 @@ char* zx_ENC_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_Scho
 char* zx_ENC_WO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolOrInstitution_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -46246,9 +46246,9 @@ int zx_LEN_WO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x )
 char* zx_ENC_SO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Score");
   if (c->inc_ns)
@@ -46285,9 +46285,9 @@ char* zx_ENC_SO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x, char* 
 char* zx_ENC_WO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -46518,9 +46518,9 @@ int zx_LEN_WO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCrite
 char* zx_ENC_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SearchCriteria");
   if (c->inc_ns)
@@ -46582,9 +46582,9 @@ char* zx_ENC_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCri
 char* zx_ENC_WO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriteria_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -46778,9 +46778,9 @@ int zx_LEN_WO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCri
 char* zx_ENC_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SearchCriteriaId");
   if (c->inc_ns)
@@ -46824,9 +46824,9 @@ char* zx_ENC_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchC
 char* zx_ENC_WO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCriteriaId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -47025,9 +47025,9 @@ int zx_LEN_WO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCrit
 char* zx_ENC_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SearchCriterion");
   if (c->inc_ns)
@@ -47072,9 +47072,9 @@ char* zx_ENC_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCr
 char* zx_ENC_WO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCriterion_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -47254,9 +47254,9 @@ int zx_LEN_WO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_Searc
 char* zx_ENC_SO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SearchRelevanceScore");
   if (c->inc_ns)
@@ -47293,9 +47293,9 @@ char* zx_ENC_SO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_Sea
 char* zx_ENC_WO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_SearchRelevanceScore_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -47550,9 +47550,9 @@ int zx_LEN_WO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_
 char* zx_ENC_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SearchResult");
   if (c->inc_ns)
@@ -47626,9 +47626,9 @@ char* zx_ENC_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResul
 char* zx_ENC_WO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -47822,9 +47822,9 @@ int zx_LEN_WO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResul
 char* zx_ENC_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SearchResultId");
   if (c->inc_ns)
@@ -47868,9 +47868,9 @@ char* zx_ENC_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchRes
 char* zx_ENC_WO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResultId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -48095,9 +48095,9 @@ int zx_LEN_WO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Securit
 char* zx_ENC_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SecurityCredential");
   if (c->inc_ns)
@@ -48155,9 +48155,9 @@ char* zx_ENC_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Secur
 char* zx_ENC_WO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_SecurityCredential_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -48345,9 +48345,9 @@ int zx_LEN_WO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Securi
 char* zx_ENC_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SecurityCredentials");
   if (c->inc_ns)
@@ -48388,9 +48388,9 @@ char* zx_ENC_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Secu
 char* zx_ENC_WO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_SecurityCredentials_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -48624,9 +48624,9 @@ int zx_LEN_WO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetai
 char* zx_ENC_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ServiceDetail");
   if (c->inc_ns)
@@ -48690,9 +48690,9 @@ char* zx_ENC_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDet
 char* zx_ENC_WO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -48887,9 +48887,9 @@ int zx_LEN_WO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumbe
 char* zx_ENC_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ServiceNumber");
   if (c->inc_ns)
@@ -48933,9 +48933,9 @@ char* zx_ENC_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNum
 char* zx_ENC_WO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -49152,9 +49152,9 @@ int zx_LEN_WO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x )
 char* zx_ENC_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Shift");
   if (c->inc_ns)
@@ -49208,9 +49208,9 @@ char* zx_ENC_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, char* 
 char* zx_ENC_WO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -49397,9 +49397,9 @@ int zx_LEN_WO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x
 char* zx_ENC_SO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SourceType");
   if (c->inc_ns)
@@ -49439,9 +49439,9 @@ char* zx_ENC_SO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s*
 char* zx_ENC_WO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -49667,9 +49667,9 @@ int zx_LEN_WO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLoc
 char* zx_ENC_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SpatialLocation");
   if (c->inc_ns)
@@ -49729,9 +49729,9 @@ char* zx_ENC_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialL
 char* zx_ENC_WO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLocation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -49969,9 +49969,9 @@ int zx_LEN_WO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEven
 char* zx_ENC_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SpeakingEvent");
   if (c->inc_ns)
@@ -50037,9 +50037,9 @@ char* zx_ENC_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEv
 char* zx_ENC_WO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -50228,9 +50228,9 @@ int zx_LEN_WO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_Spea
 char* zx_ENC_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SpeakingEventsHistory");
   if (c->inc_ns)
@@ -50271,9 +50271,9 @@ char* zx_ENC_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_Sp
 char* zx_ENC_WO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_SpeakingEventsHistory_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -50465,9 +50465,9 @@ int zx_LEN_WO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrx
 char* zx_ENC_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SpecifiedCompetencyReference");
   if (c->inc_ns)
@@ -50510,9 +50510,9 @@ char* zx_ENC_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_h
 char* zx_ENC_WO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxml_SpecifiedCompetencyReference_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -50712,9 +50712,9 @@ int zx_LEN_WO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x )
 char* zx_ENC_SO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:StartDate");
   if (c->inc_ns)
@@ -50761,9 +50761,9 @@ char* zx_ENC_SO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x
 char* zx_ENC_WO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -50950,9 +50950,9 @@ int zx_LEN_WO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_Start
 char* zx_ENC_SO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:StartingCompensation");
   if (c->inc_ns)
@@ -50992,9 +50992,9 @@ char* zx_ENC_SO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_Sta
 char* zx_ENC_WO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_StartingCompensation_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -51180,9 +51180,9 @@ int zx_LEN_WO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x )
 char* zx_ENC_SO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Status");
   if (c->inc_ns)
@@ -51220,9 +51220,9 @@ char* zx_ENC_SO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x, char
 char* zx_ENC_WO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -51420,9 +51420,9 @@ int zx_LEN_WO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x )
 char* zx_ENC_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Stock");
   if (c->inc_ns)
@@ -51467,9 +51467,9 @@ char* zx_ENC_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, char* 
 char* zx_ENC_WO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -51653,9 +51653,9 @@ int zx_LEN_WO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s*
 char* zx_ENC_SO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:StringValue");
   if (c->inc_ns)
@@ -51694,9 +51694,9 @@ char* zx_ENC_SO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_
 char* zx_ENC_WO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -52063,9 +52063,9 @@ int zx_LEN_WO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Struct
 char* zx_ENC_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:StructuredXMLResume");
   if (c->inc_ns)
@@ -52194,9 +52194,9 @@ char* zx_ENC_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Stru
 char* zx_ENC_WO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_StructuredXMLResume_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -52390,9 +52390,9 @@ int zx_LEN_WO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x
 char* zx_ENC_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SupplierId");
   if (c->inc_ns)
@@ -52436,9 +52436,9 @@ char* zx_ENC_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s*
 char* zx_ENC_WO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -52643,9 +52643,9 @@ int zx_LEN_WO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Suppor
 char* zx_ENC_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:SupportingMaterials");
   if (c->inc_ns)
@@ -52693,9 +52693,9 @@ char* zx_ENC_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Supp
 char* zx_ENC_WO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_SupportingMaterials_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -52877,9 +52877,9 @@ int zx_LEN_WO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x )
 char* zx_ENC_SO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:TTYTDD");
   if (c->inc_ns)
@@ -52917,9 +52917,9 @@ char* zx_ENC_SO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x, char
 char* zx_ENC_WO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -53113,9 +53113,9 @@ int zx_LEN_WO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x )
 char* zx_ENC_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:TaxId");
   if (c->inc_ns)
@@ -53159,9 +53159,9 @@ char* zx_ENC_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, char* 
 char* zx_ENC_WO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -53348,9 +53348,9 @@ int zx_LEN_WO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x
 char* zx_ENC_SO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:TaxonomyId");
   if (c->inc_ns)
@@ -53389,9 +53389,9 @@ char* zx_ENC_SO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s*
 char* zx_ENC_WO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -53574,9 +53574,9 @@ int zx_LEN_WO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_
 char* zx_ENC_SO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:TaxonomyName");
   if (c->inc_ns)
@@ -53613,9 +53613,9 @@ char* zx_ENC_SO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyNam
 char* zx_ENC_WO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -53798,9 +53798,9 @@ int zx_LEN_WO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x )
 char* zx_ENC_SO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Telephone");
   if (c->inc_ns)
@@ -53838,9 +53838,9 @@ char* zx_ENC_SO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x
 char* zx_ENC_WO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -54026,9 +54026,9 @@ int zx_LEN_WO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_
 char* zx_ENC_SO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:TermOfNotice");
   if (c->inc_ns)
@@ -54068,9 +54068,9 @@ char* zx_ENC_SO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotic
 char* zx_ENC_WO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -54250,9 +54250,9 @@ int zx_LEN_WO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x )
 char* zx_ENC_SO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:TimeMax");
   if (c->inc_ns)
@@ -54289,9 +54289,9 @@ char* zx_ENC_SO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x, ch
 char* zx_ENC_WO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -54482,9 +54482,9 @@ int zx_LEN_WO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAl
 char* zx_ENC_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:TimeOffAllowance");
   if (c->inc_ns)
@@ -54526,9 +54526,9 @@ char* zx_ENC_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOff
 char* zx_ENC_WO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAllowance_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -54719,9 +54719,9 @@ int zx_LEN_WO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x )
 char* zx_ENC_SO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Travel");
   if (c->inc_ns)
@@ -54763,9 +54763,9 @@ char* zx_ENC_SO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x, char
 char* zx_ENC_WO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -54949,9 +54949,9 @@ int zx_LEN_WO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDir
 char* zx_ENC_SO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:TravelDirections");
   if (c->inc_ns)
@@ -54990,9 +54990,9 @@ char* zx_ENC_SO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelD
 char* zx_ENC_WO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDirections_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -55173,9 +55173,9 @@ int zx_LEN_WO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x )
 char* zx_ENC_SO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:UserArea");
   if (c->inc_ns)
@@ -55211,9 +55211,9 @@ char* zx_ENC_SO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x, 
 char* zx_ENC_WO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -55407,9 +55407,9 @@ int zx_LEN_WO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x )
 char* zx_ENC_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:UserId");
   if (c->inc_ns)
@@ -55453,9 +55453,9 @@ char* zx_ENC_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, char
 char* zx_ENC_WO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -55658,9 +55658,9 @@ int zx_LEN_WO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x )
 char* zx_ENC_SO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ValidFrom");
   if (c->inc_ns)
@@ -55707,9 +55707,9 @@ char* zx_ENC_SO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x
 char* zx_ENC_WO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -55910,9 +55910,9 @@ int zx_LEN_WO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x )
 char* zx_ENC_SO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:ValidTo");
   if (c->inc_ns)
@@ -55959,9 +55959,9 @@ char* zx_ENC_SO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x, ch
 char* zx_ENC_WO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -56178,9 +56178,9 @@ int zx_LEN_WO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_
 char* zx_ENC_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Verification");
   if (c->inc_ns)
@@ -56235,9 +56235,9 @@ char* zx_ENC_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verificatio
 char* zx_ENC_WO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -56415,9 +56415,9 @@ int zx_LEN_WO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalA
 char* zx_ENC_SO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:VerticalAccuracy");
   if (c->inc_ns)
@@ -56453,9 +56453,9 @@ char* zx_ENC_SO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_Vertica
 char* zx_ENC_WO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalAccuracy_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -56639,9 +56639,9 @@ int zx_LEN_WO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x
 char* zx_ENC_SO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:VisaStatus");
   if (c->inc_ns)
@@ -56680,9 +56680,9 @@ char* zx_ENC_SO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s*
 char* zx_ENC_WO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -56871,9 +56871,9 @@ int zx_LEN_WO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x )
 char* zx_ENC_SO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:Weight");
   if (c->inc_ns)
@@ -56913,9 +56913,9 @@ char* zx_ENC_SO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x, char
 char* zx_ENC_WO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -57171,9 +57171,9 @@ int zx_LEN_WO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x )
 char* zx_ENC_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:WorkSite");
   if (c->inc_ns)
@@ -57246,9 +57246,9 @@ char* zx_ENC_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, 
 char* zx_ENC_WO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -57480,9 +57480,9 @@ int zx_LEN_WO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSi
 char* zx_ENC_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:WorkSiteEnvironment");
   if (c->inc_ns)
@@ -57545,9 +57545,9 @@ char* zx_ENC_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_Work
 char* zx_ENC_WO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSiteEnvironment_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');
@@ -57741,9 +57741,9 @@ int zx_LEN_WO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x
 char* zx_ENC_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x, char* p )
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<hrxml:WorkSiteId");
   if (c->inc_ns)
@@ -57787,9 +57787,9 @@ char* zx_ENC_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s*
 char* zx_ENC_WO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x, char* p )
 {
   struct zx_elem_s* kid;
+  struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
-  struct zx_ns_s* pop_seen = 0;
   char* q;
   char* qq;
   ZX_OUT_CH(p, '<');

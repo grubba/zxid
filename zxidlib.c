@@ -112,16 +112,17 @@ struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs)
  * cf::     ZXID configuration object, also used for memory allocation
  * url::    The endpoint where the request will be sent
  * env::    XML data structure representing the request
+ * ret_enve:: result parameter allowing the higher layers to see the original message
  * return:: XML data structure representing the response  */
 
 /* Called by:  zxid_wsc_call */
-struct zx_root_s* zxid_soap_call_envelope(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env)
+struct zx_root_s* zxid_soap_call_envelope(zxid_conf* cf, struct zx_str* url, struct zx_e_Envelope_s* env, char** ret_enve)
 {
   struct zx_root_s* r;
   struct zx_str* ss;
   ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
   DD("ss(%.*s) len=%d", ss->len, ss->s, ss->len);
-  r = zxid_soap_call_raw(cf, url, ss);
+  r = zxid_soap_call_raw(cf, url, ss, ret_enve);
   zx_str_free(cf->ctx, ss);
   return r;
 }
@@ -147,7 +148,7 @@ struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, str
   env->Header = hdr;
   env->Body = body;
   ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
-  r = zxid_soap_call_raw(cf, url, ss);
+  r = zxid_soap_call_raw(cf, url, ss, 0);
   zx_str_free(cf->ctx, ss);
   return r;
 }
