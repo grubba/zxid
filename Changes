@@ -59,6 +59,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     NOTPUB
 
 zxid-0.63:: 2.7.2010
+    - Removed sed(1) dependency
+    - Improved win32cl target
 zxid-0.62:: 1.7.2010
     - Fix IdP authentication template (runaway HTML comment)
 zxid-0.61:: 25.6.2010

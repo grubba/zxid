@@ -80,7 +80,6 @@ RUBY_CONFIG=true
 APACHE_ROOT=/usr/local/httpd
 
 ECHO=echo
-SED=sed
 PERL=perl
 XSD2SG_PL= ../pd/xsd2sg.pl
 XSD2SG=$(PERL) $(XSD2SG_PL)
@@ -156,9 +155,6 @@ APACHE_MODULES ?= $(APACHE_ROOT)/modules
 
 ### Compute options based on local modifications
 
-CDIR+= -I. -I$(TOP) -I$(OPENSSL_ROOT)/include -I$(CURL_ROOT)/include
-CDIR+= $(APACHE_INCLUDE) $(APR_INCLUDE)
-CDEF+= -D_REENTRANT -DDEBUG
 LIBS+= -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz
 #LIBS+=-ldl
 OUTOPT=-o 
@@ -292,6 +288,8 @@ ifeq ($(TARGET),win32cl)
 
 # Compilation with Microsoft Visual C++ compiler's command line (aka msvc) (experimental)
 
+CC=cl
+LD=link
 CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB
 CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/"
 OPENSSL_ROOT="C:/OpenSSL/"
@@ -304,10 +302,15 @@ CFLAGS=-Zi -WL
 OUTOPT=-OUT:
 OBJ_EXT=obj
 
+GPERF=gperf.exe
+SHELL="C:\Program Files\GNU Utils\bin"
+MAKESHELL="C:\Program Files\GNU Utils\bin"
+
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
 endif
+
 else
 
 # Flags for Linux 2.6 native compile (gcc + gnu binutils)
@@ -320,6 +323,10 @@ endif
 endif
 endif
 endif
+
+CDIR+= -I. -I$(TOP) -I$(OPENSSL_ROOT)/include -I$(CURL_ROOT)/include -I$(ZLIB_ROOT)/include
+CDIR+= $(APACHE_INCLUDE) $(APR_INCLUDE)
+CDEF+= -D_REENTRANT -DDEBUG
 
 CFLAGS+= $(CDEF) $(CDIR)
 
@@ -641,20 +648,16 @@ ifeq ($(ENA_GEN),1)
 ### If this runs over and over again, check timestamps in sg/ directory, or make -d -p
 
 c/zx-attrs.gperf c/zx-elems.gperf $(ZX_GEN_C) $(ZX_GEN_H): $(ZX_SG) dec-templ.c enc-templ.c aux-templ.c getput-templ.c
-	@which $(XSD2SG) || ( echo "You need to install xsd2sg.pl from Plaindoc distribution at http://zxid.org/plaindoc/pd.html. Not found $(XSD2SG)" && exit 2 )
-	$(XSD2SG) -z zx -gen c/zx -p zx_ $(ZX_ROOTS) -S $(ZX_SG) >/dev/null
+	@ls $(XSD2SG_PL) || ( echo "You need to install xsd2sg.pl from Plaindoc distribution at http://zxid.org/plaindoc/pd.html. Not found $(XSD2SG)" && exit 2 )
+	$(XSD2SG) -z zx -gen c/zx -p zx_ $(ZX_ROOTS) -S $(ZX_SG) >junk
 
 c/zx-attrs.c: c/zx-attrs.gperf
 	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
-	$(GPERF) -t -D -C -T -l -G -W zx_attrs -N zx_attr2tok $< | \
-          $(SED) -e 's/lengthtable/zx_attrs_lens/' \
-	         -e 's/static const struct zx_tok/const struct zx_tok/' >$@
+	$(GPERF) -t -D -C -T -l -G -W zx_attrs -N zx_attr2tok $< | $(PERL) ./sed-zxid.pl attrs >$@
 
 c/zx-elems.c: c/zx-elems.gperf
 	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
-	$(GPERF) -t -D -C -T -l -G -W zx_elems -N zx_elem2tok $< | \
-          $(SED) -e 's/lengthtable/zx_elems_lens/' \
-	         -e 's/static const struct zx_tok/const struct zx_tok/' >$@
+	$(GPERF) -t -D -C -T -l -G -W zx_elems -N zx_elem2tok $< | $(PERL) ./sed-zxid.pl elems >$@
 
 c/zx-const.h: c/zx-attrs.c c/zx-elems.c
 	cat c/zx-attrs.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ATTR zx_attrs >$@
@@ -666,20 +669,10 @@ c/zx-const.h: c/zx-attrs.c c/zx-elems.c
 # is not preserved.
 
 c/license.c: LICENSE-2.0.txt
-	$(ECHO) 'char* license = ' >$@
-	$(ECHO) '"Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\' >>$@ #'
-	$(ECHO) 'Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\' >>$@ #'
-	$(ECHO) 'Author: Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\' >>$@ #'
-	$(SED) -e 's/"/\\"/g' -e 's/$$/\\n\\/' LICENSE-2.0.txt >>$@
-	$(ECHO) '";' >>$@
+	$(PERL) ./sed-zxid.pl license <LICENSE-2.0.txt >$@
 
 c/zxidvers.h:
-	$(ECHO) "#ifndef _zxidvers_h" >c/zxidvers.h
-	$(ECHO) "#define _zxidvers_h" >>c/zxidvers.h
-	$(ECHO) "#define ZXID_VERSION $(ZXIDVERSION)" >>c/zxidvers.h
-	$(ECHO) "#define ZXID_REL \"$(ZXIDREL)\"" >>c/zxidvers.h
-	$(ECHO) "#define ZXID_COMPILE_DATE \"`date +%s`\"" >>c/zxidvers.h
-	$(ECHO) "#endif" >>c/zxidvers.h
+	$(PERL) ./sed-zxid.pl zxidvers $(ZXIDVERSION) $(ZXIDREL) <zxrev >$@
 
 # $(ZXID_OBJ:.o=.c) $(WSF_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h
 
@@ -1155,7 +1148,7 @@ TAS3MAS=T3-SSO-ZXID-MODAUTHSAML_$(ZXIDREL)
 tas3maspkg: mod_auth_saml.so
 	rm -rf $(TAS3MAS) $(TAS3MAS).zip
 	mkdir $(TAS3MAS)
-	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/'  < Manifest.T3-SSO-ZXID-MODAUTHSAML > $(TAS3MAS)/Manifest
+	$(PERL) version $(ZXIDREL) < Manifest.T3-SSO-ZXID-MODAUTHSAML > $(TAS3MAS)/Manifest
 	cp mod_auth_saml.so $(TAS3MAS)
 	cp $(TAS3COMMONFILES) $(TAS3MAS)
 	zip -r $(TAS3MAS).zip $(TAS3MAS)
@@ -1165,7 +1158,7 @@ TAS3PHP=T3-SSO-ZXID-PHP_$(ZXIDREL)
 tas3phppkg: php/php_zxid.so
 	rm -rf $(TAS3PHP) $(TAS3PHP).zip
 	mkdir $(TAS3PHP)
-	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' <Manifest.T3-SSO-ZXID-PHP >$(TAS3PHP)/Manifest
+	$(PERL) version $(ZXIDREL) <Manifest.T3-SSO-ZXID-PHP >$(TAS3PHP)/Manifest
 	cp *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3PHP)
 	cp $(TAS3COMMONFILES) $(TAS3PHP)
 	zip -r $(TAS3PHP).zip $(TAS3PHP)
@@ -1176,7 +1169,7 @@ tas3javapkg: $(ZXIDJNI_SO) zxidjava/zxidjni.class
 	rm -rf $(TAS3JAVA) $(TAS3JAVA).zip
 	mkdir $(TAS3JAVA)
 	mkdir $(TAS3JAVA)/zxidjava
-	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' <Manifest.T3-SSO-ZXID-JAVA >$(TAS3JAVA)/Manifest
+	$(PERL) version $(ZXIDREL) <Manifest.T3-SSO-ZXID-JAVA >$(TAS3JAVA)/Manifest
 	cp $(ZXIDJNI_SO) zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3JAVA)/zxidjava
 	cp $(TAS3COMMONFILES) $(TAS3JAVA)
 	zip -r $(TAS3JAVA).zip $(TAS3JAVA)
@@ -1186,7 +1179,7 @@ TAS3IDP=T3-IDP-ZXID_$(ZXIDREL)
 tas3idppkg: zxididp zxpasswd zxcot zxdecode
 	rm -rf $(TAS3IDP) $(TAS3IDP).zip
 	mkdir $(TAS3IDP)
-	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-IDP-ZXID > $(TAS3IDP)/Manifest
+	$(PERL) version $(ZXIDREL) < Manifest.T3-IDP-ZXID > $(TAS3IDP)/Manifest
 	cp zxididp zxpasswd zxcot zxdecode zxid-idp.pd $(TAS3IDP)
 	cp $(TAS3COMMONFILES) $(TAS3IDP)
 	zip -r $(TAS3IDP).zip $(TAS3IDP)
@@ -1199,7 +1192,7 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 	mkdir $(TAS3LINUXX86)/zxidjava
 	mkdir $(TAS3LINUXX86)/include
 	mkdir $(TAS3LINUXX86)/include/zx
-	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
+	$(PERL) version $(ZXIDREL) < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
 	cp mod_auth_saml.so $(TAS3LINUXX86)
 	cp *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
 	cp zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
@@ -1220,7 +1213,7 @@ tas3win32pkg: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) z
 	mkdir $(TAS3WIN32)
 	mkdir $(TAS3WIN32)/include
 	mkdir $(TAS3WIN32)/include/zx
-	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-ZXID-WIN32 > $(TAS3WIN32)/Manifest
+	$(PERL) version $(ZXIDREL) < Manifest.T3-ZXID-WIN32 > $(TAS3WIN32)/Manifest
 	cp zxid.dll zxid.lib $(TAS3WIN32)/
 	cp $(ZXIDHDRS) $(TAS3WIN32)/include/zx
 	cp zxididp $(TAS3WIN32)/zxididp.exe
@@ -1242,7 +1235,7 @@ TAS3SRC=T3-ZXID-SRC_$(ZXIDREL)
 tas3srcpkg: zxid-$(ZXIDREL).tgz
 	rm -rf $(TAS3SRC) $(TAS3SRC).zip
 	mkdir $(TAS3SRC)
-	$(SED) 's/^Version: .*/Version: $(ZXIDREL)/' < Manifest.T3-ZXID-SRC > $(TAS3SRC)/Manifest
+	$(PERL) version $(ZXIDREL) < Manifest.T3-ZXID-SRC > $(TAS3SRC)/Manifest
 	cp zxid-$(ZXIDREL).tgz $(TAS3SRC)
 	cp README.zxid-tas3 Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay $(TAS3SRC)
 	zip -r $(TAS3SRC).zip $(TAS3SRC)
@@ -1600,7 +1593,7 @@ cleangcov:
 ### Call graphs and reference documentation
 
 function.list: 
-	$(PERL) ./call-anal.pl -n *.c >/dev/null
+	$(PERL) ./call-anal.pl -n *.c >junk
 
 callgraph_annotate: 
 	$(PERL) ./call-anal.pl *.c >callgraph.dot
