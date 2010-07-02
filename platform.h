@@ -17,6 +17,22 @@
 #define geteuid() 0
 #define getegid() 0
 
+#ifdef WIN32CL
+typedef struct DIR {
+  int first;
+  WIN32_FIND_DATA firstfd;
+} DIR;
+struct dirent {
+  
+};
+#define opendir zx_win23_opendir
+#define readdir zx_win23_readdir
+#define closedir zx_win23_closedir
+DIR* zx_win23_opendir(char*);
+ zx_win23_readdir(DIR*);
+DIR* zx_win23_opendir(char*);
+#endif
+
 /* Windows thread identification is a mess:
  * - thread ID returned by GetCurrentThreadId() is like POSIX thread ID except
  *   that almost none of the windows thread API functions accept it as argument.

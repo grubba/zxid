@@ -41,7 +41,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
   char path[ZXID_MAX_BUF];
   char* epr_buf;
   DIR* dir;
-  struct dirent * de;
+  struct dirent* de;
   struct zx_str* affil;
   struct zx_elem_s* el;
   struct zx_a_Metadata_s* md = 0;  
