@@ -35,7 +35,9 @@ doc-inc.pd       - Navigation code include for documents
 ref-inc.pd       - Navigation code include for generated reference
 meta-fetch.dot   - Call graph for metadata fetching
 COPYING          - Copyright and license statement (referencing LICENSE-2.0
-LICENSE-2.0.txt  - Apache License v2.0
+LICENSE-2.0.txt  - Apache License v2.0 (the license under which zxid.org is licensed)
+LICENSE.openssl  - openssl.org license
+LICENSE.ssleay   - Original SSLeay license
 ca.crt           - Certification Authority certificate for zxid.pem
 zxid.pem         - Certificate and privatekey combo for testing (not secure)
 favicon.ico      - A ZX/SP favicon for use in demo SPs

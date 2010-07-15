@@ -698,6 +698,8 @@ char* zx_ENC_WO_root(struct zx_ctx* c, struct zx_root_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
+  char* q;
+  char* qq;
   ENC_LEN_DEBUG_BASE;
 
   /* root node has no begin tag */
@@ -889,10 +891,10 @@ char* zx_ENC_WO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p , cha
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->g.ns && x->g.ns->prefix_len) {
