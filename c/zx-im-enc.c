@@ -198,10 +198,10 @@ char* zx_ENC_WO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_Identit
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -446,10 +446,10 @@ char* zx_ENC_WO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_Identi
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -697,10 +697,10 @@ char* zx_ENC_WO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -934,10 +934,10 @@ char* zx_ENC_WO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {

@@ -219,10 +219,10 @@ char* zx_ENC_WO_ac_ActivationLimit(struct zx_ctx* c, struct zx_ac_ActivationLimi
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -440,10 +440,10 @@ char* zx_ENC_WO_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_ac_Activa
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -662,10 +662,10 @@ char* zx_ENC_WO_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_ac_Activati
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -956,10 +956,10 @@ char* zx_ENC_WO_ac_ActivationPin(struct zx_ctx* c, struct zx_ac_ActivationPin_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1183,10 +1183,10 @@ char* zx_ENC_WO_ac_Alphabet(struct zx_ctx* c, struct zx_ac_Alphabet_s* x, char* 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1419,10 +1419,10 @@ char* zx_ENC_WO_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_ac_Asymmetri
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1652,10 +1652,10 @@ char* zx_ENC_WO_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_ac_Asymmet
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1888,10 +1888,10 @@ char* zx_ENC_WO_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_ac_Authen
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2215,10 +2215,10 @@ char* zx_ENC_WO_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_ac
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2494,10 +2494,10 @@ char* zx_ENC_WO_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_ac_Authentic
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2877,10 +2877,10 @@ char* zx_ENC_WO_ac_Authenticator(struct zx_ctx* c, struct zx_ac_Authenticator_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3215,10 +3215,10 @@ char* zx_ENC_WO_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_ac
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3448,10 +3448,10 @@ char* zx_ENC_WO_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_ac_Deactiv
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3681,10 +3681,10 @@ char* zx_ENC_WO_ac_DigSig(struct zx_ctx* c, struct zx_ac_DigSig_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3899,10 +3899,10 @@ char* zx_ENC_WO_ac_Extension(struct zx_ctx* c, struct zx_ac_Extension_s* x, char
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4120,10 +4120,10 @@ char* zx_ENC_WO_ac_Generation(struct zx_ctx* c, struct zx_ac_Generation_s* x, ch
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4342,10 +4342,10 @@ char* zx_ENC_WO_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_ac_Governin
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4576,10 +4576,10 @@ char* zx_ENC_WO_ac_GoverningAgreements(struct zx_ctx* c, struct zx_ac_GoverningA
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4809,10 +4809,10 @@ char* zx_ENC_WO_ac_HTTP(struct zx_ctx* c, struct zx_ac_HTTP_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5042,10 +5042,10 @@ char* zx_ENC_WO_ac_IPAddress(struct zx_ctx* c, struct zx_ac_IPAddress_s* x, char
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5275,10 +5275,10 @@ char* zx_ENC_WO_ac_IPSec(struct zx_ctx* c, struct zx_ac_IPSec_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5541,10 +5541,10 @@ char* zx_ENC_WO_ac_Identification(struct zx_ctx* c, struct zx_ac_Identification_
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5790,10 +5790,10 @@ char* zx_ENC_WO_ac_KeyActivation(struct zx_ctx* c, struct zx_ac_KeyActivation_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6011,10 +6011,10 @@ char* zx_ENC_WO_ac_KeySharing(struct zx_ctx* c, struct zx_ac_KeySharing_s* x, ch
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6233,10 +6233,10 @@ char* zx_ENC_WO_ac_KeyStorage(struct zx_ctx* c, struct zx_ac_KeyStorage_s* x, ch
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6458,10 +6458,10 @@ char* zx_ENC_WO_ac_Length(struct zx_ctx* c, struct zx_ac_Length_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6693,10 +6693,10 @@ char* zx_ENC_WO_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_a
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6926,10 +6926,10 @@ char* zx_ENC_WO_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_ac_Mobi
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -7159,10 +7159,10 @@ char* zx_ENC_WO_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_ac_M
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -7422,10 +7422,10 @@ char* zx_ENC_WO_ac_OperationalProtection(struct zx_ctx* c, struct zx_ac_Operatio
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -7700,10 +7700,10 @@ char* zx_ENC_WO_ac_Password(struct zx_ctx* c, struct zx_ac_Password_s* x, char* 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -7921,10 +7921,10 @@ char* zx_ENC_WO_ac_PhysicalVerification(struct zx_ctx* c, struct zx_ac_PhysicalV
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -8155,10 +8155,10 @@ char* zx_ENC_WO_ac_PreviousSession(struct zx_ctx* c, struct zx_ac_PreviousSessio
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -8448,10 +8448,10 @@ char* zx_ENC_WO_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -8726,10 +8726,10 @@ char* zx_ENC_WO_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_ac_PrivateKe
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -8959,10 +8959,10 @@ char* zx_ENC_WO_ac_ResumeSession(struct zx_ctx* c, struct zx_ac_ResumeSession_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -9192,10 +9192,10 @@ char* zx_ENC_WO_ac_SSL(struct zx_ctx* c, struct zx_ac_SSL_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -9455,10 +9455,10 @@ char* zx_ENC_WO_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_ac_SecretKeyP
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -9703,10 +9703,10 @@ char* zx_ENC_WO_ac_SecurityAudit(struct zx_ctx* c, struct zx_ac_SecurityAudit_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -9936,10 +9936,10 @@ char* zx_ENC_WO_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_ac_
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -10169,10 +10169,10 @@ char* zx_ENC_WO_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_ac_S
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -10402,10 +10402,10 @@ char* zx_ENC_WO_ac_Smartcard(struct zx_ctx* c, struct zx_ac_Smartcard_s* x, char
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -10635,10 +10635,10 @@ char* zx_ENC_WO_ac_SwitchAudit(struct zx_ctx* c, struct zx_ac_SwitchAudit_s* x, 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -10898,10 +10898,10 @@ char* zx_ENC_WO_ac_TechnicalProtection(struct zx_ctx* c, struct zx_ac_TechnicalP
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -11125,10 +11125,10 @@ char* zx_ENC_WO_ac_TimeSyncToken(struct zx_ctx* c, struct zx_ac_TimeSyncToken_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -11376,10 +11376,10 @@ char* zx_ENC_WO_ac_Token(struct zx_ctx* c, struct zx_ac_Token_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -11609,10 +11609,10 @@ char* zx_ENC_WO_ac_WTLS(struct zx_ctx* c, struct zx_ac_WTLS_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -11842,10 +11842,10 @@ char* zx_ENC_WO_ac_WrittenConsent(struct zx_ctx* c, struct zx_ac_WrittenConsent_
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -12075,10 +12075,10 @@ char* zx_ENC_WO_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_ac_ZeroKnowledge_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {

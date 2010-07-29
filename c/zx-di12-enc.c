@@ -186,10 +186,10 @@ char* zx_ENC_WO_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_di12_Auth
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -408,10 +408,10 @@ char* zx_ENC_WO_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_di12
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -630,10 +630,10 @@ char* zx_ENC_WO_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_di12_Authori
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -849,10 +849,10 @@ char* zx_ENC_WO_di12_Credentials(struct zx_ctx* c, struct zx_di12_Credentials_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1106,10 +1106,10 @@ char* zx_ENC_WO_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1328,10 +1328,10 @@ char* zx_ENC_WO_di12_EncryptResourceID(struct zx_ctx* c, struct zx_di12_EncryptR
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1577,10 +1577,10 @@ char* zx_ENC_WO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_Encryp
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1795,10 +1795,10 @@ char* zx_ENC_WO_di12_Extension(struct zx_ctx* c, struct zx_di12_Extension_s* x, 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2028,10 +2028,10 @@ char* zx_ENC_WO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2309,10 +2309,10 @@ char* zx_ENC_WO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x, char* 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2564,10 +2564,10 @@ char* zx_ENC_WO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyRespo
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2790,10 +2790,10 @@ char* zx_ENC_WO_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x, char
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3056,10 +3056,10 @@ char* zx_ENC_WO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x, char* p 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3323,10 +3323,10 @@ char* zx_ENC_WO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryRespons
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3545,10 +3545,10 @@ char* zx_ENC_WO_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_RemoveEntry_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3785,10 +3785,10 @@ char* zx_ENC_WO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_Reque
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4006,10 +4006,10 @@ char* zx_ENC_WO_di12_ResourceID(struct zx_ctx* c, struct zx_di12_ResourceID_s* x
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4294,10 +4294,10 @@ char* zx_ENC_WO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceO
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4540,10 +4540,10 @@ char* zx_ENC_WO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceIns
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4782,10 +4782,10 @@ char* zx_ENC_WO_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x, char* 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {

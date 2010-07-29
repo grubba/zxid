@@ -186,10 +186,10 @@ char* zx_ENC_WO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_Add
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -471,10 +471,10 @@ char* zx_ENC_WO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_Affiliat
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -708,10 +708,10 @@ char* zx_ENC_WO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_Arti
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -946,10 +946,10 @@ char* zx_ENC_WO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_Asser
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1184,10 +1184,10 @@ char* zx_ENC_WO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_Asse
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1557,10 +1557,10 @@ char* zx_ENC_WO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_A
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1831,10 +1831,10 @@ char* zx_ENC_WO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_Attr
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2066,10 +2066,10 @@ char* zx_ENC_WO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeServ
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2418,10 +2418,10 @@ char* zx_ENC_WO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_Authn
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2656,10 +2656,10 @@ char* zx_ENC_WO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQuerySe
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2894,10 +2894,10 @@ char* zx_ENC_WO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3165,10 +3165,10 @@ char* zx_ENC_WO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3399,10 +3399,10 @@ char* zx_ENC_WO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMet
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3693,10 +3693,10 @@ char* zx_ENC_WO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDes
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4110,10 +4110,10 @@ char* zx_ENC_WO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescrip
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4377,10 +4377,10 @@ char* zx_ENC_WO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, ch
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4808,10 +4808,10 @@ char* zx_ENC_WO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescrip
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5065,10 +5065,10 @@ char* zx_ENC_WO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5299,10 +5299,10 @@ char* zx_ENC_WO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageName
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5537,10 +5537,10 @@ char* zx_ENC_WO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMap
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5820,10 +5820,10 @@ char* zx_ENC_WO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6047,10 +6047,10 @@ char* zx_ENC_WO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_Organi
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6277,10 +6277,10 @@ char* zx_ENC_WO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationN
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6507,10 +6507,10 @@ char* zx_ENC_WO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationUR
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6857,10 +6857,10 @@ char* zx_ENC_WO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -7107,10 +7107,10 @@ char* zx_ENC_WO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAt
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -7422,10 +7422,10 @@ char* zx_ENC_WO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -7825,10 +7825,10 @@ char* zx_ENC_WO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescripto
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -8059,10 +8059,10 @@ char* zx_ENC_WO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDesc
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -8289,10 +8289,10 @@ char* zx_ENC_WO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -8525,10 +8525,10 @@ char* zx_ENC_WO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogo
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -8763,10 +8763,10 @@ char* zx_ENC_WO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSign
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {

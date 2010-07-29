@@ -252,10 +252,10 @@ char* zx_ENC_WO_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x, char* p 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -505,10 +505,10 @@ char* zx_ENC_WO_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x, 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -787,10 +787,10 @@ char* zx_ENC_WO_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateRespons
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1065,10 +1065,10 @@ char* zx_ENC_WO_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1332,10 +1332,10 @@ char* zx_ENC_WO_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x, char* p 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1593,10 +1593,10 @@ char* zx_ENC_WO_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x, 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -1855,10 +1855,10 @@ char* zx_ENC_WO_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteRespons
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2121,10 +2121,10 @@ char* zx_ENC_WO_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x, char
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2389,10 +2389,10 @@ char* zx_ENC_WO_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2697,10 +2697,10 @@ char* zx_ENC_WO_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x, char* p 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -2976,10 +2976,10 @@ char* zx_ENC_WO_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x, 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3263,10 +3263,10 @@ char* zx_ENC_WO_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyRespons
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3515,10 +3515,10 @@ char* zx_ENC_WO_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x, char* 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -3775,10 +3775,10 @@ char* zx_ENC_WO_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4039,10 +4039,10 @@ char* zx_ENC_WO_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x, char* p 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4294,10 +4294,10 @@ char* zx_ENC_WO_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyRespons
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4582,10 +4582,10 @@ char* zx_ENC_WO_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x, char* p )
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -4875,10 +4875,10 @@ char* zx_ENC_WO_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x, ch
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5184,10 +5184,10 @@ char* zx_ENC_WO_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5466,10 +5466,10 @@ char* zx_ENC_WO_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -5729,10 +5729,10 @@ char* zx_ENC_WO_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x, char* p 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6031,10 +6031,10 @@ char* zx_ENC_WO_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s*
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6293,10 +6293,10 @@ char* zx_ENC_WO_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x, char
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
@@ -6551,10 +6551,10 @@ char* zx_ENC_WO_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x, char* p 
 {
   struct zx_elem_s* kid;
   struct zx_ns_s* pop_seen = 0;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
   char* q;
   char* qq;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
   ZX_OUT_CH(p, '<');
   q = p;
   if (x->gg.g.ns && x->gg.g.ns->prefix_len) {

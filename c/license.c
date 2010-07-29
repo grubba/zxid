@@ -1,7 +1,7 @@
-char* license = 
-"Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
-Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
-Author: Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+char* license = "\n\
+Copyright (c) 2010 Sampo Kellomaki (sampo.fi), All Rights Reserved.\n\
+Copyright (c) 2006-2009 Symlabs (symlabs.com), All Rights Reserved.\n\
+Author: Sampo Kellomaki (sampo.fi), All Rights Reserved.\n\
 \n\
                                  Apache License\n\
                            Version 2.0, January 2004\n\
@@ -204,4 +204,4 @@ Author: Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\
    See the License for the specific language governing permissions and\n\
    limitations under the License.\n\
-";
+\n\"
