@@ -59,9 +59,10 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
     NOTPUB
 
-zxid-0.63:: 2.7.2010
+zxid-0.63:: 29.7.2010
     - Removed sed(1) dependency
     - Improved win32cl target
+    - Added SubjectConfirmation
 zxid-0.62:: 1.7.2010
     - Fix IdP authentication template (runaway HTML comment)
 zxid-0.61:: 25.6.2010
