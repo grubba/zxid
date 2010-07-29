@@ -292,6 +292,7 @@ struct zx_sa_Subject_s* zxid_mk_subj(zxid_conf* cf, zxid_entity* sp_meta, zxid_n
     }
   } else
     subj->NameID = nid;
+  /* SAML spec is more lax than the schema: saml-core-2.0-os.pdf ll.653-657 says <SubjectConfirmation> [Zero or More] */
   return subj;
 }
 

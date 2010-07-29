@@ -56,6 +56,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Each credential as its own a7n
     - X509 attr certs
     - Use post screen as confirmation screen
+    - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
     NOTPUB
 
 zxid-0.63:: 2.7.2010

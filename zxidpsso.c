@@ -664,6 +664,13 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
 
   a7n = zxid_mk_user_a7n_to_sp(cf, ses, ses->uid, nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
 
+  /* saml-profiles-2.0-os.pdf ll.549-551 requires SubjectConfirmation even though
+   * saml-core-2.0-os.pdf ll.653-657 says <SubjectConfirmation> [Zero or More]. The
+   * schema seems to make it mandatory. */
+
+  a7n->Subject->SubjectConfirmation = zx_NEW_sa_SubjectConfirmation(cf->ctx);
+  a7n->Subject->SubjectConfirmation->Method = zx_dup_str(cf->ctx, SAML2_BEARER);
+
   /* Sign, encrypt, and ship the assertion according to the binding. */
 
   switch (binding) {

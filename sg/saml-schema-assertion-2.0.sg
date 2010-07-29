@@ -74,7 +74,7 @@ Subject	 -> %sa:SubjectType
   sa:BaseID?                     # Only one of the IDs should occur
   sa:NameID?
   sa:EncryptedID?
-  sa:SubjectConfirmation*        # This is more lax than SAML spec
+  sa:SubjectConfirmation*        # SAML spec is more lax than the schema: saml-core-2.0-os.pdf ll.653-657 says <SubjectConfirmation> [Zero or More]
   ;
 
 SubjectConfirmation	 -> %sa:SubjectConfirmationType
