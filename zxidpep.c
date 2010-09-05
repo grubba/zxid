@@ -31,7 +31,108 @@
 
 /* ============== Policy Enforcement Point, Authorization Decision Query ============== */
 
-/*(i) Call Policy Decision Point (PDP) to obtain an authorization decision
+/*() Extract attributes from session pool according to pepmap, usually the PEPMAP
+ * configuration variable.
+ *
+ * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~ options
+ *     set according to your situation.
+ * cgi:: if non-null, will receive error and status codes
+ * ses:: all attributes are obtained from the session. You may wish
+ *     to add additional attributes that are not known by SSO.
+ * pepmap:: The map used to extract the attributes from the pool to the XACML request
+ * subj:: Value-result parameter. Linked list of subject attributes.
+ * rsrc:: Value-result parameter. Linked list of resource attributes.
+ * act::  Value-result parameter. Linked list of action attributes (usually just one attribute).
+ * env::  Value-result parameter. Linked list of environment attributes.
+ */
+
+static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zxid_map* pepmap, struct zx_xac_Attribute_s** subj, struct zx_xac_Attribute_s** rsrc, struct zx_xac_Attribute_s** act, struct zx_xac_Attribute_s** env)
+{
+  struct zxid_map* map;
+  struct zxid_attr* at;
+  struct zxid_attr* av;
+  struct zx_xac_Attribute_s* xac_at;
+  char* name;
+
+  for (at = ses?ses->at:0; at; at = at->n) {
+    map = zxid_find_map(pepmap, at->name);
+    if (!map) {
+      D("ATTR(%s)=VAL(%s): Ignored due to no matching PEPMAP", at->name, at->val);
+      continue;
+    }
+
+    if (map->rule == ZXID_MAP_RULE_DEL) {
+      D("attribute(%s) filtered out by del rule in PEPMAP", at->name);
+      continue;
+    }
+
+    at->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, at->val));
+    if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
+      D("renaming(%s) to(%s) orig_val(%s) map_val(%.*s)", at->name, map->dst, at->val, at->map_val->len, at->map_val->s);
+      name = map->dst;
+    } else {
+      name = at->name;
+    }
+    xac_at = zxid_mk_xacml_simple_at(cf, 0,
+				     zx_dup_str(cf->ctx, name),
+				     zx_dup_str(cf->ctx, XS_STRING),
+				     at->issuer, at->map_val);
+    if (map->ns && *map->ns) {
+      if (!strcmp(map->ns, "subj")) {
+	ZX_NEXT(xac_at) = (void*)*subj;
+	*subj = xac_at;
+      } else if (!strcmp(map->ns, "rsrc")) {
+	ZX_NEXT(xac_at) = (void*)*rsrc;
+	*rsrc = xac_at;
+      } else if (!strcmp(map->ns, "act")) {
+	*act = xac_at;  /* there can be only one */
+      } else if (!strcmp(map->ns, "env")) {
+	ZX_NEXT(xac_at) = (void*)*env;
+	*env = xac_at;
+      } else {
+	ERR("PEPMAP unknown ns(%s). Valid values are subj, rsrc, act, and env.", map->ns);
+      }
+    } else {
+      ERR("PEPMAP entry lacks ns %p", map->ns);
+    }
+    
+    for (av = at->nv; av; av = av->n) {
+      av->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, av->val));
+      xac_at = zxid_mk_xacml_simple_at(cf, 0,
+				       zx_dup_str(cf->ctx, name),
+				       zx_dup_str(cf->ctx, XS_STRING),
+				       at->issuer, at->map_val);
+      if (map->ns && *map->ns) {
+	if (!strcmp(map->ns, "subj")) {
+	  ZX_NEXT(xac_at) = (void*)*subj;
+	  *subj = xac_at;
+	} else if (!strcmp(map->ns, "rsrc")) {
+	  ZX_NEXT(xac_at) = (void*)*rsrc;
+	  *rsrc = xac_at;
+	} else if (!strcmp(map->ns, "act")) {
+	  ERR("PEPMAP: Only one XACML action attribute allowed %d", 0);
+	} else if (!strcmp(map->ns, "env")) {
+	  ZX_NEXT(xac_at) = (void*)*env;
+	  *env = xac_at;
+	} else {
+	  ERR("PEPMAP unknown ns(%s). Valid values are subj, rsrc, act, and env.", map->ns);
+	}
+      } else {
+	ERR("PEPMAP entry lacks ns %p", map->ns);
+      }
+    }
+  }
+  
+  if (!*act) {
+    *act = zxid_mk_xacml_simple_at(cf, 0,
+	     zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:action:action-id"),
+	     zx_dup_str(cf->ctx, XS_STRING),
+	     0,
+	     zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:action:implied-action"));
+  }
+}
+
+/*() Call Policy Decision Point (PDP) to obtain an authorization decision
  * about a contemplated action on a resource. The attributes from the session
  * pool, as filtered by PEPMAP are fed to the PDP as inputs
  * for the decision. The call is using XACML SAML profile over SOAP.
@@ -41,27 +142,19 @@
  * cgi:: if non-null, will receive error and status codes
  * ses:: all attributes are obtained from the session. You may wish
  *     to add additional attributes that are not known by SSO.
- * pepmap:: The map used to extract the attributes from the pool to the XACML request
+ * pdp_url:: URL of the PDP to contact
+ * subj:: Linked list of subject attributes.
+ * rsrc:: Linked list of resource attributes.
+ * act::  Linked list of action attributes (usually just one attribute).
+ * env::  Linked list of environment attributes.
  * returns:: 0 on deny (for any reason, e.g. indeterminate), or string
  *     containing the obligations on permit.
- *
- * For simpler API, see zxid_az() family of functions.
  */
 
-char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap)
+static char* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
-  struct zxid_map* map;
-  struct zxid_attr* at;
-  struct zxid_attr* av;
-  struct zx_xac_Attribute_s* xac_at;
-  struct zx_xac_Attribute_s* subj = 0;
-  struct zx_xac_Attribute_s* rsrc = 0;
-  struct zx_xac_Attribute_s* act = 0;
-  struct zx_xac_Attribute_s* env = 0;
-  char* name;
-
   struct zxsig_ref refs;
   struct zx_root_s* r;
   struct zx_e_Header_s* hdr;
@@ -72,89 +165,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   struct zx_xasa_XACMLAuthzDecisionStatement_s* az_stmt;
   struct zx_xasacd1_XACMLAuthzDecisionStatement_s* az_stmt_cd1;
   struct zx_elem_s* decision;
-
-  if (cf->log_level>0)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses&&ses->nameid?ses->nameid->gg.content:0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
-  
-  if (!pdp_url || !*pdp_url) {
-    ERR("No PDP_URL or PDP_CALL_URL set. Deny. %p", pdp_url);
-    return 0;
-  }
-
-  for (at = ses?ses->at:0; at; at = at->n) {
-    map = zxid_find_map(pepmap, at->name);
-    if (map) {
-      if (map->rule == ZXID_MAP_RULE_DEL) {
-	D("attribute(%s) filtered out by del rule in PEPMAP", at->name);
-	continue;
-      }
-      at->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, at->val));
-      if (map->dst && map->dst[0] && map->src && map->src[0] != '*') {
-	D("renaming(%s) to(%s) orig_val(%s) map_val(%.*s)", at->name, map->dst, at->val, at->map_val->len, at->map_val->s);
-	name = map->dst;
-      } else {
-	name = at->name;
-      }
-      xac_at = zxid_mk_xacml_simple_at(cf, 0,
-				       zx_dup_str(cf->ctx, name),
-				       zx_dup_str(cf->ctx, XS_STRING),
-				       at->issuer, at->map_val);
-      if (map->ns && *map->ns) {
-	if (!strcmp(map->ns, "subj")) {
-	  ZX_NEXT(xac_at) = (void*)subj;
-	  subj = xac_at;
-	} else if (!strcmp(map->ns, "rsrc")) {
-	  ZX_NEXT(xac_at) = (void*)rsrc;
-	  rsrc = xac_at;
-	} else if (!strcmp(map->ns, "act")) {
-	  act = xac_at;  /* there can be only one */
-	} else if (!strcmp(map->ns, "env")) {
-	  ZX_NEXT(xac_at) = (void*)env;
-	  env = xac_at;
-	} else {
-	  ERR("PEPMAP unknown ns(%s). Valid values are subj, rsrc, act, and env.", map->ns);
-	}
-      } else {
-	ERR("PEPMAP entry lacks ns %p", map->ns);
-      }
-      
-      for (av = at->nv; av; av = av->n) {
-	av->map_val = zxid_map_val(cf, map, zx_ref_str(cf->ctx, av->val));
-	xac_at = zxid_mk_xacml_simple_at(cf, 0,
-					 zx_dup_str(cf->ctx, name),
-					 zx_dup_str(cf->ctx, XS_STRING),
-					 at->issuer, at->map_val);
-	if (map->ns && *map->ns) {
-	  if (!strcmp(map->ns, "subj")) {
-	    ZX_NEXT(xac_at) = (void*)subj;
-	    subj = xac_at;
-	  } else if (!strcmp(map->ns, "rsrc")) {
-	    ZX_NEXT(xac_at) = (void*)rsrc;
-	    rsrc = xac_at;
-	  } else if (!strcmp(map->ns, "act")) {
-	    ERR("PEPMAP: Only one XACML action attribute allowed %d", 0);
-	  } else if (!strcmp(map->ns, "env")) {
-	    ZX_NEXT(xac_at) = (void*)env;
-	    env = xac_at;
-	  } else {
-	    ERR("PEPMAP unknown ns(%s). Valid values are subj, rsrc, act, and env.", map->ns);
-	  }
-	} else {
-	  ERR("PEPMAP entry lacks ns %p", map->ns);
-	}
-      }
-    } else {
-      D("ATTR(%s)=VAL(%s): Ignored due to no matching PEPMAP", at->name, at->val);
-    }
-  }
-
-  if (!act) {
-    act = zxid_mk_xacml_simple_at(cf, 0,
-	     zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:action:action-id"),
-	     zx_dup_str(cf->ctx, XS_STRING),
-	     0,
-	     zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:1.0:action:implied-action"));
-  }
+  char* name;
 
 #if 0
   hdr = zx_NEW_e_Header(cf->ctx);
@@ -278,6 +289,43 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   /*if (resp->Assertion->AuthzDecisionStatement) {  }*/
   D("Deny %d",0);
   return 0;
+}
+
+/*(i) Call Policy Decision Point (PDP) to obtain an authorization decision
+ * about a contemplated action on a resource. The attributes from the session
+ * pool, as filtered by PEPMAP are fed to the PDP as inputs
+ * for the decision. The call is using XACML SAML profile over SOAP.
+ *
+ * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~ options
+ *     set according to your situation.
+ * cgi:: if non-null, will receive error and status codes
+ * ses:: all attributes are obtained from the session. You may wish
+ *     to add additional attributes that are not known by SSO.
+ * pdp_url:: URL of the PDP to contact
+ * pepmap:: The map used to extract the attributes from the pool to the XACML request
+ * returns:: 0 on deny (for any reason, e.g. indeterminate), or string
+ *     containing the obligations on permit.
+ *
+ * For simpler API, see zxid_az() family of functions.
+ */
+
+char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap)
+{
+  struct zx_xac_Attribute_s* subj = 0;
+  struct zx_xac_Attribute_s* rsrc = 0;
+  struct zx_xac_Attribute_s* act = 0;
+  struct zx_xac_Attribute_s* env = 0;
+
+  if (cf->log_level>0)
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ses&&ses->nameid?ses->nameid->gg.content:0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
+  
+  if (!pdp_url || !*pdp_url) {
+    ERR("No PDP_URL or PDP_CALL_URL set. Deny. %p", pdp_url);
+    return 0;
+  }
+
+  zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
+  return zxid_az_soap(cf, cgi, ses, pdp_url, subj, rsrc, act, env);
 }
 
 /*() Call Policy Decision Point (PDP) to obtain an authorization decision.

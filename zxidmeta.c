@@ -846,6 +846,8 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf)
 {
   struct zx_md_ContactPerson_s* contact = zx_NEW_md_ContactPerson(cf->ctx);
 
+  contact->contactType = zx_ref_str(cf->ctx, "administrative");  /* *** config */
+
   if (cf->contact_org) {
     if (cf->contact_org[0])
       contact->Company = zx_ref_simple_elem(cf->ctx, cf->contact_org);

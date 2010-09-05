@@ -112,7 +112,7 @@ struct zx_str* zxid_sp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     case ZXID_SSO_OK: return zx_dup_str(cf->ctx, "O");
     case ZXID_FAIL:   D("*** FAIL, should send back to IdP select %d", 0); return zx_dup_str(cf->ctx, "* ERR");
     }
-    return zx_dup_str(cf->ctx, "M");
+    return zx_dup_str(cf->ctx, "M");  /* Management screen, please. */
   }
   
   if (req = r->LogoutRequest) {

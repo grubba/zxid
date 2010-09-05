@@ -57,9 +57,10 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - X509 attr certs
     - Use post screen as confirmation screen
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
-    NOTPUB
 
 zxid-0.63:: 29.7.2010
+    NOTPUB
+    - Added mandatory attribute contatcType to Contact element in metadata
     - Removed sed(1) dependency
     - Improved win32cl target
     - Added SubjectConfirmation

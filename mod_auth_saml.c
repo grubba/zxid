@@ -11,6 +11,8 @@
  * 1.2.2008,  created --Sampo
  * 22.2.2008, distilled to much more compact version --Sampo
  * 25.8.2009, add attribute passing and pep call --Sampo
+ * 11.1.2010, refactoring and review --Sampo
+ * 15.7.2010, consider passing to simple layer more data about the request --Sampo
  *
  * To configure this module add to httpd.conf something like
  *
@@ -274,7 +276,7 @@ static int chkuid(request_rec* r)
   memset(&cgi, 0, sizeof(zxid_cgi));
   memset(&ses, 0, sizeof(zxid_ses));
 
-  D("START %s req=%p uri(%s) args(%s)", ZXID_REL, r, r?STRNULLCHK(r->uri):"", r?STRNULLCHK(r->args):"");
+  D("===== START %s req=%p uri(%s) args(%s)", ZXID_REL, r, r?STRNULLCHK(r->uri):"", r?STRNULLCHK(r->args):"");
   
   if (r->main) {  /* subreq can't come from net: always auth. */
     D("sub ok %d", OK);
@@ -329,8 +331,7 @@ static int chkuid(request_rec* r)
   if (p == cf->url)
     p = cf->url + url_len;
   
-  if (url_len >= uri_len
-      && !memcmp(p - uri_len, r->uri, uri_len)) {  /* Suffix match */
+  if (url_len >= uri_len && !memcmp(p - uri_len, r->uri, uri_len)) {  /* Suffix match */
     zxid_parse_cgi(&cgi, r->args);
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("matched uri(%s) cf->url(%s) qs(%s) rs(%s) op(%c)", r->uri, cf->url, r->args, cgi.rs, cgi.op);
     if (r->method_number == M_POST) {
