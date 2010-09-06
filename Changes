@@ -55,9 +55,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxid_select_tgt()
     - Each credential as its own a7n
     - X509 attr certs
-    - store authentication instant in session and use it in zxid_mk_an_stmt()
     - Use post screen as confirmation screen
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
+    - Make nested EncryptedKey a config option
 
 zxid-0.63:: 29.7.2010
     NOTPUB
@@ -66,6 +66,12 @@ zxid-0.63:: 29.7.2010
     - Removed sed(1) dependency
     - Improved win32cl target
     - Added SubjectConfirmation
+    - Added possibility of using nested EncryptedKey (Shib 2010) instead of RetrievalMethod
+    - Added Recipient hint in sibling EncryptedKey case. This is sufficient to get Shib 2010 working.
+    - Added SubjectConfirmationData fields to support bearer subject confirmation method
+    - Added RelayState field decoding to POST profile
+    - Added double quote detection inside RelayState value
+    - Store authentication instant in session and use it in zxid_mk_an_stmt()
 zxid-0.62:: 1.7.2010
     - Fix IdP authentication template (runaway HTML comment)
 zxid-0.61:: 25.6.2010

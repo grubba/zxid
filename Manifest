@@ -47,6 +47,7 @@ zxcleanlogs.sh   - Clean away audit trail (looses audit trail, but saves space)
 gen-consts-from-gperf-output.pl  - Used in build process
 gen-cot-links.pl - Handy tool for creating documentative symlinks in CoT directory
 gen-conf-ref.pl  - Generate configuration reference from zxidconf.h
+sed-zxid.pl      - Perform in portable way the few string edits needed by build to eliminate sed
 pulverize.pl     - A build tool for generating pulverized libraries for dead function elimination
 call-anal.pl     - Call graph analysis tool (see make callgraph)
 xml-pretty.pl    - XML Pretty Printer

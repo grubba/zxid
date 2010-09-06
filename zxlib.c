@@ -113,17 +113,6 @@ void* zx_free(struct zx_ctx* c, void* p)
   return 0;
 }
 
-/*() ZX verion of strdup(). */
-
-/* Called by:  chkuid x2, zxid_az_cf_ses, zxid_fed_mgmt_cf, zxid_get_ses, zxid_simple_cf_ses x2, zxid_simple_no_ses_cf, zxid_simple_redir_page, zxid_simple_ses_active_cf, zxid_simple_show_page x2, zxid_url_set */
-char* zx_dup_cstr(struct zx_ctx* c, const char* str)
-{
-  int len = strlen(str);
-  char* s = ZX_ALLOC(c, len+1);
-  memcpy(s, str, len+1);
-  return s;
-}
-
 /*() Convert zx_str to C string. The ZX context will provide the memory. */
 
 /* Called by:  zxid_add_a7n_at_to_pool x2, zxid_get_meta_ss, zxid_get_ses_sso_a7n, zxid_get_tas3_fault_actor, zxid_get_tas3_fault_comment, zxid_get_tas3_fault_ref, zxid_get_tas3_fault_sc1, zxid_get_tas3_fault_sc2, zxid_get_tas3_status_comment, zxid_get_tas3_status_ctlpt, zxid_get_tas3_status_ref, zxid_get_tas3_status_sc1, zxid_get_tas3_status_sc2, zxid_idp_sso, zxid_mk_ent x2, zxid_simple_idp_show_an, zxid_sp_sso_finalize x3, zxid_wsf_validate_a7n x2, zxid_wsp_validate */
@@ -209,6 +198,17 @@ struct zx_str* zx_dup_len_str(struct zx_ctx* c, int len, const char* s)
 struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s)
 {
   return zx_dup_len_str(c, strlen(s), s);
+}
+
+/*() ZX verion of strdup(). */
+
+/* Called by:  chkuid x2, zxid_az_cf_ses, zxid_fed_mgmt_cf, zxid_get_ses, zxid_simple_cf_ses x2, zxid_simple_no_ses_cf, zxid_simple_redir_page, zxid_simple_ses_active_cf, zxid_simple_show_page x2, zxid_url_set */
+char* zx_dup_cstr(struct zx_ctx* c, const char* str)
+{
+  int len = strlen(str);
+  char* s = ZX_ALLOC(c, len+1);
+  memcpy(s, str, len+1);
+  return s;
 }
 
 /*() vasprintf(3) implementation that will grab its memory from ZX memory allocator. */

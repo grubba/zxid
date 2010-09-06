@@ -31,6 +31,7 @@
 #include "platform.h"
 #include "zx.h"
 #include "zxid.h"
+#include "zxidconf.h"
 #include "c/zx-data.h"   /* For the XMLDSIG code. */
 
 //static char*
@@ -502,7 +503,7 @@ struct zx_str* zxenc_privkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* 
   }
 
   if (!ek && ed->KeyInfo)
-    ek = ed->KeyInfo->EncryptedKey;
+    ek = ed->KeyInfo->EncryptedKey;  /* Nested EncryptionKey method (Shib 2010) */
   if (!ek || !ek->CipherData || !ek->CipherData->CipherValue
       || !(ss = ek->CipherData->CipherValue->content) || !ss->len) {
     ERR("EncryptedKey element not found or malformed %p", ek->CipherData);
@@ -557,7 +558,7 @@ struct zx_str* zxenc_privkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* 
  * symkey_id:: The value of the ~Id~ XML attribute of the <EncryptedKey> element
  * return:: Encrypted data as XML data structure. Caller should free this memory.
  *
- * *Example of XML-ENC encrypted data*
+ * *Example of XML-ENC encrypted data using RetrievalMethod pointing to EncryptedID Id="EK38"*
  *
  *   <sa:EncryptedID>
  *     <e:EncryptedData
@@ -581,10 +582,14 @@ struct zx_str* zxenc_privkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* 
  *         <e:CipherValue>xf5HkmQM68t...7zRbxkqtniIVnxBHjkA=</></>
  *       <e:ReferenceList>
  *         <e:DataReference URI="#ED38"/></></></>                         # N.B. hash
+ *
+ * Alternative formulation is to replace the EncryptedData/KeyInfo/RetrievalMethod
+ * with EncryptedData/KeyInfo/EncryptedKey, i.e. inline the EncryptedKey. As of 2010
+ * Shibboleth appears to support only this method.
  */
 
 /* Called by:  zxenc_pubkey_enc */
-struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_str* ed_id, struct zx_str* symkey, struct zx_str* symkey_id)
+struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_str* ed_id, struct zx_str* symkey, struct zx_xenc_EncryptedKey_s* ek)
 {
   struct zx_str* ss;
   struct zx_str* b64;
@@ -593,11 +598,18 @@ struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* d
   ed->Type = zx_ref_str(cf->ctx, "http://www.w3.org/2001/04/xmlenc#Element");
   ed->EncryptionMethod = zx_NEW_xenc_EncryptionMethod(cf->ctx);
   ed->EncryptionMethod->Algorithm = zx_ref_str(cf->ctx, ENC_ALGO);
-  if (symkey_id) {
+  if (ek) {
     ed->KeyInfo = zx_NEW_ds_KeyInfo(cf->ctx);
+#ifdef ZXENCKEY_RETRIEVAL
+    D("Sibling EncryptedKey with RetrievalMethod %p", ek);
     ed->KeyInfo->RetrievalMethod = zx_NEW_ds_RetrievalMethod(cf->ctx);
     ed->KeyInfo->RetrievalMethod->Type = zx_ref_str(cf->ctx, "http://www.w3.org/2001/04/xmlenc#EncryptedKey");
-    ed->KeyInfo->RetrievalMethod->URI = zx_strf(cf->ctx, "#%.*s", symkey_id->len, symkey_id->s);
+    ed->KeyInfo->RetrievalMethod->URI = zx_strf(cf->ctx, "#%.*s", ek->Id->len, ek->Id->s);
+#else
+    /* Nested EncryptedKey method (Shibboleth early 2010). */
+    D("Nested EncryptedKey %p", ek);
+    ed->KeyInfo->EncryptedKey = ek;
+#endif
   }
   D("Plaintext(%.*s)", data->len, data->s);
   ss = zx_raw_cipher(cf->ctx, "AES-128-CBC", 1, symkey, data->len, data->s, 16, 0);
@@ -609,20 +621,22 @@ struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* d
   return ed;
 }
 
-/*() Public key encryption using XML-ENC. The encryption algorith is
+/*() Public key encryption using XML-ENC. The encryption algorithm is
  * auto-detected from the XML-ENC data.
  *
  * cf:: ZXID configuration object, used for memory allocation
  * data:: Data blob to encrypt. Typically serialized XML
  * ekp:: Result parameter. XML data structure corresponding to the <EncryptedKey>
  *     element will be returned. This is the encrypted symmetric key (which is
- *     pseudorandom generated inside this function)
+ *     pseudorandom generated inside this function). Usually used to set EncryptedKey
+ *     field of EncryptedAssertion when using sister elements, aka RetrievalMethod, approach.
+ *     When using nested EncryptedKey (Shib 2010) approach, leave null.
  * cert:: Certificate containing the public key used to encrypt the symmetric key
  * idsuffix:: Use to generate XML ~Id~ attributes for <EncryptedKey> and <EncryptedData>
  * return:: Encrypted data as XML data structure. Caller should free this memory. */
 
 /* Called by:  zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni */
-struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_xenc_EncryptedKey_s** ekp, X509* cert, char* idsuffix)
+struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_xenc_EncryptedKey_s** ekp, X509* cert, char* idsuffix, zxid_entity* meta)
 {
   struct rsa_st* rsa_pkey;
   char symkey[128/8];
@@ -638,6 +652,11 @@ struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* d
   ek->EncryptionMethod = zx_NEW_xenc_EncryptionMethod(cf->ctx);
   ek->EncryptionMethod->Algorithm = zx_ref_str(cf->ctx, ENC_KEYTRAN_ALGO);
   ek->KeyInfo = zxid_key_info(cf, cert);
+  if (meta) {
+    /* This hack may help early 2010 vintage Shibboleth SP to work without nested EncryptedKey.
+     * (personal communication w/Scott 20100906 --Sampo) */
+    ek->Recipient = zx_dup_str(cf->ctx, meta->eid);
+  }
   
   zx_rand(symkey, sizeof(symkey));
   symkey_ss.len = sizeof(symkey);
@@ -658,10 +677,11 @@ struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* d
   zx_str_free(cf->ctx, ss);
   ek->CipherData = zx_NEW_xenc_CipherData(cf->ctx);
   ek->CipherData->CipherValue = zx_new_simple_elem(cf->ctx, b64);
-  *ekp = ek;
+  if (ekp)
+    *ekp = ek;
   
   ss = zx_strf(cf->ctx, "ED%s", idsuffix);
-  return zxenc_symkey_enc(cf, data, ss, &symkey_ss, ek->Id);
+  return zxenc_symkey_enc(cf, data, ss, &symkey_ss, ek);
 }
 
 /* EOF -- zxsig.c */

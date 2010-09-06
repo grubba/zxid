@@ -196,27 +196,35 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
   ses->sesbuf[gotall] = 0;
   DD("ses(%s)", ses->sesbuf);
   ses->sid = zx_dup_cstr(cf->ctx, sid);
+
   ses->nid = ses->sesbuf;
   p = strchr(ses->sesbuf, '|');
-  if (p) {
-    *p++ = 0;
-    ses->sso_a7n_path = p;
-  }
+  if (!p) goto out;
+  *p++ = 0;
+
+  ses->sso_a7n_path = p;
   p = strchr(p, '|');
-  if (p) {
-    *p++ = 0;
-    ses->sesix = p;
-  }
+  if (!p) goto out;
+  *p++ = 0;
+
+  ses->sesix = p;
   p = strchr(p, '|');
-  if (p) {
-    *p++ = 0;
-    ses->an_ctx = p;
-  }
+  if (!p) goto out;
+  *p++ = 0;
+
+  ses->an_ctx = p;
   p = strchr(p, '|');
-  if (p) {
-    *p++ = 0;
-    ses->uid = p;
-  }
+  if (!p) goto out;
+  *p++ = 0;
+
+  ses->uid = p;
+  p = strchr(p, '|');
+  if (!p) goto out;
+  *p++ = 0;
+
+  ses->an_instant = atol(p);
+
+ out:
   D("GOT sesdir(%s" ZXID_SES_DIR "%s) uid(%s) nid(%s) sso_a7n_path(%s) sesix(%s) an_ctx(%s)", cf->path, ses->sid, STRNULLCHK(ses->uid), STRNULLCHK(ses->nid), STRNULLCHK(ses->sso_a7n_path), STRNULLCHK(ses->sesix), STRNULLCHK(ses->an_ctx));
   return 1;
 }
@@ -257,12 +265,13 @@ int zxid_put_ses(zxid_conf* cf, zxid_ses* ses)
   buf = ZX_ALLOC(cf->ctx, ZXID_MAX_SES);
   if (!write_all_path_fmt("put_ses", ZXID_MAX_SES, buf,
 			  "%s" ZXID_SES_DIR "%s/.ses", cf->path, ses->sid,
-			  "%s|%s|%s|%s|%s",
+			  "%s|%s|%s|%s|%s|%d|",
 			  STRNULLCHK(ses->nid),
 			  STRNULLCHK(ses->sso_a7n_path),
 			  STRNULLCHK(ses->sesix),
 			  STRNULLCHK(ses->an_ctx),
-			  STRNULLCHK(ses->uid))) {
+			  STRNULLCHK(ses->uid),
+			  ses->an_instant)) {
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "S", "EFILE", ses->sid, "writing ses fail, permissions?");
     ZX_FREE(cf->ctx, buf);
     return 0;

@@ -29,8 +29,10 @@ if ($op eq 'version') {
 }
 
 if ($op eq 'license') {
+    s/[ \t\r\n]+$//s;
     s/"/\\"/g;
     s/$/\\n\\/gm;
+    chop; chop; chop;
     print <<LICENSE;
 char* license = "\\n\\
 Copyright (c) 2010 Sampo Kellomaki (sampo\@iki.fi), All Rights Reserved.\\n\\

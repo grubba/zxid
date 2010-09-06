@@ -673,4 +673,6 @@
 #define ZXID_MGMT_FOOTER  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, "
 #define ZXID_MGMT_END     "</div>"
 
+#define ZXENCKEY_RETRIEVAL 1
+
 #endif

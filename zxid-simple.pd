@@ -180,6 +180,13 @@ cn:: Common Name. This attribute just exemplifies how any
     additional attributes the IdP may have set will appear.
     Typically the LDAP attribute names are used.
 
+fedusername:: pseudonym@idpdomain
+urn:oid:1.3.6.1.4.1.5923.1.1.1.6:: pseudonym@idpdomain
+
+<<ignore:
+http://www.protectnetwork.org/support/policies/attribute-release-policy
+>>
+
 The ~dn~ line will always be the first. All other lines may appear
 in any order. String representation of LDIF was chosen
 as it is easy to parse in most programming languages.

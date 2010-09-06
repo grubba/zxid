@@ -250,7 +250,19 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
   int alloc_len, zlen, slen, field_len, rs_len;
   field_len = strlen(field);
   rs_len = relay_state?strlen(relay_state):0;
-  
+  if (rs_len) {
+    /* Inplace decode. Decode is needed because the browser will encode again when
+     * submitting the form hidden field. */
+    p = url = relay_state;
+    URL_DECODE(p, url, relay_state + rs_len);
+    *p = 0;
+    rs_len = p - relay_state;
+    while (p = strchr(relay_state,'"')) {
+      ERR("RelayState(%s) MUST NOT contain double quote character because it would interfere with HTML form hidden field double quotes. Bad character squashed at position %d.", relay_state, p-relay_state);
+      *p = '_';
+    }
+  }
+
   /* The url buf is allocated large enough to be used for both signing and/or base64 encoding. */
   alloc_len = MAX((field_len + 1 + payload->len
 		   + sizeof("&RelayState=")-1 + rs_len

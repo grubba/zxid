@@ -131,7 +131,11 @@ struct zx_sa_EncryptedID_s* zxid_mk_enc_id(zxid_conf* cf, zxid_nid* nid, zxid_en
 {
   struct zx_sa_EncryptedID_s* encid = zx_NEW_sa_EncryptedID(cf->ctx);
   struct zx_str* ss = zx_EASY_ENC_SO_sa_NameID(cf->ctx, nid);
-  encid->EncryptedData = zxenc_pubkey_enc(cf, ss, &encid->EncryptedKey, meta->enc_cert, "38");
+#ifdef ZXENCKEY_RETRIEVAL
+  encid->EncryptedData = zxenc_pubkey_enc(cf, ss, &encid->EncryptedKey, meta->enc_cert, "38", meta);
+#else
+  encid->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "41", meta);
+#endif
   zx_str_free(cf->ctx, ss);
   return encid;
 }
@@ -144,7 +148,13 @@ struct zx_sa_EncryptedAssertion_s* zxid_mk_enc_a7n(zxid_conf* cf, zxid_a7n* a7n,
 {
   struct zx_sa_EncryptedAssertion_s* enc_a7n = zx_NEW_sa_EncryptedAssertion(cf->ctx);
   struct zx_str* ss = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
-  enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, &enc_a7n->EncryptedKey, meta->enc_cert, "39");
+#ifdef ZXENCKEY_RETRIEVAL
+  /* RetrievalMethod approach */
+  enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, &enc_a7n->EncryptedKey, meta->enc_cert, "39", meta);
+#else
+  /* Nested EncryptedKey approach (Shibboleth early 2010) */
+  enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "40", 0);
+#endif
   zx_str_free(cf->ctx, ss);
   return enc_a7n;
 }
@@ -205,8 +215,12 @@ struct zx_sp_ManageNameIDRequest_s* zxid_mk_mni(zxid_conf* cf, zxid_nid* nid, st
       struct zx_elem_s* newid = zx_new_simple_elem(cf->ctx, new_nym);
       ss = zx_EASY_ENC_SO_simple_elem(cf->ctx, newid, "sp:NewID", sizeof("sp:NewID")-1, zx_ns_tab+zx_xmlns_ix_sp);
       r->NewEncryptedID = zx_NEW_sp_NewEncryptedID(cf->ctx);
-      r->NewEncryptedID->EncryptedData = zxenc_pubkey_enc(cf, ss, &ek, idp_meta->enc_cert, "39");
+#ifdef ZXENCKEY_RETRIEVAL
+      r->NewEncryptedID->EncryptedData = zxenc_pubkey_enc(cf, ss, &ek, idp_meta->enc_cert, "39", idp_meta);
       r->NewEncryptedID->EncryptedKey = ek;
+#else
+      r->NewEncryptedID->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, idp_meta->enc_cert, "43", 0);
+#endif
       zx_str_free(cf->ctx, ss);
       zx_FREE_simple_elem(cf->ctx, newid, 0);
     } else
@@ -303,7 +317,7 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses)
 {
   struct zx_sa_AuthnStatement_s* an_stmt = zx_NEW_sa_AuthnStatement(cf->ctx);
   an_stmt->SessionIndex = zx_dup_str(cf->ctx, ses->sesix);  /* *** need noncorrelatable session index */
-  an_stmt->AuthnInstant = zxid_date_time(cf, time(0));      /* *** should really come from ses */
+  an_stmt->AuthnInstant = ses->an_instant;
   an_stmt->AuthnContext = zx_NEW_sa_AuthnContext(cf->ctx);
   if (ses->an_ctx)
     an_stmt->AuthnContext->AuthnContextClassRef = zx_dup_simple_elem(cf->ctx, ses->an_ctx);
