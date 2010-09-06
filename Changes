@@ -67,6 +67,7 @@ zxid-0.63:: 29.7.2010
     - Improved win32cl target
     - Added SubjectConfirmation
     - Added possibility of using nested EncryptedKey (Shib 2010) instead of RetrievalMethod
+    - Added SubjectConfirmationData fields to support bearer subject confirmation method
 zxid-0.62:: 1.7.2010
     - Fix IdP authentication template (runaway HTML comment)
 zxid-0.61:: 25.6.2010
