@@ -668,10 +668,10 @@ c/zx-const.h: c/zx-attrs.c c/zx-elems.c
 # N.B. echo(1) command of some shells, such as dash, is broken such that the \n\ sequence
 # is not preserved.
 
-c/license.c: LICENSE-2.0.txt
+c/license.c: LICENSE-2.0.txt sed-zxid.pl
 	$(PERL) ./sed-zxid.pl license <LICENSE-2.0.txt >$@
 
-c/zxidvers.h:
+c/zxidvers.h: sed-zxid.pl
 	$(PERL) ./sed-zxid.pl zxidvers $(ZXIDVERSION) $(ZXIDREL) <zxrev >$@
 
 # $(ZXID_OBJ:.o=.c) $(WSF_OBJ:.o=.c) zxdecode.c zxcot.c zxpasswd.c zxidhlo.c zxidsp.c zxidsimple.c $(ZX_OBJ:.o=.c) $(ZX_GEN_H) $(ZX_GEN_C) c/zx-const.h c/zxidvers.h

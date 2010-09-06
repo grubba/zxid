@@ -1200,7 +1200,7 @@ show_protected_content_setcookie:
     D("POST dispatch_loc(%s)", ss->s);
     switch (ss->s[0]) {
     case 'O': goto show_protected_content_setcookie;
-    case 'M': return zxid_simple_ab_pep(cf, ses, res_len, auto_flags);
+    case 'M': return zxid_simple_ab_pep(cf, ses, res_len, auto_flags); /* Mgmt screen case */
     case 'L':  /* Location */
       if (auto_flags & ZXID_AUTO_REDIR) {
 	printf("%.*s", ss->len, ss->s);

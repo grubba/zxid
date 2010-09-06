@@ -395,6 +395,18 @@ Never been done (as of Oct 2007), but probably this is not very
 difficult given that MinGW port already has addressed many Windows
 platform issues. Please send any success reports, and receipes, my way.
 
+As of June 2010 the MSVC support has improved. The sed dependency
+was removed and any C language constructs that MSVC has indigestion with
+have been removed. We are still aiming at Makefile based
+build using Microsoft's cl compiler. You should try
+
+  make TARGET=win32cl
+
+If you manage to build it using some IDE project, please contribute
+the project file. For ongoing maintenance, it would be good if the
+project was a text file to which new source code files and be added
+easily *without using the IDE*, i.e. using simple text editor.
+
 97.3 Configuration Questions
 ----------------------------
 
@@ -852,6 +864,27 @@ To be continued...
 
 97.7 Use of Signing and Crypto, Security Concerns
 -------------------------------------------------
+
+97.7.1 How is mod_auth_saml better than HTTP Basic Auth that it claims to emulate? HTTP Basic Auth does not address transport encryption. Is mod_auth_saml HTTP Basic Auth emulation vulnearable due to this?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+> I have looked at HTTP basic auth and it does not provide any
+> transport level security, is it secure to use HTTP basic auth with
+> certificates? is it common to do it that way?
+
+HTTP-Basic is a method for authenticating a user using username and
+password. This is orthogonal to whether the connection is encrypted.
+Most common current practise is to combine HTTP-Basic-Auth with TLS (SSL)
+encryption. This is considered safe, to the extent that passwords
+can ever be safe. mod_auth_saml keeps the TLS encryption part intact,
+but improves on the password insecurity part by either allowing
+nonpassword authentication, such as Yubikey token, or at least allowing
+one password disclosed to only one party (the IdP), rather than multiple
+passwords at multiple parties (the weakness of the latter approach
+is that the users tend to use the same passwords at the multiple
+parties, allowing each party to impersonate the user at the other
+party - and then there is the guessable password vulnearability).
+
 
 97.8 Audit Trail
 ----------------
