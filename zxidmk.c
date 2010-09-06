@@ -144,7 +144,13 @@ struct zx_sa_EncryptedAssertion_s* zxid_mk_enc_a7n(zxid_conf* cf, zxid_a7n* a7n,
 {
   struct zx_sa_EncryptedAssertion_s* enc_a7n = zx_NEW_sa_EncryptedAssertion(cf->ctx);
   struct zx_str* ss = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
+#if 0
+  /* RetrievalMethod approach */
   enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, &enc_a7n->EncryptedKey, meta->enc_cert, "39");
+#else
+  /* Nested EncryptedKey approach (Shibboleth early 2010) */
+  enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "40");
+#endif
   zx_str_free(cf->ctx, ss);
   return enc_a7n;
 }

@@ -1388,6 +1388,22 @@ different decoding engines.
     see above. Downside is that the payload can't really be
     binary, unless you base64 encode twice.
 
+11. EncryptedAssertion and EncryptedID: how is the key
+    specified? EncryptedKey ought to be the method of
+    choice.
+
+    a. The EncryptedData/KeyInfo/RetrievalMethod references the Id attribute of
+       the EncryptedKey element, which is sister of the EncryptedData.
+    b. EncryptedKey is child of EncryptedData/KeyInfo, i.e.
+       EncryptedData/KeyInfo/EncryptedKey. Shibboleth SP appears to use
+       this latter method as of 2010.
+
+    See saml-core-2.0-os.pdf, sec 2.2.4 Element <EncryptedID>, p.14, l.495
+    specifies that EncryptedData and EncryptedKey are sister elements.
+    See also ll.515-521 for schema fragment.
+    Sec 2.3.4 Element <EncryptedAssertion> on p.17 contains similar language.
+    as does 2.7.3.2 Element <EncryptedAttribute> on p.31.
+
 97.13.4 Non-obvious ID-WSF
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 

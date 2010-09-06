@@ -57,12 +57,14 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - X509 attr certs
     - Use post screen as confirmation screen
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
-    NOTPUB
+    - Make nested EncryptedKey a config option
 
 zxid-0.63:: 29.7.2010
+    NOTPUB
     - Removed sed(1) dependency
     - Improved win32cl target
     - Added SubjectConfirmation
+    - Added possibility of using nested EncryptedKey (Shib 2010) instead of RetrievalMethod
 zxid-0.62:: 1.7.2010
     - Fix IdP authentication template (runaway HTML comment)
 zxid-0.61:: 25.6.2010

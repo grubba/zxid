@@ -751,6 +751,10 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf);
     if (cf->post_a7n_enc) {
+      /* See saml-bindings-2.0-os.pdf, sec 3.5.5.2 Security Considerations, p.24, ll.847-851
+       * After publication it was understood that the SHOULD NOT could be eliminated
+       * if EncryptedAssertion is used. */
+
       resp->EncryptedAssertion = zxid_mk_enc_a7n(cf, a7n, sp_meta);
     } else {
       resp->Assertion = a7n;
