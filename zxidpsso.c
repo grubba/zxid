@@ -300,6 +300,7 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
   struct zx_sa_Subject_s* subj;
   struct zx_sa_AuthnStatement_s* an_stmt;
   struct zx_sa_AttributeStatement_s* at_stmt;
+  struct zx_sa_Attribute_s* at;
   char buf[ZXID_MAX_USER];
   int got;
 
@@ -310,6 +311,15 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
   an_stmt = ses ? zxid_mk_an_stmt(cf, ses) : 0;
   at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx);
   at_stmt->Attribute = zxid_mk_attribute(cf, "zxididp", ZXID_REL " " ZXID_COMPILE_DATE);
+
+  snprintf(buf, sizeof(buf), "%.*s@zxidp.org", nameid->gg.content->len, nameid->gg.content->s);
+  at = zxid_mk_attribute(cf, "fedusername", zx_dup_cstr(cf->ctx, buf));
+  ZX_NEXT(at) = (void*)at_stmt->Attribute;
+  at_stmt->Attribute = at;
+  at = zxid_mk_attribute(cf, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, zx_dup_cstr(cf->ctx, buf));
+  at->NameFormat = zx_dup_str(cf->ctx, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
+  ZX_NEXT(at) = (void*)at_stmt->Attribute;
+  at_stmt->Attribute = at;
 
   got = read_all(sizeof(buf)-1, buf, "idpsso_uid_at", "%s" ZXID_UID_DIR "%s/.bs/.at" , cf->path, uid);
   if (got) {
@@ -650,7 +660,8 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
 			  &srcts, ar->Issuer->gg.content, ar->ID, sp_name_buf);
 
   if (nameid) {
-    if (!cgi->nid_fmt || !cgi->nid_fmt[0] || !strcmp(cgi->nid_fmt, "trnsnt")) {
+    if (cgi->nid_fmt && !strcmp(cgi->nid_fmt, "trnsnt")) {
+      D("Despite old fed, using transient due to cgi->nid_fmt(%s)", STRNULLCHKD(cgi->nid_fmt));
       zxid_mk_transient_nid(cf, nameid, sp_name_buf, ses->uid);
       logop = "ITSSO";
     } else

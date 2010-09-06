@@ -31,6 +31,7 @@
 #include "platform.h"
 #include "zx.h"
 #include "zxid.h"
+#include "zxidconf.h"
 #include "c/zx-data.h"   /* For the XMLDSIG code. */
 
 //static char*
@@ -599,12 +600,14 @@ struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* d
   ed->EncryptionMethod->Algorithm = zx_ref_str(cf->ctx, ENC_ALGO);
   if (ek) {
     ed->KeyInfo = zx_NEW_ds_KeyInfo(cf->ctx);
-#if 0
+#ifdef ZXENCKEY_RETRIEVAL
+    D("Sibling EncryptedKey with RetrievalMethod %p", ek);
     ed->KeyInfo->RetrievalMethod = zx_NEW_ds_RetrievalMethod(cf->ctx);
     ed->KeyInfo->RetrievalMethod->Type = zx_ref_str(cf->ctx, "http://www.w3.org/2001/04/xmlenc#EncryptedKey");
     ed->KeyInfo->RetrievalMethod->URI = zx_strf(cf->ctx, "#%.*s", ek->Id->len, ek->Id->s);
 #else
     /* Nested EncryptedKey method (Shibboleth early 2010). */
+    D("Nested EncryptedKey %p", ek);
     ed->KeyInfo->EncryptedKey = ek;
 #endif
   }
@@ -633,7 +636,7 @@ struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* d
  * return:: Encrypted data as XML data structure. Caller should free this memory. */
 
 /* Called by:  zxid_mk_enc_a7n, zxid_mk_enc_id, zxid_mk_mni */
-struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_xenc_EncryptedKey_s** ekp, X509* cert, char* idsuffix)
+struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* data, struct zx_xenc_EncryptedKey_s** ekp, X509* cert, char* idsuffix, zxid_entity* meta)
 {
   struct rsa_st* rsa_pkey;
   char symkey[128/8];
@@ -649,6 +652,11 @@ struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* d
   ek->EncryptionMethod = zx_NEW_xenc_EncryptionMethod(cf->ctx);
   ek->EncryptionMethod->Algorithm = zx_ref_str(cf->ctx, ENC_KEYTRAN_ALGO);
   ek->KeyInfo = zxid_key_info(cf, cert);
+  if (meta) {
+    /* This hack may help early 2010 vintage Shibboleth SP to work without nested EncryptedKey.
+     * (personal communication w/Scott 20100906 --Sampo) */
+    ek->Recipient = zx_dup_str(cf->ctx, meta->eid);
+  }
   
   zx_rand(symkey, sizeof(symkey));
   symkey_ss.len = sizeof(symkey);
