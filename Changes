@@ -55,12 +55,14 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxid_select_tgt()
     - Each credential as its own a7n
     - X509 attr certs
+    - store authentication instant in session and use it in zxid_mk_an_stmt()
     - Use post screen as confirmation screen
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
 
 zxid-0.63:: 29.7.2010
     NOTPUB
     - Added mandatory attribute contatcType to Contact element in metadata
+    - Supply AuthnInstant
     - Removed sed(1) dependency
     - Improved win32cl target
     - Added SubjectConfirmation
