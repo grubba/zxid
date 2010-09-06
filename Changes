@@ -67,6 +67,7 @@ zxid-0.63:: 29.7.2010
     - Improved win32cl target
     - Added SubjectConfirmation
     - Added possibility of using nested EncryptedKey (Shib 2010) instead of RetrievalMethod
+    - Added Recipient hint in sibling EncryptedKey case. This is sufficient to get Shib 2010 working.
     - Added SubjectConfirmationData fields to support bearer subject confirmation method
     - Added RelayState field decoding to POST profile
     - Added double quote detection inside RelayState value
