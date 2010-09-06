@@ -193,8 +193,8 @@ extern int trace;   /* this gets manipulated by -v or similar flag */
  *   URL_DECODE(src,dst,buf+sizeof(buf));
  *   *dst = 0;   // nul terminate
  *   len = dst - buf;
- * The dst pointer need not point to same buffer as src, though it can, to effectuate an
- * in-place conversion. The converted length is the difference with original dst and final dst.
+ * The dst pointer need not point to same buffer as src, though it can (to effectuate an
+ * in-place conversion). The converted length is the difference with original dst and final dst.
  * src and dst MUST be different variables (even if they point to same place).
  * lim is one beyond end of the src data. Resulting conversion is always shorter
  * or equal to original. Both src and dst will be altered. Conversion is not nul terminated. */
