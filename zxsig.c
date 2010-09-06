@@ -502,7 +502,7 @@ struct zx_str* zxenc_privkey_dec(zxid_conf* cf, struct zx_xenc_EncryptedData_s* 
   }
 
   if (!ek && ed->KeyInfo)
-    ek = ed->KeyInfo->EncryptedKey;
+    ek = ed->KeyInfo->EncryptedKey;  /* Nested EncryptionKey method (Shib 2010) */
   if (!ek || !ek->CipherData || !ek->CipherData->CipherValue
       || !(ss = ek->CipherData->CipherValue->content) || !ss->len) {
     ERR("EncryptedKey element not found or malformed %p", ek->CipherData);
