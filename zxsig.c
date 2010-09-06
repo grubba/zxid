@@ -625,7 +625,9 @@ struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* d
  * data:: Data blob to encrypt. Typically serialized XML
  * ekp:: Result parameter. XML data structure corresponding to the <EncryptedKey>
  *     element will be returned. This is the encrypted symmetric key (which is
- *     pseudorandom generated inside this function)
+ *     pseudorandom generated inside this function). Usually used to set EncryptedKey
+ *     field of EncryptedAssertion when using sister elements, aka RetrievalMethod, approach.
+ *     When using nested EncryptedKey (Shib 2010) approach, leave null.
  * cert:: Certificate containing the public key used to encrypt the symmetric key
  * idsuffix:: Use to generate XML ~Id~ attributes for <EncryptedKey> and <EncryptedData>
  * return:: Encrypted data as XML data structure. Caller should free this memory. */
@@ -667,7 +669,8 @@ struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* d
   zx_str_free(cf->ctx, ss);
   ek->CipherData = zx_NEW_xenc_CipherData(cf->ctx);
   ek->CipherData->CipherValue = zx_new_simple_elem(cf->ctx, b64);
-  *ekp = ek;
+  if (ekp)
+    *ekp = ek;
   
   ss = zx_strf(cf->ctx, "ED%s", idsuffix);
   return zxenc_symkey_enc(cf, data, ss, &symkey_ss, ek);

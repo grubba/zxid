@@ -309,7 +309,7 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses)
 {
   struct zx_sa_AuthnStatement_s* an_stmt = zx_NEW_sa_AuthnStatement(cf->ctx);
   an_stmt->SessionIndex = zx_dup_str(cf->ctx, ses->sesix);  /* *** need noncorrelatable session index */
-  an_stmt->AuthnInstant = zxid_date_time(time(0));  /* *** should really come from session */
+  an_stmt->AuthnInstant = zxid_date_time(cf, time(0));  /* *** should really come from session */
   an_stmt->AuthnContext = zx_NEW_sa_AuthnContext(cf->ctx);
   if (ses->an_ctx)
     an_stmt->AuthnContext->AuthnContextClassRef = zx_dup_simple_elem(cf->ctx, ses->an_ctx);
