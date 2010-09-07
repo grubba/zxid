@@ -256,6 +256,7 @@ int zxid_init_conf(zxid_conf* cf, char* zxid_path)
   cf->contact_name = ZXID_CONTACT_NAME;
   cf->contact_email = ZXID_CONTACT_EMAIL;
   cf->contact_tel = ZXID_CONTACT_TEL;
+  cf->fedusername_suffix = ZXID_FEDUSERNAME_SUFFIX;
   cf->url = ZXID_URL;
   cf->non_standard_entityid = ZXID_NON_STANDARD_ENTITYID;
   cf->redirect_hack_imposed_url = ZXID_REDIRECT_HACK_IMPOSED_URL;
@@ -273,6 +274,8 @@ int zxid_init_conf(zxid_conf* cf, char* zxid_path)
   cf->wspcgicmd    = ZXID_WSPCGICMD;
   cf->nameid_enc   = ZXID_NAMEID_ENC;
   cf->post_a7n_enc = ZXID_POST_A7N_ENC;
+  cf->enckey_opt   = ZXID_ENCKEY_OPT;
+  cf->idpatopt     = ZXID_IDPATOPT;
   cf->di_allow_create = ZXID_DI_ALLOW_CREATE;
   cf->di_nid_fmt   = ZXID_DI_NID_FMT;
   cf->di_a7n_enc   = ZXID_DI_A7N_ENC;
@@ -872,6 +875,29 @@ struct zxid_attr* zxid_find_at(struct zxid_attr* pool, char* name)
   return 0;
 }
 
+/*() Given URL, return a newly allocated string corresponding
+ * to the domain name part of the URL. Used to grab fedusername_suffix
+ * from the url config option. */
+
+static char* zxid_grab_domain_name(zxid_conf* cf, char* url)
+{
+  char* dom;
+  char* p;
+  int len;
+  if (!url || !*url)
+    return 0;
+  dom = strchr(url, ':');
+  if (!dom || dom[1] != '/' || dom[2] != '/')
+    return 0;
+  dom += 3;
+  /* After shipping https:// scan for domain name allowable characters. */
+  len = strspn(dom, ".abcdefghijklmnopqrstuvwxyz0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+  p = ZX_ALLOC(cf->ctx, len+1);
+  memcpy(p, dom, len);
+  p[len] = 0;
+  return p;
+}
+
 /* ======================= CONF PARSING ======================== */
 
 #if defined(ZXID_CONF_FILE) || defined(ZXID_CONF_FLAG)
@@ -936,20 +962,20 @@ scan_end:
     
     switch (n[0]) {
     case 'A':  /* AUTHN_REQ_SIGN, ACT, AUDIENCE_FATAL, AFTER_SLOP */
-      if (!strcmp(n, "AUTO_CERT"))      { SCAN_INT(v, cf->auto_cert); break; }
-      if (!strcmp(n, "AUTHN_REQ_SIGN")) { SCAN_INT(v, cf->authn_req_sign); break; }
-      if (!strcmp(n, "ACT"))            { SCAN_INT(v, cf->log_act); break; }
-      if (!strcmp(n, "ACT_IN_ERR"))     { SCAN_INT(v, cf->log_err_in_act); break; }
-      if (!strcmp(n, "AUDIENCE_FATAL")) { SCAN_INT(v, cf->audience_fatal); break; }
-      if (!strcmp(n, "AFTER_SLOP"))     { SCAN_INT(v, cf->after_slop); break; }
-      if (!strcmp(n, "ANON_OK"))        { cf->anon_ok = v; D("anon_ok(%s)", cf->anon_ok); break; }
-      if (!strcmp(n, "AN_PAGE"))        { cf->an_page = v; break; }
-      if (!strcmp(n, "AN_TEMPL_FILE"))  { cf->an_templ_file = v; break; }
-      if (!strcmp(n, "AN_TEMPL"))       { cf->an_templ = v; break; }
-      if (!strcmp(n, "ATSEL_PAGE"))     { cf->atsel_page = v; break; }
+      if (!strcmp(n, "AUTO_CERT"))       { SCAN_INT(v, cf->auto_cert); break; }
+      if (!strcmp(n, "AUTHN_REQ_SIGN"))  { SCAN_INT(v, cf->authn_req_sign); break; }
+      if (!strcmp(n, "ACT"))             { SCAN_INT(v, cf->log_act); break; }
+      if (!strcmp(n, "ACT_IN_ERR"))      { SCAN_INT(v, cf->log_err_in_act); break; }
+      if (!strcmp(n, "AUDIENCE_FATAL"))  { SCAN_INT(v, cf->audience_fatal); break; }
+      if (!strcmp(n, "AFTER_SLOP"))      { SCAN_INT(v, cf->after_slop); break; }
+      if (!strcmp(n, "ANON_OK"))         { cf->anon_ok = v; D("anon_ok(%s)", cf->anon_ok); break; }
+      if (!strcmp(n, "AN_PAGE"))         { cf->an_page = v; break; }
+      if (!strcmp(n, "AN_TEMPL_FILE"))   { cf->an_templ_file = v; break; }
+      if (!strcmp(n, "AN_TEMPL"))        { cf->an_templ = v; break; }
+      if (!strcmp(n, "ATSEL_PAGE"))      { cf->atsel_page = v; break; }
       if (!strcmp(n, "ATTRSRC"))     { cf->attrsrc = zxid_load_atsrc(cf, cf->attrsrc, v); break; }
-      if (!strcmp(n, "A7NTTL"))         { SCAN_INT(v, cf->a7nttl); break; }
-      if (!strcmp(n, "AS_ENA"))         { SCAN_INT(v, cf->as_ena); break; }
+      if (!strcmp(n, "A7NTTL"))          { SCAN_INT(v, cf->a7nttl); break; }
+      if (!strcmp(n, "AS_ENA"))          { SCAN_INT(v, cf->as_ena); break; }
       goto badcf;
     case 'B':  /* BEFORE_SLOP */
       if (!strcmp(n, "BEFORE_SLOP"))       { SCAN_INT(v, cf->before_slop); break; }
@@ -957,25 +983,29 @@ scan_end:
       if (!strcmp(n, "BARE_URL_ENTITYID")) { SCAN_INT(v, cf->bare_url_entityid); break; }
       goto badcf;
     case 'C':  /* CDC_URL, CDC_CHOICE */
-      if (!strcmp(n, "CDC_URL"))        { cf->cdc_url = v; break; }
-      if (!strcmp(n, "CDC_CHOICE"))     { SCAN_INT(v, cf->cdc_choice); break; }
-      if (!strcmp(n, "CONTACT_ORG"))    { cf->contact_org = v; break; }
-      if (!strcmp(n, "CONTACT_NAME"))   { cf->contact_name = v; break; }
-      if (!strcmp(n, "CONTACT_EMAIL"))  { cf->contact_email = v; break; }
-      if (!strcmp(n, "CONTACT_TEL"))    { cf->contact_tel = v; break; }
-      if (!strcmp(n, "COUNTRY"))        { cf->country = v; break; }
+      if (!strcmp(n, "CDC_URL"))         { cf->cdc_url = v; break; }
+      if (!strcmp(n, "CDC_CHOICE"))      { SCAN_INT(v, cf->cdc_choice); break; }
+      if (!strcmp(n, "CONTACT_ORG"))     { cf->contact_org = v; break; }
+      if (!strcmp(n, "CONTACT_NAME"))    { cf->contact_name = v; break; }
+      if (!strcmp(n, "CONTACT_EMAIL"))   { cf->contact_email = v; break; }
+      if (!strcmp(n, "CONTACT_TEL"))     { cf->contact_tel = v; break; }
+      if (!strcmp(n, "COUNTRY"))         { cf->country = v; break; }
       goto badcf;
     case 'D':  /* DUP_A7N_FATAL, DUP_MSG_FATAL */
-      if (!strcmp(n, "DEFAULTQS"))      { cf->defaultqs = v; break; }
-      if (!strcmp(n, "DUP_A7N_FATAL"))  { SCAN_INT(v, cf->dup_a7n_fatal); break; }
-      if (!strcmp(n, "DUP_MSG_FATAL"))  { SCAN_INT(v, cf->dup_msg_fatal); break; }
+      if (!strcmp(n, "DEFAULTQS"))       { cf->defaultqs = v; break; }
+      if (!strcmp(n, "DUP_A7N_FATAL"))   { SCAN_INT(v, cf->dup_a7n_fatal); break; }
+      if (!strcmp(n, "DUP_MSG_FATAL"))   { SCAN_INT(v, cf->dup_msg_fatal); break; }
       if (!strcmp(n, "DI_ALLOW_CREATE")) { cf->di_allow_create = *v; break; }
-      if (!strcmp(n, "DI_NID_FMT"))     { SCAN_INT(v, cf->di_nid_fmt); break; }
-      if (!strcmp(n, "DI_A7N_ENC"))     { SCAN_INT(v, cf->di_a7n_enc); break; }
+      if (!strcmp(n, "DI_NID_FMT"))      { SCAN_INT(v, cf->di_nid_fmt); break; }
+      if (!strcmp(n, "DI_A7N_ENC"))      { SCAN_INT(v, cf->di_a7n_enc); break; }
       goto badcf;
     case 'E':  /* ERR, ERR_IN_ACT */
-      if (!strcmp(n, "ERR"))          { SCAN_INT(v, cf->log_err); break; }
-      if (!strcmp(n, "ERR_IN_ACT"))   { SCAN_INT(v, cf->log_err_in_act); break; }
+      if (!strcmp(n, "ERR"))             { SCAN_INT(v, cf->log_err); break; }
+      if (!strcmp(n, "ERR_IN_ACT"))      { SCAN_INT(v, cf->log_err_in_act); break; }
+      if (!strcmp(n, "ENCKEY_OPT"))      { SCAN_INT(v, cf->enckey_opt); break; }
+      goto badcf;
+    case 'F':
+      if (!strcmp(n, "FEDUSERNAME_SUFFIX")) { cf->fedusername_suffix = v; break; }
       goto badcf;
     case 'I':  /* ISSUE_A7N, ISSUE_MSG */
       if (!strcmp(n, "ISSUE_A7N"))       { SCAN_INT(v, cf->log_issue_a7n); break; }
@@ -991,6 +1021,7 @@ scan_end:
       if (!strcmp(n, "IDP_SEL_PAGE"))    { cf->idp_sel_page = v; break; }
       if (!strcmp(n, "IDP_ENA"))         { SCAN_INT(v, cf->idp_ena); break; }
       if (!strcmp(n, "IDP_PREF_ACS_BINDING")) { cf->idp_pref_acs_binding = v; break; }
+      if (!strcmp(n, "IDPATOPT"))        { SCAN_INT(v, cf->idpatopt); break; }
       if (!strcmp(n, "INMAP"))           { cf->inmap = zxid_load_map(cf, cf->inmap, v); break; }
       goto badcf;
     case 'L':  /* LEVEL (log level) */
@@ -1000,8 +1031,8 @@ scan_end:
       if (!strcmp(n, "LOCALPDP_ROLE_DENY"))     { cf->localpdp_role_deny     = zxid_load_cstr_list(cf, cf->localpdp_role_deny, v);     break; }
       if (!strcmp(n, "LOCALPDP_IDPNID_PERMIT")) { cf->localpdp_idpnid_permit = zxid_load_cstr_list(cf, cf->localpdp_idpnid_permit, v); break; }
       if (!strcmp(n, "LOCALPDP_IDPNID_DENY"))   { cf->localpdp_idpnid_deny   = zxid_load_cstr_list(cf, cf->localpdp_idpnid_deny, v);   break; }
-      if (!strcmp(n, "LOAD_COT_CACHE"))   { cf->load_cot_cache = v; break; }
-      if (!strcmp(n, "LOCALITY"))         { cf->locality = v; break; }
+      if (!strcmp(n, "LOAD_COT_CACHE"))  { cf->load_cot_cache = v; break; }
+      if (!strcmp(n, "LOCALITY"))        { cf->locality = v; break; }
       goto badcf;
     case 'M':  /* MD_FETCH, MD_POPULATE_CACHE, MD_CACHE_FIRST, MD_CACHE_LAST */
       if (!strcmp(n, "MANDATORY_ATTR"))    { cf->mandatory_attr = v; break; }
@@ -1114,7 +1145,7 @@ scan_end:
       if (!strcmp(n, "TIMESKEW"))       { SCAN_INT(v, cf->timeskew); break; }
       goto badcf;
     case 'U':  /* URL, USER_LOCAL */
-      if (!strcmp(n, "URL"))            { cf->url = v; break; }
+      if (!strcmp(n, "URL"))            { cf->url = v; cf->fedusername_suffix = zxid_grab_domain_name(cf, cf->url); break; }
       if (!strcmp(n, "USER_LOCAL"))     { SCAN_INT(v, cf->user_local); break; }
       goto badcf;
     case 'W':  /* WANT_SSO_A7N_SIGNED */
@@ -1313,6 +1344,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "CONTACT_NAME=%s\n"
 "CONTACT_EMAIL=%s\n"
 "CONTACT_TEL=%s\n"
+"FEDUSERNAME_SUFFIX=%s\n"
 "#ZXID_CONF_FILE=%d (compile)\n"
 "#ZXID_CONF_FLAG=%d (compile)\n"
 "#ZXID_MAX_CONF=%d (compile)\n"
@@ -1342,6 +1374,8 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "WSPCGICMD=%s\n"
 "NAMEID_ENC=%x\n"
 "POST_A7N_ENC=%d\n"
+"ENCKEY_OPT=%d\n"
+"IDPATOPT=%d\n"
 "DI_ALLOW_CREATE=%d\n"
 "DI_NID_FMT=%d\n"
 "DI_A7N_ENC=%d\n"
@@ -1466,6 +1500,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->contact_name),
 		 STRNULLCHK(cf->contact_email),
 		 STRNULLCHK(cf->contact_tel),
+		 STRNULLCHK(cf->fedusername_suffix),
 		 ZXID_CONF_FILE,
 		 ZXID_CONF_FLAG,
 		 ZXID_MAX_CONF,
@@ -1495,6 +1530,8 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->wspcgicmd,
 		 cf->nameid_enc,
 		 cf->post_a7n_enc,
+		 cf->enckey_opt,
+		 cf->idpatopt,
 		 cf->di_allow_create,
 		 cf->di_nid_fmt,
 		 cf->di_a7n_enc,

@@ -600,16 +600,15 @@ struct zx_xenc_EncryptedData_s* zxenc_symkey_enc(zxid_conf* cf, struct zx_str* d
   ed->EncryptionMethod->Algorithm = zx_ref_str(cf->ctx, ENC_ALGO);
   if (ek) {
     ed->KeyInfo = zx_NEW_ds_KeyInfo(cf->ctx);
-#ifdef ZXENCKEY_RETRIEVAL
-    D("Sibling EncryptedKey with RetrievalMethod %p", ek);
-    ed->KeyInfo->RetrievalMethod = zx_NEW_ds_RetrievalMethod(cf->ctx);
-    ed->KeyInfo->RetrievalMethod->Type = zx_ref_str(cf->ctx, "http://www.w3.org/2001/04/xmlenc#EncryptedKey");
-    ed->KeyInfo->RetrievalMethod->URI = zx_strf(cf->ctx, "#%.*s", ek->Id->len, ek->Id->s);
-#else
-    /* Nested EncryptedKey method (Shibboleth early 2010). */
-    D("Nested EncryptedKey %p", ek);
-    ed->KeyInfo->EncryptedKey = ek;
-#endif
+    if (cf->enckey_opt & 0x20) {
+      D("Nested EncryptedKey %p", ek); /* Shibboleth early 2010 */
+      ed->KeyInfo->EncryptedKey = ek;
+    } else {
+      D("Sibling EncryptedKey with RetrievalMethod %p", ek);
+      ed->KeyInfo->RetrievalMethod = zx_NEW_ds_RetrievalMethod(cf->ctx);
+      ed->KeyInfo->RetrievalMethod->Type = zx_ref_str(cf->ctx, "http://www.w3.org/2001/04/xmlenc#EncryptedKey");
+      ed->KeyInfo->RetrievalMethod->URI = zx_strf(cf->ctx, "#%.*s", ek->Id->len, ek->Id->s);
+    }
   }
   D("Plaintext(%.*s)", data->len, data->s);
   ss = zx_raw_cipher(cf->ctx, "AES-128-CBC", 1, symkey, data->len, data->s, 16, 0);
@@ -652,7 +651,7 @@ struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* d
   ek->EncryptionMethod = zx_NEW_xenc_EncryptionMethod(cf->ctx);
   ek->EncryptionMethod->Algorithm = zx_ref_str(cf->ctx, ENC_KEYTRAN_ALGO);
   ek->KeyInfo = zxid_key_info(cf, cert);
-  if (meta) {
+  if (meta && cf->enckey_opt & 0x01) {
     /* This hack may help early 2010 vintage Shibboleth SP to work without nested EncryptedKey.
      * (personal communication w/Scott 20100906 --Sampo) */
     ek->Recipient = zx_dup_str(cf->ctx, meta->eid);

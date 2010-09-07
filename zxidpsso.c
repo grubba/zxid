@@ -146,13 +146,12 @@ static struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp
 }
 
 /*() Parse LDIF format and insert attributes to linked list. Return new head of the list.
- * The input is temporarily modified and then restored. Do not pass const string.
- * *** illegal input causes corrupt pointer. For example query string input causes corruption. */
+ * The input is temporarily modified and then restored. Do not pass const string. */
 
 /* Called by:  zxid_mk_user_a7n_to_sp x4 */
 struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attribute_s* prev, int len, char* p, char* lk)
 {
-  struct zx_sa_Attribute_s* at;
+  struct zx_sa_Attribute_s* at = prev;
   char* name;
   char* val;
 
@@ -175,6 +174,8 @@ struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attrib
     val[-2] = ':'; /* restore */
     if (p)
       *p = '\n';
+    else
+      break;
   }
   return at;
 }
@@ -312,16 +313,18 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
   at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx);
   at_stmt->Attribute = zxid_mk_attribute(cf, "zxididp", ZXID_REL " " ZXID_COMPILE_DATE);
 
-  /* *** more configurable */
-  snprintf(buf, sizeof(buf), "%.*s@zxidp.org", nameid->gg.content->len, nameid->gg.content->s);
-  at = zxid_mk_attribute(cf, "fedusername", zx_dup_cstr(cf->ctx, buf));
-  ZX_NEXT(at) = (void*)at_stmt->Attribute;
-  at_stmt->Attribute = at;
-  at = zxid_mk_attribute(cf, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, zx_dup_cstr(cf->ctx, buf));
-  at->NameFormat = zx_dup_str(cf->ctx, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
-  ZX_NEXT(at) = (void*)at_stmt->Attribute;
-  at_stmt->Attribute = at;
-
+  if (cf->fedusername_suffix && *cf->fedusername_suffix) {
+    snprintf(buf, sizeof(buf), "%.*s@%s", nameid->gg.content->len, nameid->gg.content->s, cf->fedusername_suffix);
+    at = zxid_mk_attribute(cf, "fedusername", zx_dup_cstr(cf->ctx, buf));
+    ZX_NEXT(at) = (void*)at_stmt->Attribute;
+    at_stmt->Attribute = at;
+    if (cf->idpatopt & 0x01) {
+      at = zxid_mk_attribute(cf, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, zx_dup_cstr(cf->ctx, buf));
+      at->NameFormat = zx_dup_str(cf->ctx, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
+      ZX_NEXT(at) = (void*)at_stmt->Attribute;
+      at_stmt->Attribute = at;
+    }
+  }
   got = read_all(sizeof(buf)-1, buf, "idpsso_uid_at", "%s" ZXID_UID_DIR "%s/.bs/.at" , cf->path, uid);
   if (got) {
     at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute, got, buf, "idpsso_uid_at");

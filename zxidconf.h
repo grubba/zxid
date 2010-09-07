@@ -100,6 +100,27 @@
 #define ZXID_CONTACT_EMAIL 0
 #define ZXID_CONTACT_TEL 0
 
+/*(c) If set (by default this is always set when URL is set, you have to
+ * explicitly unset it if you do not want it), causes IdP to include
+ * fedusername attribute in the assertion. The value of this attribute
+ * will be the (persistent) nameid followed by @ sign and this suffix,
+ * for example: FXyysxhM4F6d3DIwrtoiFdi0i@zxidp.org
+ *
+ * The fedusername attribute is a helper for the SP web sites that
+ * are fixated on the notion of needing a username and/or requiring
+ * the username to look like an email. By packaging the psedonym this
+ * way it is easy to get them to work with minimal modification.
+ * N.B. Although it looks like an email address, it is not. Do not try
+ * sending mail to it (unless you hack your mailserver to understand it).
+ */
+#define ZXID_FEDUSERNAME_SUFFIX "set-this-or-url-to-site-dependent-value"
+
+/*(c) IdP Attribute Generation Options
+ * 0x01  If fedusername is generated, also generate
+ *       urn:oid:1.3.6.1.4.1.5923.1.1.1.6 (aka ~eduPersonPrincipalName~)
+ */
+#define ZXID_IDPATOPT 0x01
+
 /*(c) Common Domain Cookie URL
  * URL for reading Common Domain Cookie. It must end in "zxid". The hostname
  * and port number should match the server under which zxid CGI is accessible.
@@ -206,6 +227,20 @@
 /*(c) Assertion Encryption in POST
  * Whether to encrypt assertions when using POST bindings. */
 #define ZXID_POST_A7N_ENC 1
+
+/*(c) When producing EncryptedID, EncruptedAssertion, or EncryptedAttribute,
+ * how is the EncryptedKey stored relative to EncryptedData
+ *
+ * 0x00  Sibling, without Recipient hint (interops with many commercial implementations and Shibboleth Sept 2010)
+ * 0x01  Sibling, with Recipient hint (interops with many commercial implementations and Shibboleth as of August 2010)
+ * 0x20  Nested method, i.e. EncryptedData/KeyInfo/EncryptedKey (interops with all versions of Shibboleth and many others)
+ *
+ * N.B:: SAML2 specs fail to say which approach is preferred, therefore both
+ *     approaches are valid. In reading messages ZXID automatically understands both.
+ *     This option only controls how outbound messages are generated so that others
+ *     can understand them (ideally they would autodetect so we would not need this option).
+ */
+#define ZXID_ENCKEY_OPT 0x20
 
 /*(c) Controls whether new fedarations can be created during discovery. */
 #define ZXID_DI_ALLOW_CREATE '1'
@@ -672,7 +707,5 @@
 
 #define ZXID_MGMT_FOOTER  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, "
 #define ZXID_MGMT_END     "</div>"
-
-#define ZXENCKEY_RETRIEVAL 1
 
 #endif

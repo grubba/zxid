@@ -174,6 +174,7 @@ void  zx_str_conv(struct zx_str* ss, int* out_len, char** out_s);  /* SWIG typem
 int   zx_str_ends_in(struct zx_str* ss, int len, const char* suffix);
 #define ZX_STR_EQ(ss, cstr) ((ss) && (cstr) && (ss)->s && (ss)->len == strlen(cstr) && !memcmp((cstr), (ss)->s, (ss)->len))
 #define ZX_STR_ENDS_IN_CONST(ss, suffix) zx_str_ends_in((ss), sizeof(suffix)-1, (suffix))
+#define ZX_CONTENT_EQ_CONST(e, c) ((e) && (e)->content->len == sizeof(c)-1 && !memcmp((e)->content->s, (c), sizeof(c)-1))
 
 /* Elements that are unforeseen (errornous or extensions). */
 

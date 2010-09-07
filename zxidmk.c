@@ -131,11 +131,13 @@ struct zx_sa_EncryptedID_s* zxid_mk_enc_id(zxid_conf* cf, zxid_nid* nid, zxid_en
 {
   struct zx_sa_EncryptedID_s* encid = zx_NEW_sa_EncryptedID(cf->ctx);
   struct zx_str* ss = zx_EASY_ENC_SO_sa_NameID(cf->ctx, nid);
-#ifdef ZXENCKEY_RETRIEVAL
-  encid->EncryptedData = zxenc_pubkey_enc(cf, ss, &encid->EncryptedKey, meta->enc_cert, "38", meta);
-#else
-  encid->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "41", meta);
-#endif
+  if (cf->enckey_opt & 0x20) {
+    /* Nested EncryptedKey approach (Shibboleth early 2010) */
+    encid->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "41", 0);
+  } else {
+    /* RetrievalMethod approach */
+    encid->EncryptedData = zxenc_pubkey_enc(cf, ss, &encid->EncryptedKey, meta->enc_cert, "38", meta);
+  }
   zx_str_free(cf->ctx, ss);
   return encid;
 }
@@ -148,13 +150,13 @@ struct zx_sa_EncryptedAssertion_s* zxid_mk_enc_a7n(zxid_conf* cf, zxid_a7n* a7n,
 {
   struct zx_sa_EncryptedAssertion_s* enc_a7n = zx_NEW_sa_EncryptedAssertion(cf->ctx);
   struct zx_str* ss = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
-#ifdef ZXENCKEY_RETRIEVAL
-  /* RetrievalMethod approach */
-  enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, &enc_a7n->EncryptedKey, meta->enc_cert, "39", meta);
-#else
-  /* Nested EncryptedKey approach (Shibboleth early 2010) */
-  enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "40", 0);
-#endif
+  if (cf->enckey_opt & 0x20) {
+    /* Nested EncryptedKey approach (Shibboleth early 2010) */
+    enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, meta->enc_cert, "40", 0);
+  } else {
+    /* RetrievalMethod approach */
+    enc_a7n->EncryptedData = zxenc_pubkey_enc(cf, ss, &enc_a7n->EncryptedKey, meta->enc_cert, "39", meta);
+  }
   zx_str_free(cf->ctx, ss);
   return enc_a7n;
 }
@@ -215,12 +217,14 @@ struct zx_sp_ManageNameIDRequest_s* zxid_mk_mni(zxid_conf* cf, zxid_nid* nid, st
       struct zx_elem_s* newid = zx_new_simple_elem(cf->ctx, new_nym);
       ss = zx_EASY_ENC_SO_simple_elem(cf->ctx, newid, "sp:NewID", sizeof("sp:NewID")-1, zx_ns_tab+zx_xmlns_ix_sp);
       r->NewEncryptedID = zx_NEW_sp_NewEncryptedID(cf->ctx);
-#ifdef ZXENCKEY_RETRIEVAL
-      r->NewEncryptedID->EncryptedData = zxenc_pubkey_enc(cf, ss, &ek, idp_meta->enc_cert, "39", idp_meta);
-      r->NewEncryptedID->EncryptedKey = ek;
-#else
-      r->NewEncryptedID->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, idp_meta->enc_cert, "43", 0);
-#endif
+      if (cf->enckey_opt & 0x20) {
+	/* Nested EncryptedKey approach (Shibboleth early 2010) */
+	r->NewEncryptedID->EncryptedData = zxenc_pubkey_enc(cf, ss, 0, idp_meta->enc_cert, "43",0);
+      } else {
+	/* RetrievalMethod approach */
+	r->NewEncryptedID->EncryptedData = zxenc_pubkey_enc(cf, ss, &ek, idp_meta->enc_cert, "39", idp_meta);
+	r->NewEncryptedID->EncryptedKey = ek;
+      }
       zx_str_free(cf->ctx, ss);
       zx_FREE_simple_elem(cf->ctx, newid, 0);
     } else

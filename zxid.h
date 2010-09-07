@@ -199,8 +199,8 @@ struct zxid_conf {
   char  wsp_nosig_fatal;
 
   char  notimestamp_fatal;
-  char  pad2;
-  char  pad3;
+  char  enckey_opt;
+  char  idpatopt;
   char  pad4;
   char  pad5;
   char  pad6;
@@ -218,6 +218,7 @@ struct zxid_conf {
   char* contact_name;
   char* contact_email;
   char* contact_tel;
+  char* fedusername_suffix;  /* Default is computed from url domain name part when url is set. */
   char* ses_arch_dir;        /* Place where dead sessions go. 0=rm */
   char* ses_cookie_name;
   char* ipport;              /* Source IP and port for logging, e.g: "1.2.3.4:5" */
@@ -801,6 +802,12 @@ char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* 
 char* zxid_az_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses);
 char* zxid_az_cf(zxid_conf* cf, const char* qs, const char* sid);
 char* zxid_az(const char* conf, const char* qs, const char* sid);
+
+char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap);
+char* zxid_pep_az_base_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url);
+char* zxid_az_base_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses);
+char* zxid_az_base_cf(zxid_conf* cf, const char* qs, const char* sid);
+char* zxid_az_base(const char* conf, const char* qs, const char* sid);
 
 /* zxidpdp */
 

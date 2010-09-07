@@ -180,8 +180,21 @@ cn:: Common Name. This attribute just exemplifies how any
     additional attributes the IdP may have set will appear.
     Typically the LDAP attribute names are used.
 
-fedusername:: pseudonym@idpdomain
-urn:oid:1.3.6.1.4.1.5923.1.1.1.6:: pseudonym@idpdomain
+fedusername:: pseudonym@idpdomain, for example: FXyysxhM4F6d3DIwrtoiFdi0i@zxidp.org
+
+    The ~fedusername~ attribute is a helper for the SP web sites that
+    are fixated on the notion of needing a username and/or requiring
+    the username to look like an email. By packaging the psedonym this
+    way it is easy to get them to work with minimal modification.
+
+    N.B. Although it looks like an email address, it is not. Do not try
+    sending mail to it (unless you hack your mailserver to understand it).
+
+urn:oid:1.3.6.1.4.1.5923.1.1.1.6:: pseudonym@idpdomain (aka ~eduPersonPrincipalName~)
+
+    This is essentially the same as ~fedusername~, but it seems in some
+    shibboleth federations this is the right attribute name. At least
+    protectnetwork.org works this way.
 
 <<ignore:
 http://www.protectnetwork.org/support/policies/attribute-release-policy
