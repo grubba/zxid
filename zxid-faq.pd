@@ -1421,21 +1421,402 @@ different decoding engines.
     see above. Downside is that the payload can't really be
     binary, unless you base64 encode twice.
 
-11. EncryptedAssertion and EncryptedID: how is the key
-    specified? EncryptedKey ought to be the method of
-    choice.
+11. EncryptedAssertion and EncryptedID: how is the EncryptedKey
+    found?
 
     a. The EncryptedData/KeyInfo/RetrievalMethod references the Id attribute of
        the EncryptedKey element, which is sister of the EncryptedData.
+	Shibboleth 2010 can be kludged to work with this method if
+	EncryptedKey element has Recipient XML attribute equal to the
+        EntityID of the SP. This is nowhere well documented, but appears
+        to work.
+
     b. EncryptedKey is child of EncryptedData/KeyInfo, i.e.
        EncryptedData/KeyInfo/EncryptedKey. Shibboleth SP appears to use
-       this latter method as of 2010.
+       this latter method as of 2010. Scott ackowledged method (a) as
+       also valid and will fix Shibboleth SP.
 
     See saml-core-2.0-os.pdf, sec 2.2.4 Element <EncryptedID>, p.14, l.495
     specifies that EncryptedData and EncryptedKey are sister elements.
     See also ll.515-521 for schema fragment.
     Sec 2.3.4 Element <EncryptedAssertion> on p.17 contains similar language.
     as does 2.7.3.2 Element <EncryptedAttribute> on p.31.
+
+<<ignore:
+†Oliver:†2010-09-06 08:06:29 DEBUG OpenSAML.MessageDecoder.SAML2 [30]: extracting issuer from SAML 2.0 protocol message
+2010-09-06 08:06:29 DEBUG OpenSAML.MessageDecoder.SAML2 [30]: message from (https://zxidp.org/idp)
+2010-09-06 08:06:29 DEBUG OpenSAML.MessageDecoder.SAML2 [30]: searching metadata for message issuer...
+2010-09-06 08:06:29 DEBUG OpenSAML.SecurityPolicyRule.MessageFlow [30]: evaluating message flow policy (replay checking on, expiration 60)
+2010-09-06 08:06:29 DEBUG XMLTooling.StorageService [30]: inserted record (R6AEwkbaM6nahxpvSNOyr0dTe) in context (MessageFlow)
+2010-09-06 08:06:29 DEBUG Shibboleth.SSO.SAML2 [30]: processing message against SAML 2.0 SSO profile
+2010-09-06 08:06:29 ERROR Shibboleth.SSO.SAML2 [30]: Unable to locate an encrypted key.
+[12:07:53]†sampo.kellomaki:†Ok, looking for encrypted key.
+[12:10:41]†?†This is is what I sent on the wire.
+[12:11:49]†Oliver:†ok let me make a diff and see if that is what i received
+[12:13:30]†sampo.kellomaki:†If we analyze this you can see that EncryptedKey is sister element of EncryptedData element.
+[12:14:48]†Oliver:†ok it is exactly identical to what i have in the log
+[12:15:28]†sampo.kellomaki:†The KeyInfo of the EncryptedData references #EK39 and the EncryptedKey has Id attribute EK39
+[12:15:43]†?†That is the mechanism by which it is supposed to find the encrypted key.
+[12:16:17]†?†Now the next step is that EncryptedKey itself has KeyInfo that contains X509 certificate.
+[12:16:45]†?†That certificate is supposed to be your SP's encryption certificate, taken from your metadata.
+[12:17:22]†?†Do you follow me?
+[12:17:41]†Oliver:†yes
+[12:18:43]†sampo.kellomaki:†Now, at cursory inspection the cert in the message matches the cert in your metadata.
+[12:19:01]†?†Can you spot any error here?
+[12:19:20]†Oliver:†let me do a diff to double check ... one sec
+[12:19:56]†sampo.kellomaki:†Your metadata says you are using same certificate for encryption and signing.
+[12:20:48]†?†Next verification would be to see if your metadata matches the certificate actually used by SP at this step.
+[12:22:25]†?†I think the log messages that Scott provides are too terse to analyze this problem. Giving one blanket "Unable to locate an encrypted key" error message for all potential points of failure outlined thus far is not sufficient.
+[12:23:15]†?†I have to go eat now. I hope these ideas help. I'll be back in an hour.
+[12:23:35]†?†You do have credentials on zxidp.org so you can reproduce all this at will, right?
+[12:23:45]†Oliver:†i am checking ... but so far everything looks identical to what is in the log
+[12:23:58]†?†i have an account there yes
+[12:24:49]†sampo.kellomaki:†Good. Talk to you in an hour.
+[12:25:15]†Oliver:†enjoy your lunch
+[13:50:51]†sampo.kellomaki:†I'm back
+[13:51:19]†Oliver:†hey
+[13:52:09]†?†double checked the certs in fhe configuration and compared them to what you were sending and they are identical
+[13:52:53]†sampo.kellomaki:†Next theory why it is not working?
+[13:54:23]†Oliver:†as you might have noticed ... i am not an saml expert ... so I don&apos;t really have a theory why it is not working
+[13:54:57]†?†the strange thing is that it seems to work fine with protectnetwork and the kantara idp
+[13:55:03]†sampo.kellomaki:†Huh, I actually thought you were SAML knowledgeable or at least wanted to learn and become SAML expert?
+[13:55:52]†Oliver:†i am doing the system administration for kantara ... and very much interested in saml and learning more about it
+[13:56:02]†?†but still far from being an expert
+[13:56:09]†sampo.kellomaki:†Can you capture the wire message from protect network?
+[13:56:46]†?†For example turn off JavaScript and perform the login. When it stops on the POST page, save that page so you can see what the IdP is sending to the SP.
+[13:56:47]†Oliver:†sure let me login via protect network and capture it ... once sec
+[13:57:29]†?†i can see the wire message in the logs
+[13:57:34]†?†just once sec
+[14:00:22]†*†Oliver posted file protect-network.debug to members of this chat
+[14:00:42]†?†here is what i got from them
+[14:01:25]†sampo.kellomaki:†THe assertion is not encrypted at all!
+[14:02:01]†?†That leaves them open to attacks by infected web browsers.
+[14:02:19]†?†The so called active intemediary man in the middle attack.
+[14:02:55]†?†Can you make similar verification to see if Kantara IdP encrypts the assertion?
+[14:02:57]†Oliver:†oh you wanted the encrypted version?
+[14:03:25]†sampo.kellomaki:†If encrypted version was passed on the wire, I want to see it.
+[14:04:28]†?†If https is used, the most reliable place to capture is stopthe POST flow just before the form with the assertion is posted to the SP. Give me the content of the SAMLResponse form field.
+[14:04:29]†Oliver:†ok let me try the turn off  javascript  thing then
+[14:08:53]†*†Oliver posted file encrypted.txt to members of this chat
+[14:09:22]†?†this is the enctypted version from protect network
+[14:13:00]†sampo.kellomaki:†Analyzing...
+[14:16:05]†?†Ok, I see the difference: I use EncryptedData/KeyInfo/RetrievalMethod to designate the EncryptedKey where as protectednet uses EncryptedData/KeyInfo/EncryptedKey
+[14:16:24]†?†Schemawise both appear valid and I support both in my SP.
+[14:16:35]†Oliver:†ok
+[14:17:08]†sampo.kellomaki:†Which code does protect-network use?
+[14:17:22]†Oliver:†so you think it is a bug in shibboleth?
+[14:17:42]†sampo.kellomaki:†protected-network uses shibboleth?
+[14:17:51]†Oliver:†no that is our sp
+[14:17:59]†?†i don&apos;t know what they use
+[14:18:07]†sampo.kellomaki:†Yes, I think it is bug in shibboleth SP. It should accept either way of doing it.
+[14:18:41]†Oliver:†ok so maybe we should forward that info to scott
+[14:18:45]†sampo.kellomaki:†What software do you use for Kantara IdP?
+[14:19:02]†Oliver:†simplesamlphp
+[14:19:27]†sampo.kellomaki:†Can you capture their output and see how they designate the EncryptedKey?
+[14:19:49]†Oliver:†sure you want the decrypted version only right?
+[14:20:20]†sampo.kellomaki:†Meanwhile, I will add to my IdP an option to generate it the EncryptedData/KeyInfo/EncryptedKey way.
+[14:20:37]†?†Since the problem is with encryption, I want the encrypted version.
+[14:21:53]†*†Oliver posted file encrypted.txt to members of this chat
+[14:22:05]†?†oops sorry wrong file
+[14:22:11]†?†one sec
+[14:22:18]†*†Oliver posted file encrypted-simplesamlphp.txt to members of this chat
+[14:22:24]†sampo.kellomaki:†Fundamentally this is a bug in xml-enc and saml specs in not specifying only one way of doing it.
+[14:23:11]†Oliver:†the second one is the correct file (the one that says simplesamlphp) the first one was the one from protecnetwork
+[14:23:22]†sampo.kellomaki:†Yes, I am looking at it...
+[14:25:44]†?†The encrytped-simplesamlphp.txt does not contain encrypted assertion (or ancrypted anything).
+[14:26:14]†?†If this really is what you captured from the POST SAMLResponse field, then your IdP is vulnearable to the MITM attack.
+[14:30:30]†?†You are using the POST binding in all cases, right?
+[14:30:50]†Oliver:†yes
+[14:30:56]†?†one sec looking at the xml
+[14:31:19]†sampo.kellomaki:†That is important because encrypting the assertion is not needed in artifact binding.
+[14:32:38]†Oliver:†yes i see the encrypted is missing
+[14:33:49]†?†i need to update the software on the ipd anyway. so i will try to get this to work right during that maintenance
+[14:35:22]†?†thanks for pointing that out
+[14:37:20]†sampo.kellomaki:†See saml-bindings-2.0-os.pdf, sec 3.5.5.2 Security Considerations, p.24, ll.847-851
+[14:37:53]†?†After publication it was understood that the SHOULD NOT could be eliminated if EncryptedAssertion is used.
+[14:39:09]†Oliver:†noted
+[14:53:14]†sampo.kellomaki:†See saml-core-2.0-os.pdf, sec 2.2.4 Element <EncryptedID>, p.14, l.495 specifies that EncryptedData and EncryptedKey are sister elements. Thus this really appears to be a bug in shibboleth SP.
+[14:53:50]†?†See also ll.515-521 for schema fragment.
+[14:55:59]†Oliver:†ok
+[14:56:30]†sampo.kellomaki:†Sec 2.3.4 Element <EncryptedAssertion> on p.17 contains similar language.
+[14:56:49]†Oliver:†so what do we do? include scott in the loop?
+[14:57:00]†sampo.kellomaki:†Please raise this issue with Scott.
+[14:57:14]†Oliver:†ok
+[14:57:20]†?†will do
+[14:57:55]†sampo.kellomaki:†Meanwhile I will implement an option to be spec noncompliant so that it still works with his buggy code.
+[15:04:23]†Oliver:†ok sent him an email
+[15:04:28]†?†lets see what he says
+[15:08:41]†sampo.kellomaki:†It is quite sad that sec 6 SAML and XML Encryption Syntax and Processing, p.73, does not provide any clarification on this matter either. The core spec does not provide a single example of EncryptedID or EncryptedAssertion. Seems OASIS SSTC was pretty sloppy when defining this part of the spec.
+[15:10:33]†Oliver:†yes that should be defined in detail
+[15:19:23]†sampo.kellomaki:†Umm, it seems you did not Cc me in the mail. Please let me know what he replies.
+[15:21:43]†Oliver:†oops sorry
+[15:21:56]†?†yes will forward the answer as soon as i get it
+[16:13:42]†sampo.kellomaki:†Little progress now:
+[16:13:45]†?†opensaml::FatalProfileException at (http://kantarainitiative.org/Shibboleth.sso/SAML2/POST)
+ 
+Unable to locate satisfiable bearer SubjectConfirmation in assertion.
+[16:14:24]†?†I guess that means it is at least able to decrypt. Can you paste there the corresponding log lines?
+[16:15:03]†Oliver:†oncesec
+[16:17:03]†*†Oliver posted file shibd.log to members of this chat
+[16:19:43]†sampo.kellomaki:†2010-09-06 12:13:16 ERROR OpenSAML.SecurityPolicyRule.BearerConfirmation [30]: bearer confirmation failed with recipient mismatch
+[16:20:37]†?†I have a hunch on this. I'll check the specs.
+[16:20:46]†Oliver:†ok
+[16:21:02]†sampo.kellomaki:†Is there any way I could just use http request to a CGI to obtain a tail of your log?
+[16:21:51]†Oliver:†we don&apos;t have anything setup right now
+[16:24:10]†sampo.kellomaki:†There may be a good policy reason why not to set up such log access, but if there is no rule against it, it would be pretty trivial php or perl CGI script to write.
+[16:24:34]†?†Think about that while I think about BearerConfirmation :-)
+[16:25:56]†Oliver:†yes would not be too hard to write a little php for that but I would have to check with joni if she is ok with it
+[16:26:28]†?†i think there have a national holiday there today though
+[16:26:35]†?†they
+[16:26:53]†sampo.kellomaki:†Hope that means Scott has time to read mails :-)
+[16:27:22]†Oliver:†true
+[16:53:03]†sampo.kellomaki:†One step further.
+[16:53:04]†?†shibsp::ConfigurationException at (http://kantarainitiative.org/Shibboleth.sso/SAML2/cookie:982a07ae)
+ 
+Shibboleth handler invoked at an unconfigured location.
+[16:53:49]†Oliver:†just sent you the responce from scott
+[16:54:22]†?†do you want the logs from the errorﬂ
+[16:54:23]†?†?
+[16:56:12]†sampo.kellomaki:†At least the tail of the log from DEBUG Shibboleth.SSO.SAML2 [30]: extracting issuer from SAML 2.0 assertion onwards
+[16:56:28]†?†Hopefully that is so little you can just paste it here.
+[16:56:30]†Oliver:†one sec
+[16:56:40]†sampo.kellomaki:†I'll check Scott's response...
+[16:59:14]†Oliver:†2010-09-06 12:52:36 DEBUG Shibboleth.SSO.SAML2 [46]: extracting issuer from SAML 2.0 assertion
+2010-09-06 12:52:36 DEBUG OpenSAML.SecurityPolicyRule.MessageFlow [46]: evaluating message flow policy (replay checking on, expiration 60)
+2010-09-06 12:52:36 DEBUG XMLTooling.StorageService [46]: inserted record (Ajq-JsiQEM4thfqIZ4T911pUp) in context (MessageFlow)
+2010-09-06 12:52:36 DEBUG OpenSAML.SecurityPolicyRule.XMLSigning [46]: validating signature profile
+2010-09-06 12:52:36 DEBUG XMLTooling.TrustEngine.ExplicitKey [46]: attempting to validate signature with the peer&apos;s credentials
+2010-09-06 12:52:36 DEBUG XMLTooling.TrustEngine.ExplicitKey [46]: signature validated with credential
+2010-09-06 12:52:36 DEBUG OpenSAML.SecurityPolicyRule.XMLSigning [46]: signature verified against message issuer
+2010-09-06 12:52:36 DEBUG OpenSAML.SecurityPolicyRule.BearerConfirmation [46]: assertion satisfied bearer confirmation requirements
+2010-09-06 12:52:36 DEBUG Shibboleth.SSO.SAML2 [46]: decrypted NameID: &lt;sa:NameID xmlns:sa=&quot;urn:oasis:names:tc:SAML:2.0:assertion&quot; Format=&quot;urn:oasis:names:tc:SAML:2.0:nameid-format:transient&quot; NameQualifier=&quot;https://zxidp.org/idp&quot; SPNameQualifier=&quot;https://kantarainitiative.org/shibboleth-sp&quot;&gt;TdDu9HPCRGB3cdEaRgVtdgmkD&lt;/sa:NameID&gt;
+2010-09-06 12:52:36 DEBUG Shibboleth.SSO.SAML2 [46]: SSO profile processing completed successfully
+2010-09-06 12:52:36 DEBUG Shibboleth.SSO.SAML2 [46]: extracting pushed attributes...
+2010-09-06 12:52:36 DEBUG Shibboleth.AttributeExtractor.XML [46]: skipping unmapped NameID with format (urn:oasis:names:tc:SAML:2.0:nameid-format:transient)
+2010-09-06 12:52:36 INFO Shibboleth.AttributeExtractor.XML [46]: skipping unmapped SAML 2.0 Attribute with Name: urn:liberty:disco:2006-08:DiscoveryEPR, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
+2010-09-06 12:52:36 INFO Shibboleth.AttributeExtractor.XML [46]: skipping unmapped SAML 2.0 Attribute with Name: idpinfo, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
+2010-09-06 12:52:36 INFO Shibboleth.AttributeExtractor.XML [46]: skipping unmapped SAML 2.0 Attribute with Name: cn, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
+2010-09-06 12:52:36 INFO Shibboleth.AttributeExtractor.XML [46]: skipping unmapped SAML 2.0 Attribute with Name: zxididp, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
+2010-09-06 12:52:36 DEBUG Shibboleth.SSO.SAML2 [46]: resolving attributes...
+2010-09-06 12:52:36 DEBUG Shibboleth.AttributeResolver.Query [46]: found AttributeStatement in input to new session, skipping query
+2010-09-06 12:52:36 DEBUG Shibboleth.SessionCache [46]: creating new session
+2010-09-06 12:52:36 DEBUG Shibboleth.SessionCache [46]: storing new session...
+2010-09-06 12:52:36 DEBUG XMLTooling.StorageService [46]: inserted record (session) in context (_a1e19c299c142bf732871dbff386f7d9)
+2010-09-06 12:52:36 DEBUG XMLTooling.StorageService [46]: inserted record (TdDu9HPCRGB3cdEaRgVtdgmkD) in context (NameID)
+2010-09-06 12:52:36 DEBUG XMLTooling.StorageService [46]: inserted record (Ajq-JsiQEM4thfqIZ4T911pUp) in context (_a1e19c299c142bf732871dbff386f7d9)
+2010-09-06 12:52:36 INFO Shibboleth.SessionCache [46]: new session created: ID (_a1e19c299c142bf732871dbff386f7d9) IdP (https://zxidp.org/idp) Protocol(urn:oasis:names:tc:SAML:2.0:protocol) Address (93.108.147.200)
+2010-09-06 12:52:36 DEBUG Shibboleth.SSO.SAML2 [46]: ACS returning via redirect to: cookie%3A982a07ae
+[17:01:58]†sampo.kellomaki:†It appears SP side session was created all right.
+[17:02:20]†?†I think we are now at the point where SAML is no longer involved. 
+[17:02:24]†Oliver:†yes I still need to map some attributes but looks allright
+[17:02:43]†sampo.kellomaki:†Where did that cookie%3A982a07ae come from?
+[17:03:08]†?†It appears that the equals sign got URI escaped and perhaps that is throwing it off?
+[17:04:30]†Oliver:†is there maybe a ? missing?
+[17:04:59]†sampo.kellomaki:†That could be, as well.
+[17:05:50]†?†Lets entertain the theory that cookie%3A982a07ae came from the RelayState field and investigate how it was passed in AuthnRequest and Response.
+[17:08:52]†Oliver:†but then the same thing should happen with the protect network
+[17:09:09]†sampo.kellomaki:†If you look at the original HTTP redirect that is made to convey AuthnRequest, you can see QueryString argument RelayState=cookie%3A8cd0ff4c
+[17:10:11]†?†So clearly your SP (or WAYF service?) already passes it in that format. As far as I have understood the protocol, I am not supposed to decode it (nor reencode).
+[17:12:11]†?†If I intercept a POST, I can see the field <input name="RelayState" value="cookie%3A982a07ae" type="hidden">
+[17:13:04]†?†Perhaps the field should have been <input name="RelayState" value="cookie=982a07ae" type="hidden">
+[17:13:42]†?†I.e. the RelayState gets encoded twice because the browser, when posting the form will encode again.
+[17:14:13]†Oliver:†i think it needs to be a :
+[17:14:37]†?†this is what i am getting from protect network
+[17:14:39]†?†&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot;&gt;
+ 
+    &lt;body onload=&quot;document.forms[0].submit()&quot;&gt;
+        &lt;noscript&gt;
+            &lt;p&gt;
+                &lt;strong&gt;Note:&lt;/strong&gt; Since your browser does not support JavaScript,
+                you must press the Continue button once to proceed.
+            &lt;/p&gt;
+        &lt;/noscript&gt;
+        
+        &lt;form action=&quot;http://kantarainitiative.org/Shibboleth.sso/SAML2/POST&quot; method=&quot;post&quot;&gt;
+ 
+            &lt;div&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;RelayState&quot; value=&quot;cookie:109e37f6&quot;/&gt;
+[17:14:40]†?†...
+[17:15:10]†sampo.kellomaki:†Hex 3a is a colon? Not equals?
+[17:15:34]†Oliver:†i think so yes
+[17:15:44]†?†looked it up
+[17:15:51]†sampo.kellomaki:†I'll try this and see if it fixes...
+[17:17:29]†Oliver:†ok
+[17:30:56]†sampo.kellomaki:†It went through!
+[17:31:31]†?†But I landed back on the Current Members page where I had started by clicking the Log In.
+[17:31:51]†?†The Log In still appears.
+[17:32:00]†Oliver:†yes probably some attribute mapping missing hold on
+[17:32:01]†sampo.kellomaki:†How do I know that I am logged in?
+[17:32:33]†?†Shouldn't Single Logout button of some sort appear (and Log In disappear)?
+[17:32:53]†Oliver:†yes your username appears
+[17:32:57]†?†hold one one second
+[17:33:05]†?†need to logout and login to try it
+[17:33:24]†sampo.kellomaki:†But how can I logout? I do not see any logout button?
+[17:33:40]†Oliver:†no i do have to logout to try it here
+[17:33:55]†sampo.kellomaki:†So zap cookies is the only way?
+[17:34:34]†Oliver:†2010-09-06 13:34:04 DEBUG Shibboleth.AttributeDecoder.NameID [28]: decoding NameIDAttribute (persistent-id) from SAML 2 NameID with Format (urn:oasis:names:tc:SAML:2.0:nameid-format:persistent)
+2010-09-06 13:34:04 INFO Shibboleth.AttributeExtractor.XML [28]: skipping unmapped SAML 2.0 Attribute with Name: urn:liberty:disco:2006-08:DiscoveryEPR, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
+2010-09-06 13:34:04 INFO Shibboleth.AttributeExtractor.XML [28]: skipping unmapped SAML 2.0 Attribute with Name: idpinfo, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
+2010-09-06 13:34:04 INFO Shibboleth.AttributeExtractor.XML [28]: skipping unmapped SAML 2.0 Attribute with Name: zxididp, Format:urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
+[17:34:36]†sampo.kellomaki:†FYI, the page I am using for these tests: http://kantarainitiative.org/confluence/display/GI/Current+Members
+[17:35:22]†?†Those attributes can be safely ignored for time being.
+[17:35:34]†Oliver:†where do you pass the username?
+[17:35:40]†?†what attribute?
+[17:35:48]†?†and format?
+[17:36:02]†sampo.kellomaki:†No attribute. I pass pseudonymous NameID.
+[17:36:16]†?†That appears in Subject element of the SAML assertion.
+[17:36:47]†?†In your log 2010-09-06 13:34:04 DEBUG Shibboleth.AttributeDecoder.NameID [28]: decoding NameIDAttribute (persistent-id) from SAML 2 NameID with Format (urn:oasis:names:tc:SAML:2.0:nameid-format:persistent)
+[17:37:01]†?†would appear to correspond to that.
+[17:37:40]†Oliver:†ok so let me try to map NameID to our username
+[17:38:28]†sampo.kellomaki:†But perhaps we need to take a step back at this point: assume a random user of zxidp.org wants to access kantara. How would kantara know that user (identified by persistent pseudonym) is in fact a user that is allowed to access Kantara?
+[17:38:58]†?†I vaguely recollect that last time I asked this question, the answer was that Kantara does not care.
+[17:39:02]†Oliver:†all end up in the standard user group first
+[17:39:22]†?†where you see the same as if you were not logged in
+[17:39:44]†?†and then you contact staff and ask to be assigned to another group
+[17:39:54]†sampo.kellomaki:†But you should see at least the logout button or some indication that you are logged in.
+[17:40:43]†Oliver:†yes you see your username where it says login etc
+[17:40:53]†?†can edit your profile
+[17:40:55]†?†etc.
+[17:41:12]†sampo.kellomaki:†"username"? Is that something Kantara assigns internally?
+[17:42:01]†Oliver:†it is something like omaerz@protectnetwork.com
+[17:42:30]†sampo.kellomaki:†Are you expecting the IdP to pass you that?
+[17:42:40]†Oliver:†yes
+[17:43:03]†sampo.kellomaki:†That looks like globally unique id, a correlation handle.
+[17:43:05]†Oliver:†that is why i was looking at the attributes
+[17:43:14]†sampo.kellomaki:†That  is privacy hostile.
+[17:43:50]†Oliver:†that is the way the shibboleth plugin for confluence works
+[17:44:19]†sampo.kellomaki:†Liberty Alliance spent 8 years engineering relationshipwise pseudonymous privacy friendly protocols and now you want global correlation handle.
+[17:44:23]†Oliver:†we can map that username, name and email address if we get it from an idp
+[17:44:39]†?†i don&apos;t
+[17:44:53]†?†the people who implement the plugin do
+[17:45:20]†?†i was only asked to set that system up in that way
+[17:45:41]†sampo.kellomaki:†Basically my IdP will give you persistent pseudonym. That allows you to keep your local database that knows some things about me.
+[17:46:18]†?†Towards some other SP the IdP will give a different pseudonym so that the other site can not correlate information with Kantara.
+[17:46:27]†?†This is very important for privacy.
+[17:46:58]†?†In the end it reduces to what is the minimum amount of information that Kantara needs to know about me.
+[17:47:26]†Oliver:†ok
+[17:47:30]†sampo.kellomaki:†Perhaps some email is needed, but I would hope to use different email at each SP.
+[17:48:17]†Oliver:†email is optional and you can fill it in manually in confluence
+[17:48:22]†sampo.kellomaki:†How tightly are the mailinglists integrated to the web site?
+[17:48:22]†Oliver:†same with name
+[17:48:38]†?†no mailman integration
+[17:49:02]†sampo.kellomaki:†Ok, so I can SSO with IdP and then selectively supply the pieces of information and the versions of those pieces just for Kantara.
+[17:49:04]†Oliver:†do you know of a saml module for mailman?
+[17:49:27]†sampo.kellomaki:†In that case, wouldn't it work well to just use the persistent pseudonym as username?
+[17:49:32]†Oliver:†the only thing i need to get this to work is a username
+[17:49:43]†?†yes let me try
+[17:49:53]†?†what does that pseudonym look like?
+[17:50:14]†sampo.kellomaki:†Base64 encoded 128bit random number.
+[17:51:00]†Oliver:†i have to make sure they are unique ... so some other idp does not give us the same username
+[17:51:09]†?†i.e. you second ipd
+[17:51:14]†?†idp
+[17:51:25]†sampo.kellomaki:†<sa:NameID xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" NameQualifier="https://zxidp.org/idp" SPNameQualifier="https://kantarainitiative.org/shibboleth-sp">FRsLTG-ZdKuVJ-Pes_MiQ44cz</sa:NameID>
+[17:51:54]†?†In this XML snippet you see NameQualifier.
+[17:52:26]†?†That is essentially the namespace inside which the 128bit thing (FRsLTG-ZdKuVJ-Pes_MiQ44cz) is unique.
+[17:53:18]†?†So to form your username, you could concatenate the two. You could even use @ character as a separator, but that still would not make it workable email.
+[17:54:04]†?†BTW, the SPNameQualifier for you is always same. But for IdP serving multiple SPs that also forms important part of the namespace.
+[17:55:06]†?†Another approach you could take is simply do a sha1 hash over the canonical serialization of the whole NameID element.
+[17:55:20]†?†and use that as username.
+[17:56:13]†?†When SAML was designed, the choice was to identify IdP by a URL rather than just domain name. This makes it difficult to construct any meaningful email address that would include IdP identification.
+[17:56:36]†?†You can talk to Scott about that. May be he remembers why this design was adopted.
+[17:57:17]†Oliver:†hmm this is really ugly: https://zxidp.org/idp!https://kantarainitiative.org/shibboleth-sp!frsltg-zdkuvj-pes_miq44cz
+[17:57:25]†?†also this will break confluence
+[17:57:57]†sampo.kellomaki:†That would be a bug in Confluence, IMNSHO.
+[17:57:57]†Oliver:†like when click on a user to see his profile
+[17:58:39]†?†is it really such a big deal if you passed some unique identifier that looks more like an email address?
+[17:59:00]†?†i mean you could stick the id in there
+[17:59:10]†sampo.kellomaki:†How about this: FRsLTG-ZdKuVJ-Pes_MiQ44cz@yBeCTPt0NQ2vMuI-srKw5h4N2i8
+[17:59:12]†Oliver:†something like sp!frsltg-zdkuvj-pes_miq44cz@zxidp.org
+[17:59:25]†?†or that
+[18:00:03]†sampo.kellomaki:†where  the FR stuff is the persistent pseudonym and the yBe stuff is safe_base64 encoded sha1 hash of https://zxidp.org/idp
+[18:01:10]†Oliver:†sure
+[18:01:11]†sampo.kellomaki:†Personally I would find  FRsLTG-ZdKuVJ-Pes_MiQ44cz@zxidp.org ok as long as you do not make any assumption that you can actually send mail there :-0
+[18:01:21]†Oliver:†no
+[18:01:28]†?†it is not used as an email address
+[18:01:50]†?†the email address CAN be passed as an attribute but that is optional
+[18:02:41]†?†if it is passed then only to pre-populate the email field in confluence the very first time somebody logs in
+[18:02:42]†sampo.kellomaki:†If you adopt that convention it would be really cool if you also documented it so that could become a widely adopted solution and convention to this problem in the confluence and even wider world.
+[18:03:23]†?†What attribute others are passing to you to pick the user name?
+[18:03:31]†Oliver:†you mean the †FRsLTG-ZdKuVJ-Pes_MiQ44cz type usernames?
+[18:03:51]†sampo.kellomaki:†Does anyone else try to pass you persistent pseudonym?
+[18:04:14]†Oliver:†protectnetwork is passing &lt;protectnetwork username&gt;@protectnetwork.com
+[18:04:37]†?†kantara idp is passing the username without the @... at the then
+[18:04:52]†?†end
+[18:04:54]†sampo.kellomaki:†I guess what I am saying that if there is some industry convention (that I do not know about), I could pass the pseudonym the same way.
+[18:05:17]†?†So for kantaraidp you need to add the @idp.ki
+[18:05:20]†?†?
+[18:05:36]†Oliver:†i guess i could add it
+[18:05:50]†sampo.kellomaki:†What is the name of the attribute protectnetwork uses to pass this?
+[18:06:04]†Oliver:†hold on let me look it up
+[18:06:24]†?†http://www.protectnetwork.org/support/policies/attribute-release-policy
+[18:06:38]†?†we do not user firstname lastname though
+[18:06:58]†?†as the confluence plugin expects the whole name in one field
+[18:07:46]†?†so urn:oid:1.3.6.1.4.1.5923.1.1.1.6 is what we use for the username
+[18:08:00]†?†they do not pass the email
+[18:08:02]†?†to us
+[18:08:38]†sampo.kellomaki:†That is, urn:mace:dir:attribute-def:eduPersonPrincipalName .
+[18:09:46]†Oliver:†but they do not pass it to us
+[18:09:53]†?†for whatever reason
+[18:10:00]†?†they pass it to others
+[18:10:24]†sampo.kellomaki:†In urn:oid:1.3.6.1.4.1.5923.1.1.1.6 they the pass the email like thing.
+[18:10:43]†Oliver:†yes
+[18:11:06]†sampo.kellomaki:†So they do not pass email attribute, but pass in eduPersonPrincipalName something that most of the time is the email.
+[18:11:33]†Oliver:†they do not pass either one
+[18:11:58]†?†neither the real email nor the first + lastname in one field
+[18:12:12]†sampo.kellomaki:†Ok, decision now: do I reconfig my IdP to pass in urn:oid:1.3.6.1.4.1.5923.1.1.1.6 something like FRsLTG-ZdKuVJ-Pes_MiQ44cz@zxidp.org 
+[18:12:28]†Oliver:†sure that looks good
+[18:12:39]†sampo.kellomaki:†or do you just add the @zxidp.org to the persistent pseudonym I pass to you (i.e. no change for me)?
+[18:13:15]†?†I take it that you pick the first option. Very well. It will take me perhaps 20min or so.
+[18:15:37]†Oliver:†ok that would really be the best solution
+[18:15:52]†?†i am looking at a way how i could put the name together on my side
+[18:16:07]†sampo.kellomaki:†I suspect there are other sysadmins who would appreciate this as well.
+[18:16:16]†Oliver:†but it would probably take longer that 20 mins
+[18:17:02]†?†this is the config for shib + confluence
+[18:18:52]†?†https://studio.plugins.atlassian.com/wiki/display/SHBL/How+to+Shibbolize+Confluence
+[18:19:43]†?†ok gotta run to the store will be back in 30 mins
+[18:19:59]†sampo.kellomaki:†Ok, I'll do the same. Back in 30 min.
+[19:10:48]†?†Back.
+[19:01:38]†Oliver:†oral exam
+[19:02:53]†?†oops wrong window
+[19:44:05]†Sampo Kellom‰ki:†I am now sending urn:oid:1.3.6.1.4.1.5923.1.1.1.6 but I still am not considered logged in.
+[19:44:40]†Oliver:†let me look at the log one sec
+[19:49:34]†?†was the format
+[19:50:23]†?†you are sending it as urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified
+[19:50:37]†?†added it to the attribute map and now it works
+[19:50:54]†Sampo Kellom‰ki:†Should I tweak my code to send something other than unspec?
+[19:51:23]†Oliver:†no it is fine i added it to the attribute map
+[19:51:42]†Sampo Kellom‰ki:†I see protectednetwork sent urn:oasis:names:tc:SAML:2.0:attrname-format:uri
+[19:51:51]†?†Perhaps I do the same.
+[19:52:02]†Oliver:†ok
+[19:57:59]†Sampo Kellom‰ki:†Ok, now I see my login succeed.
+[19:58:31]†?†I'll implement the Recipient work around Scott suggests.
+[20:12:25]†Oliver:†just forwarded you another mail from scott that i have received
+[20:14:32]†Sampo Kellom‰ki:†In the Recipient case it is not clear what should go to that field.
+[20:15:15]†Oliver:†i don&apos;t know either
+[20:15:24]†?†:(
+[20:17:06]†Sampo Kellom‰ki:†I'll put the EntotyID URL and we will see.
+[21:05:59]†?†Works with the Recipient workaround.
+[21:06:18]†?†On the Kantara site, where can I edit my test user's profile?
+[21:08:58]†?†I notice you lowercase the persistent pseudonym when you form the username. You realize that my uniqueness guarantee assumes full 64 character characterset. By lowercasing you loose nearly one bit of search space :-)
+[21:09:02]†?†Out of 128.
+[21:09:16]†?†I guess you are still ok, statistically speaking.
+[22:11:14]†Oliver:†that is an intersting point
+[22:11:31]†?†i wonder if confluence does that or the shib plugin
+[22:12:00]†?†you can edit your userprofile when you click on your name
+[22:12:26]†?†and then there should be a dropdown menu with the item profile
+[22:12:48]†?†once on your profile you need to click on the edit link
+[22:13:02]†Sampo Kellom‰ki:†No doubt this needs JavaScript...
+[22:15:45]†?†The user name appears in the "Full Name" field. Is there no provision for human readable nick name?
+[22:16:06]†Oliver:†you can just overwrite that
+[22:16:19]†?†click on the edit link
+[22:16:36]†?†it is put in there if no name is passed from the idp
+[22:16:51]†?†confluence probably needs something in there
+[22:16:53]†Sampo Kellom‰ki:†The internal federated username is just initial value for Full Name - I see.
+[22:18:13]†Oliver:†yup
+[22:18:45]†Sampo Kellom‰ki:†Ok, appears to work.
+[22:19:30]†?†I'll make a new release of zxid and upgrade idp.tas3.eu to the latest and greatest. Then we can consider this issue closed for time being.
+[22:19:40]†Oliver:†cool
+>>
 
 97.13.4 Non-obvious ID-WSF
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

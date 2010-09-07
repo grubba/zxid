@@ -12,6 +12,7 @@
  * 10.10.2009, added zxid_az() family --Sampo
  * 12.2.2010,  added locking to lazy loading --Sampo
  * 31.5.2010,  generalized to several PEPs model --Sampo
+ * 7.9.2010,   merged patches from Stijn Levens --Sampo
  */
 
 #include "errmac.h"
@@ -165,7 +166,7 @@ static char* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const cha
   struct zx_xasa_XACMLAuthzDecisionStatement_s* az_stmt;
   struct zx_xasacd1_XACMLAuthzDecisionStatement_s* az_stmt_cd1;
   struct zx_elem_s* decision;
-  char* name;
+  char* res;
 
 #if 0
   hdr = zx_NEW_e_Header(cf->ctx);
@@ -180,6 +181,8 @@ static char* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const cha
 #else
   hdr = 0;
 #endif
+
+  /* Prepare request according to the version */
 
   body = zx_NEW_e_Body(cf->ctx);
   if (!strcmp(cf->xasp_vers, "xac-soap")) {
@@ -217,6 +220,8 @@ static char* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const cha
     }
   }
 
+  /* Perform the network I/O for the call (connect to PDP) */
+
 #if 0
   //ss = zx_ref_str(cf->ctx, "https://idpdemo.tas3.eu:8443/zxididp?o=S");
   // http://192.168.136.42:1104/axis2/services/TestPolicy.PERMISAuthzServerHttpSoap12Endpoint/
@@ -235,6 +240,9 @@ static char* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const cha
     ERR("Missing Response or other essential element %p %p %p %p", r, r?r->Envelope:0, r && r->Envelope?r->Envelope->Body:0, r && r->Envelope && r->Envelope->Body ? r->Envelope->Body->Response:0);
     return 0;
   }
+
+  /* Parse response from the PDP. */
+
   resp = r->Envelope->Body->Response;
   if (!zxid_saml_ok(cf, cgi, resp->Status, "AzResp")) {
     ERR("Response->Status no OK (%p)", resp->Status);
@@ -252,10 +260,10 @@ static char* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const cha
       ss = zx_EASY_ENC_WO_xac_Result(cf->ctx, az_stmt->Response->Result);
       if (!ss || !ss->len)
 	return 0;
-      name = ss->s;
+      res = ss->s;
       ZX_FREE(cf->ctx, ss);
-      D("Permit azstmt(%s)", name);
-      return name;
+      D("Permit azstmt(%s)", res);
+      return res;
     }
   }
   az_stmt_cd1 = resp->Assertion->xasacd1_XACMLAuthzDecisionStatement;
@@ -266,10 +274,10 @@ static char* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const cha
       ss = zx_EASY_ENC_WO_xac_Result(cf->ctx, az_stmt_cd1->Response->Result);
       if (!ss || !ss->len)
 	return 0;
-      name = ss->s;
+      res = ss->s;
       ZX_FREE(cf->ctx, ss);
-      D("Permit cd1(%s)", name);
-      return name;
+      D("Permit cd1(%s)", res);
+      return res;
     }
   }
   stmt = resp->Assertion->Statement;
@@ -280,10 +288,10 @@ static char* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const cha
       ss = zx_EASY_ENC_WO_xac_Result(cf->ctx, stmt->Response->Result);
       if (!ss || !ss->len)
 	return 0;
-      name = ss->s;
+      res = ss->s;
       ZX_FREE(cf->ctx, ss);
-      D("Permit stmt(%s)", name);
-      return name;
+      D("Permit stmt(%s)", res);
+      return res;
     }
   }
   /*if (resp->Assertion->AuthzDecisionStatement) {  }*/
@@ -328,6 +336,142 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   return zxid_az_soap(cf, cgi, ses, pdp_url, subj, rsrc, act, env);
 }
 
+// function added by Stijn
+char* zxid_pep_az_soap_pepmap_verbose(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url, struct zxid_map* pepmap)
+{
+  X509* sign_cert;
+  RSA*  sign_pkey;
+  struct zxid_map* map;
+  struct zxid_attr* at;
+  struct zxid_attr* av;
+  struct zx_xac_Attribute_s* xac_at;
+  struct zx_xac_Attribute_s* subj = 0;
+  struct zx_xac_Attribute_s* rsrc = 0;
+  struct zx_xac_Attribute_s* act = 0;
+  struct zx_xac_Attribute_s* env = 0;
+  char* name;
+
+  struct zxsig_ref refs;
+  struct zx_root_s* r;
+  struct zx_e_Header_s* hdr;
+  struct zx_e_Body_s* body;
+  struct zx_str* ss;
+  struct zx_sp_Response_s* resp;
+  struct zx_sa_Statement_s* stmt;
+  struct zx_xasa_XACMLAuthzDecisionStatement_s* az_stmt;
+  struct zx_xasacd1_XACMLAuthzDecisionStatement_s* az_stmt_cd1;
+  struct zx_elem_s* decision;
+
+  if (cf->log_level>0)
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ses&&ses->nameid?ses->nameid->gg.content:0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
+  
+  if (!pdp_url || !*pdp_url) {
+    ERR("No PDP_URL or PDP_CALL_URL set. Deny. %p", pdp_url);
+    return 0;
+  }
+
+  zxid_pepmap_extract(cf, cgi, ses, pepmap, &subj, &rsrc, &act, &env);
+
+  hdr = 0;
+
+  body = zx_NEW_e_Body(cf->ctx);
+  if (!strcmp(cf->xasp_vers, "xac-soap")) {
+    body->xac_Request = zxid_mk_az_cd1(cf, subj, rsrc, act, env); /* *** warning: assignment from incompatible pointer type */
+  } else if (!strcmp(cf->xasp_vers, "2.0-cd1")) {
+    body->xaspcd1_XACMLAuthzDecisionQuery = zxid_mk_az_cd1(cf, subj, rsrc, act, env);
+    if (cf->sso_soap_sign) {
+      refs.id = body->xaspcd1_XACMLAuthzDecisionQuery->ID;
+      refs.canon = zx_EASY_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx, body->xaspcd1_XACMLAuthzDecisionQuery);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az cd1"))
+	body->xaspcd1_XACMLAuthzDecisionQuery->Signature
+	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+      zx_str_free(cf->ctx, refs.canon);
+    }
+  } else {
+    body->XACMLAuthzDecisionQuery = zxid_mk_az(cf, subj, rsrc, act, env);
+    if (cf->sso_soap_sign) {
+      refs.id = body->XACMLAuthzDecisionQuery->ID;
+      refs.canon = zx_EASY_ENC_SO_xasp_XACMLAuthzDecisionQuery(cf->ctx, body->XACMLAuthzDecisionQuery);
+      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az"))
+	body->XACMLAuthzDecisionQuery->Signature
+	  = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+      zx_str_free(cf->ctx, refs.canon);
+    }
+  }
+  ss = zx_ref_str(cf->ctx, pdp_url);
+  r = zxid_soap_call_hdr_body(cf, ss, hdr, body);
+  //r = zxid_idp_soap(cf, cgi, ses, idp_meta, ZXID_MNI_SVC, body);
+  if (!r || !r->Envelope || !r->Envelope->Body || !r->Envelope->Body->Response) {
+    ERR("Missing Response or other essential element %p %p %p %p", r, r?r->Envelope:0, r && r->Envelope?r->Envelope->Body:0, r && r->Envelope && r->Envelope->Body ? r->Envelope->Body->Response:0);
+    return 0;
+  }
+  resp = r->Envelope->Body->Response;
+  if (!zxid_saml_ok(cf, cgi, resp->Status, "AzResp")) {
+    ERR("Response->Status no OK (%p)", resp->Status);
+    return 0;
+  }
+  if (!resp->Assertion) {
+    ERR("No Assertion in the Response (%p)", resp);
+    return 0;
+  }
+  az_stmt = resp->Assertion->XACMLAuthzDecisionStatement;
+  if (az_stmt && az_stmt->Response && az_stmt->Response->Result) {
+    decision = az_stmt->Response->Result->Decision;
+    // Stijn: don't check whether the answer is permit
+    //  if (decision && decision->content->len == sizeof("Permit")-1
+    //	&& !memcmp(decision->content->s, "Permit", sizeof("Permit")-1)) {
+      //ss = zx_EASY_ENC_WO_xac_Result(cf->ctx, az_stmt->Response->Result);
+      ss = zx_EASY_ENC_WO_xac_Response(cf->ctx, az_stmt->Response); // Stijn: encode the Response, rather than the Result
+      if (!ss || !ss->len)
+	return 0;
+      name = ss->s;
+      ZX_FREE(cf->ctx, ss);
+      D("Permit azstmt(%s)", name);
+      return name;
+ //   }
+  }
+  az_stmt_cd1 = resp->Assertion->xasacd1_XACMLAuthzDecisionStatement;
+  if (az_stmt_cd1 && az_stmt_cd1->Response && az_stmt_cd1->Response->Result) {
+    D("Stijn says: this branch is executed", 0);
+    decision = az_stmt_cd1->Response->Result->Decision;
+   // Stijn: don't check whether answer is permit
+    //if (decision && decision->content->len == sizeof("Permit")-1
+//	&& !memcmp(decision->content->s, "Permit", sizeof("Permit")-1)) {
+      //ss = zx_EASY_ENC_WO_xac_Result(cf->ctx, az_stmt_cd1->Response->Result);
+      ss = zx_EASY_ENC_WO_xac_Response(cf->ctx, az_stmt_cd1->Response); // Stijn: encode the Response
+      if (!ss || !ss->len)
+	return 0;
+      name = ss->s;
+      ZX_FREE(cf->ctx, ss);
+      D("Permit cd1(%s)", name);
+      return name;
+ //   }
+  }
+  stmt = resp->Assertion->Statement;
+  if (stmt && stmt->Response && stmt->Response->Result) {  /* Response here is xac:Response */
+    D("Stijn says: this branch is executed", 0);
+    decision = stmt->Response->Result->Decision;
+// Stijn: don't check whether answer is permit
+  //  if (decision && decision->content->len == sizeof("Permit")-1
+//	&& !memcmp(decision->content->s, "Permit", sizeof("Permit")-1)) {
+      //ss = zx_EASY_ENC_WO_xac_Result(cf->ctx, stmt->Response->Result);
+      ss = zx_EASY_ENC_WO_xac_Response(cf->ctx, stmt->Response); // Stijn: encode the response
+      if (!ss || !ss->len)
+	return 0;
+      name = ss->s;
+      D("ss->len=%d", ss->len);
+      ZX_FREE(cf->ctx, ss);
+      D("Returning stmt(%s)", name);
+      D("The length of the string is %d", strlen(name));
+      return name;
+//    }
+  }
+  /*if (resp->Assertion->AuthzDecisionStatement) {  }*/
+  D("Deny %d",0);
+  return 0;
+}
+//end stijn
+
 /*() Call Policy Decision Point (PDP) to obtain an authorization decision.
  * Uses default PEPMAP to call zxid_pep_az_soap_pepmap(). */
 
@@ -336,12 +480,16 @@ char* zxid_pep_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* 
   return zxid_pep_az_soap_pepmap(cf, cgi, ses, pdp_url, cf->pepmap);
 }
 
+char* zxid_pep_az_soap_verbose(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const char* pdp_url) {
+  return zxid_pep_az_soap_pepmap_verbose(cf, cgi, ses, pdp_url, cf->pepmap);
+}
+
 /*int zxid_az_cf_cgi_ses(zxid_conf* cf,  zxid_cgi* cgi, zxid_ses* ses);*/
 
 /*(i) Call Policy Decision Point (PDP) to obtain an authorization decision
  * about a contemplated action on a resource. The attributes from the session
  * pool, as filtered by ~PEPMAP~ are fed to the PDP as inputs
- * for the decision.
+ * for the decision. Session object is passed in as an argument.
  *
  * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~ options
  *     set according to your situation.
@@ -371,10 +519,25 @@ char* zxid_az_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
   return ret;
 }
 
+char* zxid_az_cf_ses_verbose(zxid_conf* cf, const char* qs, zxid_ses* ses)
+{
+  char* ret;
+  zxid_cgi cgi;
+  D_INDENT("az: ");
+  memset(&cgi, 0 , sizeof(cgi));
+  zxid_parse_cgi(&cgi, "");
+  DD("qs(%s) ses=%p", STRNULLCHKD(qs), ses);
+  if (qs && ses)
+    zxid_add_qs_to_ses(cf, ses, zx_dup_cstr(cf->ctx, qs), 1);
+  ret =  zxid_pep_az_soap_verbose(cf, &cgi, ses, (cf->pdp_call_url&&*cf->pdp_call_url)?cf->pdp_call_url:cf->pdp_url);
+  D_DEDENT("az: ");
+  return ret;
+}
+
 /*(i) Call Policy Decision Point (PDP) to obtain an authorization decision
  * about a contemplated action on a resource. The attributes from the session
  * pool, as filtered by ~PEPMAP~ are fed to the PDP as inputs
- * for the decision.
+ * for the decision. Session is identified by a session id.
  *
  * cf:: the configuration will need to have ~PEPMAP~ and ~PDP_URL~ options
  *     set according to your situation.
@@ -396,6 +559,15 @@ char* zxid_az_cf(zxid_conf* cf, const char* qs, const char* sid)
   if (sid && sid[0])
     zxid_get_ses(cf, &ses, sid);
   return zxid_az_cf_ses(cf, qs, &ses);
+}
+
+char* zxid_az_cf_verbose(zxid_conf* cf, const char* qs, const char* sid)
+{
+  zxid_ses ses;
+  memset(&ses, 0 , sizeof(zxid_ses));
+  if (sid && sid[0])
+    zxid_get_ses(cf, &ses, sid);
+  return zxid_az_cf_ses_verbose(cf, qs, &ses);
 }
 
 /*() See zxid_az_cf() for description. Only difference is that the configuration
