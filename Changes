@@ -57,9 +57,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - X509 attr certs
     - Use post screen as confirmation screen
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
+    NOTPUB
 
 zxid-0.63:: 29.7.2010
-    NOTPUB
     - Added mandatory attribute contactType to Contact element in metadata
     - Supply AuthnInstant
     - Removed sed(1) dependency
@@ -74,6 +74,7 @@ zxid-0.63:: 29.7.2010
     - Reworked/created az_base() family of functions to incorporate ideas from patch by Stijn Lievens
     - Make nested EncryptedKey a config option
     - Added support for fedusername and urn:oid:1.3.6.1.4.1.5923.1.1.1.6 (aka eduPersonPrincipalName)
+    - Tweaked the az requests to separate ses az from resource az (TAS3 bug #381)
 zxid-0.62:: 1.7.2010
     - Fix IdP authentication template (runaway HTML comment)
 zxid-0.61:: 25.6.2010

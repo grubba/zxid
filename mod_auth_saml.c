@@ -56,7 +56,7 @@ extern module AP_MODULE_DECLARE_DATA auth_saml_module;
 
 #if 0
 /* This function is run when each child process of apache starts. It does
- * initializations that do not survice fork(2). */
+ * initializations that do not survive fork(2). */
 /* Called by: */
 static void chldinit(apr_pool_t* p, server_rec* s)
 {
@@ -138,7 +138,7 @@ static int pool2apache(zxid_conf* cf, request_rec* r, struct zxid_attr* pool)
 	apr_table_setn(r->headers_out, "Location", rs);
 	ret = HTTP_SEE_OTHER;
       } else {
-	/* *** any attributes after may not appear in subrequest */
+	/* *** any attributes after this point may not appear in subrequest */
 	ap_internal_redirect_handler(rs, r);
       }
     }
@@ -307,7 +307,7 @@ static int chkuid(request_rec* r)
   /* Redirect hack */
   
   if (cf->redirect_hack_imposed_url && !strcmp(r->uri, cf->redirect_hack_imposed_url)) {
-    D("Redirect hack: mapping imposed(%s) to zxid(%s)", r->uri, cf->redirect_hack_zxid_url);
+    D("Redirect hack: mapping(%s) imposed to zxid(%s)", r->uri, cf->redirect_hack_zxid_url);
     r->uri = cf->redirect_hack_zxid_url;
     if (cf->redirect_hack_zxid_qs) {
       if (r->args) {
@@ -375,17 +375,17 @@ static int chkuid(request_rec* r)
     /* Some other page. Just check for session. */
     if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("other page uri(%s) qs(%s) cf->url(%s) uri_len=%d url_len=%d", r->uri, STRNULLCHKNULL(r->args), cf->url, uri_len, url_len);
     cgi.op = 'E';
-    cgi.rs = r->uri;
+    cgi.rs = r->uri;  /* Will be copied to ses->rs and from there in ab_pep to resource-id */
     if (cf->defaultqs && cf->defaultqs[0]) {
       if (zx_debug & MOD_AUTH_SAML_INOUT) INFO("DEFAULTQS(%s)", cf->defaultqs);
       zxid_parse_cgi(&cgi, cf->defaultqs);
     }
-    if (!cgi.sid || !zxid_get_ses(cf, &ses, cgi.sid)) {
-      D("No session(%s) active op(%c)", STRNULLCHK(cgi.sid), cgi.op);
-    } else {
+    if (cgi.sid && cgi.sid[0] && zxid_get_ses(cf, &ses, cgi.sid)) {
       res = zxid_simple_ses_active_cf(cf, &cgi, &ses, 0, AUTO_FLAGS);
       if (res)
 	goto process_zxid_simple_outcome;
+    } else {
+      D("No session(%s) active op(%c)", STRNULLCHK(cgi.sid), cgi.op);
     }
     D("other page: no_ses uri(%s)", r->uri);
   }

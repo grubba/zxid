@@ -7,8 +7,8 @@ ZXID Home - Open Source IdM - SAML SSO - Federated
 <<define: ibox300!align=right width=300 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 <<define: ibox150!align=right width=150 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 
-<<define: ZXVERS!0.62>>
-<<define: ZXNEWS!20100701 - Fixed IdP AN screen>>
+<<define: ZXVERS!0.63>>
+<<define: ZXNEWS!20100908 - Improved zxidp Shibboleth SP compatibility>>
 <<maketitle: 1>>
 
 <<ignore:
@@ -174,7 +174,8 @@ is supporting SP role, followed by ID-WSF WSC, WSP and IdP roles.
 We aim at supporting US GSA E-Auth profile.
 
 ZXID is light weight, has a small foot print, and is implemented in
-C. It is suitable for both high performance and embedded
+C. It is suitable for both high performance (e.g. 300 SSO/sec on
+normal hardware without acceleration) and embedded
 applications. Scripting languages are supported using
 <<link:http://www.swig.org: SWIG>>, including Perl, PHP and Java. The "full
 stack" nature of ZXID means it's self contained and has minimal
@@ -182,10 +183,10 @@ external library dependencies (see downloads).
 
 Targeted Federated Identity Standards
 
-* SAML 2.0 (fully done)
+* SAML 2.0 (fully done, SP and IdP roles)
 * SAML 1.1 (Assertion Consumer role 60% done)
 * Liberty ID-FF 1.2 (SP role 62% done)
-* Shibboleth 2.0 (95% done)
+* Shibboleth 2.0 (98% done)
 * WS-Federation 1.0 Basic Profile (Assertion Consumer role 40% done)
 
 Targeted ID Web Services Standards
@@ -208,12 +209,13 @@ ZXID consists of C libraries. Some of these libraries are generated
 from +schema grammar+ descriptions using a tool called xsd2sg.pl, part
 of <<link:http://zxid.org/plaindoc/pd.html: Plaindoc>> distribution. Other
 libraries that express flows and processing rules are hand-written. The
-language bindings, other than C, are generated automatically using swig(1).
+language bindings, other than C, are generated automatically using swig(1),
+see http://swig.org/.
 
 6 Status
 ========
 
-Beta. As of 0.41 (20091120) the package is mature for
+0.63 (20100908) is 1.0 Release Candidate. As of 0.41 (20091120) the package has been mature for
 doing SSO and other SP related tasks. It also supports perl and
 mod_perl by way of Net::SAML module, PHP5 (and php4) using
 php_zxid.so, as well as Java using libzxidjni.so. The Java
@@ -223,7 +225,13 @@ application server.
 mod_auth_saml is fully production grade and can be used to implement
 SSO to Apach httpd just by configuring (no programming needed).
 
-WSC role is beta grade and WSP roles are still alpha grade.
+zxididp is beta grade.
+
+zxididp ID-WSF Discovery functionality is alpha grade.
+
+ID-WSF WSC and WSP roles are beta grade.
+
+XACML PEP role is beta grade.
 
 So far we have
 
@@ -257,6 +265,8 @@ So far we have
   - Liberty ID-WSF 1.1
   - Liberty ID-WSF 2.0
   - XACML 2.0
+* XACML 2.0 PEP role in C, perl, php, and Java
+* XACML 2.0 PDP role in C, but without XACML rule evaluation engine (i.e. we use proprietary rules)
 
 7 Documentation
 ===============
@@ -295,16 +305,18 @@ Mail the author until we get bug tracking set up. Or volunteer.
 8.3 Developer access
 --------------------
 
-We use GIT over SSH, but access needs to be manually configured and is not
+Anonymous GIT read only: <<html: <a href="git://zxid.org/zxid">git clone git://zxid.org/zxid</a> >>
+
+For commit we use git over ssh, but access needs to be manually configured and is not
 anonymous. If you contribute significantly, I will bother. Others
-can send patches (good way to show you are worthy of GIT access)
-to me. I've heard some mixed experiences about open source
+can send patches (diff -u) to me - a good way to show you are worthy of git access.
+I've heard some mixed experiences about open source
 sites like sourceforge. If you run such site and want to
 host ZXID Project, please contact me.
 
-If you just always want the latest source: get the tar ball from
+If you just always want the latest stable source: get the tar ball from
 the downloads section. Trust me, this is still so much in flux
-that only the tar ball snapshots are in any usable state. CVS
+that only the tar ball snapshots are in any usable state. git
 access just to get latest source would be pointless.
 
 8.8 Commercial Support
@@ -314,7 +326,7 @@ Following companies provice consultancy and support contracts for
 ZXID:
 
 * symlabs.com
-* mercnet.pt
+* Levelview (+351-918.731.007)
 
 8.9 Previous Releases
 ---------------------
@@ -325,6 +337,7 @@ ZXID:
 <div id="old2010">
 >>
 
+* <<link:zxid-0.63.tgz>> (20100908 - Improved zxidp Shibboleth SP compatibility)
 * <<link:zxid-0.62.tgz>> (20100701 - Fixed IdP AN screen)
 * <<link:zxid-0.60.tgz>> (20100623 - No real change, just version number synchronization with TAS3 pool)
 * <<link:zxid-0.59.tgz>> (20100623 - Stabilization release)
@@ -1243,10 +1256,12 @@ To compile ZXID you need:
 * Mac OS 10 (Darwin): supported (Power PC & ix86)
 * Windows 2k: preliminary support using MinGW (I am not knowledgeable enough
   in Windows to help you if you hit troubles)
+* Windows 2k native compile is in the works...
 
 ZXID is developed on ix86 Linux with POSIX as a goal, any modern system
 should work. You will need GNU make. I use gcc-3.4.6 as a compiler so
-others (such as gcc-4) may need minor tweaking.
+others (such as gcc-4) may need minor tweaking or produce piles of (unwarranted)
+warnings.
 
 <<html:
 </td></tr></table></div>

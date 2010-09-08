@@ -13,7 +13,8 @@
  * 9.3.2008,  refactored the logged in and need login cases to subroutines --Sampo
  * 7.10.2008, added documentation --Sampo
  * 4.9.2009,  added attribute broker and PEP functionality --Sampo
- * 31.5.2010, moved local PEP and attribute broker functionality to
+ * 31.5.2010, moved local PEP and attribute broker functionality to zxidpep.c --Sampo
+ * 7.9.2010,  tweaked the az requests to separate ses az from resource az --Sampo
  *
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile
@@ -1021,7 +1022,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     zxid_sp_mni_soap(cf, cgi, ses, zx_ref_str(cf->ctx, cgi->newnym));
     cgi->msg = "SP Initiated defederation (SOAP).";
     break;     /* Defederation does not have to mean SLO */
-  case 'v':
+  case 'v':    /* N.B. This is just testing facility. The result is ignored. */
     zxid_pep_az_soap_pepmap(cf, cgi, ses, cf->pdp_call_url?cf->pdp_call_url:cf->pdp_url, cf->pepmap);
     cgi->msg = "PEP-to-PDP Authorization call (SOAP).";
     break;     /* Defederation does not have to mean SLO */
@@ -1092,7 +1093,8 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     D("Required AuthnCtx satisfied(%s)", p);
   }
 
-  /* Successful Single Sign-On case starts here */
+  /* Already successful Single Sign-On case starts here */
+  ses->rs = cgi->rs;
   return zxid_simple_ab_pep(cf, ses, res_len, auto_flags);
   
 cgi_exit:

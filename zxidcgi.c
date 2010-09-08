@@ -239,6 +239,8 @@ zxid_cgi* zxid_new_cgi(zxid_conf* cf, char* qs)
  * is not modified. The name of the cookie is determined by configuration
  * option ~SES_COOKIE_NAME~ (see zxidconf.h).
  *
+ * return:: none, but cgi->sid is modified
+ *
  * For original Netscape cookie spec see: http://curl.haxx.se/rfc/cookie_spec.html (Oct2007)
  *
  * *Example*
