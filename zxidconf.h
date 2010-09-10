@@ -257,7 +257,7 @@
  * only first level is added, i.e. all available bootstraps are embedded in
  * the assertion, but the assertions of the embedded bootstraps only
  * get discovery bootstrap. 2 would cause the assertions of the first order
- * boostraps to have further bootstraps embedded, etc. Since bootstrap
+ * bootstraps to have further bootstraps embedded, etc. Since bootstrap
  * generation tends to be expensive and wasteful, you should use discovery
  * instead and leave BOOTSTRAP_LEVEL set to 1. */
 #define ZXID_BOOTSTRAP_LEVEL 1
