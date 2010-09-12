@@ -2146,4 +2146,43 @@ Tutorial: http://simplesamlphp.org/docs/1.6/simplesamlphp-sp
 
 https://openidp.feide.no/simplesaml/module.php/core/loginuserpass.php?AuthState=_d165e5c0c137e655159f87fae7ea8223462b087b45
 
+
+Kantara Initiative project web site (confluence) accepts TAS3 IdP authentication.
+
+This means that you can use your Yubikey or other credentials you may have
+at idp.tas3.eu to login. Here's how it works:
+
+1. Start from http://kantarainitiative.org/confluence/dashboard.action
+
+2. Click "Log In" link in the top right of that page.
+
+3. On the "Select Your Home Organization" screen choose "TAS3 IdP" from
+the popup and click Select.
+
+4. You will now land on TAS3 IdP authentication screen. Use your Yubikey or
+username and password to login.
+
+5. You will see a post screen taking you back to KI web site. You are now
+logged in. Your pseudonymous username will appear in top right
+of that page. It something like this
+
+fc5y3apqom8upyicon7g6qztx@idp.tas3.eu
+
+6. Click on the username and choose "Profile" to edit the screen name
+to be nicer to users (in the internal database the pseudonym
+continues to be used so you do not need to worry about the
+screen name being acceptable, e.g. duplicate).
+
+7. Once you have your federation enabled Kantara account, you can use
+it to join Kantara Work Groups. Their policy is that you do not have
+to be Kantara member to login to the site and see the public part
+of their work. However, to contribute to their work you need to
+be a member (mainly for IPR reasons - to ensure free to implement and use).
+This is done by "elevating" the status of your federated login. It is
+done by Kantara, not by idp.tas3.eu
+
+Cheers,
+--Sampo
+
+
 >>
