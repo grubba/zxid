@@ -293,7 +293,7 @@ ifeq ($(TARGET),win32cl)
 CP=copy
 CC=cl
 LD=link
-ar=lib
+AR=lib
 CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB
 CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/"
 OPENSSL_ROOT="C:/OpenSSL/"
