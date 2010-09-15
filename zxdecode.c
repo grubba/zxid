@@ -1,5 +1,5 @@
 /* zxdecode.c  -  SAML Decoding tool
- * Copyright (c) 2008-2009 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2008-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -12,11 +12,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <stdint.h>
 #include <signal.h>
 #include <fcntl.h>
 
