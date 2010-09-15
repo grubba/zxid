@@ -299,7 +299,7 @@ CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/"
 OPENSSL_ROOT="C:/OpenSSL/"
 ZLIB_ROOT="C:/Program Files/GnuWin32/"
 WIN_LIBS= -LIBPATH:$(CURL_ROOT)/lib/Debug -LIBPATH:$(OPENSSL_ROOT)/lib/VC -LIBPATH:$(ZLIB_ROOT)/lib kernel32.lib user32.lib winmm.lib Ws2_32.lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib
-LIBS= -lpthread -L$(CURL_ROOT)/lib -L$(OPENSSL_ROOT)/lib -lcurl -lssl -lcrypto -lz $(WIN_LIBS)
+LIBS= $(WIN_LIBS)
 SHARED_FLAGS=-LDd -MDd -shared --export-all-symbols
 CFLAGS=-Zi -WL
 #CFLAGS+=-Yd
@@ -314,6 +314,8 @@ MAKESHELL="C:\Program Files\GNU Utils\bin"
 ZXIDJNI_SO=zxidjava/zxidjni.dll
 ifeq ($(SHARED),1)
 LIBZXID=-L. -lzxiddll
+else
+LIBZXID=zxid.lib
 endif
 
 else
@@ -1123,11 +1125,11 @@ else
 
 ifeq ($(TARGET),win32cl)
 libzxid.a: $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
-	LIB /OUT:zxid.lib $^
+	$(AR) $(OUTOPT)zxid.lib $^
 	echo 'touched to satisfy dep' >libzxid.a
 else
 libzxid.a: $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
-	$(AR) libzxid.a $^
+	$(AR) $(OUTOPT)libzxid.a $^
 endif
 endif
 
