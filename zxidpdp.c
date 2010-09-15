@@ -14,6 +14,8 @@
  * 31.5.2010,  generalized to several PEPs model --Sampo
  */
 
+#include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
+
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"

@@ -17,6 +17,8 @@
  *           http://curl.haxx.se/libcurl/
  */
 
+#include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
+
 #include <string.h>
 
 #ifdef USE_CURL

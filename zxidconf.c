@@ -21,6 +21,8 @@
  * 31.5.2010, added 4 web service call PEPs --Sampo
  */
 
+#include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
+
 #include <memory.h>
 #include <string.h>
 #ifdef USE_CURL

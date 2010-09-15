@@ -28,6 +28,8 @@
  * P0 = WS-Federation POST Profile
  */
 
+#include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
+
 #include <memory.h>
 #include <string.h>
 #include <unistd.h>

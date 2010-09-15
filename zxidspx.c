@@ -19,6 +19,8 @@
  * See also zxid/sg/wsf-soap11.sg and zxid/c/zx-e-data.h, which is generated.
  */
 
+#include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
+
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"

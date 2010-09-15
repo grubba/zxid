@@ -18,6 +18,8 @@
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
 
+#include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

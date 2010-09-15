@@ -17,6 +17,8 @@
  * See also: Logging chapter in README.zxid
  */
 
+#include "platform.h"  /* needed on Win32 for pthread_mutex_lock() et al. */
+
 #include <fcntl.h>
 #include <string.h>
 #include <stdarg.h>
