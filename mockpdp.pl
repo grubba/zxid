@@ -142,3 +142,36 @@ I will now setup storyboards
 Luk Vervenne
 CEO
 
+
+
+
+
+Can I just add some notes for this meeting to ensure we all have an
+understanding:
+
+- Luk to provide a list of roles (Done below).
+
+- Bjoern to develop \u2018Policy Editor\u2019 with TAS3 like look and feel
+enabling the update of the xml properties file. We will refer to \u2018roles\u2019 in
+this application and not users (though internally these are dealt with as
+users).
+
+- Bjoern to deliver existing project with policy editor to Brian.
+
+- Brian/Sampo to modify to integrate the zXID sign on (priority 1 )
+
+- Ensure that the modification of the properties is reflected in
+the CC application (priority 2).
+
+- Can we also use this for the authorisation for the SOA Gateway so
+that we can show a different policy there ? (Priority 3).
+
+- Implement a pseudo PDP in PHP and call this from the CC
+authenticate service so show a more accurate TAS3 structure (Priority 4).
+
+- Luk to deliver a story board for the demo.
+
+Does this make sense or have I missed something ?
+
+Best regards,
+John 

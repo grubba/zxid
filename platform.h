@@ -18,14 +18,7 @@
 #define getegid() 0
 
 #ifdef WIN32CL
-#if 0
-typedef struct DIR {
-  int first;
-  WIN32_FIND_DATA firstfd;
-} DIR;
-#else
 typedef struct DIR DIR;
-#endif
 struct dirent {
   char* d_name;
 };
