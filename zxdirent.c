@@ -32,6 +32,7 @@ struct DIR
     struct dirent       result; /* d_name null iff first time */
     char                *name;  /* null-terminated char string */
 };
+typedef struct DIR DIR;
 
 DIR *zx_win23_opendir(const char *name)
 {
