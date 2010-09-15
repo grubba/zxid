@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#define fdstdout STDOUT_FILENO
+#define fdstdout (GetStdHandle(STD_OUTPUT_HANDLE))
 /*#define fdtype HANDLE   see zxid.h */
 #define BADFD (INVALID_HANDLE_VALUE)
 #define closefile(x) (CloseHandle(x)?0:-1)
