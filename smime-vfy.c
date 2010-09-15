@@ -111,6 +111,7 @@
 
 #include <openssl/crypto.h>
 #include <openssl/buffer.h>
+#include <openssl/stack.h>
 #include <openssl/bio.h>
 #include <openssl/x509.h>
 #include <openssl/pem.h>

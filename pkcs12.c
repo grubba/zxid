@@ -83,6 +83,7 @@
 #include <openssl/rand.h>
 #include <openssl/conf.h>
 #include <openssl/bio.h>
+#include <openssl/stack.h>
 #include <openssl/objects.h>
 #include <openssl/asn1.h>
 #include <openssl/pem.h>
