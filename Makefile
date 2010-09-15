@@ -19,6 +19,7 @@
 # 14.11.2009, added yubikey support --Sampo
 # 12.2.2010, added pthread support --Sampo
 # 25.2.2010, added gcov support --Sampo
+# 15.9.2010, major hacking to support win32cl (MSVC cl compiler, link (ld), and lib (ar) --Sampo
 #
 # Build so far only tested on Linux, Solaris 8 and MacOS 10.3. This
 # makefile needs gmake-3.78 or newer.
@@ -97,9 +98,11 @@ CFLAGS=-g -fpic -fmessage-length=0 -Wno-unused-label -Wno-unknown-pragmas -fno-s
 #CFLAGS += -Os    # gcc-3.4.6 miscompiles with -Os on ix86
 CFLAGS += -Wall -Wno-parentheses -DMAYBE_UNUSED='__attribute__ ((unused))'
 #LDFLAGS += -Wl,--gc-sections
+LIBZXID_A=libzxid.a
 LIBZXID=-L. -lzxid
 OBJ_EXT=o
 PLATFORM_OBJ=
+EXE=
 
 ifeq ($(ENA_PG),1)
 
@@ -305,7 +308,9 @@ CFLAGS=-Zi -WL
 #CFLAGS+=-Yd
 OUTOPT=-OUT:
 OBJ_EXT=obj
+EXE=.exe
 PLATFORM_OBJ=zxdirent.obj
+LIBZXID_A=zxid.lib
 
 GPERF=gperf.exe
 SHELL="C:\Program Files\GNU Utils\bin"
@@ -740,7 +745,7 @@ endif
 
 # Overall
 
-samlmod Net/Makefile: Net/SAML_wrap.c Net/SAML.pm libzxid.a
+samlmod Net/Makefile: Net/SAML_wrap.c Net/SAML.pm $(LIBZXID_A)
 	cd Net; $(PERL) Makefile.PL && $(MAKE)
 
 samlmod_install: Net/Makefile
@@ -795,7 +800,7 @@ endif
 php/zxid_wrap.$(OBJ_EXT): php/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ `$(PHP_CONFIG) --includes` $(CFLAGS) $<
 
-php/php_zxid.so: php/zxid_wrap.$(OBJ_EXT) libzxid.a
+php/php_zxid.so: php/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)php/php_zxid.so -shared php/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
 phpzxid: php/php_zxid.so
@@ -831,7 +836,7 @@ endif
 py/zxid_wrap.$(OBJ_EXT): py/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ `$(PY_CONFIG) --includes` $(CFLAGS) $<
 
-py/py_zxid.so: py/zxid_wrap.$(OBJ_EXT) libzxid.a
+py/py_zxid.so: py/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)py/py_zxid.so -shared py/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
 pyzxid: py/py_zxid.so
@@ -862,7 +867,7 @@ endif
 ruby/zxid_wrap.$(OBJ_EXT): ruby/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ `$(RUBY_CONFIG) --includes` $(CFLAGS) $<
 
-ruby/ruby_zxid.so: ruby/zxid_wrap.$(OBJ_EXT) libzxid.a
+ruby/ruby_zxid.so: ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)ruby/ruby_zxid.so -shared ruby/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
 rubyzxid: ruby/ruby_zxid.so
@@ -893,7 +898,7 @@ endif
 csharp/zxid_wrap.$(OBJ_EXT): csharp/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ `$(CSHARP_CONFIG) --includes` $(CFLAGS) $<
 
-csharp/csharp_zxid.so: csharp/zxid_wrap.$(OBJ_EXT) libzxid.a
+csharp/csharp_zxid.so: csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)csharp/csharp_zxid.so -shared csharp/zxid_wrap.$(OBJ_EXT) $(LIBZXID) $(LIBS)
 
 csharpzxid: csharp/csharp_zxid.so
@@ -941,7 +946,7 @@ endif
 zxidjava/zxid_wrap.$(OBJ_EXT): zxidjava/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $<
 
-$(ZXIDJNI_SO): zxidjava/zxid_wrap.$(OBJ_EXT) libzxid.a
+$(ZXIDJNI_SO): zxidjava/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $(SHARED_FLAGS) $< $(LIBZXID) $(LIBS) $(SHARED_CLOSE)
 
 zxidjava/zxidjni.class: zxidjava/zxidjni.java
@@ -1007,7 +1012,7 @@ javacleaner: javaclean
 ### Apache authentication module
 ###
 
-mod_auth_saml.so: mod_auth_saml.$(OBJ_EXT) libzxid.a
+mod_auth_saml.so: mod_auth_saml.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)mod_auth_saml.so $(SHARED_FLAGS) mod_auth_saml.$(OBJ_EXT) $(SHARED_CLOSE) $(LIBZXID) $(LIBS) $(MOD_AUTH_SAML_LIBS)
 
 mod_auth_saml.dll: mod_auth_saml.so
@@ -1028,75 +1033,69 @@ apachezxid_install: mod_auth_saml.so
 ### Binaries
 ###
 
-zxid: $(ZXID_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxid $(ZXID_OBJ) $(LIBZXID) $(LIBS)
+zxid: $(ZXID_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxid$(EXE) $(ZXID_OBJ) $(LIBZXID) $(LIBS)
 
-zxcot: zxcot.$(OBJ_EXT) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBZXID) $(LIBS)
+zxcot: zxcot.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
 
-zxdecode: zxdecode.$(OBJ_EXT) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $^ $(LIBZXID) $(LIBS)
+zxdecode: zxdecode.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(LIBZXID) $(LIBS)
 
-zxpasswd: zxpasswd.$(OBJ_EXT) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $^ $(LIBZXID) $(LIBS)
+zxpasswd: zxpasswd.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $^ $(LIBZXID) $(LIBS)
 
-zxcall: zxcall.$(OBJ_EXT) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBZXID) $(LIBS)
+zxcall: zxcall.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
 
-zxidwspcgi: zxidwspcgi.$(OBJ_EXT) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBZXID) $(LIBS)
+zxidwspcgi: zxidwspcgi.$(OBJ_EXT) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@$(EXE) $< $(LIBZXID) $(LIBS)
 
-zxidwsctool: $(ZXIDWSCTOOL_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidwsctool $(ZXIDWSCTOOL_OBJ) $(LIBZXID) $(LIBS)
+zxidwsctool: $(ZXIDWSCTOOL_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidwsctool$(EXE) $(ZXIDWSCTOOL_OBJ) $(LIBZXID) $(LIBS)
 
-zxidhlo: $(ZXIDHLO_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidhlo $(ZXIDHLO_OBJ) $(LIBZXID) $(LIBS)
+zxidhlo: $(ZXIDHLO_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidhlo$(EXE) $(ZXIDHLO_OBJ) $(LIBZXID) $(LIBS)
 
-zxidsp: $(ZXIDSP_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidsp $(ZXIDSP_OBJ) $(LIBZXID) $(LIBS)
+zxidsp: $(ZXIDSP_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidsp$(EXE) $(ZXIDSP_OBJ) $(LIBZXID) $(LIBS)
 
-zxididp: $(ZXIDIDP_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxididp $(ZXIDIDP_OBJ) $(LIBZXID) $(LIBS)
+zxididp: $(ZXIDIDP_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxididp$(EXE) $(ZXIDIDP_OBJ) $(LIBZXID) $(LIBS)
 
-zxidgsa: $(ZXIDGSA_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidgsa $(ZXIDGSA_OBJ) $(LIBZXID) $(LIBS)
+zxidgsa: $(ZXIDGSA_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidgsa$(EXE) $(ZXIDGSA_OBJ) $(LIBZXID) $(LIBS)
 
-zxidhlowsf: $(ZXIDHLOWSF_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidhlowsf $(ZXIDHLOWSF_OBJ) $(LIBZXID) $(LIBS)
+zxidhlowsf: $(ZXIDHLOWSF_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidhlowsf$(EXE) $(ZXIDHLOWSF_OBJ) $(LIBZXID) $(LIBS)
 
-zxidsimple: $(ZXIDSIMPLE_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidsimple $(ZXIDSIMPLE_OBJ) $(LIBZXID) $(LIBS)
+zxidsimple: $(ZXIDSIMPLE_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidsimple$(EXE) $(ZXIDSIMPLE_OBJ) $(LIBZXID) $(LIBS)
 
-zxbench: $(ZXBENCH_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxbench $(ZXBENCH_OBJ) $(LIBZXID) $(LIBS)
+zxbench: $(ZXBENCH_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxbench$(EXE) $(ZXBENCH_OBJ) $(LIBZXID) $(LIBS)
 
-zxidssofinalizetest: $(ZXIDSSOFINALIZETEST_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidssofinalizetest $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID) $(LIBS)
+zxidssofinalizetest: $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidssofinalizetest$(EXE) $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID) $(LIBS)
 
-zxencdectest: $(ZXENCDECTEST_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxencdectest $^ $(LIBZXID) $(LIBS)
+zxencdectest: $(ZXENCDECTEST_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxencdectest$(EXE) $^ $(LIBZXID) $(LIBS)
 
-sfis: $(SFIS_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)sfis $(SFIS_OBJ) $(LIBZXID) $(LIBS)
+zxidxmltool: $(ZXIDXMLTOOL_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidxmltool$(EXE) $^ $(LIBS)
 
-sfisgsa: $(SFISGSA_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)sfisgsa $(SFISGSA_OBJ) $(LIBZXID) $(LIBS)
+zxlogview: $(ZXLOGVIEW_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxlogview$(EXE) $^ $(LIBS)
 
-zxidxmltool: $(ZXIDXMLTOOL_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidxmltool $^ $(LIBS)
+zxidhrxmlwsc: $(ZXIDHRXMLWSC_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidhrxmlwsc$(EXE) $(ZXIDHRXMLWSC_OBJ) $(LIBZXID) $(LIBS)
 
-zxlogview: $(ZXLOGVIEW_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxlogview $^ $(LIBS)
-
-zxidhrxmlwsc: $(ZXIDHRXMLWSC_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidhrxmlwsc $(ZXIDHRXMLWSC_OBJ) $(LIBZXID) $(LIBS)
-
-zxidhrxmlwsp: $(ZXIDHRXMLWSP_OBJ) libzxid.a
-	$(LD) $(LDFLAGS) $(OUTOPT)zxidhrxmlwsp $(ZXIDHRXMLWSP_OBJ) $(LIBZXID) $(LIBS)
+zxidhrxmlwsp: $(ZXIDHRXMLWSP_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxidhrxmlwsp$(EXE) $(ZXIDHRXMLWSP_OBJ) $(LIBZXID) $(LIBS)
 
 zxidhrxml: zxidhrxmlwsc zxidhrxmlwsp
 
-smime: smime.$(OBJ_EXT) libzxid.a
+smime: smime.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBZXID) $(LIBS)
 
 sizeof:
@@ -1108,36 +1107,35 @@ sizeof:
 
 ifeq ($(PULVER),1)
 
-libzxid.a: $(ZXID_LIB_OBJ) $(ZX_OBJ)
-	cat pulver/c_saml2_dec_c.deps      | xargs $(AR) libzxid.a
-	cat pulver/c_saml2_enc_c.deps      | xargs $(AR) libzxid.a
-	cat pulver/c_saml2_aux_c.deps      | xargs $(AR) libzxid.a
-	cat pulver/c_saml2_getput_c.deps   | xargs $(AR) libzxid.a
-	cat pulver/c_saml2md_dec_c.deps    | xargs $(AR) libzxid.a
-	cat pulver/c_saml2md_enc_c.deps    | xargs $(AR) libzxid.a
-	cat pulver/c_saml2md_aux_c.deps    | xargs $(AR) libzxid.a
-	cat pulver/c_saml2md_getput_c.deps | xargs $(AR) libzxid.a
-	$(AR) libzxid.a $(ZXID_LIB_OBJ)
+$(LIBZXID_A): $(ZXID_LIB_OBJ) $(ZX_OBJ)
+	cat pulver/c_saml2_dec_c.deps      | xargs $(AR) $(LIBZXID_A)
+	cat pulver/c_saml2_enc_c.deps      | xargs $(AR) $(LIBZXID_A)
+	cat pulver/c_saml2_aux_c.deps      | xargs $(AR) $(LIBZXID_A)
+	cat pulver/c_saml2_getput_c.deps   | xargs $(AR) $(LIBZXID_A)
+	cat pulver/c_saml2md_dec_c.deps    | xargs $(AR) $(LIBZXID_A)
+	cat pulver/c_saml2md_enc_c.deps    | xargs $(AR) $(LIBZXID_A)
+	cat pulver/c_saml2md_aux_c.deps    | xargs $(AR) $(LIBZXID_A)
+	cat pulver/c_saml2md_getput_c.deps | xargs $(AR) $(LIBZXID_A)
+	$(AR) $(LIBZXID_A) $(ZXID_LIB_OBJ)
 
-#	$(foreach fil,$^,$(shell $(AR) libzxid.a $(fil)))
+#	$(foreach fil,$^,$(shell $(AR) $(LIBZXID_A) $(fil)))
 
 else
 
 ifeq ($(TARGET),win32cl)
-libzxid.a: $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+$(LIBZXID_A): $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) $(OUTOPT)zxid.lib $^
-	echo 'touched to satisfy dep' >libzxid.a
 else
-libzxid.a: $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
-	$(AR) $(OUTOPT)libzxid.a $^
+$(LIBZXID_A): $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+	$(AR) $(OUTOPT)$(LIBZXID_A) $^
 endif
 endif
 
-libzxid.so.0.0: libzxid.a
+libzxid.so.0.0: $(LIBZXID_A)
 	$(LD) $(OUTOPT)libzxid.so.0.0 $(SHARED_FLAGS) $^ $(SHARED_CLOSE)
 
-zxid.dll zxid.lib: libzxid.a
-	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxid.lib $^ $(SHARED_CLOSE) $(WIN_LIBS)
+zxid.dll zxidimp.lib: $(LIBZXID_A)
+	$(LD) $(OUTOPT)zxid.dll $(SHARED_FLAGS) -Wl,--output-def,zxid.def,--out-implib,zxidimp.lib $^ $(SHARED_CLOSE) $(WIN_LIBS)
 
 # N.B. Failing to supply -Wl,-no-whole-archive above will cause
 # /apps/gcc/mingw/sysroot/lib/libmingw32.a(main.o):main.c:(.text+0x106): undefined reference to `WinMain@16'
@@ -1204,7 +1202,7 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 	$(CP) mod_auth_saml.so $(TAS3LINUXX86)
 	$(CP) *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
 	$(CP) zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
-	$(CP) libzxid.a $(TAS3LINUXX86)
+	$(CP) $(LIBZXID_A) $(TAS3LINUXX86)
 	$(CP) $(ZXIDHDRS) $(TAS3LINUXX86)/include/zx
 	$(CP) $(ZXIDJNI_SO) zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3LINUXX86)/zxidjava
 	$(CP) $(TAS3COMMONFILES) $(TAS3LINUXX86)
@@ -1280,7 +1278,9 @@ precheck/chk-apache.exe: precheck/chk-apache.$(OBJ_EXT)
 zx/zx.h:
 	echo "zx symlink for includes (ln -s . zx) missing. Emulating by creating zx directory..."
 	mkdir zx
+	mkdir zx/c
 	$(CP) *.h zx
+	$(CP) c/*.h zx/c
 
 ifeq ($(CROSS_COMPILE),1)
 precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl.exe precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl.exe
@@ -1379,11 +1379,11 @@ dir:
 dirs: dir
 	@$(ECHO) "You should use `make dir' instead!"
 
-install: zxid libzxid.a libzxid.so.0.0 dir
+install: zxid $(LIBZXID_A) libzxid.so.0.0 dir
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
 	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid
 	$(CP) zxidhlo zxididp $(PREFIX)/bin
-	$(CP) libzxid.a libzxid.so* $(PREFIX)/lib
+	$(CP) $(LIBZXID_A) libzxid.so* $(PREFIX)/lib
 	$(CP) libzxid.so.0.0 $(PREFIX)/lib
 	$(CP) *.h c/*.h $(PREFIX)/include/zxid
 	@$(ECHO) "You will need to copy zxidhlo binary where your web server can find it and"
@@ -1429,14 +1429,14 @@ docclean:
 distclean: clean
 
 cleanbin:
-	rm -f zxid zxlogview zxbench zxencdectest libzxid.a libzxid.so* sizeof zxid.stderr
+	rm -f zxid zxlogview zxbench zxencdectest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
 	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall
 	rm -f mod_auth_saml.so zxididp zxdecode
 
 miniclean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean
 	@$(ECHO) ------------------ Making miniclean
-	rm -f *.o *.obj zxid zxlogview zxbench zxencdectest libzxid.a libzxid.so* sizeof zxid.stderr
+	rm -f *.o *.obj zxid zxlogview zxbench zxencdectest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
 	rm -f mod_auth_saml.so zxididp
 	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar afr.*
