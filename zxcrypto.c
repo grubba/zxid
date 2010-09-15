@@ -11,6 +11,8 @@
  * 29.8.2009, added zxid_mk_self_signed_cert() --Sampo
  */
 
+#include "platform.h"  /* needed on Win32 for snprintf() et al. */
+
 #include <zx/errmac.h>
 #include <zx/zx.h>
 #include <zx/zxid.h>

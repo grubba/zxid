@@ -17,6 +17,8 @@
  * 26.5.2010, added XML parse error reporting --Sampo
  */
 
+#include "platform.h"  /* needed on Win32 for snprintf(), va_copy() et al. */
+
 //#include <pthread.h>
 //#ifndef MACOSX
 //#include <malloc.h>
