@@ -107,7 +107,7 @@ static const unsigned char rijndael_inv_sbox[] = {
 };
 
 /* Called by:  yubikey_aes_decrypt x7 */
-static inline unsigned char
+static /*inline*/ unsigned char
 xtime (unsigned char b)
 {
   return (b & 0x80) ? ((b << 1) ^ 0x1b) : (b << 1);
