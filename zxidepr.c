@@ -74,7 +74,8 @@ int zxid_nice_sha1(zxid_conf* cf, char* buf, int buf_len,
   sha1_cont[27] = 0;
   len = snprintf(buf, buf_len, "%.*s,%s",
 		 MAX(name->len-ign_prefix,0), name->s+ign_prefix, sha1_cont);
-
+  buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
+  
   /* 012345678
    * http://
    * https://   */
@@ -117,7 +118,8 @@ int zxid_epr_path(zxid_conf* cf, char* dir, char* sid,
 		  char* buf, int buf_len, struct zx_str* svc, struct zx_str* cont)
 {
   int len = snprintf(buf, buf_len, "%s%s%s/", cf->path, dir, sid);
-  if (len < 0) {
+  buf[buf_len-1] = 0; /* must terminate manually as on win32 termination is not guaranteed */
+  if (len <= 0) {
     perror("snprintf");
     ERR("Broken snprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", len);
     if (buf && buf_len > 0)

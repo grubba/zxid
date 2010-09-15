@@ -56,6 +56,7 @@ int close_file(fdtype fd, const char* logkey);
 int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap)
 {
   int len = vsnprintf(buf, buf_len, name_fmt, ap);
+  buf[buf_len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   if (len < 0) {
     perror("vsnprintf");
     D("Broken vsnprintf? Impossible to compute length of string. Be sure to `export LANG=C' if you get errors about multibyte characters. Length returned: %d", len);
@@ -225,6 +226,7 @@ int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_
   
   va_start(ap, data_fmt);
   len = vsnprintf(buf, len, data_fmt, ap);
+  buf[len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   va_end(ap);
   if (len < 0) {
     perror("vsnprintf");

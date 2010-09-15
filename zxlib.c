@@ -42,7 +42,9 @@ int zx_format_parse_error(struct zx_ctx* ctx, char* buf, int siz, char* logkey)
   at = MIN(ctx->p - ctx->base, end);
   start = MAX(0,at-30);
   len = MIN(at+30, end) - start;    
-  return snprintf(buf, siz, "%s: Parse error at char %d/%d (prev char, char, next char: 0x%02x 0x%02x 0x%02x)\n%.*s\n%.*s^\n", logkey, at, end, at > 0 ? ctx->p[-1]:0, ctx->p[0], at < end ? ctx->p[1]:0, len, ctx->base + start, at-start, "-----------------------------------------------");
+  len = snprintf(buf, siz, "%s: Parse error at char %d/%d (prev char, char, next char: 0x%02x 0x%02x 0x%02x)\n%.*s\n%.*s^\n", logkey, at, end, at > 0 ? ctx->p[-1]:0, ctx->p[0], at < end ? ctx->p[1]:0, len, ctx->base + start, at-start, "-----------------------------------------------");
+  buf[siz-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+  return len;
 }
 
 /*() ZX implementation of memmem(3) for platforms that do not have this. */
@@ -234,6 +236,7 @@ char* zx_alloc_vasprintf(struct zx_ctx* c, int* retlen, const char* f, va_list a
   }
   s = ZX_ALLOC(c, len+1);
   vsnprintf(s, len+1, f, ap);
+  s[len] = 0; /* must terminate manually as on win32 nul termination is not guaranteed */
   if (retlen)
     *retlen = len;
   return s;

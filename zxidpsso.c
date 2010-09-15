@@ -316,6 +316,7 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
 
   if (cf->fedusername_suffix && cf->fedusername_suffix[0]) {
     snprintf(buf, sizeof(buf), "%.*s@%s", nameid->gg.content->len, nameid->gg.content->s, cf->fedusername_suffix);
+    buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
     at = zxid_mk_attribute(cf, "fedusername", zx_dup_cstr(cf->ctx, buf));
     ZX_NEXT(at) = (void*)at_stmt->Attribute;
     at_stmt->Attribute = at;

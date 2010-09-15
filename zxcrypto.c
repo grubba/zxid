@@ -348,7 +348,7 @@ int zxid_mk_self_sig_cert(zxid_conf* cf, int buflen, char* buf, char* lk, char* 
   D("keygen start lk(%s) name(%s)", lk, name);
 
   snprintf(ou, sizeof(ou)-1, "SSO Dept ZXID Auto-Cert %s", cf->url);
-  ou[sizeof(ou)-1] = 0;
+  ou[sizeof(ou)-1] = 0;  /* must terminate manually as on win32 termination is not guaranteed */
 
   ts = time(0);
   RAND_seed(&ts,sizeof(ts));

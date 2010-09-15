@@ -368,6 +368,7 @@ int main(int argc, char** argv, char** env)
   }
   if (symlink_user) {
     snprintf(buf, sizeof(buf), "%s/%s", udir, symlink_user);
+    buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
 #ifdef MINGW
     ERR("Symlink not implemented on Win32. from(%s) (-s %s) path(%s)", buf, symlink_user, userdir);
 #else

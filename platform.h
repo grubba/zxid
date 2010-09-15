@@ -39,6 +39,9 @@ void zx_win23_rewinddir(DIR*);
 
 typedef struct stack_st STACK;  /* MSVC seems to have some problem with openssl/stack.h */
 
+#define snprintf _snprintf
+#define va_copy(ap2, ap) ap2 = ap
+
 #else
 #include <dirent.h>
 #endif

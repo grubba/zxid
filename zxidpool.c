@@ -594,6 +594,7 @@ static void zxid_copy_user_eprs_to_ses(zxid_conf* cf, zxid_ses* ses, struct zx_s
     return;  /* No valid session. Nothing to do. */
   
   snprintf(bs_dir, sizeof(bs_dir), "%.*s/.bs", path->len, path->s);
+  bs_dir[sizeof(bs_dir)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   dir = opendir(bs_dir);
   if (!dir) {
     D("Local bootstrap dir(%s) does not exist", bs_dir);
@@ -604,7 +605,9 @@ static void zxid_copy_user_eprs_to_ses(zxid_conf* cf, zxid_ses* ses, struct zx_s
       continue;
     
     snprintf(bs_dir, sizeof(bs_dir), "%.*s/.bs/%s", path->len, path->s, de->d_name);
+    bs_dir[sizeof(bs_dir)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
     snprintf(ses_path, sizeof(ses_path), "%.*s" ZXID_SES_DIR "%s/%s", path->len, path->s, ses->sid, de->d_name);
+    ses_path[sizeof(ses_path)-1] = 0; /* must term manually as on win32 nul is not guaranteed */
     copy_file(bs_dir, ses_path, "EPRS2ses", 1);
   }
   closedir(dir);
