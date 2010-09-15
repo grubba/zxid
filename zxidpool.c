@@ -13,6 +13,8 @@
  * 21.5.2010, added local attribute authority and local EPRs feature --Sampo
  */
 
+#include "platform.h"
+
 #include <memory.h>
 #include <string.h>
 #include <dirent.h>

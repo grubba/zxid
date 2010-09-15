@@ -71,6 +71,7 @@ dec-templ.c      - Code generation template for decoders
 enc-templ.c      - Code generation template for encoders
 ds-templ.c       - Code generation template for DS script API
 getput-templ.c   - Code generation template for accessor functions
+zxdirent.c       - Kevlin Henney's dirent.c (modified by Sampo) for WIN32CL port
 zxlog.c          - Logging routines with encryption and signing
 zxlogview.c      - Log viewing tool with decryption and sig verification
 zxsig.c          - XML DSIG support

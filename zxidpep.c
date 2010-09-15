@@ -12,7 +12,7 @@
  * 10.10.2009, added zxid_az() family --Sampo
  * 12.2.2010,  added locking to lazy loading --Sampo
  * 31.5.2010,  generalized to several PEPs model --Sampo
- * 7.9.2010,   merged patches from Stijn Levens --Sampo
+ * 7.9.2010,   merged patches from Stijn Lievens --Sampo
  */
 
 #include "errmac.h"
@@ -86,7 +86,12 @@ static void zxid_pepmap_extract(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, str
 	ZX_NEXT(xac_at) = (void*)*rsrc;
 	*rsrc = xac_at;
       } else if (!strcmp(map->ns, "act")) {
+#if 0
 	*act = xac_at;  /* there can be only one */
+#else
+        ZX_NEXT(xac_at) = (void*)*act;
+        *act = xac_at;  /* We can have multiple attributes in the action section */
+#endif
       } else if (!strcmp(map->ns, "env")) {
 	ZX_NEXT(xac_at) = (void*)*env;
 	*env = xac_at;

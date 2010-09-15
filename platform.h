@@ -18,19 +18,25 @@
 #define getegid() 0
 
 #ifdef WIN32CL
+#if 0
 typedef struct DIR {
   int first;
   WIN32_FIND_DATA firstfd;
 } DIR;
+#else
+typedef struct DIR DIR;
+#endif
 struct dirent {
-  
+  char* d_name;
 };
 #define opendir zx_win23_opendir
 #define readdir zx_win23_readdir
 #define closedir zx_win23_closedir
+#define rewinddir zx_win23_rewinddir
 DIR* zx_win23_opendir(char*);
- zx_win23_readdir(DIR*);
-DIR* zx_win23_opendir(char*);
+struct dirent* zx_win23_readdir(DIR*);
+int zx_win23_closedir(DIR*);
+void zx_win23_rewinddir(DIR*);
 #endif
 
 /* Windows thread identification is a mess:
