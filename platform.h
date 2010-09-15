@@ -18,6 +18,8 @@
 #define getegid() 0
 
 #ifdef WIN32CL
+/* The directory handling is quite different on Windows. The following
+ * posix wrappers are implemented in zxdirent.c */
 typedef struct DIR DIR;
 struct dirent {
   char* d_name;
@@ -30,6 +32,8 @@ DIR* zx_win23_opendir(char*);
 struct dirent* zx_win23_readdir(DIR*);
 int zx_win23_closedir(DIR*);
 void zx_win23_rewinddir(DIR*);
+#else
+#include <dirent.h>
 #endif
 
 /* Windows thread identification is a mess:
@@ -55,6 +59,10 @@ void zx_win23_rewinddir(DIR*);
 #define pthread_mutex_unlock(mutex)   (LeaveCriticalSection(mutex), 0) /* dsvm.c, api_mutex.c, pool.c, sg.c, io.c, shuffler.c LeaveCriticalSection() */
 
 #else
+
+/* NOT MINGW nor WIN32CL (i.e. its Unix) */
+
+#include <dirent.h>
 
 #define fdstdout 1
 /*#define fdtype int   see zxid.h */

@@ -80,6 +80,7 @@ RUBY_CONFIG=true
 APACHE_ROOT=/usr/local/httpd
 
 ECHO=echo
+CP=cp
 PERL=perl
 XSD2SG_PL= ../pd/xsd2sg.pl
 XSD2SG=$(PERL) $(XSD2SG_PL)
@@ -287,8 +288,9 @@ MOD_AUTH_SAML_LIBS=-lapr-1 -lhttpd2core
 else
 ifeq ($(TARGET),win32cl)
 
-# Compilation with Microsoft Visual C++ compiler's command line (aka msvc) (experimental)
+# Native Compilation with Microsoft Visual C++ compiler's command line (aka msvc) (experimental)
 
+CP=copy
 CC=cl
 LD=link
 CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB
@@ -801,7 +803,7 @@ php/php_zxid.dll: php/php_zxid.so
 phpzxid_install: php/php_zxid.so
 	@$(ECHO) Installing in `$(PHP_CONFIG) --extension-dir`
 	mkdir -p `$(PHP_CONFIG) --extension-dir`
-	cp $< `$(PHP_CONFIG) --extension-dir`
+	$(CP) $< `$(PHP_CONFIG) --extension-dir`
 
 #cp zxid.ini `$(PHP_CONFIG) --extension-dir`
 
@@ -834,7 +836,7 @@ pyzxid: py/py_zxid.so
 pyzxid_install: py/py_zxid.so
 	@$(ECHO) Installing in `$(PY_CONFIG) --extension-dir`
 	mkdir -p `$(PY_CONFIG) --extension-dir`
-	cp $< `$(PY_CONFIG) --extension-dir`
+	$(CP) $< `$(PY_CONFIG) --extension-dir`
 
 pyclean:
 	rm -rf py/*.$(OBJ_EXT) py/*~ py/*.so
@@ -865,7 +867,7 @@ rubyzxid: ruby/ruby_zxid.so
 rubyzxid_install: ruby/ruby_zxid.so
 	@$(ECHO) Installing in `$(RUBY_CONFIG) --extension-dir`
 	mkdir -p `$(RUBY_CONFIG) --extension-dir`
-	cp $< `$(RUBY_CONFIG) --extension-dir`
+	$(CP) $< `$(RUBY_CONFIG) --extension-dir`
 
 rubyclean:
 	rm -rf ruby/*.$(OBJ_EXT) ruby/*~ ruby/*.so
@@ -896,7 +898,7 @@ csharpzxid: csharp/csharp_zxid.so
 csharpzxid_install: csharp/csharp_zxid.so
 	@$(ECHO) Installing in `$(CSHARP_CONFIG) --extension-dir`
 	mkdir -p `$(CSHARP_CONFIG) --extension-dir`
-	cp $< `$(CSHARP_CONFIG) --extension-dir`
+	$(CP) $< `$(CSHARP_CONFIG) --extension-dir`
 
 csharpclean:
 	rm -rf csharp/*.$(OBJ_EXT) csharp/*~ csharp/*.so
@@ -964,14 +966,14 @@ zxidwscprepdemo.class: zxidwscprepdemo.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java zxidwscprepdemo.java
 
 zxidjava.jar: zxidjava/zxidjni.class zxidjava/README.zxid-java
-	cp COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay zxidjava/
+	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay zxidjava/
 	$(JAR) cf zxidjava.jar zxidjava/*.class zxidjava/*.java zxidjava/COPYING zxidjava/LICENSE*
 
 zxiddemo.war: zxidjava.jar
 	mkdir -p zxidservlet/WEB-INF/classes/zxidjava/
-	cp -f zxidjava.jar ./zxidservlet/WEB-INF/classes/
-	cp -f ./servlet/WEB-INF/web.xml ./zxidservlet/WEB-INF/
-	cp -f zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
+	$(CP) -f zxidjava.jar ./zxidservlet/WEB-INF/classes/
+	$(CP) -f ./servlet/WEB-INF/web.xml ./zxidservlet/WEB-INF/
+	$(CP) -f zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
 	cd ./zxidservlet ; $(JAR) cf ../zxiddemo.war *; cd ../
 	rm -rf zxidservlet
 
@@ -983,9 +985,9 @@ javazxid_install: $(ZXIDJNI_SO)
 # from Brian, somewhat obsoleted by zxiddemo.war
 javazxid_war:
 	mkdir -p zxidservlet/WEB-INF/classes/zxidjava/
-	cp -f ./zxidjava/*.class ./zxidservlet/WEB-INF/classes/zxidjava/
-	cp -f ./servlet/WEB-INF/web.xml ./zxidservlet/WEB-INF/
-	cp -f zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
+	$(CP) -f ./zxidjava/*.class ./zxidservlet/WEB-INF/classes/zxidjava/
+	$(CP) -f ./servlet/WEB-INF/web.xml ./zxidservlet/WEB-INF/
+	$(CP) -f zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidhlo.class zxidservlet/WEB-INF/classes/
 	cd ./zxidservlet ; $(JAR) cf ../zxidservlet.war *; cd ../
 	rm -rf zxidservlet
 
@@ -1017,7 +1019,7 @@ precheck_apache:  precheck/chk-apache.$(OBJ_EXT) precheck/chk-apache
 apachezxid: precheck_apache precheck mod_auth_saml.so
 
 apachezxid_install: mod_auth_saml.so
-	cp $< $(APACHE_MODULES)
+	$(CP) $< $(APACHE_MODULES)
 
 ###
 ### Binaries
@@ -1151,8 +1153,8 @@ tas3maspkg: mod_auth_saml.so
 	rm -rf $(TAS3MAS) $(TAS3MAS).zip
 	mkdir $(TAS3MAS)
 	$(PERL) version $(ZXIDREL) < Manifest.T3-SSO-ZXID-MODAUTHSAML > $(TAS3MAS)/Manifest
-	cp mod_auth_saml.so $(TAS3MAS)
-	cp $(TAS3COMMONFILES) $(TAS3MAS)
+	$(CP) mod_auth_saml.so $(TAS3MAS)
+	$(CP) $(TAS3COMMONFILES) $(TAS3MAS)
 	zip -r $(TAS3MAS).zip $(TAS3MAS)
 
 TAS3PHP=T3-SSO-ZXID-PHP_$(ZXIDREL)
@@ -1161,8 +1163,8 @@ tas3phppkg: php/php_zxid.so
 	rm -rf $(TAS3PHP) $(TAS3PHP).zip
 	mkdir $(TAS3PHP)
 	$(PERL) version $(ZXIDREL) <Manifest.T3-SSO-ZXID-PHP >$(TAS3PHP)/Manifest
-	cp *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3PHP)
-	cp $(TAS3COMMONFILES) $(TAS3PHP)
+	$(CP) *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3PHP)
+	$(CP) $(TAS3COMMONFILES) $(TAS3PHP)
 	zip -r $(TAS3PHP).zip $(TAS3PHP)
 
 TAS3JAVA=T3-SSO-ZXID-JAVA_$(ZXIDREL)
@@ -1172,8 +1174,8 @@ tas3javapkg: $(ZXIDJNI_SO) zxidjava/zxidjni.class
 	mkdir $(TAS3JAVA)
 	mkdir $(TAS3JAVA)/zxidjava
 	$(PERL) version $(ZXIDREL) <Manifest.T3-SSO-ZXID-JAVA >$(TAS3JAVA)/Manifest
-	cp $(ZXIDJNI_SO) zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3JAVA)/zxidjava
-	cp $(TAS3COMMONFILES) $(TAS3JAVA)
+	$(CP) $(ZXIDJNI_SO) zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3JAVA)/zxidjava
+	$(CP) $(TAS3COMMONFILES) $(TAS3JAVA)
 	zip -r $(TAS3JAVA).zip $(TAS3JAVA)
 
 TAS3IDP=T3-IDP-ZXID_$(ZXIDREL)
@@ -1182,8 +1184,8 @@ tas3idppkg: zxididp zxpasswd zxcot zxdecode
 	rm -rf $(TAS3IDP) $(TAS3IDP).zip
 	mkdir $(TAS3IDP)
 	$(PERL) version $(ZXIDREL) < Manifest.T3-IDP-ZXID > $(TAS3IDP)/Manifest
-	cp zxididp zxpasswd zxcot zxdecode zxid-idp.pd $(TAS3IDP)
-	cp $(TAS3COMMONFILES) $(TAS3IDP)
+	$(CP) zxididp zxpasswd zxcot zxdecode zxid-idp.pd $(TAS3IDP)
+	$(CP) $(TAS3COMMONFILES) $(TAS3IDP)
 	zip -r $(TAS3IDP).zip $(TAS3IDP)
 
 TAS3LINUXX86=T3-ZXID-LINUX-X86_$(ZXIDREL)
@@ -1195,20 +1197,20 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 	mkdir $(TAS3LINUXX86)/include
 	mkdir $(TAS3LINUXX86)/include/zx
 	$(PERL) version $(ZXIDREL) < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
-	cp mod_auth_saml.so $(TAS3LINUXX86)
-	cp *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
-	cp zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
-	cp libzxid.a $(TAS3LINUXX86)
-	cp $(ZXIDHDRS) $(TAS3LINUXX86)/include/zx
-	cp $(ZXIDJNI_SO) zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3LINUXX86)/zxidjava
-	cp $(TAS3COMMONFILES) $(TAS3LINUXX86)
+	$(CP) mod_auth_saml.so $(TAS3LINUXX86)
+	$(CP) *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
+	$(CP) zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
+	$(CP) libzxid.a $(TAS3LINUXX86)
+	$(CP) $(ZXIDHDRS) $(TAS3LINUXX86)/include/zx
+	$(CP) $(ZXIDJNI_SO) zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3LINUXX86)/zxidjava
+	$(CP) $(TAS3COMMONFILES) $(TAS3LINUXX86)
 	zip -r $(TAS3LINUXX86).zip $(TAS3LINUXX86)
 
 TAS3WIN32=T3-ZXID-WIN32_$(ZXIDREL)
 
 #tas3win32pkg: mod_auth_saml.so php/php_zxid.so
-#	cp mod_auth_saml.so $(TAS3LINUXX86)
-#	cp *.php php/php_zxid.dll php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
+#	$(CP) mod_auth_saml.so $(TAS3LINUXX86)
+#	$(CP) *.php php/php_zxid.dll php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
 
 tas3win32pkg: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidappdemo.class zxidjava.jar zxiddemo.war
 	rm -rf $(TAS3WIN32) $(TAS3WIN32).zip
@@ -1216,20 +1218,20 @@ tas3win32pkg: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) z
 	mkdir $(TAS3WIN32)/include
 	mkdir $(TAS3WIN32)/include/zx
 	$(PERL) version $(ZXIDREL) < Manifest.T3-ZXID-WIN32 > $(TAS3WIN32)/Manifest
-	cp zxid.dll zxid.lib $(TAS3WIN32)/
-	cp $(ZXIDHDRS) $(TAS3WIN32)/include/zx
-	cp zxididp $(TAS3WIN32)/zxididp.exe
-	cp zxpasswd $(TAS3WIN32)/zxpasswd.exe
-	cp zxcot $(TAS3WIN32)/zxcot.exe
-	cp zxdecode $(TAS3WIN32)/zxdecode.exe
-	cp zxlogview $(TAS3WIN32)/zxlogview.exe
-	cp zxid-idp.pd $(TAS3WIN32)
-	cp mod_auth_saml.dll $(TAS3WIN32)
-	cp *.php php/php_zxid.dll php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3WIN32)
-	cp $(ZXIDJNI_SO) $(TAS3WIN32)/
-	cp zxidjava.jar zxiddemo.war zxid-java.pd $(TAS3WIN32)
-	cp *.java *.class $(TAS3WIN32)
-	cp $(TAS3COMMONFILES) $(TAS3WIN32)
+	$(CP) zxid.dll zxid.lib $(TAS3WIN32)/
+	$(CP) $(ZXIDHDRS) $(TAS3WIN32)/include/zx
+	$(CP) zxididp $(TAS3WIN32)/zxididp.exe
+	$(CP) zxpasswd $(TAS3WIN32)/zxpasswd.exe
+	$(CP) zxcot $(TAS3WIN32)/zxcot.exe
+	$(CP) zxdecode $(TAS3WIN32)/zxdecode.exe
+	$(CP) zxlogview $(TAS3WIN32)/zxlogview.exe
+	$(CP) zxid-idp.pd $(TAS3WIN32)
+	$(CP) mod_auth_saml.dll $(TAS3WIN32)
+	$(CP) *.php php/php_zxid.dll php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3WIN32)
+	$(CP) $(ZXIDJNI_SO) $(TAS3WIN32)/
+	$(CP) zxidjava.jar zxiddemo.war zxid-java.pd $(TAS3WIN32)
+	$(CP) *.java *.class $(TAS3WIN32)
+	$(CP) $(TAS3COMMONFILES) $(TAS3WIN32)
 	zip -r $(TAS3WIN32).zip $(TAS3WIN32)
 
 TAS3SRC=T3-ZXID-SRC_$(ZXIDREL)
@@ -1238,8 +1240,8 @@ tas3srcpkg: zxid-$(ZXIDREL).tgz
 	rm -rf $(TAS3SRC) $(TAS3SRC).zip
 	mkdir $(TAS3SRC)
 	$(PERL) version $(ZXIDREL) < Manifest.T3-ZXID-SRC > $(TAS3SRC)/Manifest
-	cp zxid-$(ZXIDREL).tgz $(TAS3SRC)
-	cp README.zxid-tas3 Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay $(TAS3SRC)
+	$(CP) zxid-$(ZXIDREL).tgz $(TAS3SRC)
+	$(CP) README.zxid-tas3 Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay $(TAS3SRC)
 	zip -r $(TAS3SRC).zip $(TAS3SRC)
 
 #tas3rel: tas3idppkg tas3javapkg tas3phppkg tas3maspkg tas3srcpkg
@@ -1271,12 +1273,17 @@ precheck/chk-curl.exe: precheck/chk-curl.$(OBJ_EXT)
 precheck/chk-apache.exe: precheck/chk-apache.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
+zx/zx.h:
+	echo "zx symlink for includes (ln -s . zx) missing. Emulating by creating zx directory..."
+	mkdir zx
+	$(CP) *.h zx
+
 ifeq ($(CROSS_COMPILE),1)
 precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl.exe precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl.exe
 	@$(ECHO) "Cross compile simplified precheck ok."
 	@$(ECHO)
 else
-precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl.exe precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl.exe
+precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openssl.$(OBJ_EXT) precheck/chk-openssl.exe precheck/chk-curl.$(OBJ_EXT) precheck/chk-curl.exe zx/zx.h
 	precheck/chk-zlib.exe
 	precheck/chk-openssl.exe
 	precheck/chk-curl.exe
@@ -1371,10 +1378,10 @@ dirs: dir
 install: zxid libzxid.a libzxid.so.0.0 dir
 	@$(ECHO) "===== Installing in $(PREFIX) (to change do make install PREFIX=/your/path)"
 	-mkdir -p $(PREFIX) $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/include/zxid
-	cp zxidhlo zxididp $(PREFIX)/bin
-	cp libzxid.a libzxid.so* $(PREFIX)/lib
-	cp libzxid.so.0.0 $(PREFIX)/lib
-	cp *.h c/*.h $(PREFIX)/include/zxid
+	$(CP) zxidhlo zxididp $(PREFIX)/bin
+	$(CP) libzxid.a libzxid.so* $(PREFIX)/lib
+	$(CP) libzxid.so.0.0 $(PREFIX)/lib
+	$(CP) *.h c/*.h $(PREFIX)/include/zxid
 	@$(ECHO) "You will need to copy zxidhlo binary where your web server can find it and"
 	@$(ECHO) "make sure your web server is configured to recognize zxidhlo as a CGI script."
 	@$(ECHO)
@@ -1476,14 +1483,14 @@ linbindist:
 winbindist:
 	rm -rf zxid-$(ZXIDREL)-win32-bin
 	mkdir zxid-$(ZXIDREL)-win32-bin zxid-$(ZXIDREL)-win32-bin/c zxid-$(ZXIDREL)-win32-bin/zxidjava  zxid-$(ZXIDREL)-win32-bin/php
-	cp zxid.dll zxidhlo zxidsimple zxididp zxcot zxpasswd zxdecode zxlogview smime *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
-	cp zxidjava/*.class $(ZXIDJNI_SO) zxidjava/zxid_wrap.c zxid-$(ZXIDREL)-win32-bin/zxidjava
-	cp COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
-	cp c/*.h zxid-$(ZXIDREL)-win32-bin/c
+	$(CP) zxid.dll zxidhlo zxidsimple zxididp zxcot zxpasswd zxdecode zxlogview smime *.a *.def *.h *.java *.class *.war zxid-$(ZXIDREL)-win32-bin
+	$(CP) zxidjava/*.class $(ZXIDJNI_SO) zxidjava/zxid_wrap.c zxid-$(ZXIDREL)-win32-bin/zxidjava
+	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay README.zxid README.zxid-win32 zxid-$(ZXIDREL)-win32-bin
+	$(CP) c/*.h zxid-$(ZXIDREL)-win32-bin/c
 	zip -r zxid-$(ZXIDREL)-win32-bin.zip zxid-$(ZXIDREL)-win32-bin
 
-#	cp *.php mod_auth_saml.dll zxid-$(ZXIDREL)-win32-bin
-#	cp php/*.php php/php_zxid.dll  zxid-$(ZXIDREL)-win32-bin/php
+#	$(CP) *.php mod_auth_saml.dll zxid-$(ZXIDREL)-win32-bin
+#	$(CP) php/*.php php/php_zxid.dll  zxid-$(ZXIDREL)-win32-bin/php
 
 
 # To create release
