@@ -943,8 +943,14 @@ zxidjava/zxid_wrap.c: $(ZX_GEN_H) zxid.h javazxid.i
 
 endif
 
+ifeq ($(TARGET),win32cl)
+zxidjava/zxid_wrap.$(OBJ_EXT): zxidjava/zxid_wrap.c
+	$(CC) -c -Fozxid_wrap.obj $(JNI_INC) $(CFLAGS) $<
+	$(CP) zxid_wrap.obj $@
+else
 zxidjava/zxid_wrap.$(OBJ_EXT): zxidjava/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ $(JNI_INC) $(CFLAGS) $<
+endif
 
 $(ZXIDJNI_SO): zxidjava/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $(SHARED_FLAGS) $< $(LIBZXID) $(LIBS) $(SHARED_CLOSE)
