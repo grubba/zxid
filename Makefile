@@ -301,6 +301,7 @@ CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB
 CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/"
 OPENSSL_ROOT="C:/OpenSSL/"
 ZLIB_ROOT="C:/Program Files/GnuWin32/"
+JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:\Program Files\Java\jdk1.5.0_14\include\win32"
 WIN_LIBS= -LIBPATH:$(CURL_ROOT)/lib/Debug -LIBPATH:$(OPENSSL_ROOT)/lib/VC -LIBPATH:$(ZLIB_ROOT)/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib
 LIBS= $(WIN_LIBS)
 SHARED_FLAGS=-LDd -MDd -shared --export-all-symbols
