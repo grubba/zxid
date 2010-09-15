@@ -293,6 +293,7 @@ ifeq ($(TARGET),win32cl)
 CP=copy
 CC=cl
 LD=link
+ar=lib
 CDEF+=-DMINGW -DWIN32CL -DUSE_LOCK=flock -DCURL_STATICLIB
 CURL_ROOT="G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/"
 OPENSSL_ROOT="C:/OpenSSL/"
@@ -1122,7 +1123,8 @@ else
 
 ifeq ($(TARGET),win32cl)
 libzxid.a: $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
-	$(AR) zxid.lib $^
+	LIB /OUT:zxid.lib $^
+	echo 'touched to satisfy dep' >libzxid.a
 else
 libzxid.a: $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) libzxid.a $^

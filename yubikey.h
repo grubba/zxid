@@ -39,6 +39,10 @@
 # define YUBIKEY_KEY_SIZE 16
 # define YUBIKEY_UID_SIZE 6
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct
 {
   /* Unique (secret) ID. */
@@ -116,5 +120,10 @@ extern unsigned short yubikey_crc16 (const unsigned char * buf, size_t buf_size)
 /* AES-decrypt one 16-byte block STATE using the 128-bit KEY, leaving
    the decrypted output in the STATE buffer. */
 extern void yubikey_aes_decrypt (unsigned char * state, const unsigned char * key);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif

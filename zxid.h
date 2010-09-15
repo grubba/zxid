@@ -30,6 +30,10 @@
 
 #include <zx/zx.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef ZXID_FULL_HEADERS
 #include "c/zx-data.h"  /* Generated. If missing, run `make dep ENA_GEN=1' */
 #else
@@ -1048,5 +1052,9 @@ size_t zxid_curl_write_data(void *buffer, size_t size, size_t nmemb, void *userp
 size_t zxid_curl_read_data(void *buffer, size_t size, size_t nmemb, void *userp);
 
 #include <zx/zxidnoswig.h>
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

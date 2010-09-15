@@ -9,6 +9,10 @@
 
 #include <windows.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define fdstdout STDOUT_FILENO
 /*#define fdtype HANDLE   see zxid.h */
 #define BADFD (INVALID_HANDLE_VALUE)
@@ -32,6 +36,9 @@ DIR* zx_win23_opendir(char*);
 struct dirent* zx_win23_readdir(DIR*);
 int zx_win23_closedir(DIR*);
 void zx_win23_rewinddir(DIR*);
+
+typedef struct stack_st STACK;  /* MSVC seems to have some problem with openssl/stack.h */
+
 #else
 #include <dirent.h>
 #endif
@@ -58,17 +65,29 @@ void zx_win23_rewinddir(DIR*);
 #define pthread_mutex_lock(mutex)     (EnterCriticalSection(mutex), 0) /* dsdbilib.c, api_mutex.c, pool.c, sg.c, io.c, shuffler.c EnterCriticalSection() */
 #define pthread_mutex_unlock(mutex)   (LeaveCriticalSection(mutex), 0) /* dsvm.c, api_mutex.c, pool.c, sg.c, io.c, shuffler.c LeaveCriticalSection() */
 
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 #else
 
 /* NOT MINGW nor WIN32CL (i.e. its Unix) */
 
 #include <dirent.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define fdstdout 1
 /*#define fdtype int   see zxid.h */
 #define BADFD (-1)
 #define closefile(x) close(x)
 #define openfile_ro(path) open((path),O_RDONLY)
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif
 

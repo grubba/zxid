@@ -46,6 +46,10 @@
 #define const  /* const causes swig java to break */
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Error Codes (low level or XML parsing) */
 
 #define ZXERR_EOF             0x0001  /* return due to EOF condition */
@@ -341,5 +345,9 @@ char* zx_enc_inc_ns(struct zx_ctx* c, char* p, struct zx_ns_s** pop_seenp);
 #define ENC_ENCKEY_METH        "http://www.w3.org/2001/04/xmlenc#EncryptedKey"
 #define ENC_TYPE_ELEMENT       "http://www.w3.org/2001/04/xmlenc#Element"
 #define ENC_TYPE_CONTENT       "http://www.w3.org/2001/04/xmlenc#Content"
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

@@ -59,6 +59,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
     NOTPUB
 
+zxid-0.64:: 16.9.2010
+    - Improved WIN32CL (MSVC CL compiler) port
+    - Added extern "C" markers to headers to force C calling convention even in C++, promoting binary compatibility of libraries
 zxid-0.63:: 29.7.2010
     - Added mandatory attribute contactType to Contact element in metadata
     - Supply AuthnInstant
