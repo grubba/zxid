@@ -32,15 +32,15 @@
 
 #include "yubikey.h"
 
-uint16_t
-yubikey_crc16 (const uint8_t *buf, size_t buf_size)
+unsigned short
+yubikey_crc16 (const unsigned char *buf, size_t buf_size)
 {
-  uint16_t m_crc = 0xffff;
+  unsigned short m_crc = 0xffff;
 
   while (buf_size--)
     {
       int i, j;
-      m_crc ^= (uint8_t) * buf++ & 0xFF;
+      m_crc ^= (unsigned char) * buf++ & 0xFF;
       for (i = 0; i < 8; i++)
 	{
 	  j = m_crc & 1;
