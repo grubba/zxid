@@ -33,10 +33,10 @@
 
 #define	NUMBER_OF_ROUNDS	10
 
-static const uint8_t RC[] =
+static const unsigned char RC[] =
   { 0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36 };
 
-static const uint8_t rijndael_sbox[] = {
+static const unsigned char rijndael_sbox[] = {
   0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5,
   0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
   0xCA, 0x82, 0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0,
@@ -71,7 +71,7 @@ static const uint8_t rijndael_sbox[] = {
   0x41, 0x99, 0x2D, 0x0F, 0xB0, 0x54, 0xBB, 0x16
 };
 
-static const uint8_t rijndael_inv_sbox[] = {
+static const unsigned char rijndael_inv_sbox[] = {
   0x52, 0x09, 0x6A, 0xD5, 0x30, 0x36, 0xA5, 0x38,
   0xBF, 0x40, 0xA3, 0x9E, 0x81, 0xF3, 0xD7, 0xFB,
   0x7C, 0xE3, 0x39, 0x82, 0x9B, 0x2F, 0xFF, 0x87,
@@ -107,20 +107,20 @@ static const uint8_t rijndael_inv_sbox[] = {
 };
 
 /* Called by:  yubikey_aes_decrypt x7 */
-static inline uint8_t
-xtime (uint8_t b)
+static inline unsigned char
+xtime (unsigned char b)
 {
   return (b & 0x80) ? ((b << 1) ^ 0x1b) : (b << 1);
 }
 
 /* Called by:  main, zxid_pw_authn */
 void
-yubikey_aes_decrypt (uint8_t * state, const uint8_t * key)
+yubikey_aes_decrypt (unsigned char * state, const unsigned char * key)
 {
-  uint8_t i, j, round_key[0x10];
-  uint8_t a02x, a13x;
-  uint8_t a02xx, a13xx;
-  uint8_t k1, k2;
+  unsigned char i, j, round_key[0x10];
+  unsigned char a02x, a13x;
+  unsigned char a02xx, a13xx;
+  unsigned char k1, k2;
 
   memcpy (round_key, key, sizeof (round_key));
   for (i = 0; i < NUMBER_OF_ROUNDS; i++)

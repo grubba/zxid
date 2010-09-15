@@ -33,7 +33,6 @@
 #ifndef YUBIKEY_H
 # define YUBIKEY_H
 
-# include <stdint.h>
 # include <string.h>
 
 # define YUBIKEY_BLOCK_SIZE 16
@@ -43,20 +42,20 @@
 typedef struct
 {
   /* Unique (secret) ID. */
-  uint8_t uid[YUBIKEY_UID_SIZE];
+  unsigned char uid[YUBIKEY_UID_SIZE];
   /* Session counter (incremented by 1 at each startup).  High bit
      indicates whether caps-lock triggered the token. */
-  uint16_t ctr;
+  unsigned short ctr;
   /* Timestamp incremented by approx 8Hz (low part). */
-  uint16_t tstpl;
+  unsigned short tstpl;
   /* Timestamp (high part). */
-  uint8_t tstph;
+  unsigned char tstph;
   /* Number of times used within session + activation flags. */
-  uint8_t use;
+  unsigned char use;
   /* Pseudo-random value. */
-  uint16_t rnd;
+  unsigned short rnd;
   /* CRC16 value of all fields. */
-  uint16_t crc;
+  unsigned short crc;
 } yubikey_token_st;
 
 typedef yubikey_token_st *yubikey_token_t;
@@ -66,8 +65,8 @@ typedef yubikey_token_st *yubikey_token_t;
 /* Decrypt TOKEN using KEY and store output in OUT structure.  Note
    that there is no error checking whether the output data is valid or
    not, use yubikey_check_* for that. */
-extern void yubikey_parse (const uint8_t token[YUBIKEY_BLOCK_SIZE],
-			   const uint8_t key[YUBIKEY_KEY_SIZE],
+extern void yubikey_parse (const unsigned char token[YUBIKEY_BLOCK_SIZE],
+			   const unsigned char key[YUBIKEY_KEY_SIZE],
 			   yubikey_token_t out);
 
 # define yubikey_counter(ctr) ((ctr) & 0x7FFF)
@@ -110,12 +109,12 @@ extern int yubikey_hex_p (const char *str);
  */
 
 # define YUBIKEY_CRC_OK_RESIDUE 0xf0b8
-extern uint16_t yubikey_crc16 (const uint8_t * buf, size_t buf_size);
+extern unsigned short yubikey_crc16 (const unsigned char * buf, size_t buf_size);
 
 /* Low-level functions; AES. */
 
 /* AES-decrypt one 16-byte block STATE using the 128-bit KEY, leaving
    the decrypted output in the STATE buffer. */
-extern void yubikey_aes_decrypt (uint8_t * state, const uint8_t * key);
+extern void yubikey_aes_decrypt (unsigned char * state, const unsigned char * key);
 
 #endif
