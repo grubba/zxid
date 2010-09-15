@@ -15,8 +15,9 @@
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
 
+#include "platform.h"  /* for dirent.h */
+
 #include <sys/stat.h>
-#include <dirent.h>
 #include <errno.h>
 
 #include "errmac.h"

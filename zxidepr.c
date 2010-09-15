@@ -20,17 +20,17 @@
  * See also zxiddi.c for discovery server code.
  */
 
+#include "platform.h"  /* for dirent.h */
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
-#include <dirent.h>
 #include <unistd.h>
 
 #include "errmac.h"
 #include "zxid.h"
-#include "platform.h"
 #include "zxidconf.h"
 #include "saml2.h"
 #include "c/zx-ns.h"

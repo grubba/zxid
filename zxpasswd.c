@@ -16,11 +16,12 @@
  * phd/sampo-idp-disco-encfs-kbdtok-2009.pd
  */
 
+#include "platform.h"  /* for dirent.h */
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <dirent.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>

@@ -13,12 +13,13 @@
  * 14.11.2009, added yubikey (yubico.com) support --Sampo
  */
 
+#include "platform.h"  /* for dirent.h */
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
-#include <dirent.h>
 #include <errno.h>
 #include <unistd.h>
 

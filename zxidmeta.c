@@ -24,12 +24,13 @@
  * 12.2.2010,  added pthread locking --Sampo
  */
 
+#include "platform.h"  /* for dirent.h */
+
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <dirent.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -44,7 +45,6 @@
 #include "saml2.h"
 #include "zxid.h"
 #include "zxidconf.h"
-#include "platform.h"
 #include "c/zx-const.h"
 #include "c/zx-ns.h"
 #include "c/zx-data.h"

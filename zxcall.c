@@ -9,10 +9,11 @@
  * 27.8.2009, created --Sampo
  */
 
+#include "platform.h"  /* for dirent.h */
+
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <dirent.h>
 #include <errno.h>
 
 #include "errmac.h"

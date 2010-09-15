@@ -13,8 +13,7 @@
  * See also zxidepr.c for discovery client code.
  */
 
-#include <dirent.h>
-
+#include "platform.h"  /* for dirent.h */
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"

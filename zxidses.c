@@ -18,17 +18,17 @@
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
 
+#include "platform.h"  /* for dirent.h */
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
-#include <dirent.h>
 #include <errno.h>
 #include <unistd.h>
 
 #include "errmac.h"
-#include "platform.h"
 #include "zxid.h"
 #include "zxidconf.h"
 #include "saml2.h"
