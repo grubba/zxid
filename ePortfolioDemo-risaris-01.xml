@@ -1,0 +1,15 @@
+<authority>
+    <user name="End-User">
+        <aspect name="Competency" right="display"/>
+        <aspect name="Interests" right="display"/>
+        <aspect name="Demographics" right="display"/>
+        <aspect name="Product" right="no"/>
+        <aspect name="Address" right="no"/>
+        <aspect name="Affiliations" right="no"/>
+        <aspect name="ContactInfo" right="no"/>
+    </user>
+    <user name="CareerCoach">
+        <aspect name="Competency" right="display"/>
+        <aspect name="Interests" right="display"/>
+    </user>
+</authority>
