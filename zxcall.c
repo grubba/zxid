@@ -35,6 +35,9 @@ Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
        zxcall [options] -a IDP USER:PW -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
+       zxcall [options] -a IDP USER:PW -t SVCTYPE -nd # Discovery only\n\
+       zxcall [options] -a IDP USER:PW # Authentication only\n\
+       zxcall [options] -s SESID -l    # List session cache\n\
   -c CONF          Optional configuration string (default -c PATH=/var/zxid/)\n\
                    Most of the configuration is read from /var/zxid/zxid.conf\n\
   -s SESID         Session ID referring to a directory in /var/zxid/ses\n\
@@ -45,10 +48,12 @@ Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml\n\
                    causes authorization only mode, provided that -az was specified).\n\
   -u URL           Optional endpoint URL or ProviderID. Discovery must match this.\n\
   -di DISCOOPTS    Optional discovery options. Query string format.\n\
+  -din N           Discovery index (default: 1=pick first).\n\
   -az AZCREDS      Optional authorization credentials. Query string format.\n\
                    N.B. For authorization to work PDP_URL configuration option is needed.\n\
   -e SOAPBODY      Pass SOAP body as argument (default is to read from STDIN)\n\
   -b               In response, only return content of SOAP body, omitting Envelope and Body.\n\
+  -nd              Discovery only (you need to specify -t SVCTYPE as well)\n\
   -n               Dryrun. Do not actually make call. Instead print it to stdout.\n\
   -l               List EPR cache (you need to specify -s SEDID or -a as well)\n\
   -v               Verbose messages.\n\
@@ -64,6 +69,9 @@ echo '<query>Foo</query>' | zxcall -a https://idp.tas3.eu/zxididp?o=B user:pw -t
 int dryrun  = 0;
 int verbose = 1;
 int out_fmt = 0;
+int din = 1;
+int di_only = 0;
+int listses = 0;
 char* entid = 0;
 char* idp   = 0;
 char* user  = 0;
@@ -133,10 +141,18 @@ static void opt(int* argc, char*** argv, char*** env)
 	++zx_debug;
 	continue;
       case 'i':
-	++(*argv); --(*argc);
-	if ((*argc) < 1) break;
-	di = (*argv)[0];
-	continue;
+        switch ((*argv)[0][3]) {
+	case '\0':
+	  ++(*argv); --(*argc);
+	  if ((*argc) < 1) break;
+	  di = (*argv)[0];
+	  continue;
+	case 'n':
+	  ++(*argv); --(*argc);
+	  if ((*argc) < 1) break;
+	  sscanf((*argv)[0], "%i", &din);
+	  continue;
+	}
       case 'c':
 	ss = zxid_show_conf(cf);
 	fprintf(stderr, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
@@ -186,15 +202,21 @@ static void opt(int* argc, char*** argv, char*** env)
 
     case 'n':
       switch ((*argv)[0][2]) {
+      case 'd':
+	++di_only;
+	continue;
       case '\0':
 	++dryrun;
 	continue;
       }
       break;
 
-#if 0
     case 'l':
       switch ((*argv)[0][2]) {
+      case '\0':
+	++listses;
+	continue;
+#if 0
       case 'i':
 	if (!strcmp((*argv)[0],"-license")) {
 	  extern char* license;
@@ -202,9 +224,9 @@ static void opt(int* argc, char*** argv, char*** env)
 	  exit(0);
 	}
 	break;
+#endif
       }
       break;
-#endif
 
     case 'q':
       switch ((*argv)[0][2]) {
@@ -231,14 +253,108 @@ help:
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }
-  if (!svc && !az) {
-    fprintf(stderr, "MUST specify either -t or -az\n");
-    goto help;
-  }
   if (!sid && !idp) {
     fprintf(stderr, "MUST specify either -s or -a\n");
     goto help;
   }
+}
+
+
+/*() List session and especially its EPR cache to stdout.
+ * Typical name: /var/zxid/ses/SESID/SVCTYPE,SHA1
+ *
+ * cf:: ZXID configuration object, also used for memory allocation
+ * ses:: Session object in whose EPR cache the file is searched
+ *
+ * See also: zxid_find_epr() */
+
+/* Called by:  main */
+int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
+{
+  struct zx_root_s* r;
+  int epr_len, siz = ZXID_INIT_EPR_BUF, din = 0;
+  char path[ZXID_MAX_BUF];
+  char* epr_buf;  /* MUST NOT come from stack. */
+  DIR* dir;
+  struct dirent * de;
+  zxid_epr* epr;
+  struct zx_a_Metadata_s* md;
+  struct zx_str* ss;
+  
+  D_INDENT("lstses: ");
+
+  if (!name_from_path(path, sizeof(path), "%s" ZXID_SES_DIR "%s", cf->path, ses->sid)) {
+    D_DEDENT("lstses: ");
+    return 0;
+  }
+  
+  printf("SESID:  %s\nSESDIR: %s\n", ses->sid, path);
+  dir = opendir(path);
+  if (!dir) {
+    perror("opendir to find epr in session");
+    ERR("Opening session for find epr by opendir failed path(%s) sesptr=%p", path, ses);
+    D_DEDENT("lstses: ");
+    return 0;
+  }
+
+  epr_buf = ZX_ALLOC(cf->ctx, siz);
+  
+  while (de = readdir(dir)) {
+    D("%d Considering file(%s)", din, de->d_name);
+    if (de->d_name[0] == '.')  /* . .. and "hidden" files */
+      continue;
+    if (de->d_name[strlen(de->d_name)-1] == '~')  /* Ignore backups from hand edited EPRs. */
+      continue;
+    D("%d Checking EPR content file(%s)", din, de->d_name);
+    epr_len = read_all(siz, epr_buf, "lstses",
+		       "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
+    if (!epr_len)
+      continue;
+
+    while (epr_len == siz) {
+      siz += siz;
+      if (siz > ZXID_MAX_CURL_BUF) {
+	ERR("Fail: Size of EPR(%s) exeeds internal limit %d.", de->d_name, ZXID_MAX_CURL_BUF);
+	ZX_FREE(cf->ctx, epr_buf);
+	D_DEDENT("lstses: ");
+	return 0;
+      }
+      D("Large EPR. Reallocating and rereading %d", siz);
+      REALLOCN(/*cf->ctx,*/ epr_buf, siz);
+      epr_len = read_all(siz, epr_buf, "lstses",
+			 "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
+    }
+    
+    LOCK(cf->ctx->mx, "lstses");
+    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
+    r = zx_DEC_root(cf->ctx, 0, 1);
+    UNLOCK(cf->ctx->mx, "lstses");
+    if (!r || !r->EndpointReference) {
+      ERR("No EPR found. Failed to parse epr_buf(%.*s)", epr_len, epr_buf);
+      continue;
+    }
+    epr = r->EndpointReference;
+    ZX_FREE(cf->ctx, r);
+
+    md = epr->Metadata;
+    if (!md || !md->ServiceType || !md->ServiceType->content || !md->ServiceType->content->len) {
+      ERR("No Metadata %p or ServiceType. Failed to parse epr_buf(%.*s)", md, epr_len, epr_buf);
+      printf("EPR %d no service type\n", ++din);
+    } else {
+      ss = md->ServiceType->content;
+      printf("EPR %d SvcType: %.*s\n", ++din, ss->len, ss->s);
+    }
+    ss = zxid_get_epr_address(cf, epr);
+    printf("  URL:         %.*s\n", ss?ss->len:0, ss?ss->s:"");
+    ss = zxid_get_epr_entid(cf, epr);
+    printf("  EntityID:    %.*s\n", ss?ss->len:0, ss?ss->s:"");
+    ss = zxid_get_epr_desc(cf, epr);
+    printf("  Description: %.*s\n", ss?ss->len:0, ss?ss->s:"");
+  }
+  ZX_FREE(cf->ctx, epr_buf);
+  closedir(dir);
+  D_DEDENT("lstses: ");
+  return 0;
 }
 
 #ifndef zxcall_main
@@ -255,7 +371,8 @@ int zxcall_main(int argc, char** argv, char** env)
   struct zx_str* ss;
   zxid_ses* ses;
   zxid_entity* idp_meta;
-  
+  zxid_epr* epr;
+
   strncpy(zx_instance, "\tzxcall", sizeof(zx_instance));
   cf = zxid_new_conf_to_cf(0);
   opt(&argc, &argv, &env);
@@ -282,6 +399,26 @@ int zxcall_main(int argc, char** argv, char** env)
       ERR("Login using Authentication Service failed idp(%s)", idp);
       return 1;
     }
+  }
+
+  if (listses)
+    return zxid_print_session(cf, ses);   
+
+  if (di_only) {
+    D("Discover only. svctype(%s), index=%d", STRNULLCHK(svc), din);
+    epr = zxid_get_epr(cf, ses, svc, url, di, 0 /*action*/, din);
+    if (!epr) {
+      ERR("Discovery failed to find any epr of service type(%s)", STRNULLCHK(svc));
+      return 3;
+    }
+    ss = zxid_get_epr_address(cf, epr);
+    printf("Found epr. index=%d service type(%s)\n  URL:         %.*s\n",
+	   din, STRNULLCHK(svc), ss?ss->len:0, ss?ss->s:"");
+    ss = zxid_get_epr_entid(cf, epr);
+    printf("  EntityID:    %.*s\n", ss?ss->len:0, ss?ss->s:"");
+    ss = zxid_get_epr_desc(cf, epr);
+    printf("  Description: %.*s\n", ss?ss->len:0, ss?ss->s:"");
+    return 0;
   }
   
   if (svc) {
@@ -324,7 +461,7 @@ int zxcall_main(int argc, char** argv, char** env)
       printf("%s", p);
     } else
       printf("%.*s", ss->len, ss->s);
-  } else {
+  } else if (az) {
     D("Call Az(%s)", az);
     if (dryrun) {
       if (verbose)
@@ -340,6 +477,10 @@ int zxcall_main(int argc, char** argv, char** env)
 	fprintf(stderr, "Deny.\n");
       return 1;
     }
+  } else {
+    D("Neither service type (-t) nor -az supplied. Performed only authentication. %d",0);
+    if (verbose)
+      fprintf(stderr, "Authentication only.\n");
   }
   return 0;
 }

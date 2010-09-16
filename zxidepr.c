@@ -268,7 +268,9 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
  * di_opt:: (Optional) Additional discovery options for selecting the service, query string format
  * action:: (Optional) The action, or method, that must be invocable on the service
  * n:: How manieth matching instance is returned. 1 means first
- * return:: EPR data structure (or linked list of EPRs) on success, 0 on failure */
+ * return:: EPR data structure (or linked list of EPRs) on success, 0 on failure
+ *
+ * See also: zxid_print_session() in zxcall.c */
 
 /* Called by:  main x2, zxid_get_epr x2 */
 zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
@@ -402,7 +404,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
  *
  * cf:: ZXID configuration object, also used for memory allocation
  * ses:: Session object in whose EPR cache the file will be searched
- * svc:: Service type (usually a URN)
+ * svc:: Service type (usually the namespace URN)
  * url:: (Optional) If provided, this argument has to match either
  *     the ProviderID, EntityID, or actual service endpoint URL.
  * di_opt:: (Optional) Additional discovery options for selecting the service, query string format

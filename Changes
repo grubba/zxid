@@ -21,6 +21,8 @@ To do:
     - Add persona support to IdP
     - Add attribute editor support to IdP
 
+    - Support Danish profiles: http://digitaliser.dk/resource/516724
+
 Regarding mod_perl stability: I would assume most of that has to do
 with underlying memory allocator. All allocation activity in zxid code
 goes through zx_alloc() (in zxlib.c:55). The ctx->malloc_func function
@@ -44,9 +46,6 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
 * http://simplesamlphp.org/docs/1.5/simplesamlphp-googleapps
 * https://shibboleth.usc.edu/docs/google-apps/
 
-    - zxcall should have sso only mode
-    - zxcall should have discovery only mode and iteration option
-    - zxcall should have EPR cache and session listing mode -s SID -l
     - zxcot should have idpdimd listing mode
     - zxpasswd should have user federation listing mode
     - zxid_pw_authn() should not report scary error message when
@@ -62,6 +61,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
 zxid-0.64:: 16.9.2010
     - Improved WIN32CL (MSVC CL compiler) port
     - Added extern "C" markers to headers to force C calling convention even in C++, promoting binary compatibility of libraries
+    - zxcall: added sso only mode
+    - zxcall: added discovery only mode and iteration option
+    - zxcall: added EPR cache and session listing mode -s SID -l
 zxid-0.63:: 29.7.2010
     - Added mandatory attribute contactType to Contact element in metadata
     - Supply AuthnInstant
