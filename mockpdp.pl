@@ -7,7 +7,7 @@
 # PDP_URL=http://idp.tas3.pt:8082/mockpdp.pl
 # PEPMAP=subj$eduPersonEntitlement$rename$role$
 #
-# ./zxcall -a https://idp.tas3.eu/zxididp?o=B bh:betty -az 'eduPersonEntitlement=user1&rs=Interests&action=display'
+# ./zxcall -a https://idp.tas3.eu/zxididp?o=B bh:betty -az 'eduPersonEntitlement=user1&rs=Interests&Action=display'
 
 use XML::Simple;
 use Data::Dumper;
