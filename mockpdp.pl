@@ -2,6 +2,81 @@
 # 15.9.2010, Sampo Kellomaki (sampo@zxid.org)
 #
 # Very simple mock PDP to be run as CGI script
+#
+# mini_httpd -p 8082 -c '*.pl' &
+# PDP_URL=http://idp.tas3.pt:8082/mockpdp.pl
+# PEPMAP=subj$eduPersonEntitlement$rename$role$
+#
+# ./zxcall -a https://idp.tas3.eu/zxididp?o=B bh:betty -az 'eduPersonEntitlement=user1&rs=Interests&action=display'
+
+use XML::Simple;
+use Data::Dumper;
+
+$issuer = 'http://idp.tas3.pt:8082/mockpdp.pl';
+$policy = 'risaris-policy.xml';
+
+if ($ENV{SERVER_SOFTWARE}) {
+    if ($ENV{SERVER_SOFTWARE} =~ /^mini_httpd/) {
+	close STDERR;   # tailf /var/tmp/pdmail.err &
+	open STDERR, ">>/var/tmp/mockpdp.err" or die "write log(/var/tmp/mockpdp.err): $!";
+	#STDERR->autoflush(1);
+    }
+}
+
+sub datetime {
+    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime($_[0]);
+    return sprintf "%04d-%02d-%02dT%02d:%02d:%02dZ", $year+1900, $mon+1, $mday, $hour, $min, $sec;
+}
+
+$len = $ENV{CONTENT_LENGTH};
+if ($len) {
+    my $off = 0;
+    while ($off < $len) {
+	my $got = sysread STDIN, $data, $len-$off, $off;
+	last if $got <= 0;
+	$off += $got;
+    }
+}
+
+#warn "IN($data)";
+
+undef $/;
+open POLICY, "<$policy" or die "Cant read policy from($polcy)";
+$pol = <POLICY>;
+close POLICY;
+
+$xx = XMLin $pol, KeepRoot=>0, ForceArray=>['user','aspect'], KeyAttr=>{ 'user'=>'name', 'aspect'=>'name' }, ValueAttr=>{'aspect'=>'right'}, GroupTags => { 'aspect' => 'right' } ;
+# , ForceArray=>['user']
+#warn "Policy: ".Dumper($xx);
+
+if (length $data) {
+    $rxx = XMLin $data, ForceArray=>['xac:Attribute'], KeepRoot=>0, KeyAttr=>{ 'xac:Attribute'=>'AttributeId' }, GroupTags => { 'xac:Action' => 'xac:Attribute', 'xac:Subject' => 'xac:Attribute', 'xac:Resource' => 'xac:Attribute', 'xac:Environment' => 'xac:Attribute' } ;
+    #warn "Request: ".Dumper($rxx);
+} else {
+    warn "No XACML request supplied?!?";
+}
+
+$xac_req = $$rxx{'e:Body'}{'xasp:XACMLAuthzDecisionQuery'}{'xac:Request'};
+#warn "xac_req: ".Dumper($xac_req);
+
+$action = $$xac_req{'xac:Action'}{'urn:oasis:names:tc:xacml:1.0:action:action-id'}{'xac:AttributeValue'};
+$resource = $$xac_req{'xac:Resource'}{'urn:oasis:names:tc:xacml:1.0:resource:resource-id'}{'xac:AttributeValue'};
+$role = $$xac_req{'xac:Subject'}{'role'}{'xac:AttributeValue'};
+
+$perm = $$xx{'user'}{$role}{'aspect'}{$resource}{'right'};
+warn "perm($perm) from role($role) resource($resource) action($action)";
+
+if ($perm eq 'no' || !length $perm) {
+    $decision = 'Deny';
+} elsif ($action eq $perm) {
+    $decision = 'Permit';
+} else {
+    $decision = 'Deny';
+}
+
+$instant  = datetime(time);
+$notafter = datetime(time+3*3600);
+$id = rand(10000);
 
 print <<SOAP;
 Content-type: text/plain
@@ -9,20 +84,22 @@ Content-type: text/plain
 <e:Envelope xmlns:e="http://schemas.xmlsoap.org/soap/envelope/">
 <e:Header></e:Header>
 <e:Body>
-<sp:Response xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol" ID="R3yhGlzrJ_DCeoYj_apS773FQ" IssueInstant="2009-12-19T11:33:55Z" Version="2.0">
-<sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">http://idp.tas3.pt:8081/zxididp?o=B</sa:Issuer>
+<sp:Response xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol"
+    ID="R$id" IssueInstant="$instant" Version="2.0">
+<sa:Issuer xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion">$issuer</sa:Issuer>
 
 <sp:Status>
 <sp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"></sp:StatusCode>
 </sp:Status>
 
-<sa:Assertion xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion" ID="A1aRci5gH7kAiQB9xFFRhwwhf" IssueInstant="2009-12-19T11:33:55Z" Version="2.0">
-<sa:Issuer>http://idp.tas3.pt:8081/zxididp?o=B</sa:Issuer>
-<sa:Conditions NotBefore="2009-12-19T11:33:55Z" NotOnOrAfter="2009-12-19T12:33:55Z"></sa:Conditions>
+<sa:Assertion xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion"
+    ID="A$id" IssueInstant="$instant" Version="2.0">
+<sa:Issuer>$issuer</sa:Issuer>
+<sa:Conditions NotBefore="$instant" NotOnOrAfter="$notafter"></sa:Conditions>
 <xasa:XACMLAuthzDecisionStatement xmlns:xasa="urn:oasis:xacml:2.0:saml:assertion:schema:os">
 <xac:Response xmlns:xac="urn:oasis:names:tc:xacml:2.0:context:schema:os">
 <xac:Result>
-<xac:Decision>Permit</xac:Decision>
+<xac:Decision>$decision</xac:Decision>
 <xac:Status>
 <xac:StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"></xac:StatusCode>
 </xac:Status>
@@ -142,10 +219,6 @@ I will now setup storyboards
 Luk Vervenne
 CEO
 
-
-
-
-
 Can I just add some notes for this meeting to ensure we all have an
 understanding:
 
@@ -175,3 +248,19 @@ Does this make sense or have I missed something ?
 
 Best regards,
 John 
+
+<authority>
+<user name="user1">
+<aspect name="Competency" right="display"/>
+<aspect name="Interests" right="display"/>
+<aspect name="Demographics" right="display"/>
+<aspect name="Product" right="no"/>
+<aspect name="Address" right="no"/>
+<aspect name="Affiliations" right="no"/>
+<aspect name="ContactInfo" right="no"/>
+</user>
+<user name="user2">
+<aspect name="Competency" right="display"/>
+<aspect name="Interests" right="display"/>
+</user>
+</authority>
