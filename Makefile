@@ -304,7 +304,10 @@ ZLIB_ROOT="C:/Program Files/GnuWin32/"
 JNI_INC=-I"C:/Program Files/Java/jdk1.5.0_14/include" -I"C:\Program Files\Java\jdk1.5.0_14\include\win32"
 WIN_LIBS= -LIBPATH:$(CURL_ROOT)/lib/Debug -LIBPATH:$(OPENSSL_ROOT)/lib/VC -LIBPATH:$(ZLIB_ROOT)/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib
 LIBS= $(WIN_LIBS)
-SHARED_FLAGS=-LDd -MDd -shared --export-all-symbols
+#SHARED_FLAGS=-LDd -MDd -shared --export-all-symbols
+#SHARED_CLOSE=/SUBSYSTEM:WINDOWS
+SHARED_FLAGS=-DLL -shared --export-all-symbols
+SHARED_CLOSE=
 CFLAGS=-Zi -WL
 #CFLAGS+=-Yd
 OUTOPT=-OUT:
@@ -955,6 +958,8 @@ endif
 
 $(ZXIDJNI_SO): zxidjava/zxid_wrap.$(OBJ_EXT) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $(SHARED_FLAGS) $< $(LIBZXID) $(LIBS) $(SHARED_CLOSE)
+
+#link  -OUT:zxidjava/zxidjni.dll -DLL -LDd -MDd -shared --export-all-symbols zxidjava/zxid_wrap.obj zxid.lib -LIBPATH:&quot;G:/cvsdev/libcurl-7.19.3-win32-ssl-msvc/&quot;/lib/Debug -LIBPATH:&quot;C:/OpenSSL/&quot;/lib/VC -LIBPATH:&quot;C:/Program Files/GnuWin32/&quot;/lib curllib.lib libeay32MD.lib ssleay32MD.lib zlib.lib kernel32.lib user32.lib winmm.lib Ws2_32.lib -Wl,-no-whole-archive /SUBSYSTEM:WINDOWS /INCREMENTAL
 
 zxidjava/zxidjni.class: zxidjava/zxidjni.java
 	cd zxidjava; $(JAVAC) $(JAVAC_FLAGS) *.java
