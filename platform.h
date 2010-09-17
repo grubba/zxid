@@ -44,10 +44,10 @@ typedef struct stack_st STACK;  /* MSVC seems to have some problem with openssl/
 #define symlink(a,b) ( ERR("symlink(2) (%s => %s) not supported by Win32", (a),(b)), -1 )
 #define unlink(a)    ( ERR("unlink(2) (%s) not supported by Win32", (a)), -1 )
 #define rmdir(a)     ( ERR("rmdir(2) (%s) not supported by Win32", (a)), -1 )
+#define close(fd)    ( ERR("close(2) (%s) not supported by Win32. Leaking descriptor.", (a)), -1 )
 #define getpid()  0
 #define geteuid() 0
 #define getegid() 0
-
 
 #else
 #include <dirent.h>
@@ -105,6 +105,7 @@ int rmdir(const char *pathname);
 int getpid(void);
 int geteuid(void);
 int getegid(void);
+int close(int);
 #endif
 
 #ifdef __cplusplus

@@ -22,6 +22,10 @@
 #include <stdio.h>
 #include <errno.h>
 
+#ifdef USE_OPENSSL
+#include <openssl/des.h>
+#endif
+
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"
@@ -287,10 +291,21 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       D("pw_hash(%s)", pw_hash);
       if (strcmp(pw_buf, pw_hash)) {
 	ERR("Bad password. uid(%s)", cgi->uid);
-	D("pw(%s) .pw(%s) pw_hash(%s)", cgi->pw, pw_buf, pw_hash);
+	D("md5 pw(%s) .pw(%s) pw_hash(%s)", cgi->pw, pw_buf, pw_hash);
 	cgi->err = login_failed;
 	return 0;
       }
+#ifdef USE_OPENSSL
+    } else if (!memcmp(pw_buf, "$c$", sizeof("$c$")-1)) {
+      DES_fcrypt(cgi->pw, pw_buf+3, pw_hash);
+      D("pw_hash(%s)", pw_hash);
+      if (strcmp(buf+3, pw_hash)) {
+	ERR("Bad password for uid(%s)", cgi->uid);
+	D("crypt pw(%s) .pw(%s) pw_hash(%s)", cgi->pw, pw_buf, pw_hash);
+	cgi->err = login_failed;
+	return 0;
+      }
+#endif
     } else if (ONE_OF_2(pw_buf[0], '$', '_')) {
       ERR("Unsupported password hash. uid(%s)", cgi->uid);
       D("pw(%s) .pw(%s)", cgi->pw, pw_buf);
