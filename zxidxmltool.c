@@ -10,18 +10,14 @@
  * 29.9.2007, started --Sampo
  */
 
-//#include <pthread.h>
 #include <signal.h>
 #include <fcntl.h>
-//#include <netdb.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-//#include <sys/wait.h>
 
 #include "errmac.h"
 #include "zx.h"

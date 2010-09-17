@@ -27,7 +27,6 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
-#include <unistd.h>
 
 #include "errmac.h"
 #include "zxid.h"

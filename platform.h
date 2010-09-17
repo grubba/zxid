@@ -41,6 +41,13 @@ typedef struct stack_st STACK;  /* MSVC seems to have some problem with openssl/
 
 #define snprintf _snprintf
 #define va_copy(ap2, ap) ap2 = ap
+#define symlink(a,b) ( ERR("symlink(2) (%s => %s) not supported by Win32", (a),(b)), -1 )
+#define unlink(a)    ( ERR("unlink(2) (%s) not supported by Win32", (a)), -1 )
+#define rmdir(a)     ( ERR("rmdir(2) (%s) not supported by Win32", (a)), -1 )
+#define getpid()  0
+#define geteuid() 0
+#define getegid() 0
+
 
 #else
 #include <dirent.h>
@@ -87,6 +94,18 @@ extern "C" {
 #define BADFD (-1)
 #define closefile(x) close(x)
 #define openfile_ro(path) open((path),O_RDONLY)
+
+#ifndef _UNISTD_H
+/* We do not want to include unistd.h because it does not exist on Win32.
+ * So define these here, but protect by ifndef, because unistd.h may get
+ * indirectly included. */
+int symlink(const char *oldpath, const char *newpath);
+int unlink(const char *pathname);
+int rmdir(const char *pathname);
+int getpid(void);
+int geteuid(void);
+int getegid(void);
+#endif
 
 #ifdef __cplusplus
 } // extern "C"

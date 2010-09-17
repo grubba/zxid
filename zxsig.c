@@ -15,7 +15,6 @@
 
 #include <memory.h>
 #include <string.h>
-#include <unistd.h>
 
 #ifdef USE_OPENSSL
 #include <openssl/x509.h>

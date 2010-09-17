@@ -20,7 +20,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <errno.h>
 #include <time.h>
 #include <openssl/sha.h>

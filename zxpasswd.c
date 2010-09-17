@@ -1,5 +1,5 @@
 /* zxpasswd.c  -  Password creation and user management tool
- * Copyright (c) 2009 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * This is confidential unpublished proprietary source code of the author.
  * NO WARRANTY, not even implied warranties. Contains trade secrets.
  * Distribution prohibited unless authorized in writing.
@@ -8,6 +8,7 @@
  *
  * 18.10.2009, created --Sampo
  * 14.11.2009, added yubikey support --Sampo
+ * 16.9.2010,  added support for traditional Unix crypt(3) hashed passwords --Sampo
  *
  * See also: http://www.users.zetnet.co.uk/hopwood/crypto/scan/ph.html
  * http://www.usenix.org/events/usenix99/provos/provos_html/index.html
@@ -21,12 +22,15 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>
 #include <fcntl.h>
+
+#ifdef USE_OPENSSL
+#include <openssl/des.h>
+#endif
 
 #include "errmac.h"
 #include "zx.h"
@@ -40,7 +44,7 @@
 
 CU8* help =
 "zxpasswd  -  Password creation and user management tool R" ZXID_REL "\n\
-Copyright (c) 2009 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
@@ -63,7 +67,7 @@ Usage: zxpasswd [options] user [udir] <passwd    # Set user's password\n\
 \n\
 For Yubikey (yubico.com) authentication (-a), supply the yubikey ticket\n\
 as user and omit the password. For creating account or changing password,\n\
-use -h y to indicate that you pass yubikey AES128 shared key in hex as password.\n";
+use -t y to indicate that you pass yubikey AES128 shared key in hex as password.\n";
 
 char zx_instance[64] = "\tzxpw";
 int zx_debug = 0;
@@ -348,12 +352,21 @@ int main(int argc, char** argv, char** env)
       return 1;
     }
     got = read_all(sizeof(buf), buf, "pw", "%s/%s/.pw", udir, user);
+    if (buf[got-1] == '\n') buf[got--] = 0;
+    if (buf[got-1] == '\r') buf[got--] = 0;
     D("buf    (%s)", buf);
     if (!memcmp(buf, "$1$", sizeof("$1$")-1)) {
       zx_md5_crypt(pw, buf, pw_hash);
       D("pw_hash(%s)", pw_hash);
       return strcmp(buf, pw_hash)?1:0;
     }
+#ifdef USE_OPENSSL
+    if (!memcmp(buf, "$c$", sizeof("$c$")-1)) {
+      DES_fcrypt(pw, buf+3, pw_hash);
+      D("pw_hash(%s)", pw_hash);
+      return strcmp(buf+3, pw_hash)?1:0;
+    }
+#endif
     if (ONE_OF_2(buf[0], '$', '_')) {
       fprintf(stderr, "Unsupported password hash algorithm (%s).\n", buf);
       return 1;
@@ -384,7 +397,15 @@ int main(int argc, char** argv, char** env)
 
   if (!strcmp(hash_type, "0")) {
     strcpy(pw_hash, pw);
-  } else if (!strcmp(hash_type, "1")) {
+#ifdef USE_OPENSSL
+  } else if (!strcmp(hash_type, "c")) {  /* Unix crypt(3) hash */
+    zx_rand(salt, 2);
+    salt[0] = pw_basis_64[salt[0] & 0x3f];
+    salt[1] = pw_basis_64[salt[1] & 0x3f];
+    strcpy(pw_hash, "$c$");  /* Our custom magic to identify Unix crypt(3) hash */
+    DES_fcrypt(pw, salt, pw_hash+3);
+#endif
+  } else if (!strcmp(hash_type, "1")) {  /* MD5 hash */
     for (got = 0; got < 8; ++got) {
       zx_rand(&ch, 1);
       salt[got] = pw_basis_64[ch & 0x3f];
@@ -414,6 +435,45 @@ int main(int argc, char** argv, char** env)
 
 #if 0
 
+We choose $c$sshhhhhhhhhh representation for plain Unix crypt(3) hashed passwords.
+
+man crypt
+
+If salt is a character string starting with the characters "$id$" followed
+by a string terminated by "$":
+
+       $id$salt$encrypted
+
+then instead of using the DES machine, id identifies the encryption
+method used and this then determines how the rest of the password string
+is interpreted.  The following values of id are supported:
+
+       ID  | Method
+       ---------------------------------------------------------
+       1   | MD5
+       2a  | Blowfish (not in mainline glibc; added in some
+           | Linux distributions)
+       5   | SHA-256 (since glibc 2.7)
+       6   | SHA-512 (since glibc 2.7)
+
+So $5$salt$encrypted is an SHA-256 encoded password and $6$salt$encrypted
+is an SHA-512 encoded one.
+
+"salt" stands for the up to 16 characters following "$id$" in the salt.
+The encrypted part of the password string is  the  actual  computed
+password.  The size of this string is fixed:
+
+MD5     | 22 characters
+SHA-256 | 43 characters
+SHA-512 | 86 characters
+
+The  characters  in  "salt"  and  "encrypted" are drawn from the
+set [a-zA-Z0-9./].  In the SHA implementation the entire key is significant
+(instead of only the first 8 bytes in MD5).
+
+
+See also man DES_fcrypt
+
 Personalizing yubikeys 2009: get and compile libyubikey-1.5 and ykpers-1.0
 
 ykpersonalize -y -v -ofixed=refucenikj -a6012cad434c66ab87d43d4babe463231
@@ -421,5 +481,11 @@ ykdebug 6012cad434c66ab87d43d4babe463231 refucenikjdbrgulutnjhurchlkcckdkergfitc
 
 Here -ofixed specifies the "username" for purposes of /var/zxid/idpuid and
 -a specifies the AES128 key that will be put in .pw file as follows:
+
+y5e0w.RTowQpk
+ldapinlisboa
+
+/var/lib/trac/conf/trac.htpasswd
+sampo:y5e0w.RTowQpk
 
 #endif

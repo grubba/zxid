@@ -18,7 +18,6 @@
 #include <memory.h>
 #include <string.h>
 #include <errno.h>
-#include <unistd.h>
 
 #include "errmac.h"
 #include "zx.h"

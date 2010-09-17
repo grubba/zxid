@@ -17,7 +17,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include <zx/zxid.h>
 #include <zx/c/zxidvers.h>
