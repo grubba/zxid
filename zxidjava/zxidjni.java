@@ -2504,13 +2504,13 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_ff12_Assertion_s(cPtr, false);
   }
 
-  public static void ses_curflt_set(zxid_ses self, SWIGTYPE_p_zx_e_Fault_s value) {
-    zxidjniJNI.zxid_ses_curflt_set(zxid_ses.getCPtr(self), SWIGTYPE_p_zx_e_Fault_s.getCPtr(value));
+  public static void ses_curflt_set(zxid_ses self, zxid_fault value) {
+    zxidjniJNI.zxid_ses_curflt_set(zxid_ses.getCPtr(self), zxid_fault.getCPtr(value));
   }
 
-  public static SWIGTYPE_p_zx_e_Fault_s ses_curflt_get(zxid_ses self) {
+  public static zxid_fault ses_curflt_get(zxid_ses self) {
     long cPtr = zxidjniJNI.zxid_ses_curflt_get(zxid_ses.getCPtr(self));
-    return (cPtr == 0) ? null : new SWIGTYPE_p_zx_e_Fault_s(cPtr, false);
+    return (cPtr == 0) ? null : new zxid_fault(cPtr, false);
   }
 
   public static void ses_curstatus_set(zxid_ses self, zxid_tas3_status value) {
@@ -3664,38 +3664,43 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new zxid_tas3_status(cPtr, false);
   }
 
-  public static SWIGTYPE_p_zx_e_Fault_s mk_fault(zxid_conf cf, String fa, String fc, String fs, String sc1, String sc2, String msg, String ref) {
+  public static zxid_fault mk_fault(zxid_conf cf, String fa, String fc, String fs, String sc1, String sc2, String msg, String ref) {
     long cPtr = zxidjniJNI.zxid_mk_fault(zxid_conf.getCPtr(cf), fa, fc, fs, sc1, sc2, msg, ref);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_zx_e_Fault_s(cPtr, false);
+    return (cPtr == 0) ? null : new zxid_fault(cPtr, false);
   }
 
-  public static void set_fault(zxid_conf cf, zxid_ses ses, SWIGTYPE_p_zx_e_Fault_s flt) {
-    zxidjniJNI.zxid_set_fault(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), SWIGTYPE_p_zx_e_Fault_s.getCPtr(flt));
+  public static void set_fault(zxid_conf cf, zxid_ses ses, zxid_fault flt) {
+    zxidjniJNI.zxid_set_fault(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), zxid_fault.getCPtr(flt));
   }
 
-  public static SWIGTYPE_p_zx_e_Fault_s get_fault(zxid_conf cf, zxid_ses ses) {
+  public static zxid_fault get_fault(zxid_conf cf, zxid_ses ses) {
     long cPtr = zxidjniJNI.zxid_get_fault(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses));
-    return (cPtr == 0) ? null : new SWIGTYPE_p_zx_e_Fault_s(cPtr, false);
+    return (cPtr == 0) ? null : new zxid_fault(cPtr, false);
   }
 
-  public static String get_tas3_fault_sc1(zxid_conf cf, SWIGTYPE_p_zx_e_Fault_s flt) {
-    return zxidjniJNI.zxid_get_tas3_fault_sc1(zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_e_Fault_s.getCPtr(flt));
+  public static String get_tas3_fault_sc1(zxid_conf cf, zxid_fault flt) {
+    return zxidjniJNI.zxid_get_tas3_fault_sc1(zxid_conf.getCPtr(cf), zxid_fault.getCPtr(flt));
   }
 
-  public static String get_tas3_fault_sc2(zxid_conf cf, SWIGTYPE_p_zx_e_Fault_s flt) {
-    return zxidjniJNI.zxid_get_tas3_fault_sc2(zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_e_Fault_s.getCPtr(flt));
+  public static String get_tas3_fault_sc2(zxid_conf cf, zxid_fault flt) {
+    return zxidjniJNI.zxid_get_tas3_fault_sc2(zxid_conf.getCPtr(cf), zxid_fault.getCPtr(flt));
   }
 
-  public static String get_tas3_fault_comment(zxid_conf cf, SWIGTYPE_p_zx_e_Fault_s flt) {
-    return zxidjniJNI.zxid_get_tas3_fault_comment(zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_e_Fault_s.getCPtr(flt));
+  public static String get_tas3_fault_comment(zxid_conf cf, zxid_fault flt) {
+    return zxidjniJNI.zxid_get_tas3_fault_comment(zxid_conf.getCPtr(cf), zxid_fault.getCPtr(flt));
   }
 
-  public static String get_tas3_fault_ref(zxid_conf cf, SWIGTYPE_p_zx_e_Fault_s flt) {
-    return zxidjniJNI.zxid_get_tas3_fault_ref(zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_e_Fault_s.getCPtr(flt));
+  public static String get_tas3_fault_ref(zxid_conf cf, zxid_fault flt) {
+    return zxidjniJNI.zxid_get_tas3_fault_ref(zxid_conf.getCPtr(cf), zxid_fault.getCPtr(flt));
   }
 
-  public static String get_tas3_fault_actor(zxid_conf cf, SWIGTYPE_p_zx_e_Fault_s flt) {
-    return zxidjniJNI.zxid_get_tas3_fault_actor(zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_e_Fault_s.getCPtr(flt));
+  public static String get_tas3_fault_actor(zxid_conf cf, zxid_fault flt) {
+    return zxidjniJNI.zxid_get_tas3_fault_actor(zxid_conf.getCPtr(cf), zxid_fault.getCPtr(flt));
+  }
+
+  public static zxid_tas3_status get_fault_status(zxid_conf cf, zxid_fault flt) {
+    long cPtr = zxidjniJNI.zxid_get_fault_status(zxid_conf.getCPtr(cf), zxid_fault.getCPtr(flt));
+    return (cPtr == 0) ? null : new zxid_tas3_status(cPtr, false);
   }
 
   public static void set_tas3_status(zxid_conf cf, zxid_ses ses, zxid_tas3_status status) {

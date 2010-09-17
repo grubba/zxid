@@ -86,9 +86,9 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, const char* ctlpt, const ch
  */
 
 /* Called by:  zxid_wsf_validate_a7n x5, zxid_wsp_validate x11 */
-struct zx_e_Fault_s* zxid_mk_fault(zxid_conf* cf, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref)
+zxid_fault* zxid_mk_fault(zxid_conf* cf, const char* fa, const char* fc, const char* fs, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
-  struct zx_e_Fault_s* flt = zx_NEW_e_Fault(cf->ctx);
+  zxid_fault* flt = zx_NEW_e_Fault(cf->ctx);
   if (fa)
     flt->faultactor = zx_dup_simple_elem(cf->ctx, fa);
   flt->faultcode = zx_dup_simple_elem(cf->ctx, fc?fc:"e:Client");
@@ -107,7 +107,7 @@ struct zx_e_Fault_s* zxid_mk_fault(zxid_conf* cf, const char* fa, const char* fc
  * detected, you can use this function to reset the current fault to null. */
 
 /* Called by:  zxid_wsf_validate_a7n x5, zxid_wsp_validate x12 */
-void zxid_set_fault(zxid_conf* cf, zxid_ses* ses, struct zx_e_Fault_s* flt) {
+void zxid_set_fault(zxid_conf* cf, zxid_ses* ses, zxid_fault* flt) {
   if (ses->curflt) /* Free the previous fault */
     zx_FREE_e_Fault(cf->ctx, ses->curflt, 1);
   ses->curflt = flt;
@@ -116,39 +116,48 @@ void zxid_set_fault(zxid_conf* cf, zxid_ses* ses, struct zx_e_Fault_s* flt) {
 /*() Read current fault of the session. NULL return means that there was no fault. */
 
 /* Called by: */
-struct zx_e_Fault_s* zxid_get_fault(zxid_conf* cf, zxid_ses* ses) {
+zxid_fault* zxid_get_fault(zxid_conf* cf, zxid_ses* ses) {
   return ses->curflt;
 }
 
 /* Called by: */
-char* zxid_get_tas3_fault_sc1(zxid_conf* cf, struct zx_e_Fault_s* flt) {
+char* zxid_get_tas3_fault_sc1(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !flt->faultcode || !flt->faultcode->content || !flt->faultcode->content->s)
     return 0;
   return zx_str_to_c(cf->ctx, flt->faultcode->content);
 }
 /* Called by: */
-char* zxid_get_tas3_fault_sc2(zxid_conf* cf, struct zx_e_Fault_s* flt) {
+char* zxid_get_tas3_fault_sc2(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->code || !flt->detail->Status->code->s)
     return 0;
   return zx_str_to_c(cf->ctx, flt->detail->Status->code);
 }
 /* Called by: */
-char* zxid_get_tas3_fault_comment(zxid_conf* cf, struct zx_e_Fault_s* flt) {
+char* zxid_get_tas3_fault_comment(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !flt->faultstring || !flt->faultstring->content || !flt->faultstring->content->s)
     return 0;
   return zx_str_to_c(cf->ctx, flt->faultstring->content);
 }
 /* Called by: */
-char* zxid_get_tas3_fault_ref(zxid_conf* cf, struct zx_e_Fault_s* flt) {
+char* zxid_get_tas3_fault_ref(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->ref || !flt->detail->Status->ref->s)
     return 0;
   return zx_str_to_c(cf->ctx, flt->detail->Status->ref);
 }
 /* Called by: */
-char* zxid_get_tas3_fault_actor(zxid_conf* cf, struct zx_e_Fault_s* flt) {
+char* zxid_get_tas3_fault_actor(zxid_conf* cf, zxid_fault* flt) {
   if (!flt || !flt->faultactor || !flt->faultactor->content || !flt->faultactor->content->s)
     return 0;
   return zx_str_to_c(cf->ctx, flt->faultactor->content);
+}
+
+zxid_tas3_status* zxid_get_fault_status(zxid_conf* cf, zxid_fault* flt) {
+  zxid_tas3_status* st;
+  if (!flt || !flt->detail || !flt->detail->Status)
+    return 0;
+  st = zx_NEW_tas3_Status(cf->ctx);
+  st->Status = flt->detail->Status;
+  return st;
 }
 
 /*() Set current TAS3 Status of the session. If current Status is set, the zxid_wsp_decorate()

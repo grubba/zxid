@@ -8,18 +8,18 @@
 
 package zxidjava;
 
-public class SWIGTYPE_p_zx_e_Fault_s {
+public class zxid_fault {
   private long swigCPtr;
 
-  protected SWIGTYPE_p_zx_e_Fault_s(long cPtr, boolean futureUse) {
+  protected zxid_fault(long cPtr, boolean futureUse) {
     swigCPtr = cPtr;
   }
 
-  protected SWIGTYPE_p_zx_e_Fault_s() {
+  protected zxid_fault() {
     swigCPtr = 0;
   }
 
-  protected static long getCPtr(SWIGTYPE_p_zx_e_Fault_s obj) {
+  protected static long getCPtr(zxid_fault obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 }

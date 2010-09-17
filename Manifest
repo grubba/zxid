@@ -583,7 +583,6 @@ zxidjava/SWIGTYPE_p_zx_ds_Reference_s.java
 zxidjava/SWIGTYPE_p_zx_ds_Signature_s.java
 zxidjava/SWIGTYPE_p_zx_e_Body_s.java
 zxidjava/SWIGTYPE_p_zx_e_Envelope_s.java
-zxidjava/SWIGTYPE_p_zx_e_Fault_s.java
 zxidjava/SWIGTYPE_p_zx_e_Header_s.java
 zxidjava/SWIGTYPE_p_zx_elem_s.java
 zxidjava/SWIGTYPE_p_zx_ff12_Assertion_s.java
@@ -642,6 +641,7 @@ zxidjava/zxid_epr.java
 zxidjava/zxid_nid.java
 zxidjava/zxid_ses.java
 zxidjava/zxid_tas3_status.java
+zxidjava/zxid_fault.java
 zxidjava/zxidjni.java
 zxidjava/zxidjniConstants.java
 zxidjava/zxidjniJNI.java

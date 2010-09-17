@@ -65,6 +65,9 @@ zxid-0.64:: 16.9.2010
     - zxcall: added discovery only mode and iteration option
     - zxcall: added EPR cache and session listing mode -s SID -l
     - Added Unix crypt hash to zxpasswd and zxid_pw_authn()
+    - Added zxid_get_fault_status() method
+    - Renamed struct zx_e_Fault_s to zxid_fault (for cleaner Java Class generation)
+    - Added mockpdp.pl
 zxid-0.63:: 29.7.2010
     - Added mandatory attribute contactType to Contact element in metadata
     - Supply AuthnInstant

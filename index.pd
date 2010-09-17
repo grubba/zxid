@@ -7,8 +7,8 @@ ZXID Home - Open Source IdM - SAML SSO - Federated
 <<define: ibox300!align=right width=300 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 <<define: ibox150!align=right width=150 border=1 hspace=5 cellpadding=3 bgcolor="#550055">>
 
-<<define: ZXVERS!0.63>>
-<<define: ZXNEWS!20100908 - Improved zxidp Shibboleth SP compatibility>>
+<<define: ZXVERS!0.64>>
+<<define: ZXNEWS!20100917 - Improved Win32cl target>>
 <<maketitle: 1>>
 
 <<ignore:
@@ -337,6 +337,7 @@ ZXID:
 <div id="old2010">
 >>
 
+* <<link:zxid-0.64.tgz>> (20100917 - Improved Win32cl target)
 * <<link:zxid-0.63.tgz>> (20100908 - Improved zxidp Shibboleth SP compatibility)
 * <<link:zxid-0.62.tgz>> (20100701 - Fixed IdP AN screen)
 * <<link:zxid-0.60.tgz>> (20100623 - No real change, just version number synchronization with TAS3 pool)

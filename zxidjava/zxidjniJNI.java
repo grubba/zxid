@@ -1010,6 +1010,7 @@ class zxidjniJNI {
   public final static native String zxid_get_tas3_fault_comment(long jarg1, long jarg2);
   public final static native String zxid_get_tas3_fault_ref(long jarg1, long jarg2);
   public final static native String zxid_get_tas3_fault_actor(long jarg1, long jarg2);
+  public final static native long zxid_get_fault_status(long jarg1, long jarg2);
   public final static native void zxid_set_tas3_status(long jarg1, long jarg2, long jarg3);
   public final static native long zxid_get_tas3_status(long jarg1, long jarg2);
   public final static native String zxid_get_tas3_status_sc1(long jarg1, long jarg2);

@@ -943,6 +943,8 @@ zxidjava/zxid_wrap.c: $(ZX_GEN_H) zxid.h javazxid.i
 	mv zxidjava/SWIGTYPE_p_zx_a_EndpointReference_s.java zxidjava/zxid_epr.java
 	$(PERL) -pi -e 's/SWIGTYPE_p_zx_tas3_Status_s/zxid_tas3_status/g' zxidjava/*.java
 	mv zxidjava/SWIGTYPE_p_zx_tas3_Status_s.java zxidjava/zxid_tas3_status.java
+	$(PERL) -pi -e 's/SWIGTYPE_p_zx_e_Fault_s/zxid_fault/g' zxidjava/*.java
+	mv zxidjava/SWIGTYPE_p_zx_e_Fault_s.java zxidjava/zxid_fault.java
 	$(PERL) -pi -e 's/(public static \w+ )zxid_/$$1/' zxidjava/zxidjni.java
 
 endif
@@ -1166,7 +1168,7 @@ TAS3MAS=T3-SSO-ZXID-MODAUTHSAML_$(ZXIDREL)
 tas3maspkg: mod_auth_saml.so
 	rm -rf $(TAS3MAS) $(TAS3MAS).zip
 	mkdir $(TAS3MAS)
-	$(PERL) version $(ZXIDREL) < Manifest.T3-SSO-ZXID-MODAUTHSAML > $(TAS3MAS)/Manifest
+	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-SSO-ZXID-MODAUTHSAML > $(TAS3MAS)/Manifest
 	$(CP) mod_auth_saml.so $(TAS3MAS)
 	$(CP) $(TAS3COMMONFILES) $(TAS3MAS)
 	zip -r $(TAS3MAS).zip $(TAS3MAS)
@@ -1176,7 +1178,7 @@ TAS3PHP=T3-SSO-ZXID-PHP_$(ZXIDREL)
 tas3phppkg: php/php_zxid.so
 	rm -rf $(TAS3PHP) $(TAS3PHP).zip
 	mkdir $(TAS3PHP)
-	$(PERL) version $(ZXIDREL) <Manifest.T3-SSO-ZXID-PHP >$(TAS3PHP)/Manifest
+	$(PERL) ./sed-zxid.pl version $(ZXIDREL) <Manifest.T3-SSO-ZXID-PHP >$(TAS3PHP)/Manifest
 	$(CP) *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3PHP)
 	$(CP) $(TAS3COMMONFILES) $(TAS3PHP)
 	zip -r $(TAS3PHP).zip $(TAS3PHP)
@@ -1187,7 +1189,7 @@ tas3javapkg: $(ZXIDJNI_SO) zxidjava/zxidjni.class
 	rm -rf $(TAS3JAVA) $(TAS3JAVA).zip
 	mkdir $(TAS3JAVA)
 	mkdir $(TAS3JAVA)/zxidjava
-	$(PERL) version $(ZXIDREL) <Manifest.T3-SSO-ZXID-JAVA >$(TAS3JAVA)/Manifest
+	$(PERL) ./sed-zxid.pl version $(ZXIDREL) <Manifest.T3-SSO-ZXID-JAVA >$(TAS3JAVA)/Manifest
 	$(CP) $(ZXIDJNI_SO) zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3JAVA)/zxidjava
 	$(CP) $(TAS3COMMONFILES) $(TAS3JAVA)
 	zip -r $(TAS3JAVA).zip $(TAS3JAVA)
@@ -1197,7 +1199,7 @@ TAS3IDP=T3-IDP-ZXID_$(ZXIDREL)
 tas3idppkg: zxididp zxpasswd zxcot zxdecode
 	rm -rf $(TAS3IDP) $(TAS3IDP).zip
 	mkdir $(TAS3IDP)
-	$(PERL) version $(ZXIDREL) < Manifest.T3-IDP-ZXID > $(TAS3IDP)/Manifest
+	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-IDP-ZXID > $(TAS3IDP)/Manifest
 	$(CP) zxididp zxpasswd zxcot zxdecode zxid-idp.pd $(TAS3IDP)
 	$(CP) $(TAS3COMMONFILES) $(TAS3IDP)
 	zip -r $(TAS3IDP).zip $(TAS3IDP)
@@ -1208,14 +1210,18 @@ tas3linuxx86pkg: zxididp zxpasswd zxcot zxdecode zxlogview mod_auth_saml.so php/
 	rm -rf $(TAS3LINUXX86) $(TAS3LINUXX86).zip
 	mkdir $(TAS3LINUXX86)
 	mkdir $(TAS3LINUXX86)/zxidjava
+	mkdir $(TAS3LINUXX86)/php
 	mkdir $(TAS3LINUXX86)/include
 	mkdir $(TAS3LINUXX86)/include/zx
-	$(PERL) version $(ZXIDREL) < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
+	mkdir $(TAS3LINUXX86)/include/zx/c
+	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-ZXID-LINUX-X86 > $(TAS3LINUXX86)/Manifest
 	$(CP) mod_auth_saml.so $(TAS3LINUXX86)
-	$(CP) *.php php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php zxid-php.pd $(TAS3LINUXX86)
+	$(CP) *.php zxid-php.pd $(TAS3LINUXX86)
+	$(CP) php/php_zxid.so php/zxid.php php/zxid.ini php/README.zxid-php $(TAS3LINUXX86)/php
 	$(CP) zxididp zxpasswd zxcot zxdecode zxlogview zxid-idp.pd $(TAS3LINUXX86)
 	$(CP) $(LIBZXID_A) $(TAS3LINUXX86)
 	$(CP) $(ZXIDHDRS) $(TAS3LINUXX86)/include/zx
+	$(CP) c/*.h $(TAS3LINUXX86)/include/zx/c
 	$(CP) $(ZXIDJNI_SO) zxidjava/*.java zxidjava/*.class zxidjava/README.zxid-java zxid-java.pd $(TAS3LINUXX86)/zxidjava
 	$(CP) $(TAS3COMMONFILES) $(TAS3LINUXX86)
 	zip -r $(TAS3LINUXX86).zip $(TAS3LINUXX86)
@@ -1231,7 +1237,8 @@ tas3win32pkg: zxid.dll zxididp zxpasswd zxcot zxdecode zxlogview $(ZXIDJNI_SO) z
 	mkdir $(TAS3WIN32)
 	mkdir $(TAS3WIN32)/include
 	mkdir $(TAS3WIN32)/include/zx
-	$(PERL) version $(ZXIDREL) < Manifest.T3-ZXID-WIN32 > $(TAS3WIN32)/Manifest
+	mkdir $(TAS3WIN32)/include/zx/c
+	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-ZXID-WIN32 > $(TAS3WIN32)/Manifest
 	$(CP) zxid.dll zxid.lib $(TAS3WIN32)/
 	$(CP) $(ZXIDHDRS) $(TAS3WIN32)/include/zx
 	$(CP) zxididp $(TAS3WIN32)/zxididp.exe
@@ -1253,7 +1260,7 @@ TAS3SRC=T3-ZXID-SRC_$(ZXIDREL)
 tas3srcpkg: zxid-$(ZXIDREL).tgz
 	rm -rf $(TAS3SRC) $(TAS3SRC).zip
 	mkdir $(TAS3SRC)
-	$(PERL) version $(ZXIDREL) < Manifest.T3-ZXID-SRC > $(TAS3SRC)/Manifest
+	$(PERL) ./sed-zxid.pl version $(ZXIDREL) < Manifest.T3-ZXID-SRC > $(TAS3SRC)/Manifest
 	$(CP) zxid-$(ZXIDREL).tgz $(TAS3SRC)
 	$(CP) README.zxid-tas3 Changes COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay $(TAS3SRC)
 	zip -r $(TAS3SRC).zip $(TAS3SRC)
@@ -1269,7 +1276,7 @@ tas3rel: tas3linuxx86pkg tas3srcpkg
 # tas3pool T3-ZXID-WIN32_0.56.zip
 
 tas3copyrel: tas3rel
-	scp $(TAS3SRC).zip $(TAS3LINUXX86).zip tas3repo:pool-in
+	rsync $(TAS3SRC).zip $(TAS3LINUXX86).zip tas3repo:pool-in
 
 ###
 ### Precheck to help analyse compilation problems
@@ -1528,7 +1535,7 @@ winbindist:
 #   make winbindist
 #   make winbinrel
 #   make tas3rel
-#   make tas3copyrel    # tas3pool -u T3-ZXID-LINUX-X86_0.54.zip;
+#   make tas3copyrel    # tas3pool -u T3-ZXID-LINUX-X86_0.54.zip
 #    ./pool-submit.sh 0.62
 #   make gen ENA_GEN=1
 # zxid.user@lists.unh.edu
@@ -1537,7 +1544,7 @@ winbindist:
 WEBROOT=sampo@zxidp.org:/var/zxid/webroot
 
 copydist:
-	scp zxid-$(ZXIDREL).tgz $(WEBROOT)
+	rsync zxid-$(ZXIDREL).tgz $(WEBROOT)
 
 tex/%.pdf: %.pd
 	pd2tex -noref -nortf -nodbx -nohtml $<
@@ -1567,7 +1574,7 @@ winbinrel:
 	scp zxid-$(ZXIDREL)-win32-bin.zip $(WEBROOT)
 
 indexrel: html/index.html
-	scp $< $(WEBROOT)
+	rsync $< $(WEBROOT)
 
 reldoc:
 	scp $(DOC)  $(WEBROOT)/html
