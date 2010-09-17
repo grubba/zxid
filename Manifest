@@ -52,6 +52,7 @@ pulverize.pl     - A build tool for generating pulverized libraries for dead fun
 mockpdp.pl       - A mockup of a PDP, run as CGI
 call-anal.pl     - Call graph analysis tool (see make callgraph)
 xml-pretty.pl    - XML Pretty Printer
+zximport-htpasswd.pl - Script to create users in /var/zxid/idpuid from .htpasswd
 
 # Handwritten code
 
