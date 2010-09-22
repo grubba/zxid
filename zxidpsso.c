@@ -35,7 +35,7 @@
  * failure (i.e. duplicate), 1 on success. */
 
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_idp_sso x3 */
-static int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid)
+int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -96,7 +96,7 @@ static int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str
  * may be useful for caller to send further and should be freed by the caller. */
 
 /* Called by:  zxid_idp_sso x4 */
-static struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Response_s* resp, struct zx_sp_AuthnRequest_s* ar)
+struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Response_s* resp, struct zx_sp_AuthnRequest_s* ar)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -565,8 +565,73 @@ char* zxid_add_fed_tok_to_epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int
   return logop;
 }
 
+/*() Internal function, just to factor out some commonality between SSO and SSOS. */
+
+zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char** logop, struct zx_sp_AuthnRequest_s* ar)
+{
+  zxid_a7n* a7n;
+  struct zx_sp_NameIDPolicy_s* nidpol;
+  struct zx_str* affil;
+  char sp_name_buf[1024];
+  D("sp_eid(%s)", sp_meta->eid);
+
+  if (ar->IssueInstant && ar->IssueInstant->s)
+    srcts->tv_sec = zx_date_time_to_secs(ar->IssueInstant->s);
+  
+  nidpol = ar->NameIDPolicy;
+  if (!cgi->allow_create && nidpol && nidpol->AllowCreate && nidpol->AllowCreate->s) {
+    D("No allow_create from form, extract from SAMLRequest (%.*s) len=%d", nidpol->AllowCreate->len, nidpol->AllowCreate->s, nidpol->AllowCreate->len);
+    cgi->allow_create = ZXID_XML_TRUE_TEST(nidpol->AllowCreate) ? '1' : '0';
+  }
+
+  if ((!cgi->nid_fmt || !cgi->nid_fmt[0])
+      && nidpol && nidpol->Format && nidpol->Format->s) {
+    D("No Name ID Format from form, extract from SAMLRequest (%.*s) len=%d", nidpol->Format->len, nidpol->Format->s, nidpol->Format->len);
+    cgi->nid_fmt = nidpol->Format->len == sizeof(SAML2_TRANSIENT_NID_FMT)-1
+      && !memcmp(nidpol->Format->s, SAML2_TRANSIENT_NID_FMT, sizeof(SAML2_TRANSIENT_NID_FMT)-1)
+      ? "trnsnt" : "prstnt";
+  }
+
+  /* Check for federation. */
+  
+  affil = nidpol && nidpol->SPNameQualifier ? nidpol->SPNameQualifier : ar->Issuer->gg.content;
+  zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
+  D("sp_name_buf(%s)  allow_create=%d", sp_name_buf, cgi->allow_create);
+  *nameid = zxid_check_fed(cf, affil, ses->uid, cgi->allow_create,
+			  srcts, ar->Issuer->gg.content, ar->ID, sp_name_buf);
+
+  if (*nameid) {
+    if (cgi->nid_fmt && !strcmp(cgi->nid_fmt, "trnsnt")) {
+      D("Despite old fed, using transient due to cgi->nid_fmt(%s)", STRNULLCHKD(cgi->nid_fmt));
+      zxid_mk_transient_nid(cf, *nameid, sp_name_buf, ses->uid);
+      if (logop) *logop = "ITSSO";
+    } else
+      if (logop) *logop = "IFSSO";
+  } else {
+    D("No nameid (because of no federation), using transient %d", 0);
+    *nameid = zx_NEW_sa_NameID(cf->ctx);
+    zxid_mk_transient_nid(cf, *nameid, sp_name_buf, ses->uid);
+    if (logop) *logop = "ITSSO";
+  }
+
+  a7n = zxid_mk_user_a7n_to_sp(cf, ses, ses->uid, *nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
+
+  /* saml-profiles-2.0-os.pdf ll.549-551 requires SubjectConfirmation even though
+   * saml-core-2.0-os.pdf ll.653-657 says <SubjectConfirmation> [Zero or More]. The
+   * profile seems to make it mandatory. See profiles ll.554-560. */
+
+  a7n->Subject->SubjectConfirmation = zx_NEW_sa_SubjectConfirmation(cf->ctx);
+  a7n->Subject->SubjectConfirmation->Method = zx_dup_str(cf->ctx, SAML2_BEARER);
+  a7n->Subject->SubjectConfirmation->SubjectConfirmationData = zx_NEW_sa_SubjectConfirmationData(cf->ctx);
+  if (acsurl)
+    a7n->Subject->SubjectConfirmation->SubjectConfirmationData->Recipient = acsurl;
+  a7n->Subject->SubjectConfirmation->SubjectConfirmationData->NotOnOrAfter = a7n->Conditions->NotOnOrAfter;
+
+  return a7n;
+}
+
 /*(i) Generate SSO assertion and ship it to SP by chosen binding. User has already
- * logged in by the time this is called. */
+ * logged in by the time this is called. See also zxid_ssos_anreq() */
 
 /* Called by:  zxid_idp_dispatch */
 struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_AuthnRequest_s* ar)
@@ -579,15 +644,12 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   struct zx_str* acsurl = 0;
   struct zx_str tmpss;
   struct zx_str* ss;
-  struct zx_str* affil;
   struct zx_str* payload;
   struct timeval srcts = {0,501000};
   zxid_nid* nameid;
   zxid_a7n* a7n;
-  struct zx_sp_NameIDPolicy_s* nidpol;
   struct zx_sp_Response_s* resp;
   struct zx_e_Envelope_s* e;
-  char sp_name_buf[1024];
   char* p;
   char* logop;
 
@@ -642,54 +704,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
 
   /* User ses->uid is already logged in, now check for federation with sp */
 
-  D("sp_eid(%s)", sp_meta->eid);
-
-  if (ar->IssueInstant && ar->IssueInstant->s)
-    srcts.tv_sec = zx_date_time_to_secs(ar->IssueInstant->s);
-  
-  nidpol = ar->NameIDPolicy;
-  if (!cgi->allow_create && nidpol && nidpol->AllowCreate && nidpol->AllowCreate->s) {
-    D("No allow_create from form, extract from SAMLRequest (%.*s) len=%d", nidpol->AllowCreate->len, nidpol->AllowCreate->s, nidpol->AllowCreate->len);
-    cgi->allow_create = ZXID_XML_TRUE_TEST(nidpol->AllowCreate) ? '1' : '0';
-  }
-
-  if ((!cgi->nid_fmt || !cgi->nid_fmt[0])
-      && nidpol && nidpol->Format && nidpol->Format->s) {
-    D("No Name ID Format from form, extract from SAMLRequest (%.*s) len=%d", nidpol->Format->len, nidpol->Format->s, nidpol->Format->len);
-    cgi->nid_fmt = nidpol->Format->len == sizeof(SAML2_TRANSIENT_NID_FMT)-1 && !memcmp(nidpol->Format->s, SAML2_TRANSIENT_NID_FMT, sizeof(SAML2_TRANSIENT_NID_FMT)-1) ? "trnsnt" : "prstnt";
-  }
-
-  affil = nidpol && nidpol->SPNameQualifier ? nidpol->SPNameQualifier : ar->Issuer->gg.content;
-  zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
-  D("sp_name_buf(%s)  allow_create=%d", sp_name_buf, cgi->allow_create);
-  nameid = zxid_check_fed(cf, affil, ses->uid, cgi->allow_create,
-			  &srcts, ar->Issuer->gg.content, ar->ID, sp_name_buf);
-
-  if (nameid) {
-    if (cgi->nid_fmt && !strcmp(cgi->nid_fmt, "trnsnt")) {
-      D("Despite old fed, using transient due to cgi->nid_fmt(%s)", STRNULLCHKD(cgi->nid_fmt));
-      zxid_mk_transient_nid(cf, nameid, sp_name_buf, ses->uid);
-      logop = "ITSSO";
-    } else
-      logop = "IFSSO";
-  } else {
-    D("No nameid (because of no federation), using transient %d", 0);
-    nameid = zx_NEW_sa_NameID(cf->ctx);
-    zxid_mk_transient_nid(cf, nameid, sp_name_buf, ses->uid);
-    logop = "ITSSO";
-  }
-
-  a7n = zxid_mk_user_a7n_to_sp(cf, ses, ses->uid, nameid, sp_meta, sp_name_buf, 1);  /* SSO a7n */
-
-  /* saml-profiles-2.0-os.pdf ll.549-551 requires SubjectConfirmation even though
-   * saml-core-2.0-os.pdf ll.653-657 says <SubjectConfirmation> [Zero or More]. The
-   * profile seems to make it mandatory. See profiles ll.554-560. */
-
-  a7n->Subject->SubjectConfirmation = zx_NEW_sa_SubjectConfirmation(cf->ctx);
-  a7n->Subject->SubjectConfirmation->Method = zx_dup_str(cf->ctx, SAML2_BEARER);
-  a7n->Subject->SubjectConfirmation->SubjectConfirmationData = zx_NEW_sa_SubjectConfirmationData(cf->ctx);
-  a7n->Subject->SubjectConfirmation->SubjectConfirmationData->Recipient = acsurl;
-  a7n->Subject->SubjectConfirmation->SubjectConfirmationData->NotOnOrAfter = a7n->Conditions->NotOnOrAfter;
+  a7n = zxid_sso_issue_a7n(cf, cgi, ses, &srcts, sp_meta, acsurl, &nameid, &logop, ar);
   
   /* Sign, encrypt, and ship the assertion according to the binding. */
   

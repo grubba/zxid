@@ -478,9 +478,11 @@
  * dreaded officially introduced time errors (e.g. daylight "savings" time),
  * you can configure some slop in how the timeout is evaluated. For production
  * use something like 60 seconds could be a good value. 3600 = 1 hour, 86400 = 1 day.
+ * All servers of CoT MUST use GMT (not local timezones). You can synchronize
+ * clocks with ntpdate ntp1.funet.fi (see man ntpdate).
  * Slop is used in assessing validity of assertions as well as message timestamps. */
-#define ZXID_BEFORE_SLOP    86400  /* Number of seconds before that is acceptable. */
-#define ZXID_AFTER_SLOP     86400  /* Number of seconds after that is acceptable. */
+#define ZXID_BEFORE_SLOP    7300  /* Number of seconds before that is acceptable. */
+#define ZXID_AFTER_SLOP     7300  /* Number of seconds after that is acceptable. */
 
 #define ZXID_TIMESKEW       0      /* Timeskew, in seconds, for timestamps we emit. */
 #define ZXID_A7NTTL         3600   /* Time To Live for IdP issued Assertions */

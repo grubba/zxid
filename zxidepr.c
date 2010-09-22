@@ -58,7 +58,7 @@ void zxid_fold_svc(char* p, int len)
  * name:: Often Service name or SP Entity ID
  * cont:: content of EPR or the SP EntityID, used to compute sha1 hash that becomes part
  *     of the file name
- * ign_prefix:: How many characters to ignore from beginning of name: 0 or 7
+ * ign_prefix:: How many characters to ignore from beginning of name: 0 or 7 (http://)
  * return:: 0 on success (the real return value is returned via ~buf~ result parameter) */
 
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_di_query, zxid_epr_path, zxid_idp_sso */

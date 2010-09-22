@@ -127,6 +127,7 @@ struct zx_str* zx_EASY_ENC_WO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_To
 struct zx_sec_TokenPolicy_s {
   ZX_ELEM_EXT
   zx_sec_TokenPolicy_EXT
+  struct zx_sp_NameIDPolicy_s* NameIDPolicy;
   struct zx_str* issueTo;	/* {0,1} attribute xs:anyURI */
   struct zx_str* type;	/* {0,1} attribute hrxml:ExtendedAssociationTypeType */
   struct zx_str* validUntil;	/* {0,1} attribute xs:dateTime */

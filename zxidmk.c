@@ -326,7 +326,7 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses)
   if (ses->an_ctx)
     an_stmt->AuthnContext->AuthnContextClassRef = zx_dup_simple_elem(cf->ctx, ses->an_ctx);
   else {
-    ERR("Session(%s) lacks AuthentCOntextClassRef. Output AuthnStatement will not satisfy all processing rules. See configuration option ISSUE_AUTHNCTX_PW.", ses->sesix);
+    ERR("Session(%s) lacks AuthentContextClassRef. Output AuthnStatement will not satisfy all processing rules. See configuration option ISSUE_AUTHNCTX_PW.", ses->sesix);
   }
   return an_stmt;
 }

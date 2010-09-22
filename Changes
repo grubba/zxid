@@ -14,8 +14,8 @@ To do:
       5. Any SOAP Action header, from SOAP message or from HTTP header.
     - (Local) logout should either return to referer, or to configurable page
     - Depend logging validate, az response, emit logging decorate, azreq
-    - Static linking, dynamic linking libzxid
     - Brian's ordering problem (risaris-bad.xml)
+    - Static linking, dynamic linking libzxid
     - IdP initiated SLO
     - IdP should include URL for correcting information
     - Add persona support to IdP
@@ -50,14 +50,21 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - zxpasswd should have user federation listing mode
     - zxid_pw_authn() should not report scary error message when
       checking .ykspent in not spent case
-    - ID Mapper to be used by Delegation Service
     - zxid_select_tgt()
     - Each credential as its own a7n
     - X509 attr certs
     - Use post screen as confirmation screen
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
+    - Config option for redirection after SLO
+    - Templatize idp selection
     NOTPUB
 
+zzxid-0.65:: 18.9.2010
+    - zxidpidp: added ID Mapper (to be used by Delegation Service)
+    - zxidpidp: added some aspects of People Service (to be used by Delegation Service)
+    - zxidpidp: added SSOS
+    - Shortened the before and after slops from 1 day to about 2 hours
+   NOTPUB
 zxid-0.64:: 16.9.2010
     - Improved WIN32CL (MSVC CL compiler) port
     - Added extern "C" markers to headers to force C calling convention even in C++, promoting binary compatibility of libraries

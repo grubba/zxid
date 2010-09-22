@@ -104,11 +104,13 @@ zxidpsso.c       - Single Sign-On functions for IdP: Generate A7N
 zxidsso.c        - Single Sign-On functions for SP: Consume A7N
 zxida7n.c        - Functions for querying assertions
 zxidepr.c        - End Point Reference (EPR) and bootstrap handling
-zxidwsf.c        - Handwritten ID-WSF Framework level utilities, e.g. signing and validation
-zxidwsc.c        - Handwritten ID-WSF Web Services Client engine
-zxidwsp.c        - Handwritten ID-WSF Web Services Provider helpers
-zxiddi.c         - Handwritten ID-WSF Discovery Service
-zxidmkwsf.c      - Handwritten constructors for WSF
+zxidwsf.c        - ID-WSF Framework level utilities, e.g. signing and validation
+zxidwsc.c        - ID-WSF Web Services Client engine
+zxidwsp.c        - ID-WSF Web Services Provider helpers
+zxiddi.c         - ID-WSF Discovery Service
+zxidim.c         - ID-WSF Identity Mapping Service
+zxidps.c         - ID-WSF People Service
+zxidmkwsf.c      - Constructors for WSF
 zxidhlowsf.c     - Demonstration of calling ID-WSF services (DS and DAP)
 zxidxmltool.c    - Testing tool for parsing XML
 zxbench.c        - A benchmarking tool

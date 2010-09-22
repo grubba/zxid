@@ -5,11 +5,13 @@
 
 target(sec, urn:liberty:security:2006-08)
 ns(sa,     urn:oasis:names:tc:SAML:2.0:assertion)
+ns(sp,     urn:oasis:names:tc:SAML:2.0:protocol)
 ns(sa11,   urn:oasis:names:tc:SAML:1.0:assertion)
 ns(ff12,   urn:liberty:iff:2003-08)
 
 TokenPolicy	 -> %sec:TokenPolicyType
 %TokenPolicyType:
+  sp:NameIDPolicy?
   any*  processContents(lax)
   @validUntil?	 -> %xs:dateTime
   @issueTo?	 -> %xs:anyURI

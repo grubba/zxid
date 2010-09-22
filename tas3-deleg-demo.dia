@@ -1313,7 +1313,7 @@ service#</dia:string>
       </dia:attribute>
     </dia:object>
   </dia:layer>
-  <dia:layer name="num" visible="true" active="true">
+  <dia:layer name="num" visible="true">
     <dia:object type="Standard - Text" version="1" id="O35">
       <dia:attribute name="obj_pos">
         <dia:point val="12.55,7.15"/>
@@ -1572,6 +1572,44 @@ service#</dia:string>
           </dia:attribute>
           <dia:attribute name="pos">
             <dia:point val="16.55,20.3"/>
+          </dia:attribute>
+          <dia:attribute name="color">
+            <dia:color val="#000000"/>
+          </dia:attribute>
+          <dia:attribute name="alignment">
+            <dia:enum val="0"/>
+          </dia:attribute>
+        </dia:composite>
+      </dia:attribute>
+      <dia:attribute name="valign">
+        <dia:enum val="3"/>
+      </dia:attribute>
+    </dia:object>
+  </dia:layer>
+  <dia:layer name="api" visible="true" active="true">
+    <dia:object type="Standard - Text" version="1" id="O43">
+      <dia:attribute name="obj_pos">
+        <dia:point val="18.39,11.685"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="18.39,11.0713;26.8262,14.2749"/>
+      </dia:attribute>
+      <dia:attribute name="text">
+        <dia:composite type="text">
+          <dia:attribute name="string">
+            <dia:string>#1. ps:AddEntityReq
+4. ps:ResolveIdentifierReq
+5. di:Query
+6. im:IdentityMappingReq#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="font">
+            <dia:font family="sans" style="0" name="Helvetica"/>
+          </dia:attribute>
+          <dia:attribute name="height">
+            <dia:real val="0.80000000000000004"/>
+          </dia:attribute>
+          <dia:attribute name="pos">
+            <dia:point val="18.39,11.685"/>
           </dia:attribute>
           <dia:attribute name="color">
             <dia:color val="#000000"/>

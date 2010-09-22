@@ -176,6 +176,7 @@ void  zx_str_free(struct zx_ctx* c, struct zx_str* ss);   /* free both ss->s and
 char* zx_str_to_c(struct zx_ctx* c, struct zx_str* ss);
 void  zx_str_conv(struct zx_str* ss, int* out_len, char** out_s);  /* SWIG typemap friendly */
 int   zx_str_ends_in(struct zx_str* ss, int len, const char* suffix);
+#define ZX_STRCMP(a, b) ((a)?((b)?((a)->len == (b)->len?memcmp((a)->s, (b)->s, (a)->len):(a)->len - (b)->len):1):((b)?-1:0))
 #define ZX_STR_EQ(ss, cstr) ((ss) && (cstr) && (ss)->s && (ss)->len == strlen(cstr) && !memcmp((cstr), (ss)->s, (ss)->len))
 #define ZX_STR_ENDS_IN_CONST(ss, suffix) zx_str_ends_in((ss), sizeof(suffix)-1, (suffix))
 #define ZX_CONTENT_EQ_CONST(e, c) ((e) && (e)->content->len == sizeof(c)-1 && !memcmp((e)->content->s, (c), sizeof(c)-1))

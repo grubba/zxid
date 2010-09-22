@@ -66,6 +66,8 @@ struct zx_sp_LogoutRequest_s;
 struct zx_sp_LogoutResponse_s;
 struct zx_sp_ManageNameIDRequest_s;
 struct zx_sp_ManageNameIDResponse_s;
+struct zx_sp_NameIDMappingRequest_s;
+struct zx_sp_NameIDMappingResponse_s;
 struct zx_sa11_Assertion_s;
 struct zx_sa11_Assertion_s;
 struct zx_ff12_Assertion_s;
@@ -92,6 +94,12 @@ struct zx_xaspcd1_XACMLAuthzDecisionQuery_s;
 struct zx_as_SASLRequest_s;
 struct zx_di_Query_s;
 struct zx_di_QueryResponse_s;
+struct zx_im_IdentityMappingRequest_s;
+struct zx_im_IdentityMappingResponse_s;
+struct zx_ps_AddEntityRequest_s;
+struct zx_ps_AddEntityResponse_s;
+struct zx_ps_ResolveIdentifierRequest_s;
+struct zx_ps_ResolveIdentifierResponse_s;
 struct zx_lu_Status_s;
 struct zx_wsu_Timestamp_s;
 struct zx_wsse_Security_s;
@@ -754,6 +762,10 @@ struct zx_str* zxid_idp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, in
 
 /* zxidpsso - IdP side of SSO: generating A7N */
 
+void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_buf, const char* uid);
+int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid);
+struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Response_s* resp, struct zx_sp_AuthnRequest_s* ar);
+zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char** logop, struct zx_sp_AuthnRequest_s* ar);
 struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attribute_s* prev, int len, char* p, char* lk);
 struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* path, struct zx_sa_Attribute_s* bootstraps, int add_bs_lvl);
 zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int add_bs_lvl);
@@ -956,6 +968,19 @@ zxid_epr* zxid_new_epr(zxid_conf* cf, char* address, char* desc, char* entid, ch
 /* zxiddi -  Discovery Service */
 
 struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req);
+
+/* zxidim -  Identity Mapping Service, Single Sign-On Service (SSOS) */
+
+struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* req);
+
+struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req);
+
+struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp_NameIDMappingRequest_s* req);
+
+/* zxidps -  People Service (and delegation) */
+
+struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_AddEntityRequest_s* req);
+struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_ResolveIdentifierRequest_s* req);
 
 /* DAP scope constants are same as for LDAP, see RFC2251 */
 
