@@ -11,6 +11,10 @@
  * 15.11.2009, created --Sampo
  *
  * See also zxidepr.c for discovery client code.
+ *
+ *   zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'Discovery Svc' \
+ *     http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 \
+ *   | zxcot -bs /var/zxid/idpdimd
  */
 
 #include "platform.h"  /* for dirent.h */

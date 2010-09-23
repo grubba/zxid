@@ -12,6 +12,10 @@
  *
  * See also zxcall for client
  * - liberty-idwsf-authn-svc-v2.0.pdf sec 7 "Identity Mapping Service"
+ *
+ *   zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'IDMap Svc' \
+ *    http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:ims:2006-08 \
+ *   | zxcot -b /var/zxid/idpdimd
  */
 
 #include "platform.h"  /* for dirent.h */
@@ -127,6 +131,74 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   
   D_DEDENT("ssos: ");
   return resp;
+}
+
+/*(i) Use Liberty ID-WSF 2.0 Identity Mapping Service to convert
+ * the identity of the session to identity token in the namespace
+ * of the entity at_eid.
+
+ * This is the main work horse for WSCs wishing to call WSPs via EPR.
+ *
+ * cf:: ZXID configuration object, also used for memory allocation
+ * ses:: Session object in whose EPR cache the file will be searched
+ * at_eid:: EntityID of the destination namespace
+ * how:: How to make mapping
+ * return:: 1=success
+ */
+
+/* Called by:  main */
+int zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how)
+{
+  int n_maps = 0;
+  struct zx_str* ss;
+  struct zx_str* urlss;
+  struct zx_e_Envelope_s* env;
+  struct zx_im_MappingInput_s* inp;
+  struct zx_im_MappingOutput_s* out;
+  zxid_epr* epr;
+  epr = zxid_get_epr(cf, ses, XMLNS_IMS, 0, 0, 0, 1);
+  if (!epr) {
+    ERR("No Identity Mapping Service discovered svc(%s) how=%d", STRNULLCHK(at_eid), how);
+    return 0;
+  }
+  
+  INFO("Identity Mapping Svc svc(%s) how=%d...", STRNULLCHK(at_eid), how);
+  env = zx_NEW_e_Envelope(cf->ctx);
+  env->Header = zx_NEW_e_Header(cf->ctx);
+  env->Body = zx_NEW_e_Body(cf->ctx);
+  env->Body->IdentityMappingRequest = zx_NEW_im_IdentityMappingRequest(cf->ctx);
+  env->Body->IdentityMappingRequest->MappingInput = inp = zx_NEW_im_MappingInput(cf->ctx);
+  //inp->Token = zx_NEW_sec_Token(cf->ctx);
+  //inp->Token->ref = zx_dup_str(cf->ctx, "#A7N");
+  inp->TokenPolicy = zx_NEW_sec_TokenPolicy(cf->ctx);
+  inp->TokenPolicy->type = zx_dup_str(cf->ctx, TOKNUSG_SEC);
+#if 0  /* Default is true anyway */
+  inp->TokenPolicy->wantDSEPR = zx_dup_str(cf->ctx, "1");
+#endif
+  inp->TokenPolicy->NameIDPolicy = zx_NEW_sp_NameIDPolicy(cf->ctx);
+  inp->TokenPolicy->NameIDPolicy->Format = zx_dup_str(cf->ctx, zxid_saml2_map_nid_fmt("prstnt"));
+  inp->TokenPolicy->NameIDPolicy->SPNameQualifier = zx_dup_str(cf->ctx, at_eid);
+  inp->TokenPolicy->NameIDPolicy->AllowCreate = zx_dup_str(cf->ctx, ZXID_TRUE); /* default false */
+
+  env = zxid_wsc_call(cf, ses, epr, env, 0);
+  if (env && env->Body) {
+    if (env->Body->IdentityMappingResponse) {
+      for (out = env->Body->MappingOutput; out; out = (zxid_epr*)ZX_NEXT(out)) {
+	switch (how) {
+	case 0: // *** sec tok (invoker)
+	case 1: // *** target id
+	}
+	break;  /* Not really iterating */
+     }
+    } else {
+      ERR("No Identity Mapping Response at_eid(%s)", STRNULLCHK(at_eid));
+    }
+    if (!epr)
+    D("TOTAL mappings: %d", n_maps);
+    return 1;
+  }
+  ERR("Identity Mapping call failed envelope=%p", env);
+  return 0;
 }
 
 /*() Identity Mapping Service: Issue token in response to receiving a token */

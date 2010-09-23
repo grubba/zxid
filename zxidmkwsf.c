@@ -155,13 +155,19 @@ zxid_tas3_status* zxid_get_fault_status(zxid_conf* cf, zxid_fault* flt) {
   zxid_tas3_status* st;
   if (!flt || !flt->detail || !flt->detail->Status)
     return 0;
-  st = zx_NEW_tas3_Status(cf->ctx);
+  st = zxid_mk_tas3_status(cf,
+			   zxid_get_tas3_fault_actor(cf, flt),
+			   zxid_get_tas3_fault_sc1(cf, flt),
+			   0,
+			   zxid_get_tas3_fault_comment(cf, flt),
+			   0);
   st->Status = flt->detail->Status;
   return st;
 }
 
-/*() Set current TAS3 Status of the session. If current Status is set, the zxid_wsp_decorate()
- * function will generate a TAS3 status header. */
+/*() Set current TAS3 Status of the session. If current Status is set,
+ * the zxid_wsp_decorate() function will generate a TAS3 status
+ * header. */
 
 /* Called by:  zxid_wsp_validate */
 void zxid_set_tas3_status(zxid_conf* cf, zxid_ses* ses, zxid_tas3_status* status) {

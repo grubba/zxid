@@ -588,7 +588,21 @@ By far the most common type of bootstrap is a a discovery bootstrap:
     http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 \
     | zxcot -bs /var/zxid/idpdimd
 
-4.5.2 Bootstrap Recursiveness
+4.5.2 Creating Identity Mapping and People Service Registrations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want zxididp to support delegation, you would usually
+configure following registrations as well:
+
+  zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'IDMap Svc' \
+    http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:ims:2006-08 \
+    | zxcot -b /var/zxid/idpdimd
+
+  zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'People Svc' \
+    http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:ps:2006-08 \
+    | zxcot -b /var/zxid/idpdimd
+
+4.5.3 Bootstrap Recursiveness
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A problem that arises with the bootstraps is the support for recursive

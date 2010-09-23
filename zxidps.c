@@ -13,6 +13,10 @@
  * See also zxcall for client
  * - liberty-idwsf-overview-v2.0.pdf sec 2.3 and 2.4 (pp.15-31) for use cases
  * - liberty-idwsf-people-service-v1.0.pdf, sec 4.4 Elements Supporting Invitation (pp.53-57)
+ *
+ *  zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'People Svc' \
+ *    http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:ps:2006-08 \
+ *  | zxcot -b /var/zxid/idpdimd
  */
 
 #include "platform.h"  /* for dirent.h */

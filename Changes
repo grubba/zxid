@@ -64,7 +64,8 @@ zzxid-0.65:: 18.9.2010
     - zxidpidp: added some aspects of People Service (to be used by Delegation Service)
     - zxidpidp: added SSOS
     - Shortened the before and after slops from 1 day to about 2 hours
-   NOTPUB
+    - Improved zxid_get_fault_status() by adding a first level status code
+    NOTPUB
 zxid-0.64:: 16.9.2010
     - Improved WIN32CL (MSVC CL compiler) port
     - Added extern "C" markers to headers to force C calling convention even in C++, promoting binary compatibility of libraries
