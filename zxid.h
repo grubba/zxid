@@ -415,6 +415,8 @@ struct zxid_ses {
   zxid_nid* tgtnameid; /* From a7n or EncryptedID */
   zxid_a7n* a7n;       /* SAML 2.0 for Subject */
   zxid_a7n* tgta7n;    /* SAML 2.0 for Target */
+  struct zx_sec_Token_s* call_invtok;
+  struct zx_sec_Token_s* call_tgttok;
   struct zx_sa11_Assertion_s* a7n11;
   struct zx_sa11_Assertion_s* tgta7n11;
   struct zx_ff12_Assertion_s* a7n12;

@@ -181,21 +181,32 @@ int zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, in
   inp->TokenPolicy->NameIDPolicy->AllowCreate = zx_dup_str(cf->ctx, ZXID_TRUE); /* default false */
 
   env = zxid_wsc_call(cf, ses, epr, env, 0);
-  if (env && env->Body) {
-    if (env->Body->IdentityMappingResponse) {
+  if (!env || !env->Body) {
+    ERR("Identity Mapping call failed envelope=%p", env);
+    return 0;
+  }
+  if (!env->Body->IdentityMappingResponse) {
+      ERR("No Identity Mapping Response at_eid(%s)", STRNULLCHK(at_eid));
+      return 0;
+  }
+
       for (out = env->Body->MappingOutput; out; out = (zxid_epr*)ZX_NEXT(out)) {
 	switch (how) {
-	case 0: // *** sec tok (invoker)
-	case 1: // *** target id
+	case 0:
+	  D("Invocation token set %p", out->Token);
+	  ses->call_invtok = out->Token;
+	  break;
+	case 1:
+	  D("Target Identity token set %p", out->Token);
+	  ses->call_tgttok = out->Token;
+	  break;
 	}
-	break;  /* Not really iterating */
+	return 1;  /* Not really iterating */
      }
     } else {
       ERR("No Identity Mapping Response at_eid(%s)", STRNULLCHK(at_eid));
+      return 0;
     }
-    if (!epr)
-    D("TOTAL mappings: %d", n_maps);
-    return 1;
   }
   ERR("Identity Mapping call failed envelope=%p", env);
   return 0;
