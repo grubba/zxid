@@ -127,6 +127,15 @@ yubikey.h        - yubikey library header (from libyubikey-1.5)
 ykcrc.c          - ticket validity check
 ykaes.c          - AES128 implementation from yubico
 
+# HTML templates for SP, IdP,and PS (!!BANGBANG substitutions will be performed)
+
+idpsel.html      - IdentityProvider selection. See also IDP_SEL_TEMPL_FILE and IDP_SEL_PAGE confs.
+an-main.html     - IdP's main authentication screen. See also AN_TEMPL_FILE and AN_PAGE configs.
+post.html        - Error message (for IdP and PS). See also ERR_TEMPL_FILE and ERR_PAGE configs.
+err.html         - Error message (for IdP and PS). See also ERR_TEMPL_FILE and ERR_PAGE configs.
+idpsel.css       - Stylesheet for ipdsel.html
+an.css           - Stylesheet for an-main.html, post.html, and err.html
+
 # Full API demos
 
 zxid.c           - Main ZXID SP program (a CGI script)
@@ -390,9 +399,6 @@ t/saml-bearer.xml      - Example of ID-WSF SOAP call using bearer token (SAML2) 
 zxiddash.pl
 dash.css
 dash-main.html
-
-idpsel.css
-an.css
 
 zxidatsel.pl
 atsel.css

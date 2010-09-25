@@ -1,4 +1,4 @@
-/* C code produced by gperf version 3.0.1 */
+/* C code produced by gperf version 3.0.3 */
 /* Command-line: gperf -t -D -C -T -l -G -W zx_elems -N zx_elem2tok c/zx-elems.gperf  */
 /* Computed positions: -k'1-5,7-8,10,$' */
 
@@ -5059,6 +5059,9 @@ static const short lookup[] =
 
 #ifdef __GNUC__
 __inline
+#ifdef __GNUC_STDC_INLINE__
+__attribute__ ((__gnu_inline__))
+#endif
 #endif
 const struct zx_tok *
 zx_elem2tok (str, len)

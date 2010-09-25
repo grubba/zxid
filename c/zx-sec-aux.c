@@ -331,6 +331,14 @@ void zx_FREE_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x, i
   zx_free_attr(c, x->validUntil, free_strs);
   zx_free_attr(c, x->wantDSEPR, free_strs);
 
+  {
+      struct zx_sp_NameIDPolicy_s* e;
+      struct zx_sp_NameIDPolicy_s* en;
+      for (e = x->NameIDPolicy; e; e = en) {
+	  en = (struct zx_sp_NameIDPolicy_s*)e->gg.g.n;
+	  zx_FREE_sp_NameIDPolicy(c, e, free_strs);
+      }
+  }
 
 
   zx_free_elem_common(c, &x->gg, free_strs); 
@@ -370,6 +378,11 @@ void zx_DUP_STRS_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* 
   zx_dup_attr(c, x->validUntil);
   zx_dup_attr(c, x->wantDSEPR);
 
+  {
+      struct zx_sp_NameIDPolicy_s* e;
+      for (e = x->NameIDPolicy; e; e = (struct zx_sp_NameIDPolicy_s*)e->gg.g.n)
+	  zx_DUP_STRS_sp_NameIDPolicy(c, e);
+  }
 
 }
 
@@ -389,6 +402,19 @@ struct zx_sec_TokenPolicy_s* zx_DEEP_CLONE_sec_TokenPolicy(struct zx_ctx* c, str
   x->validUntil = zx_clone_attr(c, x->validUntil);
   x->wantDSEPR = zx_clone_attr(c, x->wantDSEPR);
 
+  {
+      struct zx_sp_NameIDPolicy_s* e;
+      struct zx_sp_NameIDPolicy_s* en;
+      struct zx_sp_NameIDPolicy_s* enn;
+      for (enn = 0, e = x->NameIDPolicy; e; e = (struct zx_sp_NameIDPolicy_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_sp_NameIDPolicy(c, e, dup_strs);
+	  if (!enn)
+	      x->NameIDPolicy = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
 
   return x;
 }
@@ -411,6 +437,14 @@ int zx_WALK_SO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x,
   if (ret)
     return ret;
 
+  {
+      struct zx_sp_NameIDPolicy_s* e;
+      for (e = x->NameIDPolicy; e; e = (struct zx_sp_NameIDPolicy_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_sp_NameIDPolicy(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
 
   
   return zx_walk_so_unknown_elems_and_content(c, &x->gg, ctx, callback);

@@ -348,6 +348,11 @@
  * Whether limited IdP functionality is enabled. Affects generated metadata. */
 #define ZXID_IDP_ENA 0
 
+/*(c) Identity Mapper and People Service
+ * Whether limited Identity Mapper and People Service functionality is enabled.
+ * For this to work, IDP_ENA=1 is needed. */
+#define ZXID_IMPS_ENA 0
+
 /*(c) Mini Authentication Service
  * Whether limited Authentication Service functionality is enabled.
  * Please note that the AuthenticationService impmenetation at present (2010)
@@ -629,9 +634,11 @@
  * are hidden and POST profile is used */
 #define ZXID_SHOW_TECH 0
 
-/*(c) Body tag for the ZXID generated pages.
- * Edit this to change the colors. */
+/*(c) Body tag for some old ZXID generated pages. Edit this to change the colors. But usually
+ * you should be editing stylesheet or template. */
 #define ZXID_BODY_TAG "<body bgcolor=white>"  /* (compile) */
+
+#if 0
 
 #define ZXID_IDP_SEL_START "<title>ZXID SP SSO: Choose IdP</title><link type=\"text/css\" rel=stylesheet href=\"idpsel.css\">" ZXID_BODY_TAG "<h1 class=zxtop>ZXID SP Federated SSO (user NOT logged in, no session)</h1>\n"
 
@@ -647,6 +654,7 @@
 
 #define ZXID_IDP_SEL_FOOTER  "<div class=zxbot><a class=zx href=\"http://zxid.org/\">zxid.org</a>, "
 #define ZXID_IDP_SEL_END     "</div>"
+#endif
 
 /*(c) IdP Selector Page URL
  * If the above simple customization options are not sufficient, you can
@@ -655,6 +663,25 @@
  * 0 (zero) disables. */
 
 #define ZXID_IDP_SEL_PAGE 0
+
+/*(c) Path for Template for IdP Authentication Page */
+
+#define ZXID_IDP_SEL_TEMPL_FILE "idpsel.html"
+
+/*(c) Template for IdP Authentication Page that is used if the
+ * path does not work. This is really meant to be the last resort. */
+
+#define ZXID_IDP_SEL_TEMPL ""
+
+/*(c) Choose the method for rendeing IdP list.
+ * 0 = popup menu
+ * 1 = buttons
+ * 2 = branded image buttons (not implemented as of 20100922) */
+#define ZXID_IDP_LIST_METH 0
+
+#define ZXID_IDP_LIST_POPUP   0
+#define ZXID_IDP_LIST_BUTTON  1
+#define ZXID_IDP_LIST_BRAND   2
 
 /*(c) If user clicks "Create New User" he is redirected to this page. */
 
@@ -701,7 +728,46 @@
   "<input type=hidden name=zxapp value=\"!!ZXAPP\">"\
   "</form><div class=zxbot><a href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"
 
-#define ZXID_MGMT_START "<title>ZXID SP Mgmt</title><link type=\"text/css\" rel=stylesheet href=\"idpsel.css\">" ZXID_BODY_TAG "<h1 class=zxtop>ZXID SP Management (user logged in, session active)</h1>\n"
+/*(c) Path for Template for POST profile page */
+
+#define ZXID_POST_TEMPL_FILE "post.html"
+
+/*(c) Template for POST profile age that is used if the
+ * path does not work. This is really meant to be the last resort. */
+
+#define ZXID_POST_TEMPL "<title>ZXID Post Profile</title>"\
+  "<link type=\"text/css\" rel=stylesheet href=\"an.css\">"\
+  "<body bgcolor=white OnLoad=\"document.forms[0].submit()\">"\
+  "<form method=post action=\"!!ACTION_URL\">"\
+  "<h1 class=zxtop>ZXID POST Profile POST</h1>"\
+  "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
+  "<input type=hidden name=!!SAML_ART value=\"!!SAML_RESP\">!!RS!!SIG"\
+  "<input type=submit name=ok value=\" If JavaScript is not on, please click here to complete the transaction \">"\
+  "</form><div class=zxbot><a href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"
+
+/*(c) Error Page URL
+ * If the template customization options are not sufficient, you can
+ * provide URL to page of your own design. If set, takes priority over ERR_TEMPL_FILE.
+ * 0 (zero) disables. */
+
+#define ZXID_ERR_PAGE 0
+
+/*(c) Path for Template for Error Page */
+
+#define ZXID_ERR_TEMPL_FILE "err.html"
+
+/*(c) Template for Error Page that is used if the
+ * path does not work. This is really meant to be the last resort. */
+
+#define ZXID_ERR_TEMPL "<title>ZXID: Error</title>"\
+  "<link type=\"text/css\" rel=stylesheet href=\"an.css\"><body bgcolor=white>"\
+  "<form method=get action=\"!!URL\">"\
+  "<h1 class=zxtop>ZXID Error Message</h1>"\
+  "<div class=zxerr>!!ERR</div><div class=zxmsg>!!MSG</div><div class=zxdbg>!!DBG</div>"\
+  "<input type=hidden name=zxapp value=\"!!ZXAPP\">"\
+  "</form><div class=zxbot><a href=\"http://zxid.org/\">zxid.org</a>, !!VERSION (builtin)</div>"
+
+#define ZXID_MGMT_START "<title>ZXID SP Mgmt</title><link type=\"text/css\" rel=stylesheet href=\"idpsel.css\"><body bgcolor=white><h1 class=zxtop>ZXID SP Management (user logged in, session active)</h1>\n"
 
 #define ZXID_MGMT_LOGOUT "<input type=submit name=gl value=\" Local Logout \">\n<input type=submit name=gr value=\" Single Logout (R) \">\n<input type=submit name=gs value=\" Single Logout (S) \">\n"
 

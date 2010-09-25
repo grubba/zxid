@@ -1567,7 +1567,7 @@ void zx_sp_NameIDMappingResponse_REV_EncryptedID(struct zx_sp_NameIDMappingRespo
 
 #endif
 /* -------------------------- sp_NameIDPolicy -------------------------- */
-/* refby( zx_sp_AuthnRequest_s zx_sp_NameIDMappingRequest_s ) */
+/* refby( zx_sp_AuthnRequest_s zx_sp_NameIDMappingRequest_s zx_sec_TokenPolicy_s ) */
 #ifndef zx_sp_NameIDPolicy_EXT
 #define zx_sp_NameIDPolicy_EXT
 #endif

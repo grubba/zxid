@@ -40,14 +40,9 @@ Usage: zxdecode [options] <message >decoded\n\
   -h               This help message\n\
   --               End of options\n";
 
-char zx_instance[64] = "\tzxdec";
-int zx_debug = 0;
-char zx_indent[256] = "";
 int inflate_flag = 2;  /* Auto */
 int verbose = 1;
 char buf[32*1024];
-int assert_nonfatal = 0;
-char* assert_msg = "assert fired.";
 
 /* Called by:  main x8, zxcall_main, zxcot_main */
 static void opt(int* argc, char*** argv, char*** env)
@@ -190,6 +185,7 @@ int main(int argc, char** argv, char** env)
   char* p;
   char* q;
 
+  strcpy(zx_instance, "\tzxdec");
   opt(&argc, &argv, &env);
 
   read_all_fd(0, buf, sizeof(buf)-1, &got);

@@ -777,8 +777,8 @@ Invitation (identified by SPtoPSRedirectURL) needs to remember
   that can be revoked without revoking other invitations.
 * Max usage
 * Usage count (when usage >= max usage, invitation is no longer accepted
-* NotBefore
-* Expires
+* Start time
+* Expiry time
 
 Invitation is stored in LDIF file at path
 
@@ -794,7 +794,7 @@ Invitation is stored in LDIF file at path
   perm:  # See below
   maxusage: 1
   usage: 0
-  notbefore: 2010-09-22T23:08:55Z
+  starts: 2010-09-22T23:08:55Z
   expires: 2010-09-29T23:08:56Z
 
 <<ignore: zx_date_time_to_secs() >>

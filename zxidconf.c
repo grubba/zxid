@@ -278,6 +278,7 @@ int zxid_init_conf(zxid_conf* cf, char* zxid_path)
   cf->post_a7n_enc = ZXID_POST_A7N_ENC;
   cf->enckey_opt   = ZXID_ENCKEY_OPT;
   cf->idpatopt     = ZXID_IDPATOPT;
+  cf->idp_list_meth   = ZXID_IDP_LIST_METH;
   cf->di_allow_create = ZXID_DI_ALLOW_CREATE;
   cf->di_nid_fmt   = ZXID_DI_NID_FMT;
   cf->di_a7n_enc   = ZXID_DI_A7N_ENC;
@@ -309,6 +310,7 @@ int zxid_init_conf(zxid_conf* cf, char* zxid_path)
   cf->ses_cookie_name   = ZXID_SES_COOKIE_NAME;
   cf->user_local        = ZXID_USER_LOCAL;
   cf->idp_ena           = ZXID_IDP_ENA;
+  cf->imps_ena          = ZXID_IMPS_ENA;
   cf->as_ena            = ZXID_AS_ENA;
   cf->pdp_ena           = ZXID_PDP_ENA;
 
@@ -377,6 +379,9 @@ int zxid_init_conf(zxid_conf* cf, char* zxid_path)
   cf->bare_url_entityid = ZXID_BARE_URL_ENTITYID;
   cf->show_tech         = ZXID_SHOW_TECH;
   cf->idp_sel_page      = ZXID_IDP_SEL_PAGE;
+  cf->idp_sel_templ_file= ZXID_IDP_SEL_TEMPL_FILE;
+  cf->idp_sel_templ     = ZXID_IDP_SEL_TEMPL;
+#if 0
   cf->idp_sel_start     = ZXID_IDP_SEL_START;
   cf->idp_sel_new_idp   = ZXID_IDP_SEL_NEW_IDP;
   cf->idp_sel_our_eid   = ZXID_IDP_SEL_OUR_EID;
@@ -384,10 +389,18 @@ int zxid_init_conf(zxid_conf* cf, char* zxid_path)
   cf->idp_sel_tech_site = ZXID_IDP_SEL_TECH_SITE;
   cf->idp_sel_footer    = ZXID_IDP_SEL_FOOTER;
   cf->idp_sel_end       = ZXID_IDP_SEL_END;
+#endif
 
   cf->an_page           = ZXID_AN_PAGE;
   cf->an_templ_file     = ZXID_AN_TEMPL_FILE;
   cf->an_templ          = ZXID_AN_TEMPL;
+
+  cf->post_templ_file   = ZXID_POST_TEMPL_FILE;
+  cf->post_templ        = ZXID_POST_TEMPL;
+
+  cf->err_page          = ZXID_ERR_PAGE;
+  cf->err_templ_file    = ZXID_ERR_TEMPL_FILE;
+  cf->err_templ         = ZXID_ERR_TEMPL;
 
   cf->new_user_page     = ZXID_NEW_USER_PAGE;
   cf->recover_passwd    = ZXID_RECOVER_PASSWD;
@@ -1005,6 +1018,9 @@ scan_end:
       if (!strcmp(n, "ERR"))             { SCAN_INT(v, cf->log_err); break; }
       if (!strcmp(n, "ERR_IN_ACT"))      { SCAN_INT(v, cf->log_err_in_act); break; }
       if (!strcmp(n, "ENCKEY_OPT"))      { SCAN_INT(v, cf->enckey_opt); break; }
+      if (!strcmp(n, "ERR_PAGE"))        { cf->err_page = v; break; }
+      if (!strcmp(n, "ERR_TEMPL_FILE"))  { cf->err_templ_file = v; break; }
+      if (!strcmp(n, "ERR_TEMPL"))       { cf->err_templ = v; break; }
       goto badcf;
     case 'F':
       if (!strcmp(n, "FEDUSERNAME_SUFFIX")) { cf->fedusername_suffix = v; break; }
@@ -1013,6 +1029,7 @@ scan_end:
       if (!strcmp(n, "ISSUE_A7N"))       { SCAN_INT(v, cf->log_issue_a7n); break; }
       if (!strcmp(n, "ISSUE_MSG"))       { SCAN_INT(v, cf->log_issue_msg); break; }
       if (!strcmp(n, "ISSUE_AUTHNCTX_PW")) { cf->issue_authnctx_pw = v; break; }
+#if 0
       if (!strcmp(n, "IDP_SEL_START"))   { cf->idp_sel_start = v; break; }
       if (!strcmp(n, "IDP_SEL_NEW_IDP")) { cf->idp_sel_new_idp = v; break; }
       if (!strcmp(n, "IDP_SEL_OUR_EID")) { cf->idp_sel_our_eid = v; break; }
@@ -1020,10 +1037,15 @@ scan_end:
       if (!strcmp(n, "IDP_SEL_TECH_SITE")) { cf->idp_sel_tech_site =v; break; }
       if (!strcmp(n, "IDP_SEL_FOOTER"))  { cf->idp_sel_footer = v; break; }
       if (!strcmp(n, "IDP_SEL_END"))     { cf->idp_sel_end = v; break; }
+#endif
       if (!strcmp(n, "IDP_SEL_PAGE"))    { cf->idp_sel_page = v; break; }
+      if (!strcmp(n, "IDP_SEL_TEMPL_FILE")) { cf->idp_sel_templ_file = v; break; }
+      if (!strcmp(n, "IDP_SEL_TEMPL"))   { cf->idp_sel_templ = v; break; }
       if (!strcmp(n, "IDP_ENA"))         { SCAN_INT(v, cf->idp_ena); break; }
+      if (!strcmp(n, "IMPS_ENA"))        { SCAN_INT(v, cf->imps_ena); break; }
       if (!strcmp(n, "IDP_PREF_ACS_BINDING")) { cf->idp_pref_acs_binding = v; break; }
       if (!strcmp(n, "IDPATOPT"))        { SCAN_INT(v, cf->idpatopt); break; }
+      if (!strcmp(n, "IDP_LIST_METH"))   { SCAN_INT(v, cf->idp_list_meth); break; }
       if (!strcmp(n, "INMAP"))           { cf->inmap = zxid_load_map(cf, cf->inmap, v); break; }
       goto badcf;
     case 'L':  /* LEVEL (log level) */
@@ -1095,6 +1117,8 @@ scan_end:
       if (!strcmp(n, "PEPMAP_RSOUT"))   { cf->pepmap_rsout = zxid_load_map(cf, cf->pepmap_rsout, v); break; }
       if (!strcmp(n, "PEPMAP_RSIN"))    { cf->pepmap_rsin  = zxid_load_map(cf, cf->pepmap_rsin,  v); break; }
       if (!strcmp(n, "POST_A7N_ENC"))   { SCAN_INT(v, cf->post_a7n_enc); break; }
+      if (!strcmp(n, "POST_TEMPL_FILE"))   { cf->post_templ_file = v; break; }
+      if (!strcmp(n, "POST_TEMPL"))        { cf->post_templ = v; break; }
       goto badcf;
     case 'R':  /* RELY_A7N, RELY_MSG */
       if (!strcmp(n, "REDIRECT_HACK_IMPOSED_URL")) { cf->redirect_hack_imposed_url = v; break; }
@@ -1391,6 +1415,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "IPPORT=%s\n"
 "USER_LOCAL=%d\n"
 "IDP_ENA=%d\n"
+"IMPS_ENA=%d\n"
 "AS_ENA=%d\n"
 "PDP_ENA=%d\n"
 "#ZXID_MAX_BUF=%d (compile)\n"
@@ -1438,8 +1463,12 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "SHOW_TECH=%d\n"
 "</pre>"
 
-"<textarea cols=100 rows=20>"
+"IDP_LIST_METH=%d\n"
 "IDP_SEL_PAGE=%s\n"
+"IDP_SEL_TEMPL_FILE=%s\n"
+"<textarea cols=100 rows=20>"
+"IDP_SEL_TEMPL=%s\n"
+#if 0
 "IDP_SEL_START=%s\n"
 "IDP_SEL_NEW_IDP=%s\n"
 "IDP_SEL_OUR_EID=%s\n"
@@ -1447,15 +1476,31 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "IDP_SEL_TECH_SITE=%s\n"
 "IDP_SEL_FOOTER=%s\n"
 "IDP_SEL_END=%s\n"
+#endif
+"</textarea>"
 
 "AN_PAGE=%s\n"
 "AN_TEMPL_FILE=%s\n"
+"<textarea cols=100 rows=20>"
 "AN_TEMPL=%s\n"
+"</textarea>"
+
+"POST_TEMPL_FILE=%s\n"
+"<textarea cols=100 rows=20>"
+"POST_TEMPL=%s\n"
+"</textarea>"
+
+"ERR_PAGE=%s\n"
+"ERR_TEMPL_FILE=%s\n"
+"<textarea cols=100 rows=20>"
+"ERR_TEMPL=%s\n"
+"</textarea>"
 
 "NEW_USER_PAGE=%s\n"
 "RECOVER_PASSWD=%s\n"
 "ATSEL_PAGE=%s\n"
 
+"<textarea cols=100 rows=20>"
 "MGMT_START=%s\n"
 "MGMT_LOGOUT=%s\n"
 "MGMT_DEFED=%s\n"
@@ -1547,6 +1592,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->ipport),
 		 cf->user_local,
 		 cf->idp_ena,
+		 cf->imps_ena,
 		 cf->as_ena,
 		 cf->pdp_ena,
 		 ZXID_MAX_BUF,
@@ -1593,7 +1639,11 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->bare_url_entityid,
 		 cf->show_tech,
 
+		 cf->idp_list_meth,
 		 STRNULLCHK(cf->idp_sel_page),
+		 STRNULLCHK(cf->idp_sel_templ_file),
+		 STRNULLCHK(cf->idp_sel_templ),
+#if 0
 		 STRNULLCHK(cf->idp_sel_start),
 		 STRNULLCHK(cf->idp_sel_new_idp),
 		 STRNULLCHK(cf->idp_sel_our_eid),
@@ -1601,10 +1651,17 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->idp_sel_tech_site),
 		 STRNULLCHK(cf->idp_sel_footer),
 		 STRNULLCHK(cf->idp_sel_end),
-
+#endif
 		 STRNULLCHK(cf->an_page),
 		 STRNULLCHK(cf->an_templ_file),
 		 STRNULLCHK(cf->an_templ),
+
+		 STRNULLCHK(cf->post_templ_file),
+		 STRNULLCHK(cf->post_templ),
+
+		 STRNULLCHK(cf->err_page),
+		 STRNULLCHK(cf->err_templ_file),
+		 STRNULLCHK(cf->err_templ),
 
 		 STRNULLCHK(cf->new_user_page),
 		 STRNULLCHK(cf->recover_passwd),
@@ -1639,6 +1696,5 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->wsc_localpdp_obl_accept)
 	 );
 }
-
 
 /* EOF  --  zxidconf.c */

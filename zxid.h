@@ -182,8 +182,9 @@ struct zxid_conf {
   char  md_cache_last;
   char  auto_cert;
   char  idp_ena;
-  char  as_ena;
+  char  imps_ena;
 
+  char  as_ena;
   char  pdp_ena;
   char  authn_req_sign;
   char  want_authn_req_signed;
@@ -191,8 +192,8 @@ struct zxid_conf {
   char  sso_soap_sign;
   char  sso_soap_resp_sign;
   char  sso_sign;            /* Which components should be signed in SSO Response and Assertion */
-  char  wsc_sign;            /* Which parts of a web service request to sign */
 
+  char  wsc_sign;            /* Which parts of a web service request to sign */
   char  wsp_sign;            /* Which parts of a web service response to sig */
   char  nameid_enc;          /* Should NameID be encrypted in SLO and MNI requests. */
   char  post_a7n_enc;
@@ -200,8 +201,8 @@ struct zxid_conf {
   char  di_nid_fmt;
   char  di_a7n_enc;
   char  show_conf;
-  char  sig_fatal;
 
+  char  sig_fatal;
   char  nosig_fatal;
   char  msg_sig_ok;
   char  timeout_fatal;
@@ -209,13 +210,12 @@ struct zxid_conf {
   char  dup_a7n_fatal;
   char  dup_msg_fatal;
   char  relto_fatal;
-  char  wsp_nosig_fatal;
 
+  char  wsp_nosig_fatal;
   char  notimestamp_fatal;
   char  enckey_opt;
   char  idpatopt;
-  char  pad4;
-  char  pad5;
+  char  idp_list_meth;
   char  pad6;
   char  pad7;
   char  pad8;
@@ -285,12 +285,21 @@ struct zxid_conf {
   char* idp_sel_footer;      /* End of page stuff, after form */
   char* idp_sel_end;         /* End of page, after version string */
   char* idp_sel_page;        /* URL for IdP selection Page. */
+  char* idp_sel_templ_file;  /* Path to template, e.g. idp-sel.html */
+  char* idp_sel_templ;       /* Default template used in case template at path can not be found. */
 
-  char* an_page;       /* URL for Authentication Page. */
-  char* an_templ_file; /* Path to template, e.g. an-main.html */
-  char* an_templ;      /* Default template used in case template at path can not be found. */
+  char* an_page;         /* URL for Authentication Page. */
+  char* an_templ_file;   /* Path to template, e.g. an-main.html */
+  char* an_templ;        /* Default template used in case template at path can not be found. */
 
-  char* new_user_page; /* URL to redirect to for new user creation */
+  char* post_templ_file; /* Path to template, e.g. post.html */
+  char* post_templ;      /* Default template used in case template at path can not be found. */
+
+  char* err_page;        /* URL for Error Message Page. */
+  char* err_templ_file;  /* Path to template, e.g. err.html */
+  char* err_templ;       /* Default template used in case template at path can not be found. */
+
+  char* new_user_page;   /* URL to redirect to for new user creation */
   char* recover_passwd;
   char* atsel_page;
 
@@ -387,6 +396,8 @@ struct zxid_cgi {
   char* ok;            /* Ok button in some forms */
   char* sp_eid;        /* IdP An for to generate page */
   char* sp_dpy_name;
+  char* inv;           /* Invitation ID */
+  char* action_url;    /* action URL in some forms, such as post.html */
   zxid_entity* idp_list;   /* IdPs from CDC */
 };
 
@@ -507,14 +518,17 @@ struct zxid_perm {
 /*(s) People Service Object */
 
 struct zxid_psobj {
-  struct zx_str*  psobj;  /* ObjectID */
-  struct zx_str*  idpnid;
+  struct zx_str*  psobj;     /* ObjectID */
+  char*           uid;       /* uid of the owner of the object */
+  struct zx_str*  idpnid;    /* NameID of the buddy */
   struct zx_str*  dispname;
   struct zx_str*  tags;
   struct zx_str*  invids;
   struct zxid_perm* perms;   /* List of permissions associated with the buddy */
   struct zxid_psobj* child; /* In case of colletion, the members of the group, e.g. ObjectRefs. */
   int nodetype;  /* 0=buddy, 1=collection */
+  int create_secs;
+  int mod_secs;
 };
 
 #define ZXID_PSOBJ_BUDDY 0
@@ -524,15 +538,15 @@ struct zxid_psobj {
 
 struct zxid_invite {
   struct zx_str*  invid;
-  struct zx_str*  uid;      /* Invitation by */
+  char*           uid;      /* Invitation by */
   struct zx_str*  desc;
   struct zx_str*  psobj;
   struct zx_str*  ps2spredir;
   struct zxid_psobj* obj;
-  struct zxid_perm* perm;   /* List of permissions associated with the invitation */
+  struct zxid_perm* perms;  /* List of permissions associated with the invitation */
   int maxusage;
   int usage;
-  int notbefore;  /* Unix seconds since epoch */
+  int starts;     /* Unix seconds since epoch */
   int expires;    /* Unix seconds since epoch */
 };
 
@@ -584,13 +598,18 @@ char* zxid_fed_mgmt_cf(zxid_conf* cf, int* res_len, int sid_len, char* sid, int 
 
 int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf);
 char* zxid_simple_len(int conf_len, char* conf, int qs_len, char* qs, int* res_len, int auto_flags);
+char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags);
 char* zxid_idp_list_len(int conf_len, char* conf, int* res_len, int auto_flags);
+char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags);
 char* zxid_idp_select_len(int conf_len, char* conf, int* res_len, int auto_flags);
 char* zxid_fed_mgmt_len(int conf_len, char* conf, int* res_len, char* sid, int auto_flags);
 struct zx_str* zxid_idp_select_zxstr_cf(zxid_conf* cf, int auto_flags);
 
+char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags);
+
 char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
 char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
+struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int auto_flags);
 
 /* --------------- Full API --------------- */
 
@@ -1013,20 +1032,24 @@ zxid_epr* zxid_new_epr(zxid_conf* cf, char* address, char* desc, char* entid, ch
 
 /* zxiddi -  Discovery Service */
 
-struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req);
+int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struct zx_lu_Status_s** stp, zxid_nid** nameidp);
+
+struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req, struct zx_str* issuer);
 
 /* zxidim -  Identity Mapping Service, Single Sign-On Service (SSOS) */
 
-struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* req);
+struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* req, struct zx_str* issuer);
 int zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how);
-struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req);
+struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req, struct zx_str* issuer);
 
 struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp_NameIDMappingRequest_s* req);
 
 /* zxidps -  People Service (and delegation) */
 
-struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_AddEntityRequest_s* req);
-struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_ResolveIdentifierRequest_s* req);
+char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
+char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
+struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_AddEntityRequest_s* req, struct zx_str* issuer);
+struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_ResolveIdentifierRequest_s* req, struct zx_str* issuer);
 
 /* DAP scope constants are same as for LDAP, see RFC2251 */
 

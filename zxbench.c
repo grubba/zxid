@@ -68,7 +68,6 @@ Usage: zxbench [options] <saml-assertion.xml >reencoded-a7n.xml\n\
 
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
 
-char* instance = "zxid";  /* how this server is identified in logs */
 int afr_buf_size = 0;
 int verbose = 1;
 extern int zx_debug;
@@ -120,7 +119,7 @@ void opt(int* argc, char*** argv, char*** env)
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	instance = (*argv)[0];
+	zx_instance = (*argv)[0];
 	continue;
       }
       break;

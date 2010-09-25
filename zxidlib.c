@@ -248,6 +248,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
   char* sig;
   char* p;
   int alloc_len, zlen, slen, field_len, rs_len;
+  zxid_cgi cgi;
   field_len = strlen(field);
   rs_len = relay_state?strlen(relay_state):0;
   if (rs_len) {
@@ -330,8 +331,24 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
   *p = 0;
   ASSERTOP(p-url, <=, alloc_len);  /* Check sig did not overrun its fixed size alloc SIG_SIZE */  
 
-  /* Se o JavaScript não esta enablado, por favor clique aqui para finalizar a transacção. */
-
+#if 1
+  /* Template based POST page, see post.html */
+  memset(&cgi, 0, sizeof(cgi));
+  cgi.action_url = zx_str_to_c(cf->ctx, action_url);
+  cgi.saml_art  = field;
+  cgi.saml_resp = url;
+  if (rs_len) {
+    logpath = zx_strf(cf->ctx, "<input type=hidden name=RelayState value=\"%s\">", relay_state);
+    cgi.rs = logpath->s;
+    ZX_FREE(cf->ctx, logpath);
+  }
+  if (sign) {
+    logpath = zx_strf(cf->ctx, "<input type=hidden name=SigAlg value=\"" SIG_ALGO "\"><input type=hidden name=Signature value=\"%s\">", sigbuf);
+    cgi.sig = logpath->s;
+    ZX_FREE(cf->ctx, logpath);
+  }
+  payload = zxid_template_page_cf(cf, &cgi, cf->post_templ_file, cf->post_templ, 0);
+#else
   payload = zx_strf(cf->ctx, "<title>ZXID POST Profile</title>"
 "<body bgcolor=white OnLoad=\"document.forms[0].submit()\">"
 "<h1>ZXID POST Profile POST</h1>"
@@ -349,6 +366,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
 		    sign?"<input type=hidden name=SigAlg value=\"" SIG_ALGO "\"><input type=hidden name=Signature value=\"":"",
 		    sigbuf,
 		    sign?"\">":"");
+#endif
   ZX_FREE(cf->ctx, url);
   return payload;
 }

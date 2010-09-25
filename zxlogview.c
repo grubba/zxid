@@ -65,17 +65,14 @@ Usage: zxlogview [options] logsign-nopw-cert.pem logenc-nopw-cert.pem <loglines\
 
 #define DIE(reason) MB fprintf(stderr, "%s\n", reason); exit(2); ME
 
-char* instance = "zxlogview";  /* how this server is identified in logs */
 int verbose = 1;
 extern int zx_debug;
 int leak_free = 0;
-//int assert_nonfatal = 0;
 
 X509* log_verify_cert;
 RSA*  log_decrypt_pkey;
 char  log_symkey[20];
-
-char buf[4096];
+char  buf[4096];
 
 static void test_mode(int* argc, char*** argv, char*** env);
 
@@ -104,7 +101,7 @@ static void opt(int* argc, char*** argv, char*** env)
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	instance = (*argv)[0];
+	strcpy(zx_instance, (*argv)[0]);
 	continue;
       }
       break;
@@ -309,6 +306,7 @@ int main(int argc, char** argv, char** env)
   char sha1[20];
   struct aes_key_st aes_key;
   zxid_conf* cf = zxid_new_conf(0);
+  strcpy(zx_instance, "\tzxlogview");
   opt(&argc, &argv, &env);
   
   while (1) {

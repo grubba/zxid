@@ -386,6 +386,11 @@ int zx_LEN_SO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x )
   int len = 0;
 #endif
   
+  {
+      struct zx_sp_NameIDPolicy_s* e;
+      for (e = x->NameIDPolicy; e; e = (struct zx_sp_NameIDPolicy_s*)e->gg.g.n)
+	  len += zx_LEN_SO_sp_NameIDPolicy(c, e);
+  }
 
 
   len += zx_len_so_common(c, &x->gg);
@@ -424,6 +429,11 @@ int zx_LEN_WO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x )
   int len = 0;
 #endif
   
+  {
+      struct zx_sp_NameIDPolicy_s* e;
+      for (e = x->NameIDPolicy; e; e = (struct zx_sp_NameIDPolicy_s*)e->gg.g.n)
+	  len += zx_LEN_WO_sp_NameIDPolicy(c, e);
+  }
 
 
   len += zx_len_wo_common(c, &x->gg); 
@@ -461,6 +471,11 @@ char* zx_ENC_SO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x
   /* root node has no begin tag */
 #endif
   
+  {
+      struct zx_sp_NameIDPolicy_s* e;
+      for (e = x->NameIDPolicy; e; e = (struct zx_sp_NameIDPolicy_s*)e->gg.g.n)
+	  p = zx_ENC_SO_sp_NameIDPolicy(c, e, p);
+  }
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   

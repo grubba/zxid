@@ -408,6 +408,11 @@ next_attr:
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
+          case zx_sp_NameIDPolicy_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_sp_NameIDPolicy(c, ns);
+            el->g.n = &x->NameIDPolicy->gg.g;
+            x->NameIDPolicy = (struct zx_sp_NameIDPolicy_s*)el;
+            break;
 
 	  default:
 	    el = zx_known_or_unknown_elem(c, tok, &x->gg, c->p - name, name, ns);

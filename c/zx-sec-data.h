@@ -127,7 +127,7 @@ struct zx_str* zx_EASY_ENC_WO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_To
 struct zx_sec_TokenPolicy_s {
   ZX_ELEM_EXT
   zx_sec_TokenPolicy_EXT
-  struct zx_sp_NameIDPolicy_s* NameIDPolicy;
+  struct zx_sp_NameIDPolicy_s* NameIDPolicy;	/* {0,1} nada */
   struct zx_str* issueTo;	/* {0,1} attribute xs:anyURI */
   struct zx_str* type;	/* {0,1} attribute hrxml:ExtendedAssociationTypeType */
   struct zx_str* validUntil;	/* {0,1} attribute xs:dateTime */
@@ -140,18 +140,26 @@ struct zx_str* zx_sec_TokenPolicy_GET_type(struct zx_sec_TokenPolicy_s* x);
 struct zx_str* zx_sec_TokenPolicy_GET_validUntil(struct zx_sec_TokenPolicy_s* x);
 struct zx_str* zx_sec_TokenPolicy_GET_wantDSEPR(struct zx_sec_TokenPolicy_s* x);
 
+struct zx_sp_NameIDPolicy_s* zx_sec_TokenPolicy_GET_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, int n);
 
+int zx_sec_TokenPolicy_NUM_NameIDPolicy(struct zx_sec_TokenPolicy_s* x);
 
+struct zx_sp_NameIDPolicy_s* zx_sec_TokenPolicy_POP_NameIDPolicy(struct zx_sec_TokenPolicy_s* x);
 
+void zx_sec_TokenPolicy_PUSH_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, struct zx_sp_NameIDPolicy_s* y);
 
 void zx_sec_TokenPolicy_PUT_issueTo(struct zx_sec_TokenPolicy_s* x, struct zx_str* y);
 void zx_sec_TokenPolicy_PUT_type(struct zx_sec_TokenPolicy_s* x, struct zx_str* y);
 void zx_sec_TokenPolicy_PUT_validUntil(struct zx_sec_TokenPolicy_s* x, struct zx_str* y);
 void zx_sec_TokenPolicy_PUT_wantDSEPR(struct zx_sec_TokenPolicy_s* x, struct zx_str* y);
 
+void zx_sec_TokenPolicy_PUT_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, int n, struct zx_sp_NameIDPolicy_s* y);
 
+void zx_sec_TokenPolicy_ADD_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, int n, struct zx_sp_NameIDPolicy_s* z);
 
+void zx_sec_TokenPolicy_DEL_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, int n);
 
+void zx_sec_TokenPolicy_REV_NameIDPolicy(struct zx_sec_TokenPolicy_s* x);
 
 #endif
 /* -------------------------- sec_TransitedProvider -------------------------- */

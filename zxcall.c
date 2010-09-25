@@ -385,7 +385,6 @@ int zxcall_main(int argc, char** argv, char** env)
   zxid_ses* ses;
   zxid_entity* idp_meta;
   zxid_epr* epr;
-  zxid_nid* nameid;
 
   strncpy(zx_instance, "\tzxcall", sizeof(zx_instance));
   cf = zxid_new_conf_to_cf(0);

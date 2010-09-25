@@ -19,6 +19,7 @@
  * WARNING: This file is outdated. See zxidhlo.c instead.
  */
 
+#include "platform.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -77,7 +78,6 @@ Usage: zxid [options]   (when used as CGI, no options can be supplied)\n\
   -h               This help message\n\
   --               End of options\n";
 
-char* instance = "zxid";  /* how this server is identified in logs */
 int afr_buf_size = 0;
 int verbose = 1;
 int timeout = 0;
@@ -139,7 +139,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	instance = (*argv)[0];
+	strcpy(zx_instance, (*argv)[0]);
 	continue;
       }
       break;

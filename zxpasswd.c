@@ -70,12 +70,7 @@ For Yubikey (yubico.com) authentication (-a), supply the yubikey ticket\n\
 as user and omit the password. For creating account or changing password,\n\
 use -t y to indicate that you pass yubikey AES128 shared key in hex as password.\n";
 
-char zx_instance[64] = "\tzxpw";
-int zx_debug = 0;
-char zx_indent[256] = "";
 int verbose = 1;
-int assert_nonfatal = 0;
-char* assert_msg = "assert fired.";
 int create = 0;
 int an = 0;
 int list = 0;
@@ -282,6 +277,7 @@ int main(int argc, char** argv, char** env)
   unsigned char ch;
   yubikey_token_st yktok;
   
+  strcpy(zx_instance, "\tzxpw");
   opt(&argc, &argv, &env);
   if (argc)
     user = argv[0];

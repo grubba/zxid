@@ -32,7 +32,7 @@
  * See also zxid_idp_sso() for similar code. */
 
 /* Called by:  zxid_sp_soap_dispatch */
-struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* ar)
+struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* ar, struct zx_str* issuer)
 {
   X509* sign_cert;
   RSA*  sign_pkey;
@@ -44,12 +44,9 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   char* logop;
   struct zx_sp_Response_s* resp = zx_NEW_sp_Response(cf->ctx);
   struct zx_str* payload;
-  struct zx_str* affil;
   struct zx_str* ss;
   zxid_entity* sp_meta;
-  int len;
   char uid[ZXID_MAX_BUF];
-  char sp_name_buf[1024];
   D_INDENT("ssos: ");
 
   if (!ar || !ar->Issuer || !ar->Issuer->gg.content) {
@@ -59,22 +56,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
     return resp;
   }
 
-  //resp->ID = zxid_mk_id(cf, "DIR", ZXID_ID_BITS);
-  
-  if (!a7n || !a7n->Subject) {
-    ERR("Malformed Assertion(%p): Subject missing.", a7n);
-    resp->Status = zxid_mk_Status(cf, "Fail", 0, 0);
-    D_DEDENT("ssos: ");
-    return resp;
-  }
-
-  nameid = zxid_decrypt_nameid(cf, a7n->Subject->NameID, a7n->Subject->EncryptedID);
-  affil = nameid->SPNameQualifier ? nameid->SPNameQualifier : zxid_my_entity_id(cf);
-  
-  zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
-  len = read_all(sizeof(uid)-1, uid, "idp_map_nid2uid", "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
-  if (!len) {
-    ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
+  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, a7n, 0, &nameid)) {
     resp->Status = zxid_mk_Status(cf, "Fail", 0, 0);
     D_DEDENT("ssos: ");
     return resp;
@@ -149,9 +131,6 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
 /* Called by:  main */
 int zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how)
 {
-  int n_maps = 0;
-  struct zx_str* ss;
-  struct zx_str* urlss;
   struct zx_e_Envelope_s* env;
   struct zx_im_MappingInput_s* inp;
   struct zx_im_MappingOutput_s* out;
@@ -190,32 +169,26 @@ int zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, in
       return 0;
   }
 
-      for (out = env->Body->MappingOutput; out; out = (zxid_epr*)ZX_NEXT(out)) {
-	switch (how) {
-	case 0:
-	  D("Invocation token set %p", out->Token);
-	  ses->call_invtok = out->Token;
-	  break;
-	case 1:
-	  D("Target Identity token set %p", out->Token);
-	  ses->call_tgttok = out->Token;
-	  break;
-	}
-	return 1;  /* Not really iterating */
-     }
-    } else {
-      ERR("No Identity Mapping Response at_eid(%s)", STRNULLCHK(at_eid));
-      return 0;
+  for (out = env->Body->IdentityMappingResponse->MappingOutput; out; out = (void*)ZX_NEXT(out)) {
+    switch (how) {
+    case 0:
+      D("Invocation token set %p", out->Token);
+      ses->call_invtok = out->Token;
+      break;
+    case 1:
+      D("Target Identity token set %p", out->Token);
+      ses->call_tgttok = out->Token;
+      break;
     }
+    return 1;  /* Not really iterating */
   }
-  ERR("Identity Mapping call failed envelope=%p", env);
-  return 0;
+  return 1;
 }
 
 /*() Identity Mapping Service: Issue token in response to receiving a token */
 
 /* Called by:  zxid_sp_soap_dispatch */
-struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req)
+struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req, struct zx_str* issuer)
 {
   struct zx_im_IdentityMappingResponse_s* resp = zx_NEW_im_IdentityMappingResponse(cf->ctx);
   struct zx_im_MappingInput_s* mapinp;
@@ -224,12 +197,11 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
   zxid_a7n* ina7n;
   zxid_a7n* outa7n;
   struct zx_str* issue_to;
-  struct zx_str* affil;
   char allow_create;
   char* nid_fmt;
   zxid_nid* nameid;
   char* logop;
-  int len, n_mapped = 0;
+  int  n_mapped = 0;
   char uid[ZXID_MAX_BUF];
   char sp_name_buf[1024];
   zxid_entity* sp_meta;
@@ -260,15 +232,6 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
       ERR("*** Missing IdentityMappingRequest/MappingInput/Token (WSC error). Using invocation identity instead. %p", a7n);
       ina7n = a7n;
     }
-
-    //resp->ID = zxid_mk_id(cf, "DIR", ZXID_ID_BITS);
-    
-    if (!ina7n || !ina7n->Subject) {
-      ERR("Malformed Assertion(%p): Subject missing.", a7n);
-      resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
-      D_DEDENT("imreq: ");
-      return resp;
-    }
     
     if (!mapinp->TokenPolicy) {
       ERR("Missing TokenPolicy. %d", 0);
@@ -276,19 +239,12 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
       D_DEDENT("imreq: ");
       return resp;
     }
-    
-    nameid = zxid_decrypt_nameid(cf, ina7n->Subject->NameID, ina7n->Subject->EncryptedID);
-    affil = nameid->SPNameQualifier ? nameid->SPNameQualifier : zxid_my_entity_id(cf);
-    
-    zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
-    len = read_all(sizeof(uid)-1, uid, "idp_map_nid2uid", "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
-    if (!len) {
-      ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
-      resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+
+    if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, ina7n, &resp->Status, 0)) {
       D_DEDENT("imreq: ");
       return resp;
     }
-
+    
     /* Figure out destination */
 
     if (mapinp->TokenPolicy->NameIDPolicy) {
@@ -361,7 +317,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     mapout->gg.g.n = &resp->MappingOutput->gg.g;
     resp->MappingOutput = mapout;
 
-    zxlog(cf, 0, 0, 0, 0, 0, a7n->ID, nameid->gg.content, "N", "K", logop, 0, "n=%d", n_mapped);
+    zxlog(cf, 0, 0, 0, issuer, 0, a7n->ID, nameid->gg.content, "N", "K", logop, 0,"n=%d",n_mapped);
   }
   
   D("TOTAL Identity Mappings issued %d", n_mapped);
@@ -387,8 +343,6 @@ struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp
   char uid[ZXID_MAX_BUF];
   char sp_name_buf[1024];
   D_INDENT("nidmap: ");
-
-  //resp->ID = zxid_mk_id(cf, "DIR", ZXID_ID_BITS);
     
   /* *** there should be some strict access control policies here, otherwise
    * privacy can be lost by consulting nameids directly via this service. */

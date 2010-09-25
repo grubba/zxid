@@ -383,7 +383,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     return zxid_soap_cgi_resp_body(cf, body, bdy->NameIDMappingRequest->Issuer->gg.content);
   }
 
-  D("as_ena=%d %p", cf->as_ena, bdy->SASLRequest);
+  DD("as_ena=%d %p", cf->as_ena, bdy->SASLRequest);
   if (cf->as_ena) {
     if (bdy->SASLRequest) {
       if (hdr && hdr->Sender
@@ -414,7 +414,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       //return zxid_sp_dig_sso_a7n(cf, cgi, ses, bdy->ArtifactResponse->Response);
     }
 
-    if (bdy->NameIDMappingRequest) {
+    if (bdy->NameIDMappingRequest && cf->imps_ena) {
       body->NameIDMappingResponse = zxid_nidmap_do(cf, bdy->NameIDMappingRequest);
       if (cf->sso_soap_resp_sign) {
 	refs.id = body->NameIDMappingResponse->ID;
@@ -435,7 +435,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     
     if (bdy->Query) { /* Discovery 2.0 Query */
 
-      body->QueryResponse = zxid_di_query(cf, a7n, bdy->Query);
+      body->QueryResponse = zxid_di_query(cf, a7n, bdy->Query, issuer);
     idwsf_resp:
 #if 0
       // *** should really sign the Body, putting sig in wsse:Security header
@@ -450,20 +450,22 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       return zxid_soap_cgi_resp_body(cf, body, issuer);
     }
 
-    if (bdy->AddEntityRequest) {
-      body->AddEntityResponse = zxid_ps_addent_invite(cf, a7n, bdy->AddEntityRequest);
-      goto idwsf_resp;
+    if (cf->imps_ena) {
+      if (bdy->AddEntityRequest) {
+	body->AddEntityResponse = zxid_ps_addent_invite(cf, a7n, bdy->AddEntityRequest, issuer);
+	goto idwsf_resp;
+      }
+      if (bdy->ResolveIdentifierRequest) {
+	body->ResolveIdentifierResponse = zxid_ps_resolv_id(cf, a7n, bdy->ResolveIdentifierRequest, issuer);
+	goto idwsf_resp;
+      }
+      if (bdy->IdentityMappingRequest) {
+	body->IdentityMappingResponse = zxid_imreq(cf, a7n, bdy->IdentityMappingRequest, issuer);
+	goto idwsf_resp;
+      }
     }
-    if (bdy->ResolveIdentifierRequest) {
-      body->ResolveIdentifierResponse = zxid_ps_resolv_id(cf, a7n, bdy->ResolveIdentifierRequest);
-      goto idwsf_resp;
-    }
-    if (bdy->AuthnRequest) {
-      body->Response = zxid_ssos_anreq(cf, a7n, bdy->AuthnRequest);
-      goto idwsf_resp;
-    }
-    if (bdy->IdentityMappingRequest) {
-      body->IdentityMappingResponse = zxid_imreq(cf, a7n, bdy->IdentityMappingRequest);
+    if (bdy->AuthnRequest && cf->as_ena) {
+      body->Response = zxid_ssos_anreq(cf, a7n, bdy->AuthnRequest, issuer);
       goto idwsf_resp;
     }
   }

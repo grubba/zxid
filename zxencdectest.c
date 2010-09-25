@@ -131,7 +131,6 @@ void test_ibm_cert_problem_enc_dec()
   printf("r2 nid(%.*s) should be(a-persistent-nid)\n", req->NameID->gg.content->len, req->NameID->gg.content->s);
 }
 
-char* instance = "zxencdectest";  /* how this server is identified in logs */
 int afr_buf_size = 0;
 int verbose = 1;
 extern int debug;
@@ -185,7 +184,7 @@ void opt(int* argc, char*** argv, char*** env)
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	instance = (*argv)[0];
+	zx_instance = (*argv)[0];
 	continue;
       }
       break;

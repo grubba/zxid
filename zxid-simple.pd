@@ -241,7 +241,7 @@ CDC_URL:: The Common Domain URL (optional, if omitted
 2.1.3 AUTO options (auto flags)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-(*** THis section also appears in zxid-conf.pd)
+(*** This section also appears in zxid-conf.pd)
 
 The ~auto_flags~ argument allows you to control which
 operations should be performed automatically and

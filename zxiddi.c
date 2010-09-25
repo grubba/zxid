@@ -27,10 +27,42 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
+/*() Recover end user's identity: uid at IdP. This is actually done via "self federation"
+ * that was created when token for accessing discovery was issued.
+ * Returns 1 on success, 0 on failure. */
+
+int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struct zx_lu_Status_s** stp, zxid_nid** nameidp)
+{
+  zxid_nid* nameid;
+  struct zx_str* affil;
+  char sp_name_buf[1024];
+
+  if (!a7n || !a7n->Subject) {
+    ERR("Malformed Assertion(%p): Subject missing.", a7n);
+    if (stp)
+      *stp = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+    return 0;
+  }
+
+  nameid = zxid_decrypt_nameid(cf, a7n->Subject->NameID, a7n->Subject->EncryptedID);
+  if (nameidp)
+    *nameidp = nameid;
+  affil = nameid->SPNameQualifier ? nameid->SPNameQualifier : zxid_my_entity_id(cf);
+  zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
+  len = read_all(len-1, uid, "idp_map_nid2uid", "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
+  if (!len) {
+    ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
+    if (stp)
+      *stp = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+    return 0;
+  }
+  return 1;
+}
+
 /*() Server side  Discovery Service Query processing. See also zxid_gen_bootstraps() */
 
 /* Called by:  zxid_sp_soap_dispatch */
-struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req)
+struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct zx_di_Query_s* req, struct zx_str* issuer)
 {
   zxid_nid* nameid;
   struct zx_di_RequestedService_s* rs;
@@ -38,40 +70,19 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
   struct zx_root_s* r;
   char* logop;
   int len, epr_len, match, n_discovered = 0;
-  char uid[ZXID_MAX_BUF];
-  char sp_name_buf[1024];
+  char uid[ZXID_MAX_USER];
   char mdpath[ZXID_MAX_BUF];
   char path[ZXID_MAX_BUF];
   char* epr_buf;
   DIR* dir;
   struct dirent* de;
-  struct zx_str* affil;
   struct zx_elem_s* el;
   struct zx_a_Metadata_s* md = 0;  
   struct zx_str* addr = 0;  
   zxid_epr* epr = 0;
   D_INDENT("di_query: ");
 
-  //resp->ID = zxid_mk_id(cf, "DIR", ZXID_ID_BITS);
-  
-  if (!a7n || !a7n->Subject) {
-    ERR("Malformed Assertion(%p): Subject missing.", a7n);
-    resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
-    D_DEDENT("di_query: ");
-    return resp;
-  }
-
-  /* Recover end user's identity: uid at IdP. This is actually done via "self federation"
-   * that was created when token for accessing discovery was issued. */
-  
-  nameid = zxid_decrypt_nameid(cf, a7n->Subject->NameID, a7n->Subject->EncryptedID);
-  affil = nameid->SPNameQualifier ? nameid->SPNameQualifier : zxid_my_entity_id(cf);
-  
-  zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
-  len = read_all(sizeof(uid)-1, uid, "idp_map_nid2uid", "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
-  if (!len) {
-    ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
-    resp->Status = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
+  if (!zxid_idp_map_nid2uid(cf, sizeof(uid), uid, a7n, &resp->Status, &nameid)) {
     D_DEDENT("di_query: ");
     return resp;
   }
@@ -249,7 +260,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       epr->gg.g.n = (void*)resp->EndpointReference;
       resp->EndpointReference = epr;
 
-      zxlog(cf, 0, 0, 0, 0, 0, a7n->ID, nameid->gg.content, "N", "K", logop, uid, "");
+      zxlog(cf, 0, 0, 0, issuer, 0, a7n->ID, nameid->gg.content, "N", "K", logop, uid, "");
 
       if (rs->resultsType && rs->resultsType->s
 	  && (!memcmp(rs->resultsType->s, "only-one", rs->resultsType->len)
@@ -267,7 +278,7 @@ next_file:
   el = req->RequestedService->ServiceType && req->RequestedService->ServiceType->content
     ? req->RequestedService->ServiceType : 0;
   D("TOTAL discovered %d svctype(%.*s)", n_discovered, el?el->content->len:0, el?el->content->s:"");
-  zxlog(cf, 0, 0, 0, 0, 0, a7n->ID, nameid->gg.content, "N", "K", "DIOK", 0, "%.*s n=%d", el?el->content->len:1, el?el->content->s:"-", n_discovered);
+  zxlog(cf, 0, 0, 0, issuer, 0, a7n->ID, nameid->gg.content, "N", "K", "DIOK", 0, "%.*s n=%d", el?el->content->len:1, el?el->content->s:"-", n_discovered);
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
   D_DEDENT("di_query: ");
   return resp;

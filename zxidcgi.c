@@ -1,5 +1,5 @@
 /* zxidcgi.c  -  Handwritten functions for parsing SP specific CGI options
- * Copyright (c) 20010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+ * Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
  * This is confidential unpublished proprietary source code of the author.
@@ -119,6 +119,10 @@ set_eid:
       D("cgi: login eid(%s)", cgi->eid);
       break;
     case 'i':
+      if (!strcmp(n, "inv")) {
+	cgi->inv = v;
+	break;
+      }
       /* IdP and protocol index selection popup values are like P<eid>
        * N.B. If eid is omitted from button name, it may be provided using
        * d or e fields (see above). This effectively allows i to be just

@@ -3755,6 +3755,8 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
     return zx_LEN_WO_simple_elem(c, (struct zx_elem_s*)x, sizeof("ConfirmationMethod")-1);
   case zx_sa11_SubjectConfirmationData_ELEM:
     return zx_LEN_WO_simple_elem(c, (struct zx_elem_s*)x, sizeof("SubjectConfirmationData")-1);
+  case zx_sp_NameIDPolicy_ELEM:
+    return zx_LEN_WO_sp_NameIDPolicy(c, (struct zx_sp_NameIDPolicy_s*)x);
   case zx_sec_TransitedProvider_ELEM:
     return zx_LEN_WO_sec_TransitedProvider(c, (struct zx_sec_TransitedProvider_s*)x);
   case zx_sec12_Issuer_ELEM:
@@ -3805,8 +3807,6 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
     return zx_LEN_WO_simple_elem(c, (struct zx_elem_s*)x, sizeof("Artifact")-1);
   case zx_sp_Status_ELEM:
     return zx_LEN_WO_sp_Status(c, (struct zx_sp_Status_s*)x);
-  case zx_sp_NameIDPolicy_ELEM:
-    return zx_LEN_WO_sp_NameIDPolicy(c, (struct zx_sp_NameIDPolicy_s*)x);
   case zx_sp_Scoping_ELEM:
     return zx_LEN_WO_sp_Scoping(c, (struct zx_sp_Scoping_s*)x);
   case zx_sp_IDPEntry_ELEM:
@@ -6909,6 +6909,8 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
     return zx_ENC_WO_simple_elem(c, (struct zx_elem_s*)x, p, "ConfirmationMethod", sizeof("ConfirmationMethod")-1);
   case zx_sa11_SubjectConfirmationData_ELEM:
     return zx_ENC_WO_simple_elem(c, (struct zx_elem_s*)x, p, "SubjectConfirmationData", sizeof("SubjectConfirmationData")-1);
+  case zx_sp_NameIDPolicy_ELEM:
+    return zx_ENC_WO_sp_NameIDPolicy(c, (struct zx_sp_NameIDPolicy_s*)x, p);
   case zx_sec_TransitedProvider_ELEM:
     return zx_ENC_WO_sec_TransitedProvider(c, (struct zx_sec_TransitedProvider_s*)x, p);
   case zx_sec12_Issuer_ELEM:
@@ -6959,8 +6961,6 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
     return zx_ENC_WO_simple_elem(c, (struct zx_elem_s*)x, p, "Artifact", sizeof("Artifact")-1);
   case zx_sp_Status_ELEM:
     return zx_ENC_WO_sp_Status(c, (struct zx_sp_Status_s*)x, p);
-  case zx_sp_NameIDPolicy_ELEM:
-    return zx_ENC_WO_sp_NameIDPolicy(c, (struct zx_sp_NameIDPolicy_s*)x, p);
   case zx_sp_Scoping_ELEM:
     return zx_ENC_WO_sp_Scoping(c, (struct zx_sp_Scoping_s*)x, p);
   case zx_sp_IDPEntry_ELEM:

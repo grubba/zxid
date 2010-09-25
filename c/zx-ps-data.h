@@ -1197,12 +1197,12 @@ struct zx_ps_Object_s {
   zx_ps_Object_EXT
   struct zx_elem_s* ObjectID;	/* {0,1} xs:anyURI */
   struct zx_ps_DisplayName_s* DisplayName;	/* {1,-1}  */
-  struct zx_ps_Tag_s* Tag;	   /* {0,1}  */
-  struct zx_ps_Object_s* Object;   /* {0,-1} nada */
-  struct zx_elem_s* ObjectRef;     /* {0,-1} xs:anyURI */
-  struct zx_str* CreatedDateTime;  /* {0,1} attribute xs:dateTime */
-  struct zx_str* ModifiedDateTime; /* {0,1} attribute xs:dateTime */
-  struct zx_str* NodeType;         /* {1,1} attribute xs:anyURI */
+  struct zx_ps_Tag_s* Tag;	/* {0,1}  */
+  struct zx_ps_Object_s* Object;	/* {0,-1} nada */
+  struct zx_elem_s* ObjectRef;	/* {0,-1} xs:anyURI */
+  struct zx_str* CreatedDateTime;	/* {0,1} attribute xs:dateTime */
+  struct zx_str* ModifiedDateTime;	/* {0,1} attribute xs:dateTime */
+  struct zx_str* NodeType;	/* {1,1} attribute xs:anyURI */
 };
 
 #ifdef ZX_ENA_GETPUT

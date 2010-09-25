@@ -240,12 +240,15 @@ char* zxid_fed_mgmt(char* conf, char* sid, int auto_flags) {
 /*() Bang-bang expansions (!!VAR) understood in the templates. */
 
 /* Called by:  zxid_template_page_cf */
-static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, const char* lim)
+static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, const char* lim, int auto_flags)
 {
   char* s;
   struct zx_str* ss;
   
   switch (*key) {
+  case 'A':
+    if (BBMATCH("ACTION_URL", key, lim)) return cgi->action_url;
+    break;
   case 'D':
     if (BBMATCH("DBG", key, lim)) return cgi->dbg;
     break;
@@ -257,16 +260,25 @@ static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, co
     }
     if (BBMATCH("ERR", key, lim)) return cgi->err;
     break;
+  case 'I':
+    if (BBMATCH("IDP_LIST", key, lim)) return zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
+    break;
   case 'M':
     if (BBMATCH("MSG", key, lim)) return cgi->msg;
     break;
   case 'U':
     if (BBMATCH("URL", key, lim)) return cf->url;
     break;
+  case 'R':
+    if (BBMATCH("RS", key, lim)) return cgi->rs;
+    break;
   case 'S':
+    if (BBMATCH("SIG", key, lim)) return cgi->sig;
     if (BBMATCH("SP_EID", key, lim)) return cgi->sp_eid;
     if (BBMATCH("SP_DPY_NAME", key, lim)) return cgi->sp_dpy_name;
     if (BBMATCH("SSOREQ", key, lim)) return cgi->ssoreq;
+    if (BBMATCH("SAML_ART", key, lim)) return cgi->saml_art;
+    if (BBMATCH("SAML_RESP", key, lim)) return cgi->saml_resp;
     break;
   case 'V':
     if (BBMATCH("VERSION", key, lim)) return zxid_version_str();
@@ -279,10 +291,10 @@ static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, co
   return 0;
 }
 
-/*() Expand a template. */
+/*() Expand a template. Only selected !!VAR expansions supported. No IFs or loops. */
 
 /* Called by:  zxid_simple_idp_show_an */
-static struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ)
+struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int auto_flags)
 {
   char buf[8192];
   char* p;
@@ -302,7 +314,7 @@ static struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const 
   for (pp = ss->s; *p && pp < ss->s + ss->len; ) {
     if (p[0] == '!' && p[1] == '!' && A_Z_a_z_(p[2])) {
       for (q = p+=2; A_Z_a_z_(*p); ++p) ;
-      q = zxid_map_bangbang(cf, cgi, q, p);
+      q = zxid_map_bangbang(cf, cgi, q, p, auto_flags);
       if (!q || !*q)
 	continue;
       len = strlen(q);
@@ -356,14 +368,13 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
   else
     ss = zx_dup_str(cf->ctx, "");
 
-#define ZXID_USE_POPUP
-#ifdef ZXID_USE_POPUP
-  dd = zx_strf(cf->ctx, "%.*s<select name=d>\n", ss->len, ss->s);
-  zx_str_free(cf->ctx, ss);
-  ss = dd;
-#endif
+  if (cf->idp_list_meth == ZXID_IDP_LIST_POPUP) {
+    dd = zx_strf(cf->ctx, "%.*s<select name=d>\n", ss->len, ss->s);
+    zx_str_free(cf->ctx, ss);
+    ss = dd;
+  }
 
-  D("Starting IdP processing... %p", idp);
+  D("Starting IdP list processing... %p", idp);
   for (; idp; idp = idp->n) {
     if (!idp->ed->IDPSSODescriptor)
       continue;
@@ -379,48 +390,53 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
       }
     }
 
-#ifdef ZXID_USE_POPUP
-    dd = zx_strf(cf->ctx, "%.*s"
-		 "<option value=\"%s\"> %s (%s) %s\n",
-		 ss->len, ss->s, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid, mark);
-#else
-    if (cf->show_tech) {
+    switch (cf->idp_list_meth) {
+    default:
+      ERR("Unsupported IDP_LIST_METH=%d, reverting to popup.", cf->idp_list_meth);
+      cf->idp_list_meth = ZXID_IDP_LIST_POPUP;
+      /* fall thru */
+    case ZXID_IDP_LIST_POPUP:
       dd = zx_strf(cf->ctx, "%.*s"
-		   "<input type=submit name=\"l0%s\" value=\" Login to %s \">\n"
-		   "<input type=submit name=\"l1%s\" value=\" Login to %s (A2) \">\n"
-		   "<input type=submit name=\"l2%s\" value=\" Login to %s (P2) \">\n"
-		   "<input type=submit name=\"l5%s\" value=\" Login to %s (S2) \">%s<br>\n",
-		   ss->len, ss->s,
-		   idp->eid, idp->eid,
-		   idp->eid, idp->eid,
-		   idp->eid, idp->eid,
-		   idp->eid, idp->eid,
-		   mark);
-    } else {
-      dd = zx_strf(cf->ctx, "%.*s"
-		   "<input type=submit name=\"l0%s\" value=\" Login to %s \">%s<br>\n"
-		   ss->len, ss->s, idp->eid, idp->eid, mark);
+		   "<option value=\"%s\"> %s (%s) %s\n",
+		   ss->len, ss->s, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid, mark);
+    case ZXID_IDP_LIST_BUTTON:
+      if (cf->show_tech) {
+	dd = zx_strf(cf->ctx, "%.*s"
+		     "<input type=submit name=\"l0%s\" value=\" Login to %s \">\n"
+		     "<input type=submit name=\"l1%s\" value=\" Login to %s (A2) \">\n"
+		     "<input type=submit name=\"l2%s\" value=\" Login to %s (P2) \">\n"
+		     "<input type=submit name=\"l5%s\" value=\" Login to %s (S2) \">%s<br>\n",
+		     ss->len, ss->s,
+		     idp->eid, idp->eid,
+		     idp->eid, idp->eid,
+		     idp->eid, idp->eid,
+		     idp->eid, idp->eid,
+		     mark);
+      } else {
+	dd = zx_strf(cf->ctx, "%.*s"
+		     "<input type=submit name=\"l0%s\" value=\" Login to %s \">%s<br>\n",
+		     ss->len, ss->s, idp->eid, idp->eid, mark);
+      }
     }
-#endif
     zx_str_free(cf->ctx, ss);
     ss = dd;
   }
-#ifdef ZXID_USE_POPUP
-  if (cf->show_tech) {
-    dd = zx_strf(cf->ctx, "%.*s</select>"
-		 "<input type=submit name=\"l0\" value=\" Login \">\n"
-		 "<input type=submit name=\"l1\" value=\" Login (A2) \">\n"
-		 "<input type=submit name=\"l2\" value=\" Login (P2) \">\n"
-		 "<input type=submit name=\"l5\" value=\" Login (S2) \"><br>\n",
-		 ss->len, ss->s);
-  } else {
-    dd = zx_strf(cf->ctx, "%.*s</select>"
-		 "<input type=submit name=\"l0\" value=\" Login \"><br>\n",
-		 ss->len, ss->s);
+  if (cf->idp_list_meth == ZXID_IDP_LIST_POPUP) {
+    if (cf->show_tech) {
+      dd = zx_strf(cf->ctx, "%.*s</select>"
+		   "<input type=submit name=\"l0\" value=\" Login \">\n"
+		   "<input type=submit name=\"l1\" value=\" Login (A2) \">\n"
+		   "<input type=submit name=\"l2\" value=\" Login (P2) \">\n"
+		   "<input type=submit name=\"l5\" value=\" Login (S2) \"><br>\n",
+		   ss->len, ss->s);
+    } else {
+      dd = zx_strf(cf->ctx, "%.*s</select>"
+		   "<input type=submit name=\"l0\" value=\" Login \"><br>\n",
+		   ss->len, ss->s);
+    }
+    zx_str_free(cf->ctx, ss);
+    ss = dd;
   }
-  zx_str_free(cf->ctx, ss);
-  ss = dd;
-#endif
 
   s = ss->s;
   D("IdP list(%s)", s);
@@ -460,16 +476,19 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 {
   struct zx_str* eid=0;
   struct zx_str* ss;
-  char* idp_list;
 
-  if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
-    eid = zxid_my_entity_id(cf);
   D("HERE %p e(%s) m(%s) d(%s)", eid, FLDCHK(cgi, err), FLDCHK(cgi, msg), FLDCHK(cgi, dbg));
-  idp_list = zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
   if (cf->log_level>1)
     zxlog(cf, 0,0,0,0,0,0,0, "N", "W", "IDPSEL", 0, 0);
+
+#if 1
+  ss = zxid_template_page_cf(cf, cgi, cf->idp_sel_templ_file, cf->idp_sel_templ, auto_flags);
+#else
+  if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
+    eid = zxid_my_entity_id(cf);
+  char* idp_list = zxid_idp_list_cf_cgi(cf, cgi, 0, auto_flags);
   if ((auto_flags & ZXID_AUTO_FORMT) && (auto_flags & ZXID_AUTO_FORMF)) {
-    DD("HERE %p", idp_list);
+    DD("HERE %p", cgi->idp_list);
     ss = zx_strf(cf->ctx,
 		 "%s"
 #ifdef ZXID_USE_POST
@@ -531,6 +550,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
 		 FLDCHK(cgi, rs));
   } else
     ss = zx_dup_str(cf->ctx, "");
+#endif
 #if 0
   if (cgi.err) printf("<p><font color=red><i>%s</i></font></p>\n", cgi.err);
   if (cgi.msg) printf("<p><i>%s</i></p>\n", cgi.msg);
@@ -649,7 +669,7 @@ static char* zxid_simple_redir_page(zxid_conf* cf, char* redir, char* rs, int* r
  * N.B. More complete documentation is available in <<link: zxid-simple.pd>> (*** fixme) */
 
 /* Called by:  zxid_simple_no_ses_cf, zxid_simple_ses_active_cf x5 */
-static char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
+char* zxid_simple_show_idp_sel(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
 {
   struct zx_str* ss;
   D("cf=%p cgi=%p", cf, cgi);
@@ -695,7 +715,33 @@ static char* zxid_simple_show_conf(zxid_conf* cf, zxid_cgi* cgi, int* res_len, i
 {
   struct zx_str* ss = zxid_show_conf(cf);
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_METAC, ZXID_AUTO_METAH,
-			       "c", "text/html", res_len, auto_flags);
+			       "d", "text/html", res_len, auto_flags);
+}
+
+/*() Show Error screen. */
+
+char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_flags)
+{
+  char* p;
+  struct zx_str* ss;
+
+  if (cf->log_level>1)
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "ERR", 0, "");
+
+  if (cf->err_page && cf->err_page[0]) {
+    ss = zx_strf(cf->ctx, "zxrfr=F%s%s%s%s&zxidpurl=%s",
+		 cgi->zxapp && cgi->zxapp[0] ? "&zxapp=" : "", cgi->zxapp ? cgi->zxapp : "",
+		 cgi->err && cgi->err[0] ? "&err=" : "", cgi->err ? cgi->err : "",
+		 cf->url);
+    p = ss->s;
+    ZX_FREE(cf->ctx, ss);
+    D("err_page(%s) p(%s)", cf->err_page, p);
+    return zxid_simple_redir_page(cf, cf->err_page, p, res_len, auto_flags);
+  }
+    
+  ss = zxid_template_page_cf(cf, cgi, cf->err_templ_file, cf->err_templ, auto_flags);
+  return zxid_simple_show_page(cf, ss, ZXID_AUTO_LOGINC, ZXID_AUTO_LOGINH,
+			       "g", "text/html", res_len, auto_flags);
 }
 
 /* ----------- IdP Screens ----------- */
@@ -853,7 +899,7 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
       cgi->sp_dpy_name = "--No SP could be determined--";
   }
   
-  ss = zxid_template_page_cf(cf, cgi, cf->an_templ_file, cf->an_templ);
+  ss = zxid_template_page_cf(cf, cgi, cf->an_templ_file, cf->an_templ, auto_flags);
   if (b64)
     ZX_FREE(cf->ctx, b64);
   DD("an_page: ret(%s)", ss?ss->len:1, ss?ss->s:"?");
@@ -989,7 +1035,8 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * A = Artifact processing
    * N = New User, during IdP Login (form an)
    * W = Recover password,  during IdP Login (form aw)
-   * D = Delegation / Invitation acceptance user interface
+   * D = Delegation / Invitation acceptance user interface, the idp selection
+   * G = Delegation / Invitation finalization after SSO (via RelayState)
    *
    * I = used for IdP ???
    * K = used?
@@ -1047,8 +1094,11 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     }
     D("Q ss(%.*s) (fall thru)", ss->len, ss->s);
     break;
-  case 'D': /*  Delegation / Invitation URL clicked. */
-     return zxid_ps_accept_invite(cf, cgi, res_len, auto_flags);
+
+     /*  Delegation / Invitation URL clicked. */
+  case 'D':  return zxid_ps_accept_invite(cf, cgi, ses, res_len, auto_flags);
+  case 'G':  return zxid_ps_finalize_invite(cf, cgi, ses, res_len, auto_flags);
+
   case 'R':
     cgi->op = 'F';
     /* Fall thru */
@@ -1224,7 +1274,7 @@ show_protected_content_setcookie:
   case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
   case 'B':    return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
   case 'D': /*  Delegation / Inviatation URL clicked. */
-     return zxid_ps_accept_invite(cf, cgi, res_len, auto_flags);
+     return zxid_ps_accept_invite(cf, cgi, ses, res_len, auto_flags);
   case 'R':
     cgi->op = 'F';
     /* Fall thru */

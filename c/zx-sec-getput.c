@@ -582,6 +582,140 @@ void zx_sec_Token_PUT_usage(struct zx_sec_Token_s* x, struct zx_str* y) { x->usa
 
 
 
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_sec_TokenPolicy_NUM_NameIDPolicy) */
+
+int zx_sec_TokenPolicy_NUM_NameIDPolicy(struct zx_sec_TokenPolicy_s* x)
+{
+  struct zx_sp_NameIDPolicy_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->NameIDPolicy; y; ++n, y = (struct zx_sp_NameIDPolicy_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_sec_TokenPolicy_GET_NameIDPolicy) */
+
+struct zx_sp_NameIDPolicy_s* zx_sec_TokenPolicy_GET_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, int n)
+{
+  struct zx_sp_NameIDPolicy_s* y;
+  if (!x) return 0;
+  for (y = x->NameIDPolicy; n>=0 && y; --n, y = (struct zx_sp_NameIDPolicy_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_sec_TokenPolicy_POP_NameIDPolicy) */
+
+struct zx_sp_NameIDPolicy_s* zx_sec_TokenPolicy_POP_NameIDPolicy(struct zx_sec_TokenPolicy_s* x)
+{
+  struct zx_sp_NameIDPolicy_s* y;
+  if (!x) return 0;
+  y = x->NameIDPolicy;
+  if (y)
+    x->NameIDPolicy = (struct zx_sp_NameIDPolicy_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_sec_TokenPolicy_PUSH_NameIDPolicy) */
+
+void zx_sec_TokenPolicy_PUSH_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, struct zx_sp_NameIDPolicy_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->NameIDPolicy->gg.g;
+  x->NameIDPolicy = z;
+}
+
+/* FUNC(zx_sec_TokenPolicy_REV_NameIDPolicy) */
+
+void zx_sec_TokenPolicy_REV_NameIDPolicy(struct zx_sec_TokenPolicy_s* x)
+{
+  struct zx_sp_NameIDPolicy_s* nxt;
+  struct zx_sp_NameIDPolicy_s* y;
+  if (!x) return;
+  y = x->NameIDPolicy;
+  if (!y) return;
+  x->NameIDPolicy = 0;
+  while (y) {
+    nxt = (struct zx_sp_NameIDPolicy_s*)y->gg.g.n;
+    y->gg.g.n = &x->NameIDPolicy->gg.g;
+    x->NameIDPolicy = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_sec_TokenPolicy_PUT_NameIDPolicy) */
+
+void zx_sec_TokenPolicy_PUT_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, int n, struct zx_sp_NameIDPolicy_s* z)
+{
+  struct zx_sp_NameIDPolicy_s* y;
+  if (!x || !z) return;
+  y = x->NameIDPolicy;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->NameIDPolicy = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sp_NameIDPolicy_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_sec_TokenPolicy_ADD_NameIDPolicy) */
+
+void zx_sec_TokenPolicy_ADD_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, int n, struct zx_sp_NameIDPolicy_s* z)
+{
+  struct zx_sp_NameIDPolicy_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->NameIDPolicy->gg.g;
+    x->NameIDPolicy = z;
+    return;
+  case -1:
+    y = x->NameIDPolicy;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_sp_NameIDPolicy_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->NameIDPolicy; n > 1 && y; --n, y = (struct zx_sp_NameIDPolicy_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_sec_TokenPolicy_DEL_NameIDPolicy) */
+
+void zx_sec_TokenPolicy_DEL_NameIDPolicy(struct zx_sec_TokenPolicy_s* x, int n)
+{
+  struct zx_sp_NameIDPolicy_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->NameIDPolicy = (struct zx_sp_NameIDPolicy_s*)x->NameIDPolicy->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_sp_NameIDPolicy_s*)x->NameIDPolicy;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_sp_NameIDPolicy_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->NameIDPolicy; n > 1 && y->gg.g.n; --n, y = (struct zx_sp_NameIDPolicy_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
 /* FUNC(zx_sec_TokenPolicy_GET_issueTo) */
 struct zx_str* zx_sec_TokenPolicy_GET_issueTo(struct zx_sec_TokenPolicy_s* x) { return x->issueTo; }
 /* FUNC(zx_sec_TokenPolicy_PUT_issueTo) */
