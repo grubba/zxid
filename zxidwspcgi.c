@@ -11,6 +11,8 @@
  * See also: http://hoohoo.ncsa.uiuc.edu/cgi/interface.html (CGI specification)
  */
 
+#include <zx/platform.h>
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
