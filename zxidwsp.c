@@ -399,7 +399,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   zxid_set_fault(cf, ses, 0);
   zxid_set_tas3_status(cf, ses, 0);
   
-  ss.s = enve;
+  ss.s = (char*)enve;
   ss.len = strlen(enve);
   LOCK(cf->ctx->mx, "valid");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + ss.len);

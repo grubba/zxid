@@ -14,10 +14,11 @@
  * 4.9.2009,  added zxid_map_val() --Sampo
  */
 
+#include "platform.h"
 #include <string.h>
 #include <stdio.h>
+#include <sys/stat.h>  /* umask(2) */
 
-#include "platform.h"
 #include "errmac.h"
 #include "zxid.h"
 #include "zxidconf.h"
@@ -82,7 +83,8 @@ struct zx_str* zxid_mk_id(zxid_conf* cf, char* prefix, int bits)
  * there are two ways to format this: with or with-out milliseconds. ZXID accepts
  * either form as input, as they are both legal, but will only generate the
  * without milliseconds form. Some other softwares are buggy and fail to
- * accept the without milliseconds form. You can change the format at compile time.
+ * accept the without milliseconds form. You can change the format at compile time
+ * by editing zxidlib.c:94.
  */
 /* Called by:  zxid_mk_a7n x3, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_az, zxid_mk_az_cd1, zxid_mk_logout, zxid_mk_logout_resp, zxid_mk_mni, zxid_mk_mni_resp, zxid_mk_saml_resp, zxid_wsc_prep_secmech, zxid_wsf_decor */
 struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs)
@@ -888,6 +890,7 @@ char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
     umask(um);
   }
   SHA1(buf, gotall, symkey);
+  return symkey;
 }
 
 /* EOF  --  zxidlib.c */

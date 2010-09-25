@@ -96,15 +96,24 @@ extern "C" {
 #define openfile_ro(path) open((path),O_RDONLY)
 
 #ifndef _UNISTD_H
+#define _UNISTD_H 1 /* Prevent confusing double inclusion. */
 /* We do not want to include unistd.h because it does not exist on Win32.
  * So define these here, but protect by ifndef, because unistd.h may get
- * indirectly included. */
+ * indirectly included first. In general we believe these Unix APIs are
+ * so standard that we do not need system includes and can cover
+ * the very few exceptions as ifdefs right in here. --Sampo */
 int symlink(const char *oldpath, const char *newpath);
 int unlink(const char *pathname);
 int rmdir(const char *pathname);
 int getpid(void);
 int geteuid(void);
 int getegid(void);
+int setuid(int);
+int setgid(int);
+int fork(void);
+int execl(const char *path, const char *arg, ...);
+int dup(int);
+int pipe(int fd[2]);
 int close(int);
 #endif
 

@@ -42,9 +42,9 @@
 #define fdtype int
 #endif
 
-#ifndef const
-#define const  /* const causes swig java to break */
-#endif
+//#ifndef const
+//#define const  /* const causes swig java to break */
+//#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -305,7 +305,7 @@ int   zx_walk_so_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, void* ctx,
 void  zx_dup_strs_simple_elems(struct zx_ctx* c, struct zx_elem_s* se);
 #endif
 
-void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, char* start, char* lim);
+void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, const char* start, const char* lim);
 int   zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el);
 int   zx_scan_pi_or_comment(struct zx_ctx* c);
 struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, char* name, char* data, int tok, int ctx_tok);

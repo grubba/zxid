@@ -109,7 +109,7 @@ char* zx_raw_digest2(struct zx_ctx* c, char* md, char* const algo, int len, cons
 
 struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, struct zx_str* key, int len, const char* s, int iv_len, const char* iv)
 {
-  char* ivv;
+  const char* ivv;
   char* where = "start";
   struct zx_str* out;
   int outlen, tmplen, alloclen;

@@ -111,7 +111,7 @@ int main(int argc, char** argv)
     epr = zxid_find_epr(cf, ses, XMLNS_DISCO_2_0, 0,0,0, 1);
     env = zxid_wsc_call(cf, ses, epr, env, 0);
     if (env->Body->QueryResponse)
-      for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = ZX_NEXT(epr))
+      for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = (void*)ZX_NEXT(epr))
 	zxid_cache_epr(cf, ses, epr);
     
   } else if (!strcmp(svc, XMLNS_DAP)) {

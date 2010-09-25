@@ -848,8 +848,8 @@ char* zx_url_encode(struct zx_ctx* c, int in_len, char* in, int* out_len)
   return out;
 }
 
-const unsigned char* hex_trans      = "0123456789abcdef";
-const unsigned char* ykmodhex_trans = "cbdefghijklnrtuv";  /* as of libyubikey-1.5 */
+const unsigned char const * hex_trans      = "0123456789abcdef";
+const unsigned char const * ykmodhex_trans = "cbdefghijklnrtuv";  /* as of libyubikey-1.5 */
 
 /*() Especially useful as yubikey_modhex_decode() replacement.
  * Supports inplace conversion. Does not nul terminate. */

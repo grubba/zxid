@@ -15,6 +15,8 @@
  *           README-zxid, section 10 "zxid_simple() API"
  */
 
+#include <zx/platform.h>
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +30,7 @@
 #include <zx/c/zxidvers.h>
 
 char* help =
-"zxididp  -  SAML 2.0 IdP CGI - R" ZXID_REL "\n\
+"zxididp  -  SAML 2.0 IdP CGI (also DI, IM, and PS) - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated identity and Single Sign-On.\n\
 Copyright (c) 2008-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\

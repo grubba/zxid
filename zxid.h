@@ -711,8 +711,8 @@ int zxid_lazy_load_sign_cert_and_pkey(zxid_conf* cf, X509** cert, RSA** pkey, co
 int   zxid_set_opt(zxid_conf* cf, int which, int val);
 char* zxid_set_opt_cstr(zxid_conf* cf, int which, char* val);
 void  zxid_url_set(zxid_conf* cf, char* url);
-int   zxid_init_conf(zxid_conf* cf, char* conf_dir);
-zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, char* zxid_path);
+int   zxid_init_conf(zxid_conf* cf, const char* conf_dir);
+zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path);
 zxid_conf* zxid_new_conf(const char* zxid_path);
 int   zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs);
 int   zxid_parse_conf(zxid_conf* cf, char* qs);
@@ -1126,8 +1126,8 @@ char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out
 int   zx_url_encode_len(int in_len, char* in);
 char* zx_url_encode_raw(int in_len, char* in, char* out);
 char* zx_url_encode(struct zx_ctx* c, int in_len, char* in, int* out_len);
-extern const unsigned char* hex_trans;
-extern const unsigned char* ykmodhex_trans;
+extern const unsigned char const * hex_trans;
+extern const unsigned char const * ykmodhex_trans;
 char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans);
 
 int read_all(int maxlen, char* buf, const char* logkey, const char* name_fmt, ...);

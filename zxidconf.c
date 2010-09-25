@@ -240,7 +240,7 @@ int zxid_ent_cache_mx_init = 0;
  */
 
 /* Called by:  zxid_conf_to_cf_len, zxid_init_conf_ctx */
-int zxid_init_conf(zxid_conf* cf, char* zxid_path)
+int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
 {
   DD("Initconf with path(%s)", zxid_path);
   cf->magic = ZXID_CONF_MAGIC;
@@ -469,7 +469,7 @@ struct zx_ctx* zx_init_ctx()
  * that memory allocation against the context should work. */
 
 /* Called by:  zxcot_main, zxid_conf_to_cf_len, zxid_new_conf */
-zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, char* zxid_path)
+zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path)
 {
 #if 0
   fprintf(stderr, "Waiting 60 secs for gdb attach...\n");

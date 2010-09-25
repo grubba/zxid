@@ -386,6 +386,23 @@ struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_xac_
   return at;
 }
 
+/*() Construct xac_Request */
+
+/* Called by:  zxid_pep_az_soap */
+struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env)
+{
+  struct zx_xac_Request_s* r = zx_NEW_xac_Request(cf->ctx);
+  r->Subject  = zx_NEW_xac_Subject(cf->ctx);
+  r->Subject->Attribute = subj;
+  r->Resource = zx_NEW_xac_Resource(cf->ctx);
+  r->Resource->Attribute = rsrc;
+  r->Action   = zx_NEW_xac_Action(cf->ctx);
+  r->Action->Attribute = act;
+  r->Environment = zx_NEW_xac_Environment(cf->ctx);
+  r->Environment->Attribute = env;
+  return r;
+}
+
 /*() Construct XACMLAuthzDecisionQuery */
 
 /* Called by:  zxid_pep_az_soap */
@@ -396,6 +413,8 @@ struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xa
   r->ID = zxid_mk_id(cf, "R", ZXID_ID_BITS);
   r->Version = zx_ref_str(cf->ctx, SAML2_VERSION);
   r->IssueInstant = zxid_date_time(cf, time(0));
+  r->Request = zxid_mk_xac_az(cf, subj, rsrc, act, env);
+
   r->Request = zx_NEW_xac_Request(cf->ctx);
   r->Request->Subject  = zx_NEW_xac_Subject(cf->ctx);
   r->Request->Subject->Attribute = subj;

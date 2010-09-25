@@ -25,8 +25,7 @@
 #ifndef _zxidnoswig_h
 #define _zxidnoswig_h
 
-struct zx_e_Envelope_s* vzxid_new_envf(zxid_conf* cf, char* body_f, va_list ap);
-int vname_from_path(char* buf, int buf_len, char* name_fmt, va_list ap);
-char* zx_alloc_vasprintf(struct zx_ctx* c, int *retlen, char* f, va_list ap);
+int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap);
+char* zx_alloc_vasprintf(struct zx_ctx* c, int *retlen, const char* f, va_list ap);
 
 #endif

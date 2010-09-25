@@ -159,7 +159,7 @@ void zx_str_free(struct zx_ctx* c, struct zx_str* ss)
 struct zx_str* zx_ref_len_str(struct zx_ctx* c, int len, const char* s)
 {
   struct zx_str* ss = ZX_ZALLOC(c, struct zx_str);
-  ss->s = s;  /* ref points to underlying data */
+  ss->s = (char*)s;  /* ref points to underlying data */
   ss->len = len;
   return ss;
 }
@@ -774,7 +774,8 @@ char* zx_enc_so_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, char* p, ch
 }
 #endif
 
-/*() Prepare a context for decoding XML.
+/*() Prepare a context for decoding XML. The decoding operation will not
+ * alter the underlying data (e.g. no nuls are inserted, not even temporarily).
  * N.B. Often you would wrap this in locks, like
  *   LOCK(cf->ctx->mx, "valid");
  *   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s + ss->len);
@@ -783,7 +784,7 @@ char* zx_enc_so_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, char* p, ch
  */
 
 /* Called by:  main x7, test_ibm_cert_problem, zxid_add_env_if_needed x2, zxid_dec_a7n, zxid_decode_redir_or_post, zxid_decrypt_nameid, zxid_decrypt_newnym, zxid_di_query, zxid_find_epr, zxid_gen_boots, zxid_get_ses_sso_a7n x2, zxid_idp_soap_parse, zxid_parse_meta, zxid_reg_svc, zxid_soap_call_raw, zxid_sp_soap_parse, zxid_wsp_validate */
-void zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, char* start, char* lim)
+void zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, const char* start, const char* lim)
 {
   c->guard_seen_n.seen_n = &c->guard_seen_p;
   c->guard_seen_p.seen_p = &c->guard_seen_n;

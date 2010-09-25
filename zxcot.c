@@ -263,13 +263,20 @@ static void opt(int* argc, char*** argv, char*** env)
 /* --------------- reg_svc --------------- */
 
 /*() IdP and Discovery. Register service metadata to /var/zxid/idpdimd/XX,
- * and possibly boostrap to /var/zxid/idpuid/.all/.bs/YY */
+ * and possibly boostrap to /var/zxid/idpuid/.all/.bs/YY
+ *
+ * bs_reg:: Register-also-as-bootstrap flag
+ * dry_run:: nonzero: do not write anything
+ * ddimd:: Discovery metadata directory, such as /var/zxid/idpdimd
+ * duid:: uid dir such as  /var/zxid/idpuid
+ * returns:: 0 on success, nonzero on error. */
 
 /* Called by:  zxcot_main */
 static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddimd, const char* duid)
 {
   char sha1_name[28];
   char path[ZXID_MAX_BUF];
+  char* duids;
   char* p;
   char* uiddir;
   int got, fd;
@@ -327,11 +334,11 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
 
   sha1_safe_base64(sha1_name, ss->len, ss->s);
   sha1_name[27] = 0;
-  duid = strdup(duid);
-  got = strlen(duid);
-  if (strcmp(duid + got - (sizeof("dimd/")-1), "dimd/")) {
+  duids = strdup(duid);
+  got = strlen(duids);
+  if (strcmp(duids + got - (sizeof("dimd/")-1), "dimd/")) {
     /* strcpy ok, because always fits: "uid/" is shorter than "dimd/" */
-    strcpy(duid + got - (sizeof("dimd/")-1), "uid/");
+    strcpy(duids + got - (sizeof("dimd/")-1), "uid/");
   }
 
   if (verbose)
@@ -364,11 +371,11 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
 
   if (bs_reg) {
     if (verbose)
-      fprintf(stderr, "Activating bootstrap %s.all/.bs/%s,%s", duid, path, sha1_name);
+      fprintf(stderr, "Activating bootstrap %s.all/.bs/%s,%s", duids, path, sha1_name);
 
     if (!dryrun) {
       fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -bs",
-			     "%s.all/.bs/%s,%s", duid, path, sha1_name);
+			     "%s.all/.bs/%s,%s", duids, path, sha1_name);
       if (fd == BADFD) {
 	perror("open epr for bootstrap activation");
 	ERR("Failed to open file for writing: sha1_name(%s,%s) to bootstrap activation", path, sha1_name);
@@ -379,7 +386,7 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
       close_file(fd, (const char*)__FUNCTION__);
     }
   } else {
-    D("You may also want to activate bootstrap by\n  touch %s.all/.bs/%s,%s", duid, path, sha1_name);
+    D("You may also want to activate bootstrap by\n  touch %s.all/.bs/%s,%s", duids, path, sha1_name);
   }
   return 0;
 }

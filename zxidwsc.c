@@ -191,7 +191,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   
   /* *** execute (or store for future execution) the obligations. */
   
-  ss.s = enve;
+  ss.s = (char*)enve;
   ss.len = strlen(enve);
   logpath = zxlog_path(cf, issuer, env->Header->MessageID->gg.content,
 		       ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);

@@ -297,8 +297,8 @@ static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, co
 struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int auto_flags)
 {
   char buf[8192];
-  char* p;
-  char* q;
+  const char* p;
+  const char* q;
   char* pp;
   struct zx_str* ss;
   int len, got = read_all(sizeof(buf)-1, buf, "templ", "%s", templ_path);
@@ -310,7 +310,7 @@ struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* t
     p = default_templ;
   } else
     p = buf;
-  ss = zx_new_len_str(cf->ctx, strlen(p) + 4096);
+  ss = zx_new_len_str(cf->ctx, strlen(p) + 4096 /* Space enough for expansions? */);
   for (pp = ss->s; *p && pp < ss->s + ss->len; ) {
     if (p[0] == '!' && p[1] == '!' && A_Z_a_z_(p[2])) {
       for (q = p+=2; A_Z_a_z_(*p); ++p) ;

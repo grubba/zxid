@@ -820,8 +820,8 @@ zxid_ses* zxid_as_call(zxid_conf* cf, zxid_entity* idp_meta, const char* user, c
   zxid_ses* ses = zxid_alloc_ses(cf);
   zxid_cgi cgi;
   memset(&cgi, 0, sizeof(cgi));
-  cgi.uid = user;
-  cgi.pw = pw;
+  cgi.uid = (char*)user;
+  cgi.pw = (char*)pw;
   
   if (!zxid_as_call_ses(cf, idp_meta, &cgi, ses)) {
     ZX_FREE(cf->ctx, ses);
