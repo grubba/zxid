@@ -51,14 +51,63 @@ int zx_EVP_CIPHER_iv_length(const EVP_CIPHER* cipher)  { return EVP_CIPHER_iv_le
 int zx_EVP_CIPHER_block_size(const EVP_CIPHER* cipher) { return EVP_CIPHER_block_size(cipher); }
 #endif
 
+/*() zx_raw_digest2() computes a message digest over two items. The result
+ * is placed in buffer md, which must already be of length sufficient for
+ * the digest. md will not be nul terminated (and will usually have binary
+ * data). Possible algos: SHA1 */
+
+char* zx_raw_digest2(struct zx_ctx* c, char* md, char* const algo, int len, const char* s, int len2, const char* s2)
+{
+  char* where = "start";
+  const EVP_MD* evp_digest;
+  EVP_MD_CTX ctx;
+  OpenSSL_add_all_digests();
+  EVP_MD_CTX_init(&ctx);
+  evp_digest = EVP_get_digestbyname(algo);
+  if (!evp_digest) {
+    ERR("Digest algo name(%s) not recognized by the crypto library (OpenSSL)", algo);
+    return 0;
+  }
+    
+  if (!EVP_DigestInit_ex(&ctx, evp_digest, 0 /* engine */)) {
+    where = "EVP_DigestInit_ex()";
+    goto sslerr;
+  }
+  
+  if (len && s) {
+    if (!EVP_DigestUpdate(&ctx, s, len)) {
+      where = "EVP_DigestUpdate()";
+      goto sslerr;
+    }
+  }
+  
+  if (len2 && s2) {
+    if (!EVP_DigestUpdate(&ctx, s2, len2)) {
+      where = "EVP_DigestUpdate() 2";
+      goto sslerr;
+    }
+  }
+  
+  if(!EVP_DigestFinal_ex(&ctx, md, 0)) {
+    where = "EVP_DigestFinal_ex()";
+    goto sslerr;
+  }
+  EVP_MD_CTX_cleanup(&ctx);
+  return md;
+
+ sslerr:
+  zx_report_openssl_error(where);
+  EVP_MD_CTX_cleanup(&ctx);
+  return 0;
+}
+
 //#define ZX_DEFAULT_IV "012345678901234567890123456789012345678901234567890123456789" /* 60 */
 #define ZX_DEFAULT_IV   "ZX_DEFAULT_IV ZXID.ORG SAML 2.0 and Liberty ID-WSF by Sampo." /* 60 */
 
 /*() zx_raw_cipher() can encrypt and decrypt, based on encflag, using symmetic cipher algo.
- * If encflag indicates encryption, the initialization vector will be prepended. */
+ * If encflag (==1) indicates encryption, the initialization vector will be prepended. */
 
-struct zx_str* zx_raw_cipher(struct zx_ctx* c, char* algo, int encflag,
-			     struct zx_str* key, int len, char* s, int iv_len, char* iv)
+struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, struct zx_str* key, int len, const char* s, int iv_len, const char* iv)
 {
   char* ivv;
   char* where = "start";
@@ -110,7 +159,7 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, char* algo, int encflag,
     goto sslerr;
   }
   
-  if(!EVP_CipherUpdate(&ctx, out->s + iv_len, &outlen, s, len)) { /* Actual crypto happens here */
+  if (!EVP_CipherUpdate(&ctx, out->s + iv_len, &outlen, s, len)) { /* Actual crypto happens here */
     where = "EVP_CipherUpdate()";
     goto sslerr;
   }

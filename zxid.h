@@ -332,6 +332,7 @@ struct zxid_conf {
   RSA*  enc_pkey;
   X509* enc_cert;
 
+  char  psobj_symkey[20];    /* sha1 hash of key data */
   char  log_symkey[20];      /* sha1 hash of key data */
   RSA*  log_sign_pkey;
   X509* log_enc_cert;
@@ -495,6 +496,46 @@ struct zxid_atsrc {
   char* ext;
 };
 
+/*(s) Permission object (for PS and DI) */
+
+struct zxid_perm {
+  struct zxid_perm* n;
+  struct zx_str* eid;
+  struct zx_str* qs;
+};
+
+/*(s) People Service Object */
+
+struct zxid_psobj {
+  struct zx_str*  psobj;  /* ObjectID */
+  struct zx_str*  idpnid;
+  struct zx_str*  dispname;
+  struct zx_str*  tags;
+  struct zx_str*  invids;
+  struct zxid_perm* perms;   /* List of permissions associated with the buddy */
+  struct zxid_psobj* child; /* In case of colletion, the members of the group, e.g. ObjectRefs. */
+  int nodetype;  /* 0=buddy, 1=collection */
+};
+
+#define ZXID_PSOBJ_BUDDY 0
+#define ZXID_PSOBJ_COLLECTION 1
+
+/*(s) Invitation object */
+
+struct zxid_invite {
+  struct zx_str*  invid;
+  struct zx_str*  uid;      /* Invitation by */
+  struct zx_str*  desc;
+  struct zx_str*  psobj;
+  struct zx_str*  ps2spredir;
+  struct zxid_psobj* obj;
+  struct zxid_perm* perm;   /* List of permissions associated with the invitation */
+  int maxusage;
+  int usage;
+  int notbefore;  /* Unix seconds since epoch */
+  int expires;    /* Unix seconds since epoch */
+};
+
 #define ZXID_SES_DIR  "ses/"
 #define ZXID_USER_DIR "user/"
 #define ZXID_UID_DIR  "uid/"
@@ -502,6 +543,7 @@ struct zxid_atsrc {
 #define ZXID_PEM_DIR  "pem/"
 #define ZXID_COT_DIR  "cot/"
 #define ZXID_DIMD_DIR "dimd/"
+#define ZXID_INV_DIR  "inv/"
 #define ZXID_MAX_USER (256)  /* Maximum size of .mni or user file */
 #define ZXID_INIT_MD_BUF   (8*1024-1)  /* Initial size, will automatically reallocate. */
 #define ZXID_INIT_SOAP_BUF (8*1024-1)  /* Initial size, will automatically reallocate. */
@@ -735,6 +777,8 @@ int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* 
 struct zx_str* zxid_map_val(zxid_conf* cf, struct zxid_map* map, struct zx_str* val);
 char* zxid_extract_body(zxid_conf* cf, char* enve);
 
+char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey);
+
 /* zxidloc */
 
 struct zx_str* zxid_idp_loc_raw(zxid_conf* cf, zxid_cgi* cgi, zxid_entity* idp_meta, int svc_type, char* binding, int req);
@@ -768,7 +812,7 @@ void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_
 int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issued_to, const char* lk, const char* uid);
 struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Response_s* resp, struct zx_sp_AuthnRequest_s* ar);
 zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct timeval* srcts, zxid_entity* sp_meta, struct zx_str* acsurl, zxid_nid** nameid, char** logop, struct zx_sp_AuthnRequest_s* ar);
-struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attribute_s* prev, int len, char* p, char* lk);
+struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attribute_s* prev, char* p, char* lk);
 struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* path, struct zx_sa_Attribute_s* bootstraps, int add_bs_lvl);
 zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, zxid_nid* nameid, zxid_entity* sp_meta, const char* sp_name_buf, int add_bs_lvl);
 zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, char allow_create, struct timeval* srcts, struct zx_str* issuer, struct zx_str* req_id, const char* sp_name_buf);

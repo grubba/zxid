@@ -52,9 +52,10 @@ Send well researched bug reports to the author. Home: zxid.org\n\
 Usage: zxpasswd [options] user [udir] <passwd    # Set user's password\n\
        zxpasswd [options] -c user [udir] <passwd # Create user and set password\n\
        zxpasswd [options] -a user [udir] <passwd # Authenticate as user using pw\n\
-       zxpasswd [options] -l [user] [udir]       # List information about user\n\
+       zxpasswd [options] -l [user [udir]]       # List information about user\n\
   [udir]           Specify zxididp user directory. Default " UDIR "\n\
   -c               Create user\n\
+  -at 'attr: val'  Append attribute(s) to .bs/.at\n\
   -s exist_uid     Symlink user to an existing user (e.g. yubikey alias)\n\
   -a               Authenticate as user. exit(2) value 0 means success\n\
   -l               List user info. If no user is specified, lists all users.\n\
@@ -82,6 +83,7 @@ char* hash_type = "1";
 char* udir = 0;
 char* user = 0;
 char* symlink_user = 0;
+char* at = 0;
 char pw[1024];
 char userdir[4096];
 char buf[4096];
@@ -117,6 +119,11 @@ static void opt(int* argc, char*** argv, char*** env)
       switch ((*argv)[0][2]) {
       case '\0':
 	++an;
+	continue;
+      case 't':
+	++(*argv); --(*argc);
+	if ((*argc) < 1) break;
+	at = (*argv)[0];
 	continue;
       }
       break;
@@ -192,7 +199,7 @@ static void opt(int* argc, char*** argv, char*** env)
     exit(3);
   }
  last:
-  if (!*argc) {
+  if (!list && !*argc) {
     fprintf(stderr, "Too few arguments (%d). Must specify at least user name.\n", *argc);
     goto help;
   }
@@ -269,6 +276,7 @@ int main(int argc, char** argv, char** env)
 {
   int isyk = 0;
   int got, pwgot;
+  char* p;
   unsigned char salt[16];
   unsigned char pw_hash[120];
   unsigned char ch;
@@ -290,7 +298,7 @@ int main(int argc, char** argv, char** env)
     userdir[sizeof(userdir)-1] = 0;
   }
   if (list) {
-    if (user)
+    if (user && user[0])  /* passing empty user results full listing */
       return list_user(userdir, udir);
     else
       return list_users(udir);
@@ -374,9 +382,18 @@ int main(int argc, char** argv, char** env)
     D("Assume plain text password %d", 0);
     return strcmp(buf, pw)?1:0;
   }
+
+  /* Create and other user management functions */
   
   if (create) {
     MKDIR(userdir, 0770);
+    buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+    snprintf(buf, sizeof(buf)-1, "%s/.bs", userdir);
+    MKDIR(buf, 0770);
+    snprintf(buf, sizeof(buf)-1, "%s/.ps", userdir);
+    MKDIR(buf, 0770);
+    snprintf(buf, sizeof(buf)-1, "%s/.ykspent", userdir);
+    MKDIR(buf, 0770);
   }
   if (symlink_user) {
     snprintf(buf, sizeof(buf), "%s/%s", udir, symlink_user);
@@ -390,6 +407,15 @@ int main(int argc, char** argv, char** env)
       return 2;
     }
 #endif
+  }
+  
+  if (at) {
+    for (p = at; *p; ++p)
+      if (*p == '$') *p = '\n';
+    snprintf(buf, sizeof(buf)-1, "%s/.bs/.at", userdir);
+    D("Appending to(%s) attributes(%s)", buf, at);
+    buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+    write2_or_append_lock_c_path(buf, strlen(at), at, 0, 0, "append .bs/.at", SEEK_END, O_APPEND);
   }
   
   /* $1$$6C2jXXYmjnyAkfWXmnCSf0 */

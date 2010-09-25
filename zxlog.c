@@ -89,7 +89,7 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
   RSA* log_sign_pkey;
   struct rsa_st* rsa_pkey;
   struct aes_key_st aes_key;
-  int len = 0, blen, zlen, um;
+  int len = 0, blen, zlen;
   char sigletter = 'P';
   char encletter = 'P';
   char* p;
@@ -171,22 +171,8 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
     case 0x40:  /* xB AES */
       encletter = 'B';
       zbuf = zxlog_alloc_zbuf(cf, &zlen, zbuf, len, sig, 16);
-      if (!cf->log_symkey[0]) {
-	char buf[1024];
-	int gotall = read_all(sizeof(buf), buf, "symkey",
-			      "%s" ZXID_PEM_DIR "logenc.key", cf->path);
-	if (!gotall && cf->auto_cert) {
-	  INFO("AUTO_CERT: generating symmetric encryption key for logging in %s" ZXID_PEM_DIR "logenc.key", cf->path);
-	  gotall = 128 >> 3;
-	  zx_rand(buf, gotall);
-	  um = umask(0077);  /* Key material should be readable only by owner */
-	  write_all_path_fmt("auto_cert", sizeof(buf), buf,
-			     "%s" ZXID_PEM_DIR "logenc.key", cf->path, 0, "%.*s",
-			     gotall, buf);
-	  umask(um);
-	}
-	SHA1(buf, gotall, cf->log_symkey);
-      }
+      if (!cf->log_symkey[0])
+	zx_get_symkey(cf, "logenc.key", cf->log_symkey);
       AES_set_encrypt_key(cf->log_symkey, 128, &aes_key);
       memcpy(ivec, zbuf, sizeof(ivec));
       AES_cbc_encrypt(zbuf+16, zbuf+16, zlen-16, &aes_key, ivec, 1);

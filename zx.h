@@ -262,7 +262,8 @@ int zx_format_parse_error(struct zx_ctx* ctx, char* buf, int siz, char* logkey);
 
 /* zxcrypto.c - Glue to OpenSSL low level */
 
-struct zx_str* zx_raw_cipher(struct zx_ctx* c, char* algo, int encp, struct zx_str* key, int len, char* s, int iv_len, char* iv);
+char* zx_raw_digest2(struct zx_ctx* c, char* md, char* const algo, int len, const char* s, int len2, const char* s2);
+struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, struct zx_str* key, int len, const char* s, int iv_len, const char* iv);
 struct zx_str* zx_rsa_pub_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_pkey, int pad);
 struct zx_str* zx_rsa_pub_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* rsa_pkey, int pad);
 struct zx_str* zx_rsa_priv_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* rsa_pkey, int pad);

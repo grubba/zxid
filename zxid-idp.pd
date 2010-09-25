@@ -729,6 +729,134 @@ As of version 0.47 (20100114) zxididp supports the following specifications
 * OAuth-WRAP support [Tom09]
 * XACML Authorization Decision Query for SSO
 
+5 People Service and Delegation Support
+=======================================
+
+zxididp can be configured to support delegation using Identity Mapping
+Service and People Service. As of 20100922 the People Service implementation
+is not complete, but is sufficient to support delegation use cases (we are
+mainly missing the buddy list manipulation).
+
+5.1 People Service Use of Local UID Directory (idpuid/)
+-------------------------------------------------------
+
+Invitations and object IDs have separate namespaces. Invitation
+can be for known object or it can be open. In the open case
+it can be accepted by existing object, or a new object can
+be created.
+
+
+
+zxididp uses local idpuid/ directory to implement the IdP logins and
+to store users federations, bootstraps, and attributes.
+
+  /var/zxid/
+   |
+   +-- idpuid/       Local user ID (local login name) to SHA1 mapping
+   |    |
+   |    +-- JOE/     Local user has directory whose name is the login uid
+   |    |    |
+   |    |    +-- .log      Log of operations regarding the user
+   |    |    +-- .ps/      User's People Service Objects and Inviations (i.e. buddy list)
+   |    |    |    |
+   |    |    |    +-- objid
+   |
+   +-- idpinv/       Invitations
+   |    |
+   |    `-- INVID    Invitation object as LDIF
+
+5.1.1 Invitation
+~~~~~~~~~~~~~~~~
+
+Invitation (identified by SPtoPSRedirectURL) needs to remember
+
+* Corresponding user (or object if invitation is directed to specific object)
+* PStoSPRedirectURL
+* Permissions, i.e. which sites and web services the delegatee is allowed to access
+  by virtue of invitation. In effect, invitation becomes a permissions bundle
+  that can be revoked without revoking other invitations.
+* Max usage
+* Usage count (when usage >= max usage, invitation is no longer accepted
+* NotBefore
+* Expires
+
+Invitation is stored in LDIF file at path
+
+  /var/zxid/idpinv/INVID
+
+*Syntax is similar to LDIF (as is the syntax of .at files)*
+
+  dn: invid=i341343122
+  invid: i341343122
+  uid: joedoe
+  psobj: o12321
+  ps2spredir: https://sp1.tas3.pt/foto/1234
+  perm:  # See below
+  maxusage: 1
+  usage: 0
+  notbefore: 2010-09-22T23:08:55Z
+  expires: 2010-09-29T23:08:56Z
+
+<<ignore: zx_date_time_to_secs() >>
+
+5.1.2 People Service Object
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Object needs to remember
+
+* Display names
+* Tags
+* federated id of the invitee (filled in once invitee dereferences invite URL)
+* Permissions, i.e. which sites and web services the delegatee is allowed to access
+  by virtue of his own identity
+* Invitation IDs that apply
+
+*Syntax is similar to LDIF (as is the syntax of .at files)*
+
+  dn: psobj=o12321
+  psobj: o12321,uid=joedoe
+  owner: joedoe
+  nodetype: 0
+  idpnid: F13432
+  tag: #golden
+  tag: #friend
+  psobjref: o3232
+  psobjref: o3233
+  invid: i341343122
+  invid: i341343123
+  perm:  # See below
+
+ObjectID (psobj) has particlar privacy threat in that several WSCs may
+see them and be able to correlate about the user that the object refers
+to (see brief discussion in sec 2.1.4 "<ObjectID> Element", ll.278-281,
+of [PeopleSvc].
+
+We adopt solution where each psobj id issued towards an entity (SP, WSC) is
+the psobj encrypted (AES-128-CBC) with key consisting of concatenation
+of secret (/var/zxid/pem/psobj-enc.key) known to ps server only (i.e. the
+zxididp) and the Entity ID of the entity. See zxid_psobj_enc() and
+zxid_psobj_dec() in zxidps.c.
+
+5.1.3 Delegated Permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Permissions are already in context of delegator and delegatee and need to capture
+
+* Whitelist of site EIDs allowed to delegatee
+* For each site a list of attribute value pairs (in cgi query string syntax).
+  As of 20100922 all of the name value pairs are for future expansion. For
+  example the illustrated ~localpath~ will not be intrpreted or enforced.
+
+*Syntax (LDIF attribute with dollar separation)*
+
+  perm: https://sp1.tas3.pt/sp?o=B$localpath=/protected
+  perm: https://sp2.tas3.eu/sp?o=B
+  perm: *$desc=This+is+wild+card+permission.+Use+with+care.
+
+The permissions lines from both invitation and object are used
+by the discovery and identity mapping services to determine
+if delegated operations should be permitted.
+
 <<if: ZXIDBOOK>>
 <<else: >>
 

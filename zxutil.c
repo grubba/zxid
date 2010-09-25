@@ -210,9 +210,10 @@ int write_all_fd(fdtype fd, const char* p, int pending)
   return 1;
 }
 
-/*() Write all data to a file at the formatted path. The buf is used for formatting
- * data. The path_fmt can have up to two %s specifiers, which will be satisfied
- * by prepath and postpath. Return 1 on success, 0 on fail. */
+/*() Write all data to a file at the formatted path. The buf is used
+ * for formatting data. The path_fmt can have up to two %s specifiers,
+ * which will be satisfied by prepath and postpath. Return 1 on
+ * success, 0 on fail. */
 
 /* Called by:  main x5, zxid_check_fed x2, zxid_mk_self_sig_cert x2, zxid_mk_transient_nid, zxid_put_ses, zxid_put_user, zxid_pw_authn, zxlog_write_line */
 int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_fmt, const char* prepath, const char* postpath, const char* data_fmt, ...)
@@ -241,18 +242,24 @@ int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_
   return 1;
 }
 
-/*() Write or append all data to a file at the formatted path. The file
- * is opened for appending, data written, and file closed (flushing the data).
- * Will perform file locking to ensure consistent results. Will create the
- * file if needed, but will not create parent directories. Returns 1 on success, 0 on err */
+/*() Write or append all data to a file at the formatted path. The
+ * file is opened for appending, data written, and file closed
+ * (flushing the data).  Will perform file locking to ensure
+ * consistent results. Will create the file if needed, but will not
+ * create parent directories. Up to two items of data can
+ * be written/appended. If you have only one item, supply null
+ * for the second. For overwrite behaviour supply seeky=SEEK_SET and
+ * flag=O_TRUNC (the seek offset is always 0). For append behaviour
+ * supply seeky=SEEK_END and flag=O_APPEND.
+ * Returns 1 on success, 0 on err */
 
 /* Called by:  zxlog_blob, zxlog_write_line x2 */
 int write2_or_append_lock_c_path(const char* c_path,
 				 int len1, const char* data1,
 				 int len2, const char* data2,
 				 const char* which,  /* log key */
-				 int seeky,   /* SEEK_END, O_APPEND == append */
-				 int flag)    /* SEEK_SET, O_TRUNC  == overwrite */
+				 int seeky, /* SEEK_END,0 O_APPEND == append */
+				 int flag)  /* SEEK_SET,0 O_TRUNC  == overwr */
 {
   fdtype fd;
   if (!c_path)

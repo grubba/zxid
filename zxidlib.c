@@ -854,4 +854,22 @@ nobody:
   return enve;
 }
 
+/*() Get symmetric key, generating it if necessary. */
+
+char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
+{
+  char buf[1024];
+  int um, gotall = read_all(sizeof(buf), buf, "symkey", "%s" ZXID_PEM_DIR "%s", cf->path, keyname);
+  if (!gotall && cf->auto_cert) {
+    INFO("AUTO_CERT: generating symmetric encryption key in %s" ZXID_PEM_DIR "%s", cf->path, keyname);
+    gotall = 128 >> 3;
+    zx_rand(buf, gotall);
+    um = umask(0077);  /* Key material should be readable only by owner */
+    write_all_path_fmt("auto_cert", sizeof(buf), buf,
+		       "%s" ZXID_PEM_DIR "%s", cf->path, keyname, "%.*s", gotall, buf);
+    umask(um);
+  }
+  SHA1(buf, gotall, symkey);
+}
+
 /* EOF  --  zxidlib.c */

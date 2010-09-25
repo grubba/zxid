@@ -146,7 +146,8 @@ void zxid_user_change_nameid(zxid_conf* cf, zxid_nid* oldnid, struct zx_str* new
   zxid_put_user(cf, oldnid->Format, oldnid->NameQualifier, oldnid->SPNameQualifier, oldnid->gg.content, sha1_name);
 }
 
-/*() Create new user object in file system. */
+/*() Create new user object in file system. Will create user diretory (but not
+ * its subdirectories). */
 
 /* Called by:  zxid_sp_sso_finalize, zxid_user_change_nameid x2, zxid_wsf_validate_a7n */
 int zxid_put_user(zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, struct zx_str* spqual, struct zx_str* idpnid, char* mniptr)

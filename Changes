@@ -59,12 +59,16 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Templatize idp selection
     NOTPUB
 
-zzxid-0.65:: 18.9.2010
-    - zxidpidp: added ID Mapper (to be used by Delegation Service)
-    - zxidpidp: added some aspects of People Service (to be used by Delegation Service)
-    - zxidpidp: added SSOS
+zzxid-0.65:: 23.9.2010
+    - zxididp: added ID Mapper (to be used by Delegation Service)
+    - zxididp: added some aspects of People Service (to be used by Delegation Service)
+    - zxididp: added SSOS
     - Shortened the before and after slops from 1 day to about 2 hours
     - Improved zxid_get_fault_status() by adding a first level status code
+    - Added -at option to zxpasswd
+    - Fixed zxpasswd -l directory listing
+    - Added psobj encryption for privacy preservation of people referenced by ObjectIDs
+    - zxid_simple():: Added handler for resolving invitation
     NOTPUB
 zxid-0.64:: 16.9.2010
     - Improved WIN32CL (MSVC CL compiler) port

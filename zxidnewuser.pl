@@ -91,11 +91,11 @@ sub redirect {
 
 if (length $cgi{'ok'}) {
     if (length $cgi{'au'} < 3 || length $cgi{'au'} > 40) {
-	$cgi{'ERR'} = "Username must be at least 3 characters long.";
+	$cgi{'ERR'} = "Username must be at least 3 characters long (and no longer than 40 chars).";
     } elsif ($cgi{'au'} !~ /^[A-Za-z0-9_-]+$/s) {
 	$cgi{'ERR'} = "Username can only contain characters [A-Za-z0-9_-]";
     } elsif (length $cgi{'ap'} < 5 || length $cgi{'ap'} > 80) {
-	$cgi{'ERR'} = "Password must be at least 5 characters long.";
+	$cgi{'ERR'} = "Password must be at least 5 characters long (and no longer than 80 chars).";
     } elsif (-e "${dir}uid/$cgi{'au'}") {
 	$cgi{'ERR'} = "Username already taken.";
     } else {
@@ -111,7 +111,7 @@ if (length $cgi{'ok'}) {
 	    open IP, ">${dir}uid/$cgi{'au'}/.regip" or die "Cant open write .bs/.regip: $!";
 	    print IP $ENV{REMOTE_ADDR} or die "Cant write .bs/.regip: $!";
 	    close IP or die "Cant close write .bs/.regip: $!";
-	    mkdir "${dir}uid/$cgi{'au'}/.bs" or die "Cant mkdir .bs: $!";
+	    mkdir "${dir}uid/$cgi{'au'}/.bs" or warn "Cant mkdir .bs: $!";
 	    open AT, ">${dir}uid/$cgi{'au'}/.bs/.at" or die "Cant write .bs/.at: $!";
 	    open OPTAT, ">${dir}uid/$cgi{'au'}/.bs/.optat" or die "Cant write .bs/.optat: $!";
 	    

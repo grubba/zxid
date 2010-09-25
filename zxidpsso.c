@@ -150,7 +150,7 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
  * The input is temporarily modified and then restored. Do not pass const string. */
 
 /* Called by:  zxid_mk_user_a7n_to_sp x4 */
-struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attribute_s* prev, int len, char* p, char* lk)
+struct zx_sa_Attribute_s* zxid_add_ldif_attrs(zxid_conf* cf, struct zx_sa_Attribute_s* prev, char* p, char* lk)
 {
   struct zx_sa_Attribute_s* at = prev;
   char* name;
@@ -327,25 +327,17 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
       at_stmt->Attribute = at;
     }
   }
-  got = read_all(sizeof(buf)-1, buf, "idpsso_uid_at", "%s" ZXID_UID_DIR "%s/.bs/.at" , cf->path, uid);
-  if (got) {
-    at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute, got, buf, "idpsso_uid_at");
-  }
-
+  got = read_all(sizeof(buf)-1, buf, "idpsso_uid_at", "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
+  if (got) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_at");
+  
   got = read_all(sizeof(buf)-1, buf, "idpsso_uid_sp_at", "%s" ZXID_UID_DIR "%s/%s/.at" , cf->path, uid, sp_name_buf);
-  if (got) {
-    at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute, got, buf, "idpsso_uid_sp_at");
-  }
+  if (got) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_sp_at");
 
-  got = read_all(sizeof(buf)-1, buf, "idpsso_all_at", "%s" ZXID_UID_DIR ".all/.bs/.at" , cf->path);
-  if (got) {
-    at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute, got, buf, "idpsso_all_at");
-  }
+  got = read_all(sizeof(buf)-1, buf, "idpsso_all_at", "%s" ZXID_UID_DIR ".all/.bs/.at",cf->path);
+  if (got) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_at");
 
-  got = read_all(sizeof(buf)-1, buf, "idpsso_all_sp_at", "%s" ZXID_UID_DIR ".all/%s/.at" , cf->path, sp_name_buf);
-  if (got) {
-    at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute, got, buf, "idpsso_all_sp_at");
-  }
+  got = read_all(sizeof(buf)-1, buf, "idpsso_all_sp_at", "%s" ZXID_UID_DIR ".all/%s/.at",cf->path,sp_name_buf);
+  if (got) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_sp_at");
   D("sp_eid(%s) bs_lvl=%d", sp_meta->eid, bs_lvl);
   
   /* Process bootstraps */

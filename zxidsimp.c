@@ -15,6 +15,7 @@
  * 4.9.2009,  added attribute broker and PEP functionality --Sampo
  * 31.5.2010, moved local PEP and attribute broker functionality to zxidpep.c --Sampo
  * 7.9.2010,  tweaked the az requests to separate ses az from resource az --Sampo
+ * 22.9.2010, added People Service invitation resolution --Sampo
  *
  * Login button abbreviations
  * A2 = SAML 2.0 Artifact Profile
@@ -988,12 +989,13 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
    * A = Artifact processing
    * N = New User, during IdP Login (form an)
    * W = Recover password,  during IdP Login (form aw)
+   * D = Delegation / Invitation acceptance user interface
    *
    * I = used for IdP ???
    * K = used?
    * F = IdP: Return SSO A7N after successful An; no ses case, generate IdP ui
    *
-   * Still available: DGHJORTUVWXYZabcdefghijkoqwxyz
+   * Still available: GHJORTUVWXYZabcdefghijkoqwxyz
    */
   
   if (cgi->enc_hint)
@@ -1045,6 +1047,8 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
     }
     D("Q ss(%.*s) (fall thru)", ss->len, ss->s);
     break;
+  case 'D': /*  Delegation / Invitation URL clicked. */
+     return zxid_ps_accept_invite(cf, cgi, res_len, auto_flags);
   case 'R':
     cgi->op = 'F';
     /* Fall thru */
@@ -1219,6 +1223,8 @@ show_protected_content_setcookie:
   case 'c':    return zxid_simple_show_carml(cf, cgi, res_len, auto_flags);
   case 'd':    return zxid_simple_show_conf(cf, cgi, res_len, auto_flags);
   case 'B':    return zxid_simple_show_meta(cf, cgi, res_len, auto_flags);
+  case 'D': /*  Delegation / Inviatation URL clicked. */
+     return zxid_ps_accept_invite(cf, cgi, res_len, auto_flags);
   case 'R':
     cgi->op = 'F';
     /* Fall thru */
