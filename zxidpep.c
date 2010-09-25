@@ -185,7 +185,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
 
   body = zx_NEW_e_Body(cf->ctx);
   if (!strcmp(cf->xasp_vers, "xac-soap")) {
-    body->xac_Request = *** zxid_mk_az_cd1(cf, subj, rsrc, act, env); /* *** warning: assignment from incompatible pointer type */
+    body->xac_Request = zxid_mk_xac_az(cf, subj, rsrc, act, env);
 #if 0
     /* *** xac:Response does not have signature field */
     if (cf->sso_soap_sign) {

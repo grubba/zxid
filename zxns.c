@@ -246,9 +246,9 @@ void zx_pop_seen(struct zx_ns_s* ns)
 struct zx_ns_s* zx_scan_xmlns(struct zx_ctx* c)
 {
   struct zx_ns_s* pop_seen = 0;  /* build a list of namespaces declared here */
-  char* prefix;
-  char* url;
-  char* p = c->p;  /* We need to keep the original c->p so normal attributes can be scanned. */
+  const char* prefix;
+  const char* url;
+  const char* p = c->p;  /* We need to keep the original c->p so normal attrs can be scanned. */
   char quote;
   int prefix_len, url_len;
 

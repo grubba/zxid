@@ -921,6 +921,7 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses);
 struct zx_sp_Response_s* zxid_mk_saml_resp(zxid_conf* cf);
 struct zx_xac_Response_s* zxid_mk_xacml_resp(zxid_conf* cf, char* decision);
 struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_xac_Attribute_s* aa, struct zx_str* atid, struct zx_str* attype, struct zx_str* atissuer, struct zx_str* atvalue);
+struct zx_xac_Request_s* zxid_mk_xac_az(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
 struct zx_xasp_XACMLAuthzDecisionQuery_s* zxid_mk_az(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
 struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zxid_mk_az_cd1(zxid_conf* cf, struct zx_xac_Attribute_s* subj, struct zx_xac_Attribute_s* rsrc, struct zx_xac_Attribute_s* act, struct zx_xac_Attribute_s* env);
 struct zx_sa_Attribute_s* zxid_mk_attribute(zxid_conf* cf, char* name, char* val);

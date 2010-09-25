@@ -62,11 +62,6 @@ int vname_from_path(char* buf, int buf_len, const char* name_fmt, va_list ap)
     return 0;
   }
   return 1;
-#if 0
- too_long:
-  ERR("Path too long base(%s) dir(%s) name(%s)\n", base, dir, name);
-  return 0;
-#endif
 }
 
 /*() Generate formatted file name path. */

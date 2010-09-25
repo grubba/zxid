@@ -100,9 +100,9 @@ struct zx_ns_s {
 /* Context tracks the input and namespaces. It is also passed to memory allocator. */
 
 struct zx_ctx {
-  char* base;  /* C# keyword :-( */
-  char* p;     /* Current scan pointer */
-  char* lim;
+  const char* bas;   /* base is C# keyword :-( */
+  const char* p;     /* Current scan pointer */
+  const char* lim;
   struct zx_ns_s* ns_tab;      /* Array, such as zx_ns_tab, see zx_prepare_dec_ctx() */
   struct zx_ns_s* unknown_ns;  /* Linked list of unknown namespaces. */
   /* Namespace prefixes that have been "seen", each prefix is a stack.
@@ -309,7 +309,7 @@ void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, const char* s
 int   zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el);
 int   zx_scan_pi_or_comment(struct zx_ctx* c);
 struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, char* name, char* data, int tok, int ctx_tok);
-char* zx_dec_attr_val(struct zx_ctx* c, char** name);
+char* zx_dec_attr_val(struct zx_ctx* c, const char** name);
 void  zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char* msg);
 
 int   zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);

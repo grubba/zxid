@@ -46,8 +46,8 @@ class zxidjniJNI {
   public final static native String zx_ns_s_url_get(long jarg1);
   public final static native long new_zx_ns_s();
   public final static native void delete_zx_ns_s(long jarg1);
-  public final static native void zx_ctx_base_set(long jarg1, String jarg2);
-  public final static native String zx_ctx_base_get(long jarg1);
+  public final static native void zx_ctx_bas_set(long jarg1, String jarg2);
+  public final static native String zx_ctx_bas_get(long jarg1);
   public final static native void zx_ctx_p_set(long jarg1, String jarg2);
   public final static native String zx_ctx_p_get(long jarg1);
   public final static native void zx_ctx_lim_set(long jarg1, String jarg2);
@@ -1088,6 +1088,7 @@ class zxidjniJNI {
   public final static native long zxid_mk_saml_resp(long jarg1);
   public final static native long zxid_mk_xacml_resp(long jarg1, String jarg2);
   public final static native long zxid_mk_xacml_simple_at(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6);
+  public final static native long zxid_mk_xac_az(long jarg1, long jarg2, long jarg3, long jarg4, long jarg5);
   public final static native long zxid_mk_az(long jarg1, long jarg2, long jarg3, long jarg4, long jarg5);
   public final static native long zxid_mk_az_cd1(long jarg1, long jarg2, long jarg3, long jarg4, long jarg5);
   public final static native long zxid_mk_attribute(long jarg1, String jarg2, String jarg3);

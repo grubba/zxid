@@ -379,7 +379,7 @@ int main(int argc, char** argv, char** env)
     len_so = zx_LEN_SO_root(&ctx, r);
     D("Enc so len %d chars", len_so);
 
-    ctx.base = so_out;
+    ctx.bas = so_out;
     so_p = zx_ENC_SO_root(&ctx, r, so_out);
     if (!so_p)
       DIE("encoding error");
@@ -387,7 +387,7 @@ int main(int argc, char** argv, char** env)
     len_wo = zx_LEN_WO_root(&ctx, r);
     D("Enc wo len %d chars", len_wo);
 
-    ctx.base = wo_out;
+    ctx.bas = wo_out;
     wo_p = zx_ENC_WO_root(&ctx, r, wo_out);
     if (!wo_p)
       DIE("encoding error");

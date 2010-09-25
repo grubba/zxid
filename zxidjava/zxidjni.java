@@ -113,12 +113,12 @@ public class zxidjni implements zxidjniConstants {
     zxidjniJNI.delete_zx_ns_s(SWIGTYPE_p_zx_ns_s.getCPtr(self));
   }
 
-  public static void zx_ctx_base_set(SWIGTYPE_p_zx_ctx self, String value) {
-    zxidjniJNI.zx_ctx_base_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  public static void zx_ctx_bas_set(SWIGTYPE_p_zx_ctx self, String value) {
+    zxidjniJNI.zx_ctx_bas_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
   }
 
-  public static String zx_ctx_base_get(SWIGTYPE_p_zx_ctx self) {
-    return zxidjniJNI.zx_ctx_base_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  public static String zx_ctx_bas_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_bas_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
   }
 
   public static void zx_ctx_p_set(SWIGTYPE_p_zx_ctx self, String value) {
@@ -3974,6 +3974,11 @@ public class zxidjni implements zxidjniConstants {
   public static SWIGTYPE_p_zx_xac_Attribute_s mk_xacml_simple_at(zxid_conf cf, SWIGTYPE_p_zx_xac_Attribute_s aa, String atid, String attype, String atissuer, String atvalue) {
     long cPtr = zxidjniJNI.zxid_mk_xacml_simple_at(zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_xac_Attribute_s.getCPtr(aa), atid, attype, atissuer, atvalue);
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_xac_Attribute_s(cPtr, false);
+  }
+
+  public static SWIGTYPE_p_zx_xac_Request_s mk_xac_az(zxid_conf cf, SWIGTYPE_p_zx_xac_Attribute_s subj, SWIGTYPE_p_zx_xac_Attribute_s rsrc, SWIGTYPE_p_zx_xac_Attribute_s act, SWIGTYPE_p_zx_xac_Attribute_s env) {
+    long cPtr = zxidjniJNI.zxid_mk_xac_az(zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_xac_Attribute_s.getCPtr(subj), SWIGTYPE_p_zx_xac_Attribute_s.getCPtr(rsrc), SWIGTYPE_p_zx_xac_Attribute_s.getCPtr(act), SWIGTYPE_p_zx_xac_Attribute_s.getCPtr(env));
+    return (cPtr == 0) ? null : new SWIGTYPE_p_zx_xac_Request_s(cPtr, false);
   }
 
   public static SWIGTYPE_p_zx_xasp_XACMLAuthzDecisionQuery_s mk_az(zxid_conf cf, SWIGTYPE_p_zx_xac_Attribute_s subj, SWIGTYPE_p_zx_xac_Attribute_s rsrc, SWIGTYPE_p_zx_xac_Attribute_s act, SWIGTYPE_p_zx_xac_Attribute_s env) {

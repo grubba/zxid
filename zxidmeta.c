@@ -149,7 +149,7 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, *md, lim);
   r = zx_DEC_root(cf->ctx, 0, 5);
   UNLOCK(cf->ctx->mx, "parse meta");
-  *md = cf->ctx->p;
+  *md = (char*)cf->ctx->p;
   if (!r)
     return 0;
   if (r->EntityDescriptor) {
@@ -169,8 +169,8 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
     return ee;
   }  
  bad_md:
-  ERR("Bad metadata. EntityDescriptor could not be found or was corrupt. MD(%.*s) %d chars parsed.", lim-cf->ctx->base, cf->ctx->base, *md - cf->ctx->base);
-  zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "BADMD", 0, "chars_parsed(%d)", *md - cf->ctx->base);
+  ERR("Bad metadata. EntityDescriptor could not be found or was corrupt. MD(%.*s) %d chars parsed.", lim-cf->ctx->bas, cf->ctx->bas, *md - cf->ctx->bas);
+  zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "BADMD", 0, "chars_parsed(%d)", *md - cf->ctx->bas);
   zx_FREE_root(cf->ctx, r, 0);
   return 0;
 }

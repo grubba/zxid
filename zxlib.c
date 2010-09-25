@@ -40,11 +40,11 @@
 int zx_format_parse_error(struct zx_ctx* ctx, char* buf, int siz, char* logkey)
 {
   int at, end, start, len;
-  end = ctx->lim - ctx->base;
-  at = MIN(ctx->p - ctx->base, end);
+  end = ctx->lim - ctx->bas;
+  at = MIN(ctx->p - ctx->bas, end);
   start = MAX(0,at-30);
   len = MIN(at+30, end) - start;    
-  len = snprintf(buf, siz, "%s: Parse error at char %d/%d (prev char, char, next char: 0x%02x 0x%02x 0x%02x)\n%.*s\n%.*s^\n", logkey, at, end, at > 0 ? ctx->p[-1]:0, ctx->p[0], at < end ? ctx->p[1]:0, len, ctx->base + start, at-start, "-----------------------------------------------");
+  len = snprintf(buf, siz, "%s: Parse error at char %d/%d (prev char, char, next char: 0x%02x 0x%02x 0x%02x)\n%.*s\n%.*s^\n", logkey, at, end, at > 0 ? ctx->p[-1]:0, ctx->p[0], at < end ? ctx->p[1]:0, len, ctx->bas + start, at-start, "-----------------------------------------------");
   buf[siz-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   return len;
 }
@@ -789,7 +789,7 @@ void zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, const char* st
   c->guard_seen_n.seen_n = &c->guard_seen_p;
   c->guard_seen_p.seen_p = &c->guard_seen_n;
   c->ns_tab = ns_tab;
-  c->base = c->p = start;
+  c->bas = c->p = start;
   c->lim = lim;
 }
 
@@ -797,11 +797,11 @@ void zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, const char* st
 int zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el)
 {
   struct zx_str* ss;
-  char* d = c->p;
+  const char* d = c->p;
   if (c->p) ZX_LOOK_FOR(c,'<');
   ss = ZX_ZALLOC(c, struct zx_str);
   ss->len = c->p - d;
-  ss->s = d;
+  ss->s = (char*)d;
   ss->g.tok = ZX_TOK_DATA;
   ss->g.n = &el->content->g;
   el->content = ss;
@@ -817,7 +817,7 @@ int zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el)
 /* Called by:  TXDEC_ELNAME */
 int zx_scan_pi_or_comment(struct zx_ctx* c)
 {
-  char* name;
+  const char* name;
   char quote;
 
   switch (*c->p) {
@@ -891,9 +891,9 @@ struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, char*
 }
 
 /* Called by:  TXDEC_ELNAME */
-char* zx_dec_attr_val(struct zx_ctx* c, char** name)
+char* zx_dec_attr_val(struct zx_ctx* c, const char** name)
 {
-  char* data;
+  const char* data;
   char quote;
   *name = c->p;
   quote = '=';
@@ -909,7 +909,7 @@ char* zx_dec_attr_val(struct zx_ctx* c, char** name)
   data = c->p;	
   
   ZX_LOOK_FOR(c, quote);
-  return data;
+  return (char*)data;  /* *** can the return be considered const? */
  look_for_not_found:
   zx_xml_parse_err(c, quote, (const char*)__FUNCTION__, "char not found");
   return 0;
@@ -918,9 +918,9 @@ char* zx_dec_attr_val(struct zx_ctx* c, char** name)
 /* Called by:  TXDEC_ELNAME x2, zx_dec_attr_val x2, zx_scan_pi_or_comment, zx_scan_xmlns x2 */
 void zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char* msg)
 {
-  char* errloc = MAX(c->p - 20, c->base);
+  const char* errloc = MAX(c->p - 20, c->bas);
   ERR("%s: %s: char(%c) pos=%d (%.*s)", func, msg, quote,
-      c->p - c->base, MIN(c->lim - errloc, 40), errloc);
+      c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
 }
 
 /* Add inclusive namespaces. */
