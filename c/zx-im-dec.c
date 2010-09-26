@@ -91,8 +91,8 @@ struct zx_im_IdentityMappingRequest_s* zx_DEC_im_IdentityMappingRequest(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_im_IdentityMappingRequest_s* x = ZX_ZALLOC(c, struct zx_im_IdentityMappingRequest_s);
   x->gg.g.tok = zx_im_IdentityMappingRequest_ELEM;
   x->gg.g.ns = ns;
@@ -125,7 +125,7 @@ struct zx_im_IdentityMappingRequest_s* zx_DEC_im_IdentityMappingRequest(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -253,8 +253,8 @@ struct zx_im_IdentityMappingResponse_s* zx_DEC_im_IdentityMappingResponse(struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_im_IdentityMappingResponse_s* x = ZX_ZALLOC(c, struct zx_im_IdentityMappingResponse_s);
   x->gg.g.tok = zx_im_IdentityMappingResponse_ELEM;
   x->gg.g.ns = ns;
@@ -287,7 +287,7 @@ struct zx_im_IdentityMappingResponse_s* zx_DEC_im_IdentityMappingResponse(struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -420,8 +420,8 @@ struct zx_im_MappingInput_s* zx_DEC_im_MappingInput(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_im_MappingInput_s* x = ZX_ZALLOC(c, struct zx_im_MappingInput_s);
   x->gg.g.tok = zx_im_MappingInput_ELEM;
   x->gg.g.ns = ns;
@@ -460,7 +460,7 @@ struct zx_im_MappingInput_s* zx_DEC_im_MappingInput(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -593,8 +593,8 @@ struct zx_im_MappingOutput_s* zx_DEC_im_MappingOutput(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_im_MappingOutput_s* x = ZX_ZALLOC(c, struct zx_im_MappingOutput_s);
   x->gg.g.tok = zx_im_MappingOutput_ELEM;
   x->gg.g.ns = ns;
@@ -633,7 +633,7 @@ struct zx_im_MappingOutput_s* zx_DEC_im_MappingOutput(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

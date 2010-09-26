@@ -334,6 +334,7 @@ document for details. By default the hierarchy will live in
    +-- idpuid/       Local user ID (local login name) to SHA1 mapping
    +-- idpnid/       Index of federated NameIDs, to map to uid
    +-- idpdimd/      Discovery Metadata registrations
+   +-- idpinv/       Invitations
    `-- idplog/       Log files, pid files, and the lik
 
 You can create this hierarchy by running
@@ -813,9 +814,9 @@ Object needs to remember
 
 *Syntax is similar to LDIF (as is the syntax of .at files)*
 
-  dn: psobj=o12321
-  psobj: o12321,uid=joedoe
-  owner: joedoe
+  dn: psobj=o12321,uid=joedoe
+  psobj: o12321
+  uid: joedoe
   nodetype: 0
   idpnid: F13432
   tag: #golden
@@ -856,6 +857,141 @@ Permissions are already in context of delegator and delegatee and need to captur
 The permissions lines from both invitation and object are used
 by the discovery and identity mapping services to determine
 if delegated operations should be permitted.
+
+5.2 SP Side Support for Delegation
+----------------------------------
+
+When an SP starts delegation sequence, it establishes a delegation
+record in delegator's (Alice's) user directory, identifying delegated resource,
+and then calls AddEntity() embedding the id of the delegation record
+in the ~PStoSPRedirectURL~. It is also possible for the SP to simply
+encode Alice and the resource in the ~PStoSPRedirectURL~ (in symmetrically
+encrypted with key only known to SP). The AddEntity() returns <ObjectID>
+that eventually allows delegatee (Bob) to be identified at PSa. The Object ID
+is remembered in the delegation record. AddEntity() also returns in ~SPtoPSRedirectURL~
+an invitation, which Alice passes to Bob.
+
+When delegatee (Bob) clicks the invite URL, he lands on PSa and
+federates by performing SSO using IdPb. He gets redirected to SP using
+~PStoSPRedirectURL~.  This allows SP to understand which resource is
+being accessed in delegated way.  Bob will usually perform SSO to SP
+using IdPb. This allows Bob to be permanetly added to white list of
+delegation record of Alice's resource, so that in future visits Bob
+can access Alice's resource directly without having to go through
+the invitation. A record of accessible resource may also be kept on
+Bob's account. This facilitates Bob's navigation, but the access control
+decisions must always be based on delegation record on Alice's side.
+
+  /var/zxid/
+   |
+   +-- ses/       Sessions
+   |    |
+   |    +-- SESID/         Each session has its own directory
+   |
+   +-- user/      Local user accounts (if enabled)
+   |    |
+   |    +-- SHA1/ Each local user has a directory whose name is SHA1
+   |    |    |    of the user's NameID (idpnid) and IdP Entity ID
+   |    |    +-- .mni     Information needed by Name ID management
+   |    |    +-- PS,SHA1  Long term People Service EPR, kept in its own file
+   |    |    +-- .deleg/  Delegations (invitations) user has issued
+   |    |    |    |
+   |    |    |    +-- DELEG
+   |    |    |    `-- DELEG
+   |    |    |    
+   |    |    +-- .access/  Invitations user has received (delegations to access other's resources)
+   |    |    |    |
+   |    |    |    +-- ACCESS
+   |    |    |    `-- ACCESS
+   |    |    |    
+   |    |    `-- .pw      User's local password if any (usually none)
+   |    |
+   |    `-- SHA1b -> ../uid/Sue   SHA1 can also be symlink to local account
+   |
+   +-- uid/       Local user ID (local login name) to SHA1 mapping
+   |    |
+   |    +-- joe -> ../user/SHA1   Symlink points to the real user directory
+
+Alice's delegation records are held in her .deleg subdirectory:
+
+  dn: deleg=d122413,idpnid=FAliceatSP
+  deleg: d122413
+  idpnid: FAliceatSP
+  rsrc: /protected
+  pseid: https://ps.tas3.pt/ps?o=B   # Entity ID of Alice's PS (for future membership queries)
+  psepr: ...                         # Hold long term EPR for PSa for making membership queries
+  diepr: ...                         # Hold long term EPR for DIa for making web service calls
+  whitelist: FBobatSP
+  whitelist: FCecilatSP
+  psobj: o123                        # PS Object IDs of yet unresolved invitations
+
+Bob's delegation hint record (similar to real delegation record, but
+interpretted differently) are held in his .access subdirectory:
+
+  dn: access=d122413,idpnid=FofBobatSP
+  idpnid: FofAliceatSP
+  rsrc: /protected
+
+Since multiple IdPs can be involved, the user directory structure must
+account for the possibility that Federated ID assigned by one IdP for
+one user can be assigned by another IdP for different user. This is
+arranged by hashing together idpnid and the Entity ID of the IdP (see
+zxid_user_sha1_name()).
+
+5.3 Accessing Alice's Discovery EPR
+-----------------------------------
+
+There are three methods for Bob to obtain Alice's Discovery EPR (DIa-EPR)
+
+1. Using PSb, which will ask from IMa (the Liberty Alliance documented way)
+2. Using PSa, which may ask IMa. PSa-EPR is passed from Alice to Bob by the inviting SP
+3. DIa-EPR is passed from Alice to Bob directly by the inviting SP
+
+[IDWSF2Overview] section 2.4 "Cross-principal Identity Service
+Access", pp.19-31, describes how Bob can call Alice's service
+(n.b. their description has the roles reversed). In that description,
+the crucial step of obtaining Alice's Discovery EPR is facilitated by
+Bob's People Service (+NOT Alice's People Service!+) using
+<ResolveIdentifierRequest> (SP to PSb) that makes
+<IdentityMappingRequest> (PSb to IMa) and returns the DItokA all the
+way through call chain.
+
+Here the assumption was that Bob can discover his own PSb and that PSb
+knows where IMa is. This latter knowledge is only possible if Alice
+had been federated to PSb, which would presume bidirectional
+friendship relationship. Such flow is indeed possible within the
+PeopleService specification, using <CreatePSObject> option of
+<AddEntityRequest>.  Advantage of this flow is that Bob can access
+WSPa even from SPs other than the inviting SP.
+
+However, if no bidirectional relationship is desired, then the flow
+does not work. We need a way for Bob to get Alice's discovery EPR with
+facilitation only by Alice's resources.
+
+Bob will have federated with Alice's PS during invitation, so it
+should be possible to direct <ResolveIdentifierRequest> to PSa, if
+only we knew where PSa is. In the case of Bob visiting the SP that
+Alice used for starting the invitation, it is possible to arrange for
+the delegation object to remember Alice's PSa-EPR so that we get the
+ball rolling. Problem is that for this to work, we need to be able to
+express Alice's "self" identity: we adopt the policy of passing
+<Token> from PSa-EPR (i.e. Alice's token) and specifying <TokenPolicy>
+where type XML attribute specifies the intended use as delegation.
+By adopting a convention where <Token> is just a reference to
+the Target Identity (Alice) of the call and the security token
+identifies the delegatee (Bob), the PSa can manufacture appropriate
+DIa(deleg B)-EPR whose Token is an Assertion with Alice as subject
+and Bob's token or identity in advice or attribute field (the exact
+place where this is expressed need to be standardized and documented).
+
+In fact, the delegation object could even remember Alice's DIa-EPR for
+Bob to use. In this sense the resource at SP that Alice delegates
+access to is in fact the DIa-EPR. While this is simple, there is
+certain lack of central control. For example, the SP could decide
+to pass DIa-EPR to Mallory. Basically the model (2) is preferred
+as it results in special DIa-EPR that expresses the delegation to Bob.
+Model (3) uses bare DIa-EPR, in effect impersonating Alice rather
+than conveying genuine delegation relationship.
 
 <<if: ZXIDBOOK>>
 <<else: >>

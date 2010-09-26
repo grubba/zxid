@@ -349,7 +349,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
     cgi.sig = logpath->s;
     ZX_FREE(cf->ctx, logpath);
   }
-  payload = zxid_template_page_cf(cf, &cgi, cf->post_templ_file, cf->post_templ, 0);
+  payload = zxid_template_page_cf(cf, &cgi, cf->post_templ_file, cf->post_templ, 64*1024, 0);
 #else
   payload = zx_strf(cf->ctx, "<title>ZXID POST Profile</title>"
 "<body bgcolor=white OnLoad=\"document.forms[0].submit()\">"
@@ -889,7 +889,7 @@ char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
 		       "%s" ZXID_PEM_DIR "%s", cf->path, keyname, "%.*s", gotall, buf);
     umask(um);
   }
-  SHA1(buf, gotall, symkey);
+  SHA1((unsigned char*)buf, gotall, (unsigned char*)symkey);
   return symkey;
 }
 

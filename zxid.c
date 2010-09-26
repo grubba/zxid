@@ -44,7 +44,7 @@
 #include "c/zx-ns.h"
 #include "c/zx-md-data.h"
 
-CU8* help =
+char* help =
 "zxid  -  SAML 2.0 SP CGI - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated idenity and Sinlg Sign-On.\n\
 Copyright (c) 2006 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
@@ -309,7 +309,7 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
     /* fall thru means unrecognized flag */
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
-    fprintf(stderr, help);
+    fprintf(stderr, "%s", help);
     fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());
     exit(3);
   }

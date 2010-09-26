@@ -88,7 +88,7 @@ char* zx_raw_digest2(struct zx_ctx* c, char* md, char* const algo, int len, cons
     }
   }
   
-  if(!EVP_DigestFinal_ex(&ctx, md, 0)) {
+  if(!EVP_DigestFinal_ex(&ctx, (unsigned char*)md, 0)) {
     where = "EVP_DigestFinal_ex()";
     goto sslerr;
   }
@@ -149,7 +149,7 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
   else
     iv_len = 0;  /* When decrypting, the iv has already been stripped. */
   
-  if (!EVP_CipherInit_ex(&ctx, evp_cipher, 0 /* engine */, key->s, ivv, encflag)) {
+  if (!EVP_CipherInit_ex(&ctx, evp_cipher, 0 /* engine */, (unsigned char*)key->s, (unsigned char*)ivv, encflag)) {
     where = "EVP_CipherInit_ex()";
     goto sslerr;
   }
@@ -159,14 +159,14 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
     goto sslerr;
   }
   
-  if (!EVP_CipherUpdate(&ctx, out->s + iv_len, &outlen, s, len)) { /* Actual crypto happens here */
+  if (!EVP_CipherUpdate(&ctx, (unsigned char*)out->s + iv_len, &outlen, (unsigned char*)s, len)) { /* Actual crypto happens here */
     where = "EVP_CipherUpdate()";
     goto sslerr;
   }
   
   ASSERTOP(outlen + iv_len, <=, alloclen);
   
-  if(!EVP_CipherFinal_ex(&ctx, out->s + iv_len + outlen, &tmplen)) {  /* Append final block */
+  if(!EVP_CipherFinal_ex(&ctx, (unsigned char*)out->s + iv_len + outlen, &tmplen)) {  /* Append final block */
     where = "EVP_CipherFinal_ex()";
     goto sslerr;
   }
@@ -220,7 +220,7 @@ struct zx_str* zx_rsa_pub_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_p
   ciphered = zx_new_len_str(c, siz);
   if (!ciphered)
     return 0;
-  ret = RSA_public_encrypt(plain->len, plain->s, ciphered->s, rsa_pkey, pad);
+  ret = RSA_public_encrypt(plain->len, (unsigned char*)plain->s, (unsigned char*)ciphered->s, rsa_pkey, pad);
   if (siz != ret) {
     D("RSA pub enc wrong ret=%d siz=%d\n",ret,siz);
     zx_report_openssl_error("zx_pub_encrypt_rsa fail (${ret})");
@@ -243,7 +243,7 @@ struct zx_str* zx_rsa_pub_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* rs
   plain = zx_new_len_str(c, siz);
   if (!plain)
     return 0;
-  ret = RSA_public_decrypt(ciphered->len, ciphered->s, plain->s, rsa_pkey, pad);
+  ret = RSA_public_decrypt(ciphered->len, (unsigned char*)ciphered->s, (unsigned char*)plain->s, rsa_pkey, pad);
   if (ret == -1) {
     D("RSA public decrypt failed ret=%d len_cipher_data=%d",ret,ciphered->len);
     zx_report_openssl_error("zx_public_decrypt_rsa fail");
@@ -272,7 +272,7 @@ struct zx_str* zx_rsa_priv_dec(struct zx_ctx* c, struct zx_str* ciphered, RSA* r
   plain = zx_new_len_str(c, siz);
   if (!plain)
     return 0;
-  ret = RSA_private_decrypt(ciphered->len, ciphered->s, plain->s, rsa_pkey, pad);
+  ret = RSA_private_decrypt(ciphered->len, (unsigned char*)ciphered->s, (unsigned char*)plain->s, rsa_pkey, pad);
   if (ret == -1) {
     D("RSA private decrypt failed ret=%d len_cipher_data=%d",ret,ciphered->len);
     zx_report_openssl_error("zx_priv_decrypt_rsa fail");
@@ -295,7 +295,7 @@ struct zx_str* zx_rsa_priv_enc(struct zx_ctx* c, struct zx_str* plain, RSA* rsa_
   ciphered = zx_new_len_str(c, siz);
   if (!ciphered)
     return 0;
-  ret = RSA_private_encrypt(plain->len, plain->s, ciphered->s, rsa_pkey, pad);
+  ret = RSA_private_encrypt(plain->len, (unsigned char*)plain->s, (unsigned char*)ciphered->s, rsa_pkey, pad);
   if (ret == -1) {
     D("RSA private encrypt failed ret=%d len_plain=%d", ret, plain->len);
     zx_report_openssl_error("zx_priv_encrypt_rsa fail");
@@ -342,7 +342,7 @@ void zx_rand(char* buf, int n_bytes)
 #if ZXID_TRUE_RAND
   RAND_bytes(buf, n_bytes);
 #else
-  RAND_pseudo_bytes(buf, n_bytes);
+  RAND_pseudo_bytes((unsigned char*)buf, n_bytes);
 #endif
 #else
   ERR("ZXID was compiled without USE_OPENSSL. This means random number generation facilities are unavailable. Recompile ZXID or acknowledge that there is no security. n_rand_bytes=%d", n);
@@ -355,7 +355,7 @@ static void zxid_add_subject_field(X509_NAME* subj, int typ, int nid, char* val)
   X509_NAME_ENTRY* ne;
   if (!val || !*val)
     return;
-  ne = X509_NAME_ENTRY_create_by_NID(0, nid, typ, val, strlen(val));
+  ne = X509_NAME_ENTRY_create_by_NID(0, nid, typ, (unsigned char*)val, strlen(val));
   X509_NAME_add_entry(subj, ne, X509_NAME_entry_count(subj), 0);
 }
 

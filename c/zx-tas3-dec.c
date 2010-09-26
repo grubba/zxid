@@ -91,8 +91,8 @@ struct zx_tas3_Credentials_s* zx_DEC_tas3_Credentials(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_tas3_Credentials_s* x = ZX_ZALLOC(c, struct zx_tas3_Credentials_s);
   x->gg.g.tok = zx_tas3_Credentials_ELEM;
   x->gg.g.ns = ns;
@@ -155,7 +155,7 @@ struct zx_tas3_Credentials_s* zx_DEC_tas3_Credentials(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -313,8 +313,8 @@ struct zx_tas3_ESLApply_s* zx_DEC_tas3_ESLApply(struct zx_ctx* c, struct zx_ns_s
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_tas3_ESLApply_s* x = ZX_ZALLOC(c, struct zx_tas3_ESLApply_s);
   x->gg.g.tok = zx_tas3_ESLApply_ELEM;
   x->gg.g.ns = ns;
@@ -347,7 +347,7 @@ struct zx_tas3_ESLApply_s* zx_DEC_tas3_ESLApply(struct zx_ctx* c, struct zx_ns_s
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -480,8 +480,8 @@ struct zx_tas3_ESLPolicies_s* zx_DEC_tas3_ESLPolicies(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_tas3_ESLPolicies_s* x = ZX_ZALLOC(c, struct zx_tas3_ESLPolicies_s);
   x->gg.g.tok = zx_tas3_ESLPolicies_ELEM;
   x->gg.g.ns = ns;
@@ -544,7 +544,7 @@ struct zx_tas3_ESLPolicies_s* zx_DEC_tas3_ESLPolicies(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -672,8 +672,8 @@ struct zx_tas3_ESLRef_s* zx_DEC_tas3_ESLRef(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_tas3_ESLRef_s* x = ZX_ZALLOC(c, struct zx_tas3_ESLRef_s);
   x->gg.g.tok = zx_tas3_ESLRef_ELEM;
   x->gg.g.ns = ns;
@@ -718,7 +718,7 @@ struct zx_tas3_ESLRef_s* zx_DEC_tas3_ESLRef(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -841,8 +841,8 @@ struct zx_tas3_Status_s* zx_DEC_tas3_Status(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_tas3_Status_s* x = ZX_ZALLOC(c, struct zx_tas3_Status_s);
   x->gg.g.tok = zx_tas3_Status_ELEM;
   x->gg.g.ns = ns;
@@ -923,7 +923,7 @@ struct zx_tas3_Status_s* zx_DEC_tas3_Status(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

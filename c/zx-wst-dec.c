@@ -91,8 +91,8 @@ struct zx_wst_Authenticator_s* zx_DEC_wst_Authenticator(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Authenticator_s* x = ZX_ZALLOC(c, struct zx_wst_Authenticator_s);
   x->gg.g.tok = zx_wst_Authenticator_ELEM;
   x->gg.g.ns = ns;
@@ -125,7 +125,7 @@ struct zx_wst_Authenticator_s* zx_DEC_wst_Authenticator(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -253,8 +253,8 @@ struct zx_wst_BinaryExchange_s* zx_DEC_wst_BinaryExchange(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_BinaryExchange_s* x = ZX_ZALLOC(c, struct zx_wst_BinaryExchange_s);
   x->gg.g.tok = zx_wst_BinaryExchange_ELEM;
   x->gg.g.ns = ns;
@@ -299,7 +299,7 @@ struct zx_wst_BinaryExchange_s* zx_DEC_wst_BinaryExchange(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -422,8 +422,8 @@ struct zx_wst_BinarySecret_s* zx_DEC_wst_BinarySecret(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_BinarySecret_s* x = ZX_ZALLOC(c, struct zx_wst_BinarySecret_s);
   x->gg.g.tok = zx_wst_BinarySecret_ELEM;
   x->gg.g.ns = ns;
@@ -462,7 +462,7 @@ struct zx_wst_BinarySecret_s* zx_DEC_wst_BinarySecret(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -585,8 +585,8 @@ struct zx_wst_CancelTarget_s* zx_DEC_wst_CancelTarget(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_CancelTarget_s* x = ZX_ZALLOC(c, struct zx_wst_CancelTarget_s);
   x->gg.g.tok = zx_wst_CancelTarget_ELEM;
   x->gg.g.ns = ns;
@@ -619,7 +619,7 @@ struct zx_wst_CancelTarget_s* zx_DEC_wst_CancelTarget(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -742,8 +742,8 @@ struct zx_wst_Claims_s* zx_DEC_wst_Claims(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Claims_s* x = ZX_ZALLOC(c, struct zx_wst_Claims_s);
   x->gg.g.tok = zx_wst_Claims_ELEM;
   x->gg.g.ns = ns;
@@ -782,7 +782,7 @@ struct zx_wst_Claims_s* zx_DEC_wst_Claims(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -905,8 +905,8 @@ struct zx_wst_DelegateTo_s* zx_DEC_wst_DelegateTo(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_DelegateTo_s* x = ZX_ZALLOC(c, struct zx_wst_DelegateTo_s);
   x->gg.g.tok = zx_wst_DelegateTo_ELEM;
   x->gg.g.ns = ns;
@@ -939,7 +939,7 @@ struct zx_wst_DelegateTo_s* zx_DEC_wst_DelegateTo(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1062,8 +1062,8 @@ struct zx_wst_Encryption_s* zx_DEC_wst_Encryption(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Encryption_s* x = ZX_ZALLOC(c, struct zx_wst_Encryption_s);
   x->gg.g.tok = zx_wst_Encryption_ELEM;
   x->gg.g.ns = ns;
@@ -1096,7 +1096,7 @@ struct zx_wst_Encryption_s* zx_DEC_wst_Encryption(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1219,8 +1219,8 @@ struct zx_wst_Entropy_s* zx_DEC_wst_Entropy(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Entropy_s* x = ZX_ZALLOC(c, struct zx_wst_Entropy_s);
   x->gg.g.tok = zx_wst_Entropy_ELEM;
   x->gg.g.ns = ns;
@@ -1253,7 +1253,7 @@ struct zx_wst_Entropy_s* zx_DEC_wst_Entropy(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1376,8 +1376,8 @@ struct zx_wst_IssuedTokens_s* zx_DEC_wst_IssuedTokens(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_IssuedTokens_s* x = ZX_ZALLOC(c, struct zx_wst_IssuedTokens_s);
   x->gg.g.tok = zx_wst_IssuedTokens_ELEM;
   x->gg.g.ns = ns;
@@ -1410,7 +1410,7 @@ struct zx_wst_IssuedTokens_s* zx_DEC_wst_IssuedTokens(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1538,8 +1538,8 @@ struct zx_wst_Issuer_s* zx_DEC_wst_Issuer(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Issuer_s* x = ZX_ZALLOC(c, struct zx_wst_Issuer_s);
   x->gg.g.tok = zx_wst_Issuer_ELEM;
   x->gg.g.ns = ns;
@@ -1608,7 +1608,7 @@ struct zx_wst_Issuer_s* zx_DEC_wst_Issuer(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1746,8 +1746,8 @@ struct zx_wst_KeyExchangeToken_s* zx_DEC_wst_KeyExchangeToken(struct zx_ctx* c, 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_KeyExchangeToken_s* x = ZX_ZALLOC(c, struct zx_wst_KeyExchangeToken_s);
   x->gg.g.tok = zx_wst_KeyExchangeToken_ELEM;
   x->gg.g.ns = ns;
@@ -1780,7 +1780,7 @@ struct zx_wst_KeyExchangeToken_s* zx_DEC_wst_KeyExchangeToken(struct zx_ctx* c, 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1903,8 +1903,8 @@ struct zx_wst_Lifetime_s* zx_DEC_wst_Lifetime(struct zx_ctx* c, struct zx_ns_s* 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Lifetime_s* x = ZX_ZALLOC(c, struct zx_wst_Lifetime_s);
   x->gg.g.tok = zx_wst_Lifetime_ELEM;
   x->gg.g.ns = ns;
@@ -1937,7 +1937,7 @@ struct zx_wst_Lifetime_s* zx_DEC_wst_Lifetime(struct zx_ctx* c, struct zx_ns_s* 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2070,8 +2070,8 @@ struct zx_wst_OnBehalfOf_s* zx_DEC_wst_OnBehalfOf(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_OnBehalfOf_s* x = ZX_ZALLOC(c, struct zx_wst_OnBehalfOf_s);
   x->gg.g.tok = zx_wst_OnBehalfOf_ELEM;
   x->gg.g.ns = ns;
@@ -2104,7 +2104,7 @@ struct zx_wst_OnBehalfOf_s* zx_DEC_wst_OnBehalfOf(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2227,8 +2227,8 @@ struct zx_wst_Participant_s* zx_DEC_wst_Participant(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Participant_s* x = ZX_ZALLOC(c, struct zx_wst_Participant_s);
   x->gg.g.tok = zx_wst_Participant_ELEM;
   x->gg.g.ns = ns;
@@ -2261,7 +2261,7 @@ struct zx_wst_Participant_s* zx_DEC_wst_Participant(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2384,8 +2384,8 @@ struct zx_wst_Participants_s* zx_DEC_wst_Participants(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Participants_s* x = ZX_ZALLOC(c, struct zx_wst_Participants_s);
   x->gg.g.tok = zx_wst_Participants_ELEM;
   x->gg.g.ns = ns;
@@ -2418,7 +2418,7 @@ struct zx_wst_Participants_s* zx_DEC_wst_Participants(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2551,8 +2551,8 @@ struct zx_wst_Primary_s* zx_DEC_wst_Primary(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Primary_s* x = ZX_ZALLOC(c, struct zx_wst_Primary_s);
   x->gg.g.tok = zx_wst_Primary_ELEM;
   x->gg.g.ns = ns;
@@ -2585,7 +2585,7 @@ struct zx_wst_Primary_s* zx_DEC_wst_Primary(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2708,8 +2708,8 @@ struct zx_wst_ProofEncryption_s* zx_DEC_wst_ProofEncryption(struct zx_ctx* c, st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_ProofEncryption_s* x = ZX_ZALLOC(c, struct zx_wst_ProofEncryption_s);
   x->gg.g.tok = zx_wst_ProofEncryption_ELEM;
   x->gg.g.ns = ns;
@@ -2742,7 +2742,7 @@ struct zx_wst_ProofEncryption_s* zx_DEC_wst_ProofEncryption(struct zx_ctx* c, st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2865,8 +2865,8 @@ struct zx_wst_RenewTarget_s* zx_DEC_wst_RenewTarget(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_RenewTarget_s* x = ZX_ZALLOC(c, struct zx_wst_RenewTarget_s);
   x->gg.g.tok = zx_wst_RenewTarget_ELEM;
   x->gg.g.ns = ns;
@@ -2899,7 +2899,7 @@ struct zx_wst_RenewTarget_s* zx_DEC_wst_RenewTarget(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3022,8 +3022,8 @@ struct zx_wst_Renewing_s* zx_DEC_wst_Renewing(struct zx_ctx* c, struct zx_ns_s* 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Renewing_s* x = ZX_ZALLOC(c, struct zx_wst_Renewing_s);
   x->gg.g.tok = zx_wst_Renewing_ELEM;
   x->gg.g.ns = ns;
@@ -3068,7 +3068,7 @@ struct zx_wst_Renewing_s* zx_DEC_wst_Renewing(struct zx_ctx* c, struct zx_ns_s* 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3191,8 +3191,8 @@ struct zx_wst_RequestSecurityToken_s* zx_DEC_wst_RequestSecurityToken(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_RequestSecurityToken_s* x = ZX_ZALLOC(c, struct zx_wst_RequestSecurityToken_s);
   x->gg.g.tok = zx_wst_RequestSecurityToken_ELEM;
   x->gg.g.ns = ns;
@@ -3231,7 +3231,7 @@ struct zx_wst_RequestSecurityToken_s* zx_DEC_wst_RequestSecurityToken(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3484,8 +3484,8 @@ struct zx_wst_RequestSecurityTokenCollection_s* zx_DEC_wst_RequestSecurityTokenC
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_RequestSecurityTokenCollection_s* x = ZX_ZALLOC(c, struct zx_wst_RequestSecurityTokenCollection_s);
   x->gg.g.tok = zx_wst_RequestSecurityTokenCollection_ELEM;
   x->gg.g.ns = ns;
@@ -3518,7 +3518,7 @@ struct zx_wst_RequestSecurityTokenCollection_s* zx_DEC_wst_RequestSecurityTokenC
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3646,8 +3646,8 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEC_wst_RequestSecurityTokenRes
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_RequestSecurityTokenResponse_s* x = ZX_ZALLOC(c, struct zx_wst_RequestSecurityTokenResponse_s);
   x->gg.g.tok = zx_wst_RequestSecurityTokenResponse_ELEM;
   x->gg.g.ns = ns;
@@ -3686,7 +3686,7 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEC_wst_RequestSecurityTokenRes
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3964,8 +3964,8 @@ struct zx_wst_RequestSecurityTokenResponseCollection_s* zx_DEC_wst_RequestSecuri
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_RequestSecurityTokenResponseCollection_s* x = ZX_ZALLOC(c, struct zx_wst_RequestSecurityTokenResponseCollection_s);
   x->gg.g.tok = zx_wst_RequestSecurityTokenResponseCollection_ELEM;
   x->gg.g.ns = ns;
@@ -3998,7 +3998,7 @@ struct zx_wst_RequestSecurityTokenResponseCollection_s* zx_DEC_wst_RequestSecuri
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4126,8 +4126,8 @@ struct zx_wst_RequestedAttachedReference_s* zx_DEC_wst_RequestedAttachedReferenc
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_RequestedAttachedReference_s* x = ZX_ZALLOC(c, struct zx_wst_RequestedAttachedReference_s);
   x->gg.g.tok = zx_wst_RequestedAttachedReference_ELEM;
   x->gg.g.ns = ns;
@@ -4160,7 +4160,7 @@ struct zx_wst_RequestedAttachedReference_s* zx_DEC_wst_RequestedAttachedReferenc
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4288,8 +4288,8 @@ struct zx_wst_RequestedProofToken_s* zx_DEC_wst_RequestedProofToken(struct zx_ct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_RequestedProofToken_s* x = ZX_ZALLOC(c, struct zx_wst_RequestedProofToken_s);
   x->gg.g.tok = zx_wst_RequestedProofToken_ELEM;
   x->gg.g.ns = ns;
@@ -4322,7 +4322,7 @@ struct zx_wst_RequestedProofToken_s* zx_DEC_wst_RequestedProofToken(struct zx_ct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4445,8 +4445,8 @@ struct zx_wst_RequestedSecurityToken_s* zx_DEC_wst_RequestedSecurityToken(struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_RequestedSecurityToken_s* x = ZX_ZALLOC(c, struct zx_wst_RequestedSecurityToken_s);
   x->gg.g.tok = zx_wst_RequestedSecurityToken_ELEM;
   x->gg.g.ns = ns;
@@ -4479,7 +4479,7 @@ struct zx_wst_RequestedSecurityToken_s* zx_DEC_wst_RequestedSecurityToken(struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4602,8 +4602,8 @@ struct zx_wst_RequestedUnattachedReference_s* zx_DEC_wst_RequestedUnattachedRefe
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_RequestedUnattachedReference_s* x = ZX_ZALLOC(c, struct zx_wst_RequestedUnattachedReference_s);
   x->gg.g.tok = zx_wst_RequestedUnattachedReference_ELEM;
   x->gg.g.ns = ns;
@@ -4636,7 +4636,7 @@ struct zx_wst_RequestedUnattachedReference_s* zx_DEC_wst_RequestedUnattachedRefe
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4764,8 +4764,8 @@ struct zx_wst_SignChallenge_s* zx_DEC_wst_SignChallenge(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_SignChallenge_s* x = ZX_ZALLOC(c, struct zx_wst_SignChallenge_s);
   x->gg.g.tok = zx_wst_SignChallenge_ELEM;
   x->gg.g.ns = ns;
@@ -4798,7 +4798,7 @@ struct zx_wst_SignChallenge_s* zx_DEC_wst_SignChallenge(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4926,8 +4926,8 @@ struct zx_wst_SignChallengeResponse_s* zx_DEC_wst_SignChallengeResponse(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_SignChallengeResponse_s* x = ZX_ZALLOC(c, struct zx_wst_SignChallengeResponse_s);
   x->gg.g.tok = zx_wst_SignChallengeResponse_ELEM;
   x->gg.g.ns = ns;
@@ -4960,7 +4960,7 @@ struct zx_wst_SignChallengeResponse_s* zx_DEC_wst_SignChallengeResponse(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5088,8 +5088,8 @@ struct zx_wst_Status_s* zx_DEC_wst_Status(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_Status_s* x = ZX_ZALLOC(c, struct zx_wst_Status_s);
   x->gg.g.tok = zx_wst_Status_ELEM;
   x->gg.g.ns = ns;
@@ -5122,7 +5122,7 @@ struct zx_wst_Status_s* zx_DEC_wst_Status(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5255,8 +5255,8 @@ struct zx_wst_UseKey_s* zx_DEC_wst_UseKey(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_UseKey_s* x = ZX_ZALLOC(c, struct zx_wst_UseKey_s);
   x->gg.g.tok = zx_wst_UseKey_ELEM;
   x->gg.g.ns = ns;
@@ -5295,7 +5295,7 @@ struct zx_wst_UseKey_s* zx_DEC_wst_UseKey(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5418,8 +5418,8 @@ struct zx_wst_ValidateTarget_s* zx_DEC_wst_ValidateTarget(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_wst_ValidateTarget_s* x = ZX_ZALLOC(c, struct zx_wst_ValidateTarget_s);
   x->gg.g.tok = zx_wst_ValidateTarget_ELEM;
   x->gg.g.ns = ns;
@@ -5452,7 +5452,7 @@ struct zx_wst_ValidateTarget_s* zx_DEC_wst_ValidateTarget(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

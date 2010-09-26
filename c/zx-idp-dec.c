@@ -91,8 +91,8 @@ struct zx_idp_AssertionItem_s* zx_DEC_idp_AssertionItem(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_AssertionItem_s* x = ZX_ZALLOC(c, struct zx_idp_AssertionItem_s);
   x->gg.g.tok = zx_idp_AssertionItem_ELEM;
   x->gg.g.ns = ns;
@@ -137,7 +137,7 @@ struct zx_idp_AssertionItem_s* zx_DEC_idp_AssertionItem(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -270,8 +270,8 @@ struct zx_idp_AuthnContextRestriction_s* zx_DEC_idp_AuthnContextRestriction(stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_AuthnContextRestriction_s* x = ZX_ZALLOC(c, struct zx_idp_AuthnContextRestriction_s);
   x->gg.g.tok = zx_idp_AuthnContextRestriction_ELEM;
   x->gg.g.ns = ns;
@@ -304,7 +304,7 @@ struct zx_idp_AuthnContextRestriction_s* zx_DEC_idp_AuthnContextRestriction(stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -432,8 +432,8 @@ struct zx_idp_CreatedStatus_s* zx_DEC_idp_CreatedStatus(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_CreatedStatus_s* x = ZX_ZALLOC(c, struct zx_idp_CreatedStatus_s);
   x->gg.g.tok = zx_idp_CreatedStatus_ELEM;
   x->gg.g.ns = ns;
@@ -466,7 +466,7 @@ struct zx_idp_CreatedStatus_s* zx_DEC_idp_CreatedStatus(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -594,8 +594,8 @@ struct zx_idp_CreatedStatusItem_s* zx_DEC_idp_CreatedStatusItem(struct zx_ctx* c
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_CreatedStatusItem_s* x = ZX_ZALLOC(c, struct zx_idp_CreatedStatusItem_s);
   x->gg.g.tok = zx_idp_CreatedStatusItem_ELEM;
   x->gg.g.ns = ns;
@@ -646,7 +646,7 @@ struct zx_idp_CreatedStatusItem_s* zx_DEC_idp_CreatedStatusItem(struct zx_ctx* c
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -769,8 +769,8 @@ struct zx_idp_CreatedStatusResponse_s* zx_DEC_idp_CreatedStatusResponse(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_CreatedStatusResponse_s* x = ZX_ZALLOC(c, struct zx_idp_CreatedStatusResponse_s);
   x->gg.g.tok = zx_idp_CreatedStatusResponse_ELEM;
   x->gg.g.ns = ns;
@@ -803,7 +803,7 @@ struct zx_idp_CreatedStatusResponse_s* zx_DEC_idp_CreatedStatusResponse(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -931,8 +931,8 @@ struct zx_idp_GetAssertion_s* zx_DEC_idp_GetAssertion(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_GetAssertion_s* x = ZX_ZALLOC(c, struct zx_idp_GetAssertion_s);
   x->gg.g.tok = zx_idp_GetAssertion_ELEM;
   x->gg.g.ns = ns;
@@ -971,7 +971,7 @@ struct zx_idp_GetAssertion_s* zx_DEC_idp_GetAssertion(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1099,8 +1099,8 @@ struct zx_idp_GetAssertionResponse_s* zx_DEC_idp_GetAssertionResponse(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_GetAssertionResponse_s* x = ZX_ZALLOC(c, struct zx_idp_GetAssertionResponse_s);
   x->gg.g.tok = zx_idp_GetAssertionResponse_ELEM;
   x->gg.g.ns = ns;
@@ -1133,7 +1133,7 @@ struct zx_idp_GetAssertionResponse_s* zx_DEC_idp_GetAssertionResponse(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1266,8 +1266,8 @@ struct zx_idp_GetAssertionResponseItem_s* zx_DEC_idp_GetAssertionResponseItem(st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_GetAssertionResponseItem_s* x = ZX_ZALLOC(c, struct zx_idp_GetAssertionResponseItem_s);
   x->gg.g.tok = zx_idp_GetAssertionResponseItem_ELEM;
   x->gg.g.ns = ns;
@@ -1312,7 +1312,7 @@ struct zx_idp_GetAssertionResponseItem_s* zx_DEC_idp_GetAssertionResponseItem(st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1440,8 +1440,8 @@ struct zx_idp_GetProviderInfo_s* zx_DEC_idp_GetProviderInfo(struct zx_ctx* c, st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_GetProviderInfo_s* x = ZX_ZALLOC(c, struct zx_idp_GetProviderInfo_s);
   x->gg.g.tok = zx_idp_GetProviderInfo_ELEM;
   x->gg.g.ns = ns;
@@ -1480,7 +1480,7 @@ struct zx_idp_GetProviderInfo_s* zx_DEC_idp_GetProviderInfo(struct zx_ctx* c, st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1608,8 +1608,8 @@ struct zx_idp_GetProviderInfoResponse_s* zx_DEC_idp_GetProviderInfoResponse(stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_GetProviderInfoResponse_s* x = ZX_ZALLOC(c, struct zx_idp_GetProviderInfoResponse_s);
   x->gg.g.tok = zx_idp_GetProviderInfoResponse_ELEM;
   x->gg.g.ns = ns;
@@ -1642,7 +1642,7 @@ struct zx_idp_GetProviderInfoResponse_s* zx_DEC_idp_GetProviderInfoResponse(stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1775,8 +1775,8 @@ struct zx_idp_MEDInfo_s* zx_DEC_idp_MEDInfo(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_MEDInfo_s* x = ZX_ZALLOC(c, struct zx_idp_MEDInfo_s);
   x->gg.g.tok = zx_idp_MEDInfo_ELEM;
   x->gg.g.ns = ns;
@@ -1809,7 +1809,7 @@ struct zx_idp_MEDInfo_s* zx_DEC_idp_MEDInfo(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1942,8 +1942,8 @@ struct zx_idp_ProviderInfo_s* zx_DEC_idp_ProviderInfo(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_ProviderInfo_s* x = ZX_ZALLOC(c, struct zx_idp_ProviderInfo_s);
   x->gg.g.tok = zx_idp_ProviderInfo_ELEM;
   x->gg.g.ns = ns;
@@ -1988,7 +1988,7 @@ struct zx_idp_ProviderInfo_s* zx_DEC_idp_ProviderInfo(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2111,8 +2111,8 @@ struct zx_idp_SubjectRestriction_s* zx_DEC_idp_SubjectRestriction(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idp_SubjectRestriction_s* x = ZX_ZALLOC(c, struct zx_idp_SubjectRestriction_s);
   x->gg.g.tok = zx_idp_SubjectRestriction_ELEM;
   x->gg.g.ns = ns;
@@ -2145,7 +2145,7 @@ struct zx_idp_SubjectRestriction_s* zx_DEC_idp_SubjectRestriction(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

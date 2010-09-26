@@ -633,12 +633,13 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   struct zx_str* tgtnid;
   struct zx_str* accr;
   struct zx_str* path;
+  struct zx_sa_AuthnStatement_s* as;
   struct zx_sa_Assertion_s* a7n;
   struct zx_sa_Assertion_s* tgta7n;
   char buf[ZXID_MAX_USER];
   char sha1_name[28];
 
-  D_INDENT("ses_to_pool: ");
+  D_INDENT("ses2pool: ");
   zxid_get_ses_sso_a7n(cf, ses);
   a7n = ses->a7n;
   D("adding a7n %p to pool", a7n);
@@ -696,7 +697,8 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
     zxid_copy_user_eprs_to_ses(cf, ses, path);
   }
   
-  accr = a7n&&a7n->AuthnStatement&&a7n->AuthnStatement->AuthnContext&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content?a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content:0;
+  accr = a7n&&(as = a7n->AuthnStatement)&&as->AuthnContext&&as->AuthnContext->AuthnContextClassRef?as->AuthnContext->AuthnContextClassRef->content:0;
+  //accr = a7n&&a7n->AuthnStatement&&a7n->AuthnStatement->AuthnContext&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content?a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content:0;
   zxid_add_attr_to_ses(cf, ses, "authnctxlevel", accr);
   
   got = read_all(sizeof(buf)-1, buf, "splocal.all", "%s" ZXID_USER_DIR ".all/.bs/.at" , cf->path);
@@ -723,7 +725,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   URL_DECODE(dst, src, lim);
   *dst = 0;
   D("RelayState(%s)", ses->at->val);
-  D_DEDENT("ses_to_pool: ");
+  D_DEDENT("ses2pool: ");
 }
 
 /*(i) Add Attributes from Querty String to Session attribute pool

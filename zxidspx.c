@@ -405,7 +405,34 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       return zxid_soap_cgi_resp_body(cf, body, issuer);
     }
   }
-  
+    
+  if (cf->pdp_ena) {
+    if (bdy->XACMLAuthzDecisionQuery) {
+      D("XACMLAuthzDecisionQuery %d",0);
+      body->Response = zxid_xacml_az_do(cf, cgi, ses, bdy->XACMLAuthzDecisionQuery);
+      if (cf->sso_soap_resp_sign) {
+	refs.id = body->Response->ID;
+	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
+	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
+	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	zx_str_free(cf->ctx, refs.canon);
+      }
+      return zxid_soap_cgi_resp_body(cf, body, bdy->XACMLAuthzDecisionQuery->Issuer->gg.content);
+    }
+    if (bdy->xaspcd1_XACMLAuthzDecisionQuery) {
+      D("xaspcd1:XACMLAuthzDecisionQuery %d",0);
+      body->Response = zxid_xacml_az_cd1_do(cf, cgi, ses, bdy->xaspcd1_XACMLAuthzDecisionQuery);
+      if (cf->sso_soap_resp_sign) {
+	refs.id = body->Response->ID;
+	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
+	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
+	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
+	zx_str_free(cf->ctx, refs.canon);
+      }
+      return zxid_soap_cgi_resp_body(cf, body, bdy->XACMLAuthzDecisionQuery->Issuer->gg.content);
+    }
+  }
+
   if (cf->idp_ena) {
     if (bdy->ArtifactResolve) {
       D("*** ArtifactResolve not implemented yet %d",0);
@@ -467,33 +494,6 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     if (bdy->AuthnRequest && cf->as_ena) {
       body->Response = zxid_ssos_anreq(cf, a7n, bdy->AuthnRequest, issuer);
       goto idwsf_resp;
-    }
-  }
-  
-  if (cf->pdp_ena) {
-    if (bdy->XACMLAuthzDecisionQuery) {
-      D("XACMLAuthzDecisionQuery %d",0);
-      body->Response = zxid_xacml_az_do(cf, cgi, ses, bdy->XACMLAuthzDecisionQuery);
-      if (cf->sso_soap_resp_sign) {
-	refs.id = body->Response->ID;
-	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
-	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
-	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
-	zx_str_free(cf->ctx, refs.canon);
-      }
-      return zxid_soap_cgi_resp_body(cf, body, bdy->XACMLAuthzDecisionQuery->Issuer->gg.content);
-    }
-    if (bdy->xaspcd1_XACMLAuthzDecisionQuery) {
-      D("xaspcd1:XACMLAuthzDecisionQuery %d",0);
-      body->Response = zxid_xacml_az_cd1_do(cf, cgi, ses, bdy->xaspcd1_XACMLAuthzDecisionQuery);
-      if (cf->sso_soap_resp_sign) {
-	refs.id = body->Response->ID;
-	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
-	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
-	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
-	zx_str_free(cf->ctx, refs.canon);
-      }
-      return zxid_soap_cgi_resp_body(cf, body, bdy->XACMLAuthzDecisionQuery->Issuer->gg.content);
     }
   }
   

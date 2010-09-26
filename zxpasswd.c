@@ -42,7 +42,7 @@
 
 #define UDIR "/var/zxid/idpuid"
 
-CU8* help =
+char* help =
 "zxpasswd  -  Password creation and user management tool R" ZXID_REL "\n\
 Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
@@ -213,7 +213,7 @@ static int list_user(char* userdir, char* udir)
   got = read_all(sizeof(buf), buf, "at", "%s/%s/.bs/.at", udir, user);
   printf("User attributes:       %s\n", buf);
   got = read_all(sizeof(buf), buf, "all at", "%s/.all/.bs/.at", udir, 0);
-  printf("All user's attributes: %s\n", buf);
+  printf("Common (.all) user attributes: %s\n", buf);
 
   printf("User's Federated SPs\n");
 
@@ -256,7 +256,7 @@ static int list_users(char* udir)
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
       got = read_all(sizeof(buf), buf, "sp at", "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
-      got = read_all(sizeof(buf), buf, "sp at", "%s/%s/.at", userdir, de->d_name);
+      got = read_all(sizeof(buf), buf, "sp at", "%s/%s/.bs/.at", userdir, de->d_name);
       printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
     }
   
@@ -345,7 +345,7 @@ int main(int argc, char** argv, char** env)
       zx_hexdec(buf, buf, got, hex_trans);
       memset (&yktok, 0, sizeof(yktok));
       zx_hexdec((void *)&yktok, pw, pwgot, ykmodhex_trans);
-      yubikey_aes_decrypt((void *)&yktok, buf);
+      yubikey_aes_decrypt((void *)&yktok, (unsigned char*)buf);
       D("internal uid %02x %02x %02x %02x %02x %02x counter=%d 0x%x timestamp=%d (hi=%x lo=%x) use=%d 0x%x rnd=0x%x crc=0x%x", yktok.uid[0], yktok.uid[1], yktok.uid[2], yktok.uid[3], yktok.uid[4], yktok.uid[5], yktok.ctr, yktok.ctr, (yktok.tstph << 16) | yktok.tstpl, yktok.tstph, yktok.tstpl, yktok.use, yktok.use, yktok.rnd, yktok.crc);
             
       if (yubikey_crc_ok_p((unsigned char*)&yktok)) {
@@ -360,15 +360,15 @@ int main(int argc, char** argv, char** env)
     if (buf[got-1] == '\r') buf[got--] = 0;
     D("buf    (%s)", buf);
     if (!memcmp(buf, "$1$", sizeof("$1$")-1)) {
-      zx_md5_crypt(pw, buf, pw_hash);
+      zx_md5_crypt(pw, buf, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);
-      return strcmp(buf, pw_hash)?1:0;
+      return strcmp(buf, (char*)pw_hash)?1:0;
     }
 #ifdef USE_OPENSSL
     if (!memcmp(buf, "$c$", sizeof("$c$")-1)) {
-      DES_fcrypt(pw, buf+3, pw_hash);
+      DES_fcrypt(pw, buf+3, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);
-      return strcmp(buf+3, pw_hash)?1:0;
+      return strcmp(buf+3, (char*)pw_hash)?1:0;
     }
 #endif
     if (ONE_OF_2(buf[0], '$', '_')) {
@@ -418,23 +418,23 @@ int main(int argc, char** argv, char** env)
   /* $y$$6012cab434c66ab87d43d4babe463331 */
 
   if (!strcmp(hash_type, "0")) {
-    strcpy(pw_hash, pw);
+    strcpy((char*)pw_hash, pw);
 #ifdef USE_OPENSSL
   } else if (!strcmp(hash_type, "c")) {  /* Unix crypt(3) hash */
-    zx_rand(salt, 2);
+    zx_rand((char*)salt, 2);
     salt[0] = pw_basis_64[salt[0] & 0x3f];
     salt[1] = pw_basis_64[salt[1] & 0x3f];
-    strcpy(pw_hash, "$c$");  /* Our custom magic to identify Unix crypt(3) hash */
-    DES_fcrypt(pw, salt, pw_hash+3);
+    strcpy((char*)pw_hash, "$c$");  /* Our custom magic to identify Unix crypt(3) hash */
+    DES_fcrypt(pw, (char*)salt, (char*)pw_hash+3);
 #endif
   } else if (!strcmp(hash_type, "1")) {  /* MD5 hash */
     for (got = 0; got < 8; ++got) {
-      zx_rand(&ch, 1);
+      zx_rand((char*)&ch, 1);
       salt[got] = pw_basis_64[ch & 0x3f];
     }
     salt[8] = 0;
     D("salt(%s)", salt);
-    zx_md5_crypt(pw, salt, pw_hash);
+    zx_md5_crypt(pw, (char*)salt, (char*)pw_hash);
     D("pw_hash(%s)", pw_hash);
   } else if (!strcmp(hash_type, "y")) {
     D("Provisioning yubikey aes(%s) in %s/%s/.yk", pw, udir, user);

@@ -91,8 +91,8 @@ struct zx_subs_RefItem_s* zx_DEC_subs_RefItem(struct zx_ctx* c, struct zx_ns_s* 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_subs_RefItem_s* x = ZX_ZALLOC(c, struct zx_subs_RefItem_s);
   x->gg.g.tok = zx_subs_RefItem_ELEM;
   x->gg.g.ns = ns;
@@ -137,7 +137,7 @@ struct zx_subs_RefItem_s* zx_DEC_subs_RefItem(struct zx_ctx* c, struct zx_ns_s* 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

@@ -91,8 +91,8 @@ struct zx_sec12_ProxyInfoConfirmationData_s* zx_DEC_sec12_ProxyInfoConfirmationD
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec12_ProxyInfoConfirmationData_s* x = ZX_ZALLOC(c, struct zx_sec12_ProxyInfoConfirmationData_s);
   x->gg.g.tok = zx_sec12_ProxyInfoConfirmationData_ELEM;
   x->gg.g.ns = ns;
@@ -131,7 +131,7 @@ struct zx_sec12_ProxyInfoConfirmationData_s* zx_DEC_sec12_ProxyInfoConfirmationD
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -274,8 +274,8 @@ struct zx_sec12_ProxySubject_s* zx_DEC_sec12_ProxySubject(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec12_ProxySubject_s* x = ZX_ZALLOC(c, struct zx_sec12_ProxySubject_s);
   x->gg.g.tok = zx_sec12_ProxySubject_ELEM;
   x->gg.g.ns = ns;
@@ -308,7 +308,7 @@ struct zx_sec12_ProxySubject_s* zx_DEC_sec12_ProxySubject(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -441,8 +441,8 @@ struct zx_sec12_ProxyTransitedStatement_s* zx_DEC_sec12_ProxyTransitedStatement(
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec12_ProxyTransitedStatement_s* x = ZX_ZALLOC(c, struct zx_sec12_ProxyTransitedStatement_s);
   x->gg.g.tok = zx_sec12_ProxyTransitedStatement_ELEM;
   x->gg.g.ns = ns;
@@ -475,7 +475,7 @@ struct zx_sec12_ProxyTransitedStatement_s* zx_DEC_sec12_ProxyTransitedStatement(
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -603,8 +603,8 @@ struct zx_sec12_ResourceAccessStatement_s* zx_DEC_sec12_ResourceAccessStatement(
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec12_ResourceAccessStatement_s* x = ZX_ZALLOC(c, struct zx_sec12_ResourceAccessStatement_s);
   x->gg.g.tok = zx_sec12_ResourceAccessStatement_ELEM;
   x->gg.g.ns = ns;
@@ -637,7 +637,7 @@ struct zx_sec12_ResourceAccessStatement_s* zx_DEC_sec12_ResourceAccessStatement(
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -785,8 +785,8 @@ struct zx_sec12_SessionContext_s* zx_DEC_sec12_SessionContext(struct zx_ctx* c, 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec12_SessionContext_s* x = ZX_ZALLOC(c, struct zx_sec12_SessionContext_s);
   x->gg.g.tok = zx_sec12_SessionContext_ELEM;
   x->gg.g.ns = ns;
@@ -837,7 +837,7 @@ struct zx_sec12_SessionContext_s* zx_DEC_sec12_SessionContext(struct zx_ctx* c, 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -975,8 +975,8 @@ struct zx_sec12_SessionContextStatement_s* zx_DEC_sec12_SessionContextStatement(
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec12_SessionContextStatement_s* x = ZX_ZALLOC(c, struct zx_sec12_SessionContextStatement_s);
   x->gg.g.tok = zx_sec12_SessionContextStatement_ELEM;
   x->gg.g.ns = ns;
@@ -1009,7 +1009,7 @@ struct zx_sec12_SessionContextStatement_s* zx_DEC_sec12_SessionContextStatement(
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1147,8 +1147,8 @@ struct zx_sec12_SessionSubject_s* zx_DEC_sec12_SessionSubject(struct zx_ctx* c, 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec12_SessionSubject_s* x = ZX_ZALLOC(c, struct zx_sec12_SessionSubject_s);
   x->gg.g.tok = zx_sec12_SessionSubject_ELEM;
   x->gg.g.ns = ns;
@@ -1181,7 +1181,7 @@ struct zx_sec12_SessionSubject_s* zx_DEC_sec12_SessionSubject(struct zx_ctx* c, 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1319,8 +1319,8 @@ struct zx_sec12_ValidityRestrictionCondition_s* zx_DEC_sec12_ValidityRestriction
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec12_ValidityRestrictionCondition_s* x = ZX_ZALLOC(c, struct zx_sec12_ValidityRestrictionCondition_s);
   x->gg.g.tok = zx_sec12_ValidityRestrictionCondition_ELEM;
   x->gg.g.ns = ns;
@@ -1353,7 +1353,7 @@ struct zx_sec12_ValidityRestrictionCondition_s* zx_DEC_sec12_ValidityRestriction
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

@@ -91,8 +91,8 @@ struct zx_idhrxml_Create_s* zx_DEC_idhrxml_Create(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_Create_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Create_s);
   x->gg.g.tok = zx_idhrxml_Create_ELEM;
   x->gg.g.ns = ns;
@@ -131,7 +131,7 @@ struct zx_idhrxml_Create_s* zx_DEC_idhrxml_Create(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -274,8 +274,8 @@ struct zx_idhrxml_CreateItem_s* zx_DEC_idhrxml_CreateItem(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_CreateItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_CreateItem_s);
   x->gg.g.tok = zx_idhrxml_CreateItem_ELEM;
   x->gg.g.ns = ns;
@@ -326,7 +326,7 @@ struct zx_idhrxml_CreateItem_s* zx_DEC_idhrxml_CreateItem(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -454,8 +454,8 @@ struct zx_idhrxml_CreateResponse_s* zx_DEC_idhrxml_CreateResponse(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_CreateResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_CreateResponse_s);
   x->gg.g.tok = zx_idhrxml_CreateResponse_ELEM;
   x->gg.g.ns = ns;
@@ -500,7 +500,7 @@ struct zx_idhrxml_CreateResponse_s* zx_DEC_idhrxml_CreateResponse(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -638,8 +638,8 @@ struct zx_idhrxml_Data_s* zx_DEC_idhrxml_Data(struct zx_ctx* c, struct zx_ns_s* 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_Data_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Data_s);
   x->gg.g.tok = zx_idhrxml_Data_ELEM;
   x->gg.g.ns = ns;
@@ -708,7 +708,7 @@ struct zx_idhrxml_Data_s* zx_DEC_idhrxml_Data(struct zx_ctx* c, struct zx_ns_s* 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -841,8 +841,8 @@ struct zx_idhrxml_Delete_s* zx_DEC_idhrxml_Delete(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_Delete_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Delete_s);
   x->gg.g.tok = zx_idhrxml_Delete_ELEM;
   x->gg.g.ns = ns;
@@ -881,7 +881,7 @@ struct zx_idhrxml_Delete_s* zx_DEC_idhrxml_Delete(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1014,8 +1014,8 @@ struct zx_idhrxml_DeleteItem_s* zx_DEC_idhrxml_DeleteItem(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_DeleteItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_DeleteItem_s);
   x->gg.g.tok = zx_idhrxml_DeleteItem_ELEM;
   x->gg.g.ns = ns;
@@ -1078,7 +1078,7 @@ struct zx_idhrxml_DeleteItem_s* zx_DEC_idhrxml_DeleteItem(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1206,8 +1206,8 @@ struct zx_idhrxml_DeleteResponse_s* zx_DEC_idhrxml_DeleteResponse(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_DeleteResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_DeleteResponse_s);
   x->gg.g.tok = zx_idhrxml_DeleteResponse_ELEM;
   x->gg.g.ns = ns;
@@ -1246,7 +1246,7 @@ struct zx_idhrxml_DeleteResponse_s* zx_DEC_idhrxml_DeleteResponse(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1379,8 +1379,8 @@ struct zx_idhrxml_ItemData_s* zx_DEC_idhrxml_ItemData(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_ItemData_s* x = ZX_ZALLOC(c, struct zx_idhrxml_ItemData_s);
   x->gg.g.tok = zx_idhrxml_ItemData_ELEM;
   x->gg.g.ns = ns;
@@ -1431,7 +1431,7 @@ struct zx_idhrxml_ItemData_s* zx_DEC_idhrxml_ItemData(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1564,8 +1564,8 @@ struct zx_idhrxml_Modify_s* zx_DEC_idhrxml_Modify(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_Modify_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Modify_s);
   x->gg.g.tok = zx_idhrxml_Modify_ELEM;
   x->gg.g.ns = ns;
@@ -1604,7 +1604,7 @@ struct zx_idhrxml_Modify_s* zx_DEC_idhrxml_Modify(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1747,8 +1747,8 @@ struct zx_idhrxml_ModifyItem_s* zx_DEC_idhrxml_ModifyItem(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_ModifyItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_ModifyItem_s);
   x->gg.g.tok = zx_idhrxml_ModifyItem_ELEM;
   x->gg.g.ns = ns;
@@ -1817,7 +1817,7 @@ struct zx_idhrxml_ModifyItem_s* zx_DEC_idhrxml_ModifyItem(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1950,8 +1950,8 @@ struct zx_idhrxml_ModifyResponse_s* zx_DEC_idhrxml_ModifyResponse(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_ModifyResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_ModifyResponse_s);
   x->gg.g.tok = zx_idhrxml_ModifyResponse_ELEM;
   x->gg.g.ns = ns;
@@ -1996,7 +1996,7 @@ struct zx_idhrxml_ModifyResponse_s* zx_DEC_idhrxml_ModifyResponse(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2134,8 +2134,8 @@ struct zx_idhrxml_NewData_s* zx_DEC_idhrxml_NewData(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_NewData_s* x = ZX_ZALLOC(c, struct zx_idhrxml_NewData_s);
   x->gg.g.tok = zx_idhrxml_NewData_ELEM;
   x->gg.g.ns = ns;
@@ -2168,7 +2168,7 @@ struct zx_idhrxml_NewData_s* zx_DEC_idhrxml_NewData(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2301,8 +2301,8 @@ struct zx_idhrxml_Notification_s* zx_DEC_idhrxml_Notification(struct zx_ctx* c, 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_Notification_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Notification_s);
   x->gg.g.tok = zx_idhrxml_Notification_ELEM;
   x->gg.g.ns = ns;
@@ -2359,7 +2359,7 @@ struct zx_idhrxml_Notification_s* zx_DEC_idhrxml_Notification(struct zx_ctx* c, 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2492,8 +2492,8 @@ struct zx_idhrxml_Notify_s* zx_DEC_idhrxml_Notify(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_Notify_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Notify_s);
   x->gg.g.tok = zx_idhrxml_Notify_ELEM;
   x->gg.g.ns = ns;
@@ -2538,7 +2538,7 @@ struct zx_idhrxml_Notify_s* zx_DEC_idhrxml_Notify(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2671,8 +2671,8 @@ struct zx_idhrxml_NotifyResponse_s* zx_DEC_idhrxml_NotifyResponse(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_NotifyResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_NotifyResponse_s);
   x->gg.g.tok = zx_idhrxml_NotifyResponse_ELEM;
   x->gg.g.ns = ns;
@@ -2711,7 +2711,7 @@ struct zx_idhrxml_NotifyResponse_s* zx_DEC_idhrxml_NotifyResponse(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2844,8 +2844,8 @@ struct zx_idhrxml_Query_s* zx_DEC_idhrxml_Query(struct zx_ctx* c, struct zx_ns_s
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_Query_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Query_s);
   x->gg.g.tok = zx_idhrxml_Query_ELEM;
   x->gg.g.ns = ns;
@@ -2884,7 +2884,7 @@ struct zx_idhrxml_Query_s* zx_DEC_idhrxml_Query(struct zx_ctx* c, struct zx_ns_s
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3027,8 +3027,8 @@ struct zx_idhrxml_QueryItem_s* zx_DEC_idhrxml_QueryItem(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_QueryItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_QueryItem_s);
   x->gg.g.tok = zx_idhrxml_QueryItem_ELEM;
   x->gg.g.ns = ns;
@@ -3127,7 +3127,7 @@ struct zx_idhrxml_QueryItem_s* zx_DEC_idhrxml_QueryItem(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3265,8 +3265,8 @@ struct zx_idhrxml_QueryResponse_s* zx_DEC_idhrxml_QueryResponse(struct zx_ctx* c
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_QueryResponse_s* x = ZX_ZALLOC(c, struct zx_idhrxml_QueryResponse_s);
   x->gg.g.tok = zx_idhrxml_QueryResponse_ELEM;
   x->gg.g.ns = ns;
@@ -3311,7 +3311,7 @@ struct zx_idhrxml_QueryResponse_s* zx_DEC_idhrxml_QueryResponse(struct zx_ctx* c
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3454,8 +3454,8 @@ struct zx_idhrxml_ResultQuery_s* zx_DEC_idhrxml_ResultQuery(struct zx_ctx* c, st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_ResultQuery_s* x = ZX_ZALLOC(c, struct zx_idhrxml_ResultQuery_s);
   x->gg.g.tok = zx_idhrxml_ResultQuery_ELEM;
   x->gg.g.ns = ns;
@@ -3530,7 +3530,7 @@ struct zx_idhrxml_ResultQuery_s* zx_DEC_idhrxml_ResultQuery(struct zx_ctx* c, st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3668,8 +3668,8 @@ struct zx_idhrxml_Subscription_s* zx_DEC_idhrxml_Subscription(struct zx_ctx* c, 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_Subscription_s* x = ZX_ZALLOC(c, struct zx_idhrxml_Subscription_s);
   x->gg.g.tok = zx_idhrxml_Subscription_ELEM;
   x->gg.g.ns = ns;
@@ -3744,7 +3744,7 @@ struct zx_idhrxml_Subscription_s* zx_DEC_idhrxml_Subscription(struct zx_ctx* c, 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3892,8 +3892,8 @@ struct zx_idhrxml_TestItem_s* zx_DEC_idhrxml_TestItem(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idhrxml_TestItem_s* x = ZX_ZALLOC(c, struct zx_idhrxml_TestItem_s);
   x->gg.g.tok = zx_idhrxml_TestItem_ELEM;
   x->gg.g.ns = ns;
@@ -3950,7 +3950,7 @@ struct zx_idhrxml_TestItem_s* zx_DEC_idhrxml_TestItem(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

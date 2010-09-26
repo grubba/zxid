@@ -1461,11 +1461,11 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "MOD_SAML_ATTR_PREFIX=%s\n"
 "BARE_URL_ENTITYID=%d\n"
 "SHOW_TECH=%d\n"
-"</pre>"
 
 "IDP_LIST_METH=%d\n"
 "IDP_SEL_PAGE=%s\n"
 "IDP_SEL_TEMPL_FILE=%s\n"
+"</pre>"
 "<textarea cols=100 rows=20>"
 "IDP_SEL_TEMPL=%s\n"
 #if 0
@@ -1477,30 +1477,30 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "IDP_SEL_FOOTER=%s\n"
 "IDP_SEL_END=%s\n"
 #endif
-"</textarea>"
+"</textarea><pre>\n"
 
 "AN_PAGE=%s\n"
 "AN_TEMPL_FILE=%s\n"
-"<textarea cols=100 rows=20>"
+"</pre><textarea cols=100 rows=20>"
 "AN_TEMPL=%s\n"
-"</textarea>"
+"</textarea><pre>\n"
 
 "POST_TEMPL_FILE=%s\n"
-"<textarea cols=100 rows=20>"
+"</pre><textarea cols=100 rows=7>"
 "POST_TEMPL=%s\n"
-"</textarea>"
+"</textarea><pre>\n"
 
 "ERR_PAGE=%s\n"
 "ERR_TEMPL_FILE=%s\n"
-"<textarea cols=100 rows=20>"
+"</pre><textarea cols=100 rows=7>"
 "ERR_TEMPL=%s\n"
-"</textarea>"
+"</textarea><pre>\n"
 
 "NEW_USER_PAGE=%s\n"
 "RECOVER_PASSWD=%s\n"
 "ATSEL_PAGE=%s\n"
 
-"<textarea cols=100 rows=20>"
+"</pre><textarea cols=100 rows=15>"
 "MGMT_START=%s\n"
 "MGMT_LOGOUT=%s\n"
 "MGMT_DEFED=%s\n"
@@ -1508,7 +1508,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "MGMT_END=%s\n"
 "</textarea>"
 
-"<pre>"
+"<pre>\n"
 "DBG=%s\n"
 
 "REQUIRED_AUTHN_CTX=\n%s\n"

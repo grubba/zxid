@@ -31,6 +31,8 @@
 #define tas3_ses           zxid_ses
 #define tas3_str           struct zx_str
 #define tas3_epr           zxid_epr
+#define tas3_status        zxid_tas3_status
+#define tas3_fault         zxid_fault
 
 /* Map ZXID functions to TAS3 equivalents */
 
@@ -54,6 +56,7 @@
 #define tas3_wsp_validate  zxid_wsp_validate
 #define tas3_wsp_decorate  zxid_wsp_decorate
 #define tas3_wsp_decoratef zxid_wsp_decoratef
+#define tas3_set_delegated_discovery_epr zxid_set_delegated_discovery_epr
 
 /* TAS3 constants */
 

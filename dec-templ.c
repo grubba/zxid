@@ -33,8 +33,8 @@ struct ELSTRUCT* TXDEC_ELNAME(struct zx_ctx* c, struct zx_ns_s* ns ROOT_N_DECODE
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct ELSTRUCT* x = ZX_ZALLOC(c, struct ELSTRUCT);
   x->gg.g.tok = TXELNAME_ELEM;
   x->gg.g.ns = ns;
@@ -67,7 +67,7 @@ ATTRS;
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -177,9 +177,9 @@ ELEMS;
 /* FUNC(TXknown_or_unknown_elem) */
 
 /* Called by:  TXDEC_ELNAME */
-struct zx_elem_s* TXknown_or_unknown_elem(struct zx_ctx* c, int tok, struct zx_elem_s* x, int len, char* name, struct zx_ns_s* ns)
+struct zx_elem_s* TXknown_or_unknown_elem(struct zx_ctx* c, int tok, struct zx_elem_s* x, int len, const char* name, struct zx_ns_s* ns)
 {
-  char* p;
+  const char* p;
   struct zx_elem_s* el;
   if (tok == ZX_TOK_NOT_FOUND) {
     D("Unknown element(%.*s) in context(%d)", len, name, x->g.tok);
@@ -207,11 +207,11 @@ struct zx_elem_s* TXknown_or_unknown_elem(struct zx_ctx* c, int tok, struct zx_e
  * The ...2tok() functions come from code generation via gperf. */
 
 /* Called by:  TXDEC_ELNAME */
-int TXattr_lookup(struct zx_ctx* c, char* name, char* lim, struct zx_ns_s** ns)
+int TXattr_lookup(struct zx_ctx* c, const char* name, const char* lim, struct zx_ns_s** ns)
 {
   const struct zx_tok* zt;
-  char* prefix;
-  char* p;
+  const char* prefix;
+  const char* p;
   
   for (p = name; p < lim && *p != ':'; ++p) ;  /* look for namespace prefix */
   if (p < lim) {
@@ -247,11 +247,11 @@ int TXattr_lookup(struct zx_ctx* c, char* name, char* lim, struct zx_ns_s** ns)
 /* FUNC(TXelem_lookup) */
 
 /* Called by:  TXDEC_ELNAME x2 */
-int TXelem_lookup(struct zx_ctx* c, char* name, char* lim, struct zx_ns_s** ns)
+int TXelem_lookup(struct zx_ctx* c, const char* name, const char* lim, struct zx_ns_s** ns)
 {
   const struct zx_tok* zt;
-  char* prefix;
-  char* p;
+  const char* prefix;
+  const char* p;
   
   for (p = name; p < lim && *p != ':'; ++p) ;  /* look for namespace prefix */
   if (p < lim) {

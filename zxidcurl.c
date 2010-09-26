@@ -221,8 +221,8 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   
   if (len == -1)
     len = strlen(data);
-  wc.buf = wc.p = data;
-  wc.lim = data + len;
+  wc.buf = wc.p = (char*)data;
+  wc.lim = (char*)data + len;
   
   curl_easy_setopt(cf->curl, CURLOPT_POST, 1);
   curl_easy_setopt(cf->curl, CURLOPT_POSTFIELDSIZE, len);

@@ -801,6 +801,8 @@ php/zxid_wrap.c php/zxid.php php/php_zxid.h php/Makefile: $(ZX_GEN_H) zxid.h php
 
 endif
 
+# -Wno-unused-label
+
 php/zxid_wrap.$(OBJ_EXT): php/zxid_wrap.c
 	$(CC) -c $(OUTOPT)$@ `$(PHP_CONFIG) --includes` $(CFLAGS) $<
 

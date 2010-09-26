@@ -11,6 +11,7 @@
  * 12.10.2007, created --Sampo
  * 7.10.2008,  added documentation --Sampo
  * 14.11.2009, added yubikey (yubico.com) support --Sampo
+ * 23.9.2010,  added delegation support --Sampo
  */
 
 #include "platform.h"  /* for dirent.h */
@@ -82,7 +83,10 @@ zxid_nid* zxid_parse_mni(zxid_conf* cf, char* buf, char** pmniptr)
   return nameid;
 }
 
-/*() Formulate NameID based directory name for the user */
+/*() Formulate NameID based directory name for the user. qualif is usually
+ * the IdP Entity ID. It is important to separate between same nid
+ * issued by different IdP. The result is "returned" by modifying
+ * sha1_name buffer, which MUST be at least 28 characters long. */
 
 /* Called by:  zxid_get_user_nameid, zxid_put_user, zxid_ses_to_pool x2, zxid_user_change_nameid */
 void zxid_user_sha1_name(zxid_conf* cf, struct zx_str* qualif, struct zx_str* nid, char* sha1_name)
@@ -147,7 +151,8 @@ void zxid_user_change_nameid(zxid_conf* cf, zxid_nid* oldnid, struct zx_str* new
 }
 
 /*() Create new user object in file system. Will create user diretory (but not
- * its subdirectories). */
+ * its subdirectories).
+ * See also zxid_ses_to_pool() */
 
 /* Called by:  zxid_sp_sso_finalize, zxid_user_change_nameid x2, zxid_wsf_validate_a7n */
 int zxid_put_user(zxid_conf* cf, struct zx_str* nidfmt, struct zx_str* idpent, struct zx_str* spqual, struct zx_str* idpnid, char* mniptr)
@@ -228,22 +233,22 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   len = strlen(cgi->uid);
   if (len > 32) {  /* Yubikey */
     meth = "yk";
-    strcpy(pw_hash, cgi->uid + len - 32);
+    strcpy((char*)pw_hash, cgi->uid + len - 32);
     cgi->uid[len - 32] = 0;
     D("yubikey user(%s) ticket(%s)", cgi->uid, pw_hash);
 
-    snprintf(buf, sizeof(buf)-1, "%suid/%s", cf->path, cgi->uid);
+    snprintf((char*)buf, sizeof(buf)-1, "%suid/%s", cf->path, cgi->uid);
     buf[sizeof(buf)-1] = 0;
-    len = read_all(sizeof(pw_buf), pw_buf, "ykspent", "%s/.ykspent/%s", buf, pw_hash);
+    len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykspent", "%s/.ykspent/%s", buf, pw_hash);
     if (len) {
       ERR("The One Time Password has already been spent. ticket(%s%s) buf(%.*s)", cgi->uid, pw_hash, len, pw_buf);
       cgi->err = login_failed;
       return 0;
     }
-    if (!write_all_path_fmt("ykspent", sizeof(pw_buf), pw_buf, "%s/.ykspent/%s", buf, pw_hash, "1"))
+    if (!write_all_path_fmt("ykspent", sizeof(pw_buf), (char*)pw_buf, "%s/.ykspent/%s", (char*)buf, (char*)pw_hash, "1"))
       return 0;
     
-    len = read_all(sizeof(pw_buf), pw_buf, "ykaes", "%s/.yk", buf);
+    len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykaes", "%s/.yk", buf);
     D("buf    (%s) got=%d", pw_buf, len);
     if (len < 32) {
       ERR("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too few characters %d ticket(%s)", cgi->uid, len, pw_hash);
@@ -255,10 +260,10 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       len = 32;
       pw_buf[len] = 0;
     }
-    zx_hexdec(pw_buf, pw_buf, len, hex_trans);
+    zx_hexdec((char*)pw_buf, (char*)pw_buf, len, hex_trans);
     memset (&yktok, 0, sizeof(yktok));
-    zx_hexdec((void *)&yktok, pw_hash, 32, ykmodhex_trans);
-    yubikey_aes_decrypt((void *)&yktok, pw_buf);
+    zx_hexdec((void*)&yktok, (char*)pw_hash, 32, ykmodhex_trans);
+    yubikey_aes_decrypt((void*)&yktok, pw_buf);
     D("internal uid %02x %02x %02x %02x %02x %02x counter=%d 0x%x timestamp=%d (hi=%x lo=%x) use=%d 0x%x rnd=0x%x crc=0x%x", yktok.uid[0], yktok.uid[1], yktok.uid[2], yktok.uid[3], yktok.uid[4], yktok.uid[5], yktok.ctr, yktok.ctr, (yktok.tstph << 16) | yktok.tstpl, yktok.tstph, yktok.tstpl, yktok.use, yktok.use, yktok.rnd, yktok.crc);
     
     if (!yubikey_crc_ok_p((unsigned char*)&yktok)) {
@@ -277,7 +282,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 
     meth = "pw";
 
-    len = read_all(sizeof(pw_buf), pw_buf, "pw_authn",
+    len = read_all(sizeof(pw_buf), (char*)pw_buf, "pw_authn",
 		   "%s" ZXID_UID_DIR "%s/.pw", cf->path, cgi->uid);
     if (len < 1) {
       ERR("No account found for uid(%s) or account does not have .pw file.", cgi->uid);
@@ -288,9 +293,9 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     
     D("pw_buf (%s)", pw_buf);
     if (!memcmp(pw_buf, "$1$", sizeof("$1$")-1)) {
-      zx_md5_crypt(cgi->pw, pw_buf, pw_hash);
+      zx_md5_crypt(cgi->pw, (char*)pw_buf, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);
-      if (strcmp(pw_buf, pw_hash)) {
+      if (strcmp((char*)pw_buf, (char*)pw_hash)) {
 	ERR("Bad password. uid(%s)", cgi->uid);
 	D("md5 pw(%s) .pw(%s) pw_hash(%s)", cgi->pw, pw_buf, pw_hash);
 	cgi->err = login_failed;
@@ -298,9 +303,9 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       }
 #ifdef USE_OPENSSL
     } else if (!memcmp(pw_buf, "$c$", sizeof("$c$")-1)) {
-      DES_fcrypt(cgi->pw, pw_buf+3, pw_hash);
+      DES_fcrypt(cgi->pw, (char*)pw_buf+3, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);
-      if (strcmp(buf+3, pw_hash)) {
+      if (strcmp((char*)buf+3, (char*)pw_hash)) {
 	ERR("Bad password for uid(%s)", cgi->uid);
 	D("crypt pw(%s) .pw(%s) pw_hash(%s)", cgi->pw, pw_buf, pw_hash);
 	cgi->err = login_failed;
@@ -313,7 +318,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       cgi->err = login_failed;
       return 0;
     } else {
-      if (strcmp(pw_buf, cgi->pw)) {
+      if (strcmp((char*)pw_buf, cgi->pw)) {
 	ERR("Bad password. uid(%s)", cgi->uid);
 	D("pw(%s) .pw(%s)", cgi->pw, pw_buf);
 	cgi->err = login_failed;
@@ -329,7 +334,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   ses->an_instant = time(0);  /* This will be later used by AuthnStatement constructor. */
   ses->an_ctx = cf->issue_authnctx_pw;  /* *** Should also depend on how user was registered */
   ss = zxid_mk_id(cf, "MSES", ZXID_ID_BITS);  /* Master session. Each pairwise SSO should have its own to avoid correlation. */
-  ses->sesix = ss->s;
+  ses->sesix = ss->s;  /* *** consider pairwise different MSES IDs when generating AN stmt */
   ZX_FREE(cf->ctx, ss);
   ses->sid = cgi->sid = ses->sesix;
   ses->uid = cgi->uid;

@@ -91,8 +91,8 @@ struct zx_demomed_DeleteObjectRequest_s* zx_DEC_demomed_DeleteObjectRequest(stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_DeleteObjectRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_DeleteObjectRequest_s);
   x->gg.g.tok = zx_demomed_DeleteObjectRequest_ELEM;
   x->gg.g.ns = ns;
@@ -125,7 +125,7 @@ struct zx_demomed_DeleteObjectRequest_s* zx_DEC_demomed_DeleteObjectRequest(stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -253,8 +253,8 @@ struct zx_demomed_DeleteObjectResponse_s* zx_DEC_demomed_DeleteObjectResponse(st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_DeleteObjectResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_DeleteObjectResponse_s);
   x->gg.g.tok = zx_demomed_DeleteObjectResponse_ELEM;
   x->gg.g.ns = ns;
@@ -287,7 +287,7 @@ struct zx_demomed_DeleteObjectResponse_s* zx_DEC_demomed_DeleteObjectResponse(st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -420,8 +420,8 @@ struct zx_demomed_GetObjectListRequest_s* zx_DEC_demomed_GetObjectListRequest(st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_GetObjectListRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectListRequest_s);
   x->gg.g.tok = zx_demomed_GetObjectListRequest_ELEM;
   x->gg.g.ns = ns;
@@ -454,7 +454,7 @@ struct zx_demomed_GetObjectListRequest_s* zx_DEC_demomed_GetObjectListRequest(st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -582,8 +582,8 @@ struct zx_demomed_GetObjectListResponse_s* zx_DEC_demomed_GetObjectListResponse(
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_GetObjectListResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectListResponse_s);
   x->gg.g.tok = zx_demomed_GetObjectListResponse_ELEM;
   x->gg.g.ns = ns;
@@ -616,7 +616,7 @@ struct zx_demomed_GetObjectListResponse_s* zx_DEC_demomed_GetObjectListResponse(
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -749,8 +749,8 @@ struct zx_demomed_GetObjectRequest_s* zx_DEC_demomed_GetObjectRequest(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_GetObjectRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectRequest_s);
   x->gg.g.tok = zx_demomed_GetObjectRequest_ELEM;
   x->gg.g.ns = ns;
@@ -783,7 +783,7 @@ struct zx_demomed_GetObjectRequest_s* zx_DEC_demomed_GetObjectRequest(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -911,8 +911,8 @@ struct zx_demomed_GetObjectResponse_s* zx_DEC_demomed_GetObjectResponse(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_GetObjectResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectResponse_s);
   x->gg.g.tok = zx_demomed_GetObjectResponse_ELEM;
   x->gg.g.ns = ns;
@@ -945,7 +945,7 @@ struct zx_demomed_GetObjectResponse_s* zx_DEC_demomed_GetObjectResponse(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1078,8 +1078,8 @@ struct zx_demomed_Object_s* zx_DEC_demomed_Object(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_Object_s* x = ZX_ZALLOC(c, struct zx_demomed_Object_s);
   x->gg.g.tok = zx_demomed_Object_ELEM;
   x->gg.g.ns = ns;
@@ -1118,7 +1118,7 @@ struct zx_demomed_Object_s* zx_DEC_demomed_Object(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1251,8 +1251,8 @@ struct zx_demomed_ObjectData_s* zx_DEC_demomed_ObjectData(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_ObjectData_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectData_s);
   x->gg.g.tok = zx_demomed_ObjectData_ELEM;
   x->gg.g.ns = ns;
@@ -1291,7 +1291,7 @@ struct zx_demomed_ObjectData_s* zx_DEC_demomed_ObjectData(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1414,8 +1414,8 @@ struct zx_demomed_ObjectInfo_s* zx_DEC_demomed_ObjectInfo(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_ObjectInfo_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectInfo_s);
   x->gg.g.tok = zx_demomed_ObjectInfo_ELEM;
   x->gg.g.ns = ns;
@@ -1454,7 +1454,7 @@ struct zx_demomed_ObjectInfo_s* zx_DEC_demomed_ObjectInfo(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1602,8 +1602,8 @@ struct zx_demomed_ObjectSearchParm_s* zx_DEC_demomed_ObjectSearchParm(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_ObjectSearchParm_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectSearchParm_s);
   x->gg.g.tok = zx_demomed_ObjectSearchParm_ELEM;
   x->gg.g.ns = ns;
@@ -1636,7 +1636,7 @@ struct zx_demomed_ObjectSearchParm_s* zx_DEC_demomed_ObjectSearchParm(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1779,8 +1779,8 @@ struct zx_demomed_ObjectStoreInfo_s* zx_DEC_demomed_ObjectStoreInfo(struct zx_ct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_ObjectStoreInfo_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectStoreInfo_s);
   x->gg.g.tok = zx_demomed_ObjectStoreInfo_ELEM;
   x->gg.g.ns = ns;
@@ -1825,7 +1825,7 @@ struct zx_demomed_ObjectStoreInfo_s* zx_DEC_demomed_ObjectStoreInfo(struct zx_ct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1948,8 +1948,8 @@ struct zx_demomed_StoreObjectRequest_s* zx_DEC_demomed_StoreObjectRequest(struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_StoreObjectRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_StoreObjectRequest_s);
   x->gg.g.tok = zx_demomed_StoreObjectRequest_ELEM;
   x->gg.g.ns = ns;
@@ -1982,7 +1982,7 @@ struct zx_demomed_StoreObjectRequest_s* zx_DEC_demomed_StoreObjectRequest(struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2110,8 +2110,8 @@ struct zx_demomed_StoreObjectResponse_s* zx_DEC_demomed_StoreObjectResponse(stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_demomed_StoreObjectResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_StoreObjectResponse_s);
   x->gg.g.tok = zx_demomed_StoreObjectResponse_ELEM;
   x->gg.g.ns = ns;
@@ -2144,7 +2144,7 @@ struct zx_demomed_StoreObjectResponse_s* zx_DEC_demomed_StoreObjectResponse(stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

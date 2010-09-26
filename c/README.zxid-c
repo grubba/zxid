@@ -1,7 +1,0 @@
-This directory contains automatically generated files.
-Normal distribution tar ball contains these generated
-files so the user does not need to install the tools
-needed to generate them, such as xsd2sg.pl and SWIG.
-If you need to regenerate the contents try
-  make cleaner; make dep ENA_GEN=1; make all ENA_GEN=1
---Sampo (20100620)

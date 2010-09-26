@@ -91,8 +91,8 @@ struct zx_ps_AddCollectionRequest_s* zx_DEC_ps_AddCollectionRequest(struct zx_ct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_AddCollectionRequest_s* x = ZX_ZALLOC(c, struct zx_ps_AddCollectionRequest_s);
   x->gg.g.tok = zx_ps_AddCollectionRequest_ELEM;
   x->gg.g.ns = ns;
@@ -131,7 +131,7 @@ struct zx_ps_AddCollectionRequest_s* zx_DEC_ps_AddCollectionRequest(struct zx_ct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -264,8 +264,8 @@ struct zx_ps_AddCollectionResponse_s* zx_DEC_ps_AddCollectionResponse(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_AddCollectionResponse_s* x = ZX_ZALLOC(c, struct zx_ps_AddCollectionResponse_s);
   x->gg.g.tok = zx_ps_AddCollectionResponse_ELEM;
   x->gg.g.ns = ns;
@@ -310,7 +310,7 @@ struct zx_ps_AddCollectionResponse_s* zx_DEC_ps_AddCollectionResponse(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -443,8 +443,8 @@ struct zx_ps_AddEntityRequest_s* zx_DEC_ps_AddEntityRequest(struct zx_ctx* c, st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_AddEntityRequest_s* x = ZX_ZALLOC(c, struct zx_ps_AddEntityRequest_s);
   x->gg.g.tok = zx_ps_AddEntityRequest_ELEM;
   x->gg.g.ns = ns;
@@ -483,7 +483,7 @@ struct zx_ps_AddEntityRequest_s* zx_DEC_ps_AddEntityRequest(struct zx_ctx* c, st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -631,8 +631,8 @@ struct zx_ps_AddEntityResponse_s* zx_DEC_ps_AddEntityResponse(struct zx_ctx* c, 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_AddEntityResponse_s* x = ZX_ZALLOC(c, struct zx_ps_AddEntityResponse_s);
   x->gg.g.tok = zx_ps_AddEntityResponse_ELEM;
   x->gg.g.ns = ns;
@@ -677,7 +677,7 @@ struct zx_ps_AddEntityResponse_s* zx_DEC_ps_AddEntityResponse(struct zx_ctx* c, 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -820,8 +820,8 @@ struct zx_ps_AddKnownEntityRequest_s* zx_DEC_ps_AddKnownEntityRequest(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_AddKnownEntityRequest_s* x = ZX_ZALLOC(c, struct zx_ps_AddKnownEntityRequest_s);
   x->gg.g.tok = zx_ps_AddKnownEntityRequest_ELEM;
   x->gg.g.ns = ns;
@@ -860,7 +860,7 @@ struct zx_ps_AddKnownEntityRequest_s* zx_DEC_ps_AddKnownEntityRequest(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1008,8 +1008,8 @@ struct zx_ps_AddKnownEntityResponse_s* zx_DEC_ps_AddKnownEntityResponse(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_AddKnownEntityResponse_s* x = ZX_ZALLOC(c, struct zx_ps_AddKnownEntityResponse_s);
   x->gg.g.tok = zx_ps_AddKnownEntityResponse_ELEM;
   x->gg.g.ns = ns;
@@ -1054,7 +1054,7 @@ struct zx_ps_AddKnownEntityResponse_s* zx_DEC_ps_AddKnownEntityResponse(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1197,8 +1197,8 @@ struct zx_ps_AddToCollectionRequest_s* zx_DEC_ps_AddToCollectionRequest(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_AddToCollectionRequest_s* x = ZX_ZALLOC(c, struct zx_ps_AddToCollectionRequest_s);
   x->gg.g.tok = zx_ps_AddToCollectionRequest_ELEM;
   x->gg.g.ns = ns;
@@ -1237,7 +1237,7 @@ struct zx_ps_AddToCollectionRequest_s* zx_DEC_ps_AddToCollectionRequest(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1375,8 +1375,8 @@ struct zx_ps_AddToCollectionResponse_s* zx_DEC_ps_AddToCollectionResponse(struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_AddToCollectionResponse_s* x = ZX_ZALLOC(c, struct zx_ps_AddToCollectionResponse_s);
   x->gg.g.tok = zx_ps_AddToCollectionResponse_ELEM;
   x->gg.g.ns = ns;
@@ -1421,7 +1421,7 @@ struct zx_ps_AddToCollectionResponse_s* zx_DEC_ps_AddToCollectionResponse(struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1549,8 +1549,8 @@ struct zx_ps_CreatePSObject_s* zx_DEC_ps_CreatePSObject(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_CreatePSObject_s* x = ZX_ZALLOC(c, struct zx_ps_CreatePSObject_s);
   x->gg.g.tok = zx_ps_CreatePSObject_ELEM;
   x->gg.g.ns = ns;
@@ -1583,7 +1583,7 @@ struct zx_ps_CreatePSObject_s* zx_DEC_ps_CreatePSObject(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1706,8 +1706,8 @@ struct zx_ps_DisplayName_s* zx_DEC_ps_DisplayName(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_DisplayName_s* x = ZX_ZALLOC(c, struct zx_ps_DisplayName_s);
   x->gg.g.tok = zx_ps_DisplayName_ELEM;
   x->gg.g.ns = ns;
@@ -1752,7 +1752,7 @@ struct zx_ps_DisplayName_s* zx_DEC_ps_DisplayName(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1875,8 +1875,8 @@ struct zx_ps_GetObjectInfoRequest_s* zx_DEC_ps_GetObjectInfoRequest(struct zx_ct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_GetObjectInfoRequest_s* x = ZX_ZALLOC(c, struct zx_ps_GetObjectInfoRequest_s);
   x->gg.g.tok = zx_ps_GetObjectInfoRequest_ELEM;
   x->gg.g.ns = ns;
@@ -1915,7 +1915,7 @@ struct zx_ps_GetObjectInfoRequest_s* zx_DEC_ps_GetObjectInfoRequest(struct zx_ct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2048,8 +2048,8 @@ struct zx_ps_GetObjectInfoResponse_s* zx_DEC_ps_GetObjectInfoResponse(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_GetObjectInfoResponse_s* x = ZX_ZALLOC(c, struct zx_ps_GetObjectInfoResponse_s);
   x->gg.g.tok = zx_ps_GetObjectInfoResponse_ELEM;
   x->gg.g.ns = ns;
@@ -2094,7 +2094,7 @@ struct zx_ps_GetObjectInfoResponse_s* zx_DEC_ps_GetObjectInfoResponse(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2227,8 +2227,8 @@ struct zx_ps_ItemData_s* zx_DEC_ps_ItemData(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_ItemData_s* x = ZX_ZALLOC(c, struct zx_ps_ItemData_s);
   x->gg.g.tok = zx_ps_ItemData_ELEM;
   x->gg.g.ns = ns;
@@ -2261,7 +2261,7 @@ struct zx_ps_ItemData_s* zx_DEC_ps_ItemData(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2389,8 +2389,8 @@ struct zx_ps_ListMembersRequest_s* zx_DEC_ps_ListMembersRequest(struct zx_ctx* c
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_ListMembersRequest_s* x = ZX_ZALLOC(c, struct zx_ps_ListMembersRequest_s);
   x->gg.g.tok = zx_ps_ListMembersRequest_ELEM;
   x->gg.g.ns = ns;
@@ -2447,7 +2447,7 @@ struct zx_ps_ListMembersRequest_s* zx_DEC_ps_ListMembersRequest(struct zx_ctx* c
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2580,8 +2580,8 @@ struct zx_ps_ListMembersResponse_s* zx_DEC_ps_ListMembersResponse(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_ListMembersResponse_s* x = ZX_ZALLOC(c, struct zx_ps_ListMembersResponse_s);
   x->gg.g.tok = zx_ps_ListMembersResponse_ELEM;
   x->gg.g.ns = ns;
@@ -2626,7 +2626,7 @@ struct zx_ps_ListMembersResponse_s* zx_DEC_ps_ListMembersResponse(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2759,8 +2759,8 @@ struct zx_ps_Notification_s* zx_DEC_ps_Notification(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_Notification_s* x = ZX_ZALLOC(c, struct zx_ps_Notification_s);
   x->gg.g.tok = zx_ps_Notification_ELEM;
   x->gg.g.ns = ns;
@@ -2817,7 +2817,7 @@ struct zx_ps_Notification_s* zx_DEC_ps_Notification(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2950,8 +2950,8 @@ struct zx_ps_Notify_s* zx_DEC_ps_Notify(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_Notify_s* x = ZX_ZALLOC(c, struct zx_ps_Notify_s);
   x->gg.g.tok = zx_ps_Notify_ELEM;
   x->gg.g.ns = ns;
@@ -2996,7 +2996,7 @@ struct zx_ps_Notify_s* zx_DEC_ps_Notify(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3124,8 +3124,8 @@ struct zx_ps_NotifyResponse_s* zx_DEC_ps_NotifyResponse(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_NotifyResponse_s* x = ZX_ZALLOC(c, struct zx_ps_NotifyResponse_s);
   x->gg.g.tok = zx_ps_NotifyResponse_ELEM;
   x->gg.g.ns = ns;
@@ -3164,7 +3164,7 @@ struct zx_ps_NotifyResponse_s* zx_DEC_ps_NotifyResponse(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3297,8 +3297,8 @@ struct zx_ps_Object_s* zx_DEC_ps_Object(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_Object_s* x = ZX_ZALLOC(c, struct zx_ps_Object_s);
   x->gg.g.tok = zx_ps_Object_ELEM;
   x->gg.g.ns = ns;
@@ -3349,7 +3349,7 @@ struct zx_ps_Object_s* zx_DEC_ps_Object(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3497,8 +3497,8 @@ struct zx_ps_QueryObjectsRequest_s* zx_DEC_ps_QueryObjectsRequest(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_QueryObjectsRequest_s* x = ZX_ZALLOC(c, struct zx_ps_QueryObjectsRequest_s);
   x->gg.g.tok = zx_ps_QueryObjectsRequest_ELEM;
   x->gg.g.ns = ns;
@@ -3549,7 +3549,7 @@ struct zx_ps_QueryObjectsRequest_s* zx_DEC_ps_QueryObjectsRequest(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3682,8 +3682,8 @@ struct zx_ps_QueryObjectsResponse_s* zx_DEC_ps_QueryObjectsResponse(struct zx_ct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_QueryObjectsResponse_s* x = ZX_ZALLOC(c, struct zx_ps_QueryObjectsResponse_s);
   x->gg.g.tok = zx_ps_QueryObjectsResponse_ELEM;
   x->gg.g.ns = ns;
@@ -3728,7 +3728,7 @@ struct zx_ps_QueryObjectsResponse_s* zx_DEC_ps_QueryObjectsResponse(struct zx_ct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3861,8 +3861,8 @@ struct zx_ps_RemoveCollectionRequest_s* zx_DEC_ps_RemoveCollectionRequest(struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_RemoveCollectionRequest_s* x = ZX_ZALLOC(c, struct zx_ps_RemoveCollectionRequest_s);
   x->gg.g.tok = zx_ps_RemoveCollectionRequest_ELEM;
   x->gg.g.ns = ns;
@@ -3901,7 +3901,7 @@ struct zx_ps_RemoveCollectionRequest_s* zx_DEC_ps_RemoveCollectionRequest(struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4029,8 +4029,8 @@ struct zx_ps_RemoveCollectionResponse_s* zx_DEC_ps_RemoveCollectionResponse(stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_RemoveCollectionResponse_s* x = ZX_ZALLOC(c, struct zx_ps_RemoveCollectionResponse_s);
   x->gg.g.tok = zx_ps_RemoveCollectionResponse_ELEM;
   x->gg.g.ns = ns;
@@ -4075,7 +4075,7 @@ struct zx_ps_RemoveCollectionResponse_s* zx_DEC_ps_RemoveCollectionResponse(stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4203,8 +4203,8 @@ struct zx_ps_RemoveEntityRequest_s* zx_DEC_ps_RemoveEntityRequest(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_RemoveEntityRequest_s* x = ZX_ZALLOC(c, struct zx_ps_RemoveEntityRequest_s);
   x->gg.g.tok = zx_ps_RemoveEntityRequest_ELEM;
   x->gg.g.ns = ns;
@@ -4243,7 +4243,7 @@ struct zx_ps_RemoveEntityRequest_s* zx_DEC_ps_RemoveEntityRequest(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4371,8 +4371,8 @@ struct zx_ps_RemoveEntityResponse_s* zx_DEC_ps_RemoveEntityResponse(struct zx_ct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_RemoveEntityResponse_s* x = ZX_ZALLOC(c, struct zx_ps_RemoveEntityResponse_s);
   x->gg.g.tok = zx_ps_RemoveEntityResponse_ELEM;
   x->gg.g.ns = ns;
@@ -4417,7 +4417,7 @@ struct zx_ps_RemoveEntityResponse_s* zx_DEC_ps_RemoveEntityResponse(struct zx_ct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4545,8 +4545,8 @@ struct zx_ps_RemoveFromCollectionRequest_s* zx_DEC_ps_RemoveFromCollectionReques
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_RemoveFromCollectionRequest_s* x = ZX_ZALLOC(c, struct zx_ps_RemoveFromCollectionRequest_s);
   x->gg.g.tok = zx_ps_RemoveFromCollectionRequest_ELEM;
   x->gg.g.ns = ns;
@@ -4585,7 +4585,7 @@ struct zx_ps_RemoveFromCollectionRequest_s* zx_DEC_ps_RemoveFromCollectionReques
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4723,8 +4723,8 @@ struct zx_ps_RemoveFromCollectionResponse_s* zx_DEC_ps_RemoveFromCollectionRespo
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_RemoveFromCollectionResponse_s* x = ZX_ZALLOC(c, struct zx_ps_RemoveFromCollectionResponse_s);
   x->gg.g.tok = zx_ps_RemoveFromCollectionResponse_ELEM;
   x->gg.g.ns = ns;
@@ -4769,7 +4769,7 @@ struct zx_ps_RemoveFromCollectionResponse_s* zx_DEC_ps_RemoveFromCollectionRespo
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4897,8 +4897,8 @@ struct zx_ps_ResolveIdentifierRequest_s* zx_DEC_ps_ResolveIdentifierRequest(stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_ResolveIdentifierRequest_s* x = ZX_ZALLOC(c, struct zx_ps_ResolveIdentifierRequest_s);
   x->gg.g.tok = zx_ps_ResolveIdentifierRequest_ELEM;
   x->gg.g.ns = ns;
@@ -4937,7 +4937,7 @@ struct zx_ps_ResolveIdentifierRequest_s* zx_DEC_ps_ResolveIdentifierRequest(stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5065,8 +5065,8 @@ struct zx_ps_ResolveIdentifierResponse_s* zx_DEC_ps_ResolveIdentifierResponse(st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_ResolveIdentifierResponse_s* x = ZX_ZALLOC(c, struct zx_ps_ResolveIdentifierResponse_s);
   x->gg.g.tok = zx_ps_ResolveIdentifierResponse_ELEM;
   x->gg.g.ns = ns;
@@ -5111,7 +5111,7 @@ struct zx_ps_ResolveIdentifierResponse_s* zx_DEC_ps_ResolveIdentifierResponse(st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5244,8 +5244,8 @@ struct zx_ps_ResolveInput_s* zx_DEC_ps_ResolveInput(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_ResolveInput_s* x = ZX_ZALLOC(c, struct zx_ps_ResolveInput_s);
   x->gg.g.tok = zx_ps_ResolveInput_ELEM;
   x->gg.g.ns = ns;
@@ -5284,7 +5284,7 @@ struct zx_ps_ResolveInput_s* zx_DEC_ps_ResolveInput(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5422,8 +5422,8 @@ struct zx_ps_ResolveOutput_s* zx_DEC_ps_ResolveOutput(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_ResolveOutput_s* x = ZX_ZALLOC(c, struct zx_ps_ResolveOutput_s);
   x->gg.g.tok = zx_ps_ResolveOutput_ELEM;
   x->gg.g.ns = ns;
@@ -5462,7 +5462,7 @@ struct zx_ps_ResolveOutput_s* zx_DEC_ps_ResolveOutput(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5590,8 +5590,8 @@ struct zx_ps_SetObjectInfoRequest_s* zx_DEC_ps_SetObjectInfoRequest(struct zx_ct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_SetObjectInfoRequest_s* x = ZX_ZALLOC(c, struct zx_ps_SetObjectInfoRequest_s);
   x->gg.g.tok = zx_ps_SetObjectInfoRequest_ELEM;
   x->gg.g.ns = ns;
@@ -5630,7 +5630,7 @@ struct zx_ps_SetObjectInfoRequest_s* zx_DEC_ps_SetObjectInfoRequest(struct zx_ct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5763,8 +5763,8 @@ struct zx_ps_SetObjectInfoResponse_s* zx_DEC_ps_SetObjectInfoResponse(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_SetObjectInfoResponse_s* x = ZX_ZALLOC(c, struct zx_ps_SetObjectInfoResponse_s);
   x->gg.g.tok = zx_ps_SetObjectInfoResponse_ELEM;
   x->gg.g.ns = ns;
@@ -5809,7 +5809,7 @@ struct zx_ps_SetObjectInfoResponse_s* zx_DEC_ps_SetObjectInfoResponse(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5937,8 +5937,8 @@ struct zx_ps_Subscription_s* zx_DEC_ps_Subscription(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_Subscription_s* x = ZX_ZALLOC(c, struct zx_ps_Subscription_s);
   x->gg.g.tok = zx_ps_Subscription_ELEM;
   x->gg.g.ns = ns;
@@ -6013,7 +6013,7 @@ struct zx_ps_Subscription_s* zx_DEC_ps_Subscription(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -6146,8 +6146,8 @@ struct zx_ps_Tag_s* zx_DEC_ps_Tag(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_Tag_s* x = ZX_ZALLOC(c, struct zx_ps_Tag_s);
   x->gg.g.tok = zx_ps_Tag_ELEM;
   x->gg.g.ns = ns;
@@ -6186,7 +6186,7 @@ struct zx_ps_Tag_s* zx_DEC_ps_Tag(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -6309,8 +6309,8 @@ struct zx_ps_TestMembershipRequest_s* zx_DEC_ps_TestMembershipRequest(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_TestMembershipRequest_s* x = ZX_ZALLOC(c, struct zx_ps_TestMembershipRequest_s);
   x->gg.g.tok = zx_ps_TestMembershipRequest_ELEM;
   x->gg.g.ns = ns;
@@ -6349,7 +6349,7 @@ struct zx_ps_TestMembershipRequest_s* zx_DEC_ps_TestMembershipRequest(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -6487,8 +6487,8 @@ struct zx_ps_TestMembershipResponse_s* zx_DEC_ps_TestMembershipResponse(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_ps_TestMembershipResponse_s* x = ZX_ZALLOC(c, struct zx_ps_TestMembershipResponse_s);
   x->gg.g.tok = zx_ps_TestMembershipResponse_ELEM;
   x->gg.g.ns = ns;
@@ -6533,7 +6533,7 @@ struct zx_ps_TestMembershipResponse_s* zx_DEC_ps_TestMembershipResponse(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

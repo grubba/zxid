@@ -55,6 +55,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   struct timeval srcts = {0,501000};
   zxid_entity* wsc_meta;
   struct zx_wsse_Security_s* sec;
+  struct zx_e_Header_s* hdr;
   struct zx_str* issuer;
   struct zx_str* logpath;
   struct zx_str ss;
@@ -69,31 +70,32 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No SOAP Envelope found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
-  if (!env->Header) {
+  hdr = env->Header;
+  if (!hdr) {
     ERR("No <e:Header> found. enve(%s)", STRNULLCHK(enve));
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No SOAP Header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
-  if (!ZX_SIMPLE_ELEM_CHK(env->Header->MessageID)) {
+  if (!ZX_SIMPLE_ELEM_CHK(hdr->MessageID)) {
     ERR("No <a:MessageID> found. enve(%s)", STRNULLCHK(enve));
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No MessageID header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
-  if (ZX_SIMPLE_ELEM_CHK(env->Header->RelatesTo)) {
+  if (ZX_SIMPLE_ELEM_CHK(hdr->RelatesTo)) {
     if (ses->wsc_msgid) {
-      if (strlen(ses->wsc_msgid) == env->Header->RelatesTo->gg.content->len
+      if (strlen(ses->wsc_msgid) == hdr->RelatesTo->gg.content->len
 	  && !memcmp(ses->wsc_msgid,
-		     env->Header->RelatesTo->gg.content->s,
-		     env->Header->RelatesTo->gg.content->len)) {
+		     hdr->RelatesTo->gg.content->s,
+		     hdr->RelatesTo->gg.content->len)) {
 	D("RelatesTo check OK %d",1);
       } else {
 	/* N.B. [SOAPBinding2] p.27, ll.818-822 indicates RelatesTo checking as SHOULD. */
 	if (cf->relto_fatal) {
-	  ERR("<a:RelatesTo> (%.*s) does not match request msgid(%s).", env->Header->RelatesTo->gg.content->len, env->Header->RelatesTo->gg.content->s, ses->wsc_msgid);
+	  ERR("<a:RelatesTo> (%.*s) does not match request msgid(%s).", hdr->RelatesTo->gg.content->len, hdr->RelatesTo->gg.content->s, ses->wsc_msgid);
 	  zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "RelatesTo in response does not match request MessageID.", "InvalidRefToMsgID", 0, 0, 0));
 	  return 0;
 	} else {
-	  INFO("<a:RelatesTo> (%.*s) does not match request msgid(%s), but configured to ignore this error (RELTO_FATAL=0).", env->Header->RelatesTo->gg.content->len, env->Header->RelatesTo->gg.content->s, ses->wsc_msgid);
+	  INFO("<a:RelatesTo> (%.*s) does not match request msgid(%s), but configured to ignore this error (RELTO_FATAL=0).", hdr->RelatesTo->gg.content->len, hdr->RelatesTo->gg.content->s, ses->wsc_msgid);
 	}
       }
     } else {
@@ -110,17 +112,16 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     }
   }
 
-  if (!env->Header->Sender || !env->Header->Sender->providerID
-      && !env->Header->Sender->affiliationID) {
+  if (!hdr->Sender || !hdr->Sender->providerID && !hdr->Sender->affiliationID) {
     ERR("No <b:Sender> found (or missing providerID or affiliationID). enve(%s)", STRNULLCHK(enve));
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No b:Sender header found (or missing providerID or affiliationID).", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
-  issuer = env->Header->Sender->providerID;
+  issuer = hdr->Sender->providerID;
   
   /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   
-  if (!(sec = env->Header->Security)) {
+  if (!(sec = hdr->Security)) {
     ERR("No <wsse:Security> found. enve(%s)", STRNULLCHK(enve));
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No wsse:Security header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
@@ -150,7 +151,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     }
   }
 
-  n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, env->Header, env->Body);
+  n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, hdr, env->Body);
   /* *** Consider adding BDY and STR */
   ses->sigres = zxsig_validate(cf->ctx, wsc_meta->sign_cert, sec->Signature, n_refs, refs);
   zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
@@ -163,14 +164,26 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   if (!zxid_wsf_timestamp_check(cf, ses, sec->Timestamp, &ourts,&srcts,TAS3_PEP_RS_IN,"e:Server"))
     return 0;
 
+  if (hdr->UsageDirective) {
+    if (hdr->UsageDirective->Obligation && hdr->UsageDirective->Obligation->AttributeAssignment && hdr->UsageDirective->Obligation->AttributeAssignment->gg.content) {
+      ses->rcvd_usagedir = zx_str_to_c(cf->ctx, hdr->UsageDirective->Obligation->AttributeAssignment->gg.content);
+      D("Found TAS3 UsageDirective with obligation(%s)", ses->rcvd_usagedir);
+    } else if (hdr->UsageDirective->gg.content) {
+      ses->rcvd_usagedir = zx_str_to_c(cf->ctx, hdr->UsageDirective->gg.content);
+      D("Found unknown UsageDirective(%s)", ses->rcvd_usagedir);
+    } else {
+      ERR("UsageDirective empty or not understood. %p", hdr->UsageDirective->Dict);
+    }
+  }
+
   zxid_ses_to_pool(cf, ses);
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
 
-  if (env->Header->Status && env->Header->Status->code
-      && (env->Header->Status->code->len != 2
-	  || env->Header->Status->code->s[0] != 'O'
-	  || env->Header->Status->code->s[1] != 'K')) {
-    ERR("TAS3 or app level error code(%.*s)", env->Header->Status->code->len, env->Header->Status->code->s);
+  if (hdr->Status && hdr->Status->code
+      && (hdr->Status->code->len != 2
+	  || hdr->Status->code->s[0] != 'O'
+	  || hdr->Status->code->s[1] != 'K')) {
+    ERR("TAS3 or app level error code(%.*s)", hdr->Status->code->len, hdr->Status->code->s);
     return 0;
   }
   
@@ -193,7 +206,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   
   ss.s = (char*)enve;
   ss.len = strlen(enve);
-  logpath = zxlog_path(cf, issuer, env->Header->MessageID->gg.content,
+  logpath = zxlog_path(cf, issuer, hdr->MessageID->gg.content,
 		       ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
   if (zxlog_dup_check(cf, logpath, "validate response")) {
     if (cf->dup_msg_fatal) {
@@ -214,16 +227,31 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
 /* Called by:  zxid_wsc_call */
 static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
+  struct zx_sec_Token_s* tok;
   struct zx_e_Header_s* hdr;
   if (!zxid_wsf_decor(cf, ses, env, 0))
     return 0;
   hdr = env->Header;
-#if 0
-  /**** for now, this is just implied by the sec mech */
-  hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx);
-  hdr->TargetIdentity->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->TargetIdentity->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-#endif
+
+  if (ses->call_tgttok || ses->call_invoktok && epr && epr->Metadata && epr->Metadata->SecurityContext && epr->Metadata->SecurityContext->Token) {
+    if (ses->call_tgttok) {
+      D("TargetIdentity: Explicit specification of ses->call_tgttok %d",0);
+      tok = ses->call_tgttok;
+    } else {
+      D("TargetIdentity: Using token from EPR due to specification of ses->call_invoktok %d",0);
+      tok = epr->Metadata->SecurityContext->Token;
+    }
+    hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx);
+    hdr->TargetIdentity->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
+    hdr->TargetIdentity->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+    if (tok->EncryptedAssertion)
+      hdr->TargetIdentity->EncryptedAssertion = tok->EncryptedAssertion;
+    else if (tok->Assertion)
+      hdr->TargetIdentity->Assertion = tok->Assertion;
+    else {
+      ERR("No <sa:EncryptedAssertion> or <sa:Assertion> found in <sec:Token> %p", tok);
+    }
+  } /* else this is just implied by the sec mech */
 
   hdr->To = zx_NEW_a_To(cf->ctx);
   hdr->To->gg.content = epr->Address->gg.content;
@@ -249,16 +277,38 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
   return 1;
 }
 
+static void zxid_choose_security_token(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_wsse_Security_s* sec)
+{
+  struct zx_sec_Token_s* tok;
+  if (ses->call_invoktok) {
+    D("Security Token: Explicit specification of ses->call_invoktok %d",0);
+    tok = ses->call_invoktok;
+  } else {
+    if (epr && epr->Metadata && epr->Metadata->SecurityContext && epr->Metadata->SecurityContext->Token) {
+      D("Security Token: Using token from EPR Metadata %d",0);
+      tok = epr->Metadata->SecurityContext->Token;
+    } else {
+      ERR("Security Token: No SecurityContext in EPR Metadata %p",epr);
+      return;
+    }
+  }
+  if (tok->EncryptedAssertion)
+    sec->EncryptedAssertion = tok->EncryptedAssertion;
+  else if (tok->Assertion)
+    sec->Assertion = tok->Assertion;
+  else
+    ERR("No <sa:EncryptedAssertion> or <sa:Assertion> found in <sec:Token> %p", tok);
+}
+
 /*() Perform security mechanism related processing for a WSC call */
 
 /* Called by:  zxid_wsc_call */
-static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_epr* epr, struct zx_e_Envelope_s* env)
+static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
   int secmech;
   struct zx_wsse_Security_s* sec;
   struct zx_wsse_SecurityTokenReference_s* str;
   struct zx_e_Header_s* hdr;
-  struct zx_sec_Token_s* tok;
   
   if (!epr || !env) {
     ERR("MUST supply epr %p and envelope as arguments", epr);
@@ -289,11 +339,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_epr* epr, struct zx_e_Envel
     D("secmech null %d", secmech);
     break;
   case ZXID_SEC_MECH_BEARER:
-    tok = epr->Metadata->SecurityContext->Token;
-    if (tok->EncryptedAssertion)
-      sec->EncryptedAssertion = tok->EncryptedAssertion;
-    else if (tok->Assertion)
-      sec->Assertion = tok->Assertion;
+    zxid_choose_security_token(cf, ses, epr, sec);
     str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx);
     str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx);
     str->KeyIdentifier->ValueType = zx_ref_str(cf->ctx, SAMLID_TOK_PROFILE);
@@ -305,10 +351,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_epr* epr, struct zx_e_Envel
     D("secmech bearer %d", secmech);
     break;
   case ZXID_SEC_MECH_SAML:
-    if (tok->EncryptedAssertion)
-      sec->EncryptedAssertion = tok->EncryptedAssertion;
-    else if (tok->Assertion)
-      sec->Assertion = tok->Assertion;
+    zxid_choose_security_token(cf, ses, epr, sec);
     /* *** Sign SEC, MID, TO, ACT (if any) */
     zxid_wsf_sign(cf, cf->wsc_sign, sec, 0, hdr, env->Body);
     D("secmech saml hok %d", secmech);
@@ -356,7 +399,7 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
   }
   
   for (i=0; i < cf->max_soap_retry; ++i) {
-    if (!zxid_wsc_prep_secmech(cf, epr, env)) {
+    if (!zxid_wsc_prep_secmech(cf, ses, epr, env)) {
       D_DEDENT("wsc_call: ");
       return 0;
     }
@@ -478,6 +521,79 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
 /* ----------------------------------------
  * Simplify writing WSCs */
 
+/*() Make a SOAP call given XML payload for SOAP <e:Envelope> or <e:Body> content,
+ * specified by the string. Assumes the EPR has already been discovered.
+ * This is sometimes useful in prediscovered or delegated use cases, but
+ * normally you should be using zxid_call() and let the discovery
+ * take its course. */
+
+/* Called by:  zxcall_main, zxid_callf */
+struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve)
+{
+  char* ret_enve;
+  struct zx_str* ret;
+  struct zx_e_Envelope_s* env;
+
+  if (!cf || !ses || !enve) {
+    ERR("Missing mandatory arguments ses=%p", ses);
+    return 0;
+  }
+
+  D_INDENT("call: ");
+  env = zxid_add_env_if_needed(cf, enve);
+  if (!env) {
+    D_DEDENT("call: ");
+    return 0;
+  }
+  
+  /* Call Rq-Out PDP */
+  
+  if (!zxid_localpdp(cf, ses)) {
+    ERR("RQOUT1 Deny by local PDP %d",0);
+    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
+    D_DEDENT("call: ");
+    return 0;
+  } else if (cf->pdp_url && *cf->pdp_url) {
+    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
+    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqout)) {
+      ERR("RQOUT1 Deny %d", 0);
+      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
+      D_DEDENT("call: ");
+      return 0;
+    }
+  }
+
+  /* *** add usage directives */
+
+  env = zxid_wsc_call(cf, ses, epr, env, &ret_enve);
+  if (!env) {
+    ERR("Web services call failed %d", 0);
+    /* Let validate report the error so that tas3 status gets set correctly */
+  }
+  if (zxid_wsc_validate_resp_env(cf, ses, az_cred, env, ret_enve) != 1) {
+    D_DEDENT("call: ");
+    return 0;
+  }
+  
+  ret = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
+  D_DEDENT("call: ");
+  return ret;
+}
+
+/*() Call web service, printf style. See zxid_call() for more documentation.
+ * Normally you should be calling zxid_callf() instead. */
+
+/* Called by:  main */
+struct zx_str* zxid_callf_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* env_f, ...)
+{
+  char* s;
+  va_list ap;
+  va_start(ap, env_f);
+  s = zx_alloc_vasprintf(cf->ctx, 0, env_f, ap);
+  va_end(ap);
+  return zxid_call_epr(cf, ses, epr, az_cred, s);
+}
+
 /*(i) Make a SOAP call given XML payload for SOAP <e:Envelope> or <e:Body> content,
  * specified by the string. This is your WSC work horse for calling almost any kind
  * of web service. Simple and intuitive specification of XML as string: no need
@@ -515,67 +631,22 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
  *     content. NULL on failure. ses->curflt and/or ses->curstatus contain
  *     more detailed error information. */
 
-/* Called by:  zxcall_main, zxid_callf */
 struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve)
 {
-  char* ret_enve;
-  struct zx_str* ret;
-  struct zx_e_Envelope_s* env;
   zxid_epr* epr;
 
-  if (!cf || !ses || !enve) {
+  if (!cf || !ses) {
     ERR("Missing mandatory arguments ses=%p", ses);
     return 0;
   }
 
-  D_INDENT("call: ");
-  env = zxid_add_env_if_needed(cf, enve);
-  if (!env) {
-    D_DEDENT("call: ");
-    return 0;
-  }
-
-  //*** Needs thought and development
-
   epr = zxid_get_epr(cf, ses, svctype, url, di_opt, 0 /*Action*/, 1);
   if (!epr) {
     ERR("EPR could not be discovered for svctype(%s)", svctype);
-    D_DEDENT("call: ");
-    return 0;
-  }
-
-  /* Call Rq-Out PDP */
-  
-  if (!zxid_localpdp(cf, ses)) {
-    ERR("RQOUT1 Deny by local PDP %d",0);
-    zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC local policy", TAS3_STATUS_DENY, 0, 0, 0));
-    D_DEDENT("call: ");
-    return 0;
-  } else if (cf->pdp_url && *cf->pdp_url) {
-    //zxid_add_attr_to_pool(cf, ses, "Action", zx_dup_str(cf->ctx, "access"));
-    if (!zxid_pep_az_soap_pepmap(cf, 0, ses, cf->pdp_url, cf->pepmap_rqout)) {
-      ERR("RQOUT1 Deny %d", 0);
-      zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RQ_OUT, "e:Client", "Request denied by WSC policy", TAS3_STATUS_DENY, 0, 0, 0));
-      D_DEDENT("call: ");
-      return 0;
-    }
-  }
-
-  /* *** add usage directives */
-
-  env = zxid_wsc_call(cf, ses, epr, env, &ret_enve);
-  if (!env) {
-    ERR("Web services call failed svctype(%s)", svctype);
-    /* Let validate report the error so that tas3 status gets set correctly */
-  }
-  if (zxid_wsc_validate_resp_env(cf, ses, az_cred, env, ret_enve) != 1) {
-    D_DEDENT("call: ");
     return 0;
   }
   
-  ret = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
-  D_DEDENT("call: ");
-  return ret;
+  return zxid_call_epr(cf, ses, epr, az_cred, enve);
 }
 
 /*() Call web service, printf style. See zxid_call() for more documentation. */
@@ -643,7 +714,7 @@ struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr
     D_DEDENT("prep: ");
     return 0;
   }
-  if (!zxid_wsc_prep_secmech(cf, epr, env)) {
+  if (!zxid_wsc_prep_secmech(cf, ses, epr, env)) {
     D_DEDENT("prep: ");
     return 0;
   }

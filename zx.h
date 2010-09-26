@@ -246,15 +246,15 @@ struct zx_tok { const char* name; const char* prefix; struct zx_ns_s* ns; };
 /*struct zx_note_s* zx_clone_any(struct zx_ctx* c, struct zx_note_s* n, int dup_strs); TBD */
 /*void zx_free_any(struct zx_ctx* c, struct zx_note_s* n, int free_strs); TBD */
 
-int   zx_date_time_to_secs(char* dt);
+int   zx_date_time_to_secs(const char* dt);
 int   write2_or_append_lock_c_path(const char* c_path, int len1, const char* data1, int len2, const char* data2, const char* which, int seeky, int flag);
 int   zx_report_openssl_error(const char* logkey);
 
-void  zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, char* nam, int namlen);
-struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, char* prefix);
-int   zx_is_ns_prefix(struct zx_ns_s* ns, int len, char* prefix);
-struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, char* prefix);
-struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, char* prefix, char* logkey, int mk_dummy_ns);
+void  zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, const char* nam, int namlen);
+struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, const char* prefix);
+int   zx_is_ns_prefix(struct zx_ns_s* ns, int len, const char* prefix);
+struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix);
+struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* prefix, const char* logkey, int mk_dummy_ns);
 struct zx_ns_s* zx_scan_xmlns(struct zx_ctx* c);
 void  zx_pop_seen(struct zx_ns_s* ns);
 
@@ -274,8 +274,7 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf);
 
 /* Common Subexpression Elimination (CSE) for generated code. */
 
-const struct zx_tok* zx_tok_by_ns(const struct zx_tok* zt, const struct zx_tok* lim,
-				  int len, char* name, struct zx_ns_s* ns);
+const struct zx_tok* zx_tok_by_ns(const struct zx_tok* zt, const struct zx_tok* lim, int len, const char* name, struct zx_ns_s* ns);
 int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 char* zx_enc_xmlns_if_not_seen(struct zx_ctx* c, char* p, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 void  zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
@@ -308,7 +307,7 @@ void  zx_dup_strs_simple_elems(struct zx_ctx* c, struct zx_elem_s* se);
 void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, const char* start, const char* lim);
 int   zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el);
 int   zx_scan_pi_or_comment(struct zx_ctx* c);
-struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, char* name, char* data, int tok, int ctx_tok);
+struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, const char* name, const char* data, int tok, int ctx_tok);
 char* zx_dec_attr_val(struct zx_ctx* c, const char** name);
 void  zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char* msg);
 

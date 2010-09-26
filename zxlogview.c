@@ -45,7 +45,7 @@
 #include "zxid.h"
 #include "c/zxidvers.h"
 
-CU8* help =
+char* help =
 "zxlogview  -  Decrypt logs and validate log signatures - R" ZXID_REL "\n\
 SAML 2.0 is a standard for federated idenity and Single Sign-On.\n\
 Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
@@ -193,7 +193,7 @@ static void opt(int* argc, char*** argv, char*** env)
   if (*argc) {  /* Log decryption key (logenc-nopw-cert.pem) */
     if ((*argv)[0][0]) {
       gotall = read_all(sizeof(buf), buf, "logview opt key", "%s", (*argv)[0]);
-      SHA1(buf, gotall, log_symkey);
+      SHA1((unsigned char*)buf, gotall, (unsigned char*)log_symkey);
       log_decrypt_pkey = zxid_extract_private_key(buf, (*argv)[0]);
     }
     ++(*argv); --(*argc);
@@ -218,7 +218,7 @@ static void test_mode(int* argc, char*** argv, char*** env)
   if (*argc) {  /* Log encryption key (logenc-nopw-cert.pem) */
     if ((*argv)[0][0]) {
       gotall = read_all(sizeof(buf), buf, "logview test_mode key", "%s", (*argv)[0]);
-      SHA1(buf, gotall, cf->log_symkey);
+      SHA1((unsigned char*)buf, gotall, (unsigned char*)cf->log_symkey);
       cf->log_enc_cert = zxid_extract_cert(buf, (*argv)[0]);
     }
     ++(*argv); --(*argc);
@@ -278,7 +278,7 @@ static void zxlog_zsig_verify_print(zxid_conf* cf, int len, char* buf, char* se,
       ERR("Wrong sha1 length in input %d", siglen);
       break;
     }
-    SHA1(p, len-(p-buf), sha1);
+    SHA1((unsigned char*)p, len-(p-buf), (unsigned char*)sha1);
     if (memcmp(sha1, buf+2, 20)) {
       printf("SHA1 FAIL\n");
     } else {
@@ -341,7 +341,7 @@ int main(int argc, char** argv, char** env)
       case 'S':
 	unbase64_raw(buf, p, buf, zx_std_index_64);  /* In place, overwrite. */
 	++p;
-	SHA1(p, len-(p-buf), sha1);
+	SHA1((unsigned char*)p, len-(p-buf), (unsigned char*)sha1);
 	if (memcmp(buf, sha1, 20)) {
 	  printf("SHA1 FAIL\n");
 	} else {
@@ -359,7 +359,7 @@ int main(int argc, char** argv, char** env)
       seslen = (unsigned char)buf[0] << 8 | (unsigned char)buf[1];
       D("seslen(%d)", seslen);
       
-      seslen = RSA_private_decrypt(seslen, buf+2, ses, log_decrypt_pkey, RSA_PKCS1_OAEP_PADDING);
+      seslen = RSA_private_decrypt(seslen, (unsigned char*)buf+2, (unsigned char*)ses, log_decrypt_pkey, RSA_PKCS1_OAEP_PADDING);
       if (seslen < 0) {
 	ERR("RSA dec fail %x", seslen);
 	zx_report_openssl_error("zxlog rsa enc");
@@ -372,8 +372,8 @@ int main(int argc, char** argv, char** env)
       }
       
       p = buf+2+seslen+16;
-      AES_set_decrypt_key(ses, 128, &aes_key);
-      AES_cbc_encrypt(p, p, len-(p-buf), &aes_key, buf+2+seslen,0);
+      AES_set_decrypt_key((unsigned char*)ses, 128, &aes_key);
+      AES_cbc_encrypt((unsigned char*)p, (unsigned char*)p, len-(p-buf), &aes_key, (unsigned char*)buf+2+seslen,0);
       zxlog_zsig_verify_print(cf, len, buf, se, p);
       break;
     case 'T':  ERR("Unimplemented decryption %c", se[1]); break;
@@ -382,8 +382,8 @@ int main(int argc, char** argv, char** env)
       len = p-buf;
       D("unbase64 len(%d)", len);
       p = buf+16;
-      AES_set_decrypt_key(log_symkey, 128, &aes_key);
-      AES_cbc_encrypt(p, p, len-16, &aes_key, buf, 0);
+      AES_set_decrypt_key((unsigned char*)log_symkey, 128, &aes_key);
+      AES_cbc_encrypt((unsigned char*)p, (unsigned char*)p, len-16, &aes_key, (unsigned char*)buf, 0);
       zxlog_zsig_verify_print(cf, len, buf, se, p);
       break;
     case 'U':  ERR("Unimplemented decryption %c", se[1]); break;

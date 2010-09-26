@@ -561,16 +561,31 @@ directory under the /var/zxid/ses tree.
    +-- user/      Local user accounts (if enabled)
    |    |
    |    +-- SHA1/ Each local user has a directory whose name is SHA1
-   |    |    |    of the user's NameID (idpnid)
+   |    |    |    of the user's NameID (idpnid) and IdP Entity ID
    |    |    +-- .mni     Information needed by Name ID management
+   |    |    +-- PS,SHA1  Long term People Service EPR, kept in its own file
+   |    |    +-- .deleg/  Delegations (invitations) user has issued
+   |    |    |    |
+   |    |    |    +-- DELEG
+   |    |    |    `-- DELEG
+   |    |    |    
+   |    |    +-- .access/ Invitations user has received (delegations to access other's resources)
+   |    |    |    |
+   |    |    |    +-- ACCESS
+   |    |    |    `-- ACCESS
+   |    |    |
+   |    |    +-- .bs/     Local user attribute directory
+   |    |    |    |
+   |    |    |    `-- .at Local user attributes as LDIF (see zxid_ses_to_pool())
+   |    |    |    
    |    |    `-- .pw      User's local password if any (usually none)
    |    |
-   |    `-- SHA1b -> ../localuid/Sue   SHA1 can also be symlink to local account
+   |    `-- SHA1b -> ../uid/Sue   SHA1 can also be symlink to local account
    |
    +-- uid/       Local user ID (local login name) to SHA1 mapping
    |    |
    |    +-- joe -> ../user/SHA1   Symlink points to the real user directory
-   |    +-- SHA1b/   Local user can have directory whose name is the uid
+   |    +-- Sue/   Local user can have directory whose name is the uid
    |         |
    |         +-- .mni     Information needed by Name ID management
    |         `-- .pw      User's local password if any (usually none)
@@ -626,9 +641,13 @@ management may be useful on its own right if your application does not
 yet have such system. If it has, you probably want to continue to use the
 application's own system.
 
+Another functionality that needs the local user accounts is delegation
+using people service. In this case the invitations / delegations and
+PS-EPR of the user are remembered.
+
 Each user is represented by a directory whose filename is safe base64
-of the SHA1 hash of the user's NameID. The directory can actually
-be a symlink to some other place, such as localuid/ directory, see below.
+of the SHA1 hash of the user's NameID and the IdP's Entity ID. The directory can actually
+be a symlink to some other place, such as uid/ directory, see below.
 
 Inside the directory, a file called .mni captures the information
 needed for NameID Management. It is expected that other files

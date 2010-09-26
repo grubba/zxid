@@ -294,43 +294,49 @@ static char* zxid_map_bangbang(zxid_conf* cf, zxid_cgi* cgi, const char* key, co
 /*() Expand a template. Only selected !!VAR expansions supported. No IFs or loops. */
 
 /* Called by:  zxid_simple_idp_show_an */
-struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int auto_flags)
+struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int size_hint, int auto_flags)
 {
   char buf[8192];
-  const char* p;
-  const char* q;
+  const char* templ;
+  const char* tp;
+  const char* tq;
   char* pp;
   struct zx_str* ss;
   int len, got = read_all(sizeof(buf)-1, buf, "templ", "%s", templ_path);
   if (got <= 0) {
     D("Template at path(%s) not found. Using default template.", templ_path);
-    p = default_templ;
-  } else if (got <= 0 || got == sizeof(buf)-1) {
+    templ = default_templ;
+  } else if (got == sizeof(buf)-1) {
     ERR("Template at path(%s) does not fit in buffer of %d. Using default template.", templ_path, sizeof(buf)-1);
-    p = default_templ;
+    templ = default_templ;
   } else
-    p = buf;
-  ss = zx_new_len_str(cf->ctx, strlen(p) + 4096 /* Space enough for expansions? */);
-  for (pp = ss->s; *p && pp < ss->s + ss->len; ) {
-    if (p[0] == '!' && p[1] == '!' && A_Z_a_z_(p[2])) {
-      for (q = p+=2; A_Z_a_z_(*p); ++p) ;
-      q = zxid_map_bangbang(cf, cgi, q, p, auto_flags);
-      if (!q || !*q)
-	continue;
-      len = strlen(q);
-      if (pp + len >= ss->s + ss->len) {
+    templ = buf;
+  while (1) {  /* Try rendering, iterate if expansion is needed. */
+    tp = templ;
+    ss = zx_new_len_str(cf->ctx, strlen(tp) + size_hint);
+    for (pp = ss->s; *tp && pp < ss->s + ss->len; ) {
+      if (tp[0] == '!' && tp[1] == '!' && A_Z_a_z_(tp[2])) {
+	for (tq = tp+=2; A_Z_a_z_(*tp); ++tp) ;
+	tq = zxid_map_bangbang(cf, cgi, tq, tp, auto_flags);
+	if (!tq || !*tq)
+	  continue;
+	len = strlen(tq);
+	if (pp + len >= ss->s + ss->len) {
+	  pp += len;
+	  break;
+	}
+	memcpy(pp, tq, len);
 	pp += len;
-	break;
+	continue;
       }
-      memcpy(pp, q, len);
-      pp += len;
+      *pp++ = *tp++;
+    }
+    if (pp >= ss->s + ss->len) {
+      INFO("Expansion of template too big. Does not fit in %d. Expanding.", ss->len);
+      size_hint += size_hint;  /* Double it */
       continue;
     }
-    *pp++ = *p++;
-  }
-  if (pp >= ss->s + ss->len) {
-    ERR("Expansion of template too big. Does not fit in %d", ss->len);
-    return 0;
+    break;
   }
   *pp = 0;
   return ss;
@@ -399,24 +405,26 @@ char* zxid_idp_list_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
       dd = zx_strf(cf->ctx, "%.*s"
 		   "<option value=\"%s\"> %s (%s) %s\n",
 		   ss->len, ss->s, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid, mark);
+      break;
     case ZXID_IDP_LIST_BUTTON:
       if (cf->show_tech) {
 	dd = zx_strf(cf->ctx, "%.*s"
-		     "<input type=submit name=\"l0%s\" value=\" Login to %s \">\n"
-		     "<input type=submit name=\"l1%s\" value=\" Login to %s (A2) \">\n"
-		     "<input type=submit name=\"l2%s\" value=\" Login to %s (P2) \">\n"
-		     "<input type=submit name=\"l5%s\" value=\" Login to %s (S2) \">%s<br>\n",
+		     "<input type=submit name=\"l0%s\" value=\" Login with %s (%s)\">\n"
+		     "<input type=submit name=\"l1%s\" value=\" Login with %s (%s) (A2) \">\n"
+		     "<input type=submit name=\"l2%s\" value=\" Login with %s (%s) (P2) \">\n"
+		     "<input type=submit name=\"l5%s\" value=\" Login with %s (%s) (S2) \">%s<br>\n",
 		     ss->len, ss->s,
-		     idp->eid, idp->eid,
-		     idp->eid, idp->eid,
-		     idp->eid, idp->eid,
-		     idp->eid, idp->eid,
+		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
+		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
+		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
+		     idp->eid, STRNULLCHK(idp->dpy_name), idp->eid,
 		     mark);
       } else {
 	dd = zx_strf(cf->ctx, "%.*s"
-		     "<input type=submit name=\"l0%s\" value=\" Login to %s \">%s<br>\n",
-		     ss->len, ss->s, idp->eid, idp->eid, mark);
+		     "<input type=submit name=\"l0%s\" value=\" Login with %s (%s) \">%s<br>\n",
+		     ss->len, ss->s, idp->eid, STRNULLCHK(idp->dpy_name), idp->eid, mark);
       }
+      break;
     }
     zx_str_free(cf->ctx, ss);
     ss = dd;
@@ -482,7 +490,7 @@ struct zx_str* zxid_idp_select_zxstr_cf_cgi(zxid_conf* cf, zxid_cgi* cgi, int au
     zxlog(cf, 0,0,0,0,0,0,0, "N", "W", "IDPSEL", 0, 0);
 
 #if 1
-  ss = zxid_template_page_cf(cf, cgi, cf->idp_sel_templ_file, cf->idp_sel_templ, auto_flags);
+  ss = zxid_template_page_cf(cf, cgi, cf->idp_sel_templ_file, cf->idp_sel_templ, 4096, auto_flags);
 #else
   if (cf->idp_sel_our_eid && cf->idp_sel_our_eid[0])
     eid = zxid_my_entity_id(cf);
@@ -739,7 +747,7 @@ char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
     return zxid_simple_redir_page(cf, cf->err_page, p, res_len, auto_flags);
   }
     
-  ss = zxid_template_page_cf(cf, cgi, cf->err_templ_file, cf->err_templ, auto_flags);
+  ss = zxid_template_page_cf(cf, cgi, cf->err_templ_file, cf->err_templ, 4096, auto_flags);
   return zxid_simple_show_page(cf, ss, ZXID_AUTO_LOGINC, ZXID_AUTO_LOGINH,
 			       "g", "text/html", res_len, auto_flags);
 }
@@ -899,7 +907,7 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
       cgi->sp_dpy_name = "--No SP could be determined--";
   }
   
-  ss = zxid_template_page_cf(cf, cgi, cf->an_templ_file, cf->an_templ, auto_flags);
+  ss = zxid_template_page_cf(cf, cgi, cf->an_templ_file, cf->an_templ, 4096, auto_flags);
   if (b64)
     ZX_FREE(cf->ctx, b64);
   DD("an_page: ret(%s)", ss?ss->len:1, ss?ss->s:"?");
@@ -922,7 +930,8 @@ static char* zxid_simple_idp_pw_authn(zxid_conf* cf, zxid_cgi* cgi, int* res_len
  
   if (!zxid_decode_ssoreq(cf, cgi))
     goto err;
-  
+
+  memset(&sess, 0, sizeof(sess));
   if (zxid_pw_authn(cf, cgi, &sess))
     return zxid_simple_idp_an_ok_do_rest(cf, cgi, &sess, res_len, auto_flags);
 

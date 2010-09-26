@@ -173,7 +173,7 @@ int zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, in
     switch (how) {
     case 0:
       D("Invocation token set %p", out->Token);
-      ses->call_invtok = out->Token;
+      ses->call_invoktok = out->Token;
       break;
     case 1:
       D("Target Identity token set %p", out->Token);

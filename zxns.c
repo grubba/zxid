@@ -24,7 +24,7 @@
 /* ------------- All the manner namespace management ------------- */
 
 /* Called by: */
-void zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, char* nam, int namlen)
+void zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, const char* nam, int namlen)
 {
   char* p = memchr(nam, ':', namlen);
   if (p) {
@@ -33,14 +33,14 @@ void zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, char* nam, i
     namlen -= p-nam;
     nam = p;
   }
-  x->name = nam;
+  x->name = (char*)nam;
   x->name_len = namlen;
 }
 
 /*() Given known namespace, does the prefix refer to it, either natively or through an alias. */
 
 /* Called by: */
-int zx_is_ns_prefix(struct zx_ns_s* ns, int len, char* prefix)
+int zx_is_ns_prefix(struct zx_ns_s* ns, int len, const char* prefix)
 {
   struct zx_ns_s* alias;
   if (!ns)
@@ -54,7 +54,7 @@ int zx_is_ns_prefix(struct zx_ns_s* ns, int len, char* prefix)
 }
 
 /* Called by:  zx_fix_any_elem_dec, zx_init_tok_tab, zx_prefix_seen_whine, zx_xmlns_decl, zxsig_validate */
-struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, char* prefix)
+struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, const char* prefix)
 {
   struct zx_ns_s* ns;
   struct zx_ns_s* alias;
@@ -73,7 +73,7 @@ struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, char* prefix)
 }
 
 /* Called by:  zx_xmlns_decl */
-static struct zx_ns_s* zx_locate_ns_by_url(struct zx_ctx* c, int len, char* url)
+static struct zx_ns_s* zx_locate_ns_by_url(struct zx_ctx* c, int len, const char* url)
 {
   struct zx_ns_s* ns;
   struct zx_ns_s* alias;
@@ -92,7 +92,7 @@ static struct zx_ns_s* zx_locate_ns_by_url(struct zx_ctx* c, int len, char* url)
 }
 
 /* Called by:  zx_prefix_seen_whine, zx_xmlns_decl */
-static struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, char* prefix, int url_len, char* url)
+static struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url)
 {
   struct zx_ns_s* ns = ZX_ZALLOC(c, struct zx_ns_s);
   ns->prefix_len = prefix_len;
@@ -117,7 +117,7 @@ static struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, char* prefix,
  * namespace prefixes. If deplocate namespaces are detected, they are handled as aliases. */
 
 /* Called by:  zx_push_seen x2 */
-static struct zx_ns_s* zx_xmlns_decl(struct zx_ctx* c, int prefix_len, char* prefix, int url_len, char* url)
+static struct zx_ns_s* zx_xmlns_decl(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url)
 {
   struct zx_ns_s* alias;
   struct zx_ns_s* ns;
@@ -143,7 +143,7 @@ static struct zx_ns_s* zx_xmlns_decl(struct zx_ctx* c, int prefix_len, char* pre
 }
 
 /* Called by:  zx_prefix_seen_whine, zx_push_seen */
-struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, char* prefix)
+struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix)
 {
   struct zx_ns_s* ns;
   for (ns = c->guard_seen_n.seen_n; ns->seen_n; ns = ns->seen_n)
@@ -156,7 +156,7 @@ struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, char* prefix)
  * wholly unknown prefixes. */
 
 /* Called by:  TXattr_lookup, TXelem_lookup */
-struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, char* prefix, char* logkey, int mk_dummy_ns)
+struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* prefix, const char* logkey, int mk_dummy_ns)
 {
   struct zx_str* url;
   struct zx_ns_s* ns = zx_prefix_seen(c, len, prefix);
@@ -189,7 +189,7 @@ struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, char* prefix, ch
  * pop_seen list. Returns 0 if no addition was done (i.e. ns had been seen already). */
 
 /* Called by:  zx_add_xmlns_if_not_seen, zx_enc_xmlns_if_not_seen, zx_len_xmlns_if_not_seen, zx_scan_xmlns */
-static struct zx_ns_s* zx_push_seen(struct zx_ctx* c, int prefix_len, char* prefix, int url_len, char* url, struct zx_ns_s** pop_seen)
+static struct zx_ns_s* zx_push_seen(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url, struct zx_ns_s** pop_seen)
 {
   struct zx_ns_s* old_ns;
   struct zx_ns_s* ns;
@@ -310,8 +310,7 @@ struct zx_ns_s* zx_scan_xmlns(struct zx_ctx* c)
  * For attributes the namespaceless case is considered. */
 
 /* Called by:  TXattr_lookup, TXelem_lookup */
-const struct zx_tok* zx_tok_by_ns(const struct zx_tok* zt, const struct zx_tok* lim,
-				  int len, char* name, struct zx_ns_s* ns)
+const struct zx_tok* zx_tok_by_ns(const struct zx_tok* zt, const struct zx_tok* lim, int len, const char* name, struct zx_ns_s* ns)
 {
   struct zx_ns_s* alias;
   const struct zx_tok* ztt;

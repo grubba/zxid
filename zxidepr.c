@@ -433,10 +433,15 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
   env->Header = zx_NEW_e_Header(cf->ctx);
   env->Body = zx_NEW_e_Body(cf->ctx);
   env->Body->Query = zxid_mk_di_query(cf, svc, url, di_opt, 0);
-  epr = zxid_find_epr(cf, ses, zx_xmlns_di, 0, 0, 0, n);
-  if (!epr) {
-    ERR("EPR for svc(%s) not found in cache and no discovery EPR in cache, thus no way to discover the svc.", STRNULLCHK(svc));
-    return 0;
+  if (ses->deleg_di_epr) {
+    epr = ses->deleg_di_epr;
+    D("%d: Using delegated discovery EPR", n);
+  } else {
+    epr = zxid_find_epr(cf, ses, zx_xmlns_di, 0, 0, 0, n);
+    if (!epr) {
+      ERR("EPR for svc(%s) not found in cache and no discovery EPR in cache, thus no way to discover the svc.", STRNULLCHK(svc));
+      return 0;
+    }
   }
   env = zxid_wsc_call(cf, ses, epr, env, 0);
   if (env && env->Body) {
@@ -518,5 +523,19 @@ struct zx_str* zxid_get_epr_a7n(zxid_conf* cf, zxid_epr* epr) {
   return epr->Metadata->SecurityContext->Token->Assertion;
 }
 #endif
+
+zxid_epr* zxid_get_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses)
+{
+  return ses->deleg_di_epr;
+}
+
+/*(i) Allows explicit control over which Discovery Service is used, such
+ * as selecting somebody else's Discovery Service. This allows delegated
+ * access. */
+
+void zxid_set_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
+{
+  ses->deleg_di_epr = epr;
+}
 
 /* EOF  --  zxidepr.c */

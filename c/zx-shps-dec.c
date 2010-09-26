@@ -91,8 +91,8 @@ struct zx_shps_CallbackEPR_s* zx_DEC_shps_CallbackEPR(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_CallbackEPR_s* x = ZX_ZALLOC(c, struct zx_shps_CallbackEPR_s);
   x->gg.g.tok = zx_shps_CallbackEPR_ELEM;
   x->gg.g.ns = ns;
@@ -161,7 +161,7 @@ struct zx_shps_CallbackEPR_s* zx_DEC_shps_CallbackEPR(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -299,8 +299,8 @@ struct zx_shps_Delete_s* zx_DEC_shps_Delete(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_Delete_s* x = ZX_ZALLOC(c, struct zx_shps_Delete_s);
   x->gg.g.tok = zx_shps_Delete_ELEM;
   x->gg.g.ns = ns;
@@ -333,7 +333,7 @@ struct zx_shps_Delete_s* zx_DEC_shps_Delete(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -461,8 +461,8 @@ struct zx_shps_DeleteResponse_s* zx_DEC_shps_DeleteResponse(struct zx_ctx* c, st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_DeleteResponse_s* x = ZX_ZALLOC(c, struct zx_shps_DeleteResponse_s);
   x->gg.g.tok = zx_shps_DeleteResponse_ELEM;
   x->gg.g.ns = ns;
@@ -495,7 +495,7 @@ struct zx_shps_DeleteResponse_s* zx_DEC_shps_DeleteResponse(struct zx_ctx* c, st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -623,8 +623,8 @@ struct zx_shps_GetStatus_s* zx_DEC_shps_GetStatus(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_GetStatus_s* x = ZX_ZALLOC(c, struct zx_shps_GetStatus_s);
   x->gg.g.tok = zx_shps_GetStatus_ELEM;
   x->gg.g.ns = ns;
@@ -657,7 +657,7 @@ struct zx_shps_GetStatus_s* zx_DEC_shps_GetStatus(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -785,8 +785,8 @@ struct zx_shps_GetStatusResponse_s* zx_DEC_shps_GetStatusResponse(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_GetStatusResponse_s* x = ZX_ZALLOC(c, struct zx_shps_GetStatusResponse_s);
   x->gg.g.tok = zx_shps_GetStatusResponse_ELEM;
   x->gg.g.ns = ns;
@@ -819,7 +819,7 @@ struct zx_shps_GetStatusResponse_s* zx_DEC_shps_GetStatusResponse(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -952,8 +952,8 @@ struct zx_shps_GetStatusResponseItem_s* zx_DEC_shps_GetStatusResponseItem(struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_GetStatusResponseItem_s* x = ZX_ZALLOC(c, struct zx_shps_GetStatusResponseItem_s);
   x->gg.g.tok = zx_shps_GetStatusResponseItem_ELEM;
   x->gg.g.ns = ns;
@@ -986,7 +986,7 @@ struct zx_shps_GetStatusResponseItem_s* zx_DEC_shps_GetStatusResponseItem(struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1119,8 +1119,8 @@ struct zx_shps_InvocationContext_s* zx_DEC_shps_InvocationContext(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_InvocationContext_s* x = ZX_ZALLOC(c, struct zx_shps_InvocationContext_s);
   x->gg.g.tok = zx_shps_InvocationContext_ELEM;
   x->gg.g.ns = ns;
@@ -1153,7 +1153,7 @@ struct zx_shps_InvocationContext_s* zx_DEC_shps_InvocationContext(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1291,8 +1291,8 @@ struct zx_shps_InvokeItem_s* zx_DEC_shps_InvokeItem(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_InvokeItem_s* x = ZX_ZALLOC(c, struct zx_shps_InvokeItem_s);
   x->gg.g.tok = zx_shps_InvokeItem_ELEM;
   x->gg.g.ns = ns;
@@ -1331,7 +1331,7 @@ struct zx_shps_InvokeItem_s* zx_DEC_shps_InvokeItem(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1459,8 +1459,8 @@ struct zx_shps_InvokeResponse_s* zx_DEC_shps_InvokeResponse(struct zx_ctx* c, st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_InvokeResponse_s* x = ZX_ZALLOC(c, struct zx_shps_InvokeResponse_s);
   x->gg.g.tok = zx_shps_InvokeResponse_ELEM;
   x->gg.g.ns = ns;
@@ -1493,7 +1493,7 @@ struct zx_shps_InvokeResponse_s* zx_DEC_shps_InvokeResponse(struct zx_ctx* c, st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1626,8 +1626,8 @@ struct zx_shps_InvokeResponseItem_s* zx_DEC_shps_InvokeResponseItem(struct zx_ct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_InvokeResponseItem_s* x = ZX_ZALLOC(c, struct zx_shps_InvokeResponseItem_s);
   x->gg.g.tok = zx_shps_InvokeResponseItem_ELEM;
   x->gg.g.ns = ns;
@@ -1666,7 +1666,7 @@ struct zx_shps_InvokeResponseItem_s* zx_DEC_shps_InvokeResponseItem(struct zx_ct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1789,8 +1789,8 @@ struct zx_shps_Poll_s* zx_DEC_shps_Poll(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_Poll_s* x = ZX_ZALLOC(c, struct zx_shps_Poll_s);
   x->gg.g.tok = zx_shps_Poll_ELEM;
   x->gg.g.ns = ns;
@@ -1829,7 +1829,7 @@ struct zx_shps_Poll_s* zx_DEC_shps_Poll(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1962,8 +1962,8 @@ struct zx_shps_PollResponse_s* zx_DEC_shps_PollResponse(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_PollResponse_s* x = ZX_ZALLOC(c, struct zx_shps_PollResponse_s);
   x->gg.g.tok = zx_shps_PollResponse_ELEM;
   x->gg.g.ns = ns;
@@ -2002,7 +2002,7 @@ struct zx_shps_PollResponse_s* zx_DEC_shps_PollResponse(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2130,8 +2130,8 @@ struct zx_shps_ProxyInvoke_s* zx_DEC_shps_ProxyInvoke(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_ProxyInvoke_s* x = ZX_ZALLOC(c, struct zx_shps_ProxyInvoke_s);
   x->gg.g.tok = zx_shps_ProxyInvoke_ELEM;
   x->gg.g.ns = ns;
@@ -2164,7 +2164,7 @@ struct zx_shps_ProxyInvoke_s* zx_DEC_shps_ProxyInvoke(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2292,8 +2292,8 @@ struct zx_shps_ProxyInvokeItem_s* zx_DEC_shps_ProxyInvokeItem(struct zx_ctx* c, 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_ProxyInvokeItem_s* x = ZX_ZALLOC(c, struct zx_shps_ProxyInvokeItem_s);
   x->gg.g.tok = zx_shps_ProxyInvokeItem_ELEM;
   x->gg.g.ns = ns;
@@ -2332,7 +2332,7 @@ struct zx_shps_ProxyInvokeItem_s* zx_DEC_shps_ProxyInvokeItem(struct zx_ctx* c, 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2470,8 +2470,8 @@ struct zx_shps_ProxyInvokeResponse_s* zx_DEC_shps_ProxyInvokeResponse(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_ProxyInvokeResponse_s* x = ZX_ZALLOC(c, struct zx_shps_ProxyInvokeResponse_s);
   x->gg.g.tok = zx_shps_ProxyInvokeResponse_ELEM;
   x->gg.g.ns = ns;
@@ -2504,7 +2504,7 @@ struct zx_shps_ProxyInvokeResponse_s* zx_DEC_shps_ProxyInvokeResponse(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2637,8 +2637,8 @@ struct zx_shps_ProxyInvokeResponseItem_s* zx_DEC_shps_ProxyInvokeResponseItem(st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_ProxyInvokeResponseItem_s* x = ZX_ZALLOC(c, struct zx_shps_ProxyInvokeResponseItem_s);
   x->gg.g.tok = zx_shps_ProxyInvokeResponseItem_ELEM;
   x->gg.g.ns = ns;
@@ -2677,7 +2677,7 @@ struct zx_shps_ProxyInvokeResponseItem_s* zx_DEC_shps_ProxyInvokeResponseItem(st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2810,8 +2810,8 @@ struct zx_shps_Query_s* zx_DEC_shps_Query(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_Query_s* x = ZX_ZALLOC(c, struct zx_shps_Query_s);
   x->gg.g.tok = zx_shps_Query_ELEM;
   x->gg.g.ns = ns;
@@ -2844,7 +2844,7 @@ struct zx_shps_Query_s* zx_DEC_shps_Query(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2972,8 +2972,8 @@ struct zx_shps_QueryRegistered_s* zx_DEC_shps_QueryRegistered(struct zx_ctx* c, 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_QueryRegistered_s* x = ZX_ZALLOC(c, struct zx_shps_QueryRegistered_s);
   x->gg.g.tok = zx_shps_QueryRegistered_ELEM;
   x->gg.g.ns = ns;
@@ -3006,7 +3006,7 @@ struct zx_shps_QueryRegistered_s* zx_DEC_shps_QueryRegistered(struct zx_ctx* c, 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3134,8 +3134,8 @@ struct zx_shps_QueryRegisteredResponse_s* zx_DEC_shps_QueryRegisteredResponse(st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_QueryRegisteredResponse_s* x = ZX_ZALLOC(c, struct zx_shps_QueryRegisteredResponse_s);
   x->gg.g.tok = zx_shps_QueryRegisteredResponse_ELEM;
   x->gg.g.ns = ns;
@@ -3168,7 +3168,7 @@ struct zx_shps_QueryRegisteredResponse_s* zx_DEC_shps_QueryRegisteredResponse(st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3301,8 +3301,8 @@ struct zx_shps_QueryResponse_s* zx_DEC_shps_QueryResponse(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_QueryResponse_s* x = ZX_ZALLOC(c, struct zx_shps_QueryResponse_s);
   x->gg.g.tok = zx_shps_QueryResponse_ELEM;
   x->gg.g.ns = ns;
@@ -3335,7 +3335,7 @@ struct zx_shps_QueryResponse_s* zx_DEC_shps_QueryResponse(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3468,8 +3468,8 @@ struct zx_shps_Register_s* zx_DEC_shps_Register(struct zx_ctx* c, struct zx_ns_s
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_Register_s* x = ZX_ZALLOC(c, struct zx_shps_Register_s);
   x->gg.g.tok = zx_shps_Register_ELEM;
   x->gg.g.ns = ns;
@@ -3502,7 +3502,7 @@ struct zx_shps_Register_s* zx_DEC_shps_Register(struct zx_ctx* c, struct zx_ns_s
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3630,8 +3630,8 @@ struct zx_shps_RegisterResponse_s* zx_DEC_shps_RegisterResponse(struct zx_ctx* c
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_RegisterResponse_s* x = ZX_ZALLOC(c, struct zx_shps_RegisterResponse_s);
   x->gg.g.tok = zx_shps_RegisterResponse_ELEM;
   x->gg.g.ns = ns;
@@ -3664,7 +3664,7 @@ struct zx_shps_RegisterResponse_s* zx_DEC_shps_RegisterResponse(struct zx_ctx* c
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3797,8 +3797,8 @@ struct zx_shps_RegisterResponseItem_s* zx_DEC_shps_RegisterResponseItem(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_RegisterResponseItem_s* x = ZX_ZALLOC(c, struct zx_shps_RegisterResponseItem_s);
   x->gg.g.tok = zx_shps_RegisterResponseItem_ELEM;
   x->gg.g.ns = ns;
@@ -3837,7 +3837,7 @@ struct zx_shps_RegisterResponseItem_s* zx_DEC_shps_RegisterResponseItem(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3965,8 +3965,8 @@ struct zx_shps_SetStatus_s* zx_DEC_shps_SetStatus(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_SetStatus_s* x = ZX_ZALLOC(c, struct zx_shps_SetStatus_s);
   x->gg.g.tok = zx_shps_SetStatus_ELEM;
   x->gg.g.ns = ns;
@@ -3999,7 +3999,7 @@ struct zx_shps_SetStatus_s* zx_DEC_shps_SetStatus(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4127,8 +4127,8 @@ struct zx_shps_SetStatusItem_s* zx_DEC_shps_SetStatusItem(struct zx_ctx* c, stru
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_SetStatusItem_s* x = ZX_ZALLOC(c, struct zx_shps_SetStatusItem_s);
   x->gg.g.tok = zx_shps_SetStatusItem_ELEM;
   x->gg.g.ns = ns;
@@ -4167,7 +4167,7 @@ struct zx_shps_SetStatusItem_s* zx_DEC_shps_SetStatusItem(struct zx_ctx* c, stru
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4300,8 +4300,8 @@ struct zx_shps_SetStatusResponse_s* zx_DEC_shps_SetStatusResponse(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_SetStatusResponse_s* x = ZX_ZALLOC(c, struct zx_shps_SetStatusResponse_s);
   x->gg.g.tok = zx_shps_SetStatusResponse_ELEM;
   x->gg.g.ns = ns;
@@ -4334,7 +4334,7 @@ struct zx_shps_SetStatusResponse_s* zx_DEC_shps_SetStatusResponse(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4462,8 +4462,8 @@ struct zx_shps_Update_s* zx_DEC_shps_Update(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_Update_s* x = ZX_ZALLOC(c, struct zx_shps_Update_s);
   x->gg.g.tok = zx_shps_Update_ELEM;
   x->gg.g.ns = ns;
@@ -4496,7 +4496,7 @@ struct zx_shps_Update_s* zx_DEC_shps_Update(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4624,8 +4624,8 @@ struct zx_shps_UpdateItem_s* zx_DEC_shps_UpdateItem(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_UpdateItem_s* x = ZX_ZALLOC(c, struct zx_shps_UpdateItem_s);
   x->gg.g.tok = zx_shps_UpdateItem_ELEM;
   x->gg.g.ns = ns;
@@ -4664,7 +4664,7 @@ struct zx_shps_UpdateItem_s* zx_DEC_shps_UpdateItem(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4797,8 +4797,8 @@ struct zx_shps_UpdateResponse_s* zx_DEC_shps_UpdateResponse(struct zx_ctx* c, st
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_shps_UpdateResponse_s* x = ZX_ZALLOC(c, struct zx_shps_UpdateResponse_s);
   x->gg.g.tok = zx_shps_UpdateResponse_ELEM;
   x->gg.g.ns = ns;
@@ -4831,7 +4831,7 @@ struct zx_shps_UpdateResponse_s* zx_DEC_shps_UpdateResponse(struct zx_ctx* c, st
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

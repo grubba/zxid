@@ -107,7 +107,7 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
     case 0x02:      /* Sx plain sha1 */
       sigletter = 'S';
       sig = ZX_ALLOC(cf->ctx, 20);
-      SHA1(zbuf, zlen, sig);
+      SHA1((unsigned char*)zbuf, zlen, (unsigned char*)sig);
       len = 20;
       break;
     case 0x04:      /* Rx RSA-SHA1 signature */
@@ -135,9 +135,9 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       encletter = 'A';
       zbuf = zxlog_alloc_zbuf(cf, &zlen, zbuf, len, sig, 16);
       zx_rand(keybuf, 16);
-      AES_set_encrypt_key(keybuf, 128, &aes_key);
+      AES_set_encrypt_key((unsigned char*)keybuf, 128, &aes_key);
       memcpy(ivec, zbuf, sizeof(ivec));
-      AES_cbc_encrypt(zbuf+16, zbuf+16, zlen-16, &aes_key, ivec, 1);
+      AES_cbc_encrypt((unsigned char*)zbuf+16, (unsigned char*)zbuf+16, zlen-16, &aes_key, (unsigned char*)ivec, 1);
 
       LOCK(cf->mx, "logenc wrln");
       if (!cf->log_enc_cert)
@@ -149,7 +149,7 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       
       len = RSA_size(rsa_pkey);
       sig = ZX_ALLOC(cf->ctx, len);
-      if (RSA_public_encrypt(16, keybuf, sig, rsa_pkey, RSA_PKCS1_OAEP_PADDING) < 0) {
+      if (RSA_public_encrypt(16, (unsigned char*)keybuf, (unsigned char*)sig, rsa_pkey, RSA_PKCS1_OAEP_PADDING) < 0) {
 	ERR("RSA enc fail %x", encflags);
 	zx_report_openssl_error("zxlog rsa enc");
 	return;
@@ -173,9 +173,9 @@ void zxlog_write_line(zxid_conf* cf, char* c_path, int encflags, int n, const ch
       zbuf = zxlog_alloc_zbuf(cf, &zlen, zbuf, len, sig, 16);
       if (!cf->log_symkey[0])
 	zx_get_symkey(cf, "logenc.key", cf->log_symkey);
-      AES_set_encrypt_key(cf->log_symkey, 128, &aes_key);
+      AES_set_encrypt_key((unsigned char*)cf->log_symkey, 128, &aes_key);
       memcpy(ivec, zbuf, sizeof(ivec));
-      AES_cbc_encrypt(zbuf+16, zbuf+16, zlen-16, &aes_key, ivec, 1);
+      AES_cbc_encrypt((unsigned char*)zbuf+16, (unsigned char*)zbuf+16, zlen-16, &aes_key, (unsigned char*)ivec, 1);
       break;
     case 0x50:  /* xU 3DES */
       encletter = 'U';
@@ -305,7 +305,7 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
 	       a7nid?a7nid->len:1, a7nid?a7nid->s:"-",
 	       nid?nid->len:1,     nid?nid->s:"-",
 	       zx_instance, STRNULLCHKD(sigval), res, op, arg?arg:"-");
-  logbuf[sizeof(len)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+  logbuf[len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   if (n <= 0 || n >= len-3) {
     if (n < 0) {
       perror("snprintf");
@@ -319,8 +319,8 @@ static int zxlog_fmt(zxid_conf* cf,   /* 1 */
   } else { /* Space left: try printing the format string as well! */
     p = logbuf+n;
     if (fmt && fmt[0]) {
-      n = vsnprintf(p, len-n-2, fmt?fmt:"-", ap);
-      p[len-n-3] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+      n = vsnprintf(p, len-n-2, fmt, ap);
+      logbuf[len-1] = 0;  /* must terminate manually as on win32 nul term is not guaranteed */
       if (n <= 0 || n >= len-(p-logbuf)-2) {
 	if (n < 0) {
 	  perror("vsnprintf");
@@ -408,7 +408,7 @@ int zxlog(zxid_conf* cf,   /* 1 */
   
   /* Output stage */
   
-  D("LOG(%.*s)", n-1, logbuf);
+  DD("LOG(%.*s)", n-1, logbuf);
   if ((cf->log_err_in_act || res[0] == 'K') && cf->log_act) {
     name_from_path(c_path, sizeof(c_path), "%s" ZXID_LOG_DIR "act", cf->path);
     zxlog_write_line(cf, c_path, cf->log_act, n, logbuf);

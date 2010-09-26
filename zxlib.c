@@ -869,7 +869,7 @@ int zx_scan_pi_or_comment(struct zx_ctx* c)
 }
 
 /* Called by:  TXDEC_ELNAME */
-struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, char* name, char* data, int tok, int ctx_tok)
+struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, const char* name, const char* data, int tok, int ctx_tok)
 {
   int namlen = data - name - 2;
   struct zx_any_attr_s* attr = ZX_ZALLOC(c, struct zx_any_attr_s);
@@ -882,7 +882,7 @@ struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, char*
   }
 
   attr->name_len = namlen;
-  attr->name = name;
+  attr->name = (char*)name;
   attr->ss.g.n = &el->any_attr->ss.g;
   el->any_attr = attr;
   /* *** namespace handling for unknown attribute? */

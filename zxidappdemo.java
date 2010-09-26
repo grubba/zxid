@@ -28,6 +28,7 @@ import java.util.regex.Matcher;
 
 public class zxidappdemo extends HttpServlet {
     static final boolean verbose = false;
+    static final Pattern fedusername_pat = Pattern.compile("fedusername:[ ]([^\\n]*)");
     static final Pattern idpnid_pat = Pattern.compile("idpnid:[ ]([^\\n]*)");
     static final Pattern nidfmt_pat = Pattern.compile("nidfmt:[ ]([^\\n]*)");
     static final Pattern affid_pat  = Pattern.compile("affid:[ ]([^\\n]*)");
@@ -52,6 +53,13 @@ public class zxidappdemo extends HttpServlet {
 	throws IOException
     {
 	int i;
+	try {
+	    Matcher matcher = idpnid_pat.matcher(ret);
+	    for (i = n; i > 0; --i)
+		matcher.find();
+	    out.print("<b>fedusername</b>: " + matcher.group(1) + "<br>\n");
+	} catch(IllegalStateException e) { }
+
 	try {
 	    Matcher matcher = idpnid_pat.matcher(ret);
 	    for (i = n; i > 0; --i)

@@ -25,7 +25,7 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-CU8* help =
+char* help =
 "zxcot  -  Circle-of-Trust management tool R" ZXID_REL "\n\
 Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\

@@ -91,8 +91,8 @@ struct zx_exca_InclusiveNamespaces_s* zx_DEC_exca_InclusiveNamespaces(struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_exca_InclusiveNamespaces_s* x = ZX_ZALLOC(c, struct zx_exca_InclusiveNamespaces_s);
   x->gg.g.tok = zx_exca_InclusiveNamespaces_ELEM;
   x->gg.g.ns = ns;
@@ -131,7 +131,7 @@ struct zx_exca_InclusiveNamespaces_s* zx_DEC_exca_InclusiveNamespaces(struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

@@ -91,8 +91,8 @@ struct zx_idpdisc_DiscoveryResponse_s* zx_DEC_idpdisc_DiscoveryResponse(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_idpdisc_DiscoveryResponse_s* x = ZX_ZALLOC(c, struct zx_idpdisc_DiscoveryResponse_s);
   x->gg.g.tok = zx_idpdisc_DiscoveryResponse_ELEM;
   x->gg.g.ns = ns;
@@ -155,7 +155,7 @@ struct zx_idpdisc_DiscoveryResponse_s* zx_DEC_idpdisc_DiscoveryResponse(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

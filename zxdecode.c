@@ -25,7 +25,7 @@
 #include "c/zxidvers.h"
 #include "c/zx-ns.h"
 
-CU8* help =
+char* help =
 "zxdecode  -  Decode SAML Redirect and POST Messages R" ZXID_REL "\n\
 Copyright (c) 2008-2009 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\

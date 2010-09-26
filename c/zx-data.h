@@ -83,9 +83,9 @@ extern const struct zx_tok zx_attrs[zx__ATTR_MAX];    /* gperf generated, see *-
 extern const struct zx_tok zx_elems[zx__ELEM_MAX];    /* gperf generated, see *-elems.c */
 const struct zx_tok* zx_attr2tok(const char* s, unsigned int len);
 const struct zx_tok* zx_elem2tok(const char* s, unsigned int len);
-struct zx_elem_s* zx_known_or_unknown_elem(struct zx_ctx* c, int tok, struct zx_elem_s* x, int len, char* name, struct zx_ns_s* ns);
-int zx_attr_lookup(struct zx_ctx* c, char* name, char* lim, struct zx_ns_s** ns);
-int zx_elem_lookup(struct zx_ctx* c, char* name, char* lim, struct zx_ns_s** ns);
+struct zx_elem_s* zx_known_or_unknown_elem(struct zx_ctx* c, int tok, struct zx_elem_s* x, int len, const char* name, struct zx_ns_s* ns);
+int zx_attr_lookup(struct zx_ctx* c, const char* name, const char* lim, struct zx_ns_s** ns);
+int zx_elem_lookup(struct zx_ctx* c, const char* name, const char* lim, struct zx_ns_s** ns);
 
 /* -------------------------- root -------------------------- */
 /* refby( ) */
@@ -469,7 +469,7 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x);
 char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x);
 struct zx_elem_s* zx_DEC_simple_elem(struct zx_ctx* c, struct zx_ns_s* ns, int tok);
-struct zx_any_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_ns_s* ns, char* nam, int namlen);
+struct zx_any_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_ns_s* ns, const char* nam, int namlen);
 void zx_DUP_STRS_simple_elem(struct zx_ctx* c, struct zx_elem_s* x);
 struct zx_elem_s* zx_DEEP_CLONE_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, int dup_strs);
 void zx_FREE_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, int free_strs);

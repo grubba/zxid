@@ -91,8 +91,8 @@ struct zx_cb_By_s* zx_DEC_cb_By(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_By_s* x = ZX_ZALLOC(c, struct zx_cb_By_s);
   x->gg.g.tok = zx_cb_By_ELEM;
   x->gg.g.ns = ns;
@@ -137,7 +137,7 @@ struct zx_cb_By_s* zx_DEC_cb_By(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -260,8 +260,8 @@ struct zx_cb_Create_s* zx_DEC_cb_Create(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Create_s* x = ZX_ZALLOC(c, struct zx_cb_Create_s);
   x->gg.g.tok = zx_cb_Create_ELEM;
   x->gg.g.ns = ns;
@@ -300,7 +300,7 @@ struct zx_cb_Create_s* zx_DEC_cb_Create(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -453,8 +453,8 @@ struct zx_cb_CreateItem_s* zx_DEC_cb_CreateItem(struct zx_ctx* c, struct zx_ns_s
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_CreateItem_s* x = ZX_ZALLOC(c, struct zx_cb_CreateItem_s);
   x->gg.g.tok = zx_cb_CreateItem_ELEM;
   x->gg.g.ns = ns;
@@ -505,7 +505,7 @@ struct zx_cb_CreateItem_s* zx_DEC_cb_CreateItem(struct zx_ctx* c, struct zx_ns_s
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -633,8 +633,8 @@ struct zx_cb_CreateResponse_s* zx_DEC_cb_CreateResponse(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_CreateResponse_s* x = ZX_ZALLOC(c, struct zx_cb_CreateResponse_s);
   x->gg.g.tok = zx_cb_CreateResponse_ELEM;
   x->gg.g.ns = ns;
@@ -679,7 +679,7 @@ struct zx_cb_CreateResponse_s* zx_DEC_cb_CreateResponse(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -817,8 +817,8 @@ struct zx_cb_Credential_s* zx_DEC_cb_Credential(struct zx_ctx* c, struct zx_ns_s
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Credential_s* x = ZX_ZALLOC(c, struct zx_cb_Credential_s);
   x->gg.g.tok = zx_cb_Credential_ELEM;
   x->gg.g.ns = ns;
@@ -857,7 +857,7 @@ struct zx_cb_Credential_s* zx_DEC_cb_Credential(struct zx_ctx* c, struct zx_ns_s
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -985,8 +985,8 @@ struct zx_cb_Data_s* zx_DEC_cb_Data(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Data_s* x = ZX_ZALLOC(c, struct zx_cb_Data_s);
   x->gg.g.tok = zx_cb_Data_ELEM;
   x->gg.g.ns = ns;
@@ -1061,7 +1061,7 @@ struct zx_cb_Data_s* zx_DEC_cb_Data(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1189,8 +1189,8 @@ struct zx_cb_Delete_s* zx_DEC_cb_Delete(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Delete_s* x = ZX_ZALLOC(c, struct zx_cb_Delete_s);
   x->gg.g.tok = zx_cb_Delete_ELEM;
   x->gg.g.ns = ns;
@@ -1229,7 +1229,7 @@ struct zx_cb_Delete_s* zx_DEC_cb_Delete(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1372,8 +1372,8 @@ struct zx_cb_DeleteItem_s* zx_DEC_cb_DeleteItem(struct zx_ctx* c, struct zx_ns_s
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_DeleteItem_s* x = ZX_ZALLOC(c, struct zx_cb_DeleteItem_s);
   x->gg.g.tok = zx_cb_DeleteItem_ELEM;
   x->gg.g.ns = ns;
@@ -1436,7 +1436,7 @@ struct zx_cb_DeleteItem_s* zx_DEC_cb_DeleteItem(struct zx_ctx* c, struct zx_ns_s
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1564,8 +1564,8 @@ struct zx_cb_DeleteResponse_s* zx_DEC_cb_DeleteResponse(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_DeleteResponse_s* x = ZX_ZALLOC(c, struct zx_cb_DeleteResponse_s);
   x->gg.g.tok = zx_cb_DeleteResponse_ELEM;
   x->gg.g.ns = ns;
@@ -1604,7 +1604,7 @@ struct zx_cb_DeleteResponse_s* zx_DEC_cb_DeleteResponse(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1737,8 +1737,8 @@ struct zx_cb_EncryptedResourceID_s* zx_DEC_cb_EncryptedResourceID(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_EncryptedResourceID_s* x = ZX_ZALLOC(c, struct zx_cb_EncryptedResourceID_s);
   x->gg.g.tok = zx_cb_EncryptedResourceID_ELEM;
   x->gg.g.ns = ns;
@@ -1771,7 +1771,7 @@ struct zx_cb_EncryptedResourceID_s* zx_DEC_cb_EncryptedResourceID(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -1904,8 +1904,8 @@ struct zx_cb_Extension_s* zx_DEC_cb_Extension(struct zx_ctx* c, struct zx_ns_s* 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Extension_s* x = ZX_ZALLOC(c, struct zx_cb_Extension_s);
   x->gg.g.tok = zx_cb_Extension_ELEM;
   x->gg.g.ns = ns;
@@ -1938,7 +1938,7 @@ struct zx_cb_Extension_s* zx_DEC_cb_Extension(struct zx_ctx* c, struct zx_ns_s* 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2061,8 +2061,8 @@ struct zx_cb_ItemData_s* zx_DEC_cb_ItemData(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_ItemData_s* x = ZX_ZALLOC(c, struct zx_cb_ItemData_s);
   x->gg.g.tok = zx_cb_ItemData_ELEM;
   x->gg.g.ns = ns;
@@ -2119,7 +2119,7 @@ struct zx_cb_ItemData_s* zx_DEC_cb_ItemData(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2247,8 +2247,8 @@ struct zx_cb_ItemSelection_s* zx_DEC_cb_ItemSelection(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_ItemSelection_s* x = ZX_ZALLOC(c, struct zx_cb_ItemSelection_s);
   x->gg.g.tok = zx_cb_ItemSelection_ELEM;
   x->gg.g.ns = ns;
@@ -2287,7 +2287,7 @@ struct zx_cb_ItemSelection_s* zx_DEC_cb_ItemSelection(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2410,8 +2410,8 @@ struct zx_cb_Modification_s* zx_DEC_cb_Modification(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Modification_s* x = ZX_ZALLOC(c, struct zx_cb_Modification_s);
   x->gg.g.tok = zx_cb_Modification_ELEM;
   x->gg.g.ns = ns;
@@ -2474,7 +2474,7 @@ struct zx_cb_Modification_s* zx_DEC_cb_Modification(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2607,8 +2607,8 @@ struct zx_cb_Modify_s* zx_DEC_cb_Modify(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Modify_s* x = ZX_ZALLOC(c, struct zx_cb_Modify_s);
   x->gg.g.tok = zx_cb_Modify_ELEM;
   x->gg.g.ns = ns;
@@ -2647,7 +2647,7 @@ struct zx_cb_Modify_s* zx_DEC_cb_Modify(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2800,8 +2800,8 @@ struct zx_cb_ModifyResponse_s* zx_DEC_cb_ModifyResponse(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_ModifyResponse_s* x = ZX_ZALLOC(c, struct zx_cb_ModifyResponse_s);
   x->gg.g.tok = zx_cb_ModifyResponse_ELEM;
   x->gg.g.ns = ns;
@@ -2846,7 +2846,7 @@ struct zx_cb_ModifyResponse_s* zx_DEC_cb_ModifyResponse(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -2984,8 +2984,8 @@ struct zx_cb_NewData_s* zx_DEC_cb_NewData(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_NewData_s* x = ZX_ZALLOC(c, struct zx_cb_NewData_s);
   x->gg.g.tok = zx_cb_NewData_ELEM;
   x->gg.g.ns = ns;
@@ -3018,7 +3018,7 @@ struct zx_cb_NewData_s* zx_DEC_cb_NewData(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3146,8 +3146,8 @@ struct zx_cb_Notification_s* zx_DEC_cb_Notification(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Notification_s* x = ZX_ZALLOC(c, struct zx_cb_Notification_s);
   x->gg.g.tok = zx_cb_Notification_ELEM;
   x->gg.g.ns = ns;
@@ -3204,7 +3204,7 @@ struct zx_cb_Notification_s* zx_DEC_cb_Notification(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3332,8 +3332,8 @@ struct zx_cb_Notify_s* zx_DEC_cb_Notify(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Notify_s* x = ZX_ZALLOC(c, struct zx_cb_Notify_s);
   x->gg.g.tok = zx_cb_Notify_ELEM;
   x->gg.g.ns = ns;
@@ -3378,7 +3378,7 @@ struct zx_cb_Notify_s* zx_DEC_cb_Notify(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3511,8 +3511,8 @@ struct zx_cb_NotifyAdminTo_s* zx_DEC_cb_NotifyAdminTo(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_NotifyAdminTo_s* x = ZX_ZALLOC(c, struct zx_cb_NotifyAdminTo_s);
   x->gg.g.tok = zx_cb_NotifyAdminTo_ELEM;
   x->gg.g.ns = ns;
@@ -3551,7 +3551,7 @@ struct zx_cb_NotifyAdminTo_s* zx_DEC_cb_NotifyAdminTo(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3689,8 +3689,8 @@ struct zx_cb_NotifyResponse_s* zx_DEC_cb_NotifyResponse(struct zx_ctx* c, struct
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_NotifyResponse_s* x = ZX_ZALLOC(c, struct zx_cb_NotifyResponse_s);
   x->gg.g.tok = zx_cb_NotifyResponse_ELEM;
   x->gg.g.ns = ns;
@@ -3729,7 +3729,7 @@ struct zx_cb_NotifyResponse_s* zx_DEC_cb_NotifyResponse(struct zx_ctx* c, struct
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -3862,8 +3862,8 @@ struct zx_cb_NotifyTo_s* zx_DEC_cb_NotifyTo(struct zx_ctx* c, struct zx_ns_s* ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_NotifyTo_s* x = ZX_ZALLOC(c, struct zx_cb_NotifyTo_s);
   x->gg.g.tok = zx_cb_NotifyTo_ELEM;
   x->gg.g.ns = ns;
@@ -3902,7 +3902,7 @@ struct zx_cb_NotifyTo_s* zx_DEC_cb_NotifyTo(struct zx_ctx* c, struct zx_ns_s* ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4040,8 +4040,8 @@ struct zx_cb_Query_s* zx_DEC_cb_Query(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Query_s* x = ZX_ZALLOC(c, struct zx_cb_Query_s);
   x->gg.g.tok = zx_cb_Query_ELEM;
   x->gg.g.ns = ns;
@@ -4080,7 +4080,7 @@ struct zx_cb_Query_s* zx_DEC_cb_Query(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4228,8 +4228,8 @@ struct zx_cb_QueryItem_s* zx_DEC_cb_QueryItem(struct zx_ctx* c, struct zx_ns_s* 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_QueryItem_s* x = ZX_ZALLOC(c, struct zx_cb_QueryItem_s);
   x->gg.g.tok = zx_cb_QueryItem_ELEM;
   x->gg.g.ns = ns;
@@ -4292,7 +4292,7 @@ struct zx_cb_QueryItem_s* zx_DEC_cb_QueryItem(struct zx_ctx* c, struct zx_ns_s* 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4415,8 +4415,8 @@ struct zx_cb_QueryResponse_s* zx_DEC_cb_QueryResponse(struct zx_ctx* c, struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_QueryResponse_s* x = ZX_ZALLOC(c, struct zx_cb_QueryResponse_s);
   x->gg.g.tok = zx_cb_QueryResponse_ELEM;
   x->gg.g.ns = ns;
@@ -4467,7 +4467,7 @@ struct zx_cb_QueryResponse_s* zx_DEC_cb_QueryResponse(struct zx_ctx* c, struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4605,8 +4605,8 @@ struct zx_cb_RefItem_s* zx_DEC_cb_RefItem(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_RefItem_s* x = ZX_ZALLOC(c, struct zx_cb_RefItem_s);
   x->gg.g.tok = zx_cb_RefItem_ELEM;
   x->gg.g.ns = ns;
@@ -4651,7 +4651,7 @@ struct zx_cb_RefItem_s* zx_DEC_cb_RefItem(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4774,8 +4774,8 @@ struct zx_cb_ReportUsage_s* zx_DEC_cb_ReportUsage(struct zx_ctx* c, struct zx_ns
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_ReportUsage_s* x = ZX_ZALLOC(c, struct zx_cb_ReportUsage_s);
   x->gg.g.tok = zx_cb_ReportUsage_ELEM;
   x->gg.g.ns = ns;
@@ -4814,7 +4814,7 @@ struct zx_cb_ReportUsage_s* zx_DEC_cb_ReportUsage(struct zx_ctx* c, struct zx_ns
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -4957,8 +4957,8 @@ struct zx_cb_ReportUsageResponse_s* zx_DEC_cb_ReportUsageResponse(struct zx_ctx*
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_ReportUsageResponse_s* x = ZX_ZALLOC(c, struct zx_cb_ReportUsageResponse_s);
   x->gg.g.tok = zx_cb_ReportUsageResponse_ELEM;
   x->gg.g.ns = ns;
@@ -4997,7 +4997,7 @@ struct zx_cb_ReportUsageResponse_s* zx_DEC_cb_ReportUsageResponse(struct zx_ctx*
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5125,8 +5125,8 @@ struct zx_cb_ResourceID_s* zx_DEC_cb_ResourceID(struct zx_ctx* c, struct zx_ns_s
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_ResourceID_s* x = ZX_ZALLOC(c, struct zx_cb_ResourceID_s);
   x->gg.g.tok = zx_cb_ResourceID_ELEM;
   x->gg.g.ns = ns;
@@ -5165,7 +5165,7 @@ struct zx_cb_ResourceID_s* zx_DEC_cb_ResourceID(struct zx_ctx* c, struct zx_ns_s
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5288,8 +5288,8 @@ struct zx_cb_Status_s* zx_DEC_cb_Status(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Status_s* x = ZX_ZALLOC(c, struct zx_cb_Status_s);
   x->gg.g.tok = zx_cb_Status_ELEM;
   x->gg.g.ns = ns;
@@ -5340,7 +5340,7 @@ struct zx_cb_Status_s* zx_DEC_cb_Status(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5468,8 +5468,8 @@ struct zx_cb_Subscription_s* zx_DEC_cb_Subscription(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_Subscription_s* x = ZX_ZALLOC(c, struct zx_cb_Subscription_s);
   x->gg.g.tok = zx_cb_Subscription_ELEM;
   x->gg.g.ns = ns;
@@ -5532,7 +5532,7 @@ struct zx_cb_Subscription_s* zx_DEC_cb_Subscription(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -5690,8 +5690,8 @@ struct zx_cb_UsageType_s* zx_DEC_cb_UsageType(struct zx_ctx* c, struct zx_ns_s* 
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_cb_UsageType_s* x = ZX_ZALLOC(c, struct zx_cb_UsageType_s);
   x->gg.g.tok = zx_cb_UsageType_ELEM;
   x->gg.g.ns = ns;
@@ -5760,7 +5760,7 @@ struct zx_cb_UsageType_s* zx_DEC_cb_UsageType(struct zx_ctx* c, struct zx_ns_s* 
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }

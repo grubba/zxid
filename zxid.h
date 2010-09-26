@@ -422,17 +422,19 @@ struct zxid_ses {
   char* setcookie;     /* If set, the content rendering should include set-cookie header. */
   char* cookie;        /* Cookie seen by downstream internal requests after SSO. */
   char* rs;            /* RelayState at SSO. mod_auth_saml uses this as URI after SSO. */
+  char* rcvd_usagedir; /* Received Usage Directives. Populated by zxid_wsc_validate_resp_env() */
   long an_instant;     /* IdP: Unix seconds when authentication was performed. Used in an_stmt */
   zxid_nid* nameid;    /* From a7n or EncryptedID */
   zxid_nid* tgtnameid; /* From a7n or EncryptedID */
   zxid_a7n* a7n;       /* SAML 2.0 for Subject */
   zxid_a7n* tgta7n;    /* SAML 2.0 for Target */
-  struct zx_sec_Token_s* call_invtok;
-  struct zx_sec_Token_s* call_tgttok;
   struct zx_sa11_Assertion_s* a7n11;
   struct zx_sa11_Assertion_s* tgta7n11;
   struct zx_ff12_Assertion_s* a7n12;
   struct zx_ff12_Assertion_s* tgta7n12;
+  struct zx_sec_Token_s* call_invoktok;  /* If set, see zxid_map_identity_token(), use as wsse */
+  struct zx_sec_Token_s* call_tgttok;    /* If set, use as TargetIdentity token */
+  zxid_epr* deleg_di_epr;  /* If set, see zxid_set_delegated_discovery_epr(), used for disco. */
   zxid_fault* curflt;  /* SOAP fault, if any, reported by zxid_wsp_validate() */
   zxid_tas3_status* curstatus;  /* TAS3 status header, if any. */
   char* sesbuf;
@@ -609,7 +611,7 @@ char* zxid_simple_show_err(zxid_conf* cf, zxid_cgi* cgi, int* res_len, int auto_
 
 char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
 char* zxid_simple_no_ses_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* res_len, int auto_flags);
-struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int auto_flags);
+struct zx_str* zxid_template_page_cf(zxid_conf* cf, zxid_cgi* cgi, const char* templ_path, const char* default_templ, int size_hint, int auto_flags);
 
 /* --------------- Full API --------------- */
 
@@ -987,6 +989,8 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve);
 struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env, char** ret_enve);
 struct zx_str* zxid_call(zxid_conf* cf, zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* enve);
 struct zx_str* zxid_callf(zxid_conf* cf, zxid_ses* ses, const char* svctype, const char* url, const char* di_opt, const char* az_cred, const char* env_f, ...);
+struct zx_str* zxid_call_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve);
+struct zx_str* zxid_callf_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* env_f, ...);
 struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* enve);
 struct zx_str* zxid_wsc_prepare_callf(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, const char* az_cred, const char* env_f, ...);
 int zxid_wsc_valid_resp(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const char* enve);
@@ -1030,6 +1034,8 @@ struct zx_str* zxid_get_epr_address(zxid_conf* cf, zxid_epr* epr);
 struct zx_str* zxid_get_epr_entid(zxid_conf* cf, zxid_epr* epr);
 struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr);
 zxid_epr* zxid_new_epr(zxid_conf* cf, char* address, char* desc, char* entid, char* svctype);
+zxid_epr* zxid_get_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses);
+void zxid_set_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr);
 
 /* zxiddi -  Discovery Service */
 

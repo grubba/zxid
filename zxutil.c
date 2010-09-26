@@ -658,7 +658,7 @@ char* sha1_safe_base64(char* out_buf, int len, const char* data)
   char sha1[20];
   if (len == -1)
     len = strlen(data);
-  SHA1(data, len, sha1);
+  SHA1((unsigned char*)data, len, (unsigned char*)sha1);
   return base64_fancy_raw(sha1, 20, out_buf, safe_basis_64, 1<<31, 0, 0, '.');
 }
 
@@ -843,8 +843,8 @@ char* zx_url_encode(struct zx_ctx* c, int in_len, char* in, int* out_len)
   return out;
 }
 
-const unsigned char const * hex_trans      = "0123456789abcdef";
-const unsigned char const * ykmodhex_trans = "cbdefghijklnrtuv";  /* as of libyubikey-1.5 */
+const unsigned char const * hex_trans      = (unsigned char*)"0123456789abcdef";
+const unsigned char const * ykmodhex_trans = (unsigned char*)"cbdefghijklnrtuv";  /* as of libyubikey-1.5 */
 
 /*() Especially useful as yubikey_modhex_decode() replacement.
  * Supports inplace conversion. Does not nul terminate. */
@@ -855,12 +855,12 @@ char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans)
   const unsigned char* hi;
   const unsigned char* lo;
   for (; len>1; len-=2, ++dst, src+=2) {
-    hi = strchr(trans, src[0]);
+    hi = (const unsigned char*)strchr((char*)trans, src[0]);
     if (!hi) {
       ERR("Bad hi character(%x) in hex string using trans(%s) len left=%d src(%.*s)", src[0], trans, len, len, src);
       hi = trans;
     }
-    lo = strchr(trans, src[1]);
+    lo = (const unsigned char*)strchr((char*)trans, src[1]);
     if (!lo) {
       ERR("Bad lo character(%x) in hex string using trans(%s) len left=%d src(%.*s)", src[1], trans, len, len, src);
       lo = trans;
@@ -876,7 +876,7 @@ char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans)
  *   yyyy-MM-ddThh:mm:ssZ */
 
 /* Called by:  zxid_idp_sso, zxid_sp_sso_finalize, zxid_validate_cond x2, zxid_wsp_validate */
-int zx_date_time_to_secs(char* dt)
+int zx_date_time_to_secs(const char* dt)
 {
   struct tm t;
   memset(&t, 0, sizeof(t));

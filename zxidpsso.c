@@ -220,7 +220,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
   }
   
   while (de = readdir(dir)) {
-    D("Considering bootstrap file(%s%s)", path, de->d_name);
+    D("Consider bs(%s%s)", path, de->d_name);
     
     if (de->d_name[strlen(de->d_name)-1] == '~')  /* Ignore backups from hand edited EPRs. */
       continue;

@@ -25,7 +25,7 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-CU8* help =
+char* help =
 "zxcall  -  Web Service Client tool R" ZXID_REL "\n\
 SAML 2.0 and ID-WSF 2.0 are standards for federated identity and web services.\n\
 Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\

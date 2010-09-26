@@ -39,13 +39,12 @@ yet another worry.
 https://idp.testshib.org/idp/shibboleth
 
 Google Apps Integration
-
 http://code.google.com/googleapps/domain/sso/saml_reference_implementation.html
-
 Here are example docs for SimpleSAMLPHP, or Shibboleth:
 * http://simplesamlphp.org/docs/1.5/simplesamlphp-googleapps
 * https://shibboleth.usc.edu/docs/google-apps/
 
+    - Pairwise session indexes (encrypt master index and SP entid with IdP sym key)
     - zxcot should have idpdimd listing mode
     - zxpasswd should have user federation listing mode
     - zxid_pw_authn() should not report scary error message when
@@ -56,20 +55,31 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Use post screen as confirmation screen
     - If generic XML content is seen as attribute value, it should be reserialized as safe_base64 so it can be returned to app layer as attribute (e.g. via LDIF).
     - Config option for redirection after SLO
-    - Templatize idp selection
+    - WSP_LOCALPDP_OBL_REQ processing
+    - WSC_LOCALPDP_OBL_ACCEPT processing
     NOTPUB
 
 zzxid-0.65:: 23.9.2010
     - zxididp: added ID Mapper (to be used by Delegation Service)
     - zxididp: added some aspects of People Service (to be used by Delegation Service)
     - zxididp: added SSOS
+    - Added zxid_map_identity_token()
+    - Added zxid_set_delegated_discovery_epr()
+    - Added psobj encryption for privacy preservation of people referenced by ObjectIDs
+    - Added zxid_attach_sol1_usage_directive()
+    - Added WSC_LOCALPDP_OBL_PLEDGE config option
+    - Added WSP_LOCALPDP_OBL_REQ config option
+    - Added WSP_LOCALPDP_OBL_EMIT config option
+    - Added WSC_LOCALPDP_OBL_ACCEPT config option
     - Shortened the before and after slops from 1 day to about 2 hours
     - Improved zxid_get_fault_status() by adding a first level status code
     - Added -at option to zxpasswd
     - Fixed zxpasswd -l directory listing
-    - Added psobj encryption for privacy preservation of people referenced by ObjectIDs
     - zxid_simple():: Added handler for resolving invitation
-    NOTPUB
+    - Templatized idp selection
+    - Templatized POST screen
+    - WIN32CL (MSVC CL compiler) port can now create zxidjni.dll, callable from Java on Windows
+    - Fixed truncated log bug (premature nul termination) in zxlog.
 zxid-0.64:: 16.9.2010
     - Improved WIN32CL (MSVC CL compiler) port
     - Added extern "C" markers to headers to force C calling convention even in C++, promoting binary compatibility of libraries
@@ -127,8 +137,7 @@ zxid-0.57:: 18.5.2010
     - Fixed SSO failure case
     - Added to session sigres and ssores.
     - Added SP local attribute authority, see zxid_ses_to_pool()
-    - Added local EPR feature to SP local attribute authority, i.e. upon
-      SSO local EPRs get copied to the new session's EPR cache
+    - Added local EPR feature to SP local attribute authority, i.e. upon SSO local EPRs get copied to the new session's EPR cache (see zxid_copy_user_eprs_to_ses())
 zxid-0.56:: 14.5.2010
     - Re-tested Windows compile
 zxid-0.55:: 26.4.2010

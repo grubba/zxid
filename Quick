@@ -66,9 +66,9 @@ Testing Java
 ------------
 
 make javazxid
-export LD_LIBRARY_PATH=/d/sampo/zxid/zxidjava:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/home/sampo/zxid/zxidjava:$LD_LIBRARY_PATH
 export JAVA_HOME=/apps/java/j2sdk1.4.2
-cd /d/sampo/apache-tomcat-5.5.20/
+cd /home/sampo/apache-tomcat-5.5.20/
 tail -f logs/catalina.out &
 ulimit -c unlimited
 killall java; bin/startup.sh

@@ -91,8 +91,8 @@ struct zx_sec_Token_s* zx_DEC_sec_Token(struct zx_ctx* c, struct zx_ns_s* ns )
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec_Token_s* x = ZX_ZALLOC(c, struct zx_sec_Token_s);
   x->gg.g.tok = zx_sec_Token_ELEM;
   x->gg.g.ns = ns;
@@ -143,7 +143,7 @@ struct zx_sec_Token_s* zx_DEC_sec_Token(struct zx_ctx* c, struct zx_ns_s* ns )
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -286,8 +286,8 @@ struct zx_sec_TokenPolicy_s* zx_DEC_sec_TokenPolicy(struct zx_ctx* c, struct zx_
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec_TokenPolicy_s* x = ZX_ZALLOC(c, struct zx_sec_TokenPolicy_s);
   x->gg.g.tok = zx_sec_TokenPolicy_ELEM;
   x->gg.g.ns = ns;
@@ -344,7 +344,7 @@ struct zx_sec_TokenPolicy_s* zx_DEC_sec_TokenPolicy(struct zx_ctx* c, struct zx_
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -472,8 +472,8 @@ struct zx_sec_TransitedProvider_s* zx_DEC_sec_TransitedProvider(struct zx_ctx* c
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec_TransitedProvider_s* x = ZX_ZALLOC(c, struct zx_sec_TransitedProvider_s);
   x->gg.g.tok = zx_sec_TransitedProvider_ELEM;
   x->gg.g.ns = ns;
@@ -518,7 +518,7 @@ struct zx_sec_TransitedProvider_s* zx_DEC_sec_TransitedProvider(struct zx_ctx* c
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
@@ -641,8 +641,8 @@ struct zx_sec_TransitedProviderPath_s* zx_DEC_sec_TransitedProviderPath(struct z
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
-  char* name;
-  char* data;
+  const char* name;
+  const char* data;
   struct zx_sec_TransitedProviderPath_s* x = ZX_ZALLOC(c, struct zx_sec_TransitedProviderPath_s);
   x->gg.g.tok = zx_sec_TransitedProviderPath_ELEM;
   x->gg.g.ns = ns;
@@ -675,7 +675,7 @@ struct zx_sec_TransitedProviderPath_s* zx_DEC_sec_TransitedProviderPath(struct z
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
-    ss->s = data;
+    ss->s = (char*)data;
 next_attr:
     continue;
   }
