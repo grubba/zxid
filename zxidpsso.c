@@ -377,7 +377,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
       if (MKDIR(dir, 0777) && errno != EEXIST) {
 	perror("mkdir for uid/sp fed");
 	ERR("Creating uid/sp federation directory(%s) failed", dir);
-	zxlog(cf, 0, srcts, 0, issuer, req_id, 0, nid, "N", "S", "EFILE", dir, "mkdir fail, permissions?");
+	zxlog(cf, 0, srcts, 0, issuer, req_id, 0, 0, "N", "S", "EFILE", dir, "mkdir fail, permissions?");
 	D_DEDENT("allowcreate: ");
 	return 0;
       }

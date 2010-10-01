@@ -57,6 +57,18 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Config option for redirection after SLO
     - WSP_LOCALPDP_OBL_REQ processing
     - WSC_LOCALPDP_OBL_ACCEPT processing
+    - zxpasswd should be tolerant of newline in input
+    - zxpasswd hash problems
+    - zxpasswd account creation problems
+        echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
+    - IdP: Display Relay State in hopes of giving user more context
+    - IdP: Interpret the attribute request authn ctx query string approach and show
+      to the user what attributes were requested by the SP.
+    - IdP: If SP does not specify attribute list, display "SP did not request any
+      specific attributes. Only authentication and default attributes will be sent.
+    - AuthnReq QS option for SP to request that consent is explicitly seeked
+    - AuthnReq QS option for SP to request that attribute list is not shown up front
+    - Show whether SP wants a persistent or transient, or some other type of Id for the user.
     NOTPUB
 
 zzxid-0.65:: 23.9.2010
