@@ -16,6 +16,8 @@
  *   zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'IDMap Svc' \
  *    http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:ims:2006-08 \
  *   | zxcot -b /var/zxid/idpdimd
+ *
+ * [SOAPAuthn2] "Liberty ID-WSF Authentication, Single Sign-On, and Identity Mapping Services Specification", liberty-idwsf-authn-svc-2.0-errata-v1.0.pdf from http://projectliberty.org/resource_center/specifications/
  */
 
 #include "platform.h"  /* for dirent.h */
@@ -118,18 +120,27 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
 /*(i) Use Liberty ID-WSF 2.0 Identity Mapping Service to convert
  * the identity of the session to identity token in the namespace
  * of the entity at_eid.
-
+ *
  * This is the main work horse for WSCs wishing to call WSPs via EPR.
  *
  * cf:: ZXID configuration object, also used for memory allocation
  * ses:: Session object in whose EPR cache the file will be searched
  * at_eid:: EntityID of the destination namespace
- * how:: How to make mapping
- * return:: 1=success
+ * how:: How to make mapping (0 = invocaction identity, 1 = target identity)
+ * return:: 0 on failure, token on success
+ *
+ * This will generate <im:IdentityMappingRequest> in SOAP envelope to the
+ * IM service of the user, as discovered dynamically. For the discovery to work,
+ * the service must have been provisioned to the discovery, with command
+ * similar to
+ *
+ *  zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'IDMap Svc' \
+ *     http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:ims:2006-08 \
+ *   | zxcot -b /var/zxid/idpdimd
  */
 
 /* Called by:  main */
-int zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how)
+struct zx_sec_Token_s* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how)
 {
   struct zx_e_Envelope_s* env;
   struct zx_im_MappingInput_s* inp;
@@ -180,9 +191,9 @@ int zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, in
       ses->call_tgttok = out->Token;
       break;
     }
-    return 1;  /* Not really iterating */
+    return out->Token;  /* Not really iterating */
   }
-  return 1;
+  return 0; /* never reached */
 }
 
 /*() Identity Mapping Service: Issue token in response to receiving a token */

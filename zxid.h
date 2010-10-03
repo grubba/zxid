@@ -57,6 +57,7 @@ struct zx_sa_EncryptedID_s;
 struct zx_sa_Subject_s;
 struct zx_sa_AuthnStatement_s;
 struct zx_sa_AttributeStatement_s;
+struct zx_sec_Token_s;
 struct zx_sp_Response_s;
 struct zx_sp_Status_s;
 struct zx_sp_NewEncryptedID_s;
@@ -1046,7 +1047,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 /* zxidim -  Identity Mapping Service, Single Sign-On Service (SSOS) */
 
 struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* req, struct zx_str* issuer);
-int zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how);
+struct zx_sec_Token_s* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how);
 struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req, struct zx_str* issuer);
 
 struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp_NameIDMappingRequest_s* req);
