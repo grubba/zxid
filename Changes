@@ -103,6 +103,7 @@ zxid-0.64:: 16.9.2010
     - Added zxid_get_fault_status() method
     - Renamed struct zx_e_Fault_s to zxid_fault (for cleaner Java Class generation)
     - Added mockpdp.pl
+    - Improved (fixed?) compatibility with SiteMinder version is R12 SP1 CR3.
 zxid-0.63:: 29.7.2010
     - Added mandatory attribute contactType to Contact element in metadata
     - Supply AuthnInstant
