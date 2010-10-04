@@ -137,6 +137,10 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
  *  zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'IDMap Svc' \
  *     http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:ims:2006-08 \
  *   | zxcot -b /var/zxid/idpdimd
+ *
+ * The received identity token is stored in session. From there it is usually
+ * automatically used in appropriate context (see the how argument). Typically
+ * you would not use the return value for anything else than checking for an error.
  */
 
 /* Called by:  main */
