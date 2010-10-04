@@ -69,9 +69,10 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnReq QS option for SP to request that consent is explicitly seeked
     - AuthnReq QS option for SP to request that attribute list is not shown up front
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
+    - Remove ZXID_MAX_USER limit from .at files
     NOTPUB
 
-zzxid-0.65:: 23.9.2010
+zxid-0.65:: 23.9.2010
     - zxididp: added ID Mapper (to be used by Delegation Service)
     - zxididp: added some aspects of People Service (to be used by Delegation Service)
     - zxididp: added SSOS
