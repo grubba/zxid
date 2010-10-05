@@ -1,4 +1,4 @@
-/* zxidconf.h  -  Configuration of ZXID SP CGI
+/* zxidconf.h  -  Configuration of ZXID
  * Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
  * Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
  * Author: Sampo Kellomaki (sampo@iki.fi)
@@ -493,10 +493,15 @@
  * dreaded officially introduced time errors (e.g. daylight "savings" time),
  * you can configure some slop in how the timeout is evaluated. For production
  * use something like 60 seconds could be a good value. 3600 = 1 hour, 86400 = 1 day.
- * All servers of CoT MUST use GMT (not local timezones). You can synchronize
+ * All servers of CoT MUST use GMT (aka UTC), not local timezones. You can synchronize
  * clocks with ntpdate ntp1.funet.fi (see man ntpdate).
- * Slop is used in assessing validity of assertions as well as message timestamps. */
-#define ZXID_BEFORE_SLOP    7300  /* Number of seconds before that is acceptable. */
+ * Slop is used in assessing validity of assertions as well as message timestamps.
+ * Time skew allows our end to lie about the time, e.g. if we are in GMT, but
+ * the other end is not and therefore we are rejected. Note that the time skew
+ * is same for all other ends, therefore this is not really a good solution.
+ * Only good solution is to have all servers synchronized to GMT (UTC) as the specs say.
+ * While flexibility is nice, there is enough rope here to hang yourself so don't do that. :-) */
+#define ZXID_BEFORE_SLOP    39600 /* Number of seconds before that is acceptable. */
 #define ZXID_AFTER_SLOP     7300  /* Number of seconds after that is acceptable. */
 
 #define ZXID_TIMESKEW       0      /* Timeskew, in seconds, for timestamps we emit. */

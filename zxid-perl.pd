@@ -63,14 +63,123 @@ you need to have SWIG installed and then say in main zxid directory
 >  time memory consumption of single cc1 process will be over
 >  256 MB of RAM. You have been warned.
 
-6.1 Current major modules are
+6.1 Example Program (see also zxidhlo.pl)
+-----------------------------------------
+
+<<ignore: perl -ne 'printf "%02d %s", ++$i, $_' <zxidhlo.pl >>
+
+<<code:
+01 use Net::SAML;
+02 $| = 1; undef $/;  # Flush pipes, read all in at once
+03 $url = "http://sp.tas3.pt:8082/zxidhlo.pl";  # Edit to match your situation
+04 $conf = "PATH=/var/zxid/&URL=$url";
+05 $cf = Net::SAML::new_conf_to_cf($conf);
+06 $qs = $ENV{'QUERY_STRING'};
+07 $qs = <STDIN> if $qs =~ /o=P/;
+08 $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x1828);
+09 $op = substr($res, 0, 1);
+10 if ($op eq 'L' || $op eq 'C') { print $res; exit; } # LOCATION (Redir) or CONTENT
+11 if ($op eq 'n') { exit; } # already handled
+12 if ($op eq 'e') { my_render_idpsel_screen(); exit; }
+13 if ($op ne 'd') { die "Unknown Net::SAML::simple() res($res)"; }
+14
+15 ($sid) = $res =~ /^sesid: (.*)$/m;  # Extract a useful attribute from SSO output
+16
+17 print <<HTML
+18 CONTENT-TYPE: text/html
+19
+20 <title>ZXID perl HLO SP Mgmt & Protected Content</title>
+21 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+22 <link type="text/css" rel=stylesheet href="idpsel.css">
+23 <body bgcolor=white><font face=sans>
+24 $az
+25 <h1>ZXID SP Perl HLO Management & Protected Content (user logged in, session active)</h1>
+26 sesid: $sid
+27 HTML
+28     ;
+29 print Net::SAML::fed_mgmt_cf($cf, undef, -1, $sid, 0x1900);
+30 exit;
+31
+32 sub my_render_idpsel_screen {  # Replaces traditional login screen
+33     print <<HTML;
+34 CONTENT-TYPE: text/html
+35
+36 <title>ZXID SP PERL HLO SSO IdP Selection</title>
+37 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+38 <link type="text/css" rel=stylesheet href="idpsel.css">
+39 <body bgcolor=white><font face=sans>
+40 <h1>ZXID SP Perl HLO Federated SSO IdP Selection (user NOT logged in, no session.)</h1>
+41 <form method=get action="zxidhlo.pl">
+42
+43 <h3>Login Using New IdP</h3>
+44
+45 <i>A new IdP is one whose metadata we do not have yet. We need to know
+46 the Entity ID in order to fetch the metadata using the well known
+47 location method. You will need to ask the adminstrator of the IdP to
+48 tell you what the EntityID is.</i>
+49
+50 <p>IdP URL <input name=e size=60><input type=submit name=l2 value=" Login ">
+51 HTML
+52 ;
+53     print Net::SAML::idp_list_cf($cf, undef, 0x1c00);   # Get the IdP selection form
+54     print <<HTML;
+55 <h3>CoT configuration parameters your IdP may need to know</h3>
+56
+57 Entity ID of this SP: <a href="$url?o=B">$url?o=B</a> (Click on the link to fetch SP metadata.)
+58
+59 <input type=hidden name=fc value=1><input type=hidden name=fn value=prstnt>
+60 <input type=hidden name=fq value=""><input type=hidden name=fy value="">
+61 <input type=hidden name=fa value=""><input type=hidden name=fm value="">
+62 <input type=hidden name=fp value=0><input type=hidden name=ff value=0>
+63
+64 </form><hr><a href="http://zxid.org/">zxid.org</a>
+65 HTML
+66     ;
+67 }
+>>
+
+This example only demosntrates SSO.
+
+Lines 1-5 set up the configuration. See zxid-conf.pd for guidance.
+
+ll.6-7 reads in the CGI input the perl way.
+
+l.8 runs the SAML engine of ZXID. The engine will return result that
+is processed below. The magic constant 0x1828 sets some flags, see
+zxid-simp.pd for explanation. This explanation may be especially relevant
+if you plan to run as mod_perl process rather than as a CGI. With
+these flags you could eliminate the need to render the IdP selection
+screen.
+
+ll.9-13: interpret the return value. l.10 deals with parts of SAML
+protocol that need redirect or content. l.12 deals with rendering the
+IdP selection screen. This screen replaces the traditional login
+screen in most applications.
+
+l.15 demonstrates how to extract attributes from the return value. The ret
+is formatted as LDIF so it is very easy to parse with perl.
+
+ll.17-30 render the "protected content". Most protected content should
+contain also Single Logout button. This is accomplished on l.29.
+Protected content is where your notmal application after SSO lives.
+You can rely in ZXID session mechanism and just show the content,
+or you could bootstrap your application's session mechanism here.
+
+ll.32-67 render the "idp selection" screen. This could have been
+automatically generated has the flags to Net::SAML::simple_cf()
+been different (see zxid-simp.pd for explanation).
+
+As can be seen, the most central logic for SSO is only about 10 lines. The
+rest is user interface.
+
+6.2 Current major modules are
 -----------------------------
 
 * Net::SAML - The high level interfaces for Single Sign-On (SSO)
 * Net::SAML::Raw - Low level assertion and protocol manipulation interfaces
 * Net::SAML::Metadata - Low level metadata manipulation interfaces
 
-6.2 Planned modules
+6.3 Planned modules
 -------------------
 
 * Net::WSF - The high level interfaces for Web Services Frameworks (WSF)
@@ -78,7 +187,7 @@ you need to have SWIG installed and then say in main zxid directory
 * Net::WSF::WSC - The high level interfaces for Web Services Clients
 * Net::WSF::WSC:Raw
 
-6.3 Perl API Adaptations
+6.4 Perl API Adaptations
 ------------------------
 
 The perl APIs were generated from the C .h files using SWIG. Generally any
@@ -105,7 +214,7 @@ two C arguments, thanks to a type map). The above could be called like
 First the "foo" satisfies both ~len~ and ~s~, and then the return value
 is converted back to perl string.
 
-6.4 Testing Net::SAML and zxid.pl as CGI script
+6.5 Testing Net::SAML and zxid.pl as CGI script
 -----------------------------------------------
 
 To test the perl module, you must restart the mini_httpd(8) so
@@ -121,7 +230,7 @@ or if you want to avoid the common domain cookie check
 
   https://sp1.zxidsp.org:8443/zxid.pl?o=E
 
-6.5 Testing Net::SAML and zxid.pl under mod_perl
+6.6 Testing Net::SAML and zxid.pl under mod_perl
 ------------------------------------------------
 
 You can run zxid.pl under mod_perl using the Apache::Registry
@@ -133,7 +242,7 @@ it should work the same as the CGI approach.
 [Sat Nov 14 12:13:55 2009] [error] [client 127.0.0.1] failed to resolve handler `ModPerl::Registry': Can't locate ModPerl/Registry.pm in @INC (@INC contains: /usr/local/lib/perl5/5.8.4/i686-linux /usr/local/lib/perl5/5.8.4 /usr/local/lib/perl5/site_perl/5.8.4/i686-linux /usr/local/lib/perl5/site_perl/5.8.4 /usr/local/lib/perl5/site_perl . /apps/apache/2.2.3) at (eval 2) line 3.\n
 >>
 
-6.6 Debugging Net::SAML with GDB
+6.7 Debugging Net::SAML with GDB
 --------------------------------
 
 As bizarre as it may sound, it is actually quite feasible to debug
@@ -168,6 +277,8 @@ wrong openssl library.
 
 96 License
 ==========
+
+Copyright (c) 2010 Sampo Kellomäki (sampo@iki.fi), All Rights Reserved.
 
 Copyright (c) 2006-2009 Symlabs (symlabs@symlabs.com), All Rights Reserved.
 Author: Sampo Kellomäki (sampo@iki.fi)

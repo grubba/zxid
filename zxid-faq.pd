@@ -712,6 +712,63 @@ See also zxid-idp.pd for registration of EPR and bootstrap.
     zxidconf.h and recompile.
 
 
+10. *Q1:* I get rejection due to NotOnOrAfter or NotBefore. I think I have
+    synchronized the clocks on IdP and SP. Log messages are
+
+      t  zxidsso.c:466 zxid_validate_cond     zx d ssof: NotOnOrAfter ok. Time to expiry 21900 secs
+      t  zxidsso.c:476 zxid_validate_cond     zx E ssof: NotBefore rejected with slop of 7300. Time to validity 21600 secs
+
+    *A1:* This seems awful lot like a timezone issue. Slop is ZXID config
+    parameter that defines the tolerance. I recently reduced it from 1 day
+    to 3 hours because I got feeback that it was security issue to have
+    such overbroad tolerance (which it is, but 1 day slop allows people
+    with bad time zone configs to still have initial success - may be
+    I go back to one day).
+
+    On both IdP and SP, run
+
+      TZ=GMT date
+
+    and see if that is about 6 hour difference. I stronly suspect other
+    machine being correctly on GMT (which does not even have concept
+    of summer time that causes so much productivity losss :-) and other
+    is on something like US Central time (your guess if summer time error applies).
+
+    You can synchronize using
+
+      TZ=GMT ntpdate ntp1.funet.fi
+
+    (there may be server closer to you than Finland)
+
+    *Q2:* I double checked the clocks, the SP and IdP are very close to our NTP
+    server, within 100ms or so.  Why would it say there's a slop of 7300
+    seconds?
+
+    *A2:* Slop is just tolerance. The real problem is "Time to validity 21600 secs".
+    If you can't get the clocks to synchronize, you can increase
+    the config option BEFORE_SLOP=22000 in /var/zxid/zxid.conf. This
+    of course has some security implications.
+
+    *Q3:* My time zone is set to CDT on both machines. Is it possible that
+    Shibboleth is using GMT and zxid is using my local time?  (Or the
+    other way around)   21600 seconds seems too obvious to
+    be a real clock skew.  If both systems have the same locale settings, then
+    something in software must be choosing the wrong time zone.
+
+    I set TIMEOUT_FATAL=0 and it does work.  I get my nid and my login session
+    is working!  So, major hurtle accomplished, but I think I'd like to get to
+    the bottom of this and find out what the real problem is.
+
+    *A3:* 21600 seems very obvious timezone issue.
+
+    On Unix the timezone behavior of a process is determined by setting
+    of TZ environment variable. To my best knowledge I always use gmtime(3)
+    which to my best understanding ignores the TZ environment variable.
+    However, it is possible that I errornously or the Shib IdP use
+    localtime(3), which will take TZ in account. Therefore I recommend
+    launching all processes with environment TZ=GMT (see the date
+    example above).
+ 
 97.4.2 Doubts
 ~~~~~~~~~~~~~
 
@@ -942,6 +999,8 @@ party - and then there is the guessable password vulnearability).
 97.9.1 Symlabs Federated Identity Suite (SFIS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Interoperates. SP and IdP.
+
 Metadata import to IdP?
 
 What I usually do is
@@ -981,11 +1040,48 @@ this off by editing slimidp.ldif:
 If this is not done, the SSO will fail (with what appears like signature
 error).1x
 
-97.9.2 Bouncing Castel vs. OpenSSL Padding Problem
+97.9.2 Shibboleth and OpenSAML
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Shibboleth 2.1.5 IdP interoperates since 0.65. Earlier versions
+interoperated in some configurations.
+
+Many Shibboleth SPs interoperate (exact version numbers lost).
+
+97.9.3 Lasso and Authentic
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Used to work, may be still does. Not tested in recent memory.
+
+97.9.4 OpenSSO
+~~~~~~~~~~~~~~
+
+Used to work, may be still does. Not tested in recent memory.
+
+97.9.5 simpleSAMLphp
+~~~~~~~~~~~~~~~~~~~~
+
+Interoperates, but as of Sept 2010, simpleSAMLphp IdP has problems with
+EncryptedAssertions. Nothing ZXID can do (but you can turn off the
+encryption if you are willing to assume the consequences).
+
+simpleSAMLphp SP works.
+
+97.9.6 Ping
+~~~~~~~~~~~
+
+Not tested in recent memory.
+
+97.9.7 SiteMinder
+~~~~~~~~~~~~~~~~~
+
+CRLF emitting. Works since 0.65.
+
+97.9.8 Bouncing Castle vs. OpenSSL Padding Problem
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There is a XML ENC padding problem between OpenSSL and Bouncing Castle Java Crypto Library.
-See OpenSSL bug number 1067:
+There is a XML ENC padding problem between OpenSSL and Bouncing Castle
+Java Crypto Library. See OpenSSL bug number 1067:
 http://rt.openssl.org/Ticket/Display.html?user=guest&;pass=guest&id=1067
 
 <<logoutput:
@@ -1106,6 +1202,10 @@ This is due to locale setting. Try
   export LANG=C
 
 This will disable any UTF-8 processing in sprintf().
+
+BTW, Win32 native _snprintf() on does not nul terminate if buffer is
+full. Gotcha! All zxid code has additional manual nul termination,
+just in case.
 
 97.11.2 My own messages are redirected back to me
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1904,7 +2004,35 @@ Shibboleth handler invoked at an unconfigured location.
     env->Header->Security->SecurityTokenReference->KeyIdentifier
     populated (normally it would be populated from Assertion->ID)?
 
-97.13.5 I do not want to know service type, but I want to call the service
+97.13.5 Non-obvious XML Exclusive Canonicalization (XML-EXC-C14N)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+XML Exclusive Canonicalization bugs cause vast majority of signature
+failures (once trivial configuration issues like using wrong
+certificates are taken care of). Here are some gotchas:
+
+1.  XML namespace prefixes must be tracked correctly and they
+    can alter at every layer, even reusing already used
+    prefixes.
+
+2.  InclusiveNamespaces/@PrefixList namespaces must always be
+    rendered. However, if the list inclides a prefix that in
+    fact has not been declared in parent node of the canonicalization,
+    then this prefix is supposed to be ignored (says Scott Cantor, 20101005).
+    I have not found any specification references saying this to be
+    the case. In fact [XML-EXC-C14N] section 3, bullet 2, and section
+    3.1, bullet 3.2.1, seem to imply otherwise. However if the prefix
+    has not been declared, it is not easy to see how the spec could
+    be satisfied (unless a bug leaks the declaration from inside
+    the canonicalized element, such as ~ds~ from embedded signature).
+
+3.  Pay attention to line end canonicalization ([XML-C14N], section 1.1
+    "Terminology", 3rd bullet): CRLF to LF. Many implementations
+    only ever produce NL, or avoid producing any superfluous whitespace at
+    all (best strategy to avoid interop problems), and therefore work fine
+    until the day when CRLF emitting implementation appears.
+
+97.13.6 I do not want to know service type, but I want to call the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  if possible i would be able to create a new structure zx_a_EndpointReference_s
@@ -2044,12 +2172,42 @@ Shibboleth handler invoked at an unconfigured location.
 
 5.  <KeyDescriptor> elements should have ~use~ XML attribute
 
+6.  After you get an installation to work, be sure to review whether
+    the default configuration is appropriate for production use
+
+    a. Decide whether you want to run open federation, see MD_FETCH
+       config option (default: 1=open federation)
+    b. Prune your Circle of Trust. Use zxcot(8) tool to list who you
+       trust and delete the misfits.
+    c. Check validity time tolerances you accept: BEFORE_SLOP
+       and AFTER_SLOP. The defaults are rather generous for
+       production use.
+    d. Review that you did not turn off any signature
+       validation just to get it to work (SIG_FATAL=0, NOSIG_FATAL=0
+       and similar config options). All signature
+       validations are there for reason and you should not
+       go to production if any of them fail.
+    e. Check permissions on /var/zxid/pem and think whether
+       your private keys, including web server SSL one,
+       are protected. Could they have been compromised
+       during trial period?
+    f. Check that your public image is conveyed right in your metadata,
+       e.g. NICE_NAME, ORG_NAME, ORG_URL, and FEDUSERNAME_SUFFIX (if
+       used, generally only on IdP). However, be forewarned
+       that changing these on last minute changes your metadata and you may
+       need to engage in an additional round of metadata exchanges
+       when you go to production.
+    g. Make sure you have a solution in place to keep your audit trail
+       in case you ever have to go to court. See zxid-log.pd for
+       details. You may also want to think about encrypting or deleting some
+       items after a while to reduce your liability for breaches.
+
 97.15 Cardspace / Infocard / DigitalMe Tutorial
 -----------------------------------------------
 
 N.B. zxid.org does not yet support Infocard, but since we
 are starting the investigation, we thought to share
-some of it
+some of it in next sections...
 
 97.15.1 Installing DigitalMe and Firefox plugin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2211,8 +2369,8 @@ Following companies provide consultancy and support contracts for
 ZXID:
 
 * symlabs.com
-* mercnet.pt
-
+* Mercnet, Lda.
+* Levelview, Lda.
 
 
 <<ignore:

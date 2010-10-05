@@ -176,12 +176,16 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
 
   /* Figure out inclusive namespaces, if any. */
   c->inc_ns = 0;
-  for (ssref = sref, nn = n; nn; --nn, ++ssref) {
-    if (!ssref->sref->Transforms)
-      continue;
-    for (xform = ssref->sref->Transforms->Transform; xform; xform = (struct zx_ds_Transform_s*)xform->gg.g.n) {
-      ss = xform->InclusiveNamespaces ? xform->InclusiveNamespaces->PrefixList : 0;
-      if (ss && ss->len && !(c->canon_inopt & ZXID_CANON_INOPT_SHIB215IDP_INCLUSIVENAMESPACES)) {
+  if (c->canon_inopt & ZXID_CANON_INOPT_SHIB215IDP_INCLUSIVENAMESPACES) {
+    INFO("Warning: Processing <InclusiveNamespaces> has been disabled (config option CANON_INOPT=1). The canonicalization may not be fully xml-enc-c14n compatible (but it may enable interoperation with an IdP that is not fully compatible). %x", c->canon_inopt);
+  } else {
+    for (ssref = sref, nn = n; nn; --nn, ++ssref) {
+      if (!ssref->sref->Transforms)
+	continue;
+      for (xform = ssref->sref->Transforms->Transform; xform; xform = (void*)xform->gg.g.n) {
+	ss = xform->InclusiveNamespaces ? xform->InclusiveNamespaces->PrefixList : 0;
+	if (!ss || !ss->len)
+	  continue;
 	for (p = ss->s, lim = p + ss->len; p < lim; ) {
 	  q = memchr(p, ' ', lim-p);
 	  if (!q)
