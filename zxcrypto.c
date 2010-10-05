@@ -101,6 +101,49 @@ char* zx_raw_digest2(struct zx_ctx* c, char* md, char* const algo, int len, cons
   return 0;
 }
 
+/*() zx_EVP_DecryptFinal_ex() is a drop-in replacement for OpenSSL EVP_DecryptFinal_ex.
+ * It performs XML Enc compatible padding check.  See OpenSSL bug 1067
+ * http://rt.openssl.org/Ticket/Display.html?user=guest&;pass=guest&id=1067 */
+
+int zx_EVP_DecryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl) {
+  int i,n;
+  unsigned int b;
+  
+  *outl=0;
+  b=ctx->cipher->block_size;
+  if (b > 1) {
+    if (ctx->buf_len || !ctx->final_used) {
+      //EVPerr(EVP_F_EVP_DECRYPTFINAL_EX,EVP_R_WRONG_FINAL_BLOCK_LENGTH);
+      return(0);
+    }
+    ASSERTOP(b, <=, sizeof ctx->final);
+    n=ctx->final[b-1];
+    if (n == 0 || n > (int)b) {
+      //EVPerr(EVP_F_EVP_DECRYPTFINAL_EX,EVP_R_BAD_DECRYPT);
+      return(0);
+    }
+      
+    /* The padding used in XML Enc does not follow RFC 1423
+     * and is not supported by OpenSSL. The last padding byte
+     * is checked, but all other padding bytes are ignored
+     * and trimmed.
+     *
+     * [XMLENC] D. Eastlake, ed., XML Encryption Syntax and
+     * Processing, W3C Recommendation 10. Dec. 2002,
+     * www.w3.org/TR/2002/REC-xmlenc-core-20021210">http://www.w3.org/TR/2002/REC-xmlenc-core-20021210 */
+    if (ctx->final[b-1] != n) {
+      //EVPerr(EVP_F_EVP_DECRYPTFINAL_EX,EVP_R_BAD_DECRYPT);
+      return(0);
+    }
+    n=ctx->cipher->block_size-n;
+    for (i=0; i<n; i++)
+      out[i]=ctx->final[i];
+    *outl=n;
+  } else
+    *outl=0;
+  return 1;
+}
+
 //#define ZX_DEFAULT_IV "012345678901234567890123456789012345678901234567890123456789" /* 60 */
 #define ZX_DEFAULT_IV   "ZX_DEFAULT_IV ZXID.ORG SAML 2.0 and Liberty ID-WSF by Sampo." /* 60 */
 
@@ -165,11 +208,30 @@ struct zx_str* zx_raw_cipher(struct zx_ctx* c, const char* algo, int encflag, st
   }
   
   ASSERTOP(outlen + iv_len, <=, alloclen);
-  
+
+#if 0  
   if(!EVP_CipherFinal_ex(&ctx, (unsigned char*)out->s + iv_len + outlen, &tmplen)) {  /* Append final block */
     where = "EVP_CipherFinal_ex()";
     goto sslerr;
   }
+#else
+  /* Patch from Eric Rybski <rybskej@yahoo.com> */
+  if (encflag) {
+    if(!EVP_CipherFinal_ex(&ctx, out->s + iv_len + outlen, &tmplen)) { /* Append final block */
+      where = "EVP_CipherFinal_ex()";
+      goto sslerr;
+    }
+  } else {
+    /* Perform our own padding check, as XML Enc is not guaranteed compatible
+     * with OpenSSL & RFC 1423. See OpenSSL bug 1067
+     * http://rt.openssl.org/Ticket/Display.html?user=guest&;pass=guest&id=1067 */
+    EVP_CIPHER_CTX_set_padding(&ctx, 0);
+    if(!zx_EVP_DecryptFinal_ex(&ctx, out->s + iv_len + outlen, &tmplen)) { /* Append final block */
+      where = "zx_EVP_DecryptFinal_ex()";
+      goto sslerr;
+    }
+  }
+#endif
   EVP_CIPHER_CTX_cleanup(&ctx);
   
   outlen += tmplen;

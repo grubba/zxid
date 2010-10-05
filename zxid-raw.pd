@@ -111,7 +111,7 @@ example.
 
 <<dot: decode-data: Typical data structure produced by decode.
 
-// This graph crashes dot 1.12, but works in dot 2.8
+// This graph crashes dot 1.12, but works in dot 2.8, seems to crash 2.20.2
 
 size="11.0,6.0"
 margin=0
@@ -159,19 +159,19 @@ ref:f_xforms -> xforms
 ref:f_digmeth -> digmeth
 ref:f_digval -> digval
 
-sig:f_kids ->siginfo [weight=0,style=dashed,color=red]
+sig:f_kids ->siginfo [weight=0,arrowhead=empty,color=red]
 
-siginfo:f_wo ->sigval [weight=0,style=dashed,color=red]
-siginfo:f_kids -> canonmeth [weight=0,style=dashed,color=red]
-canonmeth:f_wo -> sigmeth [weight=0,style=dashed,color=red]
-sigmeth:f_wo -> ref [weight=0,style=dashed,color=red]
+siginfo:f_wo ->sigval [weight=0,arrowhead=empty,color=red]
+siginfo:f_kids -> canonmeth [weight=0,arrowhead=empty,color=red]
+canonmeth:f_wo -> sigmeth [weight=0,arrowhead=empty,color=red]
+sigmeth:f_wo -> ref [weight=0,arrowhead=empty,color=red]
 
-ref:f_kids -> xforms [weight=0,style=dashed,color=red]
-xforms:f_wo -> digmeth [weight=0,style=dashed,color=red]
-digmeth:f_wo -> digval [weight=0,style=dashed,color=red]
+ref:f_kids -> xforms [weight=0,arrowhead=empty,color=red]
+xforms:f_wo -> digmeth [weight=0,arrowhead=empty,color=red]
+digmeth:f_wo -> digval [weight=0,arrowhead=empty,color=red]
 
-xforms:f_kids -> xform_c14n [weight=0,style=dashed,color=red]
-xform_c14n:f_wo -> xform_env [weight=0,style=dashed,color=red]
+xforms:f_kids -> xform_c14n [weight=0,arrowhead=empty,color=red]
+xform_c14n:f_wo -> xform_env [weight=0,arrowhead=empty,color=red]
 
 >>
 
@@ -185,12 +185,12 @@ This linked list may be in inverted order depending on the phase of
 the moon and position of the trams in Helsinki. Until implementation
 matures, its better not to depend on the ordering.>>
 
-The +wide order+ structure, depicted by red dashed arrows, is
+The +wire order+ structure, depicted by red hollow arrows, is
 maintained using gg.kids and gg.g.wo fields. For example
 ~sig->SignedInfo->Reference->Transforms~ keeps its kids, the
 ~zx_ds_Transform~ objects, in the original order hanging from the kids
-and linked with the wo field. As can be seen, the order kept with wo
-fields can be different than the one kept using n (next) fields.
+and linked with the ~wo~ field. As can be seen, the order kept with ~wo~
+fields can be different than the one kept using <<tt: n>> (next) fields.
 What's more, the kids list can contain dissimilar objects, witness
 ~sig->SignedInfo->Reference->gg.kids~. The wire order representation
 is only captured when decoding the document and is mainly useful for
@@ -251,7 +251,7 @@ field of context as follows:
   main {
     struct zx_ctx* ctx;
     ...
-    ctx->ns_tab = zx_ns_tab;   /* Here zx_ is the chosen prefix */
+    ctx->ns_tab = zx_ns_tab;   /* Here zx_ is the prefix chosen in code generation */
   }
 
 Consider the following evil contortion
@@ -292,15 +292,15 @@ B -> C [style=bold]
 B -> D [style=bold]
 D -> F [style=bold]
 
-E -> e [color=red]
-H -> h [color=red]
-B -> b [color=red]
-C -> e [color=red]
-D -> i [color=red]
-F -> e [color=red]
+E -> e [color=red,arrowhead=empty]
+H -> h [color=red,arrowhead=empty]
+B -> b [color=red,arrowhead=empty]
+C -> e [color=red,arrowhead=empty]
+D -> i [color=red,arrowhead=empty]
+F -> e [color=red,arrowhead=empty]
 >>
 
-The red thin arrows indicate how the elements reference the
+The red hollow arrows indicate how the elements reference the
 namespaces. Since none of the elements used the prefix originally
 specified in the schema grammar target() directive, we ended up
 allocating "alias" nodes for the uri. However, since E and C use the
@@ -347,12 +347,12 @@ B -> C [style=bold]
 B -> D [style=bold]
 D -> F [style=bold]
 
-E -> e [color=red]
-H -> h [color=red]
-B -> b [color=red]
-C -> e [color=red]
-D -> i [color=red]
-F -> ee [color=red]
+E -> e [color=red,arrowhead=empty]
+H -> h [color=red,arrowhead=empty]
+B -> b [color=red,arrowhead=empty]
+C -> e [color=red,arrowhead=empty]
+D -> i [color=red,arrowhead=empty]
+F -> ee [color=red,arrowhead=empty]
 
 ns_tab -> ctx:ns [arrowhead=none,arrowtail=normal]
 b -> ctx:sn [color=blue,style=dotted,arrowhead=none,arrowtail=normal]
@@ -561,8 +561,8 @@ EL_STRUCT:: Name of the struct that describes the element
 EL_NS:: Namespace prefix of the element (as seen in input schema)
 EL_TAG:: Name of the element without any namespace qualification.
 
-12.3 Exclusive Canonical Encoder
---------------------------------
+12.3 Exclusive Canonical Encoder (Serializer)
+---------------------------------------------
 
 The encoder receives a C data structure and generates a gigantic
 string containing an XML document corresponding to the data structure
@@ -593,7 +593,7 @@ that the sort mandates.
 
 For attributes we know the sort order directly from the schema
 because [XML-C14N], sec 2.2, p.7, specifies that they
-sort first by namespace URI and then by name, bot of which
+sort first by namespace URI and then by name, both of which
 we know from the schema.
 
 For ~xmlns~ specifications the situation is similarly easy in the

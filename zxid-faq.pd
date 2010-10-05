@@ -981,6 +981,81 @@ this off by editing slimidp.ldif:
 If this is not done, the SSO will fail (with what appears like signature
 error).1x
 
+97.9.2 Bouncing Castel vs. OpenSSL Padding Problem
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There is a XML ENC padding problem between OpenSSL and Bouncing Castle Java Crypto Library.
+See OpenSSL bug number 1067:
+http://rt.openssl.org/Ticket/Display.html?user=guest&;pass=guest&id=1067
+
+<<logoutput:
+
+From: 	sampo@symlabs.com
+To: 	rt@openssl.org, xml-encryption@w3.org
+Cc: 	eric@projectliberty.org, sampo@symlabs.com
+Subject: 	OpenSSL symmetric crypto padding check incompatible with XMLENC
+Date: 	Thu, 12 May 2005 20:22:50 +0000
+
+Please find below a patch, with spec reference, against OpenSSL 0.9.7g.
+
+It could be argued that XMLENC spec is wrong in insisting on unpredictable
+values for the padding because this allows padding to be used as a
+covert channel. However, to deploy interoperable implementations it seems
+patching OpenSSL is the right thing to do. It has been observed that
+other crypto libraries, such as bouncing castle (a pure Java
+implementation) do not set all padding bytes to OpenSSL's satisfaction.
+
+--Sampo
+
+--- evp_enc.c~ 2005-01-28 14:03:53.000000000 +0000
++++ evp_enc.c 2005-05-12 03:26:44.000000000 +0000
+@@ -509,6 +509,21 @@
+EVPerr(EVP_F_EVP_DECRYPTFINAL,EVP_R_BAD_DECRYPT);
+return(0);
+}
++#ifdef PADDING_CHECK
++ /* Following loop checks that all padding has known value,
++ * presumably to prevent covert channel or some form of
++ * chosen text attack. However this check is in violation
++ * of [XMLENC] specification section 5.2 subsection
++ * "Padding", which states that only last octet of the
++ * block matters and values of other octets are not
++ * predictable. Thus to implement XMLENC decryption with
++ * openssl it is necessary to disable this code.
++ * -- 11.5.2005, Sampo Kellomaki (sampo@symlabs.com)
++ *
++ * [XMLENC] D. Eastlake, ed., XML Encryption Syntax and
++ * Processing, W3C Recommendation 10. Dec. 2002,
++ * http://www.w3.org/TR/2002/REC-xmlenc-core-20021210 */
++
+for (i=0; i<n; i++)
+{
+if (ctx->final[--b] != n)
+@@ -517,6 +532,7 @@
+return(0);
+}
+}
++#endif
+n=ctx->cipher->block_size-n;
+for (i=0; i<n; i++)
+out[i]=ctx->final[i];
+
+-----------
+
+OpenSSL is complying with various other standards with its current
+behaviour. For example PKCS#7.
+
+If the EVP functions are being called directly (instead of inside
+OpenSSL in its PKCS#7 code for example) you can disable the padding
+altogether EVP_CIPHER_CTX_set_padding() and perfom padding and pad
+checking at an application level.
+
+Steve.
+>>
+
+Since ZXID version 0.65 (Oct 2010), this has been addressed via
+the EVP_CIPHER_CTX_set_padding() route.
+
 97.10 Known Bugs
 ----------------
 
