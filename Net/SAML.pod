@@ -10,12 +10,17 @@ Net::SAML - Perl extension for using SAML SSO
   Net::SAML::url_set($cf, $url);
   Net::SAML::set_opt($cf, 1 ,1);  # Turn on libzxid level debugging
 
+  $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x1828);  # The main API
+
+  # Low level API (do not use without first understanding Net::SAML::simple_cf()
+
   $cgi = Net::SAML::new_cgi($cf, $ENV{'QUERY_STRING'});
+  $sid = Net::SAML::zxid_cgi::swig_sid_get($cgi);
+  $ses = Net::SAML::fetch_ses($cf, $sid);
+
   Net::SAML::parse_cgi($cgi, $qs);
   $op = Net::SAML::zxid_cgi::swig_op_get($cgi);
-  $sid = Net::SAML::zxid_cgi::swig_sid_get($cgi);
 
-  $ses = Net::SAML::fetch_ses($cf, $sid);
   $ses = Net::SAML::fetch_ses($cf, "");  # Just allocate an empty one
   Net::SAML::del_ses($cf, $ses);
   $sid = Net::SAML::zxid_ses::swig_sid_get($ses);

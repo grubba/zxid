@@ -447,7 +447,7 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
     secs = zx_date_time_to_secs(a7n->Conditions->NotOnOrAfter->s);
     if (secs <= ourts->tv_sec) {
       if (secs + cf->after_slop <= ourts->tv_sec) {
-	ERR("NotOnOrAfter rejected with slop of %d. Time to expiry %ld secs", cf->after_slop, secs - ourts->tv_sec);
+	ERR("NotOnOrAfter rejected with slop of %d. Time to expiry %ld secs. Our gettimeofday: %ld secs, remote: %d secs", cf->after_slop, secs - ourts->tv_sec, ourts->tv_sec, secs);
 	if (cgi) {
 	  cgi->sigval = "V";
 	  cgi->sigmsg = "Assertion has expired.";
@@ -460,10 +460,10 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
 	  return ZXSIG_TIMEOUT;
 	}
       } else {
-	D("NotOnOrAfter accepted with slop of %d. Time to expiry %ld secs", cf->after_slop, secs - ourts->tv_sec);
+	D("NotOnOrAfter accepted with slop of %d. Time to expiry %ld secs. Our gettimeofday: %ld secs, remote: %d secs", cf->after_slop, secs - ourts->tv_sec, ourts->tv_sec, secs);
       }
     } else {
-      D("NotOnOrAfter ok. Time to expiry %ld secs", secs - ourts->tv_sec);
+      D("NotOnOrAfter ok. Time to expiry %ld secs. Our gettimeofday: %ld secs, remote: %d secs", secs - ourts->tv_sec, ourts->tv_sec, secs);
     }
   } else {
     INFO("Assertion does not have NotOnOrAfter. %d", 0);
@@ -473,7 +473,7 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
     secs = zx_date_time_to_secs(a7n->Conditions->NotBefore->s);
     if (secs > ourts->tv_sec) {
       if (secs - cf->before_slop > ourts->tv_sec) {
-	ERR("NotBefore rejected with slop of %d. Time to validity %ld secs", cf->before_slop, secs - ourts->tv_sec);
+	ERR("NotBefore rejected with slop of %d. Time to validity %ld secs. Our gettimeofday: %ld secs, remote: %d secs", cf->before_slop, secs - ourts->tv_sec, ourts->tv_sec, secs);
 	if (cgi) {
 	  cgi->sigval = "V";
 	  cgi->sigmsg = "Assertion is not valid yet (too soon).";
@@ -486,10 +486,10 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
 	  return ZXSIG_TIMEOUT;
 	}
       } else {
-	D("NotBefore accepted with slop of %d. Time to validity %ld secs", cf->before_slop, secs - ourts->tv_sec);
+	D("NotBefore accepted with slop of %d. Time to validity %ld secs. Our gettimeofday: %ld secs, remote: %d secs", cf->before_slop, secs - ourts->tv_sec, ourts->tv_sec, secs);
       }
     } else {
-      D("NotBefore ok. Time from validity %ld secs", ourts->tv_sec - secs);
+      D("NotBefore ok. Time from validity %ld secs. Our gettimeofday: %ld secs, remote: %d secs", ourts->tv_sec - secs, ourts->tv_sec, secs);
     }
   } else {
     INFO("Assertion does not have NotBefore. %d", 0);
