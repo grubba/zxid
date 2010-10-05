@@ -227,6 +227,70 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new SWIGTYPE_p_f_p_void__void(cPtr, false);
   }
 
+  public static void zx_ctx_canon_inopt_set(SWIGTYPE_p_zx_ctx self, char value) {
+    zxidjniJNI.zx_ctx_canon_inopt_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  }
+
+  public static char zx_ctx_canon_inopt_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_canon_inopt_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  }
+
+  public static void zx_ctx_pad1_set(SWIGTYPE_p_zx_ctx self, char value) {
+    zxidjniJNI.zx_ctx_pad1_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  }
+
+  public static char zx_ctx_pad1_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_pad1_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  }
+
+  public static void zx_ctx_pad2_set(SWIGTYPE_p_zx_ctx self, char value) {
+    zxidjniJNI.zx_ctx_pad2_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  }
+
+  public static char zx_ctx_pad2_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_pad2_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  }
+
+  public static void zx_ctx_pad3_set(SWIGTYPE_p_zx_ctx self, char value) {
+    zxidjniJNI.zx_ctx_pad3_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  }
+
+  public static char zx_ctx_pad3_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_pad3_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  }
+
+  public static void zx_ctx_pad4_set(SWIGTYPE_p_zx_ctx self, char value) {
+    zxidjniJNI.zx_ctx_pad4_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  }
+
+  public static char zx_ctx_pad4_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_pad4_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  }
+
+  public static void zx_ctx_pad5_set(SWIGTYPE_p_zx_ctx self, char value) {
+    zxidjniJNI.zx_ctx_pad5_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  }
+
+  public static char zx_ctx_pad5_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_pad5_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  }
+
+  public static void zx_ctx_pad6_set(SWIGTYPE_p_zx_ctx self, char value) {
+    zxidjniJNI.zx_ctx_pad6_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  }
+
+  public static char zx_ctx_pad6_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_pad6_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  }
+
+  public static void zx_ctx_pad7_set(SWIGTYPE_p_zx_ctx self, char value) {
+    zxidjniJNI.zx_ctx_pad7_set(SWIGTYPE_p_zx_ctx.getCPtr(self), value);
+  }
+
+  public static char zx_ctx_pad7_get(SWIGTYPE_p_zx_ctx self) {
+    return zxidjniJNI.zx_ctx_pad7_get(SWIGTYPE_p_zx_ctx.getCPtr(self));
+  }
+
   public static SWIGTYPE_p_zx_ctx new_zx_ctx() {
     long cPtr = zxidjniJNI.new_zx_ctx();
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_ctx(cPtr, true);
@@ -1170,6 +1234,14 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_conf_notimestamp_fatal_get(zxid_conf.getCPtr(self));
   }
 
+  public static void conf_canon_inopt_set(zxid_conf self, char value) {
+    zxidjniJNI.zxid_conf_canon_inopt_set(zxid_conf.getCPtr(self), value);
+  }
+
+  public static char conf_canon_inopt_get(zxid_conf self) {
+    return zxidjniJNI.zxid_conf_canon_inopt_get(zxid_conf.getCPtr(self));
+  }
+
   public static void conf_enckey_opt_set(zxid_conf self, char value) {
     zxidjniJNI.zxid_conf_enckey_opt_set(zxid_conf.getCPtr(self), value);
   }
@@ -1192,14 +1264,6 @@ public class zxidjni implements zxidjniConstants {
 
   public static char conf_idp_list_meth_get(zxid_conf self) {
     return zxidjniJNI.zxid_conf_idp_list_meth_get(zxid_conf.getCPtr(self));
-  }
-
-  public static void conf_pad6_set(zxid_conf self, char value) {
-    zxidjniJNI.zxid_conf_pad6_set(zxid_conf.getCPtr(self), value);
-  }
-
-  public static char conf_pad6_get(zxid_conf self) {
-    return zxidjniJNI.zxid_conf_pad6_get(zxid_conf.getCPtr(self));
   }
 
   public static void conf_pad7_set(zxid_conf self, char value) {
@@ -4266,8 +4330,9 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_sp_Response_s(cPtr, false);
   }
 
-  public static int map_identity_token(zxid_conf cf, zxid_ses ses, String at_eid, int how) {
-    return zxidjniJNI.zxid_map_identity_token(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), at_eid, how);
+  public static SWIGTYPE_p_zx_sec_Token_s map_identity_token(zxid_conf cf, zxid_ses ses, String at_eid, int how) {
+    long cPtr = zxidjniJNI.zxid_map_identity_token(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), at_eid, how);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_zx_sec_Token_s(cPtr, false);
   }
 
   public static SWIGTYPE_p_zx_im_IdentityMappingResponse_s imreq(zxid_conf cf, zxid_a7n a7n, SWIGTYPE_p_zx_im_IdentityMappingRequest_s req, String issuer) {

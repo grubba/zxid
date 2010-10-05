@@ -555,7 +555,7 @@ struct zx_any_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_ns_s* ns , c
   struct zx_any_elem_s* x = ZX_ZALLOC(c, struct zx_any_elem_s);
   x->gg.g.tok = ZX_TOK_NOT_FOUND;
   x->name_len = namlen;
-  x->name = nam;
+  x->name = (char*)nam;
   x->gg.g.ns = ns;
   ZX_START_DEC_EXT(x);
 
