@@ -276,6 +276,8 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
   cf->wspcgicmd    = ZXID_WSPCGICMD;
   cf->nameid_enc   = ZXID_NAMEID_ENC;
   cf->post_a7n_enc = ZXID_POST_A7N_ENC;
+  cf->canon_inopt  = ZXID_CANON_INOPT;
+  if (cf->ctx) cf->ctx->canon_inopt = cf->canon_inopt;
   cf->enckey_opt   = ZXID_ENCKEY_OPT;
   cf->idpatopt     = ZXID_IDPATOPT;
   cf->idp_list_meth   = ZXID_IDP_LIST_METH;
@@ -1005,6 +1007,7 @@ scan_end:
       if (!strcmp(n, "CONTACT_EMAIL"))   { cf->contact_email = v; break; }
       if (!strcmp(n, "CONTACT_TEL"))     { cf->contact_tel = v; break; }
       if (!strcmp(n, "COUNTRY"))         { cf->country = v; break; }
+      if (!strcmp(n, "CANON_INOPT"))     { SCAN_INT(v, cf->canon_inopt); if (cf->ctx) cf->ctx->canon_inopt = cf->canon_inopt; break; }
       goto badcf;
     case 'D':  /* DUP_A7N_FATAL, DUP_MSG_FATAL */
       if (!strcmp(n, "DEFAULTQS"))       { cf->defaultqs = v; break; }
@@ -1400,6 +1403,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "WSPCGICMD=%s\n"
 "NAMEID_ENC=%x\n"
 "POST_A7N_ENC=%d\n"
+"CANON_INOPT=%x\n"
 "ENCKEY_OPT=%d\n"
 "IDPATOPT=%d\n"
 "DI_ALLOW_CREATE=%d\n"
@@ -1577,6 +1581,7 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 cf->wspcgicmd,
 		 cf->nameid_enc,
 		 cf->post_a7n_enc,
+		 cf->canon_inopt,
 		 cf->enckey_opt,
 		 cf->idpatopt,
 		 cf->di_allow_create,

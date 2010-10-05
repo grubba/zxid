@@ -54,7 +54,7 @@ call-anal.pl     - Call graph analysis tool (see make callgraph)
 xml-pretty.pl    - XML Pretty Printer
 zximport-htpasswd.pl - Script to create users in /var/zxid/idpuid from .htpasswd
 
-# Handwritten code
+# Handwritten code, mainly for libzxid.a
 
 Makefile         - Used to build ZXID (needs GNU make)
 BSDmakefile      - Trigger gmake on BSD systems
@@ -75,7 +75,6 @@ ds-templ.c       - Code generation template for DS script API
 getput-templ.c   - Code generation template for accessor functions
 zxdirent.c       - Kevlin Henney's dirent.c (modified by Sampo) for WIN32CL port
 zxlog.c          - Logging routines with encryption and signing
-zxlogview.c      - Log viewing tool with decryption and sig verification
 zxsig.c          - XML DSIG support
 zxcrypto.c       - Cryptographical functions
 zxlib.c          - Functions used to capture commonalities in generated code
@@ -111,15 +110,7 @@ zxiddi.c         - ID-WSF Discovery Service
 zxidim.c         - ID-WSF Identity Mapping Service
 zxidps.c         - ID-WSF People Service
 zxidmkwsf.c      - Constructors for WSF
-zxidhlowsf.c     - Demonstration of calling ID-WSF services (DS and DAP)
-zxidxmltool.c    - Testing tool for parsing XML
-zxbench.c        - A benchmarking tool
-zxencdectest.c   - An XML encoding and decoding testing tool
-zxidssofinalizetest.c  - Test zxid_sso_finalize()
-zxdecode.c       - SAML redirect and post message decoding tool
-zxcot.c          - CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
-zxpasswd.c       - Password creation and user management tool
-zxcall.c         - Web Service Client tool
+zxidsimp.c       - Simple API implementation
 
 # Yubikey (yubico.com) One Time Password (OTP) USB token support
 
@@ -136,18 +127,23 @@ err.html         - Error message (for IdP and PS). See also ERR_TEMPL_FILE and E
 idpsel.css       - Stylesheet for ipdsel.html
 an.css           - Stylesheet for an-main.html, post.html, and err.html
 
-# Full API demos
+# Utilities
 
-zxid.c           - Main ZXID SP program (a CGI script)
-zxid.pl          - SAML 2.0 SP example written in perl
-zxid.php         - SAML 2.0 SP example written in php
-zxid.java        - SAML 2.0 SP example written in java (as CGI script)
-zxid-java.sh     - Shell script for wrapping zxid.java with correct paths
-zxidwsctool.c    - Command line Web Services Client, a tool for making ID-WSF calls
+zxcot.c          - CoT (Circle-of-Trust) management tool: list CoT, add metadata to CoT
+zxpasswd.c       - Password creation and user management tool
+zxcall.c         - Web Service Client tool
+zxlogview.c      - Log viewing tool with log decryption and log sig verification
+zxdecode.c       - SAML redirect and post message decoding tool
+
+# Test utilities (haphazardly maintained)
+
+zxidxmltool.c    - Testing tool for parsing XML
+zxbench.c        - A benchmarking tool
+zxencdectest.c   - An XML encoding and decoding testing tool
+zxidssofinalizetest.c  - Test zxid_sso_finalize()
 
 # Simple and Hello World demos
 
-zxidsimp.c       - Simple API main definition
 zxidhlo.c        - Hello World SSO using simple API
 zxidsimple.c     - Simple API helper program for shell scripts
 zxidhlo.sh       - Hello World SSO as a shell script
@@ -174,6 +170,16 @@ zxidhrxmlwsp.c   - Example of ID-SIS HR-XML Web Services Provider
 zxididp.c        - A rudimentary IdP (WIP Jan 2010)
 zxidsp.c         - A slightly more configurable use of simple API
 zxidwspcgi.c     - Generic Web Services Provider that calls your shell script
+
+# Misc API demos
+
+zxid.c           - Old ZXID SP demo program (a CGI script)
+zxid.pl          - Old SAML 2.0 SP example written in perl
+zxid.php         - Old SAML 2.0 SP example written in php
+zxid.java        - Old SAML 2.0 SP example written in java (as CGI script)
+zxid-java.sh     - Shell script for wrapping zxid.java with correct paths
+zxidwsctool.c    - Command line WS Client, a tool for making ID-WSF calls (older than zxcall)
+zxidhlowsf.c     - Demonstration of calling ID-WSF services (DS and DAP)
 
 # S/MIME Utility for Certificate Manipulations, Signing, and Encryption
 
@@ -204,7 +210,9 @@ smimeutil.i      - SWIG input file to generate SMIMEUtil perl module
 default-cot/OKCy5mMaXMJUnKQ1wVJCcT00AA8  - auth-int.orange.fr
 default-cot/ZLIYSwzbSQdzIWHISwoWtdrx6JI  - auth.orange.fr
 default-cot/_CBGcFVVbIEmt5oh3jUx4GEfHLM  - idp.symdemo.com
-default-cot/s36Te-rgbzReSjVc8vDDGy89tT8  - http://idp.ssocircle.com
+default-cot/s36Te-rgbzReSjVc8vDDGy89tT8  - idp.ssocircle.com
+default-cot/yBeCTPt0NQ2vMuI-srKw5h4N2i8  - zxidp.org
+default-cot/bty2J1MJ0hQsDjiAB8TasGyUU1E  - idp.tas3.eu
 
 # Module generation facilities
 

@@ -214,10 +214,10 @@ struct zxid_conf {
 
   char  wsp_nosig_fatal;
   char  notimestamp_fatal;
+  char  canon_inopt;
   char  enckey_opt;
   char  idpatopt;
   char  idp_list_meth;
-  char  pad6;
   char  pad7;
   char  pad8;
   

@@ -70,9 +70,12 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnReq QS option for SP to request that attribute list is not shown up front
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
     - Remove ZXID_MAX_USER limit from .at files
+    - Use SAML2 a7n as "sticky policy" envelope, standardizing some attribute names to convey metadata such as acceptable use or purpose, obligations, right-of-access-correction-and-deletion-URL, and the authorative source.
+    - Add to IdP metadata the NameIDMapping end point
+    - Fix: If InclusiveNamespaces/@PrefixList specifies a known namespace with new prefix, the canonicalization included both the known and the new prefix.
     NOTPUB
 
-zxid-0.65:: 23.9.2010
+zxid-0.65:: 5.10.2010
     - zxididp: added ID Mapper (to be used by Delegation Service)
     - zxididp: added some aspects of People Service (to be used by Delegation Service)
     - zxididp: added SSOS
@@ -93,6 +96,7 @@ zxid-0.65:: 23.9.2010
     - Templatized POST screen
     - WIN32CL (MSVC CL compiler) port can now create zxidjni.dll, callable from Java on Windows
     - Fixed truncated log bug (premature nul termination) in zxlog.
+    - Added CANON_INOPT=1 option to ignore InclusiveNamespaces/@PrefixList as needed to work around Shib 2.1.5 IdP bug
 zxid-0.64:: 16.9.2010
     - Improved WIN32CL (MSVC CL compiler) port
     - Added extern "C" markers to headers to force C calling convention even in C++, promoting binary compatibility of libraries

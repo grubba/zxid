@@ -1328,16 +1328,16 @@ precheckclean:
 ###
 
 t/cot:
-	./mkdirs.sh t/
+	./zxmkdirs.sh t/
 
 t/idpcot:
-	./mkdirs.sh t/idp
+	./zxmkdirs.sh t/idp
 
 t/wspcot:
-	./mkdirs.sh t/wsp
+	./zxmkdirs.sh t/wsp
 
 t/wsp2cot:
-	./mkdirs.sh t/wsp2
+	./zxmkdirs.sh t/wsp2
 
 test: t/cot t/idp t/wsp t/wsp2 zxencdectest zxcall zxididp
 	$(PERL) zxtest.pl -a
@@ -1388,7 +1388,7 @@ testclean:
 ###
 
 dir:
-	./zxmkdirs.sh
+	./zxmkdirs.sh $(ZXID_PATH)
 	-cp default-cot/* $(ZXID_PATH)cot
 
 #	cp zxid.pem $(ZXID_PATH)pem/sign-nopw-cert.pem

@@ -7,6 +7,7 @@
  * $Id: zxdecode.c,v 1.8 2009-11-29 12:23:06 sampo Exp $
  *
  * 25.11.2008, created --Sampo
+ * 4.10.2010, added -s and ss modes, as well as -i N selector --Sampo
  */
 
 #include <string.h>
@@ -24,25 +25,39 @@
 #include "zxidconf.h"
 #include "c/zxidvers.h"
 #include "c/zx-ns.h"
+#include "c/zx-const.h"
+#include "c/zx-data.h"
 
 char* help =
 "zxdecode  -  Decode SAML Redirect and POST Messages R" ZXID_REL "\n\
-Copyright (c) 2008-2009 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
+Copyright (c) 2008-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0\n\
 See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxdecode [options] <message >decoded\n\
   -z -Z            Prevent or force inflate step (default auto detects)\n\
+  -i N             Pick Nth detected decodable structure, default: 1=first\n\
+  -s               Enable signature validation step (reads config from -c, see below)\n\
+  -c CONF          For -s, optional configuration string (default -c PATH=/var/zxid/)\n\
+                   Most of the configuration is read from /var/zxid/zxid.conf\n\
+  -sha1            Compute sha1 over input and print as base64. For debugging canon.\n\
   -v               Verbose messages.\n\
   -q               Be extra quiet.\n\
   -d               Turn on debugging.\n\
   -h               This help message\n\
-  --               End of options\n";
+  --               End of options\n\
+\n\
+Will attempt to detect many layers of encoding. Will hunt for the\n\
+relevant input such as SAMLRequest or SAMLResponse in, e.g., log file.\n";
 
 int inflate_flag = 2;  /* Auto */
 int verbose = 1;
-char buf[32*1024];
+int ix = 1;
+int sig_flag = 0;  /* No sig checking by default. */
+int sha1_flag;
+zxid_conf* cf = 0;
+char buf[256*1024];
 
 /* Called by:  main x8, zxcall_main, zxcot_main */
 static void opt(int* argc, char*** argv, char*** env)
@@ -60,10 +75,45 @@ static void opt(int* argc, char*** argv, char*** env)
       DD("End of options by --");
       return;  /* -- ends the options */
 
+    case 'c':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++(*argv); --(*argc);
+	if ((*argc) < 1) break;
+	if (!cf)
+	  cf = zxid_new_conf_to_cf(0);
+	zxid_parse_conf(cf, (*argv)[0]);
+	continue;
+      }
+      break;
+
     case 'd':
       switch ((*argv)[0][2]) {
       case '\0':
 	++zx_debug;
+	continue;
+      }
+      break;
+
+    case 'i':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++(*argv); --(*argc);
+	if ((*argc) < 1) break;
+	sscanf((*argv)[0], "%i", &ix);
+	continue;
+      }
+      break;
+
+    case 's':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	++sig_flag;
+	if (!cf)
+	  cf = zxid_new_conf_to_cf(0);
+	continue;
+      case 'h':
+	++sha1_flag;
 	continue;
       }
       break;
@@ -123,8 +173,49 @@ static void opt(int* argc, char*** argv, char*** env)
   }
 }
 
+static int sig_validate(int len, char* p)
+{
+  int ret;
+  zxid_cgi cgi;
+  zxid_ses ses;
+  struct zx_root_s* r;
+  struct zx_sp_Response_s* resp;
+  zxid_a7n* a7n;
+  
+  memset(&cgi, sizeof(cgi), 0);
+  memset(&ses, sizeof(ses), 0);
+
+  LOCK(cf->ctx->mx, "decode");
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, p, p + len);
+  r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "decode");
+  if (!r) {
+    ERR("Failed to parse buf(%.*s)", len, p);
+    return 2;
+  }
+  resp = r->Response;
+  if (!r) {
+    ERR("No <sp:Response> found buf(%.*s)", len, p);
+    return 3;
+  }
+
+  /* See zxid_sp_dig_sso_a7n() for similar code. */
+  
+  if (!zxid_chk_sig(cf, &cgi, &ses, (struct zx_elem_s*)resp, resp->Signature, resp->Issuer, "Response"))
+    return 4;
+  
+  a7n = zxid_dec_a7n(cf, resp->Assertion, resp->EncryptedAssertion);
+  if (!a7n) {
+    ERR("No Assertion found and not anon_ok in SAML Response %d", 0);
+    return 5;
+  }
+  ret = zxid_sp_sso_finalize(cf, &cgi, &ses, a7n);
+  INFO("zxid_sp_sso_finalize() returned %d", ret);
+  return ret?0:6;
+}
+
 /* Called by:  main x4 */
-static void decode(char* msg, char* q)
+static int decode(char* msg, char* q)
 {
   int msglen, len;
   char* p;
@@ -174,65 +265,86 @@ static void decode(char* msg, char* q)
       p = zx_zlib_raw_inflate(0, p-msg, msg, &len);  /* Redir uses compressed payload. */
     }
     printf("%.*s", len, p);
-    fclose(stdout);
+
+    if (sig_flag)
+      return sig_validate(len, p);
   }
+  return 0;
 }
 
+#ifndef zxdecode_main
+#define zxdecode_main main
+#endif
+
 /* Called by: */
-int main(int argc, char** argv, char** env)
+int zxdecode_main(int argc, char** argv, char** env)
 {
   int got;
+  char* pp;
   char* p;
   char* q;
+  char* lim;
 
   strcpy(zx_instance, "\tzxdec");
   opt(&argc, &argv, &env);
 
   read_all_fd(0, buf, sizeof(buf)-1, &got);
   buf[got] = 0;
+  lim = buf+got;
 
-  p = strstr(buf, "SAMLRequest=");
-  if (p) {
-    q = strchr(p, '&');
-    if (!q) q = buf+got;
-    decode(p + sizeof("SAMLRequest=")-1, q);
+  if (sha1_flag) {
+    p = sha1_safe_base64(buf, got, buf);
+    *p = 0;
+    printf("%s\n", buf);
     return 0;
   }
-  p = strstr(buf, "SAMLResponse=");
-  if (p) {
-    q = strchr(p, '&');
-    if (!q) q = buf+got;
-    decode(p + sizeof("SAMLResponse=")-1, q);
-    return 0;
-  }
-  if (*buf == '<') {  /* HTML for POST */
-    p = strstr(buf, "SAMLRequest");
+
+  /* Try to detect relevant input, iterating if -i N was specified.
+   * The detection is supposed to pick SAMLREquest or SAMLResponse from
+   * middle of HTML form, or from log output. Whatever is convenient. */
+
+  for (pp = buf; pp && pp < lim; pp = p+1) {
+    p = strstr(pp, "SAMLRequest=");
     if (p) {
-      p += sizeof("SAMLRequest")-1;
-    } else {
-      p = strstr(buf, "SAMLResponse");
-      if (p)
-	p += sizeof("SAMLResponse")-1;
+      if (--ix)	continue;
+      q = strchr(p, '&');
+      return decode(p + sizeof("SAMLRequest=")-1, q?q:lim);
     }
+    p = strstr(pp, "SAMLResponse=");
     if (p) {
-      p = strstr(p, "value=");
+      if (--ix)	continue;
+      q = strchr(p, '&');
+      return decode(p + sizeof("SAMLResponse=")-1, q?q:lim);
+    }
+    if (*pp == '<') {  /* HTML for POST */
+      p = strstr(pp, "SAMLRequest");
       if (p) {
-	p += sizeof("value=")-1;
-	if (*p == '"') {
-	  ++p;
-	  q = strchr(p, '"');
-	} else {
-	  q = p+strcspn(p, "\" >");
+	p += sizeof("SAMLRequest")-1;
+      } else {
+	p = strstr(pp, "SAMLResponse");
+	if (p)
+	  p += sizeof("SAMLResponse")-1;
+      }
+      if (p) {
+	p = strstr(p, "value=");
+	if (p) {
+	  if (--ix)	continue;
+	  p += sizeof("value=")-1;
+	  if (*p == '"') {
+	    ++p;
+	    q = strchr(p, '"');
+	  } else {
+	    q = p+strcspn(p, "\" >");
+	  }
+	  return decode(p, q?q:lim);
 	}
-	if (!q) q = buf+got;
-	decode(p, q);
-	return 0;
       }
     }
-
+    if (--ix)	continue;
+    return decode(pp, lim);
   }
-  decode(buf, buf + got);
-  return 0;
+  ERR("Found no SAMLRequest or SAMLResponse to decode %d",2);
+  return 1;
 }
 
 /* EOF  --  zxdecode.c */

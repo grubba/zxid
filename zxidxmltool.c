@@ -8,6 +8,7 @@
  * $Id: zxidxmltool.c,v 1.5 2009-11-24 23:53:40 sampo Exp $
  *
  * 29.9.2007, started --Sampo
+ * WARNING: This code appears to be historical as of Oct-2010. --Sampo
  */
 
 #include <signal.h>

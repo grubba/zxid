@@ -12,6 +12,8 @@
  * Test encoding and decoding SAML 2.0 assertions and other related stuff.
  *
  * ./zxbench -d -i 1 <t/hp-idp-post-resp.xml
+ *
+ * WARNING: This code appears to be seriously out of date and historical as of Oct-2010. --Sampo
  */
 
 #include <signal.h>
@@ -301,8 +303,7 @@ int main(int argc, char** argv, char** env)
   D("Decoding %d chars, n_iter(%d)", got_all, n_iter);
   
   for (;n_iter; --n_iter) {
-    //cf = zxid_new_conf("/var/zxid/");
-    cf = zxid_new_conf("/var/sfis/");
+    cf = zxid_new_conf("/var/zxid/");
     LOCK(cf->ctx->mx, "zxbench");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + got_all);
     r = zx_DEC_root(cf->ctx, 0, 1000);

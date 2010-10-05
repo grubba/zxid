@@ -123,6 +123,14 @@ struct zx_ctx {
 #ifdef USE_PTHREAD
   pthread_mutex_t mx;
 #endif
+  char canon_inopt;
+  char pad1;
+  char pad2;
+  char pad3;
+  char pad4;
+  char pad5;
+  char pad6;
+  char pad7;
 };
 
 /* We arrange all structs to start with a common header (16 bytes on 32bit platforms) */

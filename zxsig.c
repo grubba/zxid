@@ -181,7 +181,7 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
       continue;
     for (xform = ssref->sref->Transforms->Transform; xform; xform = (struct zx_ds_Transform_s*)xform->gg.g.n) {
       ss = xform->InclusiveNamespaces ? xform->InclusiveNamespaces->PrefixList : 0;
-      if (ss && ss->len) {
+      if (ss && ss->len && !(c->canon_inopt & ZXID_CANON_INOPT_SHIB215IDP_INCLUSIVENAMESPACES)) {
 	for (p = ss->s, lim = p + ss->len; p < lim; ) {
 	  q = memchr(p, ' ', lim-p);
 	  if (!q)

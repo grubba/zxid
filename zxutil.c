@@ -650,7 +650,7 @@ char* unbase64_raw(const char* p, const char* lim, char* r, const unsigned char*
  * out_buf:: Buffer where result will be written. It must be 28 characters long and already allocated. The buffer will not be null terminated.
  * len:: Length of data. -1=use strlen(data)
  * data:: Data to be digested
- * return:: Pointer one past last character written */
+ * return:: Pointer one past last character written (not nul terminated) */
 
 /* Called by:  zxcot_main, zxid_decode_redir_or_post x2, zxid_get_ent_from_cache, zxid_mk_ent, zxid_nice_sha1, zxid_reg_svc, zxid_user_sha1_name x2, zxlog_path x2, zxlog_write_line */
 char* sha1_safe_base64(char* out_buf, int len, const char* data)
