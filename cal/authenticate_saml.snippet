@@ -1,0 +1,475 @@
+sub authenticate_saml
+{
+   my($self, $r, $user, $passwd, $ip_addy, $log, $site_prefix) = @_;
+	require Net::SAML;
+	
+	$log->debug("user: " . $user);
+	
+   # assign defaults, then pull from the config file
+   my $request_uri = param('request_uri') || 
+      ($r->prev ? $r->prev->uri : cookie('request_uri'));
+   
+   my $referer = $r->headers_in->get('Referer');
+   warn "Referer: '$referer'   Request: '$request_uri'";
+
+   my $SAMLHost = "http://$ENV{'HTTP_HOST'}";
+   if ( defined $r->dir_config('SAMLHost') )
+   {
+      $SAMLHost = $r->dir_config('SAMLHost');
+   }
+
+	my $entityID = "$SAMLHost/ticketLogin";
+   if ( defined $r->dir_config('SAMLSPEntityID') )
+   {
+      $entityID = $r->dir_config('SAMLSPEntityID');
+   }
+   
+	#my $cf = Net::SAML::new_conf("/var/zxid/");
+	warn "new_conf_to_cf";
+	my $cf = Net::SAML::new_conf_to_cf("PATH=/var/zxid/&URL=$entityID");
+	#my $cf = Net::SAML::new_conf_to_cf("PATH=/var/zxid/");
+	
+   $debug = $r->dir_config('SAMLDebug');
+   if ( defined $debug && $debug =~ /yes/i )
+   {
+      Net::SAML::set_opt($cf, 1 ,1);  # Turn on libzxid level debugging   
+   }
+	
+	warn "url_set";
+	##Net::SAML::url_set( $cf, $SAMLHost);
+	Net::SAML::url_set( $cf, $entityID);
+	
+
+	# perl CGI kind of sucks, it combines all POST and GET params
+	# into the same namespace.  So, I'm going to recombine 
+	# everything back into a standard $QUERY_STRING style format
+	# and deal with it appropriately below.  Since CGI pulls 
+	# shit off the connection, $r does NOT have the POST contents
+	# which jacks with the states
+	my $vars = Vars();
+	my $qs = "";
+	my @var_keys = keys %$vars;
+	for ( $i = 0 ; $i < @var_keys ; $i++ )
+	{
+		$qs .= "&" if ( $i > 0 );
+		$qs .= uri_escape($var_keys[$i]) . "=" . uri_escape($vars->{$var_keys[$i]});
+		#$qs .= $var_keys[$i] . "=" . $vars->{$var_keys[$i]};
+		#warn "key: $var_keys[$i]";
+		#warn "val: " . $vars->{$var_keys[$i]};
+	}
+	$qs .= "&" if ( $qs ne "" && $r->args ne "" );
+	if ( $r->args ne "" )
+	{
+		$qs .= $r->args;
+	}
+	warn "new_cgi using qs: '$qs'";
+	
+	my $cgi = Net::SAML::new_cgi($cf, $qs);
+	my $op = Net::SAML::zxid_cgi::swig_op_get($cgi);
+	
+	#my $res = Net::SAML::simple_cf($cf, -1, $qs, undef, 0x1828);
+	#warn "res: '$res'";
+	#my $op = substr($res, 0, 1);
+	
+	#warn "qs: '$qs'  op: '$op'";
+	#warn "content-type: " . $r->content_type();
+	
+	# Not sure if I need to do this...
+	#if ( $op eq 'P' )
+	#{
+	#	Net::SAML::parse_cgi($cgi, $qs);
+	#	$op = Net::SAML::zxid_cgi::swig_op_get($cgi);
+	#}
+
+	# I don't understand this...
+	$op ||= 'M';
+	warn "op '$op'";
+	my $sid = Net::SAML::zxid_cgi::swig_sid_get($cgi);
+	warn "sid: '$sid'";
+	my $ses = undef;
+	#return Apache2::Const::SERVER_ERROR;
+	
+	if ( $sid )
+	{
+		warn "sid: '$sid'";
+		$ses = Net::SAML::fetch_ses($cf, $sid);
+		if ( $ses )
+		{
+			warn "ses: '$ses'";
+			if ( saml_mgmt_screen($cf, $cgi, $ses, $op) )
+			{
+				warn "mgmt screen returns true";
+				return Apache2::Const::OK;
+			}
+		}
+	}
+
+	#$ses = Net::SAML::fetch_ses($cf, "");  # Just allocate an empty one
+
+	warn "Not logged in case op($op) ses($ses)";
+
+	if ($op eq 'M') {       # Invoke LECP or redirect to CDC reader.
+		return Apache2::Const::SERVER_ERROR if Net::SAML::lecp_check($cf, $cgi);
+		#print "Location: $cdc_url?o=C\r\n\r\n";
+		#exit;
+		# I don't know what I should be doing here...
+		#$r->headers_out->set(Location => "$SAMLLogin");
+		$r->headers_out->set(Location => "$entityID");
+		return Apache2::Const::REDIRECT;
+
+	} elsif ($op eq 'C') {  # CDC Read: Common Domain Cookie Reader
+		&Net::SAML::cdc_read($cf, $cgi);
+		#exit;
+		return Apache2::Const::OK;
+		
+	} elsif ($op eq 'E') {  # Return from CDC read, or start here to by-pass CDC read.
+		if ( Net::SAML::lecp_check($cf, $cgi) )
+		{	
+			warn "op E #1, return OK?";
+			return Apache2::Const::OK;
+		}
+		if ( Net::SAML::cdc_check($cf, $cgi) )
+		{
+			warn "op E #2, return OK?";
+			return Apache2::Const::OK;
+		}
+	} elsif ($op eq 'L'  ) {
+		warn "Start login";
+		#if ( $res =~ /^Location:\s+/i )
+		#{
+		#	my $url = $res;
+		#	$url =~ s/[\r\n]//g;
+		#	$url =~ s/^Location:\s+//i;
+		#	if ( $url =~ /o=/ )
+		#	{
+		#		$url = "/ticketLogin" . $url;
+		#	}
+		#	warn "L/C redir to url: '$url'";
+		#	$r->headers_out->set(Location => $url);
+		#	return Apache2::Const::REDIRECT;
+		#}
+		
+		my $url = Net::SAML::start_sso_url($cf, $cgi);
+		if ($url) {
+			warn "Start SSO redirect($url)";
+			#print "Location: $url\r\n\r\n";
+			#exit;
+			$r->headers_out->set(Location => $url);
+			return Apache2::Const::REDIRECT;
+		}
+		warn "Login trouble ($url)";
+	} elsif ($op eq 'A') {
+		$ses = Net::SAML::fetch_ses($cf, "");  # Just allocate an empty one
+		$ret = Net::SAML::sp_deref_art($cf, $cgi, $ses);
+		warn "deref art ret($ret)";
+		if ( $ret == 2 )
+		{
+			warn "artifact return OK?";
+			return Apache2::Const::OK;
+		}
+		if ($ret == 3) {
+			if ( saml_mgmt_screen($cf, $cgi, $ses, $op) )
+			{
+				warn "management screen returning OK";
+				return Apache2::Const::OK;
+			}
+		}
+	} elsif ($op eq 'P') {
+		warn "doing fetch_ses()";
+		$ses = Net::SAML::fetch_ses($cf, "");  # Just allocate an empty one
+		#$ret = Net::SAML::sp_dispatch($cf, $cgi, $ses, Net::SAML::zxid_cgi::swig_saml_resp_get($cgi));
+		#my $res = Net::SAML::zxid_cgi::swig_saml_resp_get($cgi);
+		#warn "op P swig_saml_resp_get: $res";
+		warn "doing sp_dispatch()";
+		$ret = Net::SAML::sp_dispatch($cf, $cgi, $ses);
+		warn "saml_resp ret($ret)";
+		my $sid = Net::SAML::zxid_ses::swig_sid_get($ses);
+		warn "sid1: '$sid'";
+		my $nid = Net::SAML::zxid_ses::swig_nid_get($ses);
+		warn "nid1: '$nid'";
+		#my $sid = Net::SAML::zxid_cgi::swig_sid_get($cgi);
+		#warn "sid2: '$sid'";
+		#my $nid = Net::SAML::zxid_ses::swig_nid_get($ses);
+		#warn "nid2: '$sid'";
+		
+		if ( $ret eq "* ERR" )
+		{
+			return Apache2::Const::SERVER_ERROR;
+		}
+		# Other types of errors, deal with these appropriately 
+		if ( $ret == 2 )
+		{
+			warn "post ret 2 return OK?";
+			return Apache2::Const::OK;		
+		}
+		if ($ret == 3) 
+		{
+			if ( saml_mgmt_screen($cf, $cgi, $ses, $op) )
+			{
+				warn "management screen returning OK";
+				return Apache2::Const::OK;
+			}
+		}
+		######   SUCCESSFUL AUTHENTICATION  #####
+		# Check for the existence of the Ticket cookie.  If it exists,
+		# it means the IdP is flexmls, and it made one for us.
+		# If it doesn't exist, it means we came back from saml.flexmls.com
+		# with a "thumbs up" due to previous session, or we're
+		# coming from an outside IdP and need to make our own session here.
+		my($result, $msg) = $self->verify_ticket($r);
+		if ( $result != 1 )
+		{
+			warn "Success back from IdP but no Ticket cookie.  Creating one.";
+         my $ticket = make_ticket($r, $nid);
+	      unless ($ticket) 
+         {
+            $log->debug("Couldn't make ticket -- missing secret?");
+            return Apache2::Const::SERVER_ERROR;
+         }
+			# CookieMaster is handling go_to_uri 
+			return 2;
+		}
+		# redirect back to root
+		$r->headers_out->set(Location => "/");
+		return Apache2::Const::REDIRECT;
+		
+		
+	} elsif ($op eq 'Q') {
+		$ses = Net::SAML::fetch_ses($cf, "");  # Just allocate an empty one
+		#$ret = Net::SAML::sp_dispatch($cf, $cgi, $ses, Net::SAML::zxid_cgi::swig_saml_req_get($cgi));
+		$ret = Net::SAML::sp_dispatch($cf, $cgi, $ses);
+		warn "saml Q ret: $ret";
+		# Not sure about this... but do a redirect if dispatch comes back with one
+		if ( $ret =~ /^Location:\s+/i )
+		{
+			my $url = $ret;
+			$url =~ s/^Location:\s+//i;
+			warn "Q redir to url: '$url'";
+			$r->headers_out->set(Location => $url);
+			return Apache2::Const::REDIRECT;
+		}
+		if ( $ret == 2 )
+		{
+			warn "saml Q return OK?";
+			return Apache2::Const::OK;		
+		}
+		if ($ret == 3) {
+			if ( saml_mgmt_screen($cf, $cgi, $ses, $op) )
+			{
+				warn "management screen returning OK";
+				return Apache2::Const::OK;
+			}
+		}
+	} elsif ($op eq 'B') {
+		$md = Net::SAML::sp_meta($cf, $cgi);
+		my $len = length $md;
+		$r->headers_out->set(Content-Length => "$len");
+		$r->content_type('text/xml');
+		
+		print "$md";
+		return Apache2::Const::OK;
+		
+	} elsif ($op eq 'K') {
+		warn "Redirect back from SLO";
+	} else {
+		# If we're here, it means we've hit the initial state where
+		# no cookies are present, and we need to redirect over to 
+		# the proper IdP in /var/zxid/cot.  We pull the desired 
+		# default from the vhost config and re-post back to 
+		# ourselves with the appropriate form data
+		warn "Unknown op($op)";
+		#<input type='hidden' name="l2http://saml.flexmls.com/idp/shibboleth" value=" Login to http://saml.flexmls.com/idp/shibboleth (SAML20:POST) ">
+		my $SAMLSetupMode = undef;
+		if ( defined $r->dir_config('SAMLSetupMode') )
+		{
+			$SAMLSetupMode = $r->dir_config('SAMLSetupMode');
+		}
+		# Default to 2, which I believe is usually HTTP-POST
+		my $SAMLACSIndex = 2;
+		if ( defined $r->dir_config('SAMLACSIndex') )
+		{
+			$SAMLACSIndex = $r->dir_config('SAMLACSIndex');
+		}
+		my $SAMLIdPEntityID = "";
+		if ( defined $r->dir_config('SAMLIdPEntityID') )
+		{
+			$SAMLIdPEntityID = $r->dir_config('SAMLIdPEntityID');
+		}
+		my $l_index = "l" . $SAMLACSIndex . $SAMLIdPEntityID;
+		
+		if ( not $SAMLSetupMode  )
+		{
+			warn "here1";
+		print <<HTML
+<html>
+<body onLoad="document.getElementById('form1').submit();">
+<form method=POST action="/ticketLogin" name="form1" id="form1">
+<input type='hidden' name='o' value='P'>
+<input type='hidden' name="$l_index" value="">
+<input type='hidden' name='fc' value=1>
+<input type='hidden' name='fp' value=0>
+<input type='hidden' name='ff' value=0>
+<input type='hidden' name='fn' value='prstnt'>
+<input type='hidden' name='fy' value=''>
+<input type='hidden' name='fa' value=''>
+<input type='hidden' name='fm' value='exact'>
+</form>
+</body>
+</html>
+HTML
+;
+		return Apache2::Const::OK;
+		}
+	}
+
+print <<HTML1
+<title>ZXID SP PERL SSO</title>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<body bgcolor="#330033" text="#ffaaff" link="#ffddff" vlink="#aa44aa" alink="#ffffff"><font face=sans><h1>ZXID SP Perl Federated SSO (user NOT logged in, no session.)</h1><pre>
+</pre><form method=GET action="/ticketLogin">
+
+<input type='hidden' name='o' value='P'>
+
+<h3>Login Using New IdP</h3>
+
+<i>A new IdP is one whose metadata we do not have yet. We need to know
+the Entity ID in order to fetch the metadata using the well known
+location method. You will need to ask the adminstrator of the IdP to
+tell you what the EntityID is.</i>
+
+<p>IdP EntityID URL <input name=e size=100>
+<input type=submit name=l1 value=" Login (SAML20:Artifact) ">
+<input type=submit name=l2 value=" Login (SAML20:POST) ">
+
+HTML1
+;
+
+	$idp = Net::SAML::load_cot_cache($cf);
+	
+	if ($idp) {
+		print "<h3>Login Using Known IdP</h3>\n";
+		while ($idp) 
+		{
+			warn "idp: '$idp'";
+			warn "before swig_eid_get";
+        $eid = Net::SAML::zxid_entity::swig_eid_get($idp);
+		  warn "eid: '$eid'";
+        #$eid_len = Net::SAML::zxid_entity::swig_eid_len_get($idp);
+        #$eid = substr($eid, 0, $eid_len);
+        #warn "eid_len($eid_len) eid($eid)";
+        print <<HTML2;
+<input type=submit name="l1$eid" value=" Login to $eid (SAML20:Artifact) ">
+<input type=submit name="l2$eid" value=" Login to $eid (SAML20:POST) ">
+HTML2
+;
+		warn "before swig_n_get()";
+		$idp = Net::SAML::zxid_entity::swig_n_get($idp);
+    }
+	}
+
+	$version_str = Net::SAML::version_str();
+	print <<HTML3;
+<h3>CoT configuration parameters your IdP may need to know</h3>
+
+Entity ID of this SP: <a href="$entityID?o=B">$entityID?o=B</a> (Click on the link to fetch SP metadata.)
+
+<h3>Technical options (typically hidden fields on production site)</h3>
+
+<input type=checkbox name=fc value=1 checked> Allow new federation to be created<br>
+<input type=checkbox name=fp value=1> Do not allow IdP to interact (e.g. ask password) (IsPassive flag)<br>
+<input type=checkbox name=ff value=1> IdP should reauthenticate user (ForceAuthn flag)<br>
+NID Format: <select name=fn><option value=prstnt>Persistent<option value=trnsnt>Transient<option value="">(none)</select><br>
+Affiliation: <select name=fq><option value="">(none)</select><br>
+
+Consent: <select name=fy><option value="">(empty)
+<option value="urn:liberty:consent:obtained">obtained
+<option value="urn:liberty:consent:obtained:prior">obtained:prior
+<option value="urn:liberty:consent:obtained:current:implicit">obtained:current:implicit
+<option value="urn:liberty:consent:obtained:current:explicit">obtained:current:explicit
+<option value="urn:liberty:consent:unavailable">unavailable
+<option value="urn:liberty:consent:inapplicable">inapplicable
+</select><br>
+Authn Req Context: <select name=fa><option value="">(none)
+<option value=pw>Password
+<option value=pwp>Password with Protected Transport
+<option value=clicert>TLS Client Certificate</select><br>
+Matching Rule: <select name=fm><option value=exact>Exact
+<option value=minimum>Min
+<option value=maximum>Max
+<option value=better>Better
+<option value="">(none)</select><br>
+
+</form><hr><a href="http://zxid.org/">zxid.org</a>, $version_str
+HTML3
+;
+	
+	return Apache2::Const::OK;
+	#return(Apache2::Const::SERVER_ERROR, "Invalid username or password");
+	#return -1;
+}
+
+sub saml_mgmt_screen 
+{
+    my ($cf, $cgi, $ses, $op) = @_;
+    warn "mgmt op($op)";
+    if ($op eq 'l') {
+        Net::SAML::del_ses($cf, $ses);
+        $msg = "Local logout Ok. Session terminated.";
+        return 0;  # Simply abandon local session. Falls thru to login screen.
+    } elsif ($op eq 'r') {
+        Net::SAML::sp_slo_redir($cf, $cgi, $ses);
+        Net::SAML::del_ses($cf, $ses);
+        return 1;  # Redirect already happened. Do not show login screen.
+    } elsif ($op eq 's') {
+        Net::SAML::sp_slo_soap($cf, $cgi, $ses);
+        Net::SAML::del_ses($cf, $ses);
+        $msg = "SP Initiated logout (SOAP). Session terminated.";
+        return 0;  # Falls thru to login screen.
+    } elsif ($op eq 't') {
+        Net::SAML::sp_nireg_redir($cf, $cgi, $ses, '');
+        return 1;  # Redirect already happened. Do not show login screen.
+    } elsif ($op eq 'u') {
+        Net::SAML::sp_nireg_soap($cf, $cgi, $ses, '');
+        $msg = "SP Initiated defederation (SOAP).";
+    } elsif ($op eq 'P') {
+        $ret = Net::SAML::sp_dispatch($cf, $cgi, $ses, Net::SAML::zxid_cgi::swig_saml_resp_get($cgi));
+        return 0 if $ret == 1;
+        return 1 if $ret == 2;
+    } elsif ($op eq 'Q') {
+        $ret = Net::SAML::sp_dispatch($cf, $cgi, $ses, Net::SAML::zxid_cgi::swig_saml_req_get($cgi));
+        return 0 if $ret == 1;
+        return 1 if $ret == 2;
+    }
+    $sid = Net::SAML::zxid_ses::swig_sid_get($ses);
+    $nid = Net::SAML::zxid_ses::swig_nid_get($ses);
+
+    # In gimp flatten the image and Save Copy as pnm
+    # giftopnm favicon.gif | ppmtowinicon >favicon.ico
+    #printf("COOKIE: foo\r\n");
+    print <<HTML;
+<title>ZXID SP Mgmt</title>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<body bgcolor="#330033" text="#ffaaff" link="#ffddff" vlink="#aa44aa" alink="#ffffff"><font face=sans>
+
+<h1>ZXID SP Perl Management (user logged in, session active)</h1><pre>
+</pre><form method=post action="/?o=P">
+<input type=hidden name=s value="$sid">
+<input type=submit name=gl value=" Local Logout ">
+<input type=submit name=gr value=" Single Logout (Redir) ">
+<input type=submit name=gs value=" Single Logout (SOAP) ">
+<input type=submit name=gt value=" Defederate (Redir) ">
+<input type=submit name=gu value=" Defederate (SOAP) ">
+
+<h3>Technical options (typically hidden fields on production site)</h3>
+
+sid($sid) nid($nid) <a href="/?s=$sid">Reload</a>
+
+</form><hr>
+<a href="http://zxid.org/">zxid.org</a>
+HTML
+;
+  return 1;
+
+
+
+}

@@ -1,0 +1,37 @@
+<saml2p:Response xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:sp="urn:oasis:names:tc:SAML:2.0:protocol" Destination="http://samltest-zxid.flexmls.com/ticketLogin?o=P" ID="_57b8787bb1ca84905f911ca5c44780b7" InResponseTo="Nh4C91R3rLrc1c7pQWP9Q0r61" IssueInstant="2010-10-01T20:13:51.703Z" Version="2.0"><saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">http://saml.flexmls.com/idp/shibboleth</saml2:Issuer><saml2p:Status><saml2p:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"></saml2p:StatusCode></saml2p:Status><saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" ID="_fbb64868745bf00d0967899f87b2ab55" IssueInstant="2010-10-01T20:13:51.703Z" Version="2.0"><saml2:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">http://saml.flexmls.com/idp/shibboleth</saml2:Issuer><ds:Signature>
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:CanonicalizationMethod>
+<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"></ds:SignatureMethod>
+<ds:Reference URI="#_fbb64868745bf00d0967899f87b2ab55">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></ds:Transform>
+<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="ds saml2"></ec:InclusiveNamespaces></ds:Transform>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>
+<ds:DigestValue>tJQBOaU5JDRdtFgTRMrUe3K7Sqk=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue>
+SghbDRHkt3DjgZHCui8bCetdkeSuVwIv8wNmOipC+4ZcUHV6e8ldnCl891SxJJPyKk4PlpOg/eY6
++XdQuvsmtoXz9yiaQiU7vd8WYcu07fjvEgjDtWQGovzlxefQL4anKPC3Nn1eV/Buwk1/ngAf0Wee
+KvlS4KMKy1Oz4gEGtTEIe4mgEeP4PoZdjt+BhURCovE8rJmIMalbGQSGt3oSbY0/hzMw4XZBEnUD
+vffV3Rs+knQpuzGR57Ke9XxCPjeMPfu5BMjaECmT0T2HTB9UcEkcMLwioEgKlkkGdximkEsY4957
+LNmJQ2q1i97xh1eJWbOpQpg+EXuPkM2OiSLOWA==
+</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIDLDCCAhSgAwIBAgIVALXdK32E0QYMthR36rFgaVqN/fqyMA0GCSqGSIb3DQEBBQUAMBsxGTAX
+BgNVBAMTEHNhbWwuZmxleG1scy5jb20wHhcNMTAwOTI0MTYwMzM2WhcNMzAwOTI0MTYwMzM2WjAb
+MRkwFwYDVQQDExBzYW1sLmZsZXhtbHMuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEArs3NVzXAsTHF50qXo73+i/3Am1QYo0psCSqhfe0EFxHN3tcoW0VY4Ti+AMp/lSJMwSTCkMAx
+/M+pzmyA3BpEWb4SMxDDVKb9xjSGzItWWWO0W6LBNheLZfjnyMKyl1yYxl846hsUhEogTWuAMA95
+R6yIeZ0DdfKNh1MYI7brfW7x3x17SvCodovnWo/Ml9p/qysopHU0e8TS+jDKDTjw0f+SWBYSXpg+
+2IuHzZU7wbM8AwivBlEYpefFxR5FWfdwqVpTj8sG7ka/UfotrorjoOVP2alLy4TXHUYFJUnx75HP
+Q/clgGG6OhPRVRNQ8jOxJ2uveVUe+LVPBFbHUmH/FwIDAQABo2cwZTBEBgNVHREEPTA7ghBzYW1s
+LmZsZXhtbHMuY29thidodHRwczovL3NhbWwuZmxleG1scy5jb20vaWRwL3NoaWJib2xldGgwHQYD
+VR0OBBYEFJ4/u83XOq77eULMck7cqo2JJ7MbMA0GCSqGSIb3DQEBBQUAA4IBAQCbD1+aFWlKz7pd
+/dK0SZbIpYaSMvWfuuc9O4r7HuiTguGpYgLjYWlG0j8Pe5r0iz1jHKuE51wh0SIC4Mg/zMWKV+H5
+nrzSfvPr0lUU4NChD4+kn/gjcAb4D0Dq9XesVMQhptpqiIx3TC0QP9pA99ndU0E3S/lnoPUTBwk4
+GaxxwEVTTFOuVvjsavMIcl4o/me66mAewouoGxRwT2OHEolBdq8sdCFEvumzII6xxnbNlootd/N7
+DdSGPK3VVavhBDYXYzAAlxacmriODS34KpZfWxzXM7WUV2OuL8krLsE3cxwhuIS7Mcm4JchTgeee
+rpMxWD2PsuuWxTuDOiQbd8mH</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Subject><saml2:NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent">cal</saml2:NameID><saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"><saml2:SubjectConfirmationData Address="216.147.179.14" InResponseTo="Nh4C91R3rLrc1c7pQWP9Q0r61" NotOnOrAfter="2010-10-01T20:18:51.703Z" Recipient="http://samltest-zxid.flexmls.com/ticketLogin?o=P"></saml2:SubjectConfirmationData></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore="2010-10-01T20:13:51.703Z" NotOnOrAfter="2010-10-01T20:18:51.703Z"><saml2:AudienceRestriction><saml2:Audience>http://samltest-zxid.flexmls.com/ticketLogin?o=B</saml2:Audience></saml2:AudienceRestriction></saml2:Conditions><saml2:AuthnStatement AuthnInstant="2010-10-01T20:13:51.683Z" SessionIndex="0f66886ce6d0ee7f605e76887a0f027dd1e38584e549818687ed5b8352af1dc4"><saml2:SubjectLocality Address="216.147.179.14"></saml2:SubjectLocality><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></saml2p:Response>)
+t  zxidsso.c:343 zxid_sigres_map        zxdec E Bad digest. Canon problem? 3
+t    zxsig.c:235 zxsig_validate         zxdec E ssof: Message digest(tJQBOaU5JDRdtFgTRMrUe3K7Sqk=) mismatch at sref(#_fbb64868745bf00d0967899f87b2ab55), canon blob(<saml2:Assertion xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:sa="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" ID="_fbb64868745bf00d0967899f87b2ab55" IssueInstant="2010-10-01T20:13:51.703Z" Version="2.0"><saml2:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">http://saml.flexmls.com/idp/shibboleth</saml2:Issuer><saml2:Subject><saml2:NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent">cal</saml2:NameID><saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"><saml2:SubjectConfirmationData Address="216.147.179.14" InResponseTo="Nh4C91R3rLrc1c7pQWP9Q0r61" NotOnOrAfter="2010-10-01T20:18:51.703Z" Recipient="http://samltest-zxid.flexmls.com/ticketLogin?o=P"></saml2:SubjectConfirmationData></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore="2010-10-01T20:13:51.703Z" NotOnOrAfter="2010-10-01T20:18:51.703Z"><saml2:AudienceRestriction><saml2:Audience>http://samltest-zxid.flexmls.com/ticketLogin?o=B</saml2:Audience></saml2:AudienceRestriction></saml2:Conditions><saml2:AuthnStatement AuthnInstant="2010-10-01T20:13:51.683Z" SessionIndex="0f66886ce6d0ee7f605e76887a0f027dd1e38584e549818687ed5b8352af1dc4"><saml2:SubjectLocality Address="216.147.179.14"></saml2:SubjectLocality><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion>

@@ -53,7 +53,7 @@ Net::SAML - Perl extension for using SAML SSO
 
 =head1 EXAMPLE
 
-You should see zxid-perl.pd, zxid-simp.pd, and zxid-conf.pd for more complete
+You should see zxid-perl.pd, zxid-simple.pd, and zxid-conf.pd for more complete
 documentation. Here is a quick walk through of a typical SP usage:
 
   01 use Net::SAML;
@@ -132,7 +132,7 @@ ll.6-7 reads in the CGI input the perl way.
 
 l.8 runs the SAML engine of ZXID. The engine will return result that
 is processed below. The magic constant 0x1828 sets some flags, see
-zxid-simp.pd for explanation. This explanation may be especially relevant
+zxid-simple.pd for explanation. This explanation may be especially relevant
 if you plan to run as mod_perl process rather than as a CGI. With
 these flags you could eliminate the need to render the IdP selection
 screen.
@@ -147,13 +147,13 @@ is formatted as LDIF so it is very easy to parse with perl.
 
 ll.17-30 render the "protected content". Most protected content should
 contain also Single Logout button. This is accomplished on l.29.
-Protected content is where your notmal application after SSO lives.
+Protected content is where your normal application after SSO lives.
 You can rely in ZXID session mechanism and just show the content,
 or you could bootstrap your application's session mechanism here.
 
 ll.32-67 render the "idp selection" screen. This could have been
 automatically generated has the flags to Net::SAML::simple_cf()
-been different (see zxid-simp.pd for explanation).
+been different (see zxid-simple.pd for explanation).
 
 As can be seen, the most central logic for SSO is only about 10 lines. The
 rest is user interface.

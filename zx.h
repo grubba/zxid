@@ -69,7 +69,7 @@ extern "C" {
 struct zx_any_elem_s;
 struct zx_any_attr_s;
 
-/* Namespace management. The context references this table. The array is
+/*(s) Namespace management. The context references this table. The array is
  * terminated by an element with empty URL (url_len == 0). The elements
  * of the array are the official namespace prefixes derived from
  * target() directives in the .sg files. The linked list hanging from
@@ -79,11 +79,11 @@ struct zx_any_attr_s;
 
 struct zx_ns_s {
   struct zx_ns_s* n;        /* For holding runtime equivalences as a linked list. */
-  struct zx_ns_s* m;        /* For an equivalence, pointer to the master entry. */
+  struct zx_ns_s* m;        /* For a rt equivalence, pointer to the master entry. */
   struct zx_ns_s* seen;     /* Pointer to other "seen" namespaces with same prefix (stack) */
   struct zx_ns_s* seen_n;   /* Next prefix in seen structure (list) */
-  struct zx_ns_s* seen_p;   /* Next prefix in seen structure (list) */
-  struct zx_ns_s* seen_pop; /* Pop list for seen stack (used in end of element). */
+  struct zx_ns_s* seen_p;   /* Previous prefix in seen structure (list) */
+  struct zx_ns_s* seen_pop; /* Pop list for seen stack (used in the end of an element). */
   struct zx_ns_s* inc_n;    /* Next link for InclusiveNamespaces */
 #if 0
   char flags;               /* 0x01 == unknown */

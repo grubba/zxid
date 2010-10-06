@@ -152,7 +152,8 @@ typedef struct zxid_ses    zxid_ses;
  * around zxid_conf. If you write multithreaded program and your
  * design allows same configuration to be accessed from multiple
  * threads (sometimes you can design your program so that this simply
- * does not happen), then you must perform locking. Often this would
+ * does not happen - each one has its own configuration),
+ * then you must perform locking. Often this would
  * mean bracketing every call to zxid API function with lock-unlock.
  *
  * zxid_conf also contains "cache" of the entity's own certificates
@@ -349,7 +350,7 @@ struct zxid_conf {
 #endif
 };
 
-/*(s) Query string, or post, is parsed into following structure. If a variable
+/*(s) Query string, or post, is parsed into the following structure. If a variable
  * is not present, it will be left as NULL. Note that this structure
  * mixes fields from all forms that ZXID might display or process. ZXID ignores
  * any field that is not explicitly foreseen here and in zxidcgi.c, i.e.
