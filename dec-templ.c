@@ -231,7 +231,7 @@ int TXattr_lookup(struct zx_ctx* c, const char* name, const char* lim, struct zx
 		  && !memcmp("xmlns", prefix, sizeof("xmlns")-1))
 	: (lim-name == sizeof("xmlns")-1
 	   && !memcmp("xmlns", name, sizeof("xmlns")-1))) {
-      /* Namespace declaration. Skip because these were prescanned (see ablec in this file). */
+      /* Namespace declaration. Skip because these were prescanned (see above in this file). */
       return ZX_TOK_XMLNS;
     }
     return ZX_TOK_NOT_FOUND;

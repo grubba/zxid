@@ -698,6 +698,8 @@ struct zx_str* zxid_decrypt_newnym(zxid_conf* cf, struct zx_str* newnym, struct 
  * elem:: Element that was signed, usually needs type cast.
  * sig:: Signature element within elem
  * issue_ent:: The EntityID zx_str of the signer (Issuer)
+ * pop_seen:: Namespaces collected from outer layers
+ * lk:: Log key
  * return:: 0 if sig check could not be made due to error, 1 if there was
  *     no signature to check, 2 if check was made, in which case the result is
  *     in ses->sigres, 3 if check was not possible (due to error), but sig was not
@@ -709,7 +711,7 @@ struct zx_str* zxid_decrypt_newnym(zxid_conf* cf, struct zx_str* newnym, struct 
  */
 
 /* Called by:  zxid_idp_slo_do, zxid_mni_do, zxid_sp_dig_sso_a7n, zxid_sp_slo_do, zxid_xacml_az_cd1_do, zxid_xacml_az_do */
-int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, const char* lk)
+int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* elem, struct zx_ds_Signature_s* sig, struct zx_sa_Issuer_s* issue_ent, struct zx_ns_s* pop_seen, const char* lk)
 {
   struct zx_str* issuer = 0;
   struct zxsig_ref refs;
@@ -749,8 +751,16 @@ int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* 
     goto erro;
   }
 
+  memset(refs, 0, sizeof(refs));
   refs.sref = sig->SignedInfo->Reference;
   refs.blob = elem;
+  refs.pop_seen = pop_seen;
+#if 0
+  zx_see_elem_ns(c, &refs.pop_seen, elem);
+#else
+  cf->ctx->p = elem->;
+  pop_seen = zx_scan_xmlns(cf->ctx);
+#endif
   ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, sig, 1, &refs);
   zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
   D("Response sigres(%d)", ses->sigres);

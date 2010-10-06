@@ -631,6 +631,7 @@ struct zxsig_ref {
   struct zx_elem_s* blob;          /* XML data structure for validation */
   struct zx_str* id;               /* ID attribute of element to sign */
   struct zx_str* canon;            /* String representing canonicalization for signing */
+  struct zx_ns_s* pop_seen;        /* Namespaces from outer layers for inc_ns processing */
 };
 
 #define ZXSIG_OK         0

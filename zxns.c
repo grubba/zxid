@@ -232,6 +232,13 @@ void zx_pop_seen(struct zx_ns_s* ns)
   }
 }
 
+void zx_see_elem_ns(struct zx_ctx* c, struct zx_ns_s** pop_seen_p, struct zx_elem_s* el)
+{
+  struct zx_str* xmlns;
+  for (xmlns = el->xmlns; xmlns; xmlns = xmlns->g.n)
+    zx_push_seen(c, xmlns->);
+}
+
 /*() When trying to scan an element, an annoying feature of XML namespaces is that the
  * namespace may be declared in a xmlns attribute within the element itself. Thus
  * at the time of scanning the <ns:element part we can't know its namespace. What

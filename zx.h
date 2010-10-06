@@ -154,7 +154,7 @@ struct zx_elem_s {
   struct zx_elem_s* kids;          /* root of wo list representing child elements */
   struct zx_any_attr_s* any_attr;  /* list of attributes not understood by parser */
   struct zx_any_elem_s* any_elem;  /* list of elements not understood by parser */
-  struct zx_str* xmlns;            /* xmlns attributes, if any */
+  struct zx_str* xmlns;            /* xmlns attributes, if any *** not used as of 20101005 */
   struct zx_str* content;          /* non-element content, if any */
 };
 

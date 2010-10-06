@@ -192,7 +192,11 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
 	    siz = lim-p;
 	  else
 	    siz = q - p;
+#if 0
 	  ns = zx_locate_ns_by_prefix(c, siz, p);
+#else
+	  ns = zx_prefix_seen(c, siz, p);
+#endif
 	  if (!ns) {
 	    ERR("InclusiveNamespaces/@PrefixList contains unknown ns prefix(%.*s)", siz, p);
 	    p += siz + 1;
@@ -206,6 +210,7 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
     }
   }
   c->inc_ns_len = c->inc_ns;
+  zx_pop_seen(ref->pop_seen);
 
   for (; n; --n, ++sref) {
     ss = zx_EASY_ENC_WO_any_elem(c, sref->blob);
