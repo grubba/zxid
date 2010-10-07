@@ -419,6 +419,9 @@ struct zx_elem_s* zx_DEC_simple_elem(struct zx_ctx* c, struct zx_ns_s* ns , int 
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(ss);
       DD("xmlns detected(%.*s)", data-2-name, name);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns->n = x->xmlns;
+      x->xmlns = ns;
       goto next_attr;
     default:
       ss = zx_dec_unknown_attr(c, x, name, data, tok, x->g.tok);
@@ -578,6 +581,9 @@ struct zx_any_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_ns_s* ns , c
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(ss);
       DD("xmlns detected(%.*s)", data-2-name, name);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns->n = x->gg.xmlns;
+      x->gg.xmlns = ns;
       goto next_attr;
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
@@ -753,7 +759,7 @@ int zx_attr_lookup(struct zx_ctx* c, const char* name, const char* lim, struct z
 		  && !memcmp("xmlns", prefix, sizeof("xmlns")-1))
 	: (lim-name == sizeof("xmlns")-1
 	   && !memcmp("xmlns", name, sizeof("xmlns")-1))) {
-      /* Namespace declaration. Skip because these were prescanned (see ablec in this file). */
+      /* Namespace declaration. Skip because these were prescanned (see above in this file). */
       return ZX_TOK_XMLNS;
     }
     return ZX_TOK_NOT_FOUND;

@@ -189,6 +189,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
 #if 0
     /* *** xac:Response does not have signature field */
     if (cf->sso_soap_sign) {
+      memset(refs, 0, sizeof(refs));
       refs.id = body->xac_Request->ID;
       refs.canon = zx_EASY_ENC_SO_xac_Request(cf->ctx, body->xac_Request);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az xac-soap"))
@@ -200,6 +201,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
   } else if (!strcmp(cf->xasp_vers, "2.0-cd1")) {
     body->xaspcd1_XACMLAuthzDecisionQuery = zxid_mk_az_cd1(cf, subj, rsrc, act, env);
     if (cf->sso_soap_sign) {
+      memset(refs, 0, sizeof(refs));
       refs.id = body->xaspcd1_XACMLAuthzDecisionQuery->ID;
       refs.canon = zx_EASY_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx, body->xaspcd1_XACMLAuthzDecisionQuery);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az cd1"))
@@ -210,6 +212,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
   } else {
     body->XACMLAuthzDecisionQuery = zxid_mk_az(cf, subj, rsrc, act, env);
     if (cf->sso_soap_sign) {
+      memset(refs, 0, sizeof(refs));
       refs.id = body->XACMLAuthzDecisionQuery->ID;
       refs.canon = zx_EASY_ENC_SO_xasp_XACMLAuthzDecisionQuery(cf->ctx, body->XACMLAuthzDecisionQuery);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az"))

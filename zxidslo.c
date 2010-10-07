@@ -57,6 +57,7 @@ int zxid_sp_slo_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     body = zx_NEW_e_Body(cf->ctx);
     body->LogoutRequest = zxid_mk_logout(cf, zxid_get_user_nameid(cf, ses->nameid), ses_ix, idp_meta);
     if (cf->sso_soap_sign) {
+      memset(refs, 0, sizeof(refs));
       refs.id = body->LogoutRequest->ID;
       refs.canon = zx_EASY_ENC_SO_sp_LogoutRequest(cf->ctx, body->LogoutRequest);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slo"))
@@ -164,7 +165,7 @@ int zxid_sp_slo_do(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_Log
 {
   struct zx_str* sesix = req->SessionIndex&&req->SessionIndex->content&&req->SessionIndex->content->len&&req->SessionIndex->content->s?req->SessionIndex->content:0;
 
-  if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)req, req->Signature, req->Issuer, "LogoutRequest"))
+  if (!zxid_chk_sig(cf, cgi, ses, &req->gg, req->Signature, req->Issuer, 0, "LogoutRequest"))
     return 0;
 
   if (cf->log_level>0)
@@ -192,7 +193,7 @@ int zxid_idp_slo_do(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_Lo
 {
   struct zx_str* sesix = req->SessionIndex&&req->SessionIndex->content&&req->SessionIndex->content->len&&req->SessionIndex->content->s?req->SessionIndex->content:0;
 
-  if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)req, req->Signature, req->Issuer, "LogoutRequest"))
+  if (!zxid_chk_sig(cf, cgi, ses, &req->gg, req->Signature, req->Issuer, 0, "LogoutRequest"))
     return 0;
   
   if (cf->log_level>0)

@@ -154,7 +154,7 @@ struct zx_elem_s {
   struct zx_elem_s* kids;          /* root of wo list representing child elements */
   struct zx_any_attr_s* any_attr;  /* list of attributes not understood by parser */
   struct zx_any_elem_s* any_elem;  /* list of elements not understood by parser */
-  struct zx_str* xmlns;            /* xmlns attributes, if any *** not used as of 20101005 */
+  struct zx_ns_s* xmlns;           /* xmlns declarations (for inc_ns processing) */
   struct zx_str* content;          /* non-element content, if any */
 };
 
@@ -259,11 +259,13 @@ int   write2_or_append_lock_c_path(const char* c_path, int len1, const char* dat
 int   zx_report_openssl_error(const char* logkey);
 
 void  zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, const char* nam, int namlen);
+struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url);
 struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, const char* prefix);
 int   zx_is_ns_prefix(struct zx_ns_s* ns, int len, const char* prefix);
 struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix);
 struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* prefix, const char* logkey, int mk_dummy_ns);
 struct zx_ns_s* zx_scan_xmlns(struct zx_ctx* c);
+void  zx_see_elem_ns(struct zx_ctx* c, struct zx_ns_s** pop_seen, struct zx_elem_s* el);
 void  zx_pop_seen(struct zx_ns_s* ns);
 
 int zx_format_parse_error(struct zx_ctx* ctx, char* buf, int siz, char* logkey);

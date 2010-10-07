@@ -755,12 +755,7 @@ int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* 
   refs.sref = sig->SignedInfo->Reference;
   refs.blob = elem;
   refs.pop_seen = pop_seen;
-#if 0
   zx_see_elem_ns(c, &refs.pop_seen, elem);
-#else
-  cf->ctx->p = elem->;
-  pop_seen = zx_scan_xmlns(cf->ctx);
-#endif
   ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, sig, 1, &refs);
   zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
   D("Response sigres(%d)", ses->sigres);

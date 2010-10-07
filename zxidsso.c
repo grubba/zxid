@@ -510,7 +510,7 @@ struct zx_str unknown_str = {{0,0,0,0,0}, 1, "??"};  /* Static string used as du
  * return:: 0 for failure, otherwise some success code such as ZXID_SSO_OK */
 
 /* Called by:  main, zxid_sp_dig_sso_a7n */
-int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7n)
+int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7n, struct zx_ns_s* pop_seen)
 {
   char* err = "S"; /* See: RES in zxid-log.pd, section "ZXID Log Format" */
   struct timeval ourts;
@@ -595,8 +595,11 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
     }
   } else {
     if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
+      memset(refs, 0, sizeof(refs));
       refs.sref = a7n->Signature->SignedInfo->Reference;
-      refs.blob = (struct zx_elem_s*)a7n;
+      refs.blob = &a7n->gg;
+      refs.pop_seen = pop_seen;
+      zx_see_elem_ns(c, &refs.pop_seen, &a7n->gg);
       ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, a7n->Signature, 1, &refs);
       zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
     } else {

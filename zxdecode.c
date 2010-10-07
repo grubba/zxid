@@ -180,6 +180,7 @@ static int sig_validate(int len, char* p)
   zxid_ses ses;
   struct zx_root_s* r;
   struct zx_sp_Response_s* resp;
+  struct zx_ns_s* pop_seen;
   zxid_a7n* a7n;
   
   memset(&cgi, sizeof(cgi), 0);
@@ -201,7 +202,7 @@ static int sig_validate(int len, char* p)
 
   /* See zxid_sp_dig_sso_a7n() for similar code. */
   
-  if (!zxid_chk_sig(cf, &cgi, &ses, (struct zx_elem_s*)resp, resp->Signature, resp->Issuer, "Response"))
+  if (!zxid_chk_sig(cf, &cgi, &ses, &resp->gg, resp->Signature, resp->Issuer, 0, "Response"))
     return 4;
   
   a7n = zxid_dec_a7n(cf, resp->Assertion, resp->EncryptedAssertion);
@@ -209,7 +210,9 @@ static int sig_validate(int len, char* p)
     ERR("No Assertion found and not anon_ok in SAML Response %d", 0);
     return 5;
   }
-  ret = zxid_sp_sso_finalize(cf, &cgi, &ses, a7n);
+
+  zx_see_elem_ns(cf->ctx, &pop_seen, &resp->gg);
+  ret = zxid_sp_sso_finalize(cf, &cgi, &ses, a7n, pop_seen);
   INFO("zxid_sp_sso_finalize() returned %d", ret);
   return ret?0:6;
 }

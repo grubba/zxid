@@ -302,6 +302,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
     }
   } else {
     if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
+      memset(refs, 0, sizeof(refs));
       refs.sref = a7n->Signature->SignedInfo->Reference;
       refs.blob = (struct zx_elem_s*)a7n;
       ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, a7n->Signature, 1, &refs);
@@ -478,6 +479,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   
   wsc_meta = zxid_get_ent_ss(cf, issuer);
   if (wsc_meta) {
+    memset(refs, 0, sizeof(refs));
     n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, hdr, env->Body);
     /* *** Consider adding BDY and STR */
     ses->sigres = zxsig_validate(cf->ctx, wsc_meta->sign_cert, sec->Signature, n_refs, refs);

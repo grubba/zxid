@@ -93,7 +93,7 @@ static struct zx_ns_s* zx_locate_ns_by_url(struct zx_ctx* c, int len, const char
 }
 
 /* Called by:  zx_prefix_seen_whine, zx_xmlns_decl */
-static struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url)
+struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url)
 {
   struct zx_ns_s* ns = ZX_ZALLOC(c, struct zx_ns_s);
   ns->prefix_len = prefix_len;
@@ -115,7 +115,7 @@ static struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* p
 
 /*() Process XML namespace declaration, trying to match it by its declared namespace URI.
  * Should this fail, we will attempt to match by customary (at least in our opinion)
- * namespace prefixes. If deplocate namespaces are detected, they are handled as aliases. */
+ * namespace prefixes. If duplicate namespaces are detected, they are handled as aliases. */
 
 /* Called by:  zx_push_seen x2 */
 static struct zx_ns_s* zx_xmlns_decl(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url)
@@ -232,11 +232,18 @@ void zx_pop_seen(struct zx_ns_s* ns)
   }
 }
 
-void zx_see_elem_ns(struct zx_ctx* c, struct zx_ns_s** pop_seen_p, struct zx_elem_s* el)
+void zx_see_elem_ns(struct zx_ctx* c, struct zx_ns_s** pop_seen, struct zx_elem_s* el)
 {
-  struct zx_str* xmlns;
-  for (xmlns = el->xmlns; xmlns; xmlns = xmlns->g.n)
-    zx_push_seen(c, xmlns->);
+  struct zx_ns_s* ns;
+  for (ns = el->xmlns; ns; ns = ns->g.n) {
+    /*zx_push_seen(c, xmlns->);*/
+    ns->seen_n = c->guard_seen_n.seen_n;  /* Add to beginning of seen_n list. */
+    c->guard_seen_n.seen_n = ns;
+    ns->seen_n->seen_p = ns;
+    ns->seen_p = &c->guard_seen_n;
+    ns->seen_pop = *pop_seen;
+    *pop_seen = ns;
+  }
 }
 
 /*() When trying to scan an element, an annoying feature of XML namespaces is that the

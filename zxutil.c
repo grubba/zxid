@@ -870,6 +870,69 @@ char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans)
   return dst;
 }
 
+static short* zx_md = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+
+/*() Map from tm struct back to seconds since Unix epoch. The tm struct
+ * is assumed to be on GMT. This function is needed because mktime(3)
+ * is tainted by local time zone brain damage. This function aims
+ * to be equivalent to GNU extension timegm(3) (see Linux man pages). */
+
+int zx_timegm(struct tm* t)
+{
+  int x, aa = t->tm_year - 70;
+
+  if (t->tm_mon > 12) {
+    t->tm_year += t->tm_mon/12;
+    t->tm_mon %= 12;
+  }
+  while (t->tm_mday > zx_md[1+t->tm_mon]) {
+    if (t->tm_mon==1 && LEAP(t->tm_year+1900)) {
+      if (t->tm_mon==31+29) break;
+      --t->tm_mday;
+    }
+    t->tm_mday -= zx_md[t->tm_mon];
+    ++t->tm_mon;
+    if (t->tm_mon > 11) {
+      t->tm_mon=0;
+      ++t->tm_year;
+    }
+  }
+
+  if (t->tm_year < 70)
+    return -1;
+
+  x  = aa * 365 + (aa + 1) / 4; /* Account for leap year every 4 years */
+
+  if ((aa -= 131) >= 0) {
+    aa /= 100;
+    x -= (aa >> 2) * 3 + 1;
+    if ((aa &= 3) == 3)
+      --aa;
+    x -= aa;
+  }
+  
+  t->tm_yday = zx_md[t->tm_mon] + t->tm_mday-1 + (LEAP(t->tm_year+1900) & (t->tm_mon>1));
+  x += t->tm_yday;
+
+  t->tm_wday = (x + 4) % 7;
+  x *= 24; /* Days to hours */
+
+  if (t->tm_sec > 60) {
+    t->tm_min += t->tm_sec/60;
+    t->tm_sec %= 60;
+  }
+  if (t->tm_min > 60) {
+    t->tm_hour += t->tm_min/60;
+    t->tm_min %= 60;
+  }
+  if (t->tm_hour > 60) {
+    t->tm_mday += t->tm_hour/60;
+    t->tm_hour %= 60;
+  }
+
+  return ((x + t->tm_hour) * 60 + t->tm_min) * 60 + t->tm_sec;
+}
+
 /*() Convert a date-time format timestamp into seconds since Unix epoch.
  * Format is as follows
  *   01234567890123456789
@@ -885,7 +948,7 @@ int zx_date_time_to_secs(const char* dt)
 	 &t.tm_hour, &t.tm_min, &t.tm_sec);
   t.tm_year -= 1900;
   --t.tm_mon;
-  return mktime(&t);
+  return zx_timegm(&t);
 }
 
 /* EOF  --  zxutil.c */

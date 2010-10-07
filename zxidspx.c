@@ -64,13 +64,16 @@ zxid_a7n* zxid_dec_a7n(zxid_conf* cf, zxid_a7n* a7n, struct zx_sa_EncryptedAsser
 static int zxid_sp_dig_sso_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_Response_s* resp)
 {
   zxid_a7n* a7n;
+  struct zx_ns_s* pop_seen;
 
-  if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)resp, resp->Signature, resp->Issuer, "Response"))
+  if (!zxid_chk_sig(cf, cgi, ses, &resp->gg, resp->Signature, resp->Issuer, 0, "Response"))
     return 0;
   
   a7n = zxid_dec_a7n(cf, resp->Assertion, resp->EncryptedAssertion);
-  if (a7n)
-    return zxid_sp_sso_finalize(cf, cgi, ses, a7n);
+  if (a7n) {
+    zx_see_elem_ns(cf->ctx, &pop_seen, &resp->gg);
+    return zxid_sp_sso_finalize(cf, cgi, ses, a7n, pop_seen);
+  }
   if (cf->anon_ok && cgi->rs && !strcmp(cf->anon_ok, cgi->rs))  /* Prefix match */
     return zxid_sp_anon_finalize(cf, cgi, ses);
   ERR("No Assertion found and not anon_ok in SAML Response %d", 0);
@@ -223,7 +226,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, z
   struct zx_str* subj;
   struct zx_xac_Attribute_s* xac_at;
   
-  if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)azq, azq->Signature, azq->Issuer, "XACMLAuthzDecisionQuery"))
+  if (!zxid_chk_sig(cf, cgi, ses, &azq->gg, azq->Signature, azq->Issuer, 0, "XACMLAuthzDecisionQuery"))
     return 0;
 
   affil = subj = 0;
@@ -268,7 +271,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
   struct zx_str* subj;
   struct zx_xac_Attribute_s* xac_at;
   
-  if (!zxid_chk_sig(cf, cgi, ses, (struct zx_elem_s*)azq, azq->Signature, azq->Issuer, "XACMLAuthzDecisionQuery"))
+  if (!zxid_chk_sig(cf, cgi, ses, &azq->gg, azq->Signature, azq->Issuer, 0, "XACMLAuthzDecisionQuery"))
     return 0;
 
   affil = subj = 0;
@@ -350,6 +353,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       return 0;
     body->LogoutResponse = zxid_mk_logout_resp(cf, zxid_OK(cf), bdy->LogoutRequest->ID);
     if (cf->sso_soap_resp_sign) {
+      memset(refs, 0, sizeof(refs));
       refs.id = body->LogoutResponse->ID;
       refs.canon = zx_EASY_ENC_SO_sp_LogoutResponse(cf->ctx, body->LogoutResponse);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slor"))
@@ -362,6 +366,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
   if (bdy->ManageNameIDRequest) {
     body->ManageNameIDResponse = zxid_mni_do(cf, cgi, ses, bdy->ManageNameIDRequest);
     if (cf->sso_soap_resp_sign) {
+      memset(refs, 0, sizeof(refs));
       refs.id = body->ManageNameIDResponse->ID;
       refs.canon = zx_EASY_ENC_SO_sp_ManageNameIDResponse(cf->ctx, body->ManageNameIDResponse);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
@@ -374,6 +379,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
   if (bdy->NameIDMappingRequest) {
     body->NameIDMappingResponse = zxid_nidmap_do(cf, bdy->NameIDMappingRequest);
     if (cf->sso_soap_resp_sign) {
+      memset(refs, 0, sizeof(refs));
       refs.id = body->NameIDMappingResponse->ID;
       refs.canon = zx_EASY_ENC_SO_sp_NameIDMappingResponse(cf->ctx, body->NameIDMappingResponse);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
@@ -395,6 +401,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       body->SASLResponse = zxid_idp_as_do(cf, bdy->SASLRequest);
 #if 0
       if (cf->sso_soap_resp_sign) {
+	memset(refs, 0, sizeof(refs));
 	refs.id = res->ID;
 	refs.canon = zx_EASY_ENC_SO_as_SASLResponse(cf->ctx, res);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert asr"))
@@ -411,6 +418,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       D("XACMLAuthzDecisionQuery %d",0);
       body->Response = zxid_xacml_az_do(cf, cgi, ses, bdy->XACMLAuthzDecisionQuery);
       if (cf->sso_soap_resp_sign) {
+	memset(refs, 0, sizeof(refs));
 	refs.id = body->Response->ID;
 	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
@@ -423,6 +431,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       D("xaspcd1:XACMLAuthzDecisionQuery %d",0);
       body->Response = zxid_xacml_az_cd1_do(cf, cgi, ses, bdy->xaspcd1_XACMLAuthzDecisionQuery);
       if (cf->sso_soap_resp_sign) {
+	memset(refs, 0, sizeof(refs));
 	refs.id = body->Response->ID;
 	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
@@ -444,6 +453,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     if (bdy->NameIDMappingRequest && cf->imps_ena) {
       body->NameIDMappingResponse = zxid_nidmap_do(cf, bdy->NameIDMappingRequest);
       if (cf->sso_soap_resp_sign) {
+	memset(refs, 0, sizeof(refs));
 	refs.id = body->NameIDMappingResponse->ID;
 	refs.canon = zx_EASY_ENC_SO_sp_NameIDMappingResponse(cf->ctx, body->NameIDMappingResponse);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
@@ -467,6 +477,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 #if 0
       // *** should really sign the Body, putting sig in wsse:Security header
       if (cf->sso_soap_resp_sign) {
+	memset(refs, 0, sizeof(refs));
 	refs.id = di_resp->ID;
 	refs.canon = zx_EASY_ENC_SO_e_Body(cf->ctx, body);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert dir"))

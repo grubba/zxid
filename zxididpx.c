@@ -128,6 +128,7 @@ int zxid_idp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct z
     body = zx_NEW_e_Body(cf->ctx);
     body->LogoutResponse = zxid_mk_logout_resp(cf, zxid_OK(cf), req->ID);
     if (cf->sso_soap_resp_sign) {
+      memset(refs, 0, sizeof(refs));
       refs.id = body->LogoutResponse->ID;
       refs.canon = zx_EASY_ENC_SO_sp_LogoutResponse(cf->ctx, body->LogoutResponse);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert idp slo"))
