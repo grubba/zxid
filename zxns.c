@@ -235,7 +235,7 @@ void zx_pop_seen(struct zx_ns_s* ns)
 void zx_see_elem_ns(struct zx_ctx* c, struct zx_ns_s** pop_seen, struct zx_elem_s* el)
 {
   struct zx_ns_s* ns;
-  for (ns = el->xmlns; ns; ns = ns->g.n) {
+  for (ns = el->xmlns; ns; ns = ns->n) {
     /*zx_push_seen(c, xmlns->);*/
     ns->seen_n = c->guard_seen_n.seen_n;  /* Add to beginning of seen_n list. */
     c->guard_seen_n.seen_n = ns;

@@ -1,3 +1,173 @@
+Subject: EXC-XML-C14N ambiguity in processing InclusiveNamespaces PrefixList with undefined prefix
+
+The specification [XML-EXC-C14N] does not state how a namespace prefix, not
+defined earlier in the document, should be processed. Section 3, bullet 2
+does not help much as it seems to assume input where the prefixes are
+always well defined. Similarily section 3.1 bullet 3.2.1 seems to assume
+that all prefixes in the PrefixList are well defined.
+
+My interpretation is that the undefined prefixes are errors that should
+cause digital signature to be rejected. However I have been challenged
+by some vendors on the market, claiming that their signatures with
+undefined prefixes in InclusiveNamespaces PrefixList are indeed valid
+as the specification does not expressly forbid such undefined
+prefixes.
+
+I think the specifications should be more clear on this issue. I would
+hope for errata to be released to clarify this.
+
+[XML-EXC-C14N] John Boyer, Donald E. Eastlake 3rd, Joseph Reagle: "Exclusive
+  XML Canonicalization Version 1.0", W3C Recommendation 18 July 2002,
+  http://www.w3.org/TR/xml-exc-c14n/
+
+--Sampo
+
+
+Cal Heldenbrand <cal@fbsdata.com> said:
+> Thanks!  Okay, tracing through a login event:
+> 
+> t  zxidsso.c:466 zxid_validate_cond     zx d ssof: NotOnOrAfter ok. Time to
+> expiry 21903 secs. Our gettimeofday: 1286377186 secs, remote: 1286399089
+> secs
+> t  zxidsso.c:489 zxid_validate_cond     zx d ssof: NotBefore accepted with
+> slop of 39600. Time to validity 21603 secs. Our gettimeofday: 1286377186
+> secs, remote: 1286398789 secs
+> 
+> NotOnOrAfter:
+>   date -d @1286377186  ->  Wed Oct  6 14:59:46 GMT 2010
+>   date -d @1286399089  ->  Wed Oct  6 21:04:49 GMT 2010
+> 
+> But, looking at the SAML Reponse (attached 6Wt-P22KFRyQLvj7GHnLhj-iNws) the
+> NotOnOrAfter timestamp is "2010-10-06T15:04:49.293Z" which indeed, is just 5
+> minutes ahead of the real time.  (plus the 3 seconds it took me to log in)
+> 
+> NotBefore:
+>   date -d @1286377186 -> Wed Oct  6 14:59:46 GMT 2010
+>   date -d @1286398789 -> Wed Oct  6 20:59:49 GMT 2010
+> 
+> Again, NotBefore in the Reponse is "2010-10-06T14:59:49.293Z"
+> 
+> I'm no expert in the SAML protocol, but is it maybe that the date is being
+> parsed incorrectly due to the millisecond precision?  I noticed the requests
+> you send out don't have millisecond granularity, so it's just a gut feeling
+> that zxid might be parsing them incorrectly.
+
+The milliseconds are unlikely to be to blame.
+
+Thanks for insisting with this problem. Indeed I had not read all
+available documentation, such as man mktime() (which I call in
+zx_date_time_to_secs() in zxutil.c:879). Turns out it is in fact
+documented as working in terms of local time. Ouch. No GMT version
+of the function is provided... time to write my own I guess.
+
+I guess most of my users in Europe have gotten away with this due
+to small enough time zone differences (or large slop).
+
+> Timestamps are annoying aren't they?  I've had my share of headaches with
+> this stuff.  You're lucky to live in GMT!  In the US, we have states that
+> don't observe DST, and most do, which makes all of this amazingly fun.
+> 
+> 
+> > I notice one of your deciding factors was apparently uncontrolled
+> > behaviour where zxid_simple() seemed to do too much for your taste.
+> >
+> 
+> Yeah, maybe that's it.  I guess I couldn't really explain why the raw API
+> seemed more appealing, but it seemed to "fit in" better with how the rest of
+
+I see this a lot. The zxid_simple() API state machine essentially trys to hide
+the SAML2 protocol flow from the programmer, but apparently many programmers
+are hell bent on tracing the flow. In some sense this is understandable
+from point of view of staying in control, but it also means you actually
+have to learn how SAML2 flows work and you are not able to support
+future protocol evolution transparently. For example, if ZXID one day
+supports InfoCards, would your code work without alteration? zxid_simple()
+based code probably would.
+
+> my mod_perl objects happen, and my need to customize each vhost depending on
+> what our clients want.
+> 
+> After the main functionality is working, I'll go back through my function
+> and clean things up, read more thoroughly through the simple API, and
+> probably change things over.
+> 
+> 
+> > if I can't autodetect, I need the hints that auto_flags provides.
+> > I could make them config options, but then they would affect code
+> > that shares /var/zxid/zxid.conf: for example if one part of your SP
+> > is done with mod_auth_saml and another was provided using Net::SAML.
+> > They should be able to share most of the configuration and somehow
+> > indicate at implementatin level that they are different animals.
+> > Perhaps I will add more simplified zxid_simple() family functions
+> > that do not take the cumbersome auto_flags argument, but instead
+> > hardwire it for a specific purpose. Then you would choose the best
+> > API function to use from a catalog of perhaps 10 rather than
+> > trying to compute the auto_flags bits that are most optimal
+> > for your situation.
+> >
+> 
+> Yes, that would be helpful.  In general, I would personally prefer
+> configurations like this to happen in the API.
+
+Ok, I'll go this way, then.
+
+> When dealing with a virtual
+> hosted environment, I can't just set something like NON_STANDARD_ENTITYID
+> globally to work around some problem with a remote IdP.
+
+Basically you need easy virtual hosting solution. My vision for this
+is somehow from the environment to figure out different PATH per
+virtual host. After that everything else can be configured.
+
+In mod_auth_saml environment it is possible to issue the ZXIDConf directives
+in context of a virtual host, thus achieving this goal. Unfortunately this
+solution does not work for CGI or Java Servlets, so I am still searching
+for the holy grail.
+
+> Most of the config
+> options I've been playing with are all due to specific issues with
+> Shibboleth... so if I have a different vhost working with a different
+> client, and a completely different IdP package then I've painted myself into
+> a corner.  I'd much rather have these options under my specific control,
+> because I can set in my own configs via the apache vhost and keep my source
+> code all the same.  (Plus, managing 60 web servers is an entire world of fun
+> on its own.  Adding yet another config file to puppet is going to make me go
+> crazy!  Side tangent:  CentOS 5 RPM's would also make my life a lot easier,
+> and I'm sure a good portion of your crowd would enjoy Debian packages as
+> well!)
+
+How would I generate and test such RPMs? I would hope community contribution.
+In fact some FreeBSD folks have done just that.
+
+http://www.freshports.org/security/zxid/
+
+Unfortunately the maintainer never since updated the package.
+
+Basically, if I get Makefile target I will integrate it. I will
+publicize it on my web site and if I get positive feedback,
+I'll probably start supporting it officially.
+
+Most distros differ mainly on filesystem layout. As a policy, the
+source distribution is assuming the layout preferred by the
+dependency modules authors, i.e. what you would get if you got the
+source directly and not through the distribution (hence OpenSSL
+in /usr/local/ssl). Many distributions quite vigorously
+disagree with the authors of various open source software. This
+is unfortunate and probably some symptom of control freakish behaviour
+of the distribution authors.
+
+Currently I do not advertise the binaries on web site much. That probably
+should change.
+
+Cheers,
+--Sampo
+
+> Thanks for doing the doc updates, I appreciate it.  And of course, an open
+> source developer that listens to users is also very appreciative.  :-)
+> 
+> --Cal
+
+
 
 Cal Heldenbrand <cal@fbsdata.com> said:
 > >

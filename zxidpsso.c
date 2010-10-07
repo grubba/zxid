@@ -46,7 +46,7 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
   GETTIMEOFDAY(&ourts, 0);
   
   if (sign) {
-    memset(refs, 0, sizeof(refs));
+    memset(&refs, 0, sizeof(refs));
     refs.id = a7n->ID;
     refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert anoint a7n"))
@@ -108,7 +108,7 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
   GETTIMEOFDAY(&ourts, 0);
   
   if (sign) {
-    memset(refs, 0, sizeof(refs));
+    memset(&refs, 0, sizeof(refs));
     refs.id = resp->ID;
     refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, resp);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert anoint resp"))
@@ -707,7 +707,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     D("SAML2 PAOS ep(%.*s)", acsurl->len, acsurl->s);
     
     if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
-      memset(refs, 0, sizeof(refs));
+      memset(&refs, 0, sizeof(refs));
       refs.id = a7n->ID;
       refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos"))

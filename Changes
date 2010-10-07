@@ -98,6 +98,8 @@ zxid-0.65:: 5.10.2010
     - Fixed truncated log bug (premature nul termination) in zxlog.
     - Added CANON_INOPT=1 option to ignore InclusiveNamespaces/@PrefixList as needed to work around Shib 2.1.5 IdP bug
     - Added patch  by Eric Rybinski for XML ENC padding problem reported by Sampo as OpenSSL bug 1067 back in 2005.
+    - Changed treatment of InclusiveNamespaces PrefixList to be more tolerant of undefined prefixes
+    - Fixed mktime(3) timezone bug, found by Cal
 zxid-0.64:: 16.9.2010
     - Improved WIN32CL (MSVC CL compiler) port
     - Added extern "C" markers to headers to force C calling convention even in C++, promoting binary compatibility of libraries

@@ -49,7 +49,7 @@ int zxid_sp_mni_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_str*
     body = zx_NEW_e_Body(cf->ctx);
     body->ManageNameIDRequest = zxid_mk_mni(cf, zxid_get_user_nameid(cf, ses->nameid), new_nym, idp_meta);
     if (cf->sso_soap_sign) {
-      memset(refs, 0, sizeof(refs));
+      memset(&refs, 0, sizeof(refs));
       refs.id = body->ManageNameIDRequest->ID;
       refs.canon = zx_EASY_ENC_SO_sp_ManageNameIDRequest(cf->ctx, body->ManageNameIDRequest);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mni"))

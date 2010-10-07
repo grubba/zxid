@@ -751,11 +751,11 @@ int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* 
     goto erro;
   }
 
-  memset(refs, 0, sizeof(refs));
+  memset(&refs, 0, sizeof(refs));
   refs.sref = sig->SignedInfo->Reference;
   refs.blob = elem;
   refs.pop_seen = pop_seen;
-  zx_see_elem_ns(c, &refs.pop_seen, elem);
+  zx_see_elem_ns(cf->ctx, &refs.pop_seen, elem);
   ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, sig, 1, &refs);
   zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
   D("Response sigres(%d)", ses->sigres);

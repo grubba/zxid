@@ -302,7 +302,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
     }
   } else {
     if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
-      memset(refs, 0, sizeof(refs));
+      memset(&refs, 0, sizeof(refs));
       refs.sref = a7n->Signature->SignedInfo->Reference;
       refs.blob = (struct zx_elem_s*)a7n;
       ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, a7n->Signature, 1, &refs);

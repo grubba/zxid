@@ -870,35 +870,46 @@ char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans)
   return dst;
 }
 
-static short* zx_md = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+static short zx_mmdd[] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
 
 /*() Map from tm struct back to seconds since Unix epoch. The tm struct
- * is assumed to be on GMT. This function is needed because mktime(3)
- * is tainted by local time zone brain damage. This function aims
- * to be equivalent to GNU extension timegm(3) (see Linux man pages). */
+ * is assumed to be on GMT. This function is needed because mktime(3) is
+ * tainted by local time zone brain damage. This function aims to be
+ * equivalent to GNU extension timegm(3) (see Linux man pages). */
 
-int zx_timegm(struct tm* t)
+static int zx_timegm(const struct tm* t)
 {
-  int x, aa = t->tm_year - 70;
+  int x;
+  int aa = t->tm_year - 70, mon = t->tm_mon, dd = t->tm_mday;
+  int hh = t->tm_hour, mm = t->tm_min, ss = t->tm_sec;
 
-  if (t->tm_mon > 12) {
-    t->tm_year += t->tm_mon/12;
-    t->tm_mon %= 12;
+  if (ss > 60) {
+    mm += ss/60;
+    ss %= 60;
   }
-  while (t->tm_mday > zx_md[1+t->tm_mon]) {
-    if (t->tm_mon==1 && LEAP(t->tm_year+1900)) {
-      if (t->tm_mon==31+29) break;
-      --t->tm_mday;
-    }
-    t->tm_mday -= zx_md[t->tm_mon];
-    ++t->tm_mon;
-    if (t->tm_mon > 11) {
-      t->tm_mon=0;
-      ++t->tm_year;
+  if (mm > 60) {
+    hh += mm/60;
+    mm %= 60;
+  }
+  if (hh > 60) {
+    dd += hh/60;
+    hh %= 60;
+  }
+  if (mon > 12) {
+    aa += mon/12;
+    mon %= 12;
+  }
+  while (dd > zx_mmdd[mon+1]) {
+    if (mon == 1 && LEAP(aa+1970))
+      --dd;
+    dd -= zx_mmdd[mon];
+    ++mon;
+    if (mon > 11) {
+      mon = 0;
+      ++aa;
     }
   }
-
-  if (t->tm_year < 70)
+  if (aa < 0)
     return -1;
 
   x  = aa * 365 + (aa + 1) / 4; /* Account for leap year every 4 years */
@@ -911,26 +922,9 @@ int zx_timegm(struct tm* t)
     x -= aa;
   }
   
-  t->tm_yday = zx_md[t->tm_mon] + t->tm_mday-1 + (LEAP(t->tm_year+1900) & (t->tm_mon>1));
-  x += t->tm_yday;
-
-  t->tm_wday = (x + 4) % 7;
+  x += zx_mmdd[mon] + dd-1 + (LEAP(aa+1970) && mon>1?1:0);
   x *= 24; /* Days to hours */
-
-  if (t->tm_sec > 60) {
-    t->tm_min += t->tm_sec/60;
-    t->tm_sec %= 60;
-  }
-  if (t->tm_min > 60) {
-    t->tm_hour += t->tm_min/60;
-    t->tm_min %= 60;
-  }
-  if (t->tm_hour > 60) {
-    t->tm_mday += t->tm_hour/60;
-    t->tm_hour %= 60;
-  }
-
-  return ((x + t->tm_hour) * 60 + t->tm_min) * 60 + t->tm_sec;
+  return ((x + hh) * 60 + mm) * 60 + ss;
 }
 
 /*() Convert a date-time format timestamp into seconds since Unix epoch.

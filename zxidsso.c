@@ -595,11 +595,11 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
     }
   } else {
     if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
-      memset(refs, 0, sizeof(refs));
+      memset(&refs, 0, sizeof(refs));
       refs.sref = a7n->Signature->SignedInfo->Reference;
       refs.blob = &a7n->gg;
       refs.pop_seen = pop_seen;
-      zx_see_elem_ns(c, &refs.pop_seen, &a7n->gg);
+      zx_see_elem_ns(cf->ctx, &refs.pop_seen, &a7n->gg);
       ses->sigres = zxsig_validate(cf->ctx, idp_meta->sign_cert, a7n->Signature, 1, &refs);
       zxid_sigres_map(ses->sigres, &cgi->sigval, &cgi->sigmsg);
     } else {
