@@ -93,7 +93,7 @@ void zxid_user_sha1_name(zxid_conf* cf, struct zx_str* qualif, struct zx_str* ni
 {
   struct zx_str* ss;
   if (!nid) {
-    memset(sha1_name, 0, 28);
+    ZERO(sha1_name, 28);
     return;
   }
   if (qualif) {
@@ -261,7 +261,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       pw_buf[len] = 0;
     }
     zx_hexdec((char*)pw_buf, (char*)pw_buf, len, hex_trans);
-    memset (&yktok, 0, sizeof(yktok));
+    ZERO (&yktok, sizeof(yktok));
     zx_hexdec((void*)&yktok, (char*)pw_hash, 32, ykmodhex_trans);
     yubikey_aes_decrypt((void*)&yktok, pw_buf);
     D("internal uid %02x %02x %02x %02x %02x %02x counter=%d 0x%x timestamp=%d (hi=%x lo=%x) use=%d 0x%x rnd=0x%x crc=0x%x", yktok.uid[0], yktok.uid[1], yktok.uid[2], yktok.uid[3], yktok.uid[4], yktok.uid[5], yktok.ctr, yktok.ctr, (yktok.tstph << 16) | yktok.tstpl, yktok.tstph, yktok.tstpl, yktok.use, yktok.use, yktok.rnd, yktok.crc);
@@ -329,7 +329,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 
   /* Successful login. Establish session. */
 
-  memset(ses, 0, sizeof(zxid_ses));
+  ZERO(ses, sizeof(zxid_ses));
   ses->magic = ZXID_SES_MAGIC;
   ses->an_instant = time(0);  /* This will be later used by AuthnStatement constructor. */
   ses->an_ctx = cf->issue_authnctx_pw;  /* *** Should also depend on how user was registered */

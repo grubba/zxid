@@ -688,7 +688,7 @@ char* zx_zlib_raw_deflate(struct zx_ctx* c, int in_len, const char* in, int* out
   char* out;
   z_stream z;
   *out_len = 0;
-  memset(&z, 0, sizeof(z_stream));
+  ZERO(&z, sizeof(z_stream));
   z.zalloc = zx_zlib_zalloc;
   z.zfree = zx_zlib_zfree;
   z.opaque = c;
@@ -731,7 +731,7 @@ char* zx_zlib_raw_inflate(struct zx_ctx* c, int in_len, const char* in, int* out
   char* old_out;
   z_stream z;
   *out_len = 0;
-  memset(&z, 0, sizeof(z_stream));
+  ZERO(&z, sizeof(z_stream));
   z.zalloc = zx_zlib_zalloc;
   z.zfree = zx_zlib_zfree;
   z.opaque = c;
@@ -936,7 +936,7 @@ static int zx_timegm(const struct tm* t)
 int zx_date_time_to_secs(const char* dt)
 {
   struct tm t;
-  memset(&t, 0, sizeof(t));
+  ZERO(&t, sizeof(t));
   sscanf(dt, "%d-%d-%dT%d:%d:%dZ",
 	 &t.tm_year, &t.tm_mon, &t.tm_mday,
 	 &t.tm_hour, &t.tm_min, &t.tm_sec);

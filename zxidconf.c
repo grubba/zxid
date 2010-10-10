@@ -57,7 +57,7 @@ void zxid_sha1_file(zxid_conf* cf, char* name, char* sha1)
 {
   int gotall;
   char buf[4096];
-  memset(sha1, 0, 20);
+  ZERO(sha1, 20);
   gotall = read_all(sizeof(buf), buf, "sha1_file", "%s%s", cf->path, name);
   SHA1(buf, gotall, sha1);
 }
@@ -439,7 +439,7 @@ int zxid_init_conf(zxid_conf* cf, const char* zxid_path)
 /* Called by:  dirconf, main x2, zx_init_ctx, zxid_az, zxid_simple_len */
 void zx_reset_ctx(struct zx_ctx* ctx)
 {
-  memset(ctx, 0, sizeof(struct zx_ctx));
+  ZERO(ctx, sizeof(struct zx_ctx));
   LOCK_INIT(ctx->mx);
   ctx->guard_seen_n.seen_n = &ctx->guard_seen_p;
   ctx->guard_seen_p.seen_p = &ctx->guard_seen_n;

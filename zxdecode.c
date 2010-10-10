@@ -200,8 +200,8 @@ static int sig_validate(int len, char* p)
   struct zx_ns_s* pop_seen = 0;
   zxid_a7n* a7n;
   
-  memset(&cgi, sizeof(cgi), 0);
-  memset(&ses, sizeof(ses), 0);
+  ZERO(&cgi, sizeof(cgi));
+  ZERO(&ses, sizeof(ses));
 
   LOCK(cf->ctx->mx, "decode");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, p, p + len);

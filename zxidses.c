@@ -173,11 +173,11 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
     p = ses->setcookie;
   else
     p = 0;
-  memset(ses, 0, sizeof(zxid_ses));
+  ZERO(ses, sizeof(zxid_ses));
   ses->magic = ZXID_SES_MAGIC;
   ses->setcookie = p;
 #else
-  memset(ses, 0, sizeof(zxid_ses));
+  ZERO(ses, sizeof(zxid_ses));
   ses->magic = ZXID_SES_MAGIC;
 #endif
 
@@ -392,7 +392,7 @@ int zxid_find_ses(zxid_conf* cf, zxid_ses* ses, struct zx_str* ses_ix, struct zx
     }
   }
   closedir(dir);
-  memset(ses, 0, sizeof(zxid_ses));
+  ZERO(ses, sizeof(zxid_ses));
   return 0;
 }
 

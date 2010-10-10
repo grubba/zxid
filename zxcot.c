@@ -454,7 +454,7 @@ static int zxid_genmd(zxid_conf* cf, int dry_run, const char* dcot)
 {
   zxid_cgi cgi;
   struct zx_str* meta = zxid_sp_meta(cf, &cgi);
-  memset(&cgi, 0, sizeof(cgi));
+  ZERO(&cgi, sizeof(cgi));
   printf("%.*s", meta->len, meta->s);
   return 0;
 }

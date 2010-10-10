@@ -97,7 +97,7 @@ void* zx_alloc(struct zx_ctx* c, int size)
 void* zx_zalloc(struct zx_ctx* c, int size)
 {
   char* p = zx_alloc(c, size);
-  memset(p, 0, size);
+  ZERO(p, size);
   return p;
 }
 

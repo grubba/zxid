@@ -111,7 +111,7 @@ zxid_conf* zxid_new_conf_to_cf(const char* conf)
     ERR("out-of-memory %d", sizeof(zxid_conf));
     exit(1); /* *** perhaps too severe! */
   }
-  cf = memset(cf, 0, sizeof(zxid_conf));
+  cf = ZERO(cf, sizeof(zxid_conf));
   zxid_conf_to_cf_len(cf, -1, conf);
   return cf;
 }
@@ -830,7 +830,7 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
   struct zx_root_s* r;
   struct zx_str* ss;
   zxid_ses sess;
-  memset(&sess, 0 , sizeof(sess));
+  ZERO(&sess, sizeof(sess));
   D("cf=%p cgi=%p", cf, cgi);
   
   DD("z saml_req(%s) rs(%s) sigalg(%s) sig(%s)", cgi->saml_req, cgi->rs, cgi->sigalg, cgi->sig);  
@@ -931,7 +931,7 @@ static char* zxid_simple_idp_pw_authn(zxid_conf* cf, zxid_cgi* cgi, int* res_len
   if (!zxid_decode_ssoreq(cf, cgi))
     goto err;
 
-  memset(&sess, 0, sizeof(sess));
+  ZERO(&sess, sizeof(sess));
   if (zxid_pw_authn(cf, cgi, &sess))
     return zxid_simple_idp_an_ok_do_rest(cf, cgi, &sess, res_len, auto_flags);
 
@@ -1346,7 +1346,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
   char* buf = 0;
   char* res = 0;
   zxid_cgi cgi;
-  memset(&cgi, 0, sizeof(cgi));
+  ZERO(&cgi, sizeof(cgi));
   
   if (!cf || !ses) {
     ERR("NULL pointer. You MUST supply configuration object %p and session object %p (programming error). auto_flags=%x", cf, ses, auto_flags);
@@ -1440,7 +1440,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	  goto done;
   }
 
-  memset(ses, 0, sizeof(ses));   /* No session yet! Process login form */
+  ZERO(ses, sizeof(ses));   /* No session yet! Process login form */
   res = zxid_simple_no_ses_cf(cf, &cgi, ses, res_len, auto_flags);
 
 done:
@@ -1466,7 +1466,7 @@ done:
 char* zxid_simple_cf(zxid_conf* cf, int qs_len, char* qs, int* res_len, int auto_flags)
 {
   zxid_ses ses;
-  memset(&ses, 0, sizeof(ses));
+  ZERO(&ses, sizeof(ses));
   return zxid_simple_cf_ses(cf, qs_len, qs, &ses, res_len, auto_flags);
 }
 
@@ -1482,7 +1482,7 @@ char* zxid_simple_len(int conf_len, char* conf, int qs_len, char* qs, int* res_l
   struct zx_ctx ctx;
   zxid_conf cf;
   zx_reset_ctx(&ctx);
-  memset(&cf, 0, sizeof(zxid_conf));
+  ZERO(&cf, sizeof(cf));
   cf.ctx = &ctx;
   zxid_conf_to_cf_len(&cf, conf_len, conf);
   return zxid_simple_cf(&cf, qs_len, qs, res_len, auto_flags);

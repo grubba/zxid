@@ -273,8 +273,8 @@ static int chkuid(request_rec* r)
   zxid_conf* cf = dir_cf(r);
   zxid_cgi cgi;
   zxid_ses ses;
-  memset(&cgi, 0, sizeof(zxid_cgi));
-  memset(&ses, 0, sizeof(zxid_ses));
+  ZERO(&cgi, sizeof(zxid_cgi));
+  ZERO(&ses, sizeof(zxid_ses));
 
   D("===== START %s req=%p uri(%s) args(%s)", ZXID_REL, r, r?STRNULLCHK(r->uri):"", r?STRNULLCHK(r->args):"");
   
@@ -476,7 +476,7 @@ const command_rec zxid_apache_commands[] = {
 static void* dirconf(apr_pool_t* p, char* d)
 {
   zxid_conf* cf = apr_palloc(p, sizeof(zxid_conf));
-  memset(cf, 0, sizeof(zxid_conf));
+  ZERO(cf, sizeof(zxid_conf));
   cf->ctx = apr_palloc(p, sizeof(struct zx_ctx));
   zx_reset_ctx(cf->ctx);
   D("cf=%p ctx=%p d(%s)", cf, cf->ctx, STRNULLCHKD(d));

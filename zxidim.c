@@ -64,8 +64,8 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
     return resp;
   }
 
-  memset(&cgi, 0, sizeof(cgi));
-  memset(&ses, 0, sizeof(ses));
+  ZERO(&cgi, sizeof(cgi));
+  ZERO(&ses, sizeof(ses));
   ses.magic = ZXID_SES_MAGIC;
   ses.an_instant = time(0);  /* This will be later used by AuthnStatement constructor. */
   ses.an_ctx = SAML_AUTHCTX_PREVSESS;  /* Is there better one to use for token based auth? */
@@ -89,7 +89,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
   a7n = zxid_sso_issue_a7n(cf, &cgi, &ses, &srcts, sp_meta, 0, &nameid, &logop, ar);
 
   if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
-    memset(&refs, 0, sizeof(refs));
+    ZERO(&refs, sizeof(refs));
     refs.id = a7n->ID;
     refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos"))

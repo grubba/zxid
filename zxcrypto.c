@@ -729,7 +729,7 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf)
   for (pl = strlen(pw); pl > 0; pl -= 16)
     MD5_Update(&ctx, (unsigned const char *)final, pl>16 ? 16 : pl);
 
-  memset(final, 0, sizeof final); /* Don't leave anything around in vm they could use. */
+  ZERO(final, sizeof final); /* Don't leave anything around in vm they could use. */
   
   /* Then something really weird... */
   for (j = 0, i = strlen(pw); i; i >>= 1)
@@ -777,7 +777,7 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf)
   l = final[11];                                       to64(p, l, 2);  p += 2;
   *p = '\0';
 
-  memset(final, 0, sizeof final); /* Don't leave anything around in vm they could use. */
+  ZERO(final, sizeof final); /* Don't leave anything around in vm they could use. */
   return buf;
 }
 

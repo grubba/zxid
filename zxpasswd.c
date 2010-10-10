@@ -343,7 +343,7 @@ int main(int argc, char** argv, char** env)
 	buf[got] = 0;
       }
       zx_hexdec(buf, buf, got, hex_trans);
-      memset (&yktok, 0, sizeof(yktok));
+      ZERO(&yktok, sizeof(yktok));
       zx_hexdec((void *)&yktok, pw, pwgot, ykmodhex_trans);
       yubikey_aes_decrypt((void *)&yktok, (unsigned char*)buf);
       D("internal uid %02x %02x %02x %02x %02x %02x counter=%d 0x%x timestamp=%d (hi=%x lo=%x) use=%d 0x%x rnd=0x%x crc=0x%x", yktok.uid[0], yktok.uid[1], yktok.uid[2], yktok.uid[3], yktok.uid[4], yktok.uid[5], yktok.ctr, yktok.ctr, (yktok.tstph << 16) | yktok.tstpl, yktok.tstph, yktok.tstpl, yktok.use, yktok.use, yktok.rnd, yktok.crc);

@@ -320,7 +320,7 @@ int main(int argc, char** argv, char** env)
 	  eid = r->Envelope->Body->ArtifactResponse->Issuer->gg.content;
 	  D("Found sig in Envelope/Body/ArtifactResponse eid(%.*s)", eid->len, eid->s);
 	  ent = zxid_get_ent_from_cache(cf, eid);
-	  memset(refs, 0, sizeof(refs));
+	  ZERO(refs, sizeof(refs));
 	  refs.sref = r->Envelope->Body->ArtifactResponse->Signature->SignedInfo->Reference;
 	  refs.blob = (struct zx_elem_s*)r->Envelope->Body->ArtifactResponse;
 	  res = zxsig_validate(cf->ctx, ent->sign_cert,

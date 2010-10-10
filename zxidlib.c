@@ -335,7 +335,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
 
 #if 1
   /* Template based POST page, see post.html */
-  memset(&cgi, 0, sizeof(cgi));
+  ZERO(&cgi, sizeof(cgi));
   cgi.action_url = zx_str_to_c(cf->ctx, action_url);
   cgi.saml_art  = field;
   cgi.saml_resp = url;
@@ -751,7 +751,7 @@ int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* 
     goto erro;
   }
 
-  memset(&refs, 0, sizeof(refs));
+  ZERO(&refs, sizeof(refs));
   refs.sref = sig->SignedInfo->Reference;
   refs.blob = elem;
   refs.pop_seen = pop_seen;

@@ -189,7 +189,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
 #if 0
     /* *** xac:Response does not have signature field */
     if (cf->sso_soap_sign) {
-      memset(refs, 0, sizeof(refs));
+      ZERO(refs, sizeof(refs));
       refs.id = body->xac_Request->ID;
       refs.canon = zx_EASY_ENC_SO_xac_Request(cf->ctx, body->xac_Request);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az xac-soap"))
@@ -201,7 +201,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
   } else if (!strcmp(cf->xasp_vers, "2.0-cd1")) {
     body->xaspcd1_XACMLAuthzDecisionQuery = zxid_mk_az_cd1(cf, subj, rsrc, act, env);
     if (cf->sso_soap_sign) {
-      memset(&refs, 0, sizeof(refs));
+      ZERO(&refs, sizeof(refs));
       refs.id = body->xaspcd1_XACMLAuthzDecisionQuery->ID;
       refs.canon = zx_EASY_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx, body->xaspcd1_XACMLAuthzDecisionQuery);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az cd1"))
@@ -212,7 +212,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
   } else {
     body->XACMLAuthzDecisionQuery = zxid_mk_az(cf, subj, rsrc, act, env);
     if (cf->sso_soap_sign) {
-      memset(&refs, 0, sizeof(refs));
+      ZERO(&refs, sizeof(refs));
       refs.id = body->XACMLAuthzDecisionQuery->ID;
       refs.canon = zx_EASY_ENC_SO_xasp_XACMLAuthzDecisionQuery(cf->ctx, body->XACMLAuthzDecisionQuery);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az"))
@@ -474,7 +474,7 @@ char* zxid_az_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
   char* ret;
   char* url = (cf->pdp_call_url&&*cf->pdp_call_url) ? cf->pdp_call_url : cf->pdp_url;
   D_INDENT("az: ");
-  memset(&cgi, 0 , sizeof(cgi));
+  ZERO(&cgi, sizeof(cgi));
   /*zxid_parse_cgi(&cgi, "");  DD("qs(%s) ses=%p", STRNULLCHKD(qs), ses);*/
   if (qs && ses)
     zxid_add_qs_to_ses(cf, ses, zx_dup_cstr(cf->ctx, qs), 1);
@@ -489,7 +489,7 @@ char* zxid_az_base_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
   char* ret;
   char* url = (cf->pdp_call_url&&*cf->pdp_call_url) ? cf->pdp_call_url : cf->pdp_url;
   D_INDENT("azb: ");
-  memset(&cgi, 0 , sizeof(cgi));
+  ZERO(&cgi, sizeof(cgi));
   /*zxid_parse_cgi(&cgi, "");  DD("qs(%s) ses=%p", STRNULLCHKD(qs), ses);*/
   if (qs && ses)
     zxid_add_qs_to_ses(cf, ses, zx_dup_cstr(cf->ctx, qs), 1);
@@ -519,7 +519,7 @@ char* zxid_az_base_cf_ses(zxid_conf* cf, const char* qs, zxid_ses* ses)
 char* zxid_az_cf(zxid_conf* cf, const char* qs, const char* sid)
 {
   zxid_ses ses;
-  memset(&ses, 0 , sizeof(zxid_ses));
+  ZERO(&ses, sizeof(ses));
   if (sid && sid[0])
     zxid_get_ses(cf, &ses, sid);
   return zxid_az_cf_ses(cf, qs, &ses);
@@ -528,7 +528,7 @@ char* zxid_az_cf(zxid_conf* cf, const char* qs, const char* sid)
 char* zxid_az_base_cf(zxid_conf* cf, const char* qs, const char* sid)
 {
   zxid_ses ses;
-  memset(&ses, 0 , sizeof(zxid_ses));
+  ZERO(&ses, sizeof(ses));
   if (sid && sid[0])
     zxid_get_ses(cf, &ses, sid);
   return zxid_az_base_cf_ses(cf, qs, &ses);
@@ -543,7 +543,7 @@ char* zxid_az(const char* conf, const char* qs, const char* sid)
   struct zx_ctx ctx;
   zxid_conf cf;
   zx_reset_ctx(&ctx);
-  memset(&cf, 0, sizeof(zxid_conf));
+  ZERO(&cf, sizeof(cf));
   cf.ctx = &ctx;
   zxid_conf_to_cf_len(&cf, -1, conf);
   return zxid_az_cf(&cf, qs, sid);
@@ -554,7 +554,7 @@ char* zxid_az_base(const char* conf, const char* qs, const char* sid)
   struct zx_ctx ctx;
   zxid_conf cf;
   zx_reset_ctx(&ctx);
-  memset(&cf, 0, sizeof(zxid_conf));
+  ZERO(&cf, sizeof(cf));
   cf.ctx = &ctx;
   zxid_conf_to_cf_len(&cf, -1, conf);
   return zxid_az_base_cf(&cf, qs, sid);

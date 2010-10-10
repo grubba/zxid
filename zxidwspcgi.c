@@ -147,7 +147,7 @@ int zxidwspcgi_main(int argc, char** argv)
   char* qs;
   char* qs2;
   pid_t pid;
-  memset(ses, 0, sizeof(zxid_ses));
+  ZERO(ses, sizeof(zxid_ses));
 
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */

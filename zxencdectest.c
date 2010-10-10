@@ -368,7 +368,7 @@ int main(int argc, char** argv, char** env)
   D("Decoding %d chars, n_iter(%d)\n", got_all, n_iter);
   
   for (; n_iter; --n_iter) {
-    memset(&ctx, 0, sizeof(ctx));
+    ZERO(&ctx, sizeof(ctx));
     LOCK(ctx.mx, "zxencdectest main");
     zx_prepare_dec_ctx(&ctx, zx_ns_tab, buf, buf + got_all);
     r = zx_DEC_root(&ctx, 0, 1000);

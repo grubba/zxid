@@ -336,7 +336,7 @@ int main(int argc, char** argv, char** env)
 
   /* Pick up application variables from query string and post content (indicated by o=P in QS) */
   
-  memset(&cgi, 0, sizeof(cgi));
+  ZERO(&cgi, sizeof(cgi));
   qs = getenv("QUERY_STRING");
   if (qs) {
     D("QS(%s)", qs);
@@ -375,7 +375,7 @@ int main(int argc, char** argv, char** env)
       if (zxid_mgmt(cf, &cgi, &ses))
 	return 0;
   }
-  memset(&ses, 0, sizeof(ses));
+  ZERO(&ses, sizeof(ses));
   
   switch (cgi.op) {
   case 'M':  /* Invoke LECP or redirect to CDC reader. */

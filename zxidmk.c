@@ -89,7 +89,7 @@ struct zx_sp_ArtifactResolve_s* zxid_mk_art_deref(zxid_conf* cf, zxid_entity* id
   ar->IssueInstant = zxid_date_time(cf, time(0));
   ar->Artifact = zx_ref_simple_elem(cf->ctx, artifact);
   if (cf->sso_soap_sign) {
-    memset(&refs, 0, sizeof(refs));
+    ZERO(&refs, sizeof(refs));
     refs.id = ar->ID;
     refs.canon = zx_EASY_ENC_SO_sp_ArtifactResolve(cf->ctx, ar);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert art deref"))

@@ -353,7 +353,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       return 0;
     body->LogoutResponse = zxid_mk_logout_resp(cf, zxid_OK(cf), bdy->LogoutRequest->ID);
     if (cf->sso_soap_resp_sign) {
-      memset(&refs, 0, sizeof(refs));
+      ZERO(&refs, sizeof(refs));
       refs.id = body->LogoutResponse->ID;
       refs.canon = zx_EASY_ENC_SO_sp_LogoutResponse(cf->ctx, body->LogoutResponse);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slor"))
@@ -366,7 +366,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
   if (bdy->ManageNameIDRequest) {
     body->ManageNameIDResponse = zxid_mni_do(cf, cgi, ses, bdy->ManageNameIDRequest);
     if (cf->sso_soap_resp_sign) {
-      memset(&refs, 0, sizeof(refs));
+      ZERO(&refs, sizeof(refs));
       refs.id = body->ManageNameIDResponse->ID;
       refs.canon = zx_EASY_ENC_SO_sp_ManageNameIDResponse(cf->ctx, body->ManageNameIDResponse);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
@@ -379,7 +379,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
   if (bdy->NameIDMappingRequest) {
     body->NameIDMappingResponse = zxid_nidmap_do(cf, bdy->NameIDMappingRequest);
     if (cf->sso_soap_resp_sign) {
-      memset(&refs, 0, sizeof(refs));
+      ZERO(&refs, sizeof(refs));
       refs.id = body->NameIDMappingResponse->ID;
       refs.canon = zx_EASY_ENC_SO_sp_NameIDMappingResponse(cf->ctx, body->NameIDMappingResponse);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
@@ -401,7 +401,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       body->SASLResponse = zxid_idp_as_do(cf, bdy->SASLRequest);
 #if 0
       if (cf->sso_soap_resp_sign) {
-	memset(&refs, 0, sizeof(refs));
+	ZERO(&refs, sizeof(refs));
 	refs.id = res->ID;
 	refs.canon = zx_EASY_ENC_SO_as_SASLResponse(cf->ctx, res);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert asr"))
@@ -418,7 +418,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       D("XACMLAuthzDecisionQuery %d",0);
       body->Response = zxid_xacml_az_do(cf, cgi, ses, bdy->XACMLAuthzDecisionQuery);
       if (cf->sso_soap_resp_sign) {
-	memset(&refs, 0, sizeof(refs));
+	ZERO(&refs, sizeof(refs));
 	refs.id = body->Response->ID;
 	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
@@ -431,7 +431,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       D("xaspcd1:XACMLAuthzDecisionQuery %d",0);
       body->Response = zxid_xacml_az_cd1_do(cf, cgi, ses, bdy->xaspcd1_XACMLAuthzDecisionQuery);
       if (cf->sso_soap_resp_sign) {
-	memset(&refs, 0, sizeof(refs));
+	ZERO(&refs, sizeof(refs));
 	refs.id = body->Response->ID;
 	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
@@ -453,7 +453,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     if (bdy->NameIDMappingRequest && cf->imps_ena) {
       body->NameIDMappingResponse = zxid_nidmap_do(cf, bdy->NameIDMappingRequest);
       if (cf->sso_soap_resp_sign) {
-	memset(&refs, 0, sizeof(refs));
+	ZERO(&refs, sizeof(refs));
 	refs.id = body->NameIDMappingResponse->ID;
 	refs.canon = zx_EASY_ENC_SO_sp_NameIDMappingResponse(cf->ctx, body->NameIDMappingResponse);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
@@ -477,7 +477,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 #if 0
       // *** should really sign the Body, putting sig in wsse:Security header
       if (cf->sso_soap_resp_sign) {
-	memset(&refs, 0, sizeof(refs));
+	ZERO(&refs, sizeof(refs));
 	refs.id = di_resp->ID;
 	refs.canon = zx_EASY_ENC_SO_e_Body(cf->ctx, body);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert dir"))

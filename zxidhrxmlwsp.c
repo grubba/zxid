@@ -70,7 +70,7 @@ int main(int argc, char** argv)
   int got, fd, cl=0;
   char* qs;
   char* qs2;
-  memset(ses, 0, sizeof(zxid_ses));
+  ZERO(ses, sizeof(ses));
   
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
 
 #if 1
   zx_reset_ctx(&ctx);
-  memset(&cfs, 0, sizeof(zxid_conf));
+  ZERO(&cfs, sizeof(cfs));
   cfs.ctx = &ctx;
   cf = &cfs;
   zxid_conf_to_cf_len(cf, -1, CONF);

@@ -229,9 +229,9 @@ struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, i
   curl_easy_setopt(cf->curl, CURLOPT_READDATA, &wc);
   curl_easy_setopt(cf->curl, CURLOPT_READFUNCTION, zxid_curl_read_data);
 
-  memset(&content_type, 0, sizeof(content_type));
+  ZERO(&content_type, sizeof(content_type));
   content_type.data = "Content-Type: text/xml";
-  memset(&SOAPaction, 0, sizeof(SOAPaction));
+  ZERO(&SOAPaction, sizeof(SOAPaction));
 #if 1
   SOAPaction.data = "SOAPAction: \"\"";  /* Empty SOAPAction is the ID-WSF (and SAML?) standard */
 #else

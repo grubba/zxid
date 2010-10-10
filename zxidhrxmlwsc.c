@@ -161,7 +161,7 @@ int main(int argc, char** argv)
 
 #if 1
   zx_reset_ctx(&ctx);
-  memset(&cfs, 0, sizeof(zxid_conf));
+  ZERO(&cfs, sizeof(cfs));
   cfs.ctx = &ctx;
   cf = &cfs;
   zxid_conf_to_cf_len(cf, -1, CONF);
@@ -214,7 +214,7 @@ int main(int argc, char** argv)
   }
 
   DD("HERE qs(%s)", qs);
-  memset(&cgi, 0, sizeof(cgi));
+  ZERO(&cgi, sizeof(cgi));
   hrxml_parse_cgi(&cgi, qs);  
   
   ses = &sess;

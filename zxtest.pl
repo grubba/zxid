@@ -888,6 +888,8 @@ CMD('COT3', 'zxcot list s2', "./zxcot -s -s");
 CMD('COT4', 'zxcot get idp meta dry', "./zxcot -g http://idp.tas3.pt:8081/zxididp?o=B -n");
 CMD('COT5', 'zxcot get sp meta dry', "./zxcot -g http://sp.tas3.pt:8080/zxidservlet/appdemo?o=B -n");
 
+CMD('SIG1', 'zx list', "./zxdecode -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal/shib-resp.xml");
+
 ED('XML1', 'Decode-Encode SO and WO: ns-bug', 1000, 't/default-ns-bug.xml');
 ED('XML2', 'Decode-Encode SO and WO: azrq1',  1000, 't/azrq1.xml');
 ED('XML3', 'Decode-Encode SO and WO: azrs1',  1000, 't/azrs1.xml');

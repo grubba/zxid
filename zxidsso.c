@@ -597,7 +597,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
     if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
       cf->ctx->guard_seen_n.seen_n = &cf->ctx->guard_seen_p;  /* *** should call zx_reset_ctx? */
       cf->ctx->guard_seen_p.seen_p = &cf->ctx->guard_seen_n;
-      memset(&refs, 0, sizeof(refs));
+      ZERO(&refs, sizeof(refs));
       refs.sref = a7n->Signature->SignedInfo->Reference;
       refs.blob = &a7n->gg;
       refs.pop_seen = pop_seen;
@@ -824,7 +824,7 @@ zxid_ses* zxid_as_call(zxid_conf* cf, zxid_entity* idp_meta, const char* user, c
 {
   zxid_ses* ses = zxid_alloc_ses(cf);
   zxid_cgi cgi;
-  memset(&cgi, 0, sizeof(cgi));
+  ZERO(&cgi, sizeof(cgi));
   cgi.uid = (char*)user;
   cgi.pw = (char*)pw;
   
