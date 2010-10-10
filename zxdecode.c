@@ -197,7 +197,7 @@ static int sig_validate(int len, char* p)
   zxid_ses ses;
   struct zx_root_s* r;
   struct zx_sp_Response_s* resp;
-  struct zx_ns_s* pop_seen;
+  struct zx_ns_s* pop_seen = 0;
   zxid_a7n* a7n;
   
   memset(&cgi, sizeof(cgi), 0);

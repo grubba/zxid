@@ -64,7 +64,7 @@ zxid_a7n* zxid_dec_a7n(zxid_conf* cf, zxid_a7n* a7n, struct zx_sa_EncryptedAsser
 static int zxid_sp_dig_sso_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_Response_s* resp)
 {
   zxid_a7n* a7n;
-  struct zx_ns_s* pop_seen;
+  struct zx_ns_s* pop_seen = 0;
 
   if (!zxid_chk_sig(cf, cgi, ses, &resp->gg, resp->Signature, resp->Issuer, 0, "Response"))
     return 0;

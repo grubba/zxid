@@ -595,6 +595,8 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
     }
   } else {
     if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
+      cf->ctx->guard_seen_n.seen_n = &cf->ctx->guard_seen_p;  /* *** should call zx_reset_ctx? */
+      cf->ctx->guard_seen_p.seen_p = &cf->ctx->guard_seen_n;
       memset(&refs, 0, sizeof(refs));
       refs.sref = a7n->Signature->SignedInfo->Reference;
       refs.blob = &a7n->gg;

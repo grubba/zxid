@@ -1434,9 +1434,9 @@ SSL=/aino/openssl-0.9.8g
 BB=/aino/busybox-1.11.1
 #DS=~/ds
 #DS=/d/sampo/ds4/ds
-DS=/d/sampo/ds
-SLIM=/d/sampo/slim
-PD=/d/sampo/pd
+DS=/home/sampo/ds
+SLIM=/home/sampo/slim
+PD=/home/sampo/pd
 APACHE=/aino/httpd-2.2.8
 
 megatags:

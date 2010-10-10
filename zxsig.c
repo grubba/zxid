@@ -194,7 +194,7 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
 	    siz = q - p;
 	  ns = zx_prefix_seen(c, siz, p);
 	  if (!ns) {
-	    ERR("InclusiveNamespaces/@PrefixList contains unknown ns prefix(%.*s)", siz, p);
+	    INFO("InclusiveNamespaces/@PrefixList contains unknown ns prefix(%.*s)", siz, p);
 	    p += siz + 1;
 	    continue;
 	  }
