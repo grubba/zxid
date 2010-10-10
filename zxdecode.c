@@ -36,6 +36,7 @@ See http://www.apache.org/licenses/LICENSE-2.0\n\
 Send well researched bug reports to the author. Home: zxid.org\n\
 \n\
 Usage: zxdecode [options] <message >decoded\n\
+  -b -B            Prevent or force decode base64 step (default auto detects)\n\
   -z -Z            Prevent or force inflate step (default auto detects)\n\
   -i N             Pick Nth detected decodable structure, default: 1=first\n\
   -s               Enable signature validation step (reads config from -c, see below)\n\
@@ -51,6 +52,7 @@ Usage: zxdecode [options] <message >decoded\n\
 Will attempt to detect many layers of encoding. Will hunt for the\n\
 relevant input such as SAMLRequest or SAMLResponse in, e.g., log file.\n";
 
+int b64_flag = 2;      /* Auto */
 int inflate_flag = 2;  /* Auto */
 int verbose = 1;
 int ix = 1;
@@ -114,6 +116,21 @@ static void opt(int* argc, char*** argv, char*** env)
 	continue;
       case 'h':
 	++sha1_flag;
+	continue;
+      }
+      break;
+
+    case 'b':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	b64_flag = 0;
+	continue;
+      }
+      break;
+    case 'B':
+      switch ((*argv)[0][2]) {
+      case '\0':
+	b64_flag = 1;
 	continue;
       }
       break;
@@ -195,7 +212,7 @@ static int sig_validate(int len, char* p)
     return 2;
   }
   resp = r->Response;
-  if (!r) {
+  if (!resp) {
     ERR("No <sp:Response> found buf(%.*s)", len, p);
     return 3;
   }
@@ -220,7 +237,7 @@ static int sig_validate(int len, char* p)
 /* Called by:  main x4 */
 static int decode(char* msg, char* q)
 {
-  int msglen, len;
+  int len;
   char* p;
   char* m2;
   char* p2;
@@ -234,21 +251,41 @@ static int decode(char* msg, char* q)
     q = p;
     *q = 0;
     D("URL Decoded Msg(%s) x=%x", msg, *msg);
-  }
+  } else
+    p = q;
   
-  msglen = q - msg;
-  p = unbase64_raw(msg, q, msg, zx_std_index_64);  /* inplace */
-  *p = 0;
-  D("Unbase64 Msg(%s) x=%x (n.b. message data may be binary at this point)", msg, *msg);
-
-  switch (inflate_flag) {
+  switch (b64_flag) {
   case 0:
-    printf("%.*s", p-msg, msg);
+    D("decode_base64 skipped at user request %d",0);
     break;
   case 1:
-    D("Decompressing... %d",0);
+    D("decode_base64 foreced at user request %d",0);
+b64_dec:
+    /* msglen = q - msg; */
+    p = unbase64_raw(msg, q, msg, zx_std_index_64);  /* inplace */
+    *p = 0;
+    D("Unbase64 Msg(%s) x=%x (n.b. message data may be binary at this point)", msg, *msg);
+    break;
+  case 2:
+    if (*msg == '<') {
+      D("decode_base64 auto detect no decode due to initial < %p %p", msg, p);
+    } else {
+      D("decode_base64 auto detect decode due to initial 0x%x",*msg);
+      goto b64_dec;
+    }
+    break;
+  }
+  
+  switch (inflate_flag) {
+  case 0:
+    D("No decompression by user choice %d",0);
+    len = p-msg;
+    p = msg;
+    break;
+  case 1:
+    D("Decompressing... (force) %d",0);
+decompress:
     p = zx_zlib_raw_inflate(0, p-msg, msg, &len);  /* Redir uses compressed payload. */
-    printf("%.*s", len, p);
     break;
   case 2:
     /* Skip whitespace in the beginning and end of the payload to help correct POST detection. */
@@ -264,14 +301,15 @@ static int decode(char* msg, char* q)
       len = p2 - m2 + 1;
       p = m2;
     } else {
-      D("Decompressing... %d",0);
-      p = zx_zlib_raw_inflate(0, p-msg, msg, &len);  /* Redir uses compressed payload. */
+      D("Decompressing... (auto) %d",0);
+      goto decompress;
     }
-    printf("%.*s", len, p);
-
-    if (sig_flag)
-      return sig_validate(len, p);
+    break;
   }
+  printf("%.*s", len, p);
+  
+  if (sig_flag)
+    return sig_validate(len, p);
   return 0;
 }
 
