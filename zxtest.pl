@@ -704,7 +704,7 @@ sub G {
     }
 }
 
-sub system_call {
+sub call_system {
     my ($test, $timeout, $slow, $command_line) = @_;
     my $send_ts = Time::HiRes::time();
     $? = 0;
@@ -747,7 +747,7 @@ sub C {
     warn "\n======= $tsti =======\n";
 
     my $test = tst_link($tsti, $expl, $url);
-    my $latency = system_call($test, $timeout, $slow, $command_line);
+    my $latency = call_system($test, $timeout, $slow, $command_line);
     return if $latency == -1;
     tst_ok($latency, $slow, $test);
 }
@@ -760,7 +760,7 @@ sub ED {  # enc-dec command with diff
     
     unlink "tmp/$tsti.out";
     
-    my $latency = system_call($test, 60, $slow, "./zxencdectest -d -i $n_iter <$file >tmp/$tsti.out 2>tmp/tst.err");
+    my $latency = call_system($test, 60, $slow, "./zxencdectest -d -i $n_iter <$file >tmp/$tsti.out 2>tmp/tst.err");
     return if $latency == -1;
     
     if (system "diff -u t/$tsti.out tmp/$tsti.out") {
@@ -778,7 +778,7 @@ sub ZXC {  # zxcall
     
     unlink "tmp/$tsti.out";
     
-    my $latency = system_call($test, 30, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp?o=B tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
+    my $latency = call_system($test, 30, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp?o=B tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
     return if $latency == -1;
     
     #if (system "diff -u t/$tsti.out tmp/$tsti.out") {
@@ -796,7 +796,7 @@ sub CMD {  # zxpasswd command with diff
     
     unlink "tmp/$tsti.out";
     
-    my $latency = system_call($test, 60, $slow, "$cmd >tmp/$tsti.out 2>tmp/tst.err");
+    my $latency = call_system($test, 60, $slow, "$cmd >tmp/$tsti.out 2>tmp/tst.err");
     return if $latency == -1;
     
     if (system "diff -u t/$tsti.out tmp/$tsti.out") {
@@ -888,7 +888,14 @@ CMD('COT3', 'zxcot list s2', "./zxcot -s -s");
 CMD('COT4', 'zxcot get idp meta dry', "./zxcot -g http://idp.tas3.pt:8081/zxididp?o=B -n");
 CMD('COT5', 'zxcot get sp meta dry', "./zxcot -g http://sp.tas3.pt:8080/zxidservlet/appdemo?o=B -n");
 
-CMD('SIG1', 'zx list', "./zxdecode -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal/shib-resp.xml");
+CMD('SIG1', 'sig vry shib resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal/shib-resp.xml");
+CMD('SIG2', 'sig vry shib post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal/shib-resp.qs");
+
+CMD('SIG3', 'sig vry zxid resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/anrs1.xml");
+CMD('SIG4', 'sig vry zxid post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/anrs1.post");
+
+CMD('SIG5', 'sig vry sm resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.xml");
+CMD('SIG6', 'sig vry sm post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.b64");
 
 ED('XML1', 'Decode-Encode SO and WO: ns-bug', 1000, 't/default-ns-bug.xml');
 ED('XML2', 'Decode-Encode SO and WO: azrq1',  1000, 't/azrq1.xml');

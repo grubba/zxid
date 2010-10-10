@@ -141,6 +141,29 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
   return sig;
 }
 
+/*() CRNL->NL canonicalization is specified in xml-c14n */
+
+static void zxsig_canon_crnl_inplace(struct zx_str* ss)
+{
+  char* p;
+  char* lim;
+  if (!ss || !ss->len || !ss->s) {
+    ERR("Asked to canonicalize null or empty string %p", ss);
+    return;
+  }
+  p = ss->s;
+  lim = p + ss->len;
+  while (p < lim) {
+    p = memchr(p, 0x0d, lim-p);
+    if (!p)
+      break;
+    --lim;
+    D("Canonicalizing CRNL to NL %d", lim-p);
+    memmove(p, p+1, lim-p);  /* *** could be more efficient */
+  }
+  ss->len = lim - ss->s;
+}
+
 /*(i) Validate XML-DSIG signature over XML data found in ~sref~ array.
  * Signature is validated agaist provided certificate, which
  * must have been previously looked up, usually using Issuer field of message
@@ -210,6 +233,7 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
 
   for (; n; --n, ++sref) {
     ss = zx_EASY_ENC_WO_any_elem(c, sref->blob);
+    zxsig_canon_crnl_inplace(ss);
     if (       ZX_STR_ENDS_IN_CONST(sref->sref->DigestMethod->Algorithm, "#sha1")) {
       SHA1((unsigned char*)ss->s, ss->len, (unsigned char*)md_calc);
       siz = 20;
@@ -245,6 +269,7 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
   }
   c->exclude_sig = 0;
   ss = zx_EASY_ENC_WO_ds_SignedInfo(c, sig->SignedInfo);
+  zxsig_canon_crnl_inplace(ss);
   evp_pkey = X509_get_pubkey(cert);
   if (!evp_pkey) goto certerr;
 

@@ -231,6 +231,8 @@ static int sig_validate(int len, char* p)
   zx_see_elem_ns(cf->ctx, &pop_seen, &resp->gg);
   ret = zxid_sp_sso_finalize(cf, &cgi, &ses, a7n, pop_seen);
   INFO("zxid_sp_sso_finalize() returned %d", ret);
+  if (ret && verbose)
+    printf("\nSIG Verified OK, zxid_sp_sso_finalize() returned %d\n", ret);
   return ret?0:6;
 }
 

@@ -1,0 +1,57 @@
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="ehp-stage.uhg.UMICH"><md:IDPSSODescriptor WantAuthnRequestsSigned="1" errorURL="ehp-stage.uhg.UMICH?o=E" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><md:KeyDescriptor use="encryption"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>MIIC9TCCAl6gAwIBAgIJANLnqCIievBCMA0GCSqGSIb3DQEBBQUAMFsxCzAJBgNVBAYTAlVTMQsw
+CQYDVQQIEwJNTjERMA8GA1UEBxMIUGx5bW91dGgxDDAKBgNVBAoTA1VIRzEMMAoGA1UECxMDV0FN
+MRAwDgYDVQQDEwdTTVN0YWdlMB4XDTEwMDMxNjIwMTcyMVoXDTIzMTEyMzIwMTcyMVowWzELMAkG
+A1UEBhMCVVMxCzAJBgNVBAgTAk1OMREwDwYDVQQHEwhQbHltb3V0aDEMMAoGA1UEChMDVUhHMQww
+CgYDVQQLEwNXQU0xEDAOBgNVBAMTB1NNU3RhZ2UwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGB
+ANJ1RSyE55lEUXzIOVI7iNu20eX8otubGIGN735+Vx//OzCwTU60JU2LbSISeXPknWlAlYTC5JR+
+pbhG13cmckxgKBfD14cc2ibQY+zYWC6jJiVAPlzSdAAl2UdF0NtGMB+xxzJDwbzRbJ1jyZgX5QkV
+D9CLsr3Qux3/bMyvJt7nAgMBAAGjgcAwgb0wHQYDVR0OBBYEFDSJcI3APKXTj3ym5U72f9QvYE/b
+MIGNBgNVHSMEgYUwgYKAFDSJcI3APKXTj3ym5U72f9QvYE/boV+kXTBbMQswCQYDVQQGEwJVUzEL
+MAkGA1UECBMCTU4xETAPBgNVBAcTCFBseW1vdXRoMQwwCgYDVQQKEwNVSEcxDDAKBgNVBAsTA1dB
+TTEQMA4GA1UEAxMHU01TdGFnZYIJANLnqCIievBCMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEF
+BQADgYEAbRrmcTTVLX6rGU3Aw/urNycSdreN3Yxcsi6jf3emahgtn3Wyo8c5E9cBp4tLrqEZbcZ8
+zdxgOypA3hHXQimU3FbDKmUxA8QxDaIovG77AGp2z1LMv9QHlKpvFuP80G+bxWuFUJym067MImcU
+ATWe/KMRi+apCwFRsl953e6LwVs=
+</ds:X509Certificate></ds:X509Data></ds:KeyInfo></md:KeyDescriptor><md:KeyDescriptor use="signing"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>MIIC9TCCAl6gAwIBAgIJANLnqCIievBCMA0GCSqGSIb3DQEBBQUAMFsxCzAJBgNVBAYTAlVTMQsw
+CQYDVQQIEwJNTjERMA8GA1UEBxMIUGx5bW91dGgxDDAKBgNVBAoTA1VIRzEMMAoGA1UECxMDV0FN
+MRAwDgYDVQQDEwdTTVN0YWdlMB4XDTEwMDMxNjIwMTcyMVoXDTIzMTEyMzIwMTcyMVowWzELMAkG
+A1UEBhMCVVMxCzAJBgNVBAgTAk1OMREwDwYDVQQHEwhQbHltb3V0aDEMMAoGA1UEChMDVUhHMQww
+CgYDVQQLEwNXQU0xEDAOBgNVBAMTB1NNU3RhZ2UwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGB
+ANJ1RSyE55lEUXzIOVI7iNu20eX8otubGIGN735+Vx//OzCwTU60JU2LbSISeXPknWlAlYTC5JR+
+pbhG13cmckxgKBfD14cc2ibQY+zYWC6jJiVAPlzSdAAl2UdF0NtGMB+xxzJDwbzRbJ1jyZgX5QkV
+D9CLsr3Qux3/bMyvJt7nAgMBAAGjgcAwgb0wHQYDVR0OBBYEFDSJcI3APKXTj3ym5U72f9QvYE/b
+MIGNBgNVHSMEgYUwgYKAFDSJcI3APKXTj3ym5U72f9QvYE/boV+kXTBbMQswCQYDVQQGEwJVUzEL
+MAkGA1UECBMCTU4xETAPBgNVBAcTCFBseW1vdXRoMQwwCgYDVQQKEwNVSEcxDDAKBgNVBAsTA1dB
+TTEQMA4GA1UEAxMHU01TdGFnZYIJANLnqCIievBCMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEF
+BQADgYEAbRrmcTTVLX6rGU3Aw/urNycSdreN3Yxcsi6jf3emahgtn3Wyo8c5E9cBp4tLrqEZbcZ8
+zdxgOypA3hHXQimU3FbDKmUxA8QxDaIovG77AGp2z1LMv9QHlKpvFuP80G+bxWuFUJym067MImcU
+ATWe/KMRi+apCwFRsl953e6LwVs=
+</ds:X509Certificate></ds:X509Data></ds:KeyInfo></md:KeyDescriptor><md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="ehp-stage.uhg.UMICH?o=Q" ResponseLocation="ehp-stage.uhg.UMICH?o=Q"></md:SingleLogoutService><md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="ehp-stage.uhg.UMICH?o=S"></md:SingleLogoutService><md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat><md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat><md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="ehp-stage.uhg.UMICH?o=F"></md:SingleSignOnService></md:IDPSSODescriptor><md:SPSSODescriptor AuthnRequestsSigned="1" WantAssertionsSigned="1" errorURL="ehp-stage.uhg.UMICH?o=E" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><md:KeyDescriptor use="encryption"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>MIIC9TCCAl6gAwIBAgIJANLnqCIievBCMA0GCSqGSIb3DQEBBQUAMFsxCzAJBgNVBAYTAlVTMQsw
+CQYDVQQIEwJNTjERMA8GA1UEBxMIUGx5bW91dGgxDDAKBgNVBAoTA1VIRzEMMAoGA1UECxMDV0FN
+MRAwDgYDVQQDEwdTTVN0YWdlMB4XDTEwMDMxNjIwMTcyMVoXDTIzMTEyMzIwMTcyMVowWzELMAkG
+A1UEBhMCVVMxCzAJBgNVBAgTAk1OMREwDwYDVQQHEwhQbHltb3V0aDEMMAoGA1UEChMDVUhHMQww
+CgYDVQQLEwNXQU0xEDAOBgNVBAMTB1NNU3RhZ2UwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGB
+ANJ1RSyE55lEUXzIOVI7iNu20eX8otubGIGN735+Vx//OzCwTU60JU2LbSISeXPknWlAlYTC5JR+
+pbhG13cmckxgKBfD14cc2ibQY+zYWC6jJiVAPlzSdAAl2UdF0NtGMB+xxzJDwbzRbJ1jyZgX5QkV
+D9CLsr3Qux3/bMyvJt7nAgMBAAGjgcAwgb0wHQYDVR0OBBYEFDSJcI3APKXTj3ym5U72f9QvYE/b
+MIGNBgNVHSMEgYUwgYKAFDSJcI3APKXTj3ym5U72f9QvYE/boV+kXTBbMQswCQYDVQQGEwJVUzEL
+MAkGA1UECBMCTU4xETAPBgNVBAcTCFBseW1vdXRoMQwwCgYDVQQKEwNVSEcxDDAKBgNVBAsTA1dB
+TTEQMA4GA1UEAxMHU01TdGFnZYIJANLnqCIievBCMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEF
+BQADgYEAbRrmcTTVLX6rGU3Aw/urNycSdreN3Yxcsi6jf3emahgtn3Wyo8c5E9cBp4tLrqEZbcZ8
+zdxgOypA3hHXQimU3FbDKmUxA8QxDaIovG77AGp2z1LMv9QHlKpvFuP80G+bxWuFUJym067MImcU
+ATWe/KMRi+apCwFRsl953e6LwVs=
+</ds:X509Certificate></ds:X509Data></ds:KeyInfo></md:KeyDescriptor><md:KeyDescriptor use="signing"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>MIIC9TCCAl6gAwIBAgIJANLnqCIievBCMA0GCSqGSIb3DQEBBQUAMFsxCzAJBgNVBAYTAlVTMQsw
+CQYDVQQIEwJNTjERMA8GA1UEBxMIUGx5bW91dGgxDDAKBgNVBAoTA1VIRzEMMAoGA1UECxMDV0FN
+MRAwDgYDVQQDEwdTTVN0YWdlMB4XDTEwMDMxNjIwMTcyMVoXDTIzMTEyMzIwMTcyMVowWzELMAkG
+A1UEBhMCVVMxCzAJBgNVBAgTAk1OMREwDwYDVQQHEwhQbHltb3V0aDEMMAoGA1UEChMDVUhHMQww
+CgYDVQQLEwNXQU0xEDAOBgNVBAMTB1NNU3RhZ2UwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGB
+ANJ1RSyE55lEUXzIOVI7iNu20eX8otubGIGN735+Vx//OzCwTU60JU2LbSISeXPknWlAlYTC5JR+
+pbhG13cmckxgKBfD14cc2ibQY+zYWC6jJiVAPlzSdAAl2UdF0NtGMB+xxzJDwbzRbJ1jyZgX5QkV
+D9CLsr3Qux3/bMyvJt7nAgMBAAGjgcAwgb0wHQYDVR0OBBYEFDSJcI3APKXTj3ym5U72f9QvYE/b
+MIGNBgNVHSMEgYUwgYKAFDSJcI3APKXTj3ym5U72f9QvYE/boV+kXTBbMQswCQYDVQQGEwJVUzEL
+MAkGA1UECBMCTU4xETAPBgNVBAcTCFBseW1vdXRoMQwwCgYDVQQKEwNVSEcxDDAKBgNVBAsTA1dB
+TTEQMA4GA1UEAxMHU01TdGFnZYIJANLnqCIievBCMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEF
+BQADgYEAbRrmcTTVLX6rGU3Aw/urNycSdreN3Yxcsi6jf3emahgtn3Wyo8c5E9cBp4tLrqEZbcZ8
+zdxgOypA3hHXQimU3FbDKmUxA8QxDaIovG77AGp2z1LMv9QHlKpvFuP80G+bxWuFUJym067MImcU
+ATWe/KMRi+apCwFRsl953e6LwVs=
+</ds:X509Certificate></ds:X509Data></ds:KeyInfo></md:KeyDescriptor><md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="ehp-stage.uhg.UMICH?o=Q" ResponseLocation="ehp-stage.uhg.UMICH?o=Q"></md:SingleLogoutService><md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="ehp-stage.uhg.UMICH?o=S"></md:SingleLogoutService><md:ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="ehp-stage.uhg.UMICH?o=Q" ResponseLocation="ehp-stage.uhg.UMICH?o=Q"></md:ManageNameIDService><md:ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="ehp-stage.uhg.UMICH?o=S"></md:ManageNameIDService><md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat><md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="ehp-stage.uhg.UMICH?o=P" index="5"></md:AssertionConsumerService><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="ehp-stage.uhg.UMICH?o=P" index="4"></md:AssertionConsumerService><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="ehp-stage.uhg.UMICH?o=S" index="3"></md:AssertionConsumerService><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="ehp-stage.uhg.UMICH?o=P" index="2"></md:AssertionConsumerService><md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="ehp-stage.uhg.UMICH" index="1"></md:AssertionConsumerService></md:SPSSODescriptor><md:Organization><md:OrganizationName xmlns:xml="http://www.w3.org/XML/1998/namespace" xml:lang="en">TAS3 Demo IdP</md:OrganizationName><md:OrganizationDisplayName xmlns:xml="http://www.w3.org/XML/1998/namespace" xml:lang="en">TAS3 Demo IdP</md:OrganizationDisplayName><md:OrganizationURL xmlns:xml="http://www.w3.org/XML/1998/namespace" xml:lang="en">ehp-stage.uhg.UMICH</md:OrganizationURL></md:Organization><md:ContactPerson><md:Company>TAS3 Demo IdP</md:Company></md:ContactPerson></md:EntityDescriptor>

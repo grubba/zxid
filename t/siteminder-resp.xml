@@ -1,0 +1,68 @@
+<Response xmlns="urn:oasis:names:tc:SAML:2.0:protocol" Destination="https://www.hmrc.kines.umich.edu/optumdev/samlgate.cgi" ID="_9d3c993d4ff08fe73c1b46462b3a1fd8ae9f" IssueInstant="2010-09-30T17:45:29Z" Version="2.0">
+    <ns1:Issuer xmlns:ns1="urn:oasis:names:tc:SAML:2.0:assertion" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">ehp-stage.uhg.UMICH</ns1:Issuer>
+    <Status>
+        <StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+    </Status>
+    <ns2:Assertion xmlns:ns2="urn:oasis:names:tc:SAML:2.0:assertion" ID="_bf03e6e7146f688c6185cccf6d2e688485e1" IssueInstant="2010-09-30T17:45:29Z" Version="2.0">
+        <ns2:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">ehp-stage.uhg.UMICH</ns2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:SignedInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"/>
+<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"/>
+<ds:Reference URI="#_bf03e6e7146f688c6185cccf6d2e688485e1" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:Transforms xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"/>
+<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"/>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"/>
+<ds:DigestValue xmlns:ds="http://www.w3.org/2000/09/xmldsig#">43/dsFN2o8jWygg2UBPBJUDTUZI=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+gN7KwswUm06HcdCUytIKE+eHk6gSynGrVckSmGCR20U5d+T3361dIy2ZI4cXtI6vn7Ffw7aV28ai
+3qRDVSne0Nwi16JfU42eTmIfBcFbOpjVfo+EE73TOlxGaw6Aze7waRxCONREsbEQLUpYijSrIvSS
+Dis/irvdYGXAjUs0STo=
+</ds:SignatureValue>
+<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:X509Data xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:X509Certificate xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+MIIC9TCCAl6gAwIBAgIJANLnqCIievBCMA0GCSqGSIb3DQEBBQUAMFsxCzAJBgNVBAYTAlVTMQsw
+CQYDVQQIEwJNTjERMA8GA1UEBxMIUGx5bW91dGgxDDAKBgNVBAoTA1VIRzEMMAoGA1UECxMDV0FN
+MRAwDgYDVQQDEwdTTVN0YWdlMB4XDTEwMDMxNjIwMTcyMVoXDTIzMTEyMzIwMTcyMVowWzELMAkG
+A1UEBhMCVVMxCzAJBgNVBAgTAk1OMREwDwYDVQQHEwhQbHltb3V0aDEMMAoGA1UEChMDVUhHMQww
+CgYDVQQLEwNXQU0xEDAOBgNVBAMTB1NNU3RhZ2UwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGB
+ANJ1RSyE55lEUXzIOVI7iNu20eX8otubGIGN735+Vx//OzCwTU60JU2LbSISeXPknWlAlYTC5JR+
+pbhG13cmckxgKBfD14cc2ibQY+zYWC6jJiVAPlzSdAAl2UdF0NtGMB+xxzJDwbzRbJ1jyZgX5QkV
+D9CLsr3Qux3/bMyvJt7nAgMBAAGjgcAwgb0wHQYDVR0OBBYEFDSJcI3APKXTj3ym5U72f9QvYE/b
+MIGNBgNVHSMEgYUwgYKAFDSJcI3APKXTj3ym5U72f9QvYE/boV+kXTBbMQswCQYDVQQGEwJVUzEL
+MAkGA1UECBMCTU4xETAPBgNVBAcTCFBseW1vdXRoMQwwCgYDVQQKEwNVSEcxDDAKBgNVBAsTA1dB
+TTEQMA4GA1UEAxMHU01TdGFnZYIJANLnqCIievBCMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEF
+BQADgYEAbRrmcTTVLX6rGU3Aw/urNycSdreN3Yxcsi6jf3emahgtn3Wyo8c5E9cBp4tLrqEZbcZ8
+zdxgOypA3hHXQimU3FbDKmUxA8QxDaIovG77AGp2z1LMv9QHlKpvFuP80G+bxWuFUJym067MImcU
+ATWe/KMRi+apCwFRsl953e6LwVs=
+</ds:X509Certificate>
+</ds:X509Data>
+</ds:KeyInfo>
+</ds:Signature>
+        <ns2:Subject>
+            <ns2:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">outboundssotestuser1</ns2:NameID>
+            <ns2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+                <ns2:SubjectConfirmationData NotOnOrAfter="2010-09-30T17:46:59Z" Recipient="https://www.hmrc.kines.umich.edu/optumdev/samlgate.cgi"/>
+            </ns2:SubjectConfirmation>
+        </ns2:Subject>
+        <ns2:Conditions NotBefore="2010-09-30T17:44:59Z" NotOnOrAfter="2010-09-30T17:46:59Z">
+            <ns2:AudienceRestriction>
+                <ns2:Audience>optumhealth_umich</ns2:Audience>
+            </ns2:AudienceRestriction>
+        </ns2:Conditions>
+        <ns2:AuthnStatement AuthnInstant="2010-09-30T17:45:28Z" SessionIndex="tBl4IAjv//iv4sYxW4IBr4cAHX0=jR7JHQ==" SessionNotOnOrAfter="2010-09-30T17:46:59Z">
+            <ns2:AuthnContext>
+                <ns2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:Password</ns2:AuthnContextClassRef>
+            </ns2:AuthnContext>
+        </ns2:AuthnStatement>
+        <ns2:AttributeStatement>
+            <ns2:Attribute Name="source" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified">
+                <ns2:AttributeValue>esyncPortal</ns2:AttributeValue>
+            </ns2:Attribute>
+        <ns2:Attribute Name="noqn" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><ns2:AttributeValue>25</ns2:AttributeValue></ns2:Attribute><ns2:Attribute Name="langchar" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><ns2:AttributeValue>English</ns2:AttributeValue></ns2:Attribute><ns2:Attribute Name="username" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"><ns2:AttributeValue>ESYNC2507X0191105</ns2:AttributeValue></ns2:Attribute></ns2:AttributeStatement>
+    </ns2:Assertion>
+</Response>
