@@ -75,7 +75,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Fix: If InclusiveNamespaces/@PrefixList specifies a known namespace with new prefix, the canonicalization included both the known and the new prefix.
     NOTPUB
 
-zxid-0.65:: 5.10.2010
+zxid-0.65:: 10.10.2010
     - zxididp: added ID Mapper (to be used by Delegation Service)
     - zxididp: added some aspects of People Service (to be used by Delegation Service)
     - zxididp: added SSOS
