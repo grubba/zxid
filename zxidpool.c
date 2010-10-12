@@ -624,7 +624,6 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   char* src;
   char* dst;
   char* lim;
-  int got;
   struct zx_str* issuer = 0;
   struct zx_str* affid;
   struct zx_str* nid;
@@ -636,7 +635,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   struct zx_sa_AuthnStatement_s* as;
   struct zx_sa_Assertion_s* a7n;
   struct zx_sa_Assertion_s* tgta7n;
-  char buf[ZXID_MAX_USER];
+  char* buf;
   char sha1_name[28];
 
   D_INDENT("ses2pool: ");
@@ -661,9 +660,11 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
     zxid_user_sha1_name(cf, affid, nid, sha1_name);
     path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
     zxid_add_attr_to_ses(cf, ses, "localpath",   path);
-    got = read_all(sizeof(buf)-1, buf, "splocal_user_at", "%.*s/.bs/.at", path->len, path->s);
-    if (got)
+    buf = read_all_alloc(cf->ctx, "splocal_user_at", 0, "%.*s/.bs/.at", path->len, path->s);
+    if (buf) {
       zxid_add_ldif_attrs_to_ses(cf, ses, "local_", buf, "splocal_user_at");
+      ZX_FREE(cf->ctx, buf);
+    }
     zxid_copy_user_eprs_to_ses(cf, ses, path);
   }
 
@@ -691,9 +692,11 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
     zxid_user_sha1_name(cf, tgtaffid, tgtnid, sha1_name);
     path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR "%s", cf->path, sha1_name);
     zxid_add_attr_to_ses(cf, ses, "tgtpath",   path);
-    got = read_all(sizeof(buf)-1, buf, "sptgt_user_at", "%.*s/.bs/.at", path->len, path->s);
-    if (got)
+    buf = read_all_alloc(cf->ctx, "sptgt_user_at", 0, "%.*s/.bs/.at", path->len, path->s);
+    if (buf) {
       zxid_add_ldif_attrs_to_ses(cf, ses, "tgt_", buf, "sptgt_user_at");
+      ZX_FREE(cf->ctx, buf);
+    }
     zxid_copy_user_eprs_to_ses(cf, ses, path);
   }
   
@@ -701,9 +704,11 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   //accr = a7n&&a7n->AuthnStatement&&a7n->AuthnStatement->AuthnContext&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content&&a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content?a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content:0;
   zxid_add_attr_to_ses(cf, ses, "authnctxlevel", accr);
   
-  got = read_all(sizeof(buf)-1, buf, "splocal.all", "%s" ZXID_USER_DIR ".all/.bs/.at" , cf->path);
-  if (got)
+  buf = read_all_alloc(cf->ctx, "splocal.all", 0, "%s" ZXID_USER_DIR ".all/.bs/.at" , cf->path);
+  if (buf) {
     zxid_add_ldif_attrs_to_ses(cf, ses, 0, buf, "splocal.all");
+    ZX_FREE(cf->ctx, buf);
+  }
   path = zx_strf(cf->ctx, "%s" ZXID_USER_DIR ".all", cf->path);
   zxid_copy_user_eprs_to_ses(cf, ses, path);
   

@@ -565,7 +565,6 @@ struct zxid_invite {
 #define ZXID_MAX_USER (256)  /* Maximum size of .mni or user file */
 #define ZXID_INIT_MD_BUF   (8*1024-1)  /* Initial size, will automatically reallocate. */
 #define ZXID_INIT_SOAP_BUF (8*1024-1)  /* Initial size, will automatically reallocate. */
-#define ZXID_INIT_EPR_BUF  (32*1024)   /* Initial size, will automatically reallocate. */
 #define ZXID_MAX_CURL_BUF  (10*1024*1024-1)  /* Buffer reallocation will not grow beyond this. */
 #define ZXID_MAX_EID  (1024)
 #define ZXID_MAX_DIR  (4*1024)
@@ -1140,6 +1139,8 @@ extern const unsigned char const * hex_trans;
 extern const unsigned char const * ykmodhex_trans;
 char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans);
 
+int get_file_size(fdtype fd);
+char* read_all_alloc(struct zx_ctx* c, const char* logkey, int* lenp, const char* name_fmt, ...);
 int read_all(int maxlen, char* buf, const char* logkey, const char* name_fmt, ...);
 int name_from_path(char* buf, int buf_len, const char* name_fmt, ...);
 fdtype open_fd_from_path(int flags, int mode, const char* logkey, const char* name_fmt, ...);

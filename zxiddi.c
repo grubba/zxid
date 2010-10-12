@@ -138,12 +138,10 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       
       /* Probable enough, read and parse EPR so we can continue examination. */
 
-      epr_buf = ZX_ALLOC(cf->ctx, ZXID_INIT_EPR_BUF);
-      epr_len = read_all(ZXID_INIT_EPR_BUF, epr_buf, "find_svcmd", "%s/%s", mdpath, de->d_name);
-      if (!epr_len) {
-	ZX_FREE(cf->ctx, epr_buf);
+      epr_buf = read_all_alloc(cf->ctx, "find_svcmd", &epr_len, "%s/%s", mdpath, de->d_name);
+      if (!epr_buf)
 	continue;
-      }
+      
       LOCK(cf->ctx->mx, "diq epr");
       zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
       r = zx_DEC_root(cf->ctx, 0, 1);

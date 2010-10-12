@@ -204,16 +204,17 @@ static void opt(int* argc, char*** argv, char*** env)
 static int list_user(char* userdir, char* udir)
 {
   int got;
+  char* at;
   struct dirent* de;
   DIR* dir;
 
   printf("User dir:              %s\n", userdir);
   got = read_all(sizeof(buf), buf, "pw", "%s/%s/.pw", udir, user);
   printf("Password hash:         %s\n", buf);
-  got = read_all(sizeof(buf), buf, "at", "%s/%s/.bs/.at", udir, user);
-  printf("User attributes:       %s\n", buf);
-  got = read_all(sizeof(buf), buf, "all at", "%s/.all/.bs/.at", udir, 0);
-  printf("Common (.all) user attributes: %s\n", buf);
+  at = read_all_alloc(cf->ctx, "at", 0, "%s/%s/.bs/.at", udir, user);
+  if (at) printf("User attributes:       %s\n", at);
+  at = read_all_alloc(cf->ctx, "all at", 0, "%s/.all/.bs/.at", udir, 0);
+  if (at) printf("Common (.all) user attributes: %s\n", buf);
 
   printf("User's Federated SPs\n");
 
@@ -227,8 +228,8 @@ static int list_user(char* userdir, char* udir)
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
       got = read_all(sizeof(buf), buf, "sp at", "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
-      got = read_all(sizeof(buf), buf, "sp at", "%s/%s/.at", userdir, de->d_name);
-      printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
+      at = read_all_alloc(cf->ctx, "sp at", 0, "%s/%s/.at", userdir, de->d_name);
+      if (at) printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
     }
 
   /* *** TODO: .all SPs, bootstraps, discovery regs */
@@ -243,6 +244,7 @@ static int list_user(char* userdir, char* udir)
 static int list_users(char* udir)
 {
   int got;
+  char* at;
   struct dirent* de;
   DIR* dir;
 
@@ -256,8 +258,8 @@ static int list_users(char* udir)
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
       got = read_all(sizeof(buf), buf, "sp at", "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
-      got = read_all(sizeof(buf), buf, "sp at", "%s/%s/.bs/.at", userdir, de->d_name);
-      printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
+      at = read_all_alloc(cf->ctx, "sp at", 0, "%s/%s/.bs/.at", userdir, de->d_name);
+      if (at) printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
     }
   
   closedir(dir);

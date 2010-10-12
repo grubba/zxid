@@ -231,9 +231,8 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
     
     /* Probable enough, read and parse EPR so we can continue examination. */
     
-    epr_buf = ZX_ALLOC(cf->ctx, ZXID_INIT_EPR_BUF);
-    epr_len = read_all(ZXID_INIT_EPR_BUF, epr_buf, "find_bs_svcmd", "%s/%s", mdpath, de->d_name);
-    if (!epr_len) {
+    epr_buf = read_all_alloc(cf->ctx, "find_bs_svcmd", &epr_len, "%s/%s", mdpath, de->d_name);
+    if (!epr_buf) {
       ERR("User's (%s) bootstrap(%s) lacks service metadata registration. Reject. Consider using zxcot -e ... | zxcot -bs. See zxid-idp.pd for further information.", uid, de->d_name);
       ZX_FREE(cf->ctx, epr_buf);
       continue;
@@ -305,8 +304,7 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
   struct zx_sa_AuthnStatement_s* an_stmt;
   struct zx_sa_AttributeStatement_s* at_stmt;
   struct zx_sa_Attribute_s* at;
-  char buf[ZXID_MAX_USER];
-  int got;
+  char* buf;
 
   D_INDENT("mka7n: ");
   D("sp_eid(%s)", sp_meta->eid);
@@ -329,17 +327,17 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
       at_stmt->Attribute = at;
     }
   }
-  got = read_all(sizeof(buf)-1, buf, "idpsso_uid_at", "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
-  if (got) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_at");
+  buf = read_all_alloc(cf->ctx, "idpsso_uid_at", 0, "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
+  if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_at");
   
-  got = read_all(sizeof(buf)-1, buf, "idpsso_uid_sp_at", "%s" ZXID_UID_DIR "%s/%s/.at" , cf->path, uid, sp_name_buf);
-  if (got) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_sp_at");
+  buf = read_all_alloc(cf->ctx, "idpsso_uid_sp_at", 0, "%s" ZXID_UID_DIR "%s/%s/.at" , cf->path, uid, sp_name_buf);
+  if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_sp_at");
 
-  got = read_all(sizeof(buf)-1, buf, "idpsso_all_at", "%s" ZXID_UID_DIR ".all/.bs/.at",cf->path);
-  if (got) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_at");
+  buf = read_all_alloc(cf->ctx, "idpsso_all_at", 0, "%s" ZXID_UID_DIR ".all/.bs/.at", cf->path);
+  if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_at");
 
-  got = read_all(sizeof(buf)-1, buf, "idpsso_all_sp_at", "%s" ZXID_UID_DIR ".all/%s/.at",cf->path,sp_name_buf);
-  if (got) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_sp_at");
+  buf = read_all_alloc(cf->ctx, "idpsso_all_sp_at", 0, "%s" ZXID_UID_DIR ".all/%s/.at",cf->path,sp_name_buf);
+  if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_sp_at");
   D("sp_eid(%s) bs_lvl=%d", sp_meta->eid, bs_lvl);
   
   /* Process bootstraps */

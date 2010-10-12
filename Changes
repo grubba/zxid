@@ -44,6 +44,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
 * http://simplesamlphp.org/docs/1.5/simplesamlphp-googleapps
 * https://shibboleth.usc.edu/docs/google-apps/
 
+    - Use SAML2 a7n as "sticky policy" envelope, standardizing some attribute names to convey metadata such as acceptable use or purpose, obligations, right-of-access-correction-and-deletion-URL, and the authorative source.
     - Pairwise session indexes (encrypt master index and SP entid with IdP sym key)
     - zxcot should have idpdimd listing mode
     - zxpasswd should have user federation listing mode
@@ -57,10 +58,6 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Config option for redirection after SLO
     - WSP_LOCALPDP_OBL_REQ processing
     - WSC_LOCALPDP_OBL_ACCEPT processing
-    - zxpasswd should be tolerant of newline in input
-    - zxpasswd hash problems
-    - zxpasswd account creation problems
-        echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
     - IdP: Display Relay State in hopes of giving user more context
     - IdP: Interpret the attribute request authn ctx query string approach and show
       to the user what attributes were requested by the SP.
@@ -69,10 +66,16 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnReq QS option for SP to request that consent is explicitly seeked
     - AuthnReq QS option for SP to request that attribute list is not shown up front
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
-    - Remove ZXID_MAX_USER limit from .at files
-    - Use SAML2 a7n as "sticky policy" envelope, standardizing some attribute names to convey metadata such as acceptable use or purpose, obligations, right-of-access-correction-and-deletion-URL, and the authorative source.
+    - zxpasswd should be tolerant of newline in input
+    - zxpasswd hash problems
+    - zxpasswd account creation problems
+        echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
+    - zxid_epr_set_token()
+    NOTPUB
+
+zxid-0.66:: 10.10.2010
     - Add to IdP metadata the NameIDMapping end point
-    - Fix: If InclusiveNamespaces/@PrefixList specifies a known namespace with new prefix, the canonicalization included both the known and the new prefix.
+    - Removed ZXID_MAX_USER limit from .at files. Removed many other limits, too.
     NOTPUB
 
 zxid-0.65:: 10.10.2010

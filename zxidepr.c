@@ -275,7 +275,7 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   struct zx_root_s* r;
-  int len, epr_len, siz = ZXID_INIT_EPR_BUF;
+  int len, epr_len;
   char path[ZXID_MAX_BUF];
   char* epr_buf;  /* MUST NOT come from stack. */
   DIR* dir;
@@ -307,7 +307,6 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
     return 0;
   }
 
-  epr_buf = ZX_ALLOC(cf->ctx, siz);  /* MUST NOT come from stack. */
   len = strlen(svc);
   len = MIN(len, sizeof(path)-1);
   memcpy(path, svc, len);
@@ -324,24 +323,10 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
     if (memcmp(de->d_name, path, len) || de->d_name[len] != ',')
       continue;
     D("%d Checking EPR content file(%s)", n, de->d_name);
-    epr_len = read_all(siz, epr_buf, "find_epr",
-		       "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
-    if (!epr_len)
+    epr_buf = read_all_alloc(cf->ctx, "find_epr", &epr_len,
+			     "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
+    if (!epr_buf)
       continue;
-
-    while (epr_len == siz) {
-      siz += siz;
-      if (siz > ZXID_MAX_CURL_BUF) {
-	ERR("Fail: Size of EPR(%s) exeeds internal limit %d.", de->d_name, ZXID_MAX_CURL_BUF);
-	ZX_FREE(cf->ctx, epr_buf);
-	D_DEDENT("find_epr: ");
-	return 0;
-      }
-      D("Large EPR. Reallocating and rereading %d", siz);
-      REALLOCN(/*cf->ctx,*/ epr_buf, siz);
-      epr_len = read_all(siz, epr_buf, "find_epr",
-			 "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
-    }
     
     LOCK(cf->ctx->mx, "find epr");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);

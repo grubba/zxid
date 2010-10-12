@@ -213,7 +213,7 @@ int zxid_write_ent_to_cache(zxid_conf* cf, zxid_entity* ent)
 /* Called by:  main x3, test_ibm_cert_problem_enc_dec, zxid_get_ent_by_sha1_name, zxid_get_ent_from_cache, zxid_load_cot_cache_from_file */
 zxid_entity* zxid_get_ent_from_file(zxid_conf* cf, char* sha1_name)
 {
-  int n, got, gotty, siz = ZXID_INIT_MD_BUF;
+  int n, got, siz;
   fdtype fd;
   char* md_buf;
   char* p;
@@ -228,27 +228,12 @@ zxid_entity* zxid_get_ent_from_file(zxid_conf* cf, char* sha1_name)
     D("No metadata file found for sha1_name(%s)", sha1_name);
     return 0;
   }
-  
+  siz = get_file_size(fd);
   md_buf = ZX_ALLOC(cf->ctx, siz+1);
   n = read_all_fd(fd, md_buf, siz, &got);
   DD("==========sha1_name(%s)", sha1_name);
   if (n == -1)
     goto readerr;
-
-  while (got == siz) {
-    siz += siz;
-    if (siz > ZXID_MAX_CURL_BUF) {
-      ERR("Metadata for sha1_name(%s) is too big. Exceeds built in limit ZXID_MAX_CURL_BUF=%d", sha1_name, ZXID_MAX_CURL_BUF);
-      close_file(fd, (const char*)__FUNCTION__);
-      return 0;
-    }
-    DD("Realloc(%.*s) got=%d siz=%d Realloc(%s)", got, md_buf, got, siz, sha1_name);
-    REALLOCN(md_buf, siz+1);
-    n = read_all_fd(fd, md_buf+got, siz-got, &gotty);
-    if (n == -1)
-      goto readerr;
-    got += gotty;
-  }
   close_file(fd, (const char*)__FUNCTION__);
 
   DD("md_buf(%.*s) got=%d siz=%d md_buf(%s)", got, md_buf, got, siz, sha1_name);
@@ -580,8 +565,7 @@ struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, char* use, X509* x)
 /*() Generate Artifact Resolution (AR) Descriptor idp metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc */
-struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf,
-						       char* binding, char* loc, char* resp_loc)
+struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_ArtifactResolutionService_s* d = zx_NEW_md_ArtifactResolutionService(cf->ctx);
   d->Binding = zx_ref_str(cf->ctx, binding);
@@ -594,8 +578,7 @@ struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf,
 /*() Generate Single SignOn (SSO) Descriptor idp metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc */
-struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf,
-						  char* binding, char* loc, char* resp_loc)
+struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_SingleSignOnService_s* d = zx_NEW_md_SingleSignOnService(cf->ctx);
   d->Binding = zx_ref_str(cf->ctx, binding);
@@ -608,8 +591,7 @@ struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf,
 /*() Generate Single Logout (SLO) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf,
-						  char* binding, char* loc, char* resp_loc)
+struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_SingleLogoutService_s* d = zx_NEW_md_SingleLogoutService(cf->ctx);
   d->Binding = zx_ref_str(cf->ctx, binding);
@@ -622,10 +604,22 @@ struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf,
 /*() Generate Manage Name Id (MNI) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf,
-						  char* binding, char* loc, char* resp_loc)
+struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_ManageNameIDService_s* d = zx_NEW_md_ManageNameIDService(cf->ctx);
+  d->Binding = zx_ref_str(cf->ctx, binding);
+  d->Location = zx_strf(cf->ctx, "%s%s", cf->url, loc);
+  if (resp_loc)
+    d->ResponseLocation = zx_strf(cf->ctx, "%s%s", cf->url, resp_loc);
+  return d;
+}
+
+/*() Generate Name ID Mapping Service metadata fragment [SAML2meta]. */
+
+/* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
+struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
+{
+  struct zx_md_NameIDMappingService_s* d = zx_NEW_md_NameIDMappingService(cf->ctx);
   d->Binding = zx_ref_str(cf->ctx, binding);
   d->Location = zx_strf(cf->ctx, "%s%s", cf->url, loc);
   if (resp_loc)
@@ -636,8 +630,7 @@ struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf,
 /*() Generate Assertion Consumer Service (SSO) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_sso_desc x5 */
-struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf,
-						      char* binding, char* loc, char* ix)
+struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, char* binding, char* loc, char* ix)
 {
   struct zx_md_AssertionConsumerService_s* d = zx_NEW_md_AssertionConsumerService(cf->ctx);
   d->Binding = zx_ref_str(cf->ctx, binding);
@@ -808,6 +801,9 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf)
   z4->gg.g.n = &idp_ssod->SingleSignOnService->gg.g;
   idp_ssod->SingleSignOnService = z4;
 
+  if (cf->imps_ena)
+    idp_ssod->NameIDMappingService = zxid_nimap_desc(cf, SAML2_SOAP, "?o=S", 0);
+  
   return idp_ssod;
 }
 

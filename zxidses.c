@@ -37,7 +37,6 @@
 /* ============== Sessions ============== */
 
 #define ZXID_MAX_SES (256)      /* Just the session nid and path to assertion */
-#define ZXID_MAX_A7N (128*1024)
 
 /*() When session is loaded, we only get the reference to assertion. This
  * is to avoid parsing overhead when the assertion really is not needed.
@@ -58,13 +57,11 @@ int zxid_get_ses_sso_a7n(zxid_conf* cf, zxid_ses* ses)
     D("Session object does not have any SSO assertion sid(%s)", STRNULLCHK(ses->sid));
     return 0;
   }
-  ses->sso_a7n_buf = ZX_ALLOC(cf->ctx, ZXID_MAX_A7N);
-  gotall = read_all(ZXID_MAX_A7N-1, ses->sso_a7n_buf, "get_ses_sso_a7n", "%s", ses->sso_a7n_path);
-  if (!gotall)
+  ses->sso_a7n_buf = read_all_alloc(cf->ctx, "get_ses_sso_a7n", &gotall, "%s", ses->sso_a7n_path);
+  if (!ses->sso_a7n_buf)
     return 0;
-  ses->sso_a7n_buf[gotall] = 0;
   
-  DD("a7n(%.*s)", gotall, ses->sso_a7n_buf);
+  DD("a7n(%s)", ses->sso_a7n_buf);
   LOCK(cf->ctx->mx, "sso a7n");
   zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ses->sso_a7n_buf, ses->sso_a7n_buf + gotall);
   r = zx_DEC_root(cf->ctx, 0, 1);

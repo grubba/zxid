@@ -285,7 +285,7 @@ help:
 int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
 {
   struct zx_root_s* r;
-  int epr_len, siz = ZXID_INIT_EPR_BUF, din = 0;
+  int epr_len, din = 0;
   char path[ZXID_MAX_BUF];
   char* epr_buf;  /* MUST NOT come from stack. */
   DIR* dir;
@@ -310,8 +310,6 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
     return 0;
   }
 
-  epr_buf = ZX_ALLOC(cf->ctx, siz);
-  
   while (de = readdir(dir)) {
     D("%d Considering file(%s)", din, de->d_name);
     if (de->d_name[0] == '.')  /* . .. and "hidden" files */
@@ -319,24 +317,10 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
     if (de->d_name[strlen(de->d_name)-1] == '~')  /* Ignore backups from hand edited EPRs. */
       continue;
     D("%d Checking EPR content file(%s)", din, de->d_name);
-    epr_len = read_all(siz, epr_buf, "lstses",
-		       "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
-    if (!epr_len)
+    epr_buf = read_all_alloc(cf->ctx, "lstses", &epr_len,
+			     "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
+    if (!epr_buf)
       continue;
-
-    while (epr_len == siz) {
-      siz += siz;
-      if (siz > ZXID_MAX_CURL_BUF) {
-	ERR("Fail: Size of EPR(%s) exeeds internal limit %d.", de->d_name, ZXID_MAX_CURL_BUF);
-	ZX_FREE(cf->ctx, epr_buf);
-	D_DEDENT("lstses: ");
-	return 0;
-      }
-      D("Large EPR. Reallocating and rereading %d", siz);
-      REALLOCN(/*cf->ctx,*/ epr_buf, siz);
-      epr_len = read_all(siz, epr_buf, "lstses",
-			 "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
-    }
     
     LOCK(cf->ctx->mx, "lstses");
     zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);

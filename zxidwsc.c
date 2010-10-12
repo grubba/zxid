@@ -330,6 +330,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
   sec->BinarySecurityToken = 0;
   sec->SecurityTokenReference = 0;
   sec->Assertion = 0;
+  sec->EncryptedAssertion = 0;
   sec->sa11_Assertion = 0;
   sec->ff12_Assertion = 0;
     

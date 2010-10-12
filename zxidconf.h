@@ -35,7 +35,6 @@
 
 #define ZXID_CONF_FILE 1     /* (compile) */
 #define ZXID_CONF_FLAG 1     /* (compile) */
-#define ZXID_MAX_CONF  4096  /* (compile) Maximum size of conf file. */
 #define ZXID_SHOW_CONF 1     /* Whether configuration is viewable from url o=d */
 
 /*(c) ZXID configuration and working directory path

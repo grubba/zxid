@@ -56,10 +56,13 @@
 void zxid_sha1_file(zxid_conf* cf, char* name, char* sha1)
 {
   int gotall;
-  char buf[4096];
+  char* buf;
   ZERO(sha1, 20);
-  gotall = read_all(sizeof(buf), buf, "sha1_file", "%s%s", cf->path, name);
+  buf = read_all_alloc(cf->ctx, "sha1_file", &gotall, "%s%s", cf->path, name);
+  if (!buf)
+    return;
   SHA1(buf, gotall, sha1);
+  ZX_FREE(cf->ctx, buf);
 }
 #endif
 
@@ -1102,13 +1105,9 @@ scan_end:
 	cf->path = v;
 	cf->path_len = strlen(v);
 	++cf->path_supplied;
-
-	buf = ZX_ALLOC(cf->ctx, ZXID_MAX_CONF);
-	len = read_all(ZXID_MAX_CONF-1, buf, "-conf_to_cf", "%szxid.conf", cf->path);
-	if (len > 0) {
-	  buf[len] = 0;
+	buf = read_all_alloc(cf->ctx, "-conf_to_cf", &len, "%szxid.conf", cf->path);
+	if (buf && len)
 	  zxid_parse_conf_raw(cf, len, buf);  /* Recurse */
-	}
 	break;
       }
       if (!strcmp(n, "PDP_ENA"))        { SCAN_INT(v, cf->pdp_ena); break; }
@@ -1376,7 +1375,6 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 "FEDUSERNAME_SUFFIX=%s\n"
 "#ZXID_CONF_FILE=%d (compile)\n"
 "#ZXID_CONF_FLAG=%d (compile)\n"
-"#ZXID_MAX_CONF=%d (compile)\n"
 "NON_STANDARD_ENTITYID=%s\n"
 "REDIRECT_HACK_IMPOSED_URL=%s\n"
 "REDIRECT_HACK_ZXID_URL=%s\n"
@@ -1554,7 +1552,6 @@ struct zx_str* zxid_show_conf(zxid_conf* cf)
 		 STRNULLCHK(cf->fedusername_suffix),
 		 ZXID_CONF_FILE,
 		 ZXID_CONF_FLAG,
-		 ZXID_MAX_CONF,
 		 STRNULLCHK(cf->non_standard_entityid),
 		 STRNULLCHK(cf->redirect_hack_imposed_url),
 		 STRNULLCHK(cf->redirect_hack_zxid_url),

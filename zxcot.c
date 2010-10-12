@@ -470,7 +470,7 @@ static int zxid_lscot_line(zxid_conf* cf, int col_swap, const char* dcot, const 
   char* p;
   int got = read_all(ZXID_MAX_MD, buf, "zxcot line", "%s%s", dcot, den);
   if (!got) {
-    ERR("Zero data in file(%s%s)", dcot, den);
+    ERR("Zero data in file(%s%s). If cot directory does not exist consider running zxmkdirs.sh", dcot, den);
     return 1;
   }
   p = buf;

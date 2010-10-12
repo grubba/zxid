@@ -30,6 +30,7 @@
 #define fdtype HANDLE
 #else
 #define fdtype int
+#include <sys/stat.h>
 #endif
 
 #include "zx.h"
@@ -155,6 +156,8 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
  *
  * maxlen:: Length of buffer
  * buf:: Result parameter. This buffer will be populated with data from the file.
+ * logkey:: Logging key to help debugging
+ * name_fmt:: Format string for building file name
  * return:: actual total length. The buffer will always be nul terminated. */
 
 /* Called by:  list_user x5, list_users x2, main x4, opt x10, test_mode x2, zxid_check_fed, zxid_conf_to_cf_len, zxid_di_query x2, zxid_find_epr x2, zxid_gen_boots, zxid_get_ses, zxid_get_ses_sso_a7n, zxid_get_user_nameid, zxid_lscot_line, zxid_mk_user_a7n_to_sp x4, zxid_parse_conf_raw, zxid_pw_authn x3, zxid_read_cert, zxid_read_private_key, zxid_ses_to_pool x3, zxid_sha1_file, zxid_template_page_cf, zxlog_write_line */
@@ -177,6 +180,57 @@ int read_all(int maxlen, char* buf, const char* logkey, const char* name_fmt, ..
   close_file(fd, logkey);
   buf[MIN(gotall, maxlen-1)] = 0;  /* nul terminate */
   return gotall;
+}
+
+int get_file_size(fdtype fd)
+{
+#ifdef MINGW
+  return GetFileSize(fd,0);
+#else
+  struct stat st;
+  fstat(fd, &st);
+  return st.st_size;
+#endif
+}
+
+/*() Read all data from a file at formatted file name path, allocating
+ * the buffer as needed.
+ *
+ * c:: ZX allocation context
+ * logkey:: Logging key to help debugging
+ * lenp:: Optional result parameter returning the length of the data read. Null ok.
+ * name_fmt:: Format string for building file name
+ * return:: The data or null on fail. The buffer will always be nul terminated. */
+
+/* Called by: */
+char* read_all_alloc(struct zx_ctx* c, const char* logkey, int* lenp, const char* name_fmt, ...)
+{
+  va_list ap;
+  char* buf;
+  int len, gotall;
+  fdtype fd;
+  va_start(ap, name_fmt);
+  fd = vopen_fd_from_path(O_RDONLY, 0, logkey, name_fmt, ap);
+  va_end(ap);
+  if (fd == BADFD) { if (lenp) *lenp = 0; return 0; }
+
+  len = get_file_size(fd);
+  buf = ZX_ALLOC(c, len+1);
+  
+  if (read_all_fd(fd, buf, len, &gotall) == -1) {
+    perror("Trouble reading.");
+    D("read error lk(%s)", logkey);
+    close_file(fd, logkey);
+    buf[len] = 0;
+    if (lenp)
+      *lenp = 0;
+    return 0;
+  }
+  close_file(fd, logkey);
+  buf[MIN(gotall, len)] = 0;  /* nul terminate */
+  if (lenp)
+    *lenp = gotall;
+  return buf;
 }
 
 /*() Low level function that keeps writing data to a file descriptor unil

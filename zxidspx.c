@@ -375,20 +375,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     }
     return zxid_soap_cgi_resp_body(cf, body, bdy->ManageNameIDRequest->Issuer->gg.content);
   }
-
-  if (bdy->NameIDMappingRequest) {
-    body->NameIDMappingResponse = zxid_nidmap_do(cf, bdy->NameIDMappingRequest);
-    if (cf->sso_soap_resp_sign) {
-      ZERO(&refs, sizeof(refs));
-      refs.id = body->NameIDMappingResponse->ID;
-      refs.canon = zx_EASY_ENC_SO_sp_NameIDMappingResponse(cf->ctx, body->NameIDMappingResponse);
-      if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
-	body->NameIDMappingResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
-      zx_str_free(cf->ctx, refs.canon);
-    }
-    return zxid_soap_cgi_resp_body(cf, body, bdy->NameIDMappingRequest->Issuer->gg.content);
-  }
-
+  
   DD("as_ena=%d %p", cf->as_ena, bdy->SASLRequest);
   if (cf->as_ena) {
     if (bdy->SASLRequest) {
