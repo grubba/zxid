@@ -29,7 +29,15 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
-/*() Encrypt psobj identifier for an entity.
+static int zxid_psobj_key_setup(zxid_conf* cf, struct zx_str* eid, char* symkey)
+{
+  if (!cf->psobj_symkey[0])
+    zx_get_symkey(cf, "psobj-enc.key", cf->psobj_symkey);
+  zx_raw_digest2(cf->ctx, symkey, "SHA1", strlen(cf->psobj_symkey), cf->psobj_symkey, eid->len, eid->s);
+  return 20;
+}
+
+/*() Encrypt and safe_base64 encode psobj identifier for an entity.
  *
  * ObjectID (psobj) has particlar privacy threat in that several WSCs may
  * see them and be able to correlate about the user that the object refers
@@ -41,33 +49,53 @@
  * of secret (/var/zxid/pem/psobj-enc.key) known to ps server (i.e. the
  * zxididp) and the Entity ID of the entity. */
 
-struct zx_str* zxid_psobj_enc(zxid_conf* cf, struct zx_str* eid, struct zx_str* psobj)
+struct zx_str* zxid_psobj_enc(zxid_conf* cf, struct zx_str* eid, const char* prefix, struct zx_str* psobj)
 {
+  char* lim;
   char symkey[20];
   struct zx_str key;
   struct zx_str* ss;
-  if (!cf->psobj_symkey[0])
-    zx_get_symkey(cf, "psobj-enc.key", cf->psobj_symkey);
-  zx_raw_digest2(cf->ctx, symkey, "SHA1", strlen(cf->psobj_symkey), cf->psobj_symkey, eid->len, eid->s);
-  key.len = 20;
+  struct zx_str* rr;
+  int prefix_len = strlen(prefix);
+  zxid_psobj_key_setup(cf, eid, symkey);
+  key.len = 16;
   key.s = symkey;
   ss = zx_raw_cipher(cf->ctx, "AES-128-CBC", 1, &key, psobj->len, psobj->s, 16, 0);
-  return ss;
+  rr = zx_new_len_str(cf->ctx, prefix_len+SIMPLE_BASE64_LEN(ss->len)+1);
+  strcpy(rr->s, prefix);
+  lim = base64_fancy_raw(ss->s, ss->len, rr->s+prefix_len, safe_basis_64, 1<<31, 0, "", '=');
+  *lim = 0;
+  rr->len = lim - rr->s;
+  zx_str_free(cf->ctx, ss);
+  return rr;
 }
 
 /*() Decrypt psobj identifier from an entity. */
 
-struct zx_str* zxid_psobj_dec(zxid_conf* cf, struct zx_str* eid, struct zx_str* psobj)
+struct zx_str* zxid_psobj_dec(zxid_conf* cf, struct zx_str* eid, const char* prefix, struct zx_str* psobj)
 {
+  char* lim;
   char symkey[20];
   struct zx_str key;
   struct zx_str* ss;
-  if (!cf->psobj_symkey[0])
-    zx_get_symkey(cf, "psobj-enc.key", cf->psobj_symkey);
-  zx_raw_digest2(cf->ctx, symkey, "SHA1", strlen(cf->psobj_symkey), cf->psobj_symkey, eid->len, eid->s);
-  key.len = 20;
+  struct zx_str* rr;
+  int prefix_len = strlen(prefix);
+  if (!eid || !psobj || psobj->len < prefix_len) {
+    ERR("Null eid or psobj, or too short psobj %p", psobj);
+    return 0;
+  }
+  if (memcmp(prefix, psobj->s, prefix_len)) {
+    ERR("psobj(%.*s) does not match prefix(%s)", psobj->len, psobj->s, prefix);
+    return 0;
+  }
+  zxid_psobj_key_setup(cf, eid, symkey);
+  key.len = 16;
   key.s = symkey;
-  ss = zx_raw_cipher(cf->ctx, "AES-128-CBC", 0, &key, psobj->len-16, psobj->s+16, 16, psobj->s);
+  rr = zx_new_len_str(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(psobj->len));
+  lim = unbase64_raw(psobj->s+prefix_len, psobj->s+psobj->len, rr->s, zx_std_index_64);
+  rr->len = lim - rr->s;
+  ss = zx_raw_cipher(cf->ctx, "AES-128-CBC", 0, &key, rr->len-16, rr->s+16, 16, rr->s);
+  zx_str_free(cf->ctx, rr);
   return ss;
 }
 
@@ -512,7 +540,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
 
   obj = ZX_ZALLOC(cf->ctx, struct zxid_psobj);
 #if 0
-  obj->psobj = req->Object->ObjectID ? zxid_psobj_dec(req->Object->ObjectID) : zxid_mk_id(cf, "o", 48);  /* What is secure and sufficient space? */
+  obj->psobj = req->Object->ObjectID ? zxid_psobj_dec(cf, issuer, "ZO", req->Object->ObjectID) : zxid_mk_id(cf, "o", 48);  /* What is secure and sufficient space? */
 #else
   if (req->Object->ObjectID) {
     ERR("AddEntityRequest contained ObjectID(%.*s), but AddEntity is about creating new objects and the object IDs are assigned by People Service, not client. Ignoring ObjectID.", req->Object->ObjectID->content->len, req->Object->ObjectID->content->s);
@@ -532,7 +560,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
   /* The invitation URL will be processed by zxid_ps_accept_invite(), see above. */
   resp->SPtoPSRedirectURL = zx_new_simple_elem(cf->ctx, zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->url, inv->invid->len, inv->invid->s));
   resp->Object = zx_NEW_ps_Object(cf->ctx);
-  resp->Object->ObjectID = zx_new_simple_elem(cf->ctx, zxid_psobj_enc(cf, issuer, obj->psobj));
+  resp->Object->ObjectID = zx_new_simple_elem(cf->ctx, zxid_psobj_enc(cf, issuer,"ZO",obj->psobj));
   resp->Object->DisplayName = zx_NEW_ps_DisplayName(cf->ctx);
   resp->Object->DisplayName->gg.content = obj->dispname;
   resp->Object->DisplayName->Locale = zx_dup_str(cf->ctx, "xx");  /* unknown locale */
@@ -560,7 +588,7 @@ struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_
 {
   struct zx_ps_ResolveIdentifierResponse_s* resp = zx_NEW_ps_ResolveIdentifierResponse(cf->ctx);
   struct zx_ps_ResolveInput_s* inp;
-  struct zx_ps_ResolveOutput_s* out;
+  //struct zx_ps_ResolveOutput_s* out;
   int n_resolv = 0;
   char uid[ZXID_MAX_USER];
   zxid_nid* nameid;

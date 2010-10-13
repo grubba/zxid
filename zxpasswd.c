@@ -257,7 +257,7 @@ static int list_users(char* udir)
   }
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
-      got = read_all(sizeof(buf), buf, 0, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
+      got = read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
       at = read_all_alloc(&ctx, "sp at", 0, 0, "%s/%s/.bs/.at", userdir, de->d_name);
       if (at) printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);

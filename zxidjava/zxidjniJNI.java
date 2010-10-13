@@ -1107,7 +1107,7 @@ class zxidjniJNI {
   public final static native long zxid_mk_mni_resp(long jarg1, long jarg2, String jarg3);
   public final static native long zxid_mk_a7n(long jarg1, String jarg2, long jarg3, long jarg4, long jarg5, long jarg6);
   public final static native long zxid_mk_subj(long jarg1, long jarg2, long jarg3);
-  public final static native long zxid_mk_an_stmt(long jarg1, long jarg2);
+  public final static native long zxid_mk_an_stmt(long jarg1, long jarg2, String jarg3);
   public final static native long zxid_mk_saml_resp(long jarg1);
   public final static native long zxid_mk_xacml_resp(long jarg1, String jarg2);
   public final static native long zxid_mk_xacml_simple_at(long jarg1, long jarg2, String jarg3, String jarg4, String jarg5, String jarg6);
@@ -1204,6 +1204,8 @@ class zxidjniJNI {
   public final static native long zxid_map_identity_token(long jarg1, long jarg2, String jarg3, int jarg4);
   public final static native long zxid_imreq(long jarg1, long jarg2, long jarg3, String jarg4);
   public final static native long zxid_nidmap_do(long jarg1, long jarg2);
+  public final static native String zxid_psobj_enc(long jarg1, String jarg2, String jarg3, String jarg4);
+  public final static native String zxid_psobj_dec(long jarg1, String jarg2, String jarg3, String jarg4);
   public final static native String zxid_ps_accept_invite(long jarg1, long jarg2, long jarg3, long jarg4, int jarg5);
   public final static native String zxid_ps_finalize_invite(long jarg1, long jarg2, long jarg3, long jarg4, int jarg5);
   public final static native long zxid_ps_addent_invite(long jarg1, long jarg2, long jarg3, String jarg4);

@@ -305,29 +305,30 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
   struct zx_sa_AttributeStatement_s* at_stmt;
   struct zx_sa_Attribute_s* at;
   char* buf;
+  char dir[ZXID_MAX_DIR];
 
   D_INDENT("mka7n: ");
   D("sp_eid(%s)", sp_meta->eid);
 
   subj = zxid_mk_subj(cf, sp_meta, nameid);
-  an_stmt = ses ? zxid_mk_an_stmt(cf, ses) : 0;
+  an_stmt = ses ? zxid_mk_an_stmt(cf, ses, sp_meta->eid) : 0;
   at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx);
   at_stmt->Attribute = zxid_mk_attribute(cf, "zxididp", ZXID_REL " " ZXID_COMPILE_DATE);
 
   if (cf->fedusername_suffix && cf->fedusername_suffix[0]) {
-    snprintf(buf, sizeof(buf), "%.*s@%s", nameid->gg.content->len, nameid->gg.content->s, cf->fedusername_suffix);
-    buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
-    at = zxid_mk_attribute(cf, "fedusername", zx_dup_cstr(cf->ctx, buf));
+    snprintf(dir, sizeof(dir), "%.*s@%s", nameid->gg.content->len, nameid->gg.content->s, cf->fedusername_suffix);
+    dir[sizeof(dir)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+    at = zxid_mk_attribute(cf, "fedusername", zx_dup_cstr(cf->ctx, dir));
     ZX_NEXT(at) = (void*)at_stmt->Attribute;
     at_stmt->Attribute = at;
     if (cf->idpatopt & 0x01) {
-      at = zxid_mk_attribute(cf, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, zx_dup_cstr(cf->ctx, buf));
+      at = zxid_mk_attribute(cf, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, zx_dup_cstr(cf->ctx, dir));
       at->NameFormat = zx_dup_str(cf->ctx, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
       ZX_NEXT(at) = (void*)at_stmt->Attribute;
       at_stmt->Attribute = at;
     }
   }
-  buf = read_all_alloc(cf->ctx, "idpsso_uid_at", 0, 0, "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
+  buf = read_all_alloc(cf->ctx, "idpsso_uid_at", 0,0, "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
   if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_at");
   
   buf = read_all_alloc(cf->ctx, "idpsso_uid_sp_at", 0, 0, "%s" ZXID_UID_DIR "%s/%s/.at" , cf->path, uid, sp_name_buf);
@@ -342,11 +343,11 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
   
   /* Process bootstraps */
 
-  name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, uid);
-  at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute, bs_lvl);
+  name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, uid);
+  at_stmt->Attribute = zxid_gen_boots(cf, uid, dir, at_stmt->Attribute, bs_lvl);
   
-  name_from_path(buf, sizeof(buf), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
-  at_stmt->Attribute = zxid_gen_boots(cf, uid, buf, at_stmt->Attribute, bs_lvl);
+  name_from_path(dir, sizeof(dir), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
+  at_stmt->Attribute = zxid_gen_boots(cf, uid, dir, at_stmt->Attribute, bs_lvl);
   
   D("sp_eid(%s)", sp_meta->eid);
   a7n = zxid_mk_a7n(cf, zx_dup_str(cf->ctx, sp_meta->eid), subj, an_stmt, at_stmt, 0);

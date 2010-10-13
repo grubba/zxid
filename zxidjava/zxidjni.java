@@ -4058,8 +4058,8 @@ public class zxidjni implements zxidjniConstants {
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_sa_Subject_s(cPtr, false);
   }
 
-  public static SWIGTYPE_p_zx_sa_AuthnStatement_s mk_an_stmt(zxid_conf cf, zxid_ses ses) {
-    long cPtr = zxidjniJNI.zxid_mk_an_stmt(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses));
+  public static SWIGTYPE_p_zx_sa_AuthnStatement_s mk_an_stmt(zxid_conf cf, zxid_ses ses, String eid) {
+    long cPtr = zxidjniJNI.zxid_mk_an_stmt(zxid_conf.getCPtr(cf), zxid_ses.getCPtr(ses), eid);
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_sa_AuthnStatement_s(cPtr, false);
   }
 
@@ -4455,6 +4455,10 @@ public class zxidjni implements zxidjniConstants {
     long cPtr = zxidjniJNI.zxid_nidmap_do(zxid_conf.getCPtr(cf), SWIGTYPE_p_zx_sp_NameIDMappingRequest_s.getCPtr(req));
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_sp_NameIDMappingResponse_s(cPtr, false);
   }
+
+  public static String psobj_enc(zxid_conf cf, String eid, String prefix, String psobj) { return zxidjniJNI.zxid_psobj_enc(zxid_conf.getCPtr(cf), eid, prefix, psobj); }
+
+  public static String psobj_dec(zxid_conf cf, String eid, String prefix, String psobj) { return zxidjniJNI.zxid_psobj_dec(zxid_conf.getCPtr(cf), eid, prefix, psobj); }
 
   public static String ps_accept_invite(zxid_conf cf, zxid_cgi cgi, zxid_ses ses, SWIGTYPE_p_int res_len, int auto_flags) {
     return zxidjniJNI.zxid_ps_accept_invite(zxid_conf.getCPtr(cf), zxid_cgi.getCPtr(cgi), zxid_ses.getCPtr(ses), SWIGTYPE_p_int.getCPtr(res_len), auto_flags);

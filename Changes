@@ -66,6 +66,7 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnReq QS option for SP to request that attribute list is not shown up front
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
 
+    - zxdecode assertion decryption support
     - zxpasswd hash problems
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory

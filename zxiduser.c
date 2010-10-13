@@ -339,9 +339,9 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   ses->magic = ZXID_SES_MAGIC;
   ses->an_instant = time(0);  /* This will be later used by AuthnStatement constructor. */
   ses->an_ctx = cf->issue_authnctx_pw;  /* *** Should also depend on how user was registered */
-  /* Master session. Each pairwise SSO has its own to avoid correlation, see */
+  /* Master session. Each pairwise SSO has its own to avoid correlation, see zxid_mk_an_stmt() */
   ss = zxid_mk_id(cf, "MMSES", ZXID_ID_BITS);
-  ses->sesix = ss->s;  /* *** consider pairwise different MSES IDs when generating AN stmt */
+  ses->sesix = ss->s;
   ZX_FREE(cf->ctx, ss);
   ses->sid = cgi->sid = ses->sesix;
   ses->uid = cgi->uid;

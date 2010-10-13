@@ -318,10 +318,23 @@ struct zx_sa_Subject_s* zxid_mk_subj(zxid_conf* cf, zxid_entity* sp_meta, zxid_n
 /*() Construct AuthnStatement */
 
 /* Called by:  zxid_mk_user_a7n_to_sp */
-struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses)
+struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, const char* eid)
 {
+  struct zx_str sesix;
+  struct zx_str eid_ss;
   struct zx_sa_AuthnStatement_s* an_stmt = zx_NEW_sa_AuthnStatement(cf->ctx);
-  an_stmt->SessionIndex = zx_dup_str(cf->ctx, ses->sesix);  /* *** need noncorrelatable session index */
+  if (ses->sesix) {
+#if 0
+    an_stmt->SessionIndex = zx_dup_str(cf->ctx, ses->sesix);
+#else
+    /* Need noncorrelatable session index */
+    eid_ss.len = strlen(eid);
+    eid_ss.s = (char*)eid;
+    sesix.len = strlen(ses->sesix);
+    sesix.s = ses->sesix;
+    an_stmt->SessionIndex = zxid_psobj_enc(cf, &eid_ss, "ZS", &sesix);
+#endif
+  }
   an_stmt->AuthnInstant = zxid_date_time(cf, ses->an_instant);
   an_stmt->AuthnContext = zx_NEW_sa_AuthnContext(cf->ctx);
   if (ses->an_ctx)

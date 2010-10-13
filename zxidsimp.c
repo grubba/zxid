@@ -76,7 +76,7 @@ int zxid_conf_to_cf_len(zxid_conf* cf, int conf_len, const char* conf)
 
     if (!conf || conf_len < 5 || memcmp(conf, "PATH=", 5)) {
       /* No conf, or conf does not start by PATH: read from file default values */
-      buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, 0, "%szxid.conf", cf->path);
+      buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%szxid.conf", cf->path);
       if (buf && len)
 	zxid_parse_conf_raw(cf, len, buf);
     }

@@ -313,7 +313,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
   path[len] = 0;
   zxid_fold_svc(path, len);
   D("Folded path prefix(%.*s) len=%d n=%d", len, path, len, n);
-      
+  
   while (de = readdir(dir)) {
     D("%d Considering file(%s)", n, de->d_name);
     if (de->d_name[0] == '.')  /* . .. and "hidden" files */
@@ -377,7 +377,6 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
     D_DEDENT("find_epr: ");
     return epr;
   }
-  ZX_FREE(cf->ctx, epr_buf);
   closedir(dir);
   D_DEDENT("find_epr: ");
   return 0;
