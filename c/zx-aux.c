@@ -69,11 +69,27 @@ void zx_FREE_root(struct zx_ctx* c, struct zx_root_s* x, int free_strs)
       }
   }
   {
+      struct zx_sa_EncryptedAssertion_s* e;
+      struct zx_sa_EncryptedAssertion_s* en;
+      for (e = x->EncryptedAssertion; e; e = en) {
+	  en = (struct zx_sa_EncryptedAssertion_s*)e->gg.g.n;
+	  zx_FREE_sa_EncryptedAssertion(c, e, free_strs);
+      }
+  }
+  {
       struct zx_sa_NameID_s* e;
       struct zx_sa_NameID_s* en;
       for (e = x->NameID; e; e = en) {
 	  en = (struct zx_sa_NameID_s*)e->gg.g.n;
 	  zx_FREE_sa_NameID(c, e, free_strs);
+      }
+  }
+  {
+      struct zx_sa_EncryptedID_s* e;
+      struct zx_sa_EncryptedID_s* en;
+      for (e = x->EncryptedID; e; e = en) {
+	  en = (struct zx_sa_EncryptedID_s*)e->gg.g.n;
+	  zx_FREE_sa_EncryptedID(c, e, free_strs);
       }
   }
   zx_free_simple_elems(c, x->NewID, free_strs);
@@ -310,6 +326,14 @@ void zx_FREE_root(struct zx_ctx* c, struct zx_root_s* x, int free_strs)
       }
   }
   {
+      struct zx_sec_Token_s* e;
+      struct zx_sec_Token_s* en;
+      for (e = x->Token; e; e = en) {
+	  en = (struct zx_sec_Token_s*)e->gg.g.n;
+	  zx_FREE_sec_Token(c, e, free_strs);
+      }
+  }
+  {
       struct zx_hrxml_Candidate_s* e;
       struct zx_hrxml_Candidate_s* en;
       for (e = x->Candidate; e; e = en) {
@@ -390,9 +414,19 @@ void zx_DUP_STRS_root(struct zx_ctx* c, struct zx_root_s* x)
 	  zx_DUP_STRS_sa_Assertion(c, e);
   }
   {
+      struct zx_sa_EncryptedAssertion_s* e;
+      for (e = x->EncryptedAssertion; e; e = (struct zx_sa_EncryptedAssertion_s*)e->gg.g.n)
+	  zx_DUP_STRS_sa_EncryptedAssertion(c, e);
+  }
+  {
       struct zx_sa_NameID_s* e;
       for (e = x->NameID; e; e = (struct zx_sa_NameID_s*)e->gg.g.n)
 	  zx_DUP_STRS_sa_NameID(c, e);
+  }
+  {
+      struct zx_sa_EncryptedID_s* e;
+      for (e = x->EncryptedID; e; e = (struct zx_sa_EncryptedID_s*)e->gg.g.n)
+	  zx_DUP_STRS_sa_EncryptedID(c, e);
   }
   zx_dup_strs_simple_elems(c, x->NewID);
   {
@@ -541,6 +575,11 @@ void zx_DUP_STRS_root(struct zx_ctx* c, struct zx_root_s* x)
 	  zx_DUP_STRS_a_EndpointReference(c, e);
   }
   {
+      struct zx_sec_Token_s* e;
+      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n)
+	  zx_DUP_STRS_sec_Token(c, e);
+  }
+  {
       struct zx_hrxml_Candidate_s* e;
       for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n)
 	  zx_DUP_STRS_hrxml_Candidate(c, e);
@@ -594,6 +633,19 @@ struct zx_root_s* zx_DEEP_CLONE_root(struct zx_ctx* c, struct zx_root_s* x, int 
       }
   }
   {
+      struct zx_sa_EncryptedAssertion_s* e;
+      struct zx_sa_EncryptedAssertion_s* en;
+      struct zx_sa_EncryptedAssertion_s* enn;
+      for (enn = 0, e = x->EncryptedAssertion; e; e = (struct zx_sa_EncryptedAssertion_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_sa_EncryptedAssertion(c, e, dup_strs);
+	  if (!enn)
+	      x->EncryptedAssertion = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
       struct zx_sa_NameID_s* e;
       struct zx_sa_NameID_s* en;
       struct zx_sa_NameID_s* enn;
@@ -601,6 +653,19 @@ struct zx_root_s* zx_DEEP_CLONE_root(struct zx_ctx* c, struct zx_root_s* x, int 
 	  en = zx_DEEP_CLONE_sa_NameID(c, e, dup_strs);
 	  if (!enn)
 	      x->NameID = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
+      struct zx_sa_EncryptedID_s* e;
+      struct zx_sa_EncryptedID_s* en;
+      struct zx_sa_EncryptedID_s* enn;
+      for (enn = 0, e = x->EncryptedID; e; e = (struct zx_sa_EncryptedID_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_sa_EncryptedID(c, e, dup_strs);
+	  if (!enn)
+	      x->EncryptedID = en;
 	  else
 	      enn->gg.g.n = &en->gg.g;
 	  enn = en;
@@ -985,6 +1050,19 @@ struct zx_root_s* zx_DEEP_CLONE_root(struct zx_ctx* c, struct zx_root_s* x, int 
       }
   }
   {
+      struct zx_sec_Token_s* e;
+      struct zx_sec_Token_s* en;
+      struct zx_sec_Token_s* enn;
+      for (enn = 0, e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_sec_Token(c, e, dup_strs);
+	  if (!enn)
+	      x->Token = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
       struct zx_hrxml_Candidate_s* e;
       struct zx_hrxml_Candidate_s* en;
       struct zx_hrxml_Candidate_s* enn;
@@ -1080,9 +1158,25 @@ int zx_WALK_SO_root(struct zx_ctx* c, struct zx_root_s* x, void* ctx, int (*call
       }
   }
   {
+      struct zx_sa_EncryptedAssertion_s* e;
+      for (e = x->EncryptedAssertion; e; e = (struct zx_sa_EncryptedAssertion_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_sa_EncryptedAssertion(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
       struct zx_sa_NameID_s* e;
       for (e = x->NameID; e; e = (struct zx_sa_NameID_s*)e->gg.g.n) {
 	  ret = zx_WALK_SO_sa_NameID(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
+      struct zx_sa_EncryptedID_s* e;
+      for (e = x->EncryptedID; e; e = (struct zx_sa_EncryptedID_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_sa_EncryptedID(c, e, ctx, callback);
 	  if (ret)
 	      return ret;
       }
@@ -1318,6 +1412,14 @@ int zx_WALK_SO_root(struct zx_ctx* c, struct zx_root_s* x, void* ctx, int (*call
       struct zx_a_EndpointReference_s* e;
       for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n) {
 	  ret = zx_WALK_SO_a_EndpointReference(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
+      struct zx_sec_Token_s* e;
+      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_sec_Token(c, e, ctx, callback);
 	  if (ret)
 	      return ret;
       }

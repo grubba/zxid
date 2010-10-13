@@ -470,7 +470,7 @@ ZX_SG+=sg/xmldsig-core.sg sg/xenc-schema.sg sg/ec.sg
 ifeq ($(ENA_SAML2),1)
 
 ZX_SG+=sg/saml-schema-assertion-2.0.sg sg/saml-schema-protocol-2.0.sg sg/saml-schema-ecp-2.0.sg sg/liberty-paos-v2.0.sg sg/wsf-soap11.sg
-ZX_ROOTS+=-r sa:Assertion -r sa:NameID -r sp:NewID -r sp:AuthnRequest -r sp:Response
+ZX_ROOTS+=-r sa:Assertion -r sa:EncryptedAssertion -r sa:NameID -r sa:EncryptedID -r sp:NewID -r sp:AuthnRequest -r sp:Response
 ZX_ROOTS+=-r sp:LogoutRequest -r sp:LogoutResponse
 ZX_ROOTS+=-r sp:ManageNameIDRequest -r sp:ManageNameIDResponse
 ZX_ROOTS+=-r e:Envelope -r e:Header -r e:Body
@@ -525,7 +525,7 @@ ZX_SG += sg/liberty-idwsf-pmm-v1.0.sg sg/liberty-idwsf-prov-v1.0.sg
 ZX_SG += sg/liberty-idwsf-shps-v1.0.sg
 ZX_SG += sg/hr-xml-sampo.sg sg/id-hrxml.sg
 ZX_SG += sg/demo-media-v1.0.sg
-ZX_ROOTS+= -r a:EndpointReference
+ZX_ROOTS+= -r a:EndpointReference -r sec:Token
 ZX_ROOTS+= -r hrxml:Candidate
 
 #ZX_SG += sg/saml-schema-assertion-2.0.sg sg/saml-schema-protocol-2.0.sg sg/xmldsig-core.sg sg/xenc-schema.sg sg/saml-schema-metadata-2.0.sg sg/oasis-sstc-saml-schema-protocol-1.1.sg sg/oasis-sstc-saml-schema-assertion-1.1.sg sg/liberty-idff-protocols-schema-1.2-errata-v2.0.sg sg/liberty-authentication-context-v2.0.sg
@@ -947,6 +947,8 @@ zxidjava/zxid_wrap.c: $(ZX_GEN_H) zxid.h javazxid.i
 	mv zxidjava/SWIGTYPE_p_zx_tas3_Status_s.java zxidjava/zxid_tas3_status.java
 	$(PERL) -pi -e 's/SWIGTYPE_p_zx_e_Fault_s/zxid_fault/g' zxidjava/*.java
 	mv zxidjava/SWIGTYPE_p_zx_e_Fault_s.java zxidjava/zxid_fault.java
+	$(PERL) -pi -e 's/SWIGTYPE_p_zx_sec_Token_s/zxid_tok/g' zxidjava/*.java
+	mv zxidjava/SWIGTYPE_p_zx_sec_Token_s.java zxidjava/zxid_tok.java
 	$(PERL) -pi -e 's/(public static \w+ )zxid_/$$1/' zxidjava/zxidjni.java
 
 endif
@@ -1143,7 +1145,7 @@ $(LIBZXID_A): $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_L
 	$(AR) $(OUTOPT)zxid.lib $^
 else
 $(LIBZXID_A): $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
-	$(AR) $(OUTOPT)$(LIBZXID_A) $^
+	$(AR) $(LIBZXID_A) $^
 endif
 endif
 

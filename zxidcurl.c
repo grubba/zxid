@@ -122,7 +122,8 @@ zxid_entity* zxid_get_meta(zxid_conf* cf, char* url)
 #else
   {
     /* TEST CODE (usually disabled) */
-    int fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "get_meta TEST", "%s" ZXID_COT_DIR "test", cf->path);
+    int fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "get_meta TEST", 1,
+			       "%s" ZXID_COT_DIR "test", cf->path);
     if (fd == -1) {
       perror("open meta to write");
       /*UNLOCK(cf->curl_mx, "curl get_meta");*/

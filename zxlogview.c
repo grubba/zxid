@@ -184,7 +184,7 @@ static void opt(int* argc, char*** argv, char*** env)
 
   if (*argc) {  /* Signature verification certificate (logsign-nopw-cert.pem) */
     if ((*argv)[0][0]) {
-      read_all(sizeof(buf), buf, "logview opt cert", "%s", (*argv)[0]);
+      read_all(sizeof(buf), buf, "logview opt cert", 1, "%s", (*argv)[0]);
       log_verify_cert = zxid_extract_cert(buf, (*argv)[0]);
     }
     ++(*argv); --(*argc);
@@ -192,7 +192,7 @@ static void opt(int* argc, char*** argv, char*** env)
 
   if (*argc) {  /* Log decryption key (logenc-nopw-cert.pem) */
     if ((*argv)[0][0]) {
-      gotall = read_all(sizeof(buf), buf, "logview opt key", "%s", (*argv)[0]);
+      gotall = read_all(sizeof(buf), buf, "logview opt key", 1, "%s", (*argv)[0]);
       SHA1((unsigned char*)buf, gotall, (unsigned char*)log_symkey);
       log_decrypt_pkey = zxid_extract_private_key(buf, (*argv)[0]);
     }
@@ -209,7 +209,7 @@ static void test_mode(int* argc, char*** argv, char*** env)
   ++(*argv); --(*argc);
   if (*argc) {  /* Signature verification certificate (logsign-nopw-cert.pem) */
     if ((*argv)[0][0]) {
-      read_all(sizeof(buf), buf, "logview test_mode private key", "%s", (*argv)[0]);
+      read_all(sizeof(buf), buf, "logview test_mode private key", 1, "%s", (*argv)[0]);
       cf->log_sign_pkey = zxid_extract_private_key(buf, (*argv)[0]);
     }
     ++(*argv); --(*argc);
@@ -217,7 +217,7 @@ static void test_mode(int* argc, char*** argv, char*** env)
   
   if (*argc) {  /* Log encryption key (logenc-nopw-cert.pem) */
     if ((*argv)[0][0]) {
-      gotall = read_all(sizeof(buf), buf, "logview test_mode key", "%s", (*argv)[0]);
+      gotall = read_all(sizeof(buf), buf, "logview test_mode key", 1, "%s", (*argv)[0]);
       SHA1((unsigned char*)buf, gotall, (unsigned char*)cf->log_symkey);
       cf->log_enc_cert = zxid_extract_cert(buf, (*argv)[0]);
     }

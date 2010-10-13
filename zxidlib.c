@@ -884,7 +884,7 @@ nobody:
 char* zx_get_symkey(zxid_conf* cf, const char* keyname, char* symkey)
 {
   char buf[1024];
-  int um, gotall = read_all(sizeof(buf), buf, "symkey", "%s" ZXID_PEM_DIR "%s", cf->path, keyname);
+  int um, gotall = read_all(sizeof(buf), buf, "symkey", 1, "%s" ZXID_PEM_DIR "%s", cf->path, keyname);
   if (!gotall && cf->auto_cert) {
     INFO("AUTO_CERT: generating symmetric encryption key in %s" ZXID_PEM_DIR "%s", cf->path, keyname);
     gotall = 128 >> 3;

@@ -159,7 +159,7 @@ int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
   zxid_epr_path(cf, ZXID_SES_DIR, ses->sid, path, sizeof(path),
 		epr->Metadata->ServiceType->content, ss);
   //fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxid_cache_epr", "%s", path);
+  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxid_cache_epr", 1, "%s", path);
   if (fd == BADFD) {
     perror("open for write cache_epr");
     ERR("EPR path(%s) creation failed", path);
@@ -323,7 +323,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
     if (memcmp(de->d_name, path, len) || de->d_name[len] != ',')
       continue;
     D("%d Checking EPR content file(%s)", n, de->d_name);
-    epr_buf = read_all_alloc(cf->ctx, "find_epr", &epr_len,
+    epr_buf = read_all_alloc(cf->ctx, "find_epr", 1, &epr_len,
 			     "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
     if (!epr_buf)
       continue;
@@ -457,24 +457,97 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
 
 /* Called by: */
 struct zx_str* zxid_get_epr_address(zxid_conf* cf, zxid_epr* epr) {
-  return epr->Address->gg.content;
+  return epr&&epr->Address?epr->Address->gg.content:0;
 }
 
 /*() Accessor function for extracting endpoint ProviderID. */
 
 /* Called by: */
 struct zx_str* zxid_get_epr_entid(zxid_conf* cf, zxid_epr* epr) {
-  return epr->Metadata->ProviderID->content;
+  return epr&&epr->Metadata&&epr->Metadata->ProviderID?epr->Metadata->ProviderID->content:0;
 }
 
 /*() Accessor function for extracting endpoint Description (Abstract). */
 
 /* Called by: */
 struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr) {
-  return epr->Metadata->Abstract->content;
+  return epr&&epr->Metadata&&epr->Metadata->Abstract?epr->Metadata->Abstract->content:0;
 }
 
-/*() Constructor for "blank". Such EPR lacks security context so it is
+/*() Accessor function for extracting security mechanism ID. */
+
+struct zx_str* zxid_get_epr_secmech(zxid_conf* cf, zxid_epr* epr) {
+  struct zx_elem_s* secmech;
+  if (!epr || !epr->Metadata || !epr->Metadata->SecurityContext
+      || (secmech = epr->Metadata->SecurityContext->SecurityMechID)) {
+    ERR("Null EPR or EPR is missing Metadata, SecurityContext or SecurityMechID. %p", epr);
+    return 0;
+  }
+  return secmech->content;
+}
+
+/*() Set security mechanism ID.
+ *
+ * WARNING! Usually security mechanism ID is set by the
+ * discovery process. Do not manipulate it unless you
+ * know what you are doing. If security mechanism requires
+ * a token, you need to arrange it separately, either via
+ * discovery (recommended) or using zxid_set_epr_token() (if
+ * you know what you are doing). */
+
+void zxid_set_epr_secmech(zxid_conf* cf, zxid_epr* epr, const char* secmec) {
+  if (!epr) {
+    ERR("Null EPR. %p", epr);
+    return;
+  }
+  if (!epr->Metadata)
+    epr->Metadata = zx_NEW_a_Metadata(cf->ctx);
+  if (!epr->Metadata->SecurityContext)
+    epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx);
+  if (secmec) {
+    epr->Metadata->SecurityContext->SecurityMechID = zx_dup_simple_elem(cf->ctx, secmec);
+    INFO("SecurityMechID set to(%s)", secmec);
+  } else {
+    epr->Metadata->SecurityContext->SecurityMechID = zx_dup_simple_elem(cf->ctx, secmec);
+    INFO("SecurityMechID set null %d", 0);
+  }
+}
+
+/*() Accessor function for extracting endpoint's (SAML2 assertion) token. */
+
+zxid_tok* zxid_get_epr_token(zxid_conf* cf, zxid_epr* epr) {
+  if (!epr || !epr->Metadata || !epr->Metadata->SecurityContext) {
+    ERR("Null EPR or EPR is missing Metadata or SecurityContext. %p", epr);
+    return 0;
+  }
+  return epr->Metadata->SecurityContext->Token;
+}
+
+/*() Set endpoint's (SAML2 assertion) token.
+ *
+ * WARNING! Generally you should not call this function. Instead
+ * you should use discovery to obtain a token properly targeted
+ * to the destination of the EPR. This includes correct audience
+ * restriction, correct name id, and possible encryption of the
+ * token so that only destination can open it. Perticular things
+ * you should NOT do: just copy SSO token and pass it to web service
+ * call (the audience restriction will be wrong); just copy
+ * token that was received on WSP interface and use it on WSC interface. */
+
+void zxid_set_epr_token(zxid_conf* cf, zxid_epr* epr, zxid_tok* tok) {
+  if (!epr) {
+    ERR("Null EPR. %p", epr);
+    return;
+  }
+  if (!epr->Metadata)
+    epr->Metadata = zx_NEW_a_Metadata(cf->ctx);
+  if (!epr->Metadata->SecurityContext)
+    epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx);
+  epr->Metadata->SecurityContext->Token = tok;
+  INFO("EPR token set %p", tok);
+}
+
+/*() Constructor for "blank" EPR. Such EPR lacks security context so it is
  * not directly usable for identity web service calls. However, it could
  * be useful as a building block, or for non-idenity web service.
  * Also id, actor, and mustUnderstand fields need to be filled in by
@@ -500,15 +573,6 @@ zxid_epr* zxid_new_epr(zxid_conf* cf, char* address, char* desc, char* entid, ch
   return epr;
 }
 
-#if 0
-/*() Accessor function for extracting endpoint's SAML2 assertion token. */
-
-/* Called by: */
-struct zx_str* zxid_get_epr_a7n(zxid_conf* cf, zxid_epr* epr) {
-  return epr->Metadata->SecurityContext->Token->Assertion;
-}
-#endif
-
 zxid_epr* zxid_get_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses)
 {
   return ses->deleg_di_epr;
@@ -521,6 +585,202 @@ zxid_epr* zxid_get_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses)
 void zxid_set_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
 {
   ses->deleg_di_epr = epr;
+}
+
+/*() Get session's call invokation token. */
+
+zxid_tok* zxid_get_call_invoktok(zxid_conf* cf, zxid_ses* ses) {
+  if (!ses) {
+    ERR("Null session. %p", ses);
+    return 0;
+  }
+  return ses->call_invoktok;
+}
+
+/*() Set session's call invokation token. */
+
+void zxid_set_call_invoktok(zxid_conf* cf, zxid_ses* ses, zxid_tok* tok) {
+  if (!ses) {
+    ERR("Null session. %p", ses);
+    return;
+  }
+  ses->call_invoktok = tok;
+}
+
+/*() Get session's call target token. */
+
+zxid_tok* zxid_get_call_tgttok(zxid_conf* cf, zxid_ses* ses) {
+  if (!ses) {
+    ERR("Null session. %p", ses);
+    return 0;
+  }
+  return ses->call_tgttok;
+}
+
+/*() Set session's call target token. */
+
+void zxid_set_call_tgttok(zxid_conf* cf, zxid_ses* ses, zxid_tok* tok) {
+  if (!ses) {
+    ERR("Null session. %p", ses);
+    return;
+  }
+  ses->call_tgttok = tok;
+}
+
+/*() Serialize a token. */
+
+struct zx_str* zxid_token2str(zxid_conf* cf, zxid_tok* tok) {
+  if (!tok)
+    return 0;
+  return zx_EASY_ENC_WO_sec_Token(cf->ctx, tok);
+}
+
+/*() Parse string into token. */
+
+zxid_tok* zxid_str2token(zxid_conf* cf, struct zx_str* ss) {
+  struct zx_root_s* r = 0;
+  zxid_tok* tok;
+
+  if (!ss || !ss->len || !ss->s)
+    return 0;
+  
+  LOCK(cf->ctx->mx, "decode token");
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s+ss->len);
+  r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "decode token");
+  if (!r) {
+    ERR("Failed to parse token buf(%.*s)", ss->len, ss->s);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "BADXML", 0, "bad token");
+    return 0;
+  }
+  if (r->Token)
+    return r->Token;
+  tok = zx_NEW_sec_Token(cf->ctx);
+  tok->Assertion = r->Assertion;
+  tok->EncryptedAssertion = r->EncryptedAssertion;
+  tok->sa11_Assertion = r->sa11_Assertion;
+  tok->ff12_Assertion = r->ff12_Assertion;
+  return tok;
+}
+
+/*() Serialize an assertion. */
+
+struct zx_str* zxid_a7n2str(zxid_conf* cf, zxid_a7n* a7n) {
+  if (!a7n)
+    return 0;
+  return zx_EASY_ENC_WO_sa_Assertion(cf->ctx, a7n);
+}
+
+/*() Parse string into assertion. */
+
+zxid_a7n* zxid_str2a7n(zxid_conf* cf, struct zx_str* ss) {
+  struct zx_root_s* r = 0;
+
+  if (!ss || !ss->len || !ss->s)
+    return 0;
+  
+  LOCK(cf->ctx->mx, "decode a7n");
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s+ss->len);
+  r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "decode a7n");
+  if (!r) {
+    ERR("Failed to parse assertion buf(%.*s)", ss->len, ss->s);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "BADXML", 0, "bad a7n");
+    return 0;
+  }
+  return r->Assertion;
+}
+
+/*() Serialize a NameID. */
+
+struct zx_str* zxid_nid2str(zxid_conf* cf, zxid_nid* nid) {
+  if (!nid)
+    return 0;
+  return zx_EASY_ENC_WO_sa_NameID(cf->ctx, nid);
+}
+
+/*() Parse string into NameID. */
+
+zxid_nid* zxid_str2nid(zxid_conf* cf, struct zx_str* ss) {
+  struct zx_root_s* r = 0;
+
+  if (!ss || !ss->len || !ss->s)
+    return 0;
+  
+  LOCK(cf->ctx->mx, "decode nid");
+  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s+ss->len);
+  r = zx_DEC_root(cf->ctx, 0, 1);
+  UNLOCK(cf->ctx->mx, "decode nid");
+  if (!r) {
+    ERR("Failed to parse NameID buf(%.*s)", ss->len, ss->s);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "BADXML", 0, "bad nid");
+    return 0;
+  }
+  return r->NameID;
+}
+
+/*() Get session's invoker nameid. */
+
+zxid_nid* zxid_get_nameid(zxid_conf* cf, zxid_ses* ses) {
+  if (!ses)
+    return 0;
+  return ses->nameid;
+}
+
+/*() Set session's invoker nameid. */
+
+void zxid_set_nameid(zxid_conf* cf, zxid_ses* ses, zxid_nid* nid) {
+  if (!ses)
+    return;
+  ses->nameid = nid;
+}
+
+/*() Get session's target nameid. */
+
+zxid_nid* zxid_get_tgtnameid(zxid_conf* cf, zxid_ses* ses) {
+  if (!ses)
+    return 0;
+  return ses->tgtnameid;
+}
+
+/*() Set session's target nameid. */
+
+void zxid_set_tgtnameid(zxid_conf* cf, zxid_ses* ses, zxid_nid* nid) {
+  if (!ses)
+    return;
+  ses->tgtnameid = nid;
+}
+
+/*() Get session's invoker assertion. */
+
+zxid_a7n* zxid_get_a7n(zxid_conf* cf, zxid_ses* ses) {
+  if (!ses)
+    return 0;
+  return ses->a7n;
+}
+
+/*() Set session's invoker assertion. */
+
+void zxid_set_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n) {
+  if (!ses)
+    return;
+  ses->a7n = a7n;
+}
+
+/*() Get session's target assertion. */
+
+zxid_a7n* zxid_get_tgta7n(zxid_conf* cf, zxid_ses* ses) {
+  if (!ses)
+    return 0;
+  return ses->tgta7n;
+}
+
+/*() Set session's target assertion. */
+
+void zxid_set_tgta7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n) {
+  if (!ses)
+    return;
+  ses->tgta7n = a7n;
 }
 
 /* EOF  --  zxidepr.c */

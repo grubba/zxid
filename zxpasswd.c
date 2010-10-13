@@ -75,13 +75,14 @@ int create = 0;
 int an = 0;
 int list = 0;
 char* hash_type = "1";
-char* udir = 0;
+char* udir = "/var/zxid/idpuid/";
 char* user = 0;
 char* symlink_user = 0;
 char* at = 0;
 char pw[1024];
 char userdir[4096];
 char buf[4096];
+struct zx_ctx ctx;
 
 /* Called by:  main x8, zxcall_main, zxcot_main */
 static void opt(int* argc, char*** argv, char*** env)
@@ -209,11 +210,11 @@ static int list_user(char* userdir, char* udir)
   DIR* dir;
 
   printf("User dir:              %s\n", userdir);
-  got = read_all(sizeof(buf), buf, "pw", "%s/%s/.pw", udir, user);
+  got = read_all(sizeof(buf), buf, "pw", 0, "%s/%s/.pw", udir, user);
   printf("Password hash:         %s\n", buf);
-  at = read_all_alloc(cf->ctx, "at", 0, "%s/%s/.bs/.at", udir, user);
+  at = read_all_alloc(&ctx, "at", 0, 0, "%s/%s/.bs/.at", udir, user);
   if (at) printf("User attributes:       %s\n", at);
-  at = read_all_alloc(cf->ctx, "all at", 0, "%s/.all/.bs/.at", udir, 0);
+  at = read_all_alloc(&ctx, "all at", 0, 0, "%s/.all/.bs/.at", udir, 0);
   if (at) printf("Common (.all) user attributes: %s\n", buf);
 
   printf("User's Federated SPs\n");
@@ -226,9 +227,9 @@ static int list_user(char* userdir, char* udir)
   }
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
-      got = read_all(sizeof(buf), buf, "sp at", "%s/%s/.mni", userdir, de->d_name);
+      got = read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
-      at = read_all_alloc(cf->ctx, "sp at", 0, "%s/%s/.at", userdir, de->d_name);
+      at = read_all_alloc(&ctx, "sp at", 0, 0, "%s/%s/.at", userdir, de->d_name);
       if (at) printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
     }
 
@@ -256,9 +257,9 @@ static int list_users(char* udir)
   }
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
-      got = read_all(sizeof(buf), buf, "sp at", "%s/%s/.mni", userdir, de->d_name);
+      got = read_all(sizeof(buf), buf, 0, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
       printf("SP specific NameID:  %s (%s)\n", buf, de->d_name);
-      at = read_all_alloc(cf->ctx, "sp at", 0, "%s/%s/.bs/.at", userdir, de->d_name);
+      at = read_all_alloc(&ctx, "sp at", 0, 0, "%s/%s/.bs/.at", userdir, de->d_name);
       if (at) printf("SP specific attrib:  %s (%s)\n", buf, de->d_name);
     }
   
@@ -280,6 +281,7 @@ int main(int argc, char** argv, char** env)
   yubikey_token_st yktok;
   
   strcpy(zx_instance, "\tzxpw");
+  zx_reset_ctx(&ctx);
   opt(&argc, &argv, &env);
   if (argc)
     user = argv[0];
@@ -313,8 +315,8 @@ int main(int argc, char** argv, char** env)
     read_all_fd(0, pw, sizeof(pw)-1, &pwgot);  /* Password from stdin */
   }
   if (pwgot) {
-    if (pw[pwgot-1] == '\015') --pwgot;
     if (pw[pwgot-1] == '\012') --pwgot;
+    if (pw[pwgot-1] == '\015') --pwgot;
   }
   pw[pwgot] = 0;
   D("pw(%s) len=%d", pw, pwgot);
@@ -325,7 +327,7 @@ int main(int argc, char** argv, char** env)
     if (isyk) {
       snprintf(userdir, sizeof(userdir)-1, "%s/%s", udir, user);
       userdir[sizeof(userdir)-1] = 0;
-      got = read_all(sizeof(buf), buf, "ykspent", "%s/.ykspent/%s", userdir, pw);
+      got = read_all(sizeof(buf), buf, "ykspent", 1, "%s/.ykspent/%s", userdir, pw);
       if (got) {
 	ERR("The One Time Password has already been spent. ticket(%s%s) buf(%.*s)", user, pw, got, buf);
 	return 1;
@@ -333,7 +335,7 @@ int main(int argc, char** argv, char** env)
       if (!write_all_path_fmt("ykspent", sizeof(buf), buf, "%s/.ykspent/%s", userdir, pw, "1"))
 	return 1;
 
-      got = read_all(sizeof(buf), buf, "ykaes", "%s/%s/.yk", udir, user);
+      got = read_all(sizeof(buf), buf, "ykaes", 1, "%s/%s/.yk", udir, user);
       D("buf    (%s) got=%d", buf, got);
       if (got < 32) {
 	ERR("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too few characters %d ticket(%s)", user, got, pw);
@@ -357,10 +359,13 @@ int main(int argc, char** argv, char** env)
       D("yubikey ticket validation failure %d", 0);
       return 1;
     }
-    got = read_all(sizeof(buf), buf, "pw", "%s/%s/.pw", udir, user);
-    if (buf[got-1] == '\n') buf[got--] = 0;
-    if (buf[got-1] == '\r') buf[got--] = 0;
-    D("buf    (%s)", buf);
+    got = read_all(sizeof(buf), buf, "pw", 1, "%s/%s/.pw", udir, user);
+    if (got>0) {
+      if (buf[got-1] == '\012') --got;
+      if (buf[got-1] == '\015') --got;
+    }
+    buf[got] = 0;
+    D("buf    (%s) got=%d", buf, got);
     if (!memcmp(buf, "$1$", sizeof("$1$")-1)) {
       zx_md5_crypt(pw, buf, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);

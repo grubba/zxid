@@ -228,7 +228,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
 /* Called by:  zxid_wsc_call */
 static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env)
 {
-  struct zx_sec_Token_s* tok;
+  zxid_tok* tok;
   struct zx_e_Header_s* hdr;
   if (!zxid_wsf_decor(cf, ses, env, 0))
     return 0;
@@ -280,7 +280,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
 
 static void zxid_choose_security_token(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_wsse_Security_s* sec)
 {
-  struct zx_sec_Token_s* tok;
+  zxid_tok* tok;
   if (ses->call_invoktok) {
     D("Security Token: Explicit specification of ses->call_invoktok %d",0);
     tok = ses->call_invoktok;

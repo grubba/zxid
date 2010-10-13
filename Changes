@@ -48,9 +48,8 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Pairwise session indexes (encrypt master index and SP entid with IdP sym key)
     - zxcot should have idpdimd listing mode
     - zxpasswd should have user federation listing mode
-    - zxid_pw_authn() should not report scary error message when
-      checking .ykspent in not spent case
-    - zxid_select_tgt()
+    - zxid_pw_authn() should not report scary error when checking .ykspent in not spent case
+    - zxid_select_tgt() (?)
     - Each credential as its own a7n
     - X509 attr certs
     - Use post screen as confirmation screen
@@ -66,16 +65,18 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnReq QS option for SP to request that consent is explicitly seeked
     - AuthnReq QS option for SP to request that attribute list is not shown up front
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
-    - zxpasswd should be tolerant of newline in input
+
     - zxpasswd hash problems
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
-    - zxid_epr_set_token()
     NOTPUB
 
 zxid-0.66:: 10.10.2010
+    - zxpasswd: be tolerant of newline in input
     - Add to IdP metadata the NameIDMapping end point
     - Removed ZXID_MAX_USER limit from .at files. Removed many other limits, too.
+    - Added zxid_epr_set_token() and other accessor functions
+    - Fixed Solaris support (unwarranted -o option to ar)
     NOTPUB
 
 zxid-0.65:: 10.10.2010

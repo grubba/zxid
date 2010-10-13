@@ -145,7 +145,7 @@ struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx
  */
 
 /* Called by:  main */
-struct zx_sec_Token_s* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how)
+zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how)
 {
   struct zx_e_Envelope_s* env;
   struct zx_im_MappingInput_s* inp;
@@ -209,7 +209,7 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
   struct zx_im_IdentityMappingResponse_s* resp = zx_NEW_im_IdentityMappingResponse(cf->ctx);
   struct zx_im_MappingInput_s* mapinp;
   struct zx_im_MappingOutput_s* mapout;
-  struct zx_sec_Token_s* tok;
+  zxid_tok* tok;
   zxid_a7n* ina7n;
   zxid_a7n* outa7n;
   struct zx_str* issue_to;
@@ -367,7 +367,7 @@ struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp
   affil = nameid->SPNameQualifier ? nameid->SPNameQualifier : zxid_my_entity_id(cf);
   
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
-  len = read_all(sizeof(uid)-1, uid, "idp_map_nid2uid", "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
+  len = read_all(sizeof(uid)-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
   if (!len) {
     ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
     resp->Status = zxid_mk_Status(cf, "Fail", 0, 0);

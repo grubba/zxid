@@ -126,7 +126,7 @@ zxid_nid* zxid_get_user_nameid(zxid_conf* cf, zxid_nid* oldnid)
   mniptr = sha1_name;
 
   while (--iter && mniptr && *mniptr) {
-    read_all(ZXID_MAX_USER, buf, (const char*)__FUNCTION__, "%s" ZXID_USER_DIR "%s/.mni", cf->path, mniptr);
+    read_all(ZXID_MAX_USER, buf, (const char*)__FUNCTION__, 1, "%s" ZXID_USER_DIR "%s/.mni", cf->path, mniptr);
     nameid = zxid_parse_mni(cf, buf, &mniptr);
     if (nameid)
       return nameid;
@@ -239,7 +239,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 
     snprintf((char*)buf, sizeof(buf)-1, "%suid/%s", cf->path, cgi->uid);
     buf[sizeof(buf)-1] = 0;
-    len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykspent", "%s/.ykspent/%s", buf, pw_hash);
+    len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykspent", 1, "%s/.ykspent/%s", buf, pw_hash);
     if (len) {
       ERR("The One Time Password has already been spent. ticket(%s%s) buf(%.*s)", cgi->uid, pw_hash, len, pw_buf);
       cgi->err = login_failed;
@@ -248,7 +248,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     if (!write_all_path_fmt("ykspent", sizeof(pw_buf), (char*)pw_buf, "%s/.ykspent/%s", (char*)buf, (char*)pw_hash, "1"))
       return 0;
     
-    len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykaes", "%s/.yk", buf);
+    len = read_all(sizeof(pw_buf), (char*)pw_buf, "ykaes", 1, "%s/.yk", buf);
     D("buf    (%s) got=%d", pw_buf, len);
     if (len < 32) {
       ERR("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too few characters %d ticket(%s)", cgi->uid, len, pw_hash);
@@ -282,7 +282,7 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
 
     meth = "pw";
 
-    len = read_all(sizeof(pw_buf), (char*)pw_buf, "pw_authn",
+    len = read_all(sizeof(pw_buf), (char*)pw_buf, "pw_authn", 1,
 		   "%s" ZXID_UID_DIR "%s/.pw", cf->path, cgi->uid);
     if (len < 1) {
       ERR("No account found for uid(%s) or account does not have .pw file.", cgi->uid);
@@ -291,7 +291,13 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       return 0;
     }
     
-    D("pw_buf (%s)", pw_buf);
+    if (len) {
+      if (pw_buf[len-1] == '\012') --len;
+      if (pw_buf[len-1] == '\015') --len;
+    }
+    pw_buf[len] = 0;
+    D("pw_buf (%s) len=%d", pw_buf, len);
+
     if (!memcmp(pw_buf, "$1$", sizeof("$1$")-1)) {
       zx_md5_crypt(cgi->pw, (char*)pw_buf, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);
@@ -333,7 +339,8 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   ses->magic = ZXID_SES_MAGIC;
   ses->an_instant = time(0);  /* This will be later used by AuthnStatement constructor. */
   ses->an_ctx = cf->issue_authnctx_pw;  /* *** Should also depend on how user was registered */
-  ss = zxid_mk_id(cf, "MSES", ZXID_ID_BITS);  /* Master session. Each pairwise SSO should have its own to avoid correlation. */
+  /* Master session. Each pairwise SSO has its own to avoid correlation, see */
+  ss = zxid_mk_id(cf, "MMSES", ZXID_ID_BITS);
   ses->sesix = ss->s;  /* *** consider pairwise different MSES IDs when generating AN stmt */
   ZX_FREE(cf->ctx, ss);
   ses->sid = cgi->sid = ses->sesix;

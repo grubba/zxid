@@ -394,7 +394,7 @@ char* zxid_ps_accept_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* re
   struct zxid_invite inv;
   struct zx_str* ss;
   char buf[ZXID_MAX_BUF];
-  int got = read_all(sizeof(buf), buf, "accept_invite", "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
+  int got = read_all(sizeof(buf), buf, "accept_invite", 1, "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
   if (!got) {
     ERR("Invitation not found(%s)", cgi->inv);
     cgi->err = "Invitation not found.";
@@ -435,7 +435,7 @@ char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* 
   struct zxid_invite inv;
   struct zx_str* ss;
   char buf[ZXID_MAX_BUF];
-  int got = read_all(sizeof(buf), buf, "accept_invite", "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
+  int got = read_all(sizeof(buf), buf, "finalize_invite", 1, "%s" ZXID_INV_DIR "%s",cf->path,cgi->inv);
   if (!got) {
     ERR("Invitation not found(%s)", cgi->inv);
     cgi->err = "Invitation not found.";

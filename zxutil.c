@@ -81,7 +81,7 @@ int name_from_path(char* buf, int buf_len, const char* name_fmt, ...)
 /*() Open a file with formatted file name path. */
 
 /* Called by:  open_fd_from_path, read_all */
-fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, const char* name_fmt, va_list ap)
+fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, int reperr, const char* name_fmt, va_list ap)
 {
   fdtype fd;
   char buf[ZXID_MAX_BUF];
@@ -97,9 +97,11 @@ fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, const char* n
   fd = open(buf, flags, mode);
 #endif
   if (fd == BADFD) {
-    if (logkey[0] != '-') {
+    if (reperr && logkey[0] != '-') {
       perror("open (vopen_fd_from_path)");
       ERR("File(%s) not found lk(%s) errno=%d err(%s). flags=0x%x, euid=%d egid=%d", buf, logkey, errno, STRERROR(errno), flags, geteuid(), getegid());
+    } else {
+      D("File(%s) not found lk(%s) errno=%d err(%s). flags=0x%x, euid=%d egid=%d", buf, logkey, errno, STRERROR(errno), flags, geteuid(), getegid());
     }
     return BADFD;
   }
@@ -109,12 +111,12 @@ fdtype vopen_fd_from_path(int flags, int mode, const char* logkey, const char* n
 /*() Open a file with formatted file name path. */
 
 /* Called by:  main x2, write_all_path_fmt, zxid_addmd, zxid_cache_epr, zxid_get_ent_from_file, zxid_get_meta, zxid_reg_svc x2, zxid_write_ent_to_cache */
-fdtype open_fd_from_path(int flags, int mode, const char* logkey, const char* name_fmt, ...)
+fdtype open_fd_from_path(int flags, int mode, const char* logkey, int reperr, const char* name_fmt, ...)
 {
   va_list ap;
   fdtype fd;
   va_start(ap, name_fmt);
-  fd = vopen_fd_from_path(flags, mode, logkey, name_fmt, ap);
+  fd = vopen_fd_from_path(flags, mode, logkey, reperr, name_fmt, ap);
   va_end(ap);
   return fd;
 }
@@ -161,13 +163,13 @@ int read_all_fd(fdtype fd, char* p, int want, int* got_all)
  * return:: actual total length. The buffer will always be nul terminated. */
 
 /* Called by:  list_user x5, list_users x2, main x4, opt x10, test_mode x2, zxid_check_fed, zxid_conf_to_cf_len, zxid_di_query x2, zxid_find_epr x2, zxid_gen_boots, zxid_get_ses, zxid_get_ses_sso_a7n, zxid_get_user_nameid, zxid_lscot_line, zxid_mk_user_a7n_to_sp x4, zxid_parse_conf_raw, zxid_pw_authn x3, zxid_read_cert, zxid_read_private_key, zxid_ses_to_pool x3, zxid_sha1_file, zxid_template_page_cf, zxlog_write_line */
-int read_all(int maxlen, char* buf, const char* logkey, const char* name_fmt, ...)
+int read_all(int maxlen, char* buf, const char* logkey, int reperr, const char* name_fmt, ...)
 {
   va_list ap;
   int gotall;
   fdtype fd;
   va_start(ap, name_fmt);
-  fd = vopen_fd_from_path(O_RDONLY, 0, logkey, name_fmt, ap);
+  fd = vopen_fd_from_path(O_RDONLY, 0, logkey, reperr, name_fmt, ap);
   va_end(ap);
   if (fd == BADFD) { if (buf) buf[0] = 0; return 0; }
   if (read_all_fd(fd, buf, maxlen, &gotall) == -1) {
@@ -203,14 +205,14 @@ int get_file_size(fdtype fd)
  * return:: The data or null on fail. The buffer will always be nul terminated. */
 
 /* Called by: */
-char* read_all_alloc(struct zx_ctx* c, const char* logkey, int* lenp, const char* name_fmt, ...)
+char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp, const char* name_fmt, ...)
 {
   va_list ap;
   char* buf;
   int len, gotall;
   fdtype fd;
   va_start(ap, name_fmt);
-  fd = vopen_fd_from_path(O_RDONLY, 0, logkey, name_fmt, ap);
+  fd = vopen_fd_from_path(O_RDONLY, 0, logkey, reperr, name_fmt, ap);
   va_end(ap);
   if (fd == BADFD) { if (lenp) *lenp = 0; return 0; }
 
@@ -269,7 +271,7 @@ int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_
 {
   va_list ap;
   fdtype fd;
-  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, logkey, path_fmt, prepath, postpath);
+  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, logkey, 1, path_fmt, prepath, postpath);
   DD("write_all_path_fmt(%s, %x)", logkey, fd);
   if (fd == BADFD) return 0;
   

@@ -49,7 +49,7 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struc
     *nameidp = nameid;
   affil = nameid->SPNameQualifier ? nameid->SPNameQualifier : zxid_my_entity_id(cf);
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
-  len = read_all(len-1, uid, "idp_map_nid2uid", "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
+  len = read_all(len-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
   if (!len) {
     ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
     if (stp)
@@ -138,7 +138,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       
       /* Probable enough, read and parse EPR so we can continue examination. */
 
-      epr_buf = read_all_alloc(cf->ctx, "find_svcmd", &epr_len, "%s/%s", mdpath, de->d_name);
+      epr_buf = read_all_alloc(cf->ctx, "find_svcmd", 1, &epr_len, "%s/%s", mdpath, de->d_name);
       if (!epr_buf)
 	continue;
       

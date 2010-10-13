@@ -135,8 +135,9 @@ struct zxid_entity {
 };
 
 typedef struct zxid_entity zxid_entity;
-typedef struct zx_sa_Assertion_s zxid_a7n;
 typedef struct zx_sa_NameID_s    zxid_nid;
+typedef struct zx_sa_Assertion_s zxid_a7n;
+typedef struct zx_sec_Token_s    zxid_tok;
 typedef struct zx_a_EndpointReference_s zxid_epr; /* Nice name for EPR. May eventually evolve to struct */
 typedef struct zx_tas3_Status_s zxid_tas3_status; /* Nice name for TAS3 status */
 typedef struct zx_e_Fault_s zxid_fault;           /* Nice name for SOAP faults */
@@ -434,8 +435,8 @@ struct zxid_ses {
   struct zx_sa11_Assertion_s* tgta7n11;
   struct zx_ff12_Assertion_s* a7n12;
   struct zx_ff12_Assertion_s* tgta7n12;
-  struct zx_sec_Token_s* call_invoktok;  /* If set, see zxid_map_identity_token(), use as wsse */
-  struct zx_sec_Token_s* call_tgttok;    /* If set, use as TargetIdentity token */
+  zxid_tok* call_invoktok; /* If set, see zxid_map_identity_token(), use as wsse */
+  zxid_tok* call_tgttok;   /* If set, use as TargetIdentity token */
   zxid_epr* deleg_di_epr;  /* If set, see zxid_set_delegated_discovery_epr(), used for disco. */
   zxid_fault* curflt;  /* SOAP fault, if any, reported by zxid_wsp_validate() */
   zxid_tas3_status* curstatus;  /* TAS3 status header, if any. */
@@ -1035,9 +1036,33 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses);
 struct zx_str* zxid_get_epr_address(zxid_conf* cf, zxid_epr* epr);
 struct zx_str* zxid_get_epr_entid(zxid_conf* cf, zxid_epr* epr);
 struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr);
+struct zx_str* zxid_get_epr_secmech(zxid_conf* cf, zxid_epr* epr);
+void zxid_set_epr_secmech(zxid_conf* cf, zxid_epr* epr, const char* secmec);
+zxid_tok* zxid_get_epr_token(zxid_conf* cf, zxid_epr* epr);
+void zxid_set_epr_token(zxid_conf* cf, zxid_epr* epr, zxid_tok* tok);
 zxid_epr* zxid_new_epr(zxid_conf* cf, char* address, char* desc, char* entid, char* svctype);
 zxid_epr* zxid_get_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses);
 void zxid_set_delegated_discovery_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr);
+
+zxid_tok* zxid_get_call_invoktok(zxid_conf* cf, zxid_ses* ses);
+void zxid_set_call_invoktok(zxid_conf* cf, zxid_ses* ses, zxid_tok* tok);
+zxid_tok* zxid_get_call_tgttok(zxid_conf* cf, zxid_ses* ses);
+void zxid_set_call_tgttok(zxid_conf* cf, zxid_ses* ses, zxid_tok* tok);
+struct zx_str* zxid_token2str(zxid_conf* cf, zxid_tok* tok);
+zxid_tok* zxid_str2token(zxid_conf* cf, struct zx_str* ss);
+struct zx_str* zxid_a7n2str(zxid_conf* cf, zxid_a7n* a7n);
+zxid_a7n* zxid_str2a7n(zxid_conf* cf, struct zx_str* ss);
+struct zx_str* zxid_nid2str(zxid_conf* cf, zxid_nid* nid);
+zxid_nid* zxid_str2nid(zxid_conf* cf, struct zx_str* ss);
+zxid_nid* zxid_get_nameid(zxid_conf* cf, zxid_ses* ses);
+void zxid_set_nameid(zxid_conf* cf, zxid_ses* ses, zxid_nid* nid);
+zxid_nid* zxid_get_tgtnameid(zxid_conf* cf, zxid_ses* ses);
+void zxid_set_tgtnameid(zxid_conf* cf, zxid_ses* ses, zxid_nid* nid);
+zxid_a7n* zxid_get_a7n(zxid_conf* cf, zxid_ses* ses);
+void zxid_set_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n);
+zxid_a7n* zxid_get_tgta7n(zxid_conf* cf, zxid_ses* ses);
+void zxid_set_tgta7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n);
+
 
 /* zxiddi -  Discovery Service */
 
@@ -1048,7 +1073,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 /* zxidim -  Identity Mapping Service, Single Sign-On Service (SSOS) */
 
 struct zx_sp_Response_s* zxid_ssos_anreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_sp_AuthnRequest_s* req, struct zx_str* issuer);
-struct zx_sec_Token_s* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how);
+zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_eid, int how);
 struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n, struct zx_im_IdentityMappingRequest_s* req, struct zx_str* issuer);
 
 struct zx_sp_NameIDMappingResponse_s* zxid_nidmap_do(zxid_conf* cf, struct zx_sp_NameIDMappingRequest_s* req);
@@ -1140,10 +1165,10 @@ extern const unsigned char const * ykmodhex_trans;
 char* zx_hexdec(char* dst, char* src, int len, const unsigned char* trans);
 
 int get_file_size(fdtype fd);
-char* read_all_alloc(struct zx_ctx* c, const char* logkey, int* lenp, const char* name_fmt, ...);
-int read_all(int maxlen, char* buf, const char* logkey, const char* name_fmt, ...);
+char* read_all_alloc(struct zx_ctx* c, const char* logkey, int reperr, int* lenp, const char* name_fmt, ...);
+int read_all(int maxlen, char* buf, const char* logkey, int reperr, const char* name_fmt, ...);
 int name_from_path(char* buf, int buf_len, const char* name_fmt, ...);
-fdtype open_fd_from_path(int flags, int mode, const char* logkey, const char* name_fmt, ...);
+fdtype open_fd_from_path(int flags, int mode, const char* logkey, int reperr, const char* name_fmt, ...);
 int read_all_fd(fdtype fd, char* p, int want, int* got_all);
 int write_all_fd(fdtype fd, const char* p, int pending);
 int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_fmt, const char* prepath, const char* postpath, const char* data_fmt, ...);

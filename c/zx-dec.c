@@ -154,10 +154,20 @@ struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_ns_s* ns , int n_decod
             el->g.n = &x->Assertion->gg.g;
             x->Assertion = (struct zx_sa_Assertion_s*)el;
             break;
+          case zx_sa_EncryptedAssertion_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_sa_EncryptedAssertion(c, ns);
+            el->g.n = &x->EncryptedAssertion->gg.g;
+            x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)el;
+            break;
           case zx_sa_NameID_ELEM:
             el = (struct zx_elem_s*)zx_DEC_sa_NameID(c, ns);
             el->g.n = &x->NameID->gg.g;
             x->NameID = (struct zx_sa_NameID_s*)el;
+            break;
+          case zx_sa_EncryptedID_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_sa_EncryptedID(c, ns);
+            el->g.n = &x->EncryptedID->gg.g;
+            x->EncryptedID = (struct zx_sa_EncryptedID_s*)el;
             break;
           case zx_sp_NewID_ELEM:
             el = zx_DEC_simple_elem(c, ns, tok);
@@ -308,6 +318,11 @@ struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_ns_s* ns , int n_decod
             el = (struct zx_elem_s*)zx_DEC_a_EndpointReference(c, ns);
             el->g.n = &x->EndpointReference->gg.g;
             x->EndpointReference = (struct zx_a_EndpointReference_s*)el;
+            break;
+          case zx_sec_Token_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_sec_Token(c, ns);
+            el->g.n = &x->Token->gg.g;
+            x->Token = (struct zx_sec_Token_s*)el;
             break;
           case zx_hrxml_Candidate_ELEM:
             el = (struct zx_elem_s*)zx_DEC_hrxml_Candidate(c, ns);

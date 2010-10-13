@@ -57,7 +57,7 @@ int zxid_get_ses_sso_a7n(zxid_conf* cf, zxid_ses* ses)
     D("Session object does not have any SSO assertion sid(%s)", STRNULLCHK(ses->sid));
     return 0;
   }
-  ses->sso_a7n_buf = read_all_alloc(cf->ctx, "get_ses_sso_a7n", &gotall, "%s", ses->sso_a7n_path);
+  ses->sso_a7n_buf = read_all_alloc(cf->ctx, "get_ses_sso_a7n", 1, &gotall, "%s", ses->sso_a7n_path);
   if (!ses->sso_a7n_buf)
     return 0;
   
@@ -185,7 +185,8 @@ int zxid_get_ses(zxid_conf* cf, zxid_ses* ses, const char* sid)
   }
   
   ses->sesbuf = ZX_ALLOC(cf->ctx, ZXID_MAX_SES);
-  gotall = read_all(ZXID_MAX_SES-1, ses->sesbuf, "get_ses", "%s" ZXID_SES_DIR "%s/.ses", cf->path, sid);
+  gotall = read_all(ZXID_MAX_SES-1, ses->sesbuf, "get_ses", 1,
+		    "%s" ZXID_SES_DIR "%s/.ses", cf->path, sid);
   if (!gotall)
     return 0;
   D("ses(%.*s) len=%d sid(%s) sesptr=%p", gotall, ses->sesbuf, gotall, sid, ses);

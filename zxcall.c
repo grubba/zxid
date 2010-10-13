@@ -317,7 +317,7 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
     if (de->d_name[strlen(de->d_name)-1] == '~')  /* Ignore backups from hand edited EPRs. */
       continue;
     D("%d Checking EPR content file(%s)", din, de->d_name);
-    epr_buf = read_all_alloc(cf->ctx, "lstses", &epr_len,
+    epr_buf = read_all_alloc(cf->ctx, "lstses", 1, &epr_len,
 			     "%s" ZXID_SES_DIR "%s/%s", cf->path, ses->sid, de->d_name);
     if (!epr_buf)
       continue;

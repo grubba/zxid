@@ -231,7 +231,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
     
     /* Probable enough, read and parse EPR so we can continue examination. */
     
-    epr_buf = read_all_alloc(cf->ctx, "find_bs_svcmd", &epr_len, "%s/%s", mdpath, de->d_name);
+    epr_buf = read_all_alloc(cf->ctx, "find_bs_svcmd", 1, &epr_len, "%s/%s", mdpath, de->d_name);
     if (!epr_buf) {
       ERR("User's (%s) bootstrap(%s) lacks service metadata registration. Reject. Consider using zxcot -e ... | zxcot -bs. See zxid-idp.pd for further information.", uid, de->d_name);
       ZX_FREE(cf->ctx, epr_buf);
@@ -327,16 +327,16 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
       at_stmt->Attribute = at;
     }
   }
-  buf = read_all_alloc(cf->ctx, "idpsso_uid_at", 0, "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
+  buf = read_all_alloc(cf->ctx, "idpsso_uid_at", 0, 0, "%s" ZXID_UID_DIR "%s/.bs/.at",cf->path,uid);
   if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_at");
   
-  buf = read_all_alloc(cf->ctx, "idpsso_uid_sp_at", 0, "%s" ZXID_UID_DIR "%s/%s/.at" , cf->path, uid, sp_name_buf);
+  buf = read_all_alloc(cf->ctx, "idpsso_uid_sp_at", 0, 0, "%s" ZXID_UID_DIR "%s/%s/.at" , cf->path, uid, sp_name_buf);
   if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_uid_sp_at");
 
-  buf = read_all_alloc(cf->ctx, "idpsso_all_at", 0, "%s" ZXID_UID_DIR ".all/.bs/.at", cf->path);
+  buf = read_all_alloc(cf->ctx, "idpsso_all_at", 0, 0, "%s" ZXID_UID_DIR ".all/.bs/.at", cf->path);
   if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_at");
 
-  buf = read_all_alloc(cf->ctx, "idpsso_all_sp_at", 0, "%s" ZXID_UID_DIR ".all/%s/.at",cf->path,sp_name_buf);
+  buf = read_all_alloc(cf->ctx, "idpsso_all_sp_at", 0, 0, "%s" ZXID_UID_DIR ".all/%s/.at",cf->path,sp_name_buf);
   if (buf) at_stmt->Attribute = zxid_add_ldif_attrs(cf, at_stmt->Attribute,buf,"idpsso_all_sp_at");
   D("sp_eid(%s) bs_lvl=%d", sp_meta->eid, bs_lvl);
   
@@ -366,7 +366,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
   struct zx_str* nid;
   struct zx_str* idp_eid;
 
-  got = read_all(sizeof(buf)-1, buf, "idpsso", "%s" ZXID_UID_DIR "%s/%s/.mni" , cf->path, uid, sp_name_buf);
+  got = read_all(sizeof(buf)-1, buf, "idpsso", 0, "%s" ZXID_UID_DIR "%s/%s/.mni" , cf->path, uid, sp_name_buf);
 
   if (!got) {
     if (allow_create == '1') {

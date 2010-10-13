@@ -166,6 +166,140 @@ void zx_root_DEL_Assertion(struct zx_root_s* x, int n)
 
 #ifdef ZX_ENA_GETPUT
 
+/* FUNC(zx_root_NUM_EncryptedAssertion) */
+
+int zx_root_NUM_EncryptedAssertion(struct zx_root_s* x)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->EncryptedAssertion; y; ++n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_EncryptedAssertion) */
+
+struct zx_sa_EncryptedAssertion_s* zx_root_GET_EncryptedAssertion(struct zx_root_s* x, int n)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x) return 0;
+  for (y = x->EncryptedAssertion; n>=0 && y; --n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_EncryptedAssertion) */
+
+struct zx_sa_EncryptedAssertion_s* zx_root_POP_EncryptedAssertion(struct zx_root_s* x)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x) return 0;
+  y = x->EncryptedAssertion;
+  if (y)
+    x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_EncryptedAssertion) */
+
+void zx_root_PUSH_EncryptedAssertion(struct zx_root_s* x, struct zx_sa_EncryptedAssertion_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->EncryptedAssertion->gg.g;
+  x->EncryptedAssertion = z;
+}
+
+/* FUNC(zx_root_REV_EncryptedAssertion) */
+
+void zx_root_REV_EncryptedAssertion(struct zx_root_s* x)
+{
+  struct zx_sa_EncryptedAssertion_s* nxt;
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x) return;
+  y = x->EncryptedAssertion;
+  if (!y) return;
+  x->EncryptedAssertion = 0;
+  while (y) {
+    nxt = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n;
+    y->gg.g.n = &x->EncryptedAssertion->gg.g;
+    x->EncryptedAssertion = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_EncryptedAssertion) */
+
+void zx_root_PUT_EncryptedAssertion(struct zx_root_s* x, int n, struct zx_sa_EncryptedAssertion_s* z)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x || !z) return;
+  y = x->EncryptedAssertion;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->EncryptedAssertion = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_EncryptedAssertion) */
+
+void zx_root_ADD_EncryptedAssertion(struct zx_root_s* x, int n, struct zx_sa_EncryptedAssertion_s* z)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->EncryptedAssertion->gg.g;
+    x->EncryptedAssertion = z;
+    return;
+  case -1:
+    y = x->EncryptedAssertion;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->EncryptedAssertion; n > 1 && y; --n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_EncryptedAssertion) */
+
+void zx_root_DEL_EncryptedAssertion(struct zx_root_s* x, int n)
+{
+  struct zx_sa_EncryptedAssertion_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)x->EncryptedAssertion->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_sa_EncryptedAssertion_s*)x->EncryptedAssertion;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->EncryptedAssertion; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_EncryptedAssertion_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
 /* FUNC(zx_root_NUM_NameID) */
 
 int zx_root_NUM_NameID(struct zx_root_s* x)
@@ -289,6 +423,140 @@ void zx_root_DEL_NameID(struct zx_root_s* x, int n)
     break;
   default:
     for (y = x->NameID; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_root_NUM_EncryptedID) */
+
+int zx_root_NUM_EncryptedID(struct zx_root_s* x)
+{
+  struct zx_sa_EncryptedID_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->EncryptedID; y; ++n, y = (struct zx_sa_EncryptedID_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_EncryptedID) */
+
+struct zx_sa_EncryptedID_s* zx_root_GET_EncryptedID(struct zx_root_s* x, int n)
+{
+  struct zx_sa_EncryptedID_s* y;
+  if (!x) return 0;
+  for (y = x->EncryptedID; n>=0 && y; --n, y = (struct zx_sa_EncryptedID_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_EncryptedID) */
+
+struct zx_sa_EncryptedID_s* zx_root_POP_EncryptedID(struct zx_root_s* x)
+{
+  struct zx_sa_EncryptedID_s* y;
+  if (!x) return 0;
+  y = x->EncryptedID;
+  if (y)
+    x->EncryptedID = (struct zx_sa_EncryptedID_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_EncryptedID) */
+
+void zx_root_PUSH_EncryptedID(struct zx_root_s* x, struct zx_sa_EncryptedID_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->EncryptedID->gg.g;
+  x->EncryptedID = z;
+}
+
+/* FUNC(zx_root_REV_EncryptedID) */
+
+void zx_root_REV_EncryptedID(struct zx_root_s* x)
+{
+  struct zx_sa_EncryptedID_s* nxt;
+  struct zx_sa_EncryptedID_s* y;
+  if (!x) return;
+  y = x->EncryptedID;
+  if (!y) return;
+  x->EncryptedID = 0;
+  while (y) {
+    nxt = (struct zx_sa_EncryptedID_s*)y->gg.g.n;
+    y->gg.g.n = &x->EncryptedID->gg.g;
+    x->EncryptedID = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_EncryptedID) */
+
+void zx_root_PUT_EncryptedID(struct zx_root_s* x, int n, struct zx_sa_EncryptedID_s* z)
+{
+  struct zx_sa_EncryptedID_s* y;
+  if (!x || !z) return;
+  y = x->EncryptedID;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->EncryptedID = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_EncryptedID_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_EncryptedID) */
+
+void zx_root_ADD_EncryptedID(struct zx_root_s* x, int n, struct zx_sa_EncryptedID_s* z)
+{
+  struct zx_sa_EncryptedID_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->EncryptedID->gg.g;
+    x->EncryptedID = z;
+    return;
+  case -1:
+    y = x->EncryptedID;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_sa_EncryptedID_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->EncryptedID; n > 1 && y; --n, y = (struct zx_sa_EncryptedID_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_EncryptedID) */
+
+void zx_root_DEL_EncryptedID(struct zx_root_s* x, int n)
+{
+  struct zx_sa_EncryptedID_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->EncryptedID = (struct zx_sa_EncryptedID_s*)x->EncryptedID->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_sa_EncryptedID_s*)x->EncryptedID;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_sa_EncryptedID_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->EncryptedID; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_EncryptedID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4309,6 +4577,140 @@ void zx_root_DEL_EndpointReference(struct zx_root_s* x, int n)
     break;
   default:
     for (y = x->EndpointReference; n > 1 && y->gg.g.n; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_root_NUM_Token) */
+
+int zx_root_NUM_Token(struct zx_root_s* x)
+{
+  struct zx_sec_Token_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->Token; y; ++n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_Token) */
+
+struct zx_sec_Token_s* zx_root_GET_Token(struct zx_root_s* x, int n)
+{
+  struct zx_sec_Token_s* y;
+  if (!x) return 0;
+  for (y = x->Token; n>=0 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_Token) */
+
+struct zx_sec_Token_s* zx_root_POP_Token(struct zx_root_s* x)
+{
+  struct zx_sec_Token_s* y;
+  if (!x) return 0;
+  y = x->Token;
+  if (y)
+    x->Token = (struct zx_sec_Token_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_Token) */
+
+void zx_root_PUSH_Token(struct zx_root_s* x, struct zx_sec_Token_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->Token->gg.g;
+  x->Token = z;
+}
+
+/* FUNC(zx_root_REV_Token) */
+
+void zx_root_REV_Token(struct zx_root_s* x)
+{
+  struct zx_sec_Token_s* nxt;
+  struct zx_sec_Token_s* y;
+  if (!x) return;
+  y = x->Token;
+  if (!y) return;
+  x->Token = 0;
+  while (y) {
+    nxt = (struct zx_sec_Token_s*)y->gg.g.n;
+    y->gg.g.n = &x->Token->gg.g;
+    x->Token = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_Token) */
+
+void zx_root_PUT_Token(struct zx_root_s* x, int n, struct zx_sec_Token_s* z)
+{
+  struct zx_sec_Token_s* y;
+  if (!x || !z) return;
+  y = x->Token;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->Token = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_Token) */
+
+void zx_root_ADD_Token(struct zx_root_s* x, int n, struct zx_sec_Token_s* z)
+{
+  struct zx_sec_Token_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->Token->gg.g;
+    x->Token = z;
+    return;
+  case -1:
+    y = x->Token;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Token; n > 1 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_Token) */
+
+void zx_root_DEL_Token(struct zx_root_s* x, int n)
+{
+  struct zx_sec_Token_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->Token = (struct zx_sec_Token_s*)x->Token->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_sec_Token_s*)x->Token;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Token; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

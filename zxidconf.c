@@ -58,7 +58,7 @@ void zxid_sha1_file(zxid_conf* cf, char* name, char* sha1)
   int gotall;
   char* buf;
   ZERO(sha1, 20);
-  buf = read_all_alloc(cf->ctx, "sha1_file", &gotall, "%s%s", cf->path, name);
+  buf = read_all_alloc(cf->ctx, "sha1_file", 1, &gotall, "%s%s", cf->path, name);
   if (!buf)
     return;
   SHA1(buf, gotall, sha1);
@@ -135,7 +135,7 @@ RSA* zxid_extract_private_key(char* buf, char* name)
 X509* zxid_read_cert(zxid_conf* cf, char* name)
 {
   char buf[4096];
-  int got = read_all(sizeof(buf), buf, "read_cert", "%s" ZXID_PEM_DIR "%s", cf->path, name);
+  int got = read_all(sizeof(buf), buf, "read_cert", 1, "%s" ZXID_PEM_DIR "%s", cf->path, name);
   if (!got && cf->auto_cert)
      zxid_mk_self_sig_cert(cf, sizeof(buf), buf, "read_cert", name);
   return zxid_extract_cert(buf, name);
@@ -147,7 +147,7 @@ X509* zxid_read_cert(zxid_conf* cf, char* name)
 RSA* zxid_read_private_key(zxid_conf* cf, char* name)
 {
   char buf[4096];
-  int got = read_all(sizeof(buf), buf, "read_private_key", "%s" ZXID_PEM_DIR "%s", cf->path, name);
+  int got = read_all(sizeof(buf), buf, "read_private_key", 1, "%s" ZXID_PEM_DIR "%s", cf->path, name);
   if (!got && cf->auto_cert)
      zxid_mk_self_sig_cert(cf, sizeof(buf), buf, "read_private_key", name);
   return zxid_extract_private_key(buf, name);
@@ -1105,7 +1105,7 @@ scan_end:
 	cf->path = v;
 	cf->path_len = strlen(v);
 	++cf->path_supplied;
-	buf = read_all_alloc(cf->ctx, "-conf_to_cf", &len, "%szxid.conf", cf->path);
+	buf = read_all_alloc(cf->ctx, "-conf_to_cf", 1, &len, "%szxid.conf", cf->path);
 	if (buf && len)
 	  zxid_parse_conf_raw(cf, len, buf);  /* Recurse */
 	break;

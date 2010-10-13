@@ -182,7 +182,7 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
 int zxid_write_ent_to_cache(zxid_conf* cf, zxid_entity* ent)
 {
   struct zx_str* ss;
-  fdtype fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "write_ent_to_cache", "%s" ZXID_COT_DIR "%s", cf->path, ent->sha1_name);
+  fdtype fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "write_ent_to_cache", 1, "%s" ZXID_COT_DIR "%s", cf->path, ent->sha1_name);
   if (fd == BADFD) {
     perror("open metadata for writing metadata to cache");
     ERR("Failed to open file for writing: sha1_name(%s) to metadata cache", ent->sha1_name);
@@ -222,7 +222,8 @@ zxid_entity* zxid_get_ent_from_file(zxid_conf* cf, char* sha1_name)
   zxid_entity* ee;
   
   DD("sha1_name(%s)", sha1_name);
-  fd = open_fd_from_path(O_RDONLY, 0, "get_ent_from_file", "%s" ZXID_COT_DIR "%s", cf->path, sha1_name);
+  fd = open_fd_from_path(O_RDONLY, 0, "get_ent_from_file", 1,
+			 "%s" ZXID_COT_DIR "%s", cf->path, sha1_name);
   if (fd == BADFD) {
     perror("open metadata to read");
     D("No metadata file found for sha1_name(%s)", sha1_name);

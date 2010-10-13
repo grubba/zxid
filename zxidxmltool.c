@@ -100,9 +100,9 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
       if (!(*argc)) break;
       if (conf_path != (char*)1) {
 	if (conf_path)
-	  read_all(sizeof(buf), buf, "new conf path in opt", "%s", conf_path);
+	  read_all(sizeof(buf), buf, "new conf path in opt", 1, "%s", conf_path);
 	else
-	  read_all(sizeof(buf), buf, "no conf path in opt", "%szxid.conf", cf->path);
+	  read_all(sizeof(buf), buf, "no conf path in opt", 1, "%szxid.conf", cf->path);
 	zxid_parse_conf(cf, buf);
 	conf_path = (char*)1;
       }
@@ -276,9 +276,9 @@ void opt(int* argc, char*** argv, char*** env, zxid_conf* cf, zxid_cgi* cgi)
   }
   if (conf_path != (char*)1) {
     if (conf_path)
-      read_all(sizeof(buf), buf, "conf_path in end of opt", "%s", conf_path);
+      read_all(sizeof(buf), buf, "conf_path in end of opt", 1, "%s", conf_path);
     else
-      read_all(sizeof(buf), buf, "no conf_path in end of opt", "%szxid.conf", cf->path);
+      read_all(sizeof(buf), buf, "no conf_path in end of opt", 1, "%szxid.conf", cf->path);
     zxid_parse_conf(cf, buf);
   }
 }

@@ -356,7 +356,7 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
   }
   
   D("Register EPR path(%s%s,%s) in discovery metadata.", ddimd, path, sha1_name);
-  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -b",
+  fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -b", 1,
 			 "%s%s,%s", ddimd, path, sha1_name);
   if (fd == BADFD) {
     perror("open epr for registering");
@@ -374,7 +374,7 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
       fprintf(stderr, "Activating bootstrap %s.all/.bs/%s,%s", duids, path, sha1_name);
 
     if (!dryrun) {
-      fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -bs",
+      fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -bs", 1,
 			     "%s.all/.bs/%s,%s", duids, path, sha1_name);
       if (fd == BADFD) {
 	perror("open epr for bootstrap activation");
@@ -430,7 +430,8 @@ static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
       continue;
     }
   
-    fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -a", "%s%s", dcot, ent->sha1_name);
+    fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -a", 1,
+			   "%s%s", dcot, ent->sha1_name);
     if (fd == BADFD) {
       perror("open metadata for writing metadata to cache");
       ERR("Failed to open file for writing: sha1_name(%s) to metadata cache", ent->sha1_name);
@@ -468,7 +469,7 @@ static int zxid_lscot_line(zxid_conf* cf, int col_swap, const char* dcot, const 
 {
   zxid_entity* ent;
   char* p;
-  int got = read_all(ZXID_MAX_MD, buf, "zxcot line", "%s%s", dcot, den);
+  int got = read_all(ZXID_MAX_MD, buf, "zxcot line", 1, "%s%s", dcot, den);
   if (!got) {
     ERR("Zero data in file(%s%s). If cot directory does not exist consider running zxmkdirs.sh", dcot, den);
     return 1;

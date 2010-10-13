@@ -205,7 +205,7 @@ int main(int argc, char** argv)
     ss = zx_EASY_ENC_WO_hrxml_Candidate(cf->ctx,
 	       r->Envelope->Body->idhrxml_Create->CreateItem->NewData->Candidate);
 
-    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "create", "%shrxml/cv.xml", cf->path);
+    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "create", 1, "%shrxml/cv.xml", cf->path);
     write_all_fd(fd, ss->s, ss->len);
     close_file(fd, (const char*)__FUNCTION__);
 
@@ -238,7 +238,7 @@ int main(int argc, char** argv)
     
     /* Parse the XML from the CV file into data structure and include it as Candidate. */
 
-    got = read_all(sizeof(buf), buf, "query", "%shrxml/cv.xml", cf->path);
+    got = read_all(sizeof(buf), buf, "query", 1, "%shrxml/cv.xml", cf->path);
     if (got < 1) {
       ERR("Reading hrxml/cv.xml resulted in error or the file was empty. ret=%d", got);
 #if 0
@@ -315,7 +315,7 @@ int main(int argc, char** argv)
     ss = zx_EASY_ENC_WO_hrxml_Candidate(cf->ctx,
 	       r->Envelope->Body->idhrxml_Modify->ModifyItem->NewData->Candidate);
 
-    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "modify", "%shrxml/cv.xml", cf->path);
+    fd = open_fd_from_path(O_CREAT|O_WRONLY|O_TRUNC, 0666, "modify", 1, "%shrxml/cv.xml", cf->path);
     write_all_fd(fd, ss->s, ss->len);
     close_file(fd, (const char*)__FUNCTION__);
 
