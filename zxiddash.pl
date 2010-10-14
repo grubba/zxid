@@ -8,6 +8,13 @@
 #
 # 17.2.2010, created --Sampo
 #
+# Dash idea: show four field of icons
+# 1. Who (humans) have accessed, tried to access, could access
+# 2. What systems have accessed, tried to access, could access
+# 3. Why the access (which business processes),
+#    which biz processes tried to access, which bp could access
+# 4. What data have been accessed, tried to access, could be accessed
+#
 # Web GUI CGI for exploring ZXID logs and audit trail
 #
 # CGI / QUERY_STRING variables

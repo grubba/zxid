@@ -449,8 +449,7 @@ ZXIDSIMPLE_OBJ=zxidsimple.$(OBJ_EXT)
 ZXBENCH_OBJ=zxbench.$(OBJ_EXT)
 ZXIDSSOFINALIZETEST_OBJ=zxidssofinalizetest.$(OBJ_EXT)
 ZXENCDECTEST_OBJ=zxencdectest.$(OBJ_EXT)
-SFIS_OBJ=sfis.$(OBJ_EXT)
-SFISGSA_OBJ=sfisgsa.$(OBJ_EXT)
+ZXMQTEST_OBJ=zxmqtest.$(OBJ_EXT)
 ZXIDXMLTOOL_OBJ=zxidxmltool.$(OBJ_EXT)
 ZXLOGVIEW_OBJ=zxlogview.$(OBJ_EXT) $(ZX_OBJ)
 ZXIDHRXMLWSC_OBJ=zxidhrxmlwsc.$(OBJ_EXT)
@@ -1099,6 +1098,9 @@ zxidssofinalizetest: $(ZXIDSSOFINALIZETEST_OBJ) $(LIBZXID_A)
 zxencdectest: $(ZXENCDECTEST_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxencdectest$(EXE) $^ $(LIBZXID) $(LIBS)
 
+zxmqtest: $(ZXMQTEST_OBJ) $(LIBZXID_A)
+	$(LD) $(LDFLAGS) $(OUTOPT)zxmqtest$(EXE) $^ -lzmq $(LIBZXID) $(LIBS)
+
 zxidxmltool: $(ZXIDXMLTOOL_OBJ) $(LIBZXID_A)
 	$(LD) $(LDFLAGS) $(OUTOPT)zxidxmltool$(EXE) $^ $(LIBS)
 
@@ -1452,14 +1454,14 @@ docclean:
 distclean: clean
 
 cleanbin:
-	rm -f zxid zxlogview zxbench zxencdectest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
+	rm -f zxid zxlogview zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
 	rm -f zxidwspcgi zxidxfoobarwsp zxpasswd zxcot zxcall
 	rm -f mod_auth_saml.so zxididp zxdecode
 
 miniclean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean precheckclean
 	@$(ECHO) ------------------ Making miniclean
-	rm -f *.o *.obj zxid zxlogview zxbench zxencdectest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
+	rm -f *.o *.obj zxid zxlogview zxbench zxencdectest zxmqtest $(LIBZXID_A) libzxid.so* sizeof zxid.stderr
 	rm -f zxidhlo zxidhlowsf zxidhrxmlwsc zxidhrxmlwsp zxidsimple zxidsp zxidwsctool
 	rm -f mod_auth_saml.so zxididp
 	rm -f core* *~ .*~ .\#* c/.*~ c/.\#* sg/*~ sg/.*~ sg/.\#* foo bar afr.*
