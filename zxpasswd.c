@@ -24,9 +24,11 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <signal.h>
 #include <fcntl.h>
+#ifndef MINGW
+#include <sys/stat.h>
+#endif
 
 #ifdef USE_OPENSSL
 #include <openssl/des.h>
@@ -208,7 +210,12 @@ static int list_user(char* userdir, char* udir)
   char* at;
   struct dirent* de;
   DIR* dir;
-
+  dir = opendir(userdir);
+  if (!dir) {
+    perror("opendir for /var/zxid/idpuid/USER userdir (or other if configured)");
+    D("failed path(%s)", userdir);
+    return 4;
+  }
   printf("User dir:              %s\n", userdir);
   got = read_all(sizeof(buf), buf, "pw", 0, "%s/%s/.pw", udir, user);
   printf("Password hash:         %s\n", buf);
@@ -219,12 +226,6 @@ static int list_user(char* userdir, char* udir)
 
   printf("User's Federated SPs\n");
 
-  dir = opendir(userdir);
-  if (!dir) {
-    perror("opendir for /var/zxid/idpuid/USER userdir (or other if configured)");
-    D("failed path(%s)", userdir);
-    return 0;
-  }
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
       got = read_all(sizeof(buf), buf, "sp at", 0, "%s/%s/.mni", userdir, de->d_name);
@@ -253,7 +254,7 @@ static int list_users(char* udir)
   if (!dir) {
     perror("opendir for /var/zxid/idpuid (or other if configured)");
     D("failed path(%s)", udir);
-    return 0;
+    return 1;
   }
   while (de = readdir(dir))
     if (de->d_name[0] != '.' && de->d_name[strlen(de->d_name)-1] != '~') {
@@ -330,7 +331,7 @@ int main(int argc, char** argv, char** env)
       got = read_all(sizeof(buf), buf, "ykspent", 1, "%s/.ykspent/%s", userdir, pw);
       if (got) {
 	ERR("The One Time Password has already been spent. ticket(%s%s) buf(%.*s)", user, pw, got, buf);
-	return 1;
+	return 5;
       }
       if (!write_all_path_fmt("ykspent", sizeof(buf), buf, "%s/.ykspent/%s", userdir, pw, "1"))
 	return 1;
@@ -339,7 +340,7 @@ int main(int argc, char** argv, char** env)
       D("buf    (%s) got=%d", buf, got);
       if (got < 32) {
 	ERR("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too few characters %d ticket(%s)", user, got, pw);
-	return 1;
+	return 6;
       }
       if (got > 32) {
 	INFO("User's %s/.yk file must contain aes128 key as 32 hexadecimal characters. Too many characters %d ticket(%s). Truncating.", user, got, pw);
@@ -357,7 +358,7 @@ int main(int argc, char** argv, char** env)
 	return 0;
       }
       D("yubikey ticket validation failure %d", 0);
-      return 1;
+      return 7;
     }
     got = read_all(sizeof(buf), buf, "pw", 1, "%s/%s/.pw", udir, user);
     if (got>0) {
@@ -369,33 +370,38 @@ int main(int argc, char** argv, char** env)
     if (!memcmp(buf, "$1$", sizeof("$1$")-1)) {
       zx_md5_crypt(pw, buf, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);
-      return strcmp(buf, (char*)pw_hash)?1:0;
+      return strcmp(buf, (char*)pw_hash)?7:0;
     }
 #ifdef USE_OPENSSL
     if (!memcmp(buf, "$c$", sizeof("$c$")-1)) {
       DES_fcrypt(pw, buf+3, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);
-      return strcmp(buf+3, (char*)pw_hash)?1:0;
+      return strcmp(buf+3, (char*)pw_hash)?7:0;
     }
 #endif
     if (ONE_OF_2(buf[0], '$', '_')) {
       fprintf(stderr, "Unsupported password hash algorithm (%s).\n", buf);
-      return 1;
+      return 8;
     }
     D("Assume plain text password %d", 0);
-    return strcmp(buf, pw)?1:0;
+    return strcmp(buf, pw)?7:0;
   }
 
   /* Create and other user management functions */
   
   if (create) {
-    MKDIR(userdir, 0770);
-    buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+    if (MKDIR(userdir, 0770) == -1) {
+      ERR("User already exists %s", userdir);
+      return 3;
+    }
     snprintf(buf, sizeof(buf)-1, "%s/.bs", userdir);
+    buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
     MKDIR(buf, 0770);
     snprintf(buf, sizeof(buf)-1, "%s/.ps", userdir);
+    buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
     MKDIR(buf, 0770);
     snprintf(buf, sizeof(buf)-1, "%s/.ykspent", userdir);
+    buf[sizeof(buf)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
     MKDIR(buf, 0770);
   }
   if (symlink_user) {
@@ -426,6 +432,7 @@ int main(int argc, char** argv, char** env)
 
   if (!strcmp(hash_type, "0")) {
     strcpy((char*)pw_hash, pw);
+    D("pw0(%s) len=%d", pw, strlen(pw));
 #ifdef USE_OPENSSL
   } else if (!strcmp(hash_type, "c")) {  /* Unix crypt(3) hash */
     zx_rand((char*)salt, 2);
@@ -455,6 +462,7 @@ int main(int argc, char** argv, char** env)
     fprintf(stderr, "Unsupported password hash algorithm (%s).\n", hash_type);
   }
   
+  DD("pw_hash(%s) len=%d", pw_hash, strlen(pw_hash));
   if (!write_all_path_fmt("set pw", sizeof(buf), buf, "%s/%s/.pw", udir, user, "%s", pw_hash))
     return 1;
   return 0;

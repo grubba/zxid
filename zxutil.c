@@ -267,8 +267,9 @@ int write_all_fd(fdtype fd, const char* p, int pending)
  * success, 0 on fail. */
 
 /* Called by:  main x5, zxid_check_fed x2, zxid_mk_self_sig_cert x2, zxid_mk_transient_nid, zxid_put_ses, zxid_put_user, zxid_pw_authn, zxlog_write_line */
-int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_fmt, const char* prepath, const char* postpath, const char* data_fmt, ...)
+int write_all_path_fmt(const char* logkey, int maxlen, char* buf, const char* path_fmt, const char* prepath, const char* postpath, const char* data_fmt, ...)
 {
+  int len;
   va_list ap;
   fdtype fd;
   fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, logkey, 1, path_fmt, prepath, postpath);
@@ -276,8 +277,8 @@ int write_all_path_fmt(const char* logkey, int len, char* buf, const char* path_
   if (fd == BADFD) return 0;
   
   va_start(ap, data_fmt);
-  len = vsnprintf(buf, len, data_fmt, ap);
-  buf[len-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
+  len = vsnprintf(buf, maxlen-1, data_fmt, ap);
+  buf[maxlen-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
   va_end(ap);
   if (len < 0) {
     perror("vsnprintf");
