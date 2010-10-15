@@ -116,6 +116,8 @@ int execl(const char *path, const char *arg, ...);
 int dup(int);
 int pipe(int fd[2]);
 int close(int);
+#define F_LOCK 1
+#define F_ULOCK 0
 #endif
 
 #ifdef __cplusplus
