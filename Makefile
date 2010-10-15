@@ -208,6 +208,10 @@ ZXIDJNI_SO=zxidjava/libzxidjni.jnilib
 #SHARED_FLAGS=-dylib -all_load -keep_private_externs 
 #OPENSSL_ROOT=/Developer/SDKs/MacOSX10.4u.sdk/usr
 #CURL_ROOT=/Developer/SDKs/MacOSX10.4u.sdk/usr
+# Try find / -name ap_config.h; find / -name apr.h
+APACHE_INCLUDE ?= -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apache2
+APR_INCLUDE    ?= -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apr-1
+APACHE_MODULES ?= /usr/libexec/apache2
 
 else
 ifeq ($(TARGET),xmingw)
