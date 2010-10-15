@@ -104,6 +104,7 @@ extern "C" {
  * so standard that we do not need system includes and can cover
  * the very few exceptions as ifdefs right in here. --Sampo */
 int symlink(const char *oldpath, const char *newpath);
+int link(const char* old, const char* new);
 int unlink(const char *pathname);
 int rmdir(const char *pathname);
 int getpid(void);
@@ -115,6 +116,9 @@ int fork(void);
 int execl(const char *path, const char *arg, ...);
 int dup(int);
 int pipe(int fd[2]);
+int read(int fd, void* buf, int count);
+int write(int fd, void* buf, int count);
+int lseek(int fd, int offset, int whence);
 int close(int);
 #define F_LOCK 1
 #define F_ULOCK 0

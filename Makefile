@@ -213,6 +213,7 @@ APACHE_INCLUDE = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apache2
 APR_INCLUDE    = -I/Developer/SDKs/MacOSX10.6.sdk/usr/include/apr-1
 APACHE_MODULES = /usr/libexec/apache2
 MOD_AUTH_SAML_LIBS=-lapr-1
+#  -lhttpd2core
 
 else
 ifeq ($(TARGET),xmingw)
