@@ -3314,6 +3314,10 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zxid_simple_no_ses_cf(zxid_conf.getCPtr(cf), zxid_cgi.getCPtr(cgi), zxid_ses.getCPtr(ses), SWIGTYPE_p_int.getCPtr(res_len), auto_flags);
   }
 
+  public static String simple_cf_ses(zxid_conf cf, int qs_len, String qs, zxid_ses ses, SWIGTYPE_p_int res_len, int auto_flags) {
+    return zxidjniJNI.zxid_simple_cf_ses(zxid_conf.getCPtr(cf), qs_len, qs, zxid_ses.getCPtr(ses), SWIGTYPE_p_int.getCPtr(res_len), auto_flags);
+  }
+
   public static String template_page_cf(zxid_conf cf, zxid_cgi cgi, String templ_path, String default_templ, int size_hint, int auto_flags) { return zxidjniJNI.zxid_template_page_cf(zxid_conf.getCPtr(cf), zxid_cgi.getCPtr(cgi), templ_path, default_templ, size_hint, auto_flags); }
 
   public static void zxsig_ref_sref_set(SWIGTYPE_p_zxsig_ref self, SWIGTYPE_p_zx_ds_Reference_s value) {

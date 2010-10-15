@@ -30877,6 +30877,85 @@ XS(_wrap_zxid_simple_no_ses_cf) {
 }
 
 
+XS(_wrap_zxid_simple_cf_ses) {
+  {
+    zxid_conf *arg1 = (zxid_conf *) 0 ;
+    int arg2 ;
+    char *arg3 = (char *) 0 ;
+    zxid_ses *arg4 = (zxid_ses *) 0 ;
+    int *arg5 = (int *) 0 ;
+    int arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int res3 ;
+    char *buf3 = 0 ;
+    int alloc3 = 0 ;
+    void *argp4 = 0 ;
+    int res4 = 0 ;
+    void *argp5 = 0 ;
+    int res5 = 0 ;
+    int val6 ;
+    int ecode6 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: zxid_simple_cf_ses(cf,qs_len,qs,ses,res_len,auto_flags);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zxid_conf, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zxid_simple_cf_ses" "', argument " "1"" of type '" "zxid_conf *""'"); 
+    }
+    arg1 = (zxid_conf *)(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zxid_simple_cf_ses" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = (int)(val2);
+    res3 = SWIG_AsCharPtrAndSize(ST(2), &buf3, NULL, &alloc3);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "zxid_simple_cf_ses" "', argument " "3"" of type '" "char *""'");
+    }
+    arg3 = (char *)(buf3);
+    res4 = SWIG_ConvertPtr(ST(3), &argp4,SWIGTYPE_p_zxid_ses, 0 |  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "zxid_simple_cf_ses" "', argument " "4"" of type '" "zxid_ses *""'"); 
+    }
+    arg4 = (zxid_ses *)(argp4);
+    res5 = SWIG_ConvertPtr(ST(4), &argp5,SWIGTYPE_p_int, 0 |  0 );
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "zxid_simple_cf_ses" "', argument " "5"" of type '" "int *""'"); 
+    }
+    arg5 = (int *)(argp5);
+    ecode6 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "zxid_simple_cf_ses" "', argument " "6"" of type '" "int""'");
+    } 
+    arg6 = (int)(val6);
+    result = (char *)zxid_simple_cf_ses(arg1,arg2,arg3,arg4,arg5,arg6);
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    
+    if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
+    
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
+    
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zxid_template_page_cf) {
   {
     zxid_conf *arg1 = (zxid_conf *) 0 ;
@@ -49581,6 +49660,7 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zxid_simple_show_err", _wrap_zxid_simple_show_err},
 {"Net::SAMLc::zxid_simple_ses_active_cf", _wrap_zxid_simple_ses_active_cf},
 {"Net::SAMLc::zxid_simple_no_ses_cf", _wrap_zxid_simple_no_ses_cf},
+{"Net::SAMLc::zxid_simple_cf_ses", _wrap_zxid_simple_cf_ses},
 {"Net::SAMLc::zxid_template_page_cf", _wrap_zxid_template_page_cf},
 {"Net::SAMLc::zxsig_ref_sref_set", _wrap_zxsig_ref_sref_set},
 {"Net::SAMLc::zxsig_ref_sref_get", _wrap_zxsig_ref_sref_get},

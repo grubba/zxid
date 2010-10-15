@@ -899,6 +899,7 @@ class zxidjniJNI {
   public final static native String zxid_simple_show_err(long jarg1, long jarg2, long jarg3, int jarg4);
   public final static native String zxid_simple_ses_active_cf(long jarg1, long jarg2, long jarg3, long jarg4, int jarg5);
   public final static native String zxid_simple_no_ses_cf(long jarg1, long jarg2, long jarg3, long jarg4, int jarg5);
+  public final static native String zxid_simple_cf_ses(long jarg1, int jarg2, String jarg3, long jarg4, long jarg5, int jarg6);
   public final static native String zxid_template_page_cf(long jarg1, long jarg2, String jarg3, String jarg4, int jarg5, int jarg6);
   public final static native int ZXID_SSO_SIGN_A7N_get();
   public final static native int ZXID_SSO_SIGN_RESP_get();
