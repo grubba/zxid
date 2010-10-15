@@ -13,6 +13,7 @@
  * 21.5.2010, added file copy --Sampo
  */
 
+#include "platform.h"
 #include "errmac.h"
 
 #include <stdarg.h>
@@ -35,7 +36,6 @@
 
 #include "zx.h"
 #include "zxidconf.h"
-#include "platform.h"
 
 #if !defined(USE_STDIO) && !defined(MINGW)
 /* *** Static initialization of struct flock is suspect since man fcntl() documentation
