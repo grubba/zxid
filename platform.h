@@ -96,7 +96,8 @@ extern "C" {
 #define openfile_ro(path) open((path),O_RDONLY)
 
 #ifndef _UNISTD_H
-#define _UNISTD_H 1 /* Prevent confusing double inclusion. */
+#define _UNISTD_H 1  /* Prevent confusing double inclusion. */
+#define _UNISTD_H_ 1 /* MacOS: Prevent confusing double inclusion. */
 /* We do not want to include unistd.h because it does not exist on Win32.
  * So define these here, but protect by ifndef, because unistd.h may get
  * indirectly included first. In general we believe these Unix APIs are
