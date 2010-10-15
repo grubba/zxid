@@ -1301,6 +1301,9 @@ precheck/chk-openssl.exe: precheck/chk-openssl.$(OBJ_EXT)
 precheck/chk-curl.exe: precheck/chk-curl.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
+precheck/chk-apache.$(OBJ_EXT): precheck/chk-apache.c
+	$(CC) $(APACHE_INCLUDE) $(APR_INCLUDE) -o $@ $^
+
 precheck/chk-apache.exe: precheck/chk-apache.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
 
