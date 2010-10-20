@@ -45,7 +45,6 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
 * https://shibboleth.usc.edu/docs/google-apps/
 
     - Use SAML2 a7n as "sticky policy" envelope, standardizing some attribute names to convey metadata such as acceptable use or purpose, obligations, right-of-access-correction-and-deletion-URL, and the authorative source.
-    - Pairwise session indexes (encrypt master index and SP entid with IdP sym key)
     - zxcot should have idpdimd listing mode
     - zxpasswd should have user federation listing mode
     - zxid_pw_authn() should not report scary error when checking .ykspent in not spent case
@@ -65,15 +64,19 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - AuthnReq QS option for SP to request that consent is explicitly seeked
     - AuthnReq QS option for SP to request that attribute list is not shown up front
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
-
     - zxdecode assertion decryption support
-    - zxpasswd hash problems
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
     NOTPUB
 
-zxid-0.68:: 13.10.2010
+zxid-0.69:: 20.10.2010
+    - Added DeployingZxidServlets.txt, ZxidSSOFilter.java, and ZxidServlet.java by Stijn Lievens
+    - Added missing file zxidjava/zxidtok.java
     NOTPUB
+zxid-0.68:: 18.10.2010
+    - zxpasswd hash problems fixed
+    - Pairwise session indexes (encrypt master index and SP entid with IdP sym key)
+    - Primitive support for passing identity token in XACML request
 zxid-0.67:: 13.10.2010
     - Fixed buffer bugs introduced by removal of ZXID_MAX_USER limit
 zxid-0.66:: 12.10.2010

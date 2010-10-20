@@ -40,8 +40,8 @@ all: default precheck_apache samlmod phpzxid javazxid apachezxid smime zxidwspcg
 
 ### This is the authorative spot to set version number. Document in Changes file.
 ### c/zxidvers.h is generated from these, see `make updatevers'
-ZXIDVERSION=0x000068
-ZXIDREL=0.68
+ZXIDVERSION=0x000069
+ZXIDREL=0.69
 
 ### Where package is installed (use `make PREFIX=/your/path' to change)
 PREFIX=/usr/local/zxid/$(ZXIDREL)
@@ -996,6 +996,12 @@ zxidwspleaf.class: zxidwspleaf.java zxidjava/zxidjni.class
 zxidwscprepdemo.class: zxidwscprepdemo.java zxidjava/zxidjni.class
 	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java zxidwscprepdemo.java
 
+ZxidSSOFilter.class: ZxidSSOFilter.java zxidjava/zxidjni.class
+	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java ZxidSSOFilter.java
+
+ZxidServlet.class: ZxidServlet.java zxidjava/zxidjni.class
+	$(JAVAC) $(JAVAC_FLAGS) -classpath $(SERVLET_PATH) zxidjava/*.java ZxidServlet.java
+
 zxidjava.jar: zxidjava/zxidjni.class zxidjava/README.zxid-java
 	$(CP) COPYING LICENSE-2.0.txt LICENSE.openssl LICENSE.ssleay zxidjava/
 	$(JAR) cf zxidjava.jar zxidjava/*.class zxidjava/*.java zxidjava/COPYING zxidjava/LICENSE*
@@ -1008,7 +1014,7 @@ zxiddemo.war: zxidjava.jar
 	cd ./zxidservlet ; $(JAR) cf ../zxiddemo.war *; cd ../
 	rm -rf zxidservlet
 
-javazxid: $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class zxidjava.jar zxiddemo.war
+javazxid: $(ZXIDJNI_SO) zxidjava/zxidjni.class zxidhlo.class zxidsrvlet.class zxidappdemo.class zxidwscprepdemo.class zxidwspdemo.class zxidwspleaf.class ZxidSSOFilter.class ZxidServlet.class zxidjava.jar zxiddemo.war
 
 javazxid_install: $(ZXIDJNI_SO)
 	@$(ECHO) "javazxid_install: Work in Progress. See zxid-java.pd"

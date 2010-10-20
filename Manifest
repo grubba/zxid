@@ -170,6 +170,9 @@ zxidhrxmlwsp.c   - Example of ID-SIS HR-XML Web Services Provider
 zxididp.c        - A rudimentary IdP (WIP Jan 2010)
 zxidsp.c         - A slightly more configurable use of simple API
 zxidwspcgi.c     - Generic Web Services Provider that calls your shell script
+DeployingZxidServlets.txt  - Documentation for deploying ZxidSSOFilter.java and ZxidServlet.java
+ZxidSSOFilter.java - Filter to intercept unauthenticated requests and forward them to ZxidServlet
+ZxidServlet.java - SAML2 SSO servlet (similar to zxidsrvlet.java, but more modern)
 
 # Misc API demos
 
@@ -671,6 +674,7 @@ zxidjava/zxid_conf.java
 zxidjava/zxid_entity.java
 zxidjava/zxid_epr.java
 zxidjava/zxid_nid.java
+zxidjava/zxid_tok.java
 zxidjava/zxid_ses.java
 zxidjava/zxid_tas3_status.java
 zxidjava/zxid_fault.java
