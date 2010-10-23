@@ -116,7 +116,7 @@ int main(int argc, char** argv)
     printf("SET-COOKIE: %s\r\n", setcookie);
   printf("Content-Type: text/html\r\n\r\n");
   printf("<title>ZXID IdP Mgmt</title>" ZXID_BODY_TAG "<h1>ZXID IdP Management (user logged in, session active)</h1><pre>\n");
-  printf("</pre><form method=post action=\"zxididp?o=P\">");
+  printf("</pre><form method=post action=\"?o=P\">");
   //if (err) printf("<p><font color=red><i>%s</i></font></p>\n", err);
   //if (msg) printf("<p><i>%s</i></p>\n", msg);
   if (sid) {
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
     printf("<input type=submit name=gs value=\" Single Logout (SOAP) \">\n");
     printf("<input type=submit name=gt value=\" Defederate (Redir) \">\n");
     printf("<input type=submit name=gu value=\" Defederate (SOAP) \"><br>\n");
-    printf("sid(%s) nid(%s) <a href=\"zxididp?s=%s\">Reload</a>", sid, nid?nid:"?!?", sid);
+    printf("sid(%s) nid(%s) <a href=\"?s=%s\">Reload</a>", sid, nid?nid:"?!?", sid);
   }
   
   printf("</form><hr>");

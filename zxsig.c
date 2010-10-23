@@ -171,12 +171,14 @@ static void zxsig_canon_crnl_inplace(struct zx_str* ss)
  * been established by other means.
  *
  * c::      ZX context. Used for memory allocation.
- * cert::   Signing party's certificate (public key), typically from metadata
+ * cert::   Signing party's certificate (public key), typically from metadata. If NULL,
+ *          then only the hashes (and hence canonicalization) are checked, but the
+ *          public key crypto part is not performed, and ZXSIG_BAD_CERT is returned.
  * sig::    Parsed XML-DSIG data structure
  * n::      Number of elements in the sref array
  * sref::   An array of <reference sref, xml data structure blob> tuples that are
  *     referenced by the signature
- * return:: ZXSIG value. 0 (ZXSIG_OK) means success. Any other value is some soft of failure */
+ * return:: ZXSIG value. 0 (ZXSIG_OK) means success. Any other value is some sort of failure */
 
 /* Called by:  main x5, zxid_chk_sig, zxid_sp_sso_finalize, zxid_wsf_validate_a7n, zxid_wsp_validate */
 int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, int n, struct zxsig_ref* sref)
@@ -200,7 +202,7 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
   /* Figure out inclusive namespaces, if any. */
   c->inc_ns = 0;
   if (c->canon_inopt & ZXID_CANON_INOPT_SHIB215IDP_INCLUSIVENAMESPACES) {
-    INFO("Warning: Processing <InclusiveNamespaces> has been disabled (config option CANON_INOPT=1). The canonicalization may not be fully xml-enc-c14n compatible (but it may enable interoperation with an IdP that is not fully compatible). %x", c->canon_inopt);
+    INFO("Warning: Processing <InclusiveNamespaces> has been disabled (config option CANON_INOPT=1). The canonicalization may not be fully xml-exc-c14n compatible (but it may enable interoperation with an IdP that is not fully compatible). %x", c->canon_inopt);
   } else {
     for (ssref = sref, nn = n; nn; --nn, ++ssref) {
       if (!ssref->sref->Transforms)
@@ -266,6 +268,10 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
       return ZXSIG_BAD_DIGEST;
     }
     ZX_FREE(c, ss);
+  }
+  if (!cert) {
+    ERR("No certificate supplied. Only hashes (and hence canonicalization) verified. %d",0);
+    return ZXSIG_BAD_CERT;
   }
   c->exclude_sig = 0;
   ss = zx_EASY_ENC_WO_ds_SignedInfo(c, sig->SignedInfo);

@@ -22,3 +22,8 @@ warn "len=".length($req);
 $reply = Net::SSLeay::tcpxcat(0, $host, $port, $req);
 
 __END__
+
+tomkirkham2: QPID Broker
+[15:25:22] ? 89.200.142.218
+[15:25:33] ? port 5671 ssl
+[15:25:38] ? port 5672 non ssl

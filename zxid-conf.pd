@@ -210,6 +210,10 @@ last instance of an option prevailing:
    (new) config file is read, effectively overriding any
    options thus far.
 
+Essentially this allows you to provide early in configuration string options that
+can then be overridden by the config file ready by virtue of PATH apprearing
+in the config string. The options in the string that come later in the string
+can then override values in config file.
 
 3 zxid_simple() API Specific Configuration
 ===========================================

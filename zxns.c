@@ -445,6 +445,8 @@ first:
   ns->seen_pop = new_ns;
 }
 
+/*() Render the namespaces that have been seen. */
+
 /* Called by:  TXENC_WO_ELNAME, TXENC_WO_any_elem */
 char* zx_enc_seen(char* p, struct zx_ns_s* ns)
 {

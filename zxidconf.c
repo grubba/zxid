@@ -231,7 +231,8 @@ int zxid_ent_cache_mx_init = 0;
  *
  * cf:: Pointer to previously allocated configuration object
  * path:: Since this configuration option is so fundamental, it can
- *     be supplied directly as argument.
+ *     be supplied directly as argument. However, unlike zxid_new_conf()
+ *     this does not cause the config file to be read.
  * return:: 0 on success (currently, 2008, this function can not
  *     fail - thus it is common to ignore the return value)
  *
@@ -468,10 +469,15 @@ struct zx_ctx* zx_init_ctx()
   return ctx;
 }
 
-/*() If zxid_path is supplied as NULL, then a minimal initialization of
+/*() Minimal initialization of
  * the context is performed. Certificate and key operations as well as
  * CURL initialization are omitted. However the zx_ctx is installed so
- * that memory allocation against the context should work. */
+ * that memory allocation against the context should work.
+ * Supplying zxid_path merely initializes the PATH config option,
+ * but does not cause configuration file to be read.
+ *
+ * Just initializes the config object to factory defaults (see zxidconf.h).
+ * Previous content of the config object is lost. */
 
 /* Called by:  zxcot_main, zxid_conf_to_cf_len, zxid_new_conf */
 zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path)
@@ -496,9 +502,10 @@ zxid_conf* zxid_init_conf_ctx(zxid_conf* cf, const char* zxid_path)
   return cf;
 }
 
-/*() Allocate conf object, but do not actually initialize it with default config
- * or config file.
- * See: zxid_new_conf_to_cf() for a more complete solution. */
+/*() Allocate conf object and initialize it with default config or config file.
+ * See zxid_new_conf_to_cf() for a more complete solution.
+ * Just initializes the config object to factory defaults (see zxidconf.h).
+ * Previous content of the config object is lost. */
 
 /* Called by:  main x6, test_ibm_cert_problem, test_ibm_cert_problem_enc_dec, test_mode */
 zxid_conf* zxid_new_conf(const char* zxid_path)

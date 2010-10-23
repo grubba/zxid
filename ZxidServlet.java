@@ -138,7 +138,7 @@ public class ZxidServlet extends HttpServlet {
     }
   }
 
-  @Override
+    //@Override
   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException,
       IOException {
     System.err.print("Start GET...\n");
@@ -146,7 +146,7 @@ public class ZxidServlet extends HttpServlet {
     doZxid(req, res, req.getQueryString());
   }
 
-  @Override
+    //@Override
   public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException,
       IOException {
     System.err.println("Start POST...");   
@@ -160,7 +160,7 @@ public class ZxidServlet extends HttpServlet {
     doZxid(req, res, qs);
   }
   
-  @Override
+    //@Override
   public void init(ServletConfig config) throws ServletException {
     if (config.getInitParameter("zxid-configuration") != null) {
       System.err.println("The zxid-configuration parameter is:" 

@@ -47,7 +47,8 @@ Usage: zxidhlo [options]   (when used as CGI, no options can be supplied)\n\
 /* CONFIG: You must edit the URL to match your domain name and port */
 
 #define ZXIDHLO "zxidhlo"
-#define CONF "PATH=/var/zxid/&URL=http://sp1.zxidsp.org:8081/" ZXIDHLO "&NOSIG_FATAL=0"
+#define CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
+//#define CONF "PATH=/var/zxid/&URL=http://sp1.zxidsp.org:8081/" ZXIDHLO "&NOSIG_FATAL=0"
 //#define CONF "URL=https://sp1.zxidsp.org:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 //#define CONF "URL=https://lima.tas3.eu:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 
@@ -116,7 +117,7 @@ int main(int argc, char** argv)
     printf("SET-COOKIE: %s\r\n", setcookie);
   printf("Content-Type: text/html\r\n\r\n");
   printf("<title>ZXID HELLO SP Mgmt</title>" ZXID_BODY_TAG "<h1>ZXID HELLO SP Management (user logged in, session active)</h1><pre>\n");
-  printf("</pre><form method=post action=\"" ZXIDHLO "?o=P\">");
+  printf("</pre><form method=post action=\"?o=P\">");
   //if (err) printf("<p><font color=red><i>%s</i></font></p>\n", err);
   //if (msg) printf("<p><i>%s</i></p>\n", msg);
   if (sid) {
@@ -126,8 +127,8 @@ int main(int argc, char** argv)
     printf("<input type=submit name=gs value=\" Single Logout (SOAP) \">\n");
     printf("<input type=submit name=gt value=\" Defederate (Redir) \">\n");
     printf("<input type=submit name=gu value=\" Defederate (SOAP) \"><br>\n");
-    printf("sid(%s) nid(%s) <a href=\"" ZXIDHLO "?s=%s\">Reload</a> | "
-	   "<a href=\"" ZXIDHLO "?o=v&s=%s\">PEP</a>", sid, nid?nid:"?!?", sid, sid);
+    printf("sid(%s) nid(%s) <a href=\"?s=%s\">Reload</a> | "
+	   "<a href=\"?o=v&s=%s\">PEP</a>", sid, nid?nid:"?!?", sid, sid);
   }
   
   printf("</form><hr>");

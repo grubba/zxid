@@ -60,25 +60,33 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - IdP: Interpret the attribute request authn ctx query string approach and show
       to the user what attributes were requested by the SP.
     - IdP: If SP does not specify attribute list, display "SP did not request any
-      specific attributes. Only authentication and default attributes will be sent.
+      specific attributes. Only authentication and default attributes will be sent."
     - AuthnReq QS option for SP to request that consent is explicitly seeked
     - AuthnReq QS option for SP to request that attribute list is not shown up front
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
-    - zxdecode assertion decryption support
+    - Fix detection of namespace of an XML attribute, see t/shib-a7n2.xml, see enc-templ and comment about sorting namespaces
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
+    NOTPUB
+
+zxid-0.70:: 21.10.2010
+    - zxdecode: assertion decode and decryption support
+    - zxdecode: sha1 validation without sig validation using -s -s
+    - fix canonicalization of attribute names with namespace prefixes
     NOTPUB
 
 zxid-0.69:: 20.10.2010
     - Added DeployingZxidServlets.txt, ZxidSSOFilter.java, and ZxidServlet.java by Stijn Lievens
     - Added missing file zxidjava/zxidtok.java
-    NOTPUB
+
 zxid-0.68:: 18.10.2010
     - zxpasswd hash problems fixed
     - Pairwise session indexes (encrypt master index and SP entid with IdP sym key)
     - Primitive support for passing identity token in XACML request
+
 zxid-0.67:: 13.10.2010
     - Fixed buffer bugs introduced by removal of ZXID_MAX_USER limit
+
 zxid-0.66:: 12.10.2010
     - zxpasswd: be tolerant of newline in input
     - Add to IdP metadata the NameIDMapping end point

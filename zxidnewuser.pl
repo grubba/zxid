@@ -105,13 +105,15 @@ if (length $cgi{'ok'}) {
 	close P;
 	warn "Populating user($cgi{'au'})";
 	if (-e "${dir}uid/$cgi{'au'}") {
-	    open LOG, ">${dir}uid/$cgi{'au'}/.regip" or die "Cant open write .bs/.regip: $!";
-	    print LOG $ENV{REMOTE_ADDR} or die "Cant write .bs/.regip: $!";
-	    close LOG or die "Cant close write .bs/.regip: $!";
-	    open IP, ">${dir}uid/$cgi{'au'}/.regip" or die "Cant open write .bs/.regip: $!";
-	    print IP $ENV{REMOTE_ADDR} or die "Cant write .bs/.regip: $!";
-	    close IP or die "Cant close write .bs/.regip: $!";
-	    mkdir "${dir}uid/$cgi{'au'}/.bs" or warn "Cant mkdir .bs: $!";
+	    open LOG, ">${dir}uid/$cgi{'au'}/.log" or die "Cant open write .log: $!";
+	    print LOG "Created ip=$ENV{REMOTE_ADDR}\n" or die "Cant write .log: $!";
+	    close LOG or die "Cant close write .log: $!";
+
+	    open IP, ">${dir}uid/$cgi{'au'}/.regip" or die "Cant open write .regip: $!";
+	    print IP $ENV{REMOTE_ADDR} or die "Cant write .regip: $!";
+	    close IP or die "Cant close write .regip: $!";
+
+	    #mkdir "${dir}uid/$cgi{'au'}/.bs" or warn "Cant mkdir .bs: $!"; zxpasswd creates .bs
 	    open AT, ">${dir}uid/$cgi{'au'}/.bs/.at" or die "Cant write .bs/.at: $!";
 	    open OPTAT, ">${dir}uid/$cgi{'au'}/.bs/.optat" or die "Cant write .bs/.optat: $!";
 	    

@@ -40,6 +40,7 @@ Usage: zxdecode [options] <message >decoded\n\
   -z -Z            Prevent or force inflate step (default auto detects)\n\
   -i N             Pick Nth detected decodable structure, default: 1=first\n\
   -s               Enable signature validation step (reads config from -c, see below)\n\
+  -s -s            Only validate hashes (check canon), do not fetch meta or check RSA\n\
   -c CONF          For -s, optional configuration string (default -c PATH=/var/zxid/)\n\
                    Most of the configuration is read from /var/zxid/zxid.conf\n\
   -sha1            Compute sha1 over input and print as base64. For debugging canon.\n\
@@ -198,6 +199,7 @@ static int sig_validate(int len, char* p)
   struct zx_root_s* r;
   struct zx_sp_Response_s* resp;
   struct zx_ns_s* pop_seen = 0;
+  struct zxsig_ref refs;
   zxid_a7n* a7n;
   
   ZERO(&cgi, sizeof(cgi));
@@ -213,24 +215,80 @@ static int sig_validate(int len, char* p)
   }
   resp = r->Response;
   if (!resp) {
-    ERR("No <sp:Response> found buf(%.*s)", len, p);
+    a7n = zxid_dec_a7n(cf, r->Assertion, r->EncryptedAssertion);
+    if (a7n) {
+      INFO("Bare Assertion without Response wrapper detected %p", r->Assertion);
+      goto got_a7n;
+    }
+    ERR("No <sp:Response>, <sa:Assertion>, or <sa:EncryptedAssertion> found buf(%.*s)", len, p);
     return 3;
   }
 
   /* See zxid_sp_dig_sso_a7n() for similar code. */
   
-  if (!zxid_chk_sig(cf, &cgi, &ses, &resp->gg, resp->Signature, resp->Issuer, 0, "Response"))
-    return 4;
+  if (sig_flag == 2) {
+    if (!resp->Signature) {
+      INFO("No signature in Response %d", 0);
+    } else {
+      if (!resp->Signature->SignedInfo || !resp->Signature->SignedInfo->Reference) {
+	ERR("Malformed signature, missing mandatory SignedInfo(%p) or Reference", resp->Signature->SignedInfo);
+	return 9;
+      }
+
+      ZERO(&refs, sizeof(refs));
+      refs.sref = resp->Signature->SignedInfo->Reference;
+      refs.blob = &resp->gg;
+      refs.pop_seen = pop_seen;
+      zx_see_elem_ns(cf->ctx, &refs.pop_seen, &resp->gg);
+      ret = zxsig_validate(cf->ctx, 0, resp->Signature, 1, &refs);
+      if (ret == ZXSIG_BAD_CERT) {
+	INFO("Canon sha1 of Response verified OK %d", ret);
+	if (verbose)
+	  printf("\nCanon sha1 of Response verified OK %d\n", ret);
+      } else {
+	ERR("Response Signature hash validation error. Bad canonicalization? ret=%d",ret);
+	if (sig_flag < 3)
+	  return 10;
+      }
+    }
+  } else {
+    if (!zxid_chk_sig(cf, &cgi, &ses, &resp->gg, resp->Signature, resp->Issuer, 0, "Response"))
+      return 4;
+  }
   
   a7n = zxid_dec_a7n(cf, resp->Assertion, resp->EncryptedAssertion);
   if (!a7n) {
     ERR("No Assertion found and not anon_ok in SAML Response %d", 0);
     return 5;
   }
-
   zx_see_elem_ns(cf->ctx, &pop_seen, &resp->gg);
-  ret = zxid_sp_sso_finalize(cf, &cgi, &ses, a7n, pop_seen);
-  INFO("zxid_sp_sso_finalize() returned %d", ret);
+got_a7n:
+  if (sig_flag == 2) {
+    if (a7n->Signature && a7n->Signature->SignedInfo && a7n->Signature->SignedInfo->Reference) {
+      cf->ctx->guard_seen_n.seen_n = &cf->ctx->guard_seen_p;  /* *** should call zx_reset_ctx? */
+      cf->ctx->guard_seen_p.seen_p = &cf->ctx->guard_seen_n;
+      ZERO(&refs, sizeof(refs));
+      refs.sref = a7n->Signature->SignedInfo->Reference;
+      refs.blob = &a7n->gg;
+      refs.pop_seen = pop_seen;
+      zx_see_elem_ns(cf->ctx, &refs.pop_seen, &a7n->gg);
+      ret = zxsig_validate(cf->ctx, 0, a7n->Signature, 1, &refs);
+      if (ret == ZXSIG_BAD_CERT) {
+	INFO("Canon sha1 of Assertion verified OK %d", ret);
+	if (ret && verbose)
+	  printf("\nCanon sha1 of Assertion verified OK %d\n", ret);
+	return 0;
+      }
+      ERR("Canon sha1 of Assertion failed to verify ret=%d", ret);
+      return 11;
+    } else {
+      ERR("Assertion does not contain a signature %p", a7n->Signature);
+      return 7;
+    }
+  } else {
+    ret = zxid_sp_sso_finalize(cf, &cgi, &ses, a7n, pop_seen);
+    INFO("zxid_sp_sso_finalize() returned %d", ret);
+  }
   if (ret && verbose)
     printf("\nSIG Verified OK, zxid_sp_sso_finalize() returned %d\n", ret);
   return ret?0:6;

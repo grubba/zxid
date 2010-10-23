@@ -86,7 +86,9 @@ or just access the URL with web browser and save the page.
 Automatic Circle-of-Trust (Auto-CoT) feature allows other parties
 metadata to be automatically fetched on the fly as needed. The
 fetch is made by using the entity ID of the other party as
-a URL. This is known as the Well Known Location (WKL) method. Auto-CoT
+a URL. This is known as the Well Known Location (WKL) method,
+see [SAML2meta] section 4.1 "Publication and Resolution via Well-Known Location",
+p.29, for normative description of this method. Auto-CoT
 makes setting up the Circle-of-Trust very easy, but has its
 drawbacks: anyone can join, connectivity between entities
 is needed, and WKL method needs to be supported and enabled in the

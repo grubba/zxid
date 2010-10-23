@@ -6,7 +6,7 @@ Test driver for ZXID
 Usage: http://localhost:8081/zxtest.pl?tst=XML1
        ./zxtest.pl -a [-x] tst=XML1
          -a Ascii mode
-         -x Print exec events to stderr
+         -x Print exec command lines to stderr
 USAGE
     ;
 
@@ -897,7 +897,9 @@ CMD('SIG4', 'sig vry zxid post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOU
 CMD('SIG5', 'sig vry sm resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.xml");
 CMD('SIG6', 'sig vry sm post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.b64");
 
-CMD('SIG7', 'sig vry shib resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/shib-a7n2.xml");
+CMD('SIG7', 'sig vry shib resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/shib-a7n2.xml"); # fails due to xsi, a namespace of an attribute
+CMD('SIG8', 'sig vry ping resp', "./zxdecode -v -s -s <t/ping-resp.xml");
+CMD('SIG9', 'sig vry ping post', "./zxdecode -v -s -s <t/ping-resp.qs");
 
 ED('XML1', 'Decode-Encode SO and WO: ns-bug', 1000, 't/default-ns-bug.xml');
 ED('XML2', 'Decode-Encode SO and WO: azrq1',  1000, 't/azrq1.xml');
