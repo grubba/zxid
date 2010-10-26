@@ -422,13 +422,15 @@ static int zxid_addmd(zxid_conf* cf, char* mdurl, int dry_run, const char* dcot)
     if (!ss)
       return 2;
   
-    if (verbose)
-      fprintf(stderr, "Writing ent(%s) to %s%s\n", ent->eid, dcot, ent->sha1_name);
     if (dry_run) {
       write_all_fd(fdstdout, ss->s, ss->len);
       zx_str_free(cf->ctx, ss);
+      if (verbose>1)
+	printf("\n\nDry run ent(%s) to %s%s\n", ent->eid, dcot, ent->sha1_name);
       continue;
     }
+    if (verbose)
+      printf("Writing ent(%s) to %s%s\n", ent->eid, dcot, ent->sha1_name);
   
     fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxcot -a", 1,
 			   "%s%s", dcot, ent->sha1_name);

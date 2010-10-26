@@ -89,7 +89,7 @@ struct zx_md_AffiliationDescriptor_s {
   struct zx_md_Extensions_s* Extensions;	/* {0,1} nada */
   struct zx_elem_s* AffiliateMember;	/* {1,-1} xs:anyURI */
   struct zx_md_KeyDescriptor_s* KeyDescriptor;	/* {0,-1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* affiliationOwnerID;	/* {1,1} attribute m20:entityIDType */
   struct zx_str* cacheDuration;	/* {0,1} attribute xs:duration */
   struct zx_str* validUntil;	/* {0,1} attribute xs:dateTime */
@@ -344,7 +344,7 @@ struct zx_md_AttributeAuthorityDescriptor_s {
   struct zx_elem_s* NameIDFormat;	/* {0,-1} xs:anyURI */
   struct zx_elem_s* AttributeProfile;	/* {0,-1} xs:anyURI */
   struct zx_sa_Attribute_s* Attribute;	/* {0,-1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* cacheDuration;	/* {0,1} attribute xs:duration */
   struct zx_str* errorURL;	/* {0,1} attribute xs:anyURI */
   struct zx_str* protocolSupportEnumeration;	/* {1,1} attribute xs:string */
@@ -612,7 +612,7 @@ struct zx_md_AuthnAuthorityDescriptor_s {
   struct zx_md_AuthnQueryService_s* AuthnQueryService;	/* {1,-1} nada */
   struct zx_md_AssertionIDRequestService_s* AssertionIDRequestService;	/* {0,-1} nada */
   struct zx_elem_s* NameIDFormat;	/* {0,-1} xs:anyURI */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* cacheDuration;	/* {0,1} attribute xs:duration */
   struct zx_str* errorURL;	/* {0,1} attribute xs:anyURI */
   struct zx_str* protocolSupportEnumeration;	/* {1,1} attribute xs:string */
@@ -844,7 +844,7 @@ struct zx_md_ContactPerson_s {
   struct zx_elem_s* SurName;	/* {0,1} xs:string */
   struct zx_elem_s* EmailAddress;	/* {0,-1} xs:anyURI */
   struct zx_elem_s* TelephoneNumber;	/* {0,-1} xs:string */
-  struct zx_str* contactType;	/* {1,1} attribute hrxml:ContactTypeStringExtensionType */
+  struct zx_str* contactType;	/* {1,1} attribute m20:attrContactType */
 };
 
 #ifdef ZX_ENA_GETPUT
@@ -998,7 +998,7 @@ struct zx_md_EntitiesDescriptor_s {
   struct zx_md_Extensions_s* Extensions;	/* {0,1} nada */
   struct zx_md_EntityDescriptor_s* EntityDescriptor;	/* {0,-1} nada */
   struct zx_md_EntitiesDescriptor_s* EntitiesDescriptor;	/* {0,-1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* Name;	/* {0,1} attribute xs:anyURI */
   struct zx_str* cacheDuration;	/* {0,1} attribute xs:duration */
   struct zx_str* validUntil;	/* {0,1} attribute xs:dateTime */
@@ -1093,7 +1093,7 @@ struct zx_md_EntityDescriptor_s {
   struct zx_md_Organization_s* Organization;	/* {0,1} nada */
   struct zx_md_ContactPerson_s* ContactPerson;	/* {0,-1} nada */
   struct zx_md_AdditionalMetadataLocation_s* AdditionalMetadataLocation;	/* {0,-1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* cacheDuration;	/* {0,1} attribute xs:duration */
   struct zx_str* entityID;	/* {1,1} attribute md:entityIDType */
   struct zx_str* validUntil;	/* {0,1} attribute xs:dateTime */
@@ -1320,7 +1320,7 @@ struct zx_md_IDPSSODescriptor_s {
   struct zx_md_AssertionIDRequestService_s* AssertionIDRequestService;	/* {0,-1} nada */
   struct zx_elem_s* AttributeProfile;	/* {0,-1} xs:anyURI */
   struct zx_sa_Attribute_s* Attribute;	/* {0,-1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* WantAuthnRequestsSigned;	/* {0,1} attribute xs:boolean */
   struct zx_str* cacheDuration;	/* {0,1} attribute xs:duration */
   struct zx_str* errorURL;	/* {0,1} attribute xs:anyURI */
@@ -1866,7 +1866,7 @@ struct zx_md_PDPDescriptor_s {
   struct zx_md_AuthzService_s* AuthzService;	/* {1,-1} nada */
   struct zx_md_AssertionIDRequestService_s* AssertionIDRequestService;	/* {0,-1} nada */
   struct zx_elem_s* NameIDFormat;	/* {0,-1} xs:anyURI */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* cacheDuration;	/* {0,1} attribute xs:duration */
   struct zx_str* errorURL;	/* {0,1} attribute xs:anyURI */
   struct zx_str* protocolSupportEnumeration;	/* {1,1} attribute xs:string */
@@ -2049,7 +2049,7 @@ struct zx_md_RoleDescriptor_s {
   struct zx_md_KeyDescriptor_s* KeyDescriptor;	/* {0,-1} nada */
   struct zx_md_Organization_s* Organization;	/* {0,1} nada */
   struct zx_md_ContactPerson_s* ContactPerson;	/* {0,-1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* cacheDuration;	/* {0,1} attribute xs:duration */
   struct zx_str* errorURL;	/* {0,1} attribute xs:anyURI */
   struct zx_str* protocolSupportEnumeration;	/* {1,1} attribute xs:string */
@@ -2155,7 +2155,7 @@ struct zx_md_SPSSODescriptor_s {
   struct zx_md_AssertionConsumerService_s* AssertionConsumerService;	/* {1,-1} nada */
   struct zx_md_AttributeConsumingService_s* AttributeConsumingService;	/* {0,-1} nada */
   struct zx_str* AuthnRequestsSigned;	/* {0,1} attribute xs:boolean */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* WantAssertionsSigned;	/* {0,1} attribute xs:boolean */
   struct zx_str* cacheDuration;	/* {0,1} attribute xs:duration */
   struct zx_str* errorURL;	/* {0,1} attribute xs:anyURI */

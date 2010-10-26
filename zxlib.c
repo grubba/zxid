@@ -323,7 +323,7 @@ struct zx_elem_s* zx_dup_simple_elem(struct zx_ctx* c, const char* s)
 /*() Render the unknown attributes list. CSE for almost all tags. */
 
 /* Called by:  TXLEN_SO_ELNAME */
-int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x)
+int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp)
 {
   int len = 0;
   struct zx_str* ss;
@@ -334,6 +334,7 @@ int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x)
     if (aa->ss.g.ns && aa->ss.g.ns->prefix_len)
       len += aa->ss.g.ns->prefix_len + 1;
     len += 1 + aa->name_len + 1 + 1 + aa->ss.len + 1;  /* attr="val" */
+    len += zx_len_xmlns_if_not_seen(c, aa->ss.g.ns, pop_seenp);
   }
 
   for (ae = x->any_elem; ae; ae = (struct zx_any_elem_s*)ae->gg.g.n)    /* unknown elements */
@@ -346,7 +347,7 @@ int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x)
 }
 
 /* Called by:  TXLEN_WO_ELNAME, TXLEN_WO_any_elem */
-int zx_len_wo_common(struct zx_ctx* c, struct zx_elem_s* x)
+int zx_len_wo_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp)
 {
   int len = 0;
   struct zx_str* ss;
@@ -357,6 +358,7 @@ int zx_len_wo_common(struct zx_ctx* c, struct zx_elem_s* x)
     if (aa->ss.g.ns && aa->ss.g.ns->prefix_len)
       len += aa->ss.g.ns->prefix_len + 1;
     len += 1 + aa->name_len + 1 + 1 + aa->ss.len + 1;  /* attr="val" */
+    len += zx_len_xmlns_if_not_seen(c, aa->ss.g.ns, pop_seenp);
   }
 
   for (ae = x->any_elem; ae; ae = (struct zx_any_elem_s*)ae->gg.g.n)    /* unknown elements */
@@ -366,6 +368,13 @@ int zx_len_wo_common(struct zx_ctx* c, struct zx_elem_s* x)
     len += ss->len;
   
   return len;
+}
+
+void zx_see_unknown_attrs_ns(struct zx_ctx* c, struct zx_any_attr_s* aa, struct zx_ns_s** pop_seenp)
+{
+  for (; aa; aa = (struct zx_any_attr_s*)aa->ss.g.n) {  /* unknown attributes */
+     zx_add_xmlns_if_not_seen(c, aa->ss.g.ns, pop_seenp);
+  }
 }
 
 /* Called by:  TXENC_SO_ELNAME, TXENC_WO_ELNAME, TXENC_WO_any_elem */
@@ -415,9 +424,11 @@ struct zx_str* zx_easy_enc_common(struct zx_ctx* c, char* p, char* buf, int len)
 }
 
 /* Called by: */
-int zx_attr_so_len(struct zx_str* attr, int name_size)
+int zx_attr_so_len(struct zx_ctx* c, struct zx_str* attr, int name_size, struct zx_ns_s** pop_seenp)
 {
   int len = 0;
+  if (attr)
+    len += zx_len_xmlns_if_not_seen(c, attr->g.ns, pop_seenp);
   /* In legal XML there should really be just one attribute, but we accommodate multioccurances. */
   for (; attr; attr = (struct zx_str*)attr->g.n)
     len += 1 + name_size + 1 + 1 + attr->len + 1;
@@ -439,9 +450,11 @@ char* zx_attr_so_enc(char* p, struct zx_str* attr, char* name, int name_len)
 }
 
 /* Called by: */
-int zx_attr_wo_len(struct zx_str* attr, int name_size)
+int zx_attr_wo_len(struct zx_ctx* c, struct zx_str* attr, int name_size, struct zx_ns_s** pop_seenp)
 {
   int len = 0;
+  if (attr)
+    len += zx_len_xmlns_if_not_seen(c, attr->g.ns, pop_seenp);
   /* In legal XML there should really be just one attribute, but we accommodate multioccurances. */
   for (; attr; attr = (struct zx_str*)attr->g.n) {
     if (attr->g.ns && attr->g.ns->prefix_len)
@@ -871,6 +884,7 @@ int zx_scan_pi_or_comment(struct zx_ctx* c)
 /* Called by:  TXDEC_ELNAME */
 struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, const char* name, const char* data, int tok, int ctx_tok)
 {
+  const char* p;
   int namlen = data - name - 2;
   struct zx_any_attr_s* attr = ZX_ZALLOC(c, struct zx_any_attr_s);
   
@@ -881,17 +895,23 @@ struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, const
     tok = ZX_TOK_NOT_FOUND;
   }
 
+  p = memchr(name, ':', namlen);   /* namespace check */
+  if (p) {
+    namlen -= 1+p-name;
+    name = p+1;
+  }
   attr->name_len = namlen;
   attr->name = (char*)name;
   attr->ss.g.n = &el->any_attr->ss.g;
   el->any_attr = attr;
-  /* *** namespace handling for unknown attribute? */
   /*ZX_UNKNOWN_ATTR_DEC_EXT(attr);*/
   return &attr->ss;
 }
 
+/*() Called from dec-templ.c for CSE elimination. */
+
 /* Called by:  TXDEC_ELNAME */
-char* zx_dec_attr_val(struct zx_ctx* c, const char** name)
+const char* zx_dec_attr_val(struct zx_ctx* c, const char** name, const char* func)
 {
   const char* data;
   char quote;
@@ -901,7 +921,7 @@ char* zx_dec_attr_val(struct zx_ctx* c, const char** name)
   
   ++c->p;
   if (!ONE_OF_2(*c->p, '"', '\'')) {
-    zx_xml_parse_err(c, *c->p, (const char*)__FUNCTION__, "Did not find expected quote char (single or double), saw");
+    zx_xml_parse_err(c, *c->p, func, "zx_dec_attr_val: Did not find expected quote char (single or double), saw");
     return 0;
   }
   quote = *c->p;
@@ -909,10 +929,24 @@ char* zx_dec_attr_val(struct zx_ctx* c, const char** name)
   data = c->p;	
   
   ZX_LOOK_FOR(c, quote);
-  return (char*)data;  /* *** can the return be considered const? */
+  return data;
  look_for_not_found:
-  zx_xml_parse_err(c, quote, (const char*)__FUNCTION__, "char not found");
+  zx_xml_parse_err(c, quote, func, "zx_dev_attr_val: char not found");
   return 0;
+}
+
+/*() Called from dec-templ.c for CSE elimination. */
+
+void zx_dec_reverse_lists(struct zx_elem_s* x)
+{
+  struct zx_elem_s* iternode;
+  struct zx_str* ss;
+  iternode = x->kids;
+  REVERSE_LIST_NEXT(x->kids, iternode, g.wo);
+  iternode = (struct zx_elem_s*)(x->any_elem);
+  REVERSE_LIST_NEXT(x->any_elem, iternode, g.n);
+  ss = (struct zx_str*)(x->any_attr);
+  REVERSE_LIST_NEXT(x->any_attr, ss, g.n);
 }
 
 /* Called by:  TXDEC_ELNAME x2, zx_dec_attr_val x2, zx_scan_pi_or_comment, zx_scan_xmlns x2 */
@@ -921,6 +955,27 @@ void zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char
   const char* errloc = MAX(c->p - 20, c->bas);
   ERR("%s: %s: char(%c) pos=%d (%.*s)", func, msg, quote,
       c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
+}
+
+/*() This is very special error handler called from innards for dec-templ.c for CSE. */
+
+void zx_xml_parse_err_mismatching_close_tag(struct zx_ctx* c, const char* func, const char* name, int tok)
+{
+  const char* errloc = MAX(c->p - 20, c->bas);
+  ERR("%s: Mismatching close tag(%.*s) tok=%d pos=%d (%.*s)", func, c->p-name, name, tok, c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
+  ++c->p;
+}
+
+/*() Called from innards for dec-templ.c for CSE. */
+
+const char* zx_scan_elem_start(struct zx_ctx* c, const char* func)
+{
+  const char* name = c->p;
+  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
+  if (*c->p)
+    return name;
+  D("%s: Incomplete %s", func, name);
+  return 0;
 }
 
 /* Add inclusive namespaces. */
@@ -932,7 +987,7 @@ int zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp)
   struct zx_ns_s* ns;
   for (ns = c->inc_ns; ns; ns = ns->inc_n)
     len += zx_len_xmlns_if_not_seen(c, ns, pop_seenp);
-  c->inc_ns_len = 0;
+  /*c->inc_ns_len = 0;  needs to be processed at every level */
   return len;
 }
 
@@ -942,17 +997,7 @@ void zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp)
   struct zx_ns_s* ns;
   for (ns = c->inc_ns; ns; ns = ns->inc_n)
     zx_add_xmlns_if_not_seen(c, ns, pop_seenp);
-  c->inc_ns = 0;
-}
-
-/* Called by:  TXENC_SO_ELNAME */
-char* zx_enc_inc_ns(struct zx_ctx* c, char* p, struct zx_ns_s** pop_seenp)
-{
-  struct zx_ns_s* ns;
-  for (ns = c->inc_ns; ns; ns = ns->inc_n)
-    p = zx_enc_xmlns_if_not_seen(c, p, ns, pop_seenp);
-  c->inc_ns = 0;
-  return p;
+  /*c->inc_ns = 0;  needs to be processed at every level */
 }
 
 /* EOF -- zxlib.c */

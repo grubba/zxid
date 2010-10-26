@@ -87,7 +87,7 @@ int zx_LEN_SO_dst_TestResult(struct zx_ctx* c, struct zx_dst_TestResult_s* x )
   if (x->itemIDRef)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
 
-  len += zx_attr_so_len(x->itemIDRef, sizeof("dst:itemIDRef")-1);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -96,7 +96,7 @@ int zx_LEN_SO_dst_TestResult(struct zx_ctx* c, struct zx_dst_TestResult_s* x )
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "dst:TestResult", len);
   return len;
@@ -123,7 +123,7 @@ int zx_LEN_WO_dst_TestResult(struct zx_ctx* c, struct zx_dst_TestResult_s* x )
   if (x->itemIDRef)
     len += zx_len_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -132,7 +132,7 @@ int zx_LEN_WO_dst_TestResult(struct zx_ctx* c, struct zx_dst_TestResult_s* x )
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "dst:TestResult", len);
   return len;
@@ -154,10 +154,12 @@ char* zx_ENC_SO_dst_TestResult(struct zx_ctx* c, struct zx_dst_TestResult_s* x, 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<dst:TestResult");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -202,12 +204,12 @@ char* zx_ENC_WO_dst_TestResult(struct zx_ctx* c, struct zx_dst_TestResult_s* x, 
   ZX_OUT_MEM(p, "TestResult", sizeof("TestResult")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
     zx_add_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->itemIDRef, "itemIDRef=\"", sizeof("itemIDRef=\"")-1);
 

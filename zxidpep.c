@@ -199,7 +199,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
 #if 0
     /* *** xac:Response does not have signature field */
     if (cf->sso_soap_sign) {
-      ZERO(refs, sizeof(refs));
+      ZERO(&refs, sizeof(refs));
       refs.id = body->xac_Request->ID;
       refs.canon = zx_EASY_ENC_SO_xac_Request(cf->ctx, body->xac_Request);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az xac-soap"))

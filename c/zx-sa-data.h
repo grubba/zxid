@@ -191,7 +191,7 @@ struct zx_sa_Assertion_s {
   struct zx_xasa_XACMLPolicyStatement_s* XACMLPolicyStatement;	/* {0,-1} nada */
   struct zx_xasacd1_XACMLAuthzDecisionStatement_s* xasacd1_XACMLAuthzDecisionStatement;	/* {0,-1} nada */
   struct zx_xasacd1_XACMLPolicyStatement_s* xasacd1_XACMLPolicyStatement;	/* {0,-1} nada */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
 };
@@ -459,9 +459,11 @@ struct zx_sa_AttributeValue_s {
   zx_sa_AttributeValue_EXT
   struct zx_di12_ResourceOffering_s* ResourceOffering;	/* {0,-1} nada */
   struct zx_a_EndpointReference_s* EndpointReference;	/* {0,-1} nada */
+  struct zx_str* type;	/* {0,1} attribute xs:string */
 };
 
 #ifdef ZX_ENA_GETPUT
+struct zx_str* zx_sa_AttributeValue_GET_type(struct zx_sa_AttributeValue_s* x);
 
 struct zx_di12_ResourceOffering_s* zx_sa_AttributeValue_GET_ResourceOffering(struct zx_sa_AttributeValue_s* x, int n);
 struct zx_a_EndpointReference_s* zx_sa_AttributeValue_GET_EndpointReference(struct zx_sa_AttributeValue_s* x, int n);
@@ -475,6 +477,7 @@ struct zx_a_EndpointReference_s* zx_sa_AttributeValue_POP_EndpointReference(stru
 void zx_sa_AttributeValue_PUSH_ResourceOffering(struct zx_sa_AttributeValue_s* x, struct zx_di12_ResourceOffering_s* y);
 void zx_sa_AttributeValue_PUSH_EndpointReference(struct zx_sa_AttributeValue_s* x, struct zx_a_EndpointReference_s* y);
 
+void zx_sa_AttributeValue_PUT_type(struct zx_sa_AttributeValue_s* x, struct zx_str* y);
 
 void zx_sa_AttributeValue_PUT_ResourceOffering(struct zx_sa_AttributeValue_s* x, int n, struct zx_di12_ResourceOffering_s* y);
 void zx_sa_AttributeValue_PUT_EndpointReference(struct zx_sa_AttributeValue_s* x, int n, struct zx_a_EndpointReference_s* y);

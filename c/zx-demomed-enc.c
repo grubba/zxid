@@ -96,7 +96,7 @@ int zx_LEN_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_De
     len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:ObjectID")-1, zx_ns_tab+zx_xmlns_ix_demomed);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:DeleteObjectRequest", len);
   return len;
@@ -132,7 +132,7 @@ int zx_LEN_WO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_De
     len += zx_LEN_WO_simple_elem(c, se, sizeof("ObjectID")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:DeleteObjectRequest", len);
   return len;
@@ -154,9 +154,11 @@ char* zx_ENC_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:DeleteObjectRequest");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -202,11 +204,11 @@ char* zx_ENC_WO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_
   ZX_OUT_MEM(p, "DeleteObjectRequest", sizeof("DeleteObjectRequest")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -325,7 +327,7 @@ int zx_LEN_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_D
     len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Count")-1, zx_ns_tab+zx_xmlns_ix_demomed);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:DeleteObjectResponse", len);
   return len;
@@ -366,7 +368,7 @@ int zx_LEN_WO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_D
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Count")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:DeleteObjectResponse", len);
   return len;
@@ -388,9 +390,11 @@ char* zx_ENC_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:DeleteObjectResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -441,11 +445,11 @@ char* zx_ENC_WO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed
   ZX_OUT_MEM(p, "DeleteObjectResponse", sizeof("DeleteObjectResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -562,7 +566,7 @@ int zx_LEN_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_G
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:GetObjectListRequest", len);
   return len;
@@ -601,7 +605,7 @@ int zx_LEN_WO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_G
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:GetObjectListRequest", len);
   return len;
@@ -623,9 +627,11 @@ char* zx_ENC_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:GetObjectListRequest");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -674,11 +680,11 @@ char* zx_ENC_WO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed
   ZX_OUT_MEM(p, "GetObjectListRequest", sizeof("GetObjectListRequest")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -800,7 +806,7 @@ int zx_LEN_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:GetObjectListResponse", len);
   return len;
@@ -844,7 +850,7 @@ int zx_LEN_WO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:GetObjectListResponse", len);
   return len;
@@ -866,9 +872,11 @@ char* zx_ENC_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demome
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:GetObjectListResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -922,11 +930,11 @@ char* zx_ENC_WO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demome
   ZX_OUT_MEM(p, "GetObjectListResponse", sizeof("GetObjectListResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1040,7 +1048,7 @@ int zx_LEN_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetOb
     len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:ObjectID")-1, zx_ns_tab+zx_xmlns_ix_demomed);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:GetObjectRequest", len);
   return len;
@@ -1076,7 +1084,7 @@ int zx_LEN_WO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetOb
     len += zx_LEN_WO_simple_elem(c, se, sizeof("ObjectID")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:GetObjectRequest", len);
   return len;
@@ -1098,9 +1106,11 @@ char* zx_ENC_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_Get
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:GetObjectRequest");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -1146,11 +1156,11 @@ char* zx_ENC_WO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_Get
   ZX_OUT_MEM(p, "GetObjectRequest", sizeof("GetObjectRequest")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1272,7 +1282,7 @@ int zx_LEN_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetO
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:GetObjectResponse", len);
   return len;
@@ -1316,7 +1326,7 @@ int zx_LEN_WO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetO
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:GetObjectResponse", len);
   return len;
@@ -1338,9 +1348,11 @@ char* zx_ENC_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_Ge
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:GetObjectResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -1394,11 +1406,11 @@ char* zx_ENC_WO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_Ge
   ZX_OUT_MEM(p, "GetObjectResponse", sizeof("GetObjectResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1502,7 +1514,7 @@ int zx_LEN_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
-  len += zx_attr_so_len(x->reqID, sizeof("reqID")-1);
+  len += zx_attr_so_len(c, x->reqID, sizeof("reqID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1521,7 +1533,7 @@ int zx_LEN_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:Object", len);
   return len;
@@ -1547,7 +1559,7 @@ int zx_LEN_WO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->reqID, sizeof("reqID")-1);
+  len += zx_attr_wo_len(c, x->reqID, sizeof("reqID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1566,7 +1578,7 @@ int zx_LEN_WO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:Object", len);
   return len;
@@ -1588,9 +1600,11 @@ char* zx_ENC_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:Object");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->reqID, " reqID=\"", sizeof(" reqID=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1645,11 +1659,11 @@ char* zx_ENC_WO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, 
   ZX_OUT_MEM(p, "Object", sizeof("Object")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->reqID, "reqID=\"", sizeof("reqID=\"")-1);
 
@@ -1754,7 +1768,7 @@ int zx_LEN_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
-  len += zx_attr_so_len(x->objectID, sizeof("objectID")-1);
+  len += zx_attr_so_len(c, x->objectID, sizeof("objectID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1763,7 +1777,7 @@ int zx_LEN_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:ObjectData", len);
   return len;
@@ -1789,7 +1803,7 @@ int zx_LEN_WO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->objectID, sizeof("objectID")-1);
+  len += zx_attr_wo_len(c, x->objectID, sizeof("objectID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1798,7 +1812,7 @@ int zx_LEN_WO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:ObjectData", len);
   return len;
@@ -1820,9 +1834,11 @@ char* zx_ENC_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectDat
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:ObjectData");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->objectID, " objectID=\"", sizeof(" objectID=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1867,11 +1883,11 @@ char* zx_ENC_WO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectDat
   ZX_OUT_MEM(p, "ObjectData", sizeof("ObjectData")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->objectID, "objectID=\"", sizeof("objectID=\"")-1);
 
@@ -1976,7 +1992,7 @@ int zx_LEN_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
-  len += zx_attr_so_len(x->objectID, sizeof("objectID")-1);
+  len += zx_attr_so_len(c, x->objectID, sizeof("objectID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1995,7 +2011,7 @@ int zx_LEN_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_
     len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Comment")-1, zx_ns_tab+zx_xmlns_ix_demomed);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:ObjectInfo", len);
   return len;
@@ -2021,7 +2037,7 @@ int zx_LEN_WO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->objectID, sizeof("objectID")-1);
+  len += zx_attr_wo_len(c, x->objectID, sizeof("objectID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2040,7 +2056,7 @@ int zx_LEN_WO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Comment")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:ObjectInfo", len);
   return len;
@@ -2062,9 +2078,11 @@ char* zx_ENC_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInf
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:ObjectInfo");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->objectID, " objectID=\"", sizeof(" objectID=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2119,11 +2137,11 @@ char* zx_ENC_WO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInf
   ZX_OUT_MEM(p, "ObjectInfo", sizeof("ObjectInfo")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->objectID, "objectID=\"", sizeof("objectID=\"")-1);
 
@@ -2244,7 +2262,7 @@ int zx_LEN_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Objec
     len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:objectID")-1, zx_ns_tab+zx_xmlns_ix_demomed);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:ObjectSearchParm", len);
   return len;
@@ -2286,7 +2304,7 @@ int zx_LEN_WO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Objec
     len += zx_LEN_WO_simple_elem(c, se, sizeof("objectID")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:ObjectSearchParm", len);
   return len;
@@ -2308,9 +2326,11 @@ char* zx_ENC_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Obj
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:ObjectSearchParm");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -2362,11 +2382,11 @@ char* zx_ENC_WO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Obj
   ZX_OUT_MEM(p, "ObjectSearchParm", sizeof("ObjectSearchParm")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2470,8 +2490,8 @@ int zx_LEN_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Object
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
-  len += zx_attr_so_len(x->objectID, sizeof("objectID")-1);
-  len += zx_attr_so_len(x->storeRef, sizeof("storeRef")-1);
+  len += zx_attr_so_len(c, x->objectID, sizeof("objectID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->storeRef, sizeof("storeRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2480,7 +2500,7 @@ int zx_LEN_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Object
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:ObjectStoreInfo", len);
   return len;
@@ -2506,8 +2526,8 @@ int zx_LEN_WO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Object
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->objectID, sizeof("objectID")-1);
-  len += zx_attr_wo_len(x->storeRef, sizeof("storeRef")-1);
+  len += zx_attr_wo_len(c, x->objectID, sizeof("objectID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->storeRef, sizeof("storeRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2516,7 +2536,7 @@ int zx_LEN_WO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Object
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:ObjectStoreInfo", len);
   return len;
@@ -2538,9 +2558,11 @@ char* zx_ENC_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Obje
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:ObjectStoreInfo");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->objectID, " objectID=\"", sizeof(" objectID=\"")-1);
   p = zx_attr_so_enc(p, x->storeRef, " storeRef=\"", sizeof(" storeRef=\"")-1);
 
@@ -2586,11 +2608,11 @@ char* zx_ENC_WO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Obje
   ZX_OUT_MEM(p, "ObjectStoreInfo", sizeof("ObjectStoreInfo")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->objectID, "objectID=\"", sizeof("objectID=\"")-1);
   p = zx_attr_wo_enc(p, x->storeRef, "storeRef=\"", sizeof("storeRef=\"")-1);
@@ -2709,7 +2731,7 @@ int zx_LEN_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_Sto
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:StoreObjectRequest", len);
   return len;
@@ -2748,7 +2770,7 @@ int zx_LEN_WO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_Sto
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:StoreObjectRequest", len);
   return len;
@@ -2770,9 +2792,11 @@ char* zx_ENC_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_S
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:StoreObjectRequest");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -2821,11 +2845,11 @@ char* zx_ENC_WO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_S
   ZX_OUT_MEM(p, "StoreObjectRequest", sizeof("StoreObjectRequest")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2947,7 +2971,7 @@ int zx_LEN_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_St
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:StoreObjectResponse", len);
   return len;
@@ -2991,7 +3015,7 @@ int zx_LEN_WO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_St
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "demomed:StoreObjectResponse", len);
   return len;
@@ -3013,9 +3037,11 @@ char* zx_ENC_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<demomed:StoreObjectResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_demomed, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -3069,11 +3095,11 @@ char* zx_ENC_WO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_
   ZX_OUT_MEM(p, "StoreObjectResponse", sizeof("StoreObjectResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);

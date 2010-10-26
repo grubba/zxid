@@ -4922,7 +4922,7 @@ struct zx_hrxml_EmployerContactInfo_s {
   struct zx_hrxml_ContactMethod_s* ContactMethod;	/* {0,-1}  */
   struct zx_hrxml_LocationSummary_s* LocationSummary;	/* {0,1}  */
   struct zx_hrxml_InternetDomainName_s* InternetDomainName;	/* {0,-1}  */
-  struct zx_str* contactType;	/* {0,1} attribute hrxml:ContactTypeStringExtensionType */
+  struct zx_str* contactType;	/* {0,1} attribute m20:attrContactType */
 };
 
 #ifdef ZX_ENA_GETPUT

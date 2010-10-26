@@ -87,7 +87,6 @@
 struct zx_ac_ActivationLimit_s* zx_DEC_ac_ActivationLimit(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -107,15 +106,13 @@ struct zx_ac_ActivationLimit_s* zx_DEC_ac_ActivationLimit(struct zx_ctx* c, stru
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -124,7 +121,7 @@ struct zx_ac_ActivationLimit_s* zx_DEC_ac_ActivationLimit(struct zx_ctx* c, stru
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -171,10 +168,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -183,12 +178,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -227,12 +218,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -262,7 +248,6 @@ next_attr:
 struct zx_ac_ActivationLimitDuration_s* zx_DEC_ac_ActivationLimitDuration(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -282,10 +267,8 @@ struct zx_ac_ActivationLimitDuration_s* zx_DEC_ac_ActivationLimitDuration(struct
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_duration_ATTR:
@@ -296,7 +279,7 @@ struct zx_ac_ActivationLimitDuration_s* zx_DEC_ac_ActivationLimitDuration(struct
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -305,7 +288,7 @@ struct zx_ac_ActivationLimitDuration_s* zx_DEC_ac_ActivationLimitDuration(struct
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -352,10 +335,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -364,12 +345,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -393,12 +370,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -428,7 +400,6 @@ next_attr:
 struct zx_ac_ActivationLimitUsages_s* zx_DEC_ac_ActivationLimitUsages(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -448,10 +419,8 @@ struct zx_ac_ActivationLimitUsages_s* zx_DEC_ac_ActivationLimitUsages(struct zx_
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_number_ATTR:
@@ -462,7 +431,7 @@ struct zx_ac_ActivationLimitUsages_s* zx_DEC_ac_ActivationLimitUsages(struct zx_
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -471,7 +440,7 @@ struct zx_ac_ActivationLimitUsages_s* zx_DEC_ac_ActivationLimitUsages(struct zx_
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -518,10 +487,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -530,12 +497,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -559,12 +522,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -594,7 +552,6 @@ next_attr:
 struct zx_ac_ActivationPin_s* zx_DEC_ac_ActivationPin(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -614,15 +571,13 @@ struct zx_ac_ActivationPin_s* zx_DEC_ac_ActivationPin(struct zx_ctx* c, struct z
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -631,7 +586,7 @@ struct zx_ac_ActivationPin_s* zx_DEC_ac_ActivationPin(struct zx_ctx* c, struct z
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -678,10 +633,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -690,12 +643,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -744,12 +693,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -779,7 +723,6 @@ next_attr:
 struct zx_ac_Alphabet_s* zx_DEC_ac_Alphabet(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -799,10 +742,8 @@ struct zx_ac_Alphabet_s* zx_DEC_ac_Alphabet(struct zx_ctx* c, struct zx_ns_s* ns
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_case_ATTR:
@@ -825,7 +766,7 @@ struct zx_ac_Alphabet_s* zx_DEC_ac_Alphabet(struct zx_ctx* c, struct zx_ns_s* ns
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -834,7 +775,7 @@ struct zx_ac_Alphabet_s* zx_DEC_ac_Alphabet(struct zx_ctx* c, struct zx_ns_s* ns
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -881,10 +822,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -893,12 +832,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -922,12 +857,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -957,7 +887,6 @@ next_attr:
 struct zx_ac_AsymmetricDecryption_s* zx_DEC_ac_AsymmetricDecryption(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -977,15 +906,13 @@ struct zx_ac_AsymmetricDecryption_s* zx_DEC_ac_AsymmetricDecryption(struct zx_ct
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -994,7 +921,7 @@ struct zx_ac_AsymmetricDecryption_s* zx_DEC_ac_AsymmetricDecryption(struct zx_ct
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -1041,10 +968,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -1053,12 +978,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -1087,12 +1008,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -1122,7 +1038,6 @@ next_attr:
 struct zx_ac_AsymmetricKeyAgreement_s* zx_DEC_ac_AsymmetricKeyAgreement(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -1142,15 +1057,13 @@ struct zx_ac_AsymmetricKeyAgreement_s* zx_DEC_ac_AsymmetricKeyAgreement(struct z
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -1159,7 +1072,7 @@ struct zx_ac_AsymmetricKeyAgreement_s* zx_DEC_ac_AsymmetricKeyAgreement(struct z
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -1206,10 +1119,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -1218,12 +1129,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -1252,12 +1159,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -1287,7 +1189,6 @@ next_attr:
 struct zx_ac_AuthenticatingAuthority_s* zx_DEC_ac_AuthenticatingAuthority(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -1307,10 +1208,8 @@ struct zx_ac_AuthenticatingAuthority_s* zx_DEC_ac_AuthenticatingAuthority(struct
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_ID_ATTR:
@@ -1321,7 +1220,7 @@ struct zx_ac_AuthenticatingAuthority_s* zx_DEC_ac_AuthenticatingAuthority(struct
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -1330,7 +1229,7 @@ struct zx_ac_AuthenticatingAuthority_s* zx_DEC_ac_AuthenticatingAuthority(struct
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -1377,10 +1276,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -1389,12 +1286,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -1423,12 +1316,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -1458,7 +1346,6 @@ next_attr:
 struct zx_ac_AuthenticationContextStatement_s* zx_DEC_ac_AuthenticationContextStatement(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -1478,10 +1365,8 @@ struct zx_ac_AuthenticationContextStatement_s* zx_DEC_ac_AuthenticationContextSt
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_ID_ATTR:
@@ -1492,7 +1377,7 @@ struct zx_ac_AuthenticationContextStatement_s* zx_DEC_ac_AuthenticationContextSt
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -1501,7 +1386,7 @@ struct zx_ac_AuthenticationContextStatement_s* zx_DEC_ac_AuthenticationContextSt
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -1548,10 +1433,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -1560,12 +1443,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -1624,12 +1503,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -1659,7 +1533,6 @@ next_attr:
 struct zx_ac_AuthenticationMethod_s* zx_DEC_ac_AuthenticationMethod(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -1679,15 +1552,13 @@ struct zx_ac_AuthenticationMethod_s* zx_DEC_ac_AuthenticationMethod(struct zx_ct
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -1696,7 +1567,7 @@ struct zx_ac_AuthenticationMethod_s* zx_DEC_ac_AuthenticationMethod(struct zx_ct
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -1743,10 +1614,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -1755,12 +1624,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -1804,12 +1669,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -1839,7 +1699,6 @@ next_attr:
 struct zx_ac_Authenticator_s* zx_DEC_ac_Authenticator(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -1859,15 +1718,13 @@ struct zx_ac_Authenticator_s* zx_DEC_ac_Authenticator(struct zx_ctx* c, struct z
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -1876,7 +1733,7 @@ struct zx_ac_Authenticator_s* zx_DEC_ac_Authenticator(struct zx_ctx* c, struct z
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -1923,10 +1780,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -1935,12 +1790,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -2019,12 +1870,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -2054,7 +1900,6 @@ next_attr:
 struct zx_ac_AuthenticatorTransportProtocol_s* zx_DEC_ac_AuthenticatorTransportProtocol(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -2074,15 +1919,13 @@ struct zx_ac_AuthenticatorTransportProtocol_s* zx_DEC_ac_AuthenticatorTransportP
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -2091,7 +1934,7 @@ struct zx_ac_AuthenticatorTransportProtocol_s* zx_DEC_ac_AuthenticatorTransportP
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -2138,10 +1981,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -2150,12 +1991,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -2219,12 +2056,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -2254,7 +2086,6 @@ next_attr:
 struct zx_ac_DeactivationCallCenter_s* zx_DEC_ac_DeactivationCallCenter(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -2274,15 +2105,13 @@ struct zx_ac_DeactivationCallCenter_s* zx_DEC_ac_DeactivationCallCenter(struct z
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -2291,7 +2120,7 @@ struct zx_ac_DeactivationCallCenter_s* zx_DEC_ac_DeactivationCallCenter(struct z
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -2338,10 +2167,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -2350,12 +2177,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -2384,12 +2207,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -2419,7 +2237,6 @@ next_attr:
 struct zx_ac_DigSig_s* zx_DEC_ac_DigSig(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -2439,15 +2256,13 @@ struct zx_ac_DigSig_s* zx_DEC_ac_DigSig(struct zx_ctx* c, struct zx_ns_s* ns )
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -2456,7 +2271,7 @@ struct zx_ac_DigSig_s* zx_DEC_ac_DigSig(struct zx_ctx* c, struct zx_ns_s* ns )
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -2503,10 +2318,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -2515,12 +2328,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -2549,12 +2358,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -2584,7 +2388,6 @@ next_attr:
 struct zx_ac_Extension_s* zx_DEC_ac_Extension(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -2604,15 +2407,13 @@ struct zx_ac_Extension_s* zx_DEC_ac_Extension(struct zx_ctx* c, struct zx_ns_s* 
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -2621,7 +2422,7 @@ struct zx_ac_Extension_s* zx_DEC_ac_Extension(struct zx_ctx* c, struct zx_ns_s* 
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -2668,10 +2469,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -2680,12 +2479,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -2709,12 +2504,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -2744,7 +2534,6 @@ next_attr:
 struct zx_ac_Generation_s* zx_DEC_ac_Generation(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -2764,10 +2553,8 @@ struct zx_ac_Generation_s* zx_DEC_ac_Generation(struct zx_ctx* c, struct zx_ns_s
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_mechanism_ATTR:
@@ -2778,7 +2565,7 @@ struct zx_ac_Generation_s* zx_DEC_ac_Generation(struct zx_ctx* c, struct zx_ns_s
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -2787,7 +2574,7 @@ struct zx_ac_Generation_s* zx_DEC_ac_Generation(struct zx_ctx* c, struct zx_ns_s
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -2834,10 +2621,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -2846,12 +2631,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -2875,12 +2656,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -2910,7 +2686,6 @@ next_attr:
 struct zx_ac_GoverningAgreementRef_s* zx_DEC_ac_GoverningAgreementRef(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -2930,10 +2705,8 @@ struct zx_ac_GoverningAgreementRef_s* zx_DEC_ac_GoverningAgreementRef(struct zx_
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_governingAgreementRef_ATTR:
@@ -2944,7 +2717,7 @@ struct zx_ac_GoverningAgreementRef_s* zx_DEC_ac_GoverningAgreementRef(struct zx_
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -2953,7 +2726,7 @@ struct zx_ac_GoverningAgreementRef_s* zx_DEC_ac_GoverningAgreementRef(struct zx_
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -3000,10 +2773,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -3012,12 +2783,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -3041,12 +2808,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -3076,7 +2838,6 @@ next_attr:
 struct zx_ac_GoverningAgreements_s* zx_DEC_ac_GoverningAgreements(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -3096,15 +2857,13 @@ struct zx_ac_GoverningAgreements_s* zx_DEC_ac_GoverningAgreements(struct zx_ctx*
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -3113,7 +2872,7 @@ struct zx_ac_GoverningAgreements_s* zx_DEC_ac_GoverningAgreements(struct zx_ctx*
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -3160,10 +2919,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -3172,12 +2929,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -3206,12 +2959,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -3241,7 +2989,6 @@ next_attr:
 struct zx_ac_HTTP_s* zx_DEC_ac_HTTP(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -3261,15 +3008,13 @@ struct zx_ac_HTTP_s* zx_DEC_ac_HTTP(struct zx_ctx* c, struct zx_ns_s* ns )
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -3278,7 +3023,7 @@ struct zx_ac_HTTP_s* zx_DEC_ac_HTTP(struct zx_ctx* c, struct zx_ns_s* ns )
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -3325,10 +3070,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -3337,12 +3080,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -3371,12 +3110,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -3406,7 +3140,6 @@ next_attr:
 struct zx_ac_IPAddress_s* zx_DEC_ac_IPAddress(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -3426,15 +3159,13 @@ struct zx_ac_IPAddress_s* zx_DEC_ac_IPAddress(struct zx_ctx* c, struct zx_ns_s* 
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -3443,7 +3174,7 @@ struct zx_ac_IPAddress_s* zx_DEC_ac_IPAddress(struct zx_ctx* c, struct zx_ns_s* 
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -3490,10 +3221,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -3502,12 +3231,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -3536,12 +3261,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -3571,7 +3291,6 @@ next_attr:
 struct zx_ac_IPSec_s* zx_DEC_ac_IPSec(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -3591,15 +3310,13 @@ struct zx_ac_IPSec_s* zx_DEC_ac_IPSec(struct zx_ctx* c, struct zx_ns_s* ns )
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -3608,7 +3325,7 @@ struct zx_ac_IPSec_s* zx_DEC_ac_IPSec(struct zx_ctx* c, struct zx_ns_s* ns )
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -3655,10 +3372,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -3667,12 +3382,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -3701,12 +3412,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -3736,7 +3442,6 @@ next_attr:
 struct zx_ac_Identification_s* zx_DEC_ac_Identification(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -3756,10 +3461,8 @@ struct zx_ac_Identification_s* zx_DEC_ac_Identification(struct zx_ctx* c, struct
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_nym_ATTR:
@@ -3770,7 +3473,7 @@ struct zx_ac_Identification_s* zx_DEC_ac_Identification(struct zx_ctx* c, struct
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -3779,7 +3482,7 @@ struct zx_ac_Identification_s* zx_DEC_ac_Identification(struct zx_ctx* c, struct
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -3826,10 +3529,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -3838,12 +3539,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -3882,12 +3579,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -3917,7 +3609,6 @@ next_attr:
 struct zx_ac_KeyActivation_s* zx_DEC_ac_KeyActivation(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -3937,15 +3628,13 @@ struct zx_ac_KeyActivation_s* zx_DEC_ac_KeyActivation(struct zx_ctx* c, struct z
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -3954,7 +3643,7 @@ struct zx_ac_KeyActivation_s* zx_DEC_ac_KeyActivation(struct zx_ctx* c, struct z
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -4001,10 +3690,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -4013,12 +3700,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -4052,12 +3735,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -4087,7 +3765,6 @@ next_attr:
 struct zx_ac_KeySharing_s* zx_DEC_ac_KeySharing(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -4107,10 +3784,8 @@ struct zx_ac_KeySharing_s* zx_DEC_ac_KeySharing(struct zx_ctx* c, struct zx_ns_s
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_sharing_ATTR:
@@ -4121,7 +3796,7 @@ struct zx_ac_KeySharing_s* zx_DEC_ac_KeySharing(struct zx_ctx* c, struct zx_ns_s
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -4130,7 +3805,7 @@ struct zx_ac_KeySharing_s* zx_DEC_ac_KeySharing(struct zx_ctx* c, struct zx_ns_s
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -4177,10 +3852,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -4189,12 +3862,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -4218,12 +3887,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -4253,7 +3917,6 @@ next_attr:
 struct zx_ac_KeyStorage_s* zx_DEC_ac_KeyStorage(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -4273,10 +3936,8 @@ struct zx_ac_KeyStorage_s* zx_DEC_ac_KeyStorage(struct zx_ctx* c, struct zx_ns_s
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_medium_ATTR:
@@ -4287,7 +3948,7 @@ struct zx_ac_KeyStorage_s* zx_DEC_ac_KeyStorage(struct zx_ctx* c, struct zx_ns_s
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -4296,7 +3957,7 @@ struct zx_ac_KeyStorage_s* zx_DEC_ac_KeyStorage(struct zx_ctx* c, struct zx_ns_s
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -4343,10 +4004,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -4355,12 +4014,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -4384,12 +4039,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -4419,7 +4069,6 @@ next_attr:
 struct zx_ac_Length_s* zx_DEC_ac_Length(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -4439,10 +4088,8 @@ struct zx_ac_Length_s* zx_DEC_ac_Length(struct zx_ctx* c, struct zx_ns_s* ns )
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_max_ATTR:
@@ -4459,7 +4106,7 @@ struct zx_ac_Length_s* zx_DEC_ac_Length(struct zx_ctx* c, struct zx_ns_s* ns )
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -4468,7 +4115,7 @@ struct zx_ac_Length_s* zx_DEC_ac_Length(struct zx_ctx* c, struct zx_ns_s* ns )
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -4515,10 +4162,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -4527,12 +4172,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -4556,12 +4197,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -4591,7 +4227,6 @@ next_attr:
 struct zx_ac_MobileNetworkEndToEndEncryption_s* zx_DEC_ac_MobileNetworkEndToEndEncryption(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -4611,15 +4246,13 @@ struct zx_ac_MobileNetworkEndToEndEncryption_s* zx_DEC_ac_MobileNetworkEndToEndE
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -4628,7 +4261,7 @@ struct zx_ac_MobileNetworkEndToEndEncryption_s* zx_DEC_ac_MobileNetworkEndToEndE
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -4675,10 +4308,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -4687,12 +4318,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -4721,12 +4348,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -4756,7 +4378,6 @@ next_attr:
 struct zx_ac_MobileNetworkNoEncryption_s* zx_DEC_ac_MobileNetworkNoEncryption(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -4776,15 +4397,13 @@ struct zx_ac_MobileNetworkNoEncryption_s* zx_DEC_ac_MobileNetworkNoEncryption(st
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -4793,7 +4412,7 @@ struct zx_ac_MobileNetworkNoEncryption_s* zx_DEC_ac_MobileNetworkNoEncryption(st
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -4840,10 +4459,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -4852,12 +4469,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -4886,12 +4499,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -4921,7 +4529,6 @@ next_attr:
 struct zx_ac_MobileNetworkRadioEncryption_s* zx_DEC_ac_MobileNetworkRadioEncryption(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -4941,15 +4548,13 @@ struct zx_ac_MobileNetworkRadioEncryption_s* zx_DEC_ac_MobileNetworkRadioEncrypt
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -4958,7 +4563,7 @@ struct zx_ac_MobileNetworkRadioEncryption_s* zx_DEC_ac_MobileNetworkRadioEncrypt
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -5005,10 +4610,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -5017,12 +4620,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -5051,12 +4650,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -5086,7 +4680,6 @@ next_attr:
 struct zx_ac_OperationalProtection_s* zx_DEC_ac_OperationalProtection(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -5106,15 +4699,13 @@ struct zx_ac_OperationalProtection_s* zx_DEC_ac_OperationalProtection(struct zx_
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -5123,7 +4714,7 @@ struct zx_ac_OperationalProtection_s* zx_DEC_ac_OperationalProtection(struct zx_
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -5170,10 +4761,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -5182,12 +4771,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -5226,12 +4811,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -5261,7 +4841,6 @@ next_attr:
 struct zx_ac_Password_s* zx_DEC_ac_Password(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -5281,15 +4860,13 @@ struct zx_ac_Password_s* zx_DEC_ac_Password(struct zx_ctx* c, struct zx_ns_s* ns
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -5298,7 +4875,7 @@ struct zx_ac_Password_s* zx_DEC_ac_Password(struct zx_ctx* c, struct zx_ns_s* ns
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -5345,10 +4922,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -5357,12 +4932,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -5406,12 +4977,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -5441,7 +5007,6 @@ next_attr:
 struct zx_ac_PhysicalVerification_s* zx_DEC_ac_PhysicalVerification(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -5461,10 +5026,8 @@ struct zx_ac_PhysicalVerification_s* zx_DEC_ac_PhysicalVerification(struct zx_ct
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_credentialLevel_ATTR:
@@ -5475,7 +5038,7 @@ struct zx_ac_PhysicalVerification_s* zx_DEC_ac_PhysicalVerification(struct zx_ct
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -5484,7 +5047,7 @@ struct zx_ac_PhysicalVerification_s* zx_DEC_ac_PhysicalVerification(struct zx_ct
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -5531,10 +5094,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -5543,12 +5104,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -5572,12 +5129,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -5607,7 +5159,6 @@ next_attr:
 struct zx_ac_PreviousSession_s* zx_DEC_ac_PreviousSession(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -5627,15 +5178,13 @@ struct zx_ac_PreviousSession_s* zx_DEC_ac_PreviousSession(struct zx_ctx* c, stru
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -5644,7 +5193,7 @@ struct zx_ac_PreviousSession_s* zx_DEC_ac_PreviousSession(struct zx_ctx* c, stru
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -5691,10 +5240,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -5703,12 +5250,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -5737,12 +5280,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -5772,7 +5310,6 @@ next_attr:
 struct zx_ac_PrincipalAuthenticationMechanism_s* zx_DEC_ac_PrincipalAuthenticationMechanism(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -5792,15 +5329,13 @@ struct zx_ac_PrincipalAuthenticationMechanism_s* zx_DEC_ac_PrincipalAuthenticati
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -5809,7 +5344,7 @@ struct zx_ac_PrincipalAuthenticationMechanism_s* zx_DEC_ac_PrincipalAuthenticati
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -5856,10 +5391,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -5868,12 +5401,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -5922,12 +5451,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -5957,7 +5481,6 @@ next_attr:
 struct zx_ac_PrivateKeyProtection_s* zx_DEC_ac_PrivateKeyProtection(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -5977,15 +5500,13 @@ struct zx_ac_PrivateKeyProtection_s* zx_DEC_ac_PrivateKeyProtection(struct zx_ct
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -5994,7 +5515,7 @@ struct zx_ac_PrivateKeyProtection_s* zx_DEC_ac_PrivateKeyProtection(struct zx_ct
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -6041,10 +5562,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -6053,12 +5572,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -6102,12 +5617,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -6137,7 +5647,6 @@ next_attr:
 struct zx_ac_ResumeSession_s* zx_DEC_ac_ResumeSession(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -6157,15 +5666,13 @@ struct zx_ac_ResumeSession_s* zx_DEC_ac_ResumeSession(struct zx_ctx* c, struct z
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -6174,7 +5681,7 @@ struct zx_ac_ResumeSession_s* zx_DEC_ac_ResumeSession(struct zx_ctx* c, struct z
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -6221,10 +5728,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -6233,12 +5738,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -6267,12 +5768,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -6302,7 +5798,6 @@ next_attr:
 struct zx_ac_SSL_s* zx_DEC_ac_SSL(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -6322,15 +5817,13 @@ struct zx_ac_SSL_s* zx_DEC_ac_SSL(struct zx_ctx* c, struct zx_ns_s* ns )
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -6339,7 +5832,7 @@ struct zx_ac_SSL_s* zx_DEC_ac_SSL(struct zx_ctx* c, struct zx_ns_s* ns )
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -6386,10 +5879,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -6398,12 +5889,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -6432,12 +5919,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -6467,7 +5949,6 @@ next_attr:
 struct zx_ac_SecretKeyProtection_s* zx_DEC_ac_SecretKeyProtection(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -6487,15 +5968,13 @@ struct zx_ac_SecretKeyProtection_s* zx_DEC_ac_SecretKeyProtection(struct zx_ctx*
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -6504,7 +5983,7 @@ struct zx_ac_SecretKeyProtection_s* zx_DEC_ac_SecretKeyProtection(struct zx_ctx*
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -6551,10 +6030,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -6563,12 +6040,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -6607,12 +6080,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -6642,7 +6110,6 @@ next_attr:
 struct zx_ac_SecurityAudit_s* zx_DEC_ac_SecurityAudit(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -6662,15 +6129,13 @@ struct zx_ac_SecurityAudit_s* zx_DEC_ac_SecurityAudit(struct zx_ctx* c, struct z
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -6679,7 +6144,7 @@ struct zx_ac_SecurityAudit_s* zx_DEC_ac_SecurityAudit(struct zx_ctx* c, struct z
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -6726,10 +6191,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -6738,12 +6201,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -6777,12 +6236,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -6812,7 +6266,6 @@ next_attr:
 struct zx_ac_SharedSecretChallengeResponse_s* zx_DEC_ac_SharedSecretChallengeResponse(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -6832,15 +6285,13 @@ struct zx_ac_SharedSecretChallengeResponse_s* zx_DEC_ac_SharedSecretChallengeRes
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -6849,7 +6300,7 @@ struct zx_ac_SharedSecretChallengeResponse_s* zx_DEC_ac_SharedSecretChallengeRes
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -6896,10 +6347,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -6908,12 +6357,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -6942,12 +6387,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -6977,7 +6417,6 @@ next_attr:
 struct zx_ac_SharedSecretDynamicPlaintext_s* zx_DEC_ac_SharedSecretDynamicPlaintext(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -6997,15 +6436,13 @@ struct zx_ac_SharedSecretDynamicPlaintext_s* zx_DEC_ac_SharedSecretDynamicPlaint
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -7014,7 +6451,7 @@ struct zx_ac_SharedSecretDynamicPlaintext_s* zx_DEC_ac_SharedSecretDynamicPlaint
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -7061,10 +6498,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -7073,12 +6508,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -7107,12 +6538,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -7142,7 +6568,6 @@ next_attr:
 struct zx_ac_Smartcard_s* zx_DEC_ac_Smartcard(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -7162,15 +6587,13 @@ struct zx_ac_Smartcard_s* zx_DEC_ac_Smartcard(struct zx_ctx* c, struct zx_ns_s* 
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -7179,7 +6602,7 @@ struct zx_ac_Smartcard_s* zx_DEC_ac_Smartcard(struct zx_ctx* c, struct zx_ns_s* 
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -7226,10 +6649,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -7238,12 +6659,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -7272,12 +6689,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -7307,7 +6719,6 @@ next_attr:
 struct zx_ac_SwitchAudit_s* zx_DEC_ac_SwitchAudit(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -7327,15 +6738,13 @@ struct zx_ac_SwitchAudit_s* zx_DEC_ac_SwitchAudit(struct zx_ctx* c, struct zx_ns
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -7344,7 +6753,7 @@ struct zx_ac_SwitchAudit_s* zx_DEC_ac_SwitchAudit(struct zx_ctx* c, struct zx_ns
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -7391,10 +6800,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -7403,12 +6810,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -7437,12 +6840,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -7472,7 +6870,6 @@ next_attr:
 struct zx_ac_TechnicalProtection_s* zx_DEC_ac_TechnicalProtection(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -7492,15 +6889,13 @@ struct zx_ac_TechnicalProtection_s* zx_DEC_ac_TechnicalProtection(struct zx_ctx*
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -7509,7 +6904,7 @@ struct zx_ac_TechnicalProtection_s* zx_DEC_ac_TechnicalProtection(struct zx_ctx*
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -7556,10 +6951,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -7568,12 +6961,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -7612,12 +7001,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -7647,7 +7031,6 @@ next_attr:
 struct zx_ac_TimeSyncToken_s* zx_DEC_ac_TimeSyncToken(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -7667,10 +7050,8 @@ struct zx_ac_TimeSyncToken_s* zx_DEC_ac_TimeSyncToken(struct zx_ctx* c, struct z
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
     case zx_DeviceInHand_ATTR:
@@ -7693,7 +7074,7 @@ struct zx_ac_TimeSyncToken_s* zx_DEC_ac_TimeSyncToken(struct zx_ctx* c, struct z
       break;
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -7702,7 +7083,7 @@ struct zx_ac_TimeSyncToken_s* zx_DEC_ac_TimeSyncToken(struct zx_ctx* c, struct z
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -7749,10 +7130,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -7761,12 +7140,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -7790,12 +7165,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -7825,7 +7195,6 @@ next_attr:
 struct zx_ac_Token_s* zx_DEC_ac_Token(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -7845,15 +7214,13 @@ struct zx_ac_Token_s* zx_DEC_ac_Token(struct zx_ctx* c, struct zx_ns_s* ns )
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -7862,7 +7229,7 @@ struct zx_ac_Token_s* zx_DEC_ac_Token(struct zx_ctx* c, struct zx_ns_s* ns )
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -7909,10 +7276,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -7921,12 +7286,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -7960,12 +7321,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -7995,7 +7351,6 @@ next_attr:
 struct zx_ac_WTLS_s* zx_DEC_ac_WTLS(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -8015,15 +7370,13 @@ struct zx_ac_WTLS_s* zx_DEC_ac_WTLS(struct zx_ctx* c, struct zx_ns_s* ns )
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -8032,7 +7385,7 @@ struct zx_ac_WTLS_s* zx_DEC_ac_WTLS(struct zx_ctx* c, struct zx_ns_s* ns )
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -8079,10 +7432,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -8091,12 +7442,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -8125,12 +7472,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -8160,7 +7502,6 @@ next_attr:
 struct zx_ac_WrittenConsent_s* zx_DEC_ac_WrittenConsent(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -8180,15 +7521,13 @@ struct zx_ac_WrittenConsent_s* zx_DEC_ac_WrittenConsent(struct zx_ctx* c, struct
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -8197,7 +7536,7 @@ struct zx_ac_WrittenConsent_s* zx_DEC_ac_WrittenConsent(struct zx_ctx* c, struct
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -8244,10 +7583,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -8256,12 +7593,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -8290,12 +7623,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -8325,7 +7653,6 @@ next_attr:
 struct zx_ac_ZeroKnowledge_s* zx_DEC_ac_ZeroKnowledge(struct zx_ctx* c, struct zx_ns_s* ns )
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -8345,15 +7672,13 @@ struct zx_ac_ZeroKnowledge_s* zx_DEC_ac_ZeroKnowledge(struct zx_ctx* c, struct z
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -8362,7 +7687,7 @@ struct zx_ac_ZeroKnowledge_s* zx_DEC_ac_ZeroKnowledge(struct zx_ctx* c, struct z
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -8409,10 +7734,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -8421,12 +7744,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -8455,12 +7774,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 

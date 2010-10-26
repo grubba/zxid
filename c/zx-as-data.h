@@ -177,7 +177,7 @@ struct zx_as_SASLRequest_s {
   struct zx_as_Extensions_s* Extensions;	/* {0,1}  */
   struct zx_str* advisoryAuthnID;	/* {0,1} attribute xs:string */
   struct zx_str* authzID;	/* {0,1} attribute xs:string */
-  struct zx_str* mechanism;	/* {1,1} attribute xs:string */
+  struct zx_str* mechanism;	/* {1,1} attribute principalchosen */
 };
 
 #ifdef ZX_ENA_GETPUT

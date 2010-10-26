@@ -161,6 +161,41 @@ int zx_LEN_SO_root(struct zx_ctx* c, struct zx_root_s* x )
 	  len += zx_LEN_SO_md_EntitiesDescriptor(c, e);
   }
   {
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
+	  len += zx_LEN_SO_xasp_XACMLAuthzDecisionQuery(c, e);
+  }
+  {
+      struct zx_xasp_XACMLPolicyQuery_s* e;
+      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n)
+	  len += zx_LEN_SO_xasp_XACMLPolicyQuery(c, e);
+  }
+  {
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
+	  len += zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(c, e);
+  }
+  {
+      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
+      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n)
+	  len += zx_LEN_SO_xaspcd1_XACMLPolicyQuery(c, e);
+  }
+  {
+      struct zx_a_EndpointReference_s* e;
+      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n)
+	  len += zx_LEN_SO_a_EndpointReference(c, e);
+  }
+  {
+      struct zx_sec_Token_s* e;
+      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n)
+	  len += zx_LEN_SO_sec_Token(c, e);
+  }
+  {
+      struct zx_hrxml_Candidate_s* e;
+      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n)
+	  len += zx_LEN_SO_hrxml_Candidate(c, e);
+  }
+  {
       struct zx_sa11_Assertion_s* e;
       for (e = x->sa11_Assertion; e; e = (struct zx_sa11_Assertion_s*)e->gg.g.n)
 	  len += zx_LEN_SO_sa11_Assertion(c, e);
@@ -245,44 +280,9 @@ int zx_LEN_SO_root(struct zx_ctx* c, struct zx_root_s* x )
       for (e = x->m20_EntitiesDescriptor; e; e = (struct zx_m20_EntitiesDescriptor_s*)e->gg.g.n)
 	  len += zx_LEN_SO_m20_EntitiesDescriptor(c, e);
   }
-  {
-      struct zx_a_EndpointReference_s* e;
-      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n)
-	  len += zx_LEN_SO_a_EndpointReference(c, e);
-  }
-  {
-      struct zx_sec_Token_s* e;
-      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n)
-	  len += zx_LEN_SO_sec_Token(c, e);
-  }
-  {
-      struct zx_hrxml_Candidate_s* e;
-      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n)
-	  len += zx_LEN_SO_hrxml_Candidate(c, e);
-  }
-  {
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
-	  len += zx_LEN_SO_xasp_XACMLAuthzDecisionQuery(c, e);
-  }
-  {
-      struct zx_xasp_XACMLPolicyQuery_s* e;
-      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n)
-	  len += zx_LEN_SO_xasp_XACMLPolicyQuery(c, e);
-  }
-  {
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
-	  len += zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(c, e);
-  }
-  {
-      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
-      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n)
-	  len += zx_LEN_SO_xaspcd1_XACMLPolicyQuery(c, e);
-  }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, ":root", len);
   return len;
@@ -382,6 +382,41 @@ int zx_LEN_WO_root(struct zx_ctx* c, struct zx_root_s* x )
 	  len += zx_LEN_WO_md_EntitiesDescriptor(c, e);
   }
   {
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
+	  len += zx_LEN_WO_xasp_XACMLAuthzDecisionQuery(c, e);
+  }
+  {
+      struct zx_xasp_XACMLPolicyQuery_s* e;
+      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n)
+	  len += zx_LEN_WO_xasp_XACMLPolicyQuery(c, e);
+  }
+  {
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
+	  len += zx_LEN_WO_xaspcd1_XACMLAuthzDecisionQuery(c, e);
+  }
+  {
+      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
+      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n)
+	  len += zx_LEN_WO_xaspcd1_XACMLPolicyQuery(c, e);
+  }
+  {
+      struct zx_a_EndpointReference_s* e;
+      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n)
+	  len += zx_LEN_WO_a_EndpointReference(c, e);
+  }
+  {
+      struct zx_sec_Token_s* e;
+      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n)
+	  len += zx_LEN_WO_sec_Token(c, e);
+  }
+  {
+      struct zx_hrxml_Candidate_s* e;
+      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n)
+	  len += zx_LEN_WO_hrxml_Candidate(c, e);
+  }
+  {
       struct zx_sa11_Assertion_s* e;
       for (e = x->sa11_Assertion; e; e = (struct zx_sa11_Assertion_s*)e->gg.g.n)
 	  len += zx_LEN_WO_sa11_Assertion(c, e);
@@ -466,44 +501,9 @@ int zx_LEN_WO_root(struct zx_ctx* c, struct zx_root_s* x )
       for (e = x->m20_EntitiesDescriptor; e; e = (struct zx_m20_EntitiesDescriptor_s*)e->gg.g.n)
 	  len += zx_LEN_WO_m20_EntitiesDescriptor(c, e);
   }
-  {
-      struct zx_a_EndpointReference_s* e;
-      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n)
-	  len += zx_LEN_WO_a_EndpointReference(c, e);
-  }
-  {
-      struct zx_sec_Token_s* e;
-      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n)
-	  len += zx_LEN_WO_sec_Token(c, e);
-  }
-  {
-      struct zx_hrxml_Candidate_s* e;
-      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n)
-	  len += zx_LEN_WO_hrxml_Candidate(c, e);
-  }
-  {
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
-	  len += zx_LEN_WO_xasp_XACMLAuthzDecisionQuery(c, e);
-  }
-  {
-      struct zx_xasp_XACMLPolicyQuery_s* e;
-      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n)
-	  len += zx_LEN_WO_xasp_XACMLPolicyQuery(c, e);
-  }
-  {
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
-	  len += zx_LEN_WO_xaspcd1_XACMLAuthzDecisionQuery(c, e);
-  }
-  {
-      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
-      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n)
-	  len += zx_LEN_WO_xaspcd1_XACMLPolicyQuery(c, e);
-  }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, ":root", len);
   return len;
@@ -603,6 +603,41 @@ char* zx_ENC_SO_root(struct zx_ctx* c, struct zx_root_s* x, char* p )
 	  p = zx_ENC_SO_md_EntitiesDescriptor(c, e, p);
   }
   {
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
+	  p = zx_ENC_SO_xasp_XACMLAuthzDecisionQuery(c, e, p);
+  }
+  {
+      struct zx_xasp_XACMLPolicyQuery_s* e;
+      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n)
+	  p = zx_ENC_SO_xasp_XACMLPolicyQuery(c, e, p);
+  }
+  {
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
+	  p = zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(c, e, p);
+  }
+  {
+      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
+      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n)
+	  p = zx_ENC_SO_xaspcd1_XACMLPolicyQuery(c, e, p);
+  }
+  {
+      struct zx_a_EndpointReference_s* e;
+      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n)
+	  p = zx_ENC_SO_a_EndpointReference(c, e, p);
+  }
+  {
+      struct zx_sec_Token_s* e;
+      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n)
+	  p = zx_ENC_SO_sec_Token(c, e, p);
+  }
+  {
+      struct zx_hrxml_Candidate_s* e;
+      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n)
+	  p = zx_ENC_SO_hrxml_Candidate(c, e, p);
+  }
+  {
       struct zx_sa11_Assertion_s* e;
       for (e = x->sa11_Assertion; e; e = (struct zx_sa11_Assertion_s*)e->gg.g.n)
 	  p = zx_ENC_SO_sa11_Assertion(c, e, p);
@@ -686,41 +721,6 @@ char* zx_ENC_SO_root(struct zx_ctx* c, struct zx_root_s* x, char* p )
       struct zx_m20_EntitiesDescriptor_s* e;
       for (e = x->m20_EntitiesDescriptor; e; e = (struct zx_m20_EntitiesDescriptor_s*)e->gg.g.n)
 	  p = zx_ENC_SO_m20_EntitiesDescriptor(c, e, p);
-  }
-  {
-      struct zx_a_EndpointReference_s* e;
-      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n)
-	  p = zx_ENC_SO_a_EndpointReference(c, e, p);
-  }
-  {
-      struct zx_sec_Token_s* e;
-      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n)
-	  p = zx_ENC_SO_sec_Token(c, e, p);
-  }
-  {
-      struct zx_hrxml_Candidate_s* e;
-      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n)
-	  p = zx_ENC_SO_hrxml_Candidate(c, e, p);
-  }
-  {
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
-	  p = zx_ENC_SO_xasp_XACMLAuthzDecisionQuery(c, e, p);
-  }
-  {
-      struct zx_xasp_XACMLPolicyQuery_s* e;
-      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n)
-	  p = zx_ENC_SO_xasp_XACMLPolicyQuery(c, e, p);
-  }
-  {
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
-	  p = zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(c, e, p);
-  }
-  {
-      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
-      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n)
-	  p = zx_ENC_SO_xaspcd1_XACMLPolicyQuery(c, e, p);
   }
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -848,7 +848,7 @@ int zx_LEN_SO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x , int simplelen,
   
 
 
-  len += zx_len_so_common(c, x);
+  len += zx_len_so_common(c, x, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "simple_elem", len);
   return len;
@@ -882,7 +882,7 @@ int zx_LEN_WO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x , int simplelen)
   
 
 
-  len += zx_len_wo_common(c, x); 
+  len += zx_len_wo_common(c, x, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "simple_elem", len);
   return len;
@@ -904,8 +904,10 @@ char* zx_ENC_SO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p , cha
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_SIMPLE_TAG(p, x->g.tok, simpletag, simplelen, ns);
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, ns, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, ns, &pop_seen);
+  zx_see_unknown_attrs_ns(c, x->any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->any_attr);
 #else
@@ -949,11 +951,11 @@ char* zx_ENC_WO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p , cha
   ZX_OUT_MEM(p, simpletag, simplelen);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->any_attr);
@@ -1015,6 +1017,7 @@ struct zx_str* zx_EASY_ENC_WO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x 
 /* Called by: */
 int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
 {
+  struct zx_ns_s* pop_seen = 0;
   int len;
   //struct zx_elem_s* kid;
   switch (x->g.tok) {
@@ -4153,7 +4156,10 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
     len = 1 + ZX_ANY_EL(x)->name_len + 1 + 2 + ZX_ANY_EL(x)->name_len + 1;
     if (x->g.ns && x->g.ns->prefix_len)
       len += (x->g.ns->prefix_len + 1) * 2;
-    len += zx_len_wo_common(c, x);
+    if (c->inc_ns_len)
+      len += zx_len_inc_ns(c, &pop_seen);
+    len += zx_len_wo_common(c, x, &pop_seen);
+    zx_pop_seen(pop_seen);
     return len;
   case ZX_TOK_DATA:
     return ((struct zx_str*)x)->len;
@@ -7312,10 +7318,11 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
     }
     ZX_OUT_MEM(p, ZX_ANY_EL(x)->name, ZX_ANY_EL(x)->name_len);
     zx_add_xmlns_if_not_seen(c, x->g.ns, &pop_seen);
-    
-    /* *** xmlns specs */ 
+    if (c->inc_ns)
+      zx_add_inc_ns(c, &pop_seen);
+    zx_see_unknown_attrs_ns(c, x->any_attr, &pop_seen);
     p = zx_enc_seen(p, pop_seen); 
-    p = zx_enc_unknown_attrs(p, ZX_ANY_EL(x)->gg.any_attr);
+    p = zx_enc_unknown_attrs(p, x->any_attr);
   
     for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.wo)))
       p = zx_ENC_WO_any_elem(c, kid, p);

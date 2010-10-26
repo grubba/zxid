@@ -3298,6 +3298,10 @@ void zx_sa_AttributeValue_DEL_EndpointReference(struct zx_sa_AttributeValue_s* x
 
 #endif
 
+/* FUNC(zx_sa_AttributeValue_GET_type) */
+struct zx_str* zx_sa_AttributeValue_GET_type(struct zx_sa_AttributeValue_s* x) { return x->type; }
+/* FUNC(zx_sa_AttributeValue_PUT_type) */
+void zx_sa_AttributeValue_PUT_type(struct zx_sa_AttributeValue_s* x, struct zx_str* y) { x->type = y; }
 
 
 

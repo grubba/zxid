@@ -427,7 +427,7 @@ struct zx_wst_Issuer_s {
   struct zx_a_Address_s* Address;	/* {1,1}  */
   struct zx_a_ReferenceParameters_s* ReferenceParameters;	/* {0,1} nada */
   struct zx_a_Metadata_s* Metadata;	/* {0,1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* notOnOrAfter;	/* {0,1} attribute xs:dateTime */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */

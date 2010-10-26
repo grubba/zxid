@@ -86,7 +86,6 @@
 struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_ns_s* ns , int n_decode)
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -128,10 +127,8 @@ struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_ns_s* ns , int n_decod
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -140,12 +137,8 @@ struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_ns_s* ns , int n_decod
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -228,6 +221,41 @@ struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_ns_s* ns , int n_decod
             el = (struct zx_elem_s*)zx_DEC_md_EntitiesDescriptor(c, ns);
             el->g.n = &x->EntitiesDescriptor->gg.g;
             x->EntitiesDescriptor = (struct zx_md_EntitiesDescriptor_s*)el;
+            break;
+          case zx_xasp_XACMLAuthzDecisionQuery_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_xasp_XACMLAuthzDecisionQuery(c, ns);
+            el->g.n = &x->XACMLAuthzDecisionQuery->gg.g;
+            x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)el;
+            break;
+          case zx_xasp_XACMLPolicyQuery_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_xasp_XACMLPolicyQuery(c, ns);
+            el->g.n = &x->XACMLPolicyQuery->gg.g;
+            x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)el;
+            break;
+          case zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_xaspcd1_XACMLAuthzDecisionQuery(c, ns);
+            el->g.n = &x->xaspcd1_XACMLAuthzDecisionQuery->gg.g;
+            x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)el;
+            break;
+          case zx_xaspcd1_XACMLPolicyQuery_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_xaspcd1_XACMLPolicyQuery(c, ns);
+            el->g.n = &x->xaspcd1_XACMLPolicyQuery->gg.g;
+            x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)el;
+            break;
+          case zx_a_EndpointReference_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_a_EndpointReference(c, ns);
+            el->g.n = &x->EndpointReference->gg.g;
+            x->EndpointReference = (struct zx_a_EndpointReference_s*)el;
+            break;
+          case zx_sec_Token_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_sec_Token(c, ns);
+            el->g.n = &x->Token->gg.g;
+            x->Token = (struct zx_sec_Token_s*)el;
+            break;
+          case zx_hrxml_Candidate_ELEM:
+            el = (struct zx_elem_s*)zx_DEC_hrxml_Candidate(c, ns);
+            el->g.n = &x->Candidate->gg.g;
+            x->Candidate = (struct zx_hrxml_Candidate_s*)el;
             break;
           case zx_sa11_Assertion_ELEM:
             el = (struct zx_elem_s*)zx_DEC_sa11_Assertion(c, ns);
@@ -314,41 +342,6 @@ struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_ns_s* ns , int n_decod
             el->g.n = &x->m20_EntitiesDescriptor->gg.g;
             x->m20_EntitiesDescriptor = (struct zx_m20_EntitiesDescriptor_s*)el;
             break;
-          case zx_a_EndpointReference_ELEM:
-            el = (struct zx_elem_s*)zx_DEC_a_EndpointReference(c, ns);
-            el->g.n = &x->EndpointReference->gg.g;
-            x->EndpointReference = (struct zx_a_EndpointReference_s*)el;
-            break;
-          case zx_sec_Token_ELEM:
-            el = (struct zx_elem_s*)zx_DEC_sec_Token(c, ns);
-            el->g.n = &x->Token->gg.g;
-            x->Token = (struct zx_sec_Token_s*)el;
-            break;
-          case zx_hrxml_Candidate_ELEM:
-            el = (struct zx_elem_s*)zx_DEC_hrxml_Candidate(c, ns);
-            el->g.n = &x->Candidate->gg.g;
-            x->Candidate = (struct zx_hrxml_Candidate_s*)el;
-            break;
-          case zx_xasp_XACMLAuthzDecisionQuery_ELEM:
-            el = (struct zx_elem_s*)zx_DEC_xasp_XACMLAuthzDecisionQuery(c, ns);
-            el->g.n = &x->XACMLAuthzDecisionQuery->gg.g;
-            x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)el;
-            break;
-          case zx_xasp_XACMLPolicyQuery_ELEM:
-            el = (struct zx_elem_s*)zx_DEC_xasp_XACMLPolicyQuery(c, ns);
-            el->g.n = &x->XACMLPolicyQuery->gg.g;
-            x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)el;
-            break;
-          case zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM:
-            el = (struct zx_elem_s*)zx_DEC_xaspcd1_XACMLAuthzDecisionQuery(c, ns);
-            el->g.n = &x->xaspcd1_XACMLAuthzDecisionQuery->gg.g;
-            x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)el;
-            break;
-          case zx_xaspcd1_XACMLPolicyQuery_ELEM:
-            el = (struct zx_elem_s*)zx_DEC_xaspcd1_XACMLPolicyQuery(c, ns);
-            el->g.n = &x->xaspcd1_XACMLPolicyQuery->gg.g;
-            x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)el;
-            break;
 
 	  default:
 	    el = zx_known_or_unknown_elem(c, tok, &x->gg, c->p - name, name, ns);
@@ -369,12 +362,7 @@ struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_ns_s* ns , int n_decod
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -404,7 +392,6 @@ struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_ns_s* ns , int n_decod
 struct zx_elem_s* zx_DEC_simple_elem(struct zx_ctx* c, struct zx_ns_s* ns , int toke)
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -424,15 +411,13 @@ struct zx_elem_s* zx_DEC_simple_elem(struct zx_ctx* c, struct zx_ns_s* ns , int 
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->xmlns;
@@ -441,7 +426,7 @@ struct zx_elem_s* zx_DEC_simple_elem(struct zx_ctx* c, struct zx_ns_s* ns , int 
     default:
       ss = zx_dec_unknown_attr(c, x, name, data, tok, x->g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -488,10 +473,8 @@ next_attr:
 	if (tok != x->g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -500,12 +483,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -529,12 +508,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->kids;
-  REVERSE_LIST_NEXT(x->kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->any_elem);
-  REVERSE_LIST_NEXT(x->any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->any_attr);
-  REVERSE_LIST_NEXT(x->any_attr, ss, g.n);
+  zx_dec_reverse_lists(x);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -564,7 +538,6 @@ next_attr:
 struct zx_any_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_ns_s* ns , const char* nam, int namlen)
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -586,15 +559,13 @@ struct zx_any_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_ns_s* ns , c
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = zx_attr_lookup(c, name, data-2, &ns);
     switch (tok) {
 
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -603,7 +574,7 @@ struct zx_any_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_ns_s* ns , c
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -650,10 +621,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -662,12 +631,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = zx_elem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -691,12 +656,7 @@ next_attr:
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -729,8 +689,8 @@ struct zx_elem_s* zx_known_or_unknown_elem(struct zx_ctx* c, int tok, struct zx_
   } else {
     D("Known element(%.*s) tok(%d) in wrong context(%d)", len, name, tok, x->g.tok);
   }
-  for (p = name; p < name + len && *p != ':'; ++p) ;  /* look for namespace prefix */
-  if (p < name + len) {
+  p = memchr(name, ':', len);  /* look for namespace prefix */
+  if (p) {
     /*prefix = name;*/
     len -= p+1-name;
     name = p+1;
@@ -756,29 +716,27 @@ int zx_attr_lookup(struct zx_ctx* c, const char* name, const char* lim, struct z
   const char* prefix;
   const char* p;
   
-  for (p = name; p < lim && *p != ':'; ++p) ;  /* look for namespace prefix */
-  if (p < lim) {
+  p = memchr(name, ':', lim-name);  /* look for namespace prefix */
+  if (p) {
     prefix = name;
     name = p+1;
   } else
     prefix = 0;
 
-  if (prefix)
+  /* Look for namespace declaration. Skip as these were prescanned (see above in this file). */
+  if (prefix) {
+    if ((name-1)-prefix == sizeof("xmlns")-1 && !memcmp("xmlns", prefix, sizeof("xmlns")-1))
+      return ZX_TOK_XMLNS;
     *ns = zx_prefix_seen_whine(c, prefix ? (name-1)-prefix : 0, prefix, "zx_attr_lookup", 0);
-  else
+  } else {
+    if (lim-name == sizeof("xmlns")-1 && !memcmp("xmlns", name, sizeof("xmlns")-1))
+      return ZX_TOK_XMLNS;
     *ns = 0;
+  }
   
   zt = zx_attr2tok(name, lim-name);
-  if (!zt) {
-    if (prefix ? ((name-1)-prefix == sizeof("xmlns")-1
-		  && !memcmp("xmlns", prefix, sizeof("xmlns")-1))
-	: (lim-name == sizeof("xmlns")-1
-	   && !memcmp("xmlns", name, sizeof("xmlns")-1))) {
-      /* Namespace declaration. Skip because these were prescanned (see above in this file). */
-      return ZX_TOK_XMLNS;
-    }
+  if (!zt)
     return ZX_TOK_NOT_FOUND;
-  }
 
   /* Look for token whose namespace matches. */
   zt = zx_tok_by_ns(zt, zx_attrs + sizeof(zx_attrs) / sizeof(struct zx_tok), lim-name, name, *ns);
@@ -796,8 +754,8 @@ int zx_elem_lookup(struct zx_ctx* c, const char* name, const char* lim, struct z
   const char* prefix;
   const char* p;
   
-  for (p = name; p < lim && *p != ':'; ++p) ;  /* look for namespace prefix */
-  if (p < lim) {
+  p = memchr(name, ':', lim-name);  /* look for namespace prefix */
+  if (p) {
     prefix = name;
     name = p+1;
   } else

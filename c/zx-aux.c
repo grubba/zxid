@@ -182,6 +182,62 @@ void zx_FREE_root(struct zx_ctx* c, struct zx_root_s* x, int free_strs)
       }
   }
   {
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* en;
+      for (e = x->XACMLAuthzDecisionQuery; e; e = en) {
+	  en = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n;
+	  zx_FREE_xasp_XACMLAuthzDecisionQuery(c, e, free_strs);
+      }
+  }
+  {
+      struct zx_xasp_XACMLPolicyQuery_s* e;
+      struct zx_xasp_XACMLPolicyQuery_s* en;
+      for (e = x->XACMLPolicyQuery; e; e = en) {
+	  en = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n;
+	  zx_FREE_xasp_XACMLPolicyQuery(c, e, free_strs);
+      }
+  }
+  {
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* en;
+      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = en) {
+	  en = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n;
+	  zx_FREE_xaspcd1_XACMLAuthzDecisionQuery(c, e, free_strs);
+      }
+  }
+  {
+      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
+      struct zx_xaspcd1_XACMLPolicyQuery_s* en;
+      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = en) {
+	  en = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n;
+	  zx_FREE_xaspcd1_XACMLPolicyQuery(c, e, free_strs);
+      }
+  }
+  {
+      struct zx_a_EndpointReference_s* e;
+      struct zx_a_EndpointReference_s* en;
+      for (e = x->EndpointReference; e; e = en) {
+	  en = (struct zx_a_EndpointReference_s*)e->gg.g.n;
+	  zx_FREE_a_EndpointReference(c, e, free_strs);
+      }
+  }
+  {
+      struct zx_sec_Token_s* e;
+      struct zx_sec_Token_s* en;
+      for (e = x->Token; e; e = en) {
+	  en = (struct zx_sec_Token_s*)e->gg.g.n;
+	  zx_FREE_sec_Token(c, e, free_strs);
+      }
+  }
+  {
+      struct zx_hrxml_Candidate_s* e;
+      struct zx_hrxml_Candidate_s* en;
+      for (e = x->Candidate; e; e = en) {
+	  en = (struct zx_hrxml_Candidate_s*)e->gg.g.n;
+	  zx_FREE_hrxml_Candidate(c, e, free_strs);
+      }
+  }
+  {
       struct zx_sa11_Assertion_s* e;
       struct zx_sa11_Assertion_s* en;
       for (e = x->sa11_Assertion; e; e = en) {
@@ -317,62 +373,6 @@ void zx_FREE_root(struct zx_ctx* c, struct zx_root_s* x, int free_strs)
 	  zx_FREE_m20_EntitiesDescriptor(c, e, free_strs);
       }
   }
-  {
-      struct zx_a_EndpointReference_s* e;
-      struct zx_a_EndpointReference_s* en;
-      for (e = x->EndpointReference; e; e = en) {
-	  en = (struct zx_a_EndpointReference_s*)e->gg.g.n;
-	  zx_FREE_a_EndpointReference(c, e, free_strs);
-      }
-  }
-  {
-      struct zx_sec_Token_s* e;
-      struct zx_sec_Token_s* en;
-      for (e = x->Token; e; e = en) {
-	  en = (struct zx_sec_Token_s*)e->gg.g.n;
-	  zx_FREE_sec_Token(c, e, free_strs);
-      }
-  }
-  {
-      struct zx_hrxml_Candidate_s* e;
-      struct zx_hrxml_Candidate_s* en;
-      for (e = x->Candidate; e; e = en) {
-	  en = (struct zx_hrxml_Candidate_s*)e->gg.g.n;
-	  zx_FREE_hrxml_Candidate(c, e, free_strs);
-      }
-  }
-  {
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* en;
-      for (e = x->XACMLAuthzDecisionQuery; e; e = en) {
-	  en = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n;
-	  zx_FREE_xasp_XACMLAuthzDecisionQuery(c, e, free_strs);
-      }
-  }
-  {
-      struct zx_xasp_XACMLPolicyQuery_s* e;
-      struct zx_xasp_XACMLPolicyQuery_s* en;
-      for (e = x->XACMLPolicyQuery; e; e = en) {
-	  en = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n;
-	  zx_FREE_xasp_XACMLPolicyQuery(c, e, free_strs);
-      }
-  }
-  {
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* en;
-      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = en) {
-	  en = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n;
-	  zx_FREE_xaspcd1_XACMLAuthzDecisionQuery(c, e, free_strs);
-      }
-  }
-  {
-      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
-      struct zx_xaspcd1_XACMLPolicyQuery_s* en;
-      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = en) {
-	  en = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n;
-	  zx_FREE_xaspcd1_XACMLPolicyQuery(c, e, free_strs);
-      }
-  }
 
 
   zx_free_elem_common(c, &x->gg, free_strs); 
@@ -485,6 +485,41 @@ void zx_DUP_STRS_root(struct zx_ctx* c, struct zx_root_s* x)
 	  zx_DUP_STRS_md_EntitiesDescriptor(c, e);
   }
   {
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
+	  zx_DUP_STRS_xasp_XACMLAuthzDecisionQuery(c, e);
+  }
+  {
+      struct zx_xasp_XACMLPolicyQuery_s* e;
+      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n)
+	  zx_DUP_STRS_xasp_XACMLPolicyQuery(c, e);
+  }
+  {
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
+	  zx_DUP_STRS_xaspcd1_XACMLAuthzDecisionQuery(c, e);
+  }
+  {
+      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
+      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n)
+	  zx_DUP_STRS_xaspcd1_XACMLPolicyQuery(c, e);
+  }
+  {
+      struct zx_a_EndpointReference_s* e;
+      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n)
+	  zx_DUP_STRS_a_EndpointReference(c, e);
+  }
+  {
+      struct zx_sec_Token_s* e;
+      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n)
+	  zx_DUP_STRS_sec_Token(c, e);
+  }
+  {
+      struct zx_hrxml_Candidate_s* e;
+      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n)
+	  zx_DUP_STRS_hrxml_Candidate(c, e);
+  }
+  {
       struct zx_sa11_Assertion_s* e;
       for (e = x->sa11_Assertion; e; e = (struct zx_sa11_Assertion_s*)e->gg.g.n)
 	  zx_DUP_STRS_sa11_Assertion(c, e);
@@ -568,41 +603,6 @@ void zx_DUP_STRS_root(struct zx_ctx* c, struct zx_root_s* x)
       struct zx_m20_EntitiesDescriptor_s* e;
       for (e = x->m20_EntitiesDescriptor; e; e = (struct zx_m20_EntitiesDescriptor_s*)e->gg.g.n)
 	  zx_DUP_STRS_m20_EntitiesDescriptor(c, e);
-  }
-  {
-      struct zx_a_EndpointReference_s* e;
-      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n)
-	  zx_DUP_STRS_a_EndpointReference(c, e);
-  }
-  {
-      struct zx_sec_Token_s* e;
-      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n)
-	  zx_DUP_STRS_sec_Token(c, e);
-  }
-  {
-      struct zx_hrxml_Candidate_s* e;
-      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n)
-	  zx_DUP_STRS_hrxml_Candidate(c, e);
-  }
-  {
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
-	  zx_DUP_STRS_xasp_XACMLAuthzDecisionQuery(c, e);
-  }
-  {
-      struct zx_xasp_XACMLPolicyQuery_s* e;
-      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n)
-	  zx_DUP_STRS_xasp_XACMLPolicyQuery(c, e);
-  }
-  {
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n)
-	  zx_DUP_STRS_xaspcd1_XACMLAuthzDecisionQuery(c, e);
-  }
-  {
-      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
-      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n)
-	  zx_DUP_STRS_xaspcd1_XACMLPolicyQuery(c, e);
   }
 
 }
@@ -810,6 +810,97 @@ struct zx_root_s* zx_DEEP_CLONE_root(struct zx_ctx* c, struct zx_root_s* x, int 
 	  en = zx_DEEP_CLONE_md_EntitiesDescriptor(c, e, dup_strs);
 	  if (!enn)
 	      x->EntitiesDescriptor = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* en;
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* enn;
+      for (enn = 0, e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_xasp_XACMLAuthzDecisionQuery(c, e, dup_strs);
+	  if (!enn)
+	      x->XACMLAuthzDecisionQuery = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
+      struct zx_xasp_XACMLPolicyQuery_s* e;
+      struct zx_xasp_XACMLPolicyQuery_s* en;
+      struct zx_xasp_XACMLPolicyQuery_s* enn;
+      for (enn = 0, e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_xasp_XACMLPolicyQuery(c, e, dup_strs);
+	  if (!enn)
+	      x->XACMLPolicyQuery = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* en;
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* enn;
+      for (enn = 0, e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_xaspcd1_XACMLAuthzDecisionQuery(c, e, dup_strs);
+	  if (!enn)
+	      x->xaspcd1_XACMLAuthzDecisionQuery = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
+      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
+      struct zx_xaspcd1_XACMLPolicyQuery_s* en;
+      struct zx_xaspcd1_XACMLPolicyQuery_s* enn;
+      for (enn = 0, e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_xaspcd1_XACMLPolicyQuery(c, e, dup_strs);
+	  if (!enn)
+	      x->xaspcd1_XACMLPolicyQuery = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
+      struct zx_a_EndpointReference_s* e;
+      struct zx_a_EndpointReference_s* en;
+      struct zx_a_EndpointReference_s* enn;
+      for (enn = 0, e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_a_EndpointReference(c, e, dup_strs);
+	  if (!enn)
+	      x->EndpointReference = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
+      struct zx_sec_Token_s* e;
+      struct zx_sec_Token_s* en;
+      struct zx_sec_Token_s* enn;
+      for (enn = 0, e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_sec_Token(c, e, dup_strs);
+	  if (!enn)
+	      x->Token = en;
+	  else
+	      enn->gg.g.n = &en->gg.g;
+	  enn = en;
+      }
+  }
+  {
+      struct zx_hrxml_Candidate_s* e;
+      struct zx_hrxml_Candidate_s* en;
+      struct zx_hrxml_Candidate_s* enn;
+      for (enn = 0, e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n) {
+	  en = zx_DEEP_CLONE_hrxml_Candidate(c, e, dup_strs);
+	  if (!enn)
+	      x->Candidate = en;
 	  else
 	      enn->gg.g.n = &en->gg.g;
 	  enn = en;
@@ -1036,97 +1127,6 @@ struct zx_root_s* zx_DEEP_CLONE_root(struct zx_ctx* c, struct zx_root_s* x, int 
 	  enn = en;
       }
   }
-  {
-      struct zx_a_EndpointReference_s* e;
-      struct zx_a_EndpointReference_s* en;
-      struct zx_a_EndpointReference_s* enn;
-      for (enn = 0, e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n) {
-	  en = zx_DEEP_CLONE_a_EndpointReference(c, e, dup_strs);
-	  if (!enn)
-	      x->EndpointReference = en;
-	  else
-	      enn->gg.g.n = &en->gg.g;
-	  enn = en;
-      }
-  }
-  {
-      struct zx_sec_Token_s* e;
-      struct zx_sec_Token_s* en;
-      struct zx_sec_Token_s* enn;
-      for (enn = 0, e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n) {
-	  en = zx_DEEP_CLONE_sec_Token(c, e, dup_strs);
-	  if (!enn)
-	      x->Token = en;
-	  else
-	      enn->gg.g.n = &en->gg.g;
-	  enn = en;
-      }
-  }
-  {
-      struct zx_hrxml_Candidate_s* e;
-      struct zx_hrxml_Candidate_s* en;
-      struct zx_hrxml_Candidate_s* enn;
-      for (enn = 0, e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n) {
-	  en = zx_DEEP_CLONE_hrxml_Candidate(c, e, dup_strs);
-	  if (!enn)
-	      x->Candidate = en;
-	  else
-	      enn->gg.g.n = &en->gg.g;
-	  enn = en;
-      }
-  }
-  {
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* en;
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* enn;
-      for (enn = 0, e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n) {
-	  en = zx_DEEP_CLONE_xasp_XACMLAuthzDecisionQuery(c, e, dup_strs);
-	  if (!enn)
-	      x->XACMLAuthzDecisionQuery = en;
-	  else
-	      enn->gg.g.n = &en->gg.g;
-	  enn = en;
-      }
-  }
-  {
-      struct zx_xasp_XACMLPolicyQuery_s* e;
-      struct zx_xasp_XACMLPolicyQuery_s* en;
-      struct zx_xasp_XACMLPolicyQuery_s* enn;
-      for (enn = 0, e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n) {
-	  en = zx_DEEP_CLONE_xasp_XACMLPolicyQuery(c, e, dup_strs);
-	  if (!enn)
-	      x->XACMLPolicyQuery = en;
-	  else
-	      enn->gg.g.n = &en->gg.g;
-	  enn = en;
-      }
-  }
-  {
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* en;
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* enn;
-      for (enn = 0, e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n) {
-	  en = zx_DEEP_CLONE_xaspcd1_XACMLAuthzDecisionQuery(c, e, dup_strs);
-	  if (!enn)
-	      x->xaspcd1_XACMLAuthzDecisionQuery = en;
-	  else
-	      enn->gg.g.n = &en->gg.g;
-	  enn = en;
-      }
-  }
-  {
-      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
-      struct zx_xaspcd1_XACMLPolicyQuery_s* en;
-      struct zx_xaspcd1_XACMLPolicyQuery_s* enn;
-      for (enn = 0, e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n) {
-	  en = zx_DEEP_CLONE_xaspcd1_XACMLPolicyQuery(c, e, dup_strs);
-	  if (!enn)
-	      x->xaspcd1_XACMLPolicyQuery = en;
-	  else
-	      enn->gg.g.n = &en->gg.g;
-	  enn = en;
-      }
-  }
 
   return x;
 }
@@ -1273,6 +1273,62 @@ int zx_WALK_SO_root(struct zx_ctx* c, struct zx_root_s* x, void* ctx, int (*call
       }
   }
   {
+      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_xasp_XACMLAuthzDecisionQuery(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
+      struct zx_xasp_XACMLPolicyQuery_s* e;
+      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_xasp_XACMLPolicyQuery(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
+      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
+      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_xaspcd1_XACMLAuthzDecisionQuery(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
+      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
+      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_xaspcd1_XACMLPolicyQuery(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
+      struct zx_a_EndpointReference_s* e;
+      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_a_EndpointReference(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
+      struct zx_sec_Token_s* e;
+      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_sec_Token(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
+      struct zx_hrxml_Candidate_s* e;
+      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n) {
+	  ret = zx_WALK_SO_hrxml_Candidate(c, e, ctx, callback);
+	  if (ret)
+	      return ret;
+      }
+  }
+  {
       struct zx_sa11_Assertion_s* e;
       for (e = x->sa11_Assertion; e; e = (struct zx_sa11_Assertion_s*)e->gg.g.n) {
 	  ret = zx_WALK_SO_sa11_Assertion(c, e, ctx, callback);
@@ -1404,62 +1460,6 @@ int zx_WALK_SO_root(struct zx_ctx* c, struct zx_root_s* x, void* ctx, int (*call
       struct zx_m20_EntitiesDescriptor_s* e;
       for (e = x->m20_EntitiesDescriptor; e; e = (struct zx_m20_EntitiesDescriptor_s*)e->gg.g.n) {
 	  ret = zx_WALK_SO_m20_EntitiesDescriptor(c, e, ctx, callback);
-	  if (ret)
-	      return ret;
-      }
-  }
-  {
-      struct zx_a_EndpointReference_s* e;
-      for (e = x->EndpointReference; e; e = (struct zx_a_EndpointReference_s*)e->gg.g.n) {
-	  ret = zx_WALK_SO_a_EndpointReference(c, e, ctx, callback);
-	  if (ret)
-	      return ret;
-      }
-  }
-  {
-      struct zx_sec_Token_s* e;
-      for (e = x->Token; e; e = (struct zx_sec_Token_s*)e->gg.g.n) {
-	  ret = zx_WALK_SO_sec_Token(c, e, ctx, callback);
-	  if (ret)
-	      return ret;
-      }
-  }
-  {
-      struct zx_hrxml_Candidate_s* e;
-      for (e = x->Candidate; e; e = (struct zx_hrxml_Candidate_s*)e->gg.g.n) {
-	  ret = zx_WALK_SO_hrxml_Candidate(c, e, ctx, callback);
-	  if (ret)
-	      return ret;
-      }
-  }
-  {
-      struct zx_xasp_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->XACMLAuthzDecisionQuery; e; e = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e->gg.g.n) {
-	  ret = zx_WALK_SO_xasp_XACMLAuthzDecisionQuery(c, e, ctx, callback);
-	  if (ret)
-	      return ret;
-      }
-  }
-  {
-      struct zx_xasp_XACMLPolicyQuery_s* e;
-      for (e = x->XACMLPolicyQuery; e; e = (struct zx_xasp_XACMLPolicyQuery_s*)e->gg.g.n) {
-	  ret = zx_WALK_SO_xasp_XACMLPolicyQuery(c, e, ctx, callback);
-	  if (ret)
-	      return ret;
-      }
-  }
-  {
-      struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* e;
-      for (e = x->xaspcd1_XACMLAuthzDecisionQuery; e; e = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e->gg.g.n) {
-	  ret = zx_WALK_SO_xaspcd1_XACMLAuthzDecisionQuery(c, e, ctx, callback);
-	  if (ret)
-	      return ret;
-      }
-  }
-  {
-      struct zx_xaspcd1_XACMLPolicyQuery_s* e;
-      for (e = x->xaspcd1_XACMLPolicyQuery; e; e = (struct zx_xaspcd1_XACMLPolicyQuery_s*)e->gg.g.n) {
-	  ret = zx_WALK_SO_xaspcd1_XACMLPolicyQuery(c, e, ctx, callback);
 	  if (ret)
 	      return ret;
       }

@@ -88,8 +88,8 @@ int zx_LEN_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToke
   if (x->Id)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_wsu, &pop_seen);
 
-  len += zx_attr_so_len(x->Algorithm, sizeof("Algorithm")-1);
-  len += zx_attr_so_len(x->Id, sizeof("wsu:Id")-1);
+  len += zx_attr_so_len(c, x->Algorithm, sizeof("Algorithm")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->Id, sizeof("wsu:Id")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -118,7 +118,7 @@ int zx_LEN_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToke
     len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Nonce")-1, zx_ns_tab+zx_xmlns_ix_wsc);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "wsc:DerivedKeyToken", len);
   return len;
@@ -146,8 +146,8 @@ int zx_LEN_WO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToke
   if (x->Id)
     len += zx_len_xmlns_if_not_seen(c, x->Id->g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->Algorithm, sizeof("Algorithm")-1);
-  len += zx_attr_wo_len(x->Id, sizeof("Id")-1);
+  len += zx_attr_wo_len(c, x->Algorithm, sizeof("Algorithm")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->Id, sizeof("Id")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -176,7 +176,7 @@ int zx_LEN_WO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToke
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Nonce")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "wsc:DerivedKeyToken", len);
   return len;
@@ -198,11 +198,13 @@ char* zx_ENC_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyTo
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<wsc:DerivedKeyToken");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_wsc, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_wsc, &pop_seen);
   if (x->Id)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_wsu, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_wsu, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->Algorithm, " Algorithm=\"", sizeof(" Algorithm=\"")-1);
   p = zx_attr_so_enc(p, x->Id, " wsu:Id=\"", sizeof(" wsu:Id=\"")-1);
 
@@ -268,13 +270,13 @@ char* zx_ENC_WO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyTo
   ZX_OUT_MEM(p, "DerivedKeyToken", sizeof("DerivedKeyToken")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
   if (x->Id)
     zx_add_xmlns_if_not_seen(c, x->Id->g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->Algorithm, "Algorithm=\"", sizeof("Algorithm=\"")-1);
   p = zx_attr_wo_enc(p, x->Id, "Id=\"", sizeof("Id=\"")-1);
@@ -388,7 +390,7 @@ int zx_LEN_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x )
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "wsc:Properties", len);
   return len;
@@ -422,7 +424,7 @@ int zx_LEN_WO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x )
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "wsc:Properties", len);
   return len;
@@ -444,9 +446,11 @@ char* zx_ENC_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<wsc:Properties");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_wsc, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_wsc, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -490,11 +494,11 @@ char* zx_ENC_WO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, 
   ZX_OUT_MEM(p, "Properties", sizeof("Properties")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -600,7 +604,7 @@ int zx_LEN_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityC
   if (x->Id)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_wsu, &pop_seen);
 
-  len += zx_attr_so_len(x->Id, sizeof("wsu:Id")-1);
+  len += zx_attr_so_len(c, x->Id, sizeof("wsu:Id")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -609,7 +613,7 @@ int zx_LEN_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityC
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "wsc:SecurityContextToken", len);
   return len;
@@ -637,7 +641,7 @@ int zx_LEN_WO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityC
   if (x->Id)
     len += zx_len_xmlns_if_not_seen(c, x->Id->g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->Id, sizeof("Id")-1);
+  len += zx_attr_wo_len(c, x->Id, sizeof("Id")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -646,7 +650,7 @@ int zx_LEN_WO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityC
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "wsc:SecurityContextToken", len);
   return len;
@@ -668,11 +672,13 @@ char* zx_ENC_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_Securit
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<wsc:SecurityContextToken");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_wsc, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_wsc, &pop_seen);
   if (x->Id)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_wsu, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_wsu, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->Id, " wsu:Id=\"", sizeof(" wsu:Id=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -717,13 +723,13 @@ char* zx_ENC_WO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_Securit
   ZX_OUT_MEM(p, "SecurityContextToken", sizeof("SecurityContextToken")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
   if (x->Id)
     zx_add_xmlns_if_not_seen(c, x->Id->g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->Id, "Id=\"", sizeof("Id=\"")-1);
 

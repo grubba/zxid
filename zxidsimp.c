@@ -1442,7 +1442,7 @@ char* zxid_simple_cf_ses(zxid_conf* cf, int qs_len, char* qs, zxid_ses* ses, int
 	  goto done;
   }
 
-  ZERO(ses, sizeof(ses));   /* No session yet! Process login form */
+  ZERO(ses, sizeof(zxid_ses));   /* No session yet! Process login form */
   res = zxid_simple_no_ses_cf(cf, &cgi, ses, res_len, auto_flags);
 
 done:

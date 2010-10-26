@@ -193,7 +193,7 @@ int zxid_idp_slo_do(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_Lo
 {
   struct zx_str* sesix = req->SessionIndex&&req->SessionIndex->content&&req->SessionIndex->content->len&&req->SessionIndex->content->s?req->SessionIndex->content:0;
   if (sesix)
-    sesix = zxid_psobj_dec(cf, req->Issuer, "ZS", sesix);
+    sesix = zxid_psobj_dec(cf, req->Issuer->gg.content, "ZS", sesix);
   
   if (!zxid_chk_sig(cf, cgi, ses, &req->gg, req->Signature, req->Issuer, 0, "LogoutRequest"))
     return 0;

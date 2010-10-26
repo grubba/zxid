@@ -422,7 +422,7 @@ struct zx_ac_AuthenticatingAuthority_s {
   ZX_ELEM_EXT
   zx_ac_AuthenticatingAuthority_EXT
   struct zx_ac_GoverningAgreements_s* GoverningAgreements;	/* {1,1}  */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
 };
 
 #ifdef ZX_ENA_GETPUT
@@ -479,7 +479,7 @@ struct zx_ac_AuthenticationContextStatement_s {
   struct zx_ac_GoverningAgreements_s* GoverningAgreements;	/* {0,1}  */
   struct zx_ac_AuthenticatingAuthority_s* AuthenticatingAuthority;	/* {0,-1} nada */
   struct zx_ac_Extension_s* Extension;	/* {0,-1}  */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
 };
 
 #ifdef ZX_ENA_GETPUT
@@ -1036,7 +1036,7 @@ struct zx_str* zx_EASY_ENC_WO_ac_Generation(struct zx_ctx* c, struct zx_ac_Gener
 struct zx_ac_Generation_s {
   ZX_ELEM_EXT
   zx_ac_Generation_EXT
-  struct zx_str* mechanism;	/* {1,1} attribute xs:string */
+  struct zx_str* mechanism;	/* {1,1} attribute principalchosen */
 };
 
 #ifdef ZX_ENA_GETPUT

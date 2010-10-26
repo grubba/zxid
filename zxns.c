@@ -24,6 +24,7 @@
 
 /* ------------- All the manner namespace management ------------- */
 
+#if 0
 /* Called by: */
 void zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, const char* nam, int namlen)
 {
@@ -53,12 +54,40 @@ int zx_is_ns_prefix(struct zx_ns_s* ns, int len, const char* prefix)
       return 1;
   return 0;
 }
+#endif
+
+/*() Debugging function. You can say in gdb: print zx_dump_ns_tab(c,0) */
+
+int zx_dump_ns_tab(struct zx_ctx* c, int flags)
+{
+  struct zx_ns_s* ns;
+  struct zx_ns_s* alias;
+  int n=0;
+  for (alias = c->unknown_ns; alias; alias = alias->n) {
+    printf("%3d UNK %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
+  }
+  for (ns = c->ns_tab; ns->url_len; ++ns) {
+    printf("%3d NS  %8.*s %.*s\n", ++n, ns->prefix_len, ns->prefix, ns->url_len, ns->url);
+    for (alias = ns->n; alias; alias = alias->n)
+      printf("%3d   A %8.*s %.*s\n", ++n, alias->prefix_len, alias->prefix, alias->url_len, alias->url);
+  }
+  return n;
+}
+
+/*() Profiling of 0.69 on 20101024 shows that 31% of the enc-dec time is spent here.
+ * Surprisingly, the namespace is never found! The only return that executes is 0.
+ * Input was t/azrq1.xml, where in our understanding all prefixes are known.
+ * After fixing a bug related to xmlns declarations being fed to here, the function
+ * was never called. Could we safely delete this? */
 
 /* Called by:  zx_fix_any_elem_dec, zx_init_tok_tab, zx_prefix_seen_whine, zx_xmlns_decl, zxsig_validate */
 struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, const char* prefix)
 {
   struct zx_ns_s* ns;
   struct zx_ns_s* alias;
+  for (alias = c->unknown_ns; alias; alias = alias->n)
+    if (alias->prefix_len == len && (!len || !memcmp(alias->prefix, prefix, len)))
+      return alias;
   for (ns = c->ns_tab; ns->url_len; ++ns) {
     if (ns->prefix_len == len && (!len || !memcmp(ns->prefix, prefix, len)))
       return ns;
@@ -66,50 +95,46 @@ struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, const char* pr
       if (alias->prefix_len == len && (!len || !memcmp(alias->prefix, prefix, len)))
 	return ns;
   }
-  
-  for (alias = c->unknown_ns; alias; alias = alias->n)
-    if (alias->prefix_len == len && (!len || !memcmp(alias->prefix, prefix, len)))
-      return alias;
   return 0;
 }
+
+/*() Profiling of 0.69 on 20101024 shows that 64% of the enc-dec time is spent here.
+ * Here the namespace is always found via return ns, but not before searching through
+ * oodles of aliases. After bug fix, this consumes 95% of the zxencdectest run time! */
 
 /* Called by:  zx_xmlns_decl */
 static struct zx_ns_s* zx_locate_ns_by_url(struct zx_ctx* c, int len, const char* url)
 {
   struct zx_ns_s* ns;
   struct zx_ns_s* alias;
-  for (ns = c->ns_tab; ns->url_len; ++ns) {
-    if (ns->url_len == len && (!len || !memcmp(ns->url, url, len)))
-      return ns;
-    for (alias = ns->n; alias; alias = alias->n)
-      if (alias->url_len == len && (!len || !memcmp(alias->url, url, len)))
-	return alias;
-  }
-
   for (alias = c->unknown_ns; alias; alias = alias->n)
     if (alias->url_len == len && (!len || !memcmp(alias->url, url, len)))
       return alias;
+  for (ns = c->ns_tab; ns->url_len; ++ns) {
+    if (ns->url_len == len && (!len || !memcmp(ns->url, url, len)))
+      return ns;
+  }
   return 0;
 }
 
 /* Called by:  zx_prefix_seen_whine, zx_xmlns_decl */
-struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url)
+struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url, int unknown)
 {
   struct zx_ns_s* ns = ZX_ZALLOC(c, struct zx_ns_s);
   ns->prefix_len = prefix_len;
   ns->url_len = url_len;
-#if 0
-  ns->prefix = prefix;
-  ns->url = url;
-#else
-  /* *** reallocating these should not be necessary, except for unknown namespaces */
-  ns->prefix = ZX_ALLOC(c, prefix_len+1);
-  ns->url = ZX_ALLOC(c, url_len+1);
-  memcpy(ns->prefix, prefix, prefix_len);
-  memcpy(ns->url, url, url_len);
-  ns->prefix[prefix_len] = 0;
-  ns->url[url_len] = 0;
-#endif
+  if (unknown) {
+    /* Reallocating these is necessary for unknown namespaces */
+    ns->prefix = ZX_ALLOC(c, prefix_len+1);
+    ns->url = ZX_ALLOC(c, url_len+1);
+    memcpy(ns->prefix, prefix, prefix_len);
+    memcpy(ns->url, url, url_len);
+    ns->prefix[prefix_len] = 0;
+    ns->url[url_len] = 0;
+  } else {
+    ns->prefix = prefix;
+    ns->url = url;
+  }
   return ns;
 }
 
@@ -123,23 +148,33 @@ static struct zx_ns_s* zx_xmlns_decl(struct zx_ctx* c, int prefix_len, const cha
   struct zx_ns_s* alias;
   struct zx_ns_s* ns;
 
-  /* Always alloc a new one because we may need to push to stack multiple instances of same ns. */
-  alias = zx_new_ns(c, prefix_len, prefix, url_len, url);
-
   ns = zx_locate_ns_by_url(c, url_len, url);
   if (!ns) {
-    D("Namespace(%.*s) not found by URL(%.*s) (probably wrong namespace URL)", prefix_len, prefix, url_len, url);
+    D("Namespace(%.*s) not found by URL(%.*s) (probably unknown or wrong namespace URL)", prefix_len, prefix, url_len, url);
     ns = zx_locate_ns_by_prefix(c, prefix_len, prefix);
     if (!ns) {
       /* Namespace not known by compiled in schemata. */
-      D("Namespace not found by prefix(%.*s) or URL(%.*s) (probably wrong namespace URL)", prefix_len, prefix, url_len, url);
+      D("Namespace not found by prefix(%.*s) or URL(%.*s) (probably unknown or wrong namespace URL)", prefix_len, prefix, url_len, url);
+      alias = zx_new_ns(c, prefix_len, prefix, url_len, url, 1);
       alias->n = c->unknown_ns;
       c->unknown_ns = alias;
       return alias;
     }
   }
+  /* Always alloc a new one because we may need to push to stack multiple instances of same ns. */
+  alias = zx_new_ns(c, prefix_len, prefix, url_len, url, 0);
+
+  /* Avoid adding to alias list if prefix is already known. */
+  if (ns->prefix_len == prefix_len && (!prefix_len || !memcmp(ns->prefix, prefix, prefix_len)))
+    goto known_prefix;
+  for (alias = ns->n; alias; alias = alias->n)
+    if (alias->prefix_len == prefix_len && (!prefix_len || !memcmp(alias->prefix, prefix, prefix_len)))
+      goto known_prefix;
+  
+  D("New prefix(%.*s) known URL(%.*s)", prefix_len, prefix, url_len, url);
   alias->n = ns->n;
   ns->n = alias;
+known_prefix:
   return alias;
 }
 
@@ -168,7 +203,7 @@ struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* pref
     if (!ns) {
       if (mk_dummy_ns) {
 	url = zx_strf(c, "urn:zxid:unknown-ns-prefix:%s:%.*s", logkey, len, STRNULLCHK(prefix));
-	ns = zx_new_ns(c, len, prefix, url->len, url->s);
+	ns = zx_new_ns(c, len, prefix, url->len, url->s, 1);
 	ns->n = c->unknown_ns;
 	c->unknown_ns = ns;
 	D("Undefined namespace prefix(%.*s). NS not known from any context. Creating dummy ns(%.*s).", len, prefix, url->len, url->s);
@@ -372,34 +407,14 @@ int zx_init_tok_tab(struct zx_ctx* c, struct zx_tok* tok_tab, struct zx_tok* tok
 #endif
 
 /* Called by:  zx_len_inc_ns */
-int zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen)
+int zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seenp)
 {
   if (!ns)
     return 0;
-  if (!zx_push_seen(c, ns->prefix_len, ns->prefix, ns->url_len, ns->url, pop_seen))
+  if (!zx_push_seen(c, ns->prefix_len, ns->prefix, ns->url_len, ns->url, pop_seenp))
     return 0;
   return sizeof(" xmlns")-1
     + (ns->prefix_len ? ns->prefix_len+1 : 0) + 2 + ns->url_len + 1;
-}
-
-/* Called by:  zx_enc_inc_ns */
-char* zx_enc_xmlns_if_not_seen(struct zx_ctx* c, char* p, struct zx_ns_s* ns, struct zx_ns_s** pop_seen)
-{
-  if (!ns)
-    return p;
-  if (!zx_push_seen(c, ns->prefix_len, ns->prefix, ns->url_len, ns->url, pop_seen))
-    return p;
-  
-  ZX_OUT_MEM(p, " xmlns", sizeof(" xmlns")-1);
-  if (ns->prefix_len) {
-    ZX_OUT_CH(p, ':');
-    ZX_OUT_MEM(p, ns->prefix, ns->prefix_len);
-  }
-  ZX_OUT_CH(p, '=');
-  ZX_OUT_CH(p, '"');
-  ZX_OUT_MEM(p, ns->url, ns->url_len);
-  ZX_OUT_CH(p, '"');
-  return p;
 }
 
 /*() For WO encoder the order of xmlns declarations is not known at compile
@@ -408,7 +423,7 @@ char* zx_enc_xmlns_if_not_seen(struct zx_ctx* c, char* p, struct zx_ns_s* ns, st
  * then later render the list using zx_enc_seen(). */
 
 /* Called by:  TXENC_WO_any_elem, zx_add_inc_ns */
-void zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen)
+void zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seenp)
 {
   struct zx_ns_s* pop_seen_dummy=0;
   struct zx_ns_s* new_ns;
@@ -418,18 +433,18 @@ void zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns
   new_ns = zx_push_seen(c, ns->prefix_len, ns->prefix, ns->url_len, ns->url, &pop_seen_dummy);
   if (!new_ns)
     return;
-  if (!*pop_seen) {
-    *pop_seen = new_ns;
+  if (!*pop_seenp) {
+    *pop_seenp = new_ns;
     return;
   }
   if (!new_ns->prefix_len) {       /* Default namespace (empty prefix) sorts first. */
 first:
-    new_ns->seen_pop = *pop_seen;
-    *pop_seen = new_ns;
+    new_ns->seen_pop = *pop_seenp;
+    *pop_seenp = new_ns;
     return;
   }
 
-  ns = *pop_seen;
+  ns = *pop_seenp;
   if (ns->prefix_len) {
     res = memcmp(ns->prefix, new_ns->prefix, MIN(ns->prefix_len, new_ns->prefix_len));
     if (res > 0 || !res && ns->prefix_len >= new_ns->prefix_len)
@@ -445,12 +460,11 @@ first:
   ns->seen_pop = new_ns;
 }
 
-/*() Render the namespaces that have been seen. */
+/*() Render the namespaces that have been seen. The list is assumed to be already sorted. */
 
 /* Called by:  TXENC_WO_ELNAME, TXENC_WO_any_elem */
 char* zx_enc_seen(char* p, struct zx_ns_s* ns)
 {
-  /* *** Consider sorting the seen */
   for (; ns; ns = ns->seen_pop) {
     ZX_OUT_MEM(p, " xmlns", sizeof(" xmlns")-1);
     if (ns->prefix_len) {

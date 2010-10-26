@@ -1378,6 +1378,7 @@ void zx_FREE_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s* 
 {
   /* *** deal with xmlns specifications in exc c14n way */
 
+  zx_free_attr(c, x->type, free_strs);
 
   {
       struct zx_di12_ResourceOffering_s* e;
@@ -1429,6 +1430,7 @@ void zx_DUP_STRS_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue
   zx_dup_strs_common(c, &x->gg);
   /* *** deal with xmlns specifications in exc c14n way */
 
+  zx_dup_attr(c, x->type);
 
   {
       struct zx_di12_ResourceOffering_s* e;
@@ -1454,6 +1456,7 @@ struct zx_sa_AttributeValue_s* zx_DEEP_CLONE_sa_AttributeValue(struct zx_ctx* c,
   x = (struct zx_sa_AttributeValue_s*)zx_clone_elem_common(c, &x->gg, sizeof(struct zx_sa_AttributeValue_s), dup_strs);
   /* *** deal with xmlns specifications in exc c14n way */
 
+  x->type = zx_clone_attr(c, x->type);
 
   {
       struct zx_di12_ResourceOffering_s* e;

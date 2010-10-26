@@ -86,8 +86,8 @@ int zx_LEN_SO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s*
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
-  len += zx_attr_so_len(x->created, sizeof("created")-1);
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
+  len += zx_attr_so_len(c, x->created, sizeof("created")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -106,7 +106,7 @@ int zx_LEN_SO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s*
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:AssertionItem", len);
   return len;
@@ -132,8 +132,8 @@ int zx_LEN_WO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s*
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->created, sizeof("created")-1);
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
+  len += zx_attr_wo_len(c, x->created, sizeof("created")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -152,7 +152,7 @@ int zx_LEN_WO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_s*
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:AssertionItem", len);
   return len;
@@ -174,9 +174,11 @@ char* zx_ENC_SO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:AssertionItem");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->created, " created=\"", sizeof(" created=\"")-1);
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
 
@@ -232,11 +234,11 @@ char* zx_ENC_WO_idp_AssertionItem(struct zx_ctx* c, struct zx_idp_AssertionItem_
   ZX_OUT_MEM(p, "AssertionItem", sizeof("AssertionItem")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->created, "created=\"", sizeof("created=\"")-1);
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
@@ -355,7 +357,7 @@ int zx_LEN_SO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnC
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:AuthnContextRestriction", len);
   return len;
@@ -394,7 +396,7 @@ int zx_LEN_WO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_AuthnC
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:AuthnContextRestriction", len);
   return len;
@@ -416,9 +418,11 @@ char* zx_ENC_SO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_Auth
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:AuthnContextRestriction");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -467,11 +471,11 @@ char* zx_ENC_WO_idp_AuthnContextRestriction(struct zx_ctx* c, struct zx_idp_Auth
   ZX_OUT_MEM(p, "AuthnContextRestriction", sizeof("AuthnContextRestriction")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -588,7 +592,7 @@ int zx_LEN_SO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s*
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:CreatedStatus", len);
   return len;
@@ -627,7 +631,7 @@ int zx_LEN_WO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_s*
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:CreatedStatus", len);
   return len;
@@ -649,9 +653,11 @@ char* zx_ENC_SO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:CreatedStatus");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -700,11 +706,11 @@ char* zx_ENC_WO_idp_CreatedStatus(struct zx_ctx* c, struct zx_idp_CreatedStatus_
   ZX_OUT_MEM(p, "CreatedStatus", sizeof("CreatedStatus")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -808,9 +814,9 @@ int zx_LEN_SO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatu
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
-  len += zx_attr_so_len(x->firstUsed, sizeof("firstUsed")-1);
-  len += zx_attr_so_len(x->ref, sizeof("ref")-1);
-  len += zx_attr_so_len(x->used, sizeof("used")-1);
+  len += zx_attr_so_len(c, x->firstUsed, sizeof("firstUsed")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->used, sizeof("used")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -819,7 +825,7 @@ int zx_LEN_SO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatu
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:CreatedStatusItem", len);
   return len;
@@ -845,9 +851,9 @@ int zx_LEN_WO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatu
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->firstUsed, sizeof("firstUsed")-1);
-  len += zx_attr_wo_len(x->ref, sizeof("ref")-1);
-  len += zx_attr_wo_len(x->used, sizeof("used")-1);
+  len += zx_attr_wo_len(c, x->firstUsed, sizeof("firstUsed")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->ref, sizeof("ref")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->used, sizeof("used")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -856,7 +862,7 @@ int zx_LEN_WO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedStatu
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:CreatedStatusItem", len);
   return len;
@@ -878,9 +884,11 @@ char* zx_ENC_SO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedSta
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:CreatedStatusItem");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->firstUsed, " firstUsed=\"", sizeof(" firstUsed=\"")-1);
   p = zx_attr_so_enc(p, x->ref, " ref=\"", sizeof(" ref=\"")-1);
   p = zx_attr_so_enc(p, x->used, " used=\"", sizeof(" used=\"")-1);
@@ -927,11 +935,11 @@ char* zx_ENC_WO_idp_CreatedStatusItem(struct zx_ctx* c, struct zx_idp_CreatedSta
   ZX_OUT_MEM(p, "CreatedStatusItem", sizeof("CreatedStatusItem")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->firstUsed, "firstUsed=\"", sizeof("firstUsed=\"")-1);
   p = zx_attr_wo_enc(p, x->ref, "ref=\"", sizeof("ref=\"")-1);
@@ -1051,7 +1059,7 @@ int zx_LEN_SO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedS
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:CreatedStatusResponse", len);
   return len;
@@ -1090,7 +1098,7 @@ int zx_LEN_WO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_CreatedS
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:CreatedStatusResponse", len);
   return len;
@@ -1112,9 +1120,11 @@ char* zx_ENC_SO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_Create
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:CreatedStatusResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -1163,11 +1173,11 @@ char* zx_ENC_WO_idp_CreatedStatusResponse(struct zx_ctx* c, struct zx_idp_Create
   ZX_OUT_MEM(p, "CreatedStatusResponse", sizeof("CreatedStatusResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1271,7 +1281,7 @@ int zx_LEN_SO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
-  len += zx_attr_so_len(x->purpose, sizeof("purpose")-1);
+  len += zx_attr_so_len(c, x->purpose, sizeof("purpose")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1285,7 +1295,7 @@ int zx_LEN_SO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetAssertion", len);
   return len;
@@ -1311,7 +1321,7 @@ int zx_LEN_WO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->purpose, sizeof("purpose")-1);
+  len += zx_attr_wo_len(c, x->purpose, sizeof("purpose")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1325,7 +1335,7 @@ int zx_LEN_WO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s* x
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetAssertion", len);
   return len;
@@ -1347,9 +1357,11 @@ char* zx_ENC_SO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s*
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:GetAssertion");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->purpose, " purpose=\"", sizeof(" purpose=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1399,11 +1411,11 @@ char* zx_ENC_WO_idp_GetAssertion(struct zx_ctx* c, struct zx_idp_GetAssertion_s*
   ZX_OUT_MEM(p, "GetAssertion", sizeof("GetAssertion")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->purpose, "purpose=\"", sizeof("purpose=\"")-1);
 
@@ -1526,7 +1538,7 @@ int zx_LEN_SO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssert
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetAssertionResponse", len);
   return len;
@@ -1570,7 +1582,7 @@ int zx_LEN_WO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAssert
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetAssertionResponse", len);
   return len;
@@ -1592,9 +1604,11 @@ char* zx_ENC_SO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAsse
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:GetAssertionResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -1648,11 +1662,11 @@ char* zx_ENC_WO_idp_GetAssertionResponse(struct zx_ctx* c, struct zx_idp_GetAsse
   ZX_OUT_MEM(p, "GetAssertionResponse", sizeof("GetAssertionResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1756,8 +1770,8 @@ int zx_LEN_SO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAs
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->ref, sizeof("ref")-1);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1771,7 +1785,7 @@ int zx_LEN_SO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAs
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetAssertionResponseItem", len);
   return len;
@@ -1797,8 +1811,8 @@ int zx_LEN_WO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAs
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->ref, sizeof("ref")-1);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->ref, sizeof("ref")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1812,7 +1826,7 @@ int zx_LEN_WO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_GetAs
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetAssertionResponseItem", len);
   return len;
@@ -1834,9 +1848,11 @@ char* zx_ENC_SO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_Get
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:GetAssertionResponseItem");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
   p = zx_attr_so_enc(p, x->ref, " ref=\"", sizeof(" ref=\"")-1);
 
@@ -1887,11 +1903,11 @@ char* zx_ENC_WO_idp_GetAssertionResponseItem(struct zx_ctx* c, struct zx_idp_Get
   ZX_OUT_MEM(p, "GetAssertionResponseItem", sizeof("GetAssertionResponseItem")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
   p = zx_attr_wo_enc(p, x->ref, "ref=\"", sizeof("ref=\"")-1);
@@ -1997,7 +2013,7 @@ int zx_LEN_SO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInf
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
-  len += zx_attr_so_len(x->all, sizeof("all")-1);
+  len += zx_attr_so_len(c, x->all, sizeof("all")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2008,7 +2024,7 @@ int zx_LEN_SO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInf
     len += zx_LEN_SO_simple_elem(c,se, sizeof("idp:ProviderID")-1, zx_ns_tab+zx_xmlns_ix_idp);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetProviderInfo", len);
   return len;
@@ -2034,7 +2050,7 @@ int zx_LEN_WO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInf
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->all, sizeof("all")-1);
+  len += zx_attr_wo_len(c, x->all, sizeof("all")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2045,7 +2061,7 @@ int zx_LEN_WO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderInf
     len += zx_LEN_WO_simple_elem(c, se, sizeof("ProviderID")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetProviderInfo", len);
   return len;
@@ -2067,9 +2083,11 @@ char* zx_ENC_SO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderI
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:GetProviderInfo");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->all, " all=\"", sizeof(" all=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2116,11 +2134,11 @@ char* zx_ENC_WO_idp_GetProviderInfo(struct zx_ctx* c, struct zx_idp_GetProviderI
   ZX_OUT_MEM(p, "GetProviderInfo", sizeof("GetProviderInfo")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->all, "all=\"", sizeof("all=\"")-1);
 
@@ -2243,7 +2261,7 @@ int zx_LEN_SO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetPro
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetProviderInfoResponse", len);
   return len;
@@ -2287,7 +2305,7 @@ int zx_LEN_WO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetPro
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:GetProviderInfoResponse", len);
   return len;
@@ -2309,9 +2327,11 @@ char* zx_ENC_SO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetP
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:GetProviderInfoResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -2365,11 +2385,11 @@ char* zx_ENC_WO_idp_GetProviderInfoResponse(struct zx_ctx* c, struct zx_idp_GetP
   ZX_OUT_MEM(p, "GetProviderInfoResponse", sizeof("GetProviderInfoResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2491,7 +2511,7 @@ int zx_LEN_SO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:MEDInfo", len);
   return len;
@@ -2535,7 +2555,7 @@ int zx_LEN_WO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:MEDInfo", len);
   return len;
@@ -2557,9 +2577,11 @@ char* zx_ENC_SO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x, char* 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:MEDInfo");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -2613,11 +2635,11 @@ char* zx_ENC_WO_idp_MEDInfo(struct zx_ctx* c, struct zx_idp_MEDInfo_s* x, char* 
   ZX_OUT_MEM(p, "MEDInfo", sizeof("MEDInfo")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2721,8 +2743,8 @@ int zx_LEN_SO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
-  len += zx_attr_so_len(x->name, sizeof("name")-1);
-  len += zx_attr_so_len(x->providerID, sizeof("providerID")-1);
+  len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->providerID, sizeof("providerID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2731,7 +2753,7 @@ int zx_LEN_SO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:ProviderInfo", len);
   return len;
@@ -2757,8 +2779,8 @@ int zx_LEN_WO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->name, sizeof("name")-1);
-  len += zx_attr_wo_len(x->providerID, sizeof("providerID")-1);
+  len += zx_attr_wo_len(c, x->name, sizeof("name")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->providerID, sizeof("providerID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2767,7 +2789,7 @@ int zx_LEN_WO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s* x
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:ProviderInfo", len);
   return len;
@@ -2789,9 +2811,11 @@ char* zx_ENC_SO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s*
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:ProviderInfo");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->name, " name=\"", sizeof(" name=\"")-1);
   p = zx_attr_so_enc(p, x->providerID, " providerID=\"", sizeof(" providerID=\"")-1);
 
@@ -2837,11 +2861,11 @@ char* zx_ENC_WO_idp_ProviderInfo(struct zx_ctx* c, struct zx_idp_ProviderInfo_s*
   ZX_OUT_MEM(p, "ProviderInfo", sizeof("ProviderInfo")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->name, "name=\"", sizeof("name=\"")-1);
   p = zx_attr_wo_enc(p, x->providerID, "providerID=\"", sizeof("providerID=\"")-1);
@@ -2960,7 +2984,7 @@ int zx_LEN_SO_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRest
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:SubjectRestriction", len);
   return len;
@@ -2999,7 +3023,7 @@ int zx_LEN_WO_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRest
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idp:SubjectRestriction", len);
   return len;
@@ -3021,9 +3045,11 @@ char* zx_ENC_SO_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRe
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idp:SubjectRestriction");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idp, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -3072,11 +3098,11 @@ char* zx_ENC_WO_idp_SubjectRestriction(struct zx_ctx* c, struct zx_idp_SubjectRe
   ZX_OUT_MEM(p, "SubjectRestriction", sizeof("SubjectRestriction")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);

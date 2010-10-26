@@ -680,7 +680,7 @@ zxid_entity* zxid_get_ent_from_cache(zxid_conf* cf, struct zx_str* eid);
 int zxid_write_ent_to_cache(zxid_conf* cf, zxid_entity* ent);
 zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim);
 zxid_entity* zxid_get_meta_ss(zxid_conf* cf, struct zx_str* url);
-zxid_entity* zxid_get_meta(zxid_conf* cf, char* url);
+zxid_entity* zxid_get_meta(zxid_conf* cf, const char* url);
 zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid);
 zxid_entity* zxid_get_ent(zxid_conf* cf, char* eid);
 zxid_entity* zxid_get_ent_by_succinct_id(zxid_conf* cf, char* raw_succinct_id);

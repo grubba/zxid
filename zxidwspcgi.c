@@ -93,7 +93,7 @@ static int zxidwspcgi_child(zxid_conf* cf, int len, char* buf, char* sid, char* 
     setenv("idpnid", nid, 1);
     setenv("sid", sid, 1);
     D("exec(%s)", cf->wspcgicmd);
-    execl(cf->wspcgicmd, cf->wspcgicmd, 0);
+    execl(cf->wspcgicmd, cf->wspcgicmd);
     perror("exec");
     ERR("Exec(%s) failed: errno=%d", cf->wspcgicmd, errno);
     return 1;

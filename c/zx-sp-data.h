@@ -49,7 +49,7 @@ struct zx_sp_ArtifactResolve_s {
   struct zx_elem_s* Artifact;	/* {1,1} xs:string */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
 };
@@ -140,7 +140,7 @@ struct zx_sp_ArtifactResponse_s {
   struct zx_sp_Response_s* Response;	/* {0,1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* InResponseTo;	/* {0,1} attribute xs:NCName */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
@@ -241,7 +241,7 @@ struct zx_sp_AssertionIDRequest_s {
   struct zx_elem_s* AssertionIDRef;	/* {1,-1} xs:NCName */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
 };
@@ -332,7 +332,7 @@ struct zx_sp_AttributeQuery_s {
   struct zx_sa_Attribute_s* Attribute;	/* {0,-1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
 };
@@ -431,7 +431,7 @@ struct zx_sp_AuthnQuery_s {
   struct zx_sp_RequestedAuthnContext_s* RequestedAuthnContext;	/* {0,1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* SessionIndex;	/* {0,1} attribute xs:string */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
@@ -540,7 +540,7 @@ struct zx_sp_AuthnRequest_s {
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
   struct zx_str* ForceAuthn;	/* {0,1} attribute xs:boolean */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IsPassive;	/* {0,1} attribute xs:boolean */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* ProtocolBinding;	/* {0,1} attribute xs:anyURI */
@@ -681,7 +681,7 @@ struct zx_sp_AuthzDecisionQuery_s {
   struct zx_sa_Evidence_s* Evidence;	/* {0,1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Resource;	/* {1,1} attribute xs:anyURI */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
@@ -937,7 +937,7 @@ struct zx_sp_LogoutRequest_s {
   struct zx_elem_s* SessionIndex;	/* {0,-1} xs:string */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* NotOnOrAfter;	/* {0,1} attribute xs:dateTime */
   struct zx_str* Reason;	/* {0,1} attribute xs:string */
@@ -1057,7 +1057,7 @@ struct zx_sp_LogoutResponse_s {
   struct zx_sp_Status_s* Status;	/* {1,1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* InResponseTo;	/* {0,1} attribute xs:NCName */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
@@ -1154,7 +1154,7 @@ struct zx_sp_ManageNameIDRequest_s {
   struct zx_elem_s* Terminate;	/* {0,1} sp:TerminateType */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
 };
@@ -1276,7 +1276,7 @@ struct zx_sp_ManageNameIDResponse_s {
   struct zx_sp_Status_s* Status;	/* {1,1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* InResponseTo;	/* {0,1} attribute xs:NCName */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
@@ -1372,7 +1372,7 @@ struct zx_sp_NameIDMappingRequest_s {
   struct zx_sp_NameIDPolicy_s* NameIDPolicy;	/* {1,1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
 };
@@ -1488,7 +1488,7 @@ struct zx_sp_NameIDMappingResponse_s {
   struct zx_sa_EncryptedID_s* EncryptedID;	/* {0,1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* InResponseTo;	/* {0,1} attribute xs:NCName */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
@@ -1764,7 +1764,7 @@ struct zx_sp_Response_s {
   struct zx_sa_EncryptedAssertion_s* EncryptedAssertion;	/* {0,1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* InResponseTo;	/* {0,1} attribute xs:NCName */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
@@ -1994,7 +1994,7 @@ struct zx_sp_StatusCode_s {
   ZX_ELEM_EXT
   zx_sp_StatusCode_EXT
   struct zx_sp_StatusCode_s* StatusCode;	/* {0,1} nada */
-  struct zx_str* Value;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* Value;	/* {1,1} attribute xs:QName */
 };
 
 #ifdef ZX_ENA_GETPUT
@@ -2089,7 +2089,7 @@ struct zx_sp_SubjectQuery_s {
   struct zx_sa_Subject_s* Subject;	/* {1,1} nada */
   struct zx_str* Consent;	/* {0,1} attribute xs:anyURI */
   struct zx_str* Destination;	/* {0,1} attribute xs:anyURI */
-  struct zx_str* ID;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {1,1} attribute xs:ID */
   struct zx_str* IssueInstant;	/* {1,1} attribute xs:dateTime */
   struct zx_str* Version;	/* {1,1} attribute xa:VersionType */
 };

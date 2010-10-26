@@ -70,7 +70,7 @@ int main(int argc, char** argv)
   int got, fd, cl=0;
   char* qs;
   char* qs2;
-  ZERO(ses, sizeof(ses));
+  ZERO(ses, sizeof(zxid_ses));
   
 #if 1
   /* Helps debugging CGI scripts if you see stderr. */

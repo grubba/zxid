@@ -44,6 +44,7 @@ favicon.ico      - A ZX/SP favicon for use in demo SPs
 tpn-client.sh    - Wrapper for calling TrustBuilder from discovery
 zxmkdirs.sh      - Create the typical directory hierarchy under /var/zxid
 zxcleanlogs.sh   - Clean away audit trail (looses audit trail, but saves space)
+covrep.sh        - Test coverage report generator
 gen-consts-from-gperf-output.pl  - Used in build process
 gen-cot-links.pl - Handy tool for creating documentative symlinks in CoT directory
 gen-conf-ref.pl  - Generate configuration reference from zxidconf.h

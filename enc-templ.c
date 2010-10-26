@@ -75,7 +75,7 @@ ATTRS_SO_LEN;
   
 ELEMS_SO_LEN;
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "ELNSCELTAG", len);
   return len;
@@ -108,7 +108,7 @@ ATTRS_WO_LEN;
   
 ELEMS_WO_LEN;
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "ELNSCELTAG", len);
   return len;
@@ -130,8 +130,10 @@ char* TXENC_SO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, char* p SIMPLETAGLEN
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<ELNSCELTAG");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-XMLNS_SO_ENC;
+    zx_add_inc_ns(c, &pop_seen);
+XMLNS_SO_SEE;
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 ATTRS_SO_ENC;
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -175,10 +177,10 @@ char* TXENC_WO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, char* p SIMPLETAGLEN
   ZX_OUT_MEM(p, "ELTAG", sizeof("ELTAG")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-XMLNS_WO_ENC;
+XMLNS_WO_SEE;
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 ATTRS_WO_ENC;
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -237,6 +239,7 @@ struct zx_str* TXEASY_ENC_WO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x SIMPLET
 /* Called by: */
 int TXLEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
 {
+  struct zx_ns_s* pop_seen = 0;
   int len;
   //struct zx_elem_s* kid;
   switch (x->g.tok) {
@@ -245,7 +248,10 @@ ANYELEM_WO_LEN;
     len = 1 + ZX_ANY_EL(x)->name_len + 1 + 2 + ZX_ANY_EL(x)->name_len + 1;
     if (x->g.ns && x->g.ns->prefix_len)
       len += (x->g.ns->prefix_len + 1) * 2;
-    len += zx_len_wo_common(c, x);
+    if (c->inc_ns_len)
+      len += zx_len_inc_ns(c, &pop_seen);
+    len += zx_len_wo_common(c, x, &pop_seen);
+    zx_pop_seen(pop_seen);
     return len;
   case ZX_TOK_DATA:
     return ((struct zx_str*)x)->len;
@@ -274,10 +280,11 @@ ANYELEM_WO_ENC;
     }
     ZX_OUT_MEM(p, ZX_ANY_EL(x)->name, ZX_ANY_EL(x)->name_len);
     zx_add_xmlns_if_not_seen(c, x->g.ns, &pop_seen);
-    
-    /* *** xmlns specs */ 
+    if (c->inc_ns)
+      zx_add_inc_ns(c, &pop_seen);
+    zx_see_unknown_attrs_ns(c, x->any_attr, &pop_seen);
     p = zx_enc_seen(p, pop_seen); 
-    p = zx_enc_unknown_attrs(p, ZX_ANY_EL(x)->gg.any_attr);
+    p = zx_enc_unknown_attrs(p, x->any_attr);
   
     for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.wo)))
       p = TXENC_WO_any_elem(c, kid, p);

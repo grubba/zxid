@@ -2032,6 +2032,9 @@ certificates are taken care of). Here are some gotchas:
     all (best strategy to avoid interop problems), and therefore work fine
     until the day when CRLF emitting implementation appears.
 
+4.  Namespace declarations are ordered by namespace prefix, while
+    namespaced attributes are ordered by namespace URI. Gotcha!
+
 97.13.6 I do not want to know service type, but I want to call the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

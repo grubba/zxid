@@ -355,9 +355,11 @@ int main(int argc, char** argv, char** env)
             
       if (yubikey_crc_ok_p((unsigned char*)&yktok)) {
 	D("yubikey ticket validates ok %d", 0);
+	if (verbose) printf("yubikey ticket validates ok\n");
 	return 0;
       }
       D("yubikey ticket validation failure %d", 0);
+      if (verbose) printf("yubikey ticket validation failure\n");
       return 7;
     }
     got = read_all(sizeof(buf), buf, "pw", 1, "%s/%s/.pw", udir, user);
@@ -370,13 +372,17 @@ int main(int argc, char** argv, char** env)
     if (!memcmp(buf, "$1$", sizeof("$1$")-1)) {
       zx_md5_crypt(pw, buf, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);
-      return strcmp(buf, (char*)pw_hash)?7:0;
+      got = strcmp(buf, (char*)pw_hash)?7:0;
+      if (verbose) printf("md5_crypt hash ($1$) validate: %s\n", got?"fail":"ok");
+      return got;
     }
 #ifdef USE_OPENSSL
     if (!memcmp(buf, "$c$", sizeof("$c$")-1)) {
       DES_fcrypt(pw, buf+3, (char*)pw_hash);
       D("pw_hash(%s)", pw_hash);
-      return strcmp(buf+3, (char*)pw_hash)?7:0;
+      got = strcmp(buf+3, (char*)pw_hash)?7:0;
+      if (verbose) printf("Unix DES_crypt hash ($c$) validate: %s\n", got?"fail":"ok");
+      return got;
     }
 #endif
     if (ONE_OF_2(buf[0], '$', '_')) {
@@ -384,7 +390,9 @@ int main(int argc, char** argv, char** env)
       return 8;
     }
     D("Assume plain text password %d", 0);
-    return strcmp(buf, pw)?7:0;
+    got = strcmp(buf, pw)?7:0;
+    if (verbose) printf("plaintext password validate: %s\n", got?"fail":"ok");
+    return got;
   }
 
   /* Create and other user management functions */

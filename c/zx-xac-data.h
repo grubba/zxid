@@ -608,7 +608,7 @@ struct zx_xac_StatusCode_s {
   ZX_ELEM_EXT
   zx_xac_StatusCode_EXT
   struct zx_xac_StatusCode_s* StatusCode;	/* {0,1} nada */
-  struct zx_str* Value;	/* {1,1} attribute xs:anyURI */
+  struct zx_str* Value;	/* {1,1} attribute xs:QName */
 };
 
 #ifdef ZX_ENA_GETPUT

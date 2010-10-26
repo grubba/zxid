@@ -643,10 +643,6 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zx_report_openssl_error(logkey);
   }
 
-  public static void zx_fix_any_elem_dec(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_zx_any_elem_s x, String nam, int namlen) {
-    zxidjniJNI.zx_fix_any_elem_dec(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_zx_any_elem_s.getCPtr(x), nam, namlen);
-  }
-
   public static SWIGTYPE_p_zx_ns_s zx_new_ns(SWIGTYPE_p_zx_ctx c, int prefix_len, String prefix, int url_len, String url) {
     long cPtr = zxidjniJNI.zx_new_ns(SWIGTYPE_p_zx_ctx.getCPtr(c), prefix_len, prefix, url_len, url);
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_ns_s(cPtr, false);
@@ -655,10 +651,6 @@ public class zxidjni implements zxidjniConstants {
   public static SWIGTYPE_p_zx_ns_s zx_locate_ns_by_prefix(SWIGTYPE_p_zx_ctx c, int len, String prefix) {
     long cPtr = zxidjniJNI.zx_locate_ns_by_prefix(SWIGTYPE_p_zx_ctx.getCPtr(c), len, prefix);
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_ns_s(cPtr, false);
-  }
-
-  public static int zx_is_ns_prefix(SWIGTYPE_p_zx_ns_s ns, int len, String prefix) {
-    return zxidjniJNI.zx_is_ns_prefix(SWIGTYPE_p_zx_ns_s.getCPtr(ns), len, prefix);
   }
 
   public static SWIGTYPE_p_zx_ns_s zx_prefix_seen(SWIGTYPE_p_zx_ctx c, int len, String prefix) {
@@ -724,10 +716,6 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zx_len_xmlns_if_not_seen(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_zx_ns_s.getCPtr(ns), SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seen));
   }
 
-  public static String zx_enc_xmlns_if_not_seen(SWIGTYPE_p_zx_ctx c, String p, SWIGTYPE_p_zx_ns_s ns, SWIGTYPE_p_p_zx_ns_s pop_seen) {
-    return zxidjniJNI.zx_enc_xmlns_if_not_seen(SWIGTYPE_p_zx_ctx.getCPtr(c), p, SWIGTYPE_p_zx_ns_s.getCPtr(ns), SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seen));
-  }
-
   public static void zx_add_xmlns_if_not_seen(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_zx_ns_s ns, SWIGTYPE_p_p_zx_ns_s pop_seen) {
     zxidjniJNI.zx_add_xmlns_if_not_seen(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_zx_ns_s.getCPtr(ns), SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seen));
   }
@@ -736,12 +724,16 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zx_enc_seen(p, SWIGTYPE_p_zx_ns_s.getCPtr(ns));
   }
 
-  public static int zx_len_so_common(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_zx_elem_s x) {
-    return zxidjniJNI.zx_len_so_common(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_zx_elem_s.getCPtr(x));
+  public static int zx_len_so_common(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_zx_elem_s x, SWIGTYPE_p_p_zx_ns_s pop_seenp) {
+    return zxidjniJNI.zx_len_so_common(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_zx_elem_s.getCPtr(x), SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seenp));
   }
 
-  public static int zx_len_wo_common(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_zx_elem_s x) {
-    return zxidjniJNI.zx_len_wo_common(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_zx_elem_s.getCPtr(x));
+  public static int zx_len_wo_common(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_zx_elem_s x, SWIGTYPE_p_p_zx_ns_s pop_seenp) {
+    return zxidjniJNI.zx_len_wo_common(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_zx_elem_s.getCPtr(x), SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seenp));
+  }
+
+  public static void zx_see_unknown_attrs_ns(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_zx_any_attr_s aa, SWIGTYPE_p_p_zx_ns_s pop_seenp) {
+    zxidjniJNI.zx_see_unknown_attrs_ns(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_zx_any_attr_s.getCPtr(aa), SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seenp));
   }
 
   public static String zx_enc_unknown_attrs(String p, SWIGTYPE_p_zx_any_attr_s aa) {
@@ -754,16 +746,16 @@ public class zxidjni implements zxidjniConstants {
 
   public static String zx_easy_enc_common(SWIGTYPE_p_zx_ctx c, String p, String buf, int len) { return zxidjniJNI.zx_easy_enc_common(SWIGTYPE_p_zx_ctx.getCPtr(c), p, buf, len); }
 
-  public static int zx_attr_so_len(String attr, int name_size) {
-    return zxidjniJNI.zx_attr_so_len(attr, name_size);
+  public static int zx_attr_so_len(SWIGTYPE_p_zx_ctx c, String attr, int name_size, SWIGTYPE_p_p_zx_ns_s pop_seenp) {
+    return zxidjniJNI.zx_attr_so_len(SWIGTYPE_p_zx_ctx.getCPtr(c), attr, name_size, SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seenp));
   }
 
   public static String zx_attr_so_enc(String p, String attr, String name, int name_len) {
     return zxidjniJNI.zx_attr_so_enc(p, attr, name, name_len);
   }
 
-  public static int zx_attr_wo_len(String attr, int name_size) {
-    return zxidjniJNI.zx_attr_wo_len(attr, name_size);
+  public static int zx_attr_wo_len(SWIGTYPE_p_zx_ctx c, String attr, int name_size, SWIGTYPE_p_p_zx_ns_s pop_seenp) {
+    return zxidjniJNI.zx_attr_wo_len(SWIGTYPE_p_zx_ctx.getCPtr(c), attr, name_size, SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seenp));
   }
 
   public static String zx_attr_wo_enc(String p, String attr, String name, int name_len) {
@@ -796,12 +788,24 @@ public class zxidjni implements zxidjniConstants {
 
   public static String zx_dec_unknown_attr(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_zx_elem_s el, String name, String data, int tok, int ctx_tok) { return zxidjniJNI.zx_dec_unknown_attr(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_zx_elem_s.getCPtr(el), name, data, tok, ctx_tok); }
 
-  public static String zx_dec_attr_val(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_p_char name) {
-    return zxidjniJNI.zx_dec_attr_val(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_p_char.getCPtr(name));
+  public static String zx_dec_attr_val(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_p_char name, String func) {
+    return zxidjniJNI.zx_dec_attr_val(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_p_char.getCPtr(name), func);
+  }
+
+  public static void zx_dec_reverse_lists(SWIGTYPE_p_zx_elem_s x) {
+    zxidjniJNI.zx_dec_reverse_lists(SWIGTYPE_p_zx_elem_s.getCPtr(x));
   }
 
   public static void zx_xml_parse_err(SWIGTYPE_p_zx_ctx c, char quote, String func, String msg) {
     zxidjniJNI.zx_xml_parse_err(SWIGTYPE_p_zx_ctx.getCPtr(c), quote, func, msg);
+  }
+
+  public static void zx_xml_parse_err_mismatching_close_tag(SWIGTYPE_p_zx_ctx c, String func, String name, int tok) {
+    zxidjniJNI.zx_xml_parse_err_mismatching_close_tag(SWIGTYPE_p_zx_ctx.getCPtr(c), func, name, tok);
+  }
+
+  public static String zx_scan_elem_start(SWIGTYPE_p_zx_ctx c, String func) {
+    return zxidjniJNI.zx_scan_elem_start(SWIGTYPE_p_zx_ctx.getCPtr(c), func);
   }
 
   public static int zx_len_inc_ns(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_p_zx_ns_s pop_seenp) {
@@ -810,10 +814,6 @@ public class zxidjni implements zxidjniConstants {
 
   public static void zx_add_inc_ns(SWIGTYPE_p_zx_ctx c, SWIGTYPE_p_p_zx_ns_s pop_seenp) {
     zxidjniJNI.zx_add_inc_ns(SWIGTYPE_p_zx_ctx.getCPtr(c), SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seenp));
-  }
-
-  public static String zx_enc_inc_ns(SWIGTYPE_p_zx_ctx c, String p, SWIGTYPE_p_p_zx_ns_s pop_seenp) {
-    return zxidjniJNI.zx_enc_inc_ns(SWIGTYPE_p_zx_ctx.getCPtr(c), p, SWIGTYPE_p_p_zx_ns_s.getCPtr(pop_seenp));
   }
 
   public static void entity_n_set(zxid_entity self, zxid_entity value) {

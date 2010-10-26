@@ -395,6 +395,8 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   struct zx_str* logpath;
   struct zx_str  ss;
   zxid_cgi cgi;
+  char* p;
+  char msg[256];
 
   D_INDENT("valid: ");
   GETTIMEOFDAY(&ourts, 0);
@@ -408,8 +410,6 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   r = zx_DEC_root(cf->ctx, 0, 1);
   UNLOCK(cf->ctx->mx, "valid");
   if (!r) {
-    char msg[256];
-    char* p;
     ERR("Malformed XML enve(%s)", enve);
     zx_format_parse_error(cf->ctx, msg, sizeof(msg), "valid");
     ERR("Detail: %s", msg);

@@ -223,7 +223,7 @@ struct zx_m20_ContactPerson_s {
   struct zx_elem_s* EmailAddress;	/* {0,-1} xs:anyURI */
   struct zx_elem_s* TelephoneNumber;	/* {0,-1} xs:string */
   struct zx_m20_Extension_s* Extension;	/* {0,1}  */
-  struct zx_str* contactType;	/* {1,1} attribute hrxml:ContactTypeStringExtensionType */
+  struct zx_str* contactType;	/* {1,1} attribute m20:attrContactType */
   struct zx_str* libertyPrincipalIdentifier;	/* {0,1} attribute m20:entityIDType */
 };
 

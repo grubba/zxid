@@ -43,7 +43,7 @@ struct zx_str* zx_EASY_ENC_WO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Create
 struct zx_wsu_Created_s {
   ZX_ELEM_EXT
   zx_wsu_Created_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
 };
@@ -91,7 +91,7 @@ struct zx_str* zx_EASY_ENC_WO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expire
 struct zx_wsu_Expires_s {
   ZX_ELEM_EXT
   zx_wsu_Expires_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
 };
@@ -141,7 +141,7 @@ struct zx_wsu_Timestamp_s {
   zx_wsu_Timestamp_EXT
   struct zx_wsu_Created_s* Created;	/* {0,1} nada */
   struct zx_wsu_Expires_s* Expires;	/* {0,1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
 };

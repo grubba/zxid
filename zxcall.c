@@ -158,6 +158,10 @@ static void opt(int* argc, char*** argv, char*** env)
 	}
       case 'c':
 	ss = zxid_show_conf(cf);
+	if (verbose>1) {
+	  printf("\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
+	  exit(0);
+	}
 	fprintf(stderr, "\n======== CONF ========\n%.*s\n^^^^^^^^ CONF ^^^^^^^^\n",ss->len,ss->s);
 	continue;
       }

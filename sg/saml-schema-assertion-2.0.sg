@@ -228,6 +228,7 @@ AttributeValue -> %sa:AttributeValueType
 %AttributeValueType:
   di12:ResourceOffering*
   a:EndpointReference*
+  @xsi:type?              # often any attribute extension point is used for this
   ;
 
 EncryptedAttribute -> %sa:EncryptedElementType

@@ -86,7 +86,7 @@ int zx_LEN_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthorit
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_shibmd, &pop_seen);
 
-  len += zx_attr_so_len(x->VerifyDepth, sizeof("VerifyDepth")-1);
+  len += zx_attr_so_len(c, x->VerifyDepth, sizeof("VerifyDepth")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -100,7 +100,7 @@ int zx_LEN_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthorit
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "shibmd:KeyAuthority", len);
   return len;
@@ -126,7 +126,7 @@ int zx_LEN_WO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthorit
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->VerifyDepth, sizeof("VerifyDepth")-1);
+  len += zx_attr_wo_len(c, x->VerifyDepth, sizeof("VerifyDepth")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -140,7 +140,7 @@ int zx_LEN_WO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthorit
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "shibmd:KeyAuthority", len);
   return len;
@@ -162,9 +162,11 @@ char* zx_ENC_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthor
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<shibmd:KeyAuthority");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_shibmd, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_shibmd, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->VerifyDepth, " VerifyDepth=\"", sizeof(" VerifyDepth=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -214,11 +216,11 @@ char* zx_ENC_WO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthor
   ZX_OUT_MEM(p, "KeyAuthority", sizeof("KeyAuthority")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->VerifyDepth, "VerifyDepth=\"", sizeof("VerifyDepth=\"")-1);
 
@@ -323,7 +325,7 @@ int zx_LEN_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_shibmd, &pop_seen);
 
-  len += zx_attr_so_len(x->regexp, sizeof("regexp")-1);
+  len += zx_attr_so_len(c, x->regexp, sizeof("regexp")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -332,7 +334,7 @@ int zx_LEN_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x )
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "shibmd:Scope", len);
   return len;
@@ -358,7 +360,7 @@ int zx_LEN_WO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->regexp, sizeof("regexp")-1);
+  len += zx_attr_wo_len(c, x->regexp, sizeof("regexp")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -367,7 +369,7 @@ int zx_LEN_WO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x )
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "shibmd:Scope", len);
   return len;
@@ -389,9 +391,11 @@ char* zx_ENC_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x, char
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<shibmd:Scope");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_shibmd, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_shibmd, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->regexp, " regexp=\"", sizeof(" regexp=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -436,11 +440,11 @@ char* zx_ENC_WO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x, char
   ZX_OUT_MEM(p, "Scope", sizeof("Scope")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->regexp, "regexp=\"", sizeof("regexp=\"")-1);
 

@@ -86,7 +86,7 @@ int zx_LEN_SO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->name, sizeof("name")-1);
+  len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -106,7 +106,7 @@ int zx_LEN_SO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x )
     len += zx_LEN_SO_simple_elem(c,se, sizeof("is12:Value")-1, zx_ns_tab+zx_xmlns_ix_is12);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Confirm", len);
   return len;
@@ -132,7 +132,7 @@ int zx_LEN_WO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->name, sizeof("name")-1);
+  len += zx_attr_wo_len(c, x->name, sizeof("name")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -152,7 +152,7 @@ int zx_LEN_WO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x )
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Value")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Confirm", len);
   return len;
@@ -174,9 +174,11 @@ char* zx_ENC_SO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x, char
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Confirm");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->name, " name=\"", sizeof(" name=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -232,11 +234,11 @@ char* zx_ENC_WO_is12_Confirm(struct zx_ctx* c, struct zx_is12_Confirm_s* x, char
   ZX_OUT_MEM(p, "Confirm", sizeof("Confirm")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->name, "name=\"", sizeof("name=\"")-1);
 
@@ -359,7 +361,7 @@ int zx_LEN_SO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_Encrypte
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:EncryptedResourceID", len);
   return len;
@@ -403,7 +405,7 @@ int zx_LEN_WO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_Encrypte
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:EncryptedResourceID", len);
   return len;
@@ -425,9 +427,11 @@ char* zx_ENC_SO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_Encryp
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:EncryptedResourceID");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -481,11 +485,11 @@ char* zx_ENC_WO_is12_EncryptedResourceID(struct zx_ctx* c, struct zx_is12_Encryp
   ZX_OUT_MEM(p, "EncryptedResourceID", sizeof("EncryptedResourceID")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -597,7 +601,7 @@ int zx_LEN_SO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x )
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Extension", len);
   return len;
@@ -631,7 +635,7 @@ int zx_LEN_WO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x )
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Extension", len);
   return len;
@@ -653,9 +657,11 @@ char* zx_ENC_SO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x, 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Extension");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -699,11 +705,11 @@ char* zx_ENC_WO_is12_Extension(struct zx_ctx* c, struct zx_is12_Extension_s* x, 
   ZX_OUT_MEM(p, "Extension", sizeof("Extension")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -807,9 +813,9 @@ int zx_LEN_SO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->label, sizeof("label")-1);
-  len += zx_attr_so_len(x->link, sizeof("link")-1);
-  len += zx_attr_so_len(x->moreLink, sizeof("moreLink")-1);
+  len += zx_attr_so_len(c, x->label, sizeof("label")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->link, sizeof("link")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->moreLink, sizeof("moreLink")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -818,7 +824,7 @@ int zx_LEN_SO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x )
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Help", len);
   return len;
@@ -844,9 +850,9 @@ int zx_LEN_WO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->label, sizeof("label")-1);
-  len += zx_attr_wo_len(x->link, sizeof("link")-1);
-  len += zx_attr_wo_len(x->moreLink, sizeof("moreLink")-1);
+  len += zx_attr_wo_len(c, x->label, sizeof("label")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->link, sizeof("link")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->moreLink, sizeof("moreLink")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -855,7 +861,7 @@ int zx_LEN_WO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x )
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Help", len);
   return len;
@@ -877,9 +883,11 @@ char* zx_ENC_SO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x, char* p )
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Help");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->label, " label=\"", sizeof(" label=\"")-1);
   p = zx_attr_so_enc(p, x->link, " link=\"", sizeof(" link=\"")-1);
   p = zx_attr_so_enc(p, x->moreLink, " moreLink=\"", sizeof(" moreLink=\"")-1);
@@ -926,11 +934,11 @@ char* zx_ENC_WO_is12_Help(struct zx_ctx* c, struct zx_is12_Help_s* x, char* p )
   ZX_OUT_MEM(p, "Help", sizeof("Help")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->label, "label=\"", sizeof("label=\"")-1);
   p = zx_attr_wo_enc(p, x->link, "link=\"", sizeof("link=\"")-1);
@@ -1037,8 +1045,8 @@ int zx_LEN_SO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->title, sizeof("title")-1);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->title, sizeof("title")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1067,7 +1075,7 @@ int zx_LEN_SO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Inquiry", len);
   return len;
@@ -1093,8 +1101,8 @@ int zx_LEN_WO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->title, sizeof("title")-1);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->title, sizeof("title")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1123,7 +1131,7 @@ int zx_LEN_WO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Inquiry", len);
   return len;
@@ -1145,9 +1153,11 @@ char* zx_ENC_SO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x, char
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Inquiry");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
   p = zx_attr_so_enc(p, x->title, " title=\"", sizeof(" title=\"")-1);
 
@@ -1213,11 +1223,11 @@ char* zx_ENC_WO_is12_Inquiry(struct zx_ctx* c, struct zx_is12_Inquiry_s* x, char
   ZX_OUT_MEM(p, "Inquiry", sizeof("Inquiry")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
   p = zx_attr_wo_enc(p, x->title, "title=\"", sizeof("title=\"")-1);
@@ -1323,10 +1333,10 @@ int zx_LEN_SO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_Interacti
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->language, sizeof("language")-1);
-  len += zx_attr_so_len(x->maxInteractTime, sizeof("maxInteractTime")-1);
-  len += zx_attr_so_len(x->signed_is_c_keyword, sizeof("signed")-1);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->language, sizeof("language")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->maxInteractTime, sizeof("maxInteractTime")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->signed_is_c_keyword, sizeof("signed")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1345,7 +1355,7 @@ int zx_LEN_SO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_Interacti
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:InteractionRequest", len);
   return len;
@@ -1371,10 +1381,10 @@ int zx_LEN_WO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_Interacti
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->language, sizeof("language")-1);
-  len += zx_attr_wo_len(x->maxInteractTime, sizeof("maxInteractTime")-1);
-  len += zx_attr_wo_len(x->signed_is_c_keyword, sizeof("signed")-1);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->language, sizeof("language")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->maxInteractTime, sizeof("maxInteractTime")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->signed_is_c_keyword, sizeof("signed")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1393,7 +1403,7 @@ int zx_LEN_WO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_Interacti
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:InteractionRequest", len);
   return len;
@@ -1415,9 +1425,11 @@ char* zx_ENC_SO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_Interac
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:InteractionRequest");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
   p = zx_attr_so_enc(p, x->language, " language=\"", sizeof(" language=\"")-1);
   p = zx_attr_so_enc(p, x->maxInteractTime, " maxInteractTime=\"", sizeof(" maxInteractTime=\"")-1);
@@ -1475,11 +1487,11 @@ char* zx_ENC_WO_is12_InteractionRequest(struct zx_ctx* c, struct zx_is12_Interac
   ZX_OUT_MEM(p, "InteractionRequest", sizeof("InteractionRequest")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
   p = zx_attr_wo_enc(p, x->language, "language=\"", sizeof("language=\"")-1);
@@ -1610,7 +1622,7 @@ int zx_LEN_SO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_Interact
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:InteractionResponse", len);
   return len;
@@ -1659,7 +1671,7 @@ int zx_LEN_WO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_Interact
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:InteractionResponse", len);
   return len;
@@ -1681,9 +1693,11 @@ char* zx_ENC_SO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_Intera
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:InteractionResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -1742,11 +1756,11 @@ char* zx_ENC_WO_is12_InteractionResponse(struct zx_ctx* c, struct zx_is12_Intera
   ZX_OUT_MEM(p, "InteractionResponse", sizeof("InteractionResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1850,7 +1864,7 @@ int zx_LEN_SO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_Interacti
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->entryID, sizeof("entryID")-1);
+  len += zx_attr_so_len(c, x->entryID, sizeof("entryID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1881,7 +1895,7 @@ int zx_LEN_SO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_Interacti
     len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:Abstract")-1, zx_ns_tab+zx_xmlns_ix_di12);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:InteractionService", len);
   return len;
@@ -1907,7 +1921,7 @@ int zx_LEN_WO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_Interacti
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->entryID, sizeof("entryID")-1);
+  len += zx_attr_wo_len(c, x->entryID, sizeof("entryID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1938,7 +1952,7 @@ int zx_LEN_WO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_Interacti
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Abstract")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:InteractionService", len);
   return len;
@@ -1960,9 +1974,11 @@ char* zx_ENC_SO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_Interac
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:InteractionService");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->entryID, " entryID=\"", sizeof(" entryID=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2029,11 +2045,11 @@ char* zx_ENC_WO_is12_InteractionService(struct zx_ctx* c, struct zx_is12_Interac
   ZX_OUT_MEM(p, "InteractionService", sizeof("InteractionService")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->entryID, "entryID=\"", sizeof("entryID=\"")-1);
 
@@ -2157,7 +2173,7 @@ int zx_LEN_SO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_Interac
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:InteractionStatement", len);
   return len;
@@ -2202,7 +2218,7 @@ int zx_LEN_WO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_Interac
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:InteractionStatement", len);
   return len;
@@ -2224,9 +2240,11 @@ char* zx_ENC_SO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_Inter
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:InteractionStatement");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -2281,11 +2299,11 @@ char* zx_ENC_WO_is12_InteractionStatement(struct zx_ctx* c, struct zx_is12_Inter
   ZX_OUT_MEM(p, "InteractionStatement", sizeof("InteractionStatement")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2389,8 +2407,8 @@ int zx_LEN_SO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->label, sizeof("label")-1);
-  len += zx_attr_so_len(x->value, sizeof("value")-1);
+  len += zx_attr_so_len(c, x->label, sizeof("label")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->value, sizeof("value")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2401,7 +2419,7 @@ int zx_LEN_SO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x )
     len += zx_LEN_SO_simple_elem(c,se, sizeof("is12:Hint")-1, zx_ns_tab+zx_xmlns_ix_is12);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Item", len);
   return len;
@@ -2427,8 +2445,8 @@ int zx_LEN_WO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->label, sizeof("label")-1);
-  len += zx_attr_wo_len(x->value, sizeof("value")-1);
+  len += zx_attr_wo_len(c, x->label, sizeof("label")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->value, sizeof("value")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2439,7 +2457,7 @@ int zx_LEN_WO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x )
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Hint")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Item", len);
   return len;
@@ -2461,9 +2479,11 @@ char* zx_ENC_SO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x, char* p )
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Item");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->label, " label=\"", sizeof(" label=\"")-1);
   p = zx_attr_so_enc(p, x->value, " value=\"", sizeof(" value=\"")-1);
 
@@ -2511,11 +2531,11 @@ char* zx_ENC_WO_is12_Item(struct zx_ctx* c, struct zx_is12_Item_s* x, char* p )
   ZX_OUT_MEM(p, "Item", sizeof("Item")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->label, "label=\"", sizeof("label=\"")-1);
   p = zx_attr_wo_enc(p, x->value, "value=\"", sizeof("value=\"")-1);
@@ -2621,8 +2641,8 @@ int zx_LEN_SO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->name, sizeof("name")-1);
-  len += zx_attr_so_len(x->value, sizeof("value")-1);
+  len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->value, sizeof("value")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2631,7 +2651,7 @@ int zx_LEN_SO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x )
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Parameter", len);
   return len;
@@ -2657,8 +2677,8 @@ int zx_LEN_WO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->name, sizeof("name")-1);
-  len += zx_attr_wo_len(x->value, sizeof("value")-1);
+  len += zx_attr_wo_len(c, x->name, sizeof("name")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->value, sizeof("value")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2667,7 +2687,7 @@ int zx_LEN_WO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x )
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Parameter", len);
   return len;
@@ -2689,9 +2709,11 @@ char* zx_ENC_SO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x, 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Parameter");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->name, " name=\"", sizeof(" name=\"")-1);
   p = zx_attr_so_enc(p, x->value, " value=\"", sizeof(" value=\"")-1);
 
@@ -2737,11 +2759,11 @@ char* zx_ENC_WO_is12_Parameter(struct zx_ctx* c, struct zx_is12_Parameter_s* x, 
   ZX_OUT_MEM(p, "Parameter", sizeof("Parameter")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->name, "name=\"", sizeof("name=\"")-1);
   p = zx_attr_wo_enc(p, x->value, "value=\"", sizeof("value=\"")-1);
@@ -2847,7 +2869,7 @@ int zx_LEN_SO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequ
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->redirectURL, sizeof("redirectURL")-1);
+  len += zx_attr_so_len(c, x->redirectURL, sizeof("redirectURL")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2856,7 +2878,7 @@ int zx_LEN_SO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequ
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:RedirectRequest", len);
   return len;
@@ -2882,7 +2904,7 @@ int zx_LEN_WO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequ
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->redirectURL, sizeof("redirectURL")-1);
+  len += zx_attr_wo_len(c, x->redirectURL, sizeof("redirectURL")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2891,7 +2913,7 @@ int zx_LEN_WO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRequ
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:RedirectRequest", len);
   return len;
@@ -2913,9 +2935,11 @@ char* zx_ENC_SO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRe
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:RedirectRequest");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->redirectURL, " redirectURL=\"", sizeof(" redirectURL=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2960,11 +2984,11 @@ char* zx_ENC_WO_is12_RedirectRequest(struct zx_ctx* c, struct zx_is12_RedirectRe
   ZX_OUT_MEM(p, "RedirectRequest", sizeof("RedirectRequest")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->redirectURL, "redirectURL=\"", sizeof("redirectURL=\"")-1);
 
@@ -3069,7 +3093,7 @@ int zx_LEN_SO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3078,7 +3102,7 @@ int zx_LEN_SO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x )
   
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:ResourceID", len);
   return len;
@@ -3104,7 +3128,7 @@ int zx_LEN_WO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3113,7 +3137,7 @@ int zx_LEN_WO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x )
   
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:ResourceID", len);
   return len;
@@ -3135,9 +3159,11 @@ char* zx_ENC_SO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:ResourceID");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -3182,11 +3208,11 @@ char* zx_ENC_WO_is12_ResourceID(struct zx_ctx* c, struct zx_is12_ResourceID_s* x
   ZX_OUT_MEM(p, "ResourceID", sizeof("ResourceID")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
 
@@ -3291,8 +3317,8 @@ int zx_LEN_SO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->multiple, sizeof("multiple")-1);
-  len += zx_attr_so_len(x->name, sizeof("name")-1);
+  len += zx_attr_so_len(c, x->multiple, sizeof("multiple")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3317,7 +3343,7 @@ int zx_LEN_SO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Select", len);
   return len;
@@ -3343,8 +3369,8 @@ int zx_LEN_WO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->multiple, sizeof("multiple")-1);
-  len += zx_attr_wo_len(x->name, sizeof("name")-1);
+  len += zx_attr_wo_len(c, x->multiple, sizeof("multiple")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->name, sizeof("name")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3369,7 +3395,7 @@ int zx_LEN_WO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Select", len);
   return len;
@@ -3391,9 +3417,11 @@ char* zx_ENC_SO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x, char* 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Select");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->multiple, " multiple=\"", sizeof(" multiple=\"")-1);
   p = zx_attr_so_enc(p, x->name, " name=\"", sizeof(" name=\"")-1);
 
@@ -3455,11 +3483,11 @@ char* zx_ENC_WO_is12_Select(struct zx_ctx* c, struct zx_is12_Select_s* x, char* 
   ZX_OUT_MEM(p, "Select", sizeof("Select")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->multiple, "multiple=\"", sizeof("multiple=\"")-1);
   p = zx_attr_wo_enc(p, x->name, "name=\"", sizeof("name=\"")-1);
@@ -3565,9 +3593,9 @@ int zx_LEN_SO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->code, sizeof("code")-1);
-  len += zx_attr_so_len(x->comment, sizeof("comment")-1);
-  len += zx_attr_so_len(x->ref, sizeof("ref")-1);
+  len += zx_attr_so_len(c, x->code, sizeof("code")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->comment, sizeof("comment")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3581,7 +3609,7 @@ int zx_LEN_SO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Status", len);
   return len;
@@ -3607,9 +3635,9 @@ int zx_LEN_WO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->code, sizeof("code")-1);
-  len += zx_attr_wo_len(x->comment, sizeof("comment")-1);
-  len += zx_attr_wo_len(x->ref, sizeof("ref")-1);
+  len += zx_attr_wo_len(c, x->code, sizeof("code")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->comment, sizeof("comment")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->ref, sizeof("ref")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3623,7 +3651,7 @@ int zx_LEN_WO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Status", len);
   return len;
@@ -3645,9 +3673,11 @@ char* zx_ENC_SO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x, char* 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Status");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->code, " code=\"", sizeof(" code=\"")-1);
   p = zx_attr_so_enc(p, x->comment, " comment=\"", sizeof(" comment=\"")-1);
   p = zx_attr_so_enc(p, x->ref, " ref=\"", sizeof(" ref=\"")-1);
@@ -3699,11 +3729,11 @@ char* zx_ENC_WO_is12_Status(struct zx_ctx* c, struct zx_is12_Status_s* x, char* 
   ZX_OUT_MEM(p, "Status", sizeof("Status")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->code, "code=\"", sizeof("code=\"")-1);
   p = zx_attr_wo_enc(p, x->comment, "comment=\"", sizeof("comment=\"")-1);
@@ -3810,10 +3840,10 @@ int zx_LEN_SO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->format, sizeof("format")-1);
-  len += zx_attr_so_len(x->maxChars, sizeof("maxChars")-1);
-  len += zx_attr_so_len(x->minChars, sizeof("minChars")-1);
-  len += zx_attr_so_len(x->name, sizeof("name")-1);
+  len += zx_attr_so_len(c, x->format, sizeof("format")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->maxChars, sizeof("maxChars")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->minChars, sizeof("minChars")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3833,7 +3863,7 @@ int zx_LEN_SO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x )
     len += zx_LEN_SO_simple_elem(c,se, sizeof("is12:Value")-1, zx_ns_tab+zx_xmlns_ix_is12);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Text", len);
   return len;
@@ -3859,10 +3889,10 @@ int zx_LEN_WO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->format, sizeof("format")-1);
-  len += zx_attr_wo_len(x->maxChars, sizeof("maxChars")-1);
-  len += zx_attr_wo_len(x->minChars, sizeof("minChars")-1);
-  len += zx_attr_wo_len(x->name, sizeof("name")-1);
+  len += zx_attr_wo_len(c, x->format, sizeof("format")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->maxChars, sizeof("maxChars")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->minChars, sizeof("minChars")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->name, sizeof("name")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3882,7 +3912,7 @@ int zx_LEN_WO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x )
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Value")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:Text", len);
   return len;
@@ -3904,9 +3934,11 @@ char* zx_ENC_SO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x, char* p )
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:Text");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->format, " format=\"", sizeof(" format=\"")-1);
   p = zx_attr_so_enc(p, x->maxChars, " maxChars=\"", sizeof(" maxChars=\"")-1);
   p = zx_attr_so_enc(p, x->minChars, " minChars=\"", sizeof(" minChars=\"")-1);
@@ -3965,11 +3997,11 @@ char* zx_ENC_WO_is12_Text(struct zx_ctx* c, struct zx_is12_Text_s* x, char* p )
   ZX_OUT_MEM(p, "Text", sizeof("Text")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->format, "format=\"", sizeof("format=\"")-1);
   p = zx_attr_wo_enc(p, x->maxChars, "maxChars=\"", sizeof("maxChars=\"")-1);
@@ -4079,13 +4111,13 @@ int zx_LEN_SO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteract
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_e, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->interact, sizeof("interact")-1);
-  len += zx_attr_so_len(x->language, sizeof("language")-1);
-  len += zx_attr_so_len(x->maxInteractTime, sizeof("maxInteractTime")-1);
-  len += zx_attr_so_len(x->redirect, sizeof("redirect")-1);
-  len += zx_attr_so_len(x->actor, sizeof("e:actor")-1);
-  len += zx_attr_so_len(x->mustUnderstand, sizeof("e:mustUnderstand")-1);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->interact, sizeof("interact")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->language, sizeof("language")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->maxInteractTime, sizeof("maxInteractTime")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->redirect, sizeof("redirect")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->actor, sizeof("e:actor")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->mustUnderstand, sizeof("e:mustUnderstand")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -4099,7 +4131,7 @@ int zx_LEN_SO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteract
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:UserInteraction", len);
   return len;
@@ -4129,13 +4161,13 @@ int zx_LEN_WO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteract
     len += zx_len_xmlns_if_not_seen(c, x->mustUnderstand->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->interact, sizeof("interact")-1);
-  len += zx_attr_wo_len(x->language, sizeof("language")-1);
-  len += zx_attr_wo_len(x->maxInteractTime, sizeof("maxInteractTime")-1);
-  len += zx_attr_wo_len(x->redirect, sizeof("redirect")-1);
-  len += zx_attr_wo_len(x->actor, sizeof("actor")-1);
-  len += zx_attr_wo_len(x->mustUnderstand, sizeof("mustUnderstand")-1);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->interact, sizeof("interact")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->language, sizeof("language")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->maxInteractTime, sizeof("maxInteractTime")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->redirect, sizeof("redirect")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->actor, sizeof("actor")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->mustUnderstand, sizeof("mustUnderstand")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -4149,7 +4181,7 @@ int zx_LEN_WO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserInteract
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "is12:UserInteraction", len);
   return len;
@@ -4171,11 +4203,13 @@ char* zx_ENC_SO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserIntera
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<is12:UserInteraction");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_e, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_e, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_is12, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
   p = zx_attr_so_enc(p, x->interact, " interact=\"", sizeof(" interact=\"")-1);
   p = zx_attr_so_enc(p, x->language, " language=\"", sizeof(" language=\"")-1);
@@ -4231,7 +4265,6 @@ char* zx_ENC_WO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserIntera
   ZX_OUT_MEM(p, "UserInteraction", sizeof("UserInteraction")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor)
@@ -4240,6 +4273,7 @@ char* zx_ENC_WO_is12_UserInteraction(struct zx_ctx* c, struct zx_is12_UserIntera
     zx_add_xmlns_if_not_seen(c, x->mustUnderstand->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
   p = zx_attr_wo_enc(p, x->interact, "interact=\"", sizeof("interact=\"")-1);

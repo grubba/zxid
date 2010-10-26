@@ -36,9 +36,8 @@
 #include "c/zx-ns.h"
 
 int read_all_fd(int fd, char* p, int want, int* got_all);
-int write_all_fd(int fd, char* p, int pending);
 
-CU8* help =
+char* help =
 "zxencdectest  -  ZX encoding and decoding tester - R" ZXID_REL "\n\
 Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.\n\
 Copyright (c) 2006-2007 Symlabs (symlabs@symlabs.com), All Rights Reserved.\n\
@@ -184,7 +183,7 @@ void opt(int* argc, char*** argv, char*** env)
       case 'i':  if ((*argv)[0][3]) break;
 	++(*argv); --(*argc);
 	if (!(*argc)) break;
-	zx_instance = (*argv)[0];
+	strncpy(zx_instance, (*argv)[0], sizeof(zx_instance));
 	continue;
       }
       break;

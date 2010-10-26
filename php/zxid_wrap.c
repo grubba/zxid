@@ -6184,52 +6184,6 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zx_fix_any_elem_dec) {
-  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
-  struct zx_any_elem_s *arg2 = (struct zx_any_elem_s *) 0 ;
-  char *arg3 = (char *) 0 ;
-  int arg4 ;
-  zval **args[4];
-  
-  SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  {
-    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_fix_any_elem_dec. Expected SWIGTYPE_p_zx_ctx");
-    }
-  }
-  {
-    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zx_any_elem_s, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zx_fix_any_elem_dec. Expected SWIGTYPE_p_zx_any_elem_s");
-    }
-  }
-  
-  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
-  if ((*args[2])->type==IS_NULL) {
-    arg3 = (char *) 0;
-  } else {
-    convert_to_string_ex(args[2]);
-    arg3 = (char *) Z_STRVAL_PP(args[2]);
-  }
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[3]);
-  arg4 = (int) Z_LVAL_PP(args[3]);
-  /*@SWIG@*/;
-  
-  zx_fix_any_elem_dec(arg1,arg2,(char const *)arg3,arg4);
-  
-  return;
-fail:
-  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
-}
-
-
 ZEND_NAMED_FUNCTION(_wrap_zx_new_ns) {
   struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
   int arg2 ;
@@ -6328,49 +6282,6 @@ ZEND_NAMED_FUNCTION(_wrap_zx_locate_ns_by_prefix) {
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zx_ns_s, 0);
   
-  return;
-fail:
-  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_zx_is_ns_prefix) {
-  struct zx_ns_s *arg1 = (struct zx_ns_s *) 0 ;
-  int arg2 ;
-  char *arg3 = (char *) 0 ;
-  zval **args[3];
-  int result;
-  
-  SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  {
-    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ns_s, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_is_ns_prefix. Expected SWIGTYPE_p_zx_ns_s");
-    }
-  }
-  
-  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
-  if ((*args[2])->type==IS_NULL) {
-    arg3 = (char *) 0;
-  } else {
-    convert_to_string_ex(args[2]);
-    arg3 = (char *) Z_STRVAL_PP(args[2]);
-  }
-  /*@SWIG@*/;
-  
-  result = (int)zx_is_ns_prefix(arg1,arg2,(char const *)arg3);
-  {
-    ZVAL_LONG(return_value,result);
-  }
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -7183,58 +7094,6 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_zx_enc_xmlns_if_not_seen) {
-  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
-  char *arg2 = (char *) 0 ;
-  struct zx_ns_s *arg3 = (struct zx_ns_s *) 0 ;
-  struct zx_ns_s **arg4 = (struct zx_ns_s **) 0 ;
-  zval **args[4];
-  char *result = 0 ;
-  
-  SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  {
-    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_enc_xmlns_if_not_seen. Expected SWIGTYPE_p_zx_ctx");
-    }
-  }
-  
-  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
-  if ((*args[1])->type==IS_NULL) {
-    arg2 = (char *) 0;
-  } else {
-    convert_to_string_ex(args[1]);
-    arg2 = (char *) Z_STRVAL_PP(args[1]);
-  }
-  /*@SWIG@*/;
-  
-  {
-    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_zx_ns_s, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zx_enc_xmlns_if_not_seen. Expected SWIGTYPE_p_zx_ns_s");
-    }
-  }
-  {
-    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_p_zx_ns_s, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zx_enc_xmlns_if_not_seen. Expected SWIGTYPE_p_p_zx_ns_s");
-    }
-  }
-  result = (char *)zx_enc_xmlns_if_not_seen(arg1,arg2,arg3,arg4);
-  {
-    if(!result) {
-      ZVAL_NULL(return_value);
-    } else {
-      ZVAL_STRING(return_value, (char *)result, 1);
-    }
-  }
-  return;
-fail:
-  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
-}
-
-
 ZEND_NAMED_FUNCTION(_wrap_zx_add_xmlns_if_not_seen) {
   struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
   struct zx_ns_s *arg2 = (struct zx_ns_s *) 0 ;
@@ -7312,11 +7171,12 @@ fail:
 ZEND_NAMED_FUNCTION(_wrap_zx_len_so_common) {
   struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
   struct zx_elem_s *arg2 = (struct zx_elem_s *) 0 ;
-  zval **args[2];
+  struct zx_ns_s **arg3 = (struct zx_ns_s **) 0 ;
+  zval **args[3];
   int result;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
@@ -7330,7 +7190,12 @@ ZEND_NAMED_FUNCTION(_wrap_zx_len_so_common) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zx_len_so_common. Expected SWIGTYPE_p_zx_elem_s");
     }
   }
-  result = (int)zx_len_so_common(arg1,arg2);
+  {
+    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_p_zx_ns_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zx_len_so_common. Expected SWIGTYPE_p_p_zx_ns_s");
+    }
+  }
+  result = (int)zx_len_so_common(arg1,arg2,arg3);
   {
     ZVAL_LONG(return_value,result);
   }
@@ -7343,11 +7208,12 @@ fail:
 ZEND_NAMED_FUNCTION(_wrap_zx_len_wo_common) {
   struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
   struct zx_elem_s *arg2 = (struct zx_elem_s *) 0 ;
-  zval **args[2];
+  struct zx_ns_s **arg3 = (struct zx_ns_s **) 0 ;
+  zval **args[3];
   int result;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
@@ -7361,10 +7227,49 @@ ZEND_NAMED_FUNCTION(_wrap_zx_len_wo_common) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zx_len_wo_common. Expected SWIGTYPE_p_zx_elem_s");
     }
   }
-  result = (int)zx_len_wo_common(arg1,arg2);
+  {
+    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_p_zx_ns_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zx_len_wo_common. Expected SWIGTYPE_p_p_zx_ns_s");
+    }
+  }
+  result = (int)zx_len_wo_common(arg1,arg2,arg3);
   {
     ZVAL_LONG(return_value,result);
   }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zx_see_unknown_attrs_ns) {
+  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+  struct zx_any_attr_s *arg2 = (struct zx_any_attr_s *) 0 ;
+  struct zx_ns_s **arg3 = (struct zx_ns_s **) 0 ;
+  zval **args[3];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_see_unknown_attrs_ns. Expected SWIGTYPE_p_zx_ctx");
+    }
+  }
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zx_any_attr_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zx_see_unknown_attrs_ns. Expected SWIGTYPE_p_zx_any_attr_s");
+    }
+  }
+  {
+    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_p_zx_ns_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zx_see_unknown_attrs_ns. Expected SWIGTYPE_p_p_zx_ns_s");
+    }
+  }
+  zx_see_unknown_attrs_ns(arg1,arg2,arg3);
+  
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -7514,28 +7419,40 @@ fail:
 
 
 ZEND_NAMED_FUNCTION(_wrap_zx_attr_so_len) {
-  struct zx_str *arg1 = (struct zx_str *) 0 ;
-  int arg2 ;
-  zval **args[2];
+  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+  struct zx_str *arg2 = (struct zx_str *) 0 ;
+  int arg3 ;
+  struct zx_ns_s **arg4 = (struct zx_ns_s **) 0 ;
+  zval **args[4];
   int result;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   {
-    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_str, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_attr_so_len. Expected SWIGTYPE_p_zx_str");
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_attr_so_len. Expected SWIGTYPE_p_zx_ctx");
+    }
+  }
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zx_str, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zx_attr_so_len. Expected SWIGTYPE_p_zx_str");
     }
   }
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
+  convert_to_long_ex(args[2]);
+  arg3 = (int) Z_LVAL_PP(args[2]);
   /*@SWIG@*/;
   
-  result = (int)zx_attr_so_len(arg1,arg2);
+  {
+    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_p_zx_ns_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zx_attr_so_len. Expected SWIGTYPE_p_p_zx_ns_s");
+    }
+  }
+  result = (int)zx_attr_so_len(arg1,arg2,arg3,arg4);
   {
     ZVAL_LONG(return_value,result);
   }
@@ -7604,28 +7521,40 @@ fail:
 
 
 ZEND_NAMED_FUNCTION(_wrap_zx_attr_wo_len) {
-  struct zx_str *arg1 = (struct zx_str *) 0 ;
-  int arg2 ;
-  zval **args[2];
+  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+  struct zx_str *arg2 = (struct zx_str *) 0 ;
+  int arg3 ;
+  struct zx_ns_s **arg4 = (struct zx_ns_s **) 0 ;
+  zval **args[4];
   int result;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   {
-    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_str, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_attr_wo_len. Expected SWIGTYPE_p_zx_str");
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_attr_wo_len. Expected SWIGTYPE_p_zx_ctx");
+    }
+  }
+  {
+    if(SWIG_ConvertPtr(*args[1], (void **) &arg2, SWIGTYPE_p_zx_str, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zx_attr_wo_len. Expected SWIGTYPE_p_zx_str");
     }
   }
   
   /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
+  convert_to_long_ex(args[2]);
+  arg3 = (int) Z_LVAL_PP(args[2]);
   /*@SWIG@*/;
   
-  result = (int)zx_attr_wo_len(arg1,arg2);
+  {
+    if(SWIG_ConvertPtr(*args[3], (void **) &arg4, SWIGTYPE_p_p_zx_ns_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 4 of zx_attr_wo_len. Expected SWIGTYPE_p_p_zx_ns_s");
+    }
+  }
+  result = (int)zx_attr_wo_len(arg1,arg2,arg3,arg4);
   {
     ZVAL_LONG(return_value,result);
   }
@@ -7976,11 +7905,12 @@ fail:
 ZEND_NAMED_FUNCTION(_wrap_zx_dec_attr_val) {
   struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
   char **arg2 = (char **) 0 ;
-  zval **args[2];
+  char *arg3 = (char *) 0 ;
+  zval **args[3];
   char *result = 0 ;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
@@ -7994,7 +7924,17 @@ ZEND_NAMED_FUNCTION(_wrap_zx_dec_attr_val) {
       SWIG_PHP_Error(E_ERROR, "Type error in argument 2 of zx_dec_attr_val. Expected SWIGTYPE_p_p_char");
     }
   }
-  result = (char *)zx_dec_attr_val(arg1,(char const **)arg2);
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
+  if ((*args[2])->type==IS_NULL) {
+    arg3 = (char *) 0;
+  } else {
+    convert_to_string_ex(args[2]);
+    arg3 = (char *) Z_STRVAL_PP(args[2]);
+  }
+  /*@SWIG@*/;
+  
+  result = (char *)zx_dec_attr_val(arg1,(char const **)arg2,(char const *)arg3);
   {
     if(!result) {
       ZVAL_NULL(return_value);
@@ -8002,6 +7942,28 @@ ZEND_NAMED_FUNCTION(_wrap_zx_dec_attr_val) {
       ZVAL_STRING(return_value, (char *)result, 1);
     }
   }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zx_dec_reverse_lists) {
+  struct zx_elem_s *arg1 = (struct zx_elem_s *) 0 ;
+  zval **args[1];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_elem_s, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_dec_reverse_lists. Expected SWIGTYPE_p_zx_elem_s");
+    }
+  }
+  zx_dec_reverse_lists(arg1);
+  
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -8053,6 +8015,97 @@ ZEND_NAMED_FUNCTION(_wrap_zx_xml_parse_err) {
   
   zx_xml_parse_err(arg1,arg2,(char const *)arg3,(char const *)arg4);
   
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zx_xml_parse_err_mismatching_close_tag) {
+  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
+  int arg4 ;
+  zval **args[4];
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_xml_parse_err_mismatching_close_tag. Expected SWIGTYPE_p_zx_ctx");
+    }
+  }
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
+  if ((*args[1])->type==IS_NULL) {
+    arg2 = (char *) 0;
+  } else {
+    convert_to_string_ex(args[1]);
+    arg2 = (char *) Z_STRVAL_PP(args[1]);
+  }
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
+  if ((*args[2])->type==IS_NULL) {
+    arg3 = (char *) 0;
+  } else {
+    convert_to_string_ex(args[2]);
+    arg3 = (char *) Z_STRVAL_PP(args[2]);
+  }
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+  convert_to_long_ex(args[3]);
+  arg4 = (int) Z_LVAL_PP(args[3]);
+  /*@SWIG@*/;
+  
+  zx_xml_parse_err_mismatching_close_tag(arg1,(char const *)arg2,(char const *)arg3,arg4);
+  
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
+ZEND_NAMED_FUNCTION(_wrap_zx_scan_elem_start) {
+  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+  char *arg2 = (char *) 0 ;
+  zval **args[2];
+  char *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_scan_elem_start. Expected SWIGTYPE_p_zx_ctx");
+    }
+  }
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
+  if ((*args[1])->type==IS_NULL) {
+    arg2 = (char *) 0;
+  } else {
+    convert_to_string_ex(args[1]);
+    arg2 = (char *) Z_STRVAL_PP(args[1]);
+  }
+  /*@SWIG@*/;
+  
+  result = (char *)zx_scan_elem_start(arg1,(char const *)arg2);
+  {
+    if(!result) {
+      ZVAL_NULL(return_value);
+    } else {
+      ZVAL_STRING(return_value, (char *)result, 1);
+    }
+  }
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -8112,52 +8165,6 @@ ZEND_NAMED_FUNCTION(_wrap_zx_add_inc_ns) {
   }
   zx_add_inc_ns(arg1,arg2);
   
-  return;
-fail:
-  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_zx_enc_inc_ns) {
-  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
-  char *arg2 = (char *) 0 ;
-  struct zx_ns_s **arg3 = (struct zx_ns_s **) 0 ;
-  zval **args[3];
-  char *result = 0 ;
-  
-  SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  {
-    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_enc_inc_ns. Expected SWIGTYPE_p_zx_ctx");
-    }
-  }
-  
-  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,26,CONVERT_STRING_IN@*/
-  if ((*args[1])->type==IS_NULL) {
-    arg2 = (char *) 0;
-  } else {
-    convert_to_string_ex(args[1]);
-    arg2 = (char *) Z_STRVAL_PP(args[1]);
-  }
-  /*@SWIG@*/;
-  
-  {
-    if(SWIG_ConvertPtr(*args[2], (void **) &arg3, SWIGTYPE_p_p_zx_ns_s, 0) < 0) {
-      SWIG_PHP_Error(E_ERROR, "Type error in argument 3 of zx_enc_inc_ns. Expected SWIGTYPE_p_p_zx_ns_s");
-    }
-  }
-  result = (char *)zx_enc_inc_ns(arg1,arg2,arg3);
-  {
-    if(!result) {
-      ZVAL_NULL(return_value);
-    } else {
-      ZVAL_STRING(return_value, (char *)result, 1);
-    }
-  }
   return;
 fail:
   zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
@@ -43020,10 +43027,8 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zx_date_time_to_secs,_wrap_zx_date_time_to_secs,NULL)
  SWIG_ZEND_NAMED_FE(write2_or_append_lock_c_path,_wrap_write2_or_append_lock_c_path,NULL)
  SWIG_ZEND_NAMED_FE(zx_report_openssl_error,_wrap_zx_report_openssl_error,NULL)
- SWIG_ZEND_NAMED_FE(zx_fix_any_elem_dec,_wrap_zx_fix_any_elem_dec,NULL)
  SWIG_ZEND_NAMED_FE(zx_new_ns,_wrap_zx_new_ns,NULL)
  SWIG_ZEND_NAMED_FE(zx_locate_ns_by_prefix,_wrap_zx_locate_ns_by_prefix,NULL)
- SWIG_ZEND_NAMED_FE(zx_is_ns_prefix,_wrap_zx_is_ns_prefix,NULL)
  SWIG_ZEND_NAMED_FE(zx_prefix_seen,_wrap_zx_prefix_seen,NULL)
  SWIG_ZEND_NAMED_FE(zx_prefix_seen_whine,_wrap_zx_prefix_seen_whine,NULL)
  SWIG_ZEND_NAMED_FE(zx_scan_xmlns,_wrap_zx_scan_xmlns,NULL)
@@ -43041,11 +43046,11 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zx_md5_crypt,_wrap_zx_md5_crypt,NULL)
  SWIG_ZEND_NAMED_FE(zx_tok_by_ns,_wrap_zx_tok_by_ns,NULL)
  SWIG_ZEND_NAMED_FE(zx_len_xmlns_if_not_seen,_wrap_zx_len_xmlns_if_not_seen,NULL)
- SWIG_ZEND_NAMED_FE(zx_enc_xmlns_if_not_seen,_wrap_zx_enc_xmlns_if_not_seen,NULL)
  SWIG_ZEND_NAMED_FE(zx_add_xmlns_if_not_seen,_wrap_zx_add_xmlns_if_not_seen,NULL)
  SWIG_ZEND_NAMED_FE(zx_enc_seen,_wrap_zx_enc_seen,NULL)
  SWIG_ZEND_NAMED_FE(zx_len_so_common,_wrap_zx_len_so_common,NULL)
  SWIG_ZEND_NAMED_FE(zx_len_wo_common,_wrap_zx_len_wo_common,NULL)
+ SWIG_ZEND_NAMED_FE(zx_see_unknown_attrs_ns,_wrap_zx_see_unknown_attrs_ns,NULL)
  SWIG_ZEND_NAMED_FE(zx_enc_unknown_attrs,_wrap_zx_enc_unknown_attrs,NULL)
  SWIG_ZEND_NAMED_FE(zx_enc_so_unknown_elems_and_content,_wrap_zx_enc_so_unknown_elems_and_content,NULL)
  SWIG_ZEND_NAMED_FE(zx_easy_enc_common,_wrap_zx_easy_enc_common,NULL)
@@ -43061,10 +43066,12 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zx_scan_pi_or_comment,_wrap_zx_scan_pi_or_comment,NULL)
  SWIG_ZEND_NAMED_FE(zx_dec_unknown_attr,_wrap_zx_dec_unknown_attr,NULL)
  SWIG_ZEND_NAMED_FE(zx_dec_attr_val,_wrap_zx_dec_attr_val,NULL)
+ SWIG_ZEND_NAMED_FE(zx_dec_reverse_lists,_wrap_zx_dec_reverse_lists,NULL)
  SWIG_ZEND_NAMED_FE(zx_xml_parse_err,_wrap_zx_xml_parse_err,NULL)
+ SWIG_ZEND_NAMED_FE(zx_xml_parse_err_mismatching_close_tag,_wrap_zx_xml_parse_err_mismatching_close_tag,NULL)
+ SWIG_ZEND_NAMED_FE(zx_scan_elem_start,_wrap_zx_scan_elem_start,NULL)
  SWIG_ZEND_NAMED_FE(zx_len_inc_ns,_wrap_zx_len_inc_ns,NULL)
  SWIG_ZEND_NAMED_FE(zx_add_inc_ns,_wrap_zx_add_inc_ns,NULL)
- SWIG_ZEND_NAMED_FE(zx_enc_inc_ns,_wrap_zx_enc_inc_ns,NULL)
  SWIG_ZEND_NAMED_FE(zxid_entity_n_set,_wrap_zxid_entity_n_set,NULL)
  SWIG_ZEND_NAMED_FE(zxid_entity_n_get,_wrap_zxid_entity_n_get,NULL)
  SWIG_ZEND_NAMED_FE(zxid_entity_n_cdc_set,_wrap_zxid_entity_n_cdc_set,NULL)

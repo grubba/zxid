@@ -258,16 +258,18 @@ int   zx_date_time_to_secs(const char* dt);
 int   write2_or_append_lock_c_path(const char* c_path, int len1, const char* data1, int len2, const char* data2, const char* which, int seeky, int flag);
 int   zx_report_openssl_error(const char* logkey);
 
+#if 0
 void  zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, const char* nam, int namlen);
-struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url);
-struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, const char* prefix);
 int   zx_is_ns_prefix(struct zx_ns_s* ns, int len, const char* prefix);
+#endif
+int zx_dump_ns_tab(struct zx_ctx* c, int flags);
+struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url, int unknown);
+struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, const char* prefix);
 struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix);
 struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* prefix, const char* logkey, int mk_dummy_ns);
 struct zx_ns_s* zx_scan_xmlns(struct zx_ctx* c);
 void  zx_see_elem_ns(struct zx_ctx* c, struct zx_ns_s** pop_seen, struct zx_elem_s* el);
 void  zx_pop_seen(struct zx_ns_s* ns);
-
 int zx_format_parse_error(struct zx_ctx* ctx, char* buf, int siz, char* logkey);
 
 /* zxcrypto.c - Glue to OpenSSL low level */
@@ -286,17 +288,17 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf);
 
 const struct zx_tok* zx_tok_by_ns(const struct zx_tok* zt, const struct zx_tok* lim, int len, const char* name, struct zx_ns_s* ns);
 int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
-char* zx_enc_xmlns_if_not_seen(struct zx_ctx* c, char* p, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 void  zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 char* zx_enc_seen(char* p, struct zx_ns_s* ns);
-int   zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x);
-int   zx_len_wo_common(struct zx_ctx* c, struct zx_elem_s* x);
+int   zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp);
+int   zx_len_wo_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp);
+void  zx_see_unknown_attrs_ns(struct zx_ctx* c, struct zx_any_attr_s* aa, struct zx_ns_s** pop_seenp);
 char* zx_enc_unknown_attrs(char* p, struct zx_any_attr_s* aa);
 char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_elem_s* x);
 struct zx_str* zx_easy_enc_common(struct zx_ctx* c, char* p, char* buf, int len);
-int   zx_attr_so_len(struct zx_str* attr, int name_size);
+int   zx_attr_so_len(struct zx_ctx* c, struct zx_str* attr, int name_size, struct zx_ns_s** pop_seenp);
 char* zx_attr_so_enc(char* p, struct zx_str* attr, char* name, int name_len);
-int   zx_attr_wo_len(struct zx_str* attr, int name_size);
+int   zx_attr_wo_len(struct zx_ctx* c, struct zx_str* attr, int name_size, struct zx_ns_s** pop_seenp);
 char* zx_attr_wo_enc(char* p, struct zx_str* attr, char* name, int name_len);
 void  zx_free_attr(struct zx_ctx* c, struct zx_str* attr, int free_strs);
 void  zx_free_elem_common(struct zx_ctx* c, struct zx_elem_s* x, int free_strs);
@@ -318,12 +320,14 @@ void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, const char* s
 int   zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el);
 int   zx_scan_pi_or_comment(struct zx_ctx* c);
 struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, const char* name, const char* data, int tok, int ctx_tok);
-char* zx_dec_attr_val(struct zx_ctx* c, const char** name);
+const char* zx_dec_attr_val(struct zx_ctx* c, const char** name, const char* func);
+void zx_dec_reverse_lists(struct zx_elem_s* x);
 void  zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char* msg);
+void zx_xml_parse_err_mismatching_close_tag(struct zx_ctx* c, const char* func, const char* name, int tok);
+const char* zx_scan_elem_start(struct zx_ctx* c, const char* func);
 
 int   zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
 void  zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
-char* zx_enc_inc_ns(struct zx_ctx* c, char* p, struct zx_ns_s** pop_seenp);
 
 #if 0
 #define ZX_DEC_TAG_NOT_YET_CLOSED(x) (x).err |= ZXERR_TAG_NOT_CLOSED

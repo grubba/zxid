@@ -86,14 +86,14 @@ int zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_xaspcd1, &pop_seen);
 
-  len += zx_attr_so_len(x->CombinePolicies, sizeof("CombinePolicies")-1);
-  len += zx_attr_so_len(x->Consent, sizeof("Consent")-1);
-  len += zx_attr_so_len(x->Destination, sizeof("Destination")-1);
-  len += zx_attr_so_len(x->ID, sizeof("ID")-1);
-  len += zx_attr_so_len(x->InputContextOnly, sizeof("InputContextOnly")-1);
-  len += zx_attr_so_len(x->IssueInstant, sizeof("IssueInstant")-1);
-  len += zx_attr_so_len(x->ReturnContext, sizeof("ReturnContext")-1);
-  len += zx_attr_so_len(x->Version, sizeof("Version")-1);
+  len += zx_attr_so_len(c, x->CombinePolicies, sizeof("CombinePolicies")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->Consent, sizeof("Consent")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->Destination, sizeof("Destination")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->InputContextOnly, sizeof("InputContextOnly")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->ReturnContext, sizeof("ReturnContext")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->Version, sizeof("Version")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -138,7 +138,7 @@ int zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "xaspcd1:XACMLAuthzDecisionQuery", len);
   return len;
@@ -164,14 +164,14 @@ int zx_LEN_WO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->CombinePolicies, sizeof("CombinePolicies")-1);
-  len += zx_attr_wo_len(x->Consent, sizeof("Consent")-1);
-  len += zx_attr_wo_len(x->Destination, sizeof("Destination")-1);
-  len += zx_attr_wo_len(x->ID, sizeof("ID")-1);
-  len += zx_attr_wo_len(x->InputContextOnly, sizeof("InputContextOnly")-1);
-  len += zx_attr_wo_len(x->IssueInstant, sizeof("IssueInstant")-1);
-  len += zx_attr_wo_len(x->ReturnContext, sizeof("ReturnContext")-1);
-  len += zx_attr_wo_len(x->Version, sizeof("Version")-1);
+  len += zx_attr_wo_len(c, x->CombinePolicies, sizeof("CombinePolicies")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->Consent, sizeof("Consent")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->Destination, sizeof("Destination")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->ID, sizeof("ID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->InputContextOnly, sizeof("InputContextOnly")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->ReturnContext, sizeof("ReturnContext")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->Version, sizeof("Version")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -216,7 +216,7 @@ int zx_LEN_WO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "xaspcd1:XACMLAuthzDecisionQuery", len);
   return len;
@@ -238,9 +238,11 @@ char* zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xasp
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<xaspcd1:XACMLAuthzDecisionQuery");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_xaspcd1, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_xaspcd1, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->CombinePolicies, " CombinePolicies=\"", sizeof(" CombinePolicies=\"")-1);
   p = zx_attr_so_enc(p, x->Consent, " Consent=\"", sizeof(" Consent=\"")-1);
   p = zx_attr_so_enc(p, x->Destination, " Destination=\"", sizeof(" Destination=\"")-1);
@@ -328,11 +330,11 @@ char* zx_ENC_WO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xasp
   ZX_OUT_MEM(p, "XACMLAuthzDecisionQuery", sizeof("XACMLAuthzDecisionQuery")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->CombinePolicies, "CombinePolicies=\"", sizeof("CombinePolicies=\"")-1);
   p = zx_attr_wo_enc(p, x->Consent, "Consent=\"", sizeof("Consent=\"")-1);
@@ -444,11 +446,11 @@ int zx_LEN_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACML
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_xaspcd1, &pop_seen);
 
-  len += zx_attr_so_len(x->Consent, sizeof("Consent")-1);
-  len += zx_attr_so_len(x->Destination, sizeof("Destination")-1);
-  len += zx_attr_so_len(x->ID, sizeof("ID")-1);
-  len += zx_attr_so_len(x->IssueInstant, sizeof("IssueInstant")-1);
-  len += zx_attr_so_len(x->Version, sizeof("Version")-1);
+  len += zx_attr_so_len(c, x->Consent, sizeof("Consent")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->Destination, sizeof("Destination")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->Version, sizeof("Version")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -493,7 +495,7 @@ int zx_LEN_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACML
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "xaspcd1:XACMLPolicyQuery", len);
   return len;
@@ -519,11 +521,11 @@ int zx_LEN_WO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACML
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->Consent, sizeof("Consent")-1);
-  len += zx_attr_wo_len(x->Destination, sizeof("Destination")-1);
-  len += zx_attr_wo_len(x->ID, sizeof("ID")-1);
-  len += zx_attr_wo_len(x->IssueInstant, sizeof("IssueInstant")-1);
-  len += zx_attr_wo_len(x->Version, sizeof("Version")-1);
+  len += zx_attr_wo_len(c, x->Consent, sizeof("Consent")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->Destination, sizeof("Destination")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->ID, sizeof("ID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->Version, sizeof("Version")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -568,7 +570,7 @@ int zx_LEN_WO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACML
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "xaspcd1:XACMLPolicyQuery", len);
   return len;
@@ -590,9 +592,11 @@ char* zx_ENC_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XAC
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<xaspcd1:XACMLPolicyQuery");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_xaspcd1, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_xaspcd1, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->Consent, " Consent=\"", sizeof(" Consent=\"")-1);
   p = zx_attr_so_enc(p, x->Destination, " Destination=\"", sizeof(" Destination=\"")-1);
   p = zx_attr_so_enc(p, x->ID, " ID=\"", sizeof(" ID=\"")-1);
@@ -677,11 +681,11 @@ char* zx_ENC_WO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XAC
   ZX_OUT_MEM(p, "XACMLPolicyQuery", sizeof("XACMLPolicyQuery")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->Consent, "Consent=\"", sizeof("Consent=\"")-1);
   p = zx_attr_wo_enc(p, x->Destination, "Destination=\"", sizeof("Destination=\"")-1);

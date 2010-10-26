@@ -63,8 +63,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
       specific attributes. Only authentication and default attributes will be sent."
     - AuthnReq QS option for SP to request that consent is explicitly seeked
     - AuthnReq QS option for SP to request that attribute list is not shown up front
+    - Consider removing zx_scan_pi_or_comment() from most tags, only leaving for top level.
     - Show whether SP wants a persistent or transient, or some other type of Id for the user.
-    - Fix detection of namespace of an XML attribute, see t/shib-a7n2.xml, see enc-templ and comment about sorting namespaces
+    - Sort unknown attributes wrt known attributes in SO and WO enc
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
     NOTPUB
@@ -72,8 +73,9 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
 zxid-0.70:: 21.10.2010
     - zxdecode: assertion decode and decryption support
     - zxdecode: sha1 validation without sig validation using -s -s
-    - fix canonicalization of attribute names with namespace prefixes
-    NOTPUB
+    - Fix canonicalization of attribute names with namespace prefixes
+    - Fix detection of namespace of an XML attribute, see t/shib-a7n2.xml
+    - Some optimizations based on gcov and gprof
 
 zxid-0.69:: 20.10.2010
     - Added DeployingZxidServlets.txt, ZxidSSOFilter.java, and ZxidServlet.java by Stijn Lievens

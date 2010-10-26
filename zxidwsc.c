@@ -154,7 +154,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   ZERO(refs, sizeof(refs));
   n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, hdr, env->Body);
   /* *** Consider adding BDY and STR */
-  ses->sigres = zxsig_validate(cf->ctx, wsc_meta->sign_cert, sec->Signature, n_refs, refs);
+  ses->sigres = zxsig_validate(cf->ctx, wsc_meta?wsc_meta->sign_cert:0, sec->Signature, n_refs, refs);
   zxid_sigres_map(ses->sigres, &cgi.sigval, &cgi.sigmsg);
   if (cf->sig_fatal && ses->sigres) {
     ERR("Fail due to failed message signature sigres=%d", ses->sigres);

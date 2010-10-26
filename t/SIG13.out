@@ -1,0 +1,20 @@
+<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="iede33b6da788148ca1da3c4dfaadc651772c2e50" InResponseTo="NdJkYe5Fm" Version="2.0" IssueInstant="2007-10-09T22:25:33.000Z"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">https://ovsf-idp.external.hp.com:8443/tfs</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"></samlp:StatusCode></samlp:Status><saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="id73f91a55b66e2e47677764f603f0572e19afb36" IssueInstant="2007-10-09T22:25:33.000Z" Version="2.0"><saml:Issuer>https://ovsf-idp.external.hp.com:8443/tfs</saml:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:CanonicalizationMethod>
+<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"></ds:SignatureMethod>
+<ds:Reference URI="#id73f91a55b66e2e47677764f603f0572e19afb36">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></ds:Transform>
+<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:Transform>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>
+<ds:DigestValue>ucGPVM1f8pa7js8ocZQcGycvr84=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue>
+WgXgu0z8vF9td+d3hm2FHt0zU9Q/31GzM12SdRV+0dsbDCJP+Fh/EGgT8lzoOFf/O0XsK3JYcKph
+IBI56rLl5NimE5cT4V5SNzrdjX4mRfMuTB1IKF7xizryQtVxtSSLnX16NUq8iy37cYx5sAyhT2pV
+Br99nQ2RYiEeKp064rQ=
+</ds:SignatureValue>
+</ds:Signature><saml:Subject><saml:NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" NameQualifier="https://ovsf-idp.external.hp.com:8443/tfs" SPNameQualifier="https://s-xtra.liberty-iop.org:8443/sfis?o=B">8bc58a1c739b363ea64fd2c879a517026856fb1c</saml:NameID><saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"><saml:SubjectConfirmationData InResponseTo="NdJkYe5Fm" NotOnOrAfter="2007-10-09T22:35:33.000Z" Recipient="https://s-xtra.liberty-iop.org:8443/sfis?o=P"></saml:SubjectConfirmationData></saml:SubjectConfirmation></saml:Subject><saml:Conditions><saml:AudienceRestriction><saml:Audience>https://s-xtra.liberty-iop.org:8443/sfis?o=B</saml:Audience></saml:AudienceRestriction></saml:Conditions><saml:AuthnStatement AuthnInstant="2007-10-09T22:25:32.000Z" SessionIndex="id73f91a55b66e2e47677764f603f0572e19afb36" SessionNotOnOrAfter="2007-10-10T08:25:32.000Z"><saml:AuthnContext><saml:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml:AuthnContextClassRef><saml:AuthnContextDeclRef>https://ovsf-idp.external.hp.com:8443/tfs/AC_SAML20/sslpassword</saml:AuthnContextDeclRef></saml:AuthnContext></saml:AuthnStatement></saml:Assertion></samlp:Response>
+Canon sha1 of Assertion verified OK 5

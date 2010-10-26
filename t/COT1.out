@@ -1,0 +1,18 @@
+/var/zxid/cot/s36Te-rgbzReSjVc8vDDGy89tT8 http://idp.ssocircle.com                           -
+/var/zxid/cot/_CBGcFVVbIEmt5oh3jUx4GEfHLM https://idp.symdemo.com:8880/idp.xml               -
+/var/zxid/cot/crE4cE1_K3Vd5oQkgDxi_vD6GNE https://idp.tas3.kent.ac.uk/idp/shibboleth         -
+/var/zxid/cot/RoxLhhcxK04xzJRrW6ZuroX7Ing http://sp.tas3.pt:8080/zxidservlet/wspdemo?o=B     -
+/var/zxid/cot/xsKJr3DL7sUPDdbdqgC2H_eP-UM http://idp.tas3.pt:8081/zxididp                    TAS3 Demo IdP
+/var/zxid/cot/9u_7LsQjkz0VaXKucmx1_sYjQnM http://sp.tas3.pt:8080/zxidservlet/sso?o=B         -
+/var/zxid/cot/xOjD65W1OVltx35kfHMs7ZLD9Sg https://idp.tas3.eu/zxididp?o=B                    -
+/var/zxid/cot/JiB-7CyH0JYURjZj3slF2sl7CO4 https://idp.kantarainitiative.org/simplesaml/saml2/idp/metadata.php -
+/var/zxid/cot/HP5IP9fE_HtNMNuTisquh7oNqg4 http://idp.tas3.pt:8081/zxididp                    TAS3 Demo IdP
+/var/zxid/cot/v1tVvR0_Z_ZjW2p0GQzQYSUDY0M https://cardspace-idp.symlabs.net:8002/idp.xml     -
+/var/zxid/cot/yBeCTPt0NQ2vMuI-srKw5h4N2i8 https://zxidp.org/idp                              ZXIDP - Free IdP
+/var/zxid/cot/sVKeK_EW5Kdgt_3_dty3Pvpkvn4 ehp-stage.uhg.UMICH                                TAS3 Demo IdP
+/var/zxid/cot/JwZcQkNISe3yGNqYkRkhC6MsPI4 http://rolacast.labse.isti.cnr.it/meta.xml         -
+/var/zxid/cot/U1P0XrwXMFHdAqVbFUpnrDvDV3g http://saml.flexmls.com/idp/shibboleth             -
+/var/zxid/cot/kBxtAcQLGjHtsHvYvHDhOoehdTY https://idpdemo.tas3.eu:8443/zxididp?o=B           -
+/var/zxid/cot/dgsDrHIE3WTSvxSsu8zCClSeFYg https://sp1.zxidsp.org:8443/zxidhlo?o=B            -
+/var/zxid/cot/LrmskITZZexv2pk5c7qKRvLMicw http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B     TAS3 App Demo SP and WSC
+/var/zxid/cot/ZLIYSwzbSQdzIWHISwoWtdrx6JI http://auth.orange.fr                              -

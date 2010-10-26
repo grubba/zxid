@@ -88,7 +88,7 @@ int zx_LEN_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x )
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -117,7 +117,7 @@ int zx_LEN_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Create", len);
   return len;
@@ -145,7 +145,7 @@ int zx_LEN_WO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x )
     len += zx_len_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -174,7 +174,7 @@ int zx_LEN_WO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Create", len);
   return len;
@@ -196,11 +196,13 @@ char* zx_ENC_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x, 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:Create");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -265,13 +267,13 @@ char* zx_ENC_WO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x, 
   ZX_OUT_MEM(p, "Create", sizeof("Create")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
     zx_add_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->itemID, "itemID=\"", sizeof("itemID=\"")-1);
 
@@ -378,9 +380,9 @@ int zx_LEN_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
-  len += zx_attr_so_len(x->objectType, sizeof("dst:objectType")-1);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->objectType, sizeof("dst:objectType")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -394,7 +396,7 @@ int zx_LEN_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:CreateItem", len);
   return len;
@@ -424,9 +426,9 @@ int zx_LEN_WO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_
     len += zx_len_xmlns_if_not_seen(c, x->objectType->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
-  len += zx_attr_wo_len(x->objectType, sizeof("objectType")-1);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->objectType, sizeof("objectType")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -440,7 +442,7 @@ int zx_LEN_WO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:CreateItem", len);
   return len;
@@ -462,11 +464,13 @@ char* zx_ENC_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateIte
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:CreateItem");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
   p = zx_attr_so_enc(p, x->objectType, " dst:objectType=\"", sizeof(" dst:objectType=\"")-1);
@@ -518,7 +522,6 @@ char* zx_ENC_WO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateIte
   ZX_OUT_MEM(p, "CreateItem", sizeof("CreateItem")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
@@ -527,6 +530,7 @@ char* zx_ENC_WO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateIte
     zx_add_xmlns_if_not_seen(c, x->objectType->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
   p = zx_attr_wo_enc(p, x->itemID, "itemID=\"", sizeof("itemID=\"")-1);
@@ -635,8 +639,8 @@ int zx_LEN_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateR
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->timeStamp, sizeof("timeStamp")-1);
-  len += zx_attr_so_len(x->itemIDRef, sizeof("dst:itemIDRef")-1);
+  len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -660,7 +664,7 @@ int zx_LEN_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateR
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:CreateResponse", len);
   return len;
@@ -688,8 +692,8 @@ int zx_LEN_WO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateR
     len += zx_len_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->timeStamp, sizeof("timeStamp")-1);
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_wo_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -713,7 +717,7 @@ int zx_LEN_WO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateR
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:CreateResponse", len);
   return len;
@@ -735,11 +739,13 @@ char* zx_ENC_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_Creat
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:CreateResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->timeStamp, " timeStamp=\"", sizeof(" timeStamp=\"")-1);
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
 
@@ -800,13 +806,13 @@ char* zx_ENC_WO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_Creat
   ZX_OUT_MEM(p, "CreateResponse", sizeof("CreateResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
     zx_add_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->timeStamp, "timeStamp=\"", sizeof("timeStamp=\"")-1);
   p = zx_attr_wo_enc(p, x->itemIDRef, "itemIDRef=\"", sizeof("itemIDRef=\"")-1);
@@ -914,12 +920,12 @@ int zx_LEN_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x )
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->nextOffset, sizeof("nextOffset")-1);
-  len += zx_attr_so_len(x->notSorted, sizeof("notSorted")-1);
-  len += zx_attr_so_len(x->remaining, sizeof("remaining")-1);
-  len += zx_attr_so_len(x->setID, sizeof("setID")-1);
-  len += zx_attr_so_len(x->changeFormat, sizeof("dst:changeFormat")-1);
-  len += zx_attr_so_len(x->itemIDRef, sizeof("dst:itemIDRef")-1);
+  len += zx_attr_so_len(c, x->nextOffset, sizeof("nextOffset")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->notSorted, sizeof("notSorted")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->remaining, sizeof("remaining")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->setID, sizeof("setID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->changeFormat, sizeof("dst:changeFormat")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -938,7 +944,7 @@ int zx_LEN_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Data", len);
   return len;
@@ -968,12 +974,12 @@ int zx_LEN_WO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x )
     len += zx_len_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->nextOffset, sizeof("nextOffset")-1);
-  len += zx_attr_wo_len(x->notSorted, sizeof("notSorted")-1);
-  len += zx_attr_wo_len(x->remaining, sizeof("remaining")-1);
-  len += zx_attr_wo_len(x->setID, sizeof("setID")-1);
-  len += zx_attr_wo_len(x->changeFormat, sizeof("changeFormat")-1);
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_wo_len(c, x->nextOffset, sizeof("nextOffset")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->notSorted, sizeof("notSorted")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->remaining, sizeof("remaining")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->setID, sizeof("setID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->changeFormat, sizeof("changeFormat")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -992,7 +998,7 @@ int zx_LEN_WO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Data", len);
   return len;
@@ -1014,11 +1020,13 @@ char* zx_ENC_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x, char
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:Data");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->changeFormat || x->itemIDRef)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->nextOffset, " nextOffset=\"", sizeof(" nextOffset=\"")-1);
   p = zx_attr_so_enc(p, x->notSorted, " notSorted=\"", sizeof(" notSorted=\"")-1);
   p = zx_attr_so_enc(p, x->remaining, " remaining=\"", sizeof(" remaining=\"")-1);
@@ -1078,7 +1086,6 @@ char* zx_ENC_WO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x, char
   ZX_OUT_MEM(p, "Data", sizeof("Data")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->changeFormat)
@@ -1087,6 +1094,7 @@ char* zx_ENC_WO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x, char
     zx_add_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->nextOffset, "nextOffset=\"", sizeof("nextOffset=\"")-1);
   p = zx_attr_wo_enc(p, x->notSorted, "notSorted=\"", sizeof("notSorted=\"")-1);
@@ -1198,7 +1206,7 @@ int zx_LEN_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x )
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1217,7 +1225,7 @@ int zx_LEN_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Delete", len);
   return len;
@@ -1245,7 +1253,7 @@ int zx_LEN_WO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x )
     len += zx_len_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1264,7 +1272,7 @@ int zx_LEN_WO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Delete", len);
   return len;
@@ -1286,11 +1294,13 @@ char* zx_ENC_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x, 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:Delete");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1345,13 +1355,13 @@ char* zx_ENC_WO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x, 
   ZX_OUT_MEM(p, "Delete", sizeof("Delete")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
     zx_add_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->itemID, "itemID=\"", sizeof("itemID=\"")-1);
 
@@ -1458,11 +1468,11 @@ int zx_LEN_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->notChangedSince, sizeof("notChangedSince")-1);
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
-  len += zx_attr_so_len(x->objectType, sizeof("dst:objectType")-1);
-  len += zx_attr_so_len(x->predefined, sizeof("dst:predefined")-1);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->notChangedSince, sizeof("notChangedSince")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->objectType, sizeof("dst:objectType")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->predefined, sizeof("dst:predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1473,7 +1483,7 @@ int zx_LEN_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_
     len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Select")-1, zx_ns_tab+zx_xmlns_ix_idhrxml);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:DeleteItem", len);
   return len;
@@ -1505,11 +1515,11 @@ int zx_LEN_WO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_
     len += zx_len_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->notChangedSince, sizeof("notChangedSince")-1);
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
-  len += zx_attr_wo_len(x->objectType, sizeof("objectType")-1);
-  len += zx_attr_wo_len(x->predefined, sizeof("predefined")-1);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->notChangedSince, sizeof("notChangedSince")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->objectType, sizeof("objectType")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->predefined, sizeof("predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1520,7 +1530,7 @@ int zx_LEN_WO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Select")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:DeleteItem", len);
   return len;
@@ -1542,11 +1552,13 @@ char* zx_ENC_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteIte
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:DeleteItem");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType || x->predefined)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
   p = zx_attr_so_enc(p, x->notChangedSince, " notChangedSince=\"", sizeof(" notChangedSince=\"")-1);
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
@@ -1597,7 +1609,6 @@ char* zx_ENC_WO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteIte
   ZX_OUT_MEM(p, "DeleteItem", sizeof("DeleteItem")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
@@ -1608,6 +1619,7 @@ char* zx_ENC_WO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteIte
     zx_add_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
   p = zx_attr_wo_enc(p, x->notChangedSince, "notChangedSince=\"", sizeof("notChangedSince=\"")-1);
@@ -1716,7 +1728,7 @@ int zx_LEN_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteR
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1735,7 +1747,7 @@ int zx_LEN_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteR
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:DeleteResponse", len);
   return len;
@@ -1761,7 +1773,7 @@ int zx_LEN_WO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteR
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1780,7 +1792,7 @@ int zx_LEN_WO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteR
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:DeleteResponse", len);
   return len;
@@ -1802,9 +1814,11 @@ char* zx_ENC_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_Delet
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:DeleteResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->itemIDRef, " itemIDRef=\"", sizeof(" itemIDRef=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -1859,11 +1873,11 @@ char* zx_ENC_WO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_Delet
   ZX_OUT_MEM(p, "DeleteResponse", sizeof("DeleteResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->itemIDRef, "itemIDRef=\"", sizeof("itemIDRef=\"")-1);
 
@@ -1970,9 +1984,9 @@ int zx_LEN_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->notSorted, sizeof("notSorted")-1);
-  len += zx_attr_so_len(x->changeFormat, sizeof("dst:changeFormat")-1);
-  len += zx_attr_so_len(x->itemIDRef, sizeof("dst:itemIDRef")-1);
+  len += zx_attr_so_len(c, x->notSorted, sizeof("notSorted")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->changeFormat, sizeof("dst:changeFormat")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -1991,7 +2005,7 @@ int zx_LEN_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:ItemData", len);
   return len;
@@ -2021,9 +2035,9 @@ int zx_LEN_WO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x
     len += zx_len_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->notSorted, sizeof("notSorted")-1);
-  len += zx_attr_wo_len(x->changeFormat, sizeof("changeFormat")-1);
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_wo_len(c, x->notSorted, sizeof("notSorted")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->changeFormat, sizeof("changeFormat")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2042,7 +2056,7 @@ int zx_LEN_WO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:ItemData", len);
   return len;
@@ -2064,11 +2078,13 @@ char* zx_ENC_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s*
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:ItemData");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->changeFormat || x->itemIDRef)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->notSorted, " notSorted=\"", sizeof(" notSorted=\"")-1);
   p = zx_attr_so_enc(p, x->changeFormat, " dst:changeFormat=\"", sizeof(" dst:changeFormat=\"")-1);
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
@@ -2125,7 +2141,6 @@ char* zx_ENC_WO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s*
   ZX_OUT_MEM(p, "ItemData", sizeof("ItemData")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->changeFormat)
@@ -2134,6 +2149,7 @@ char* zx_ENC_WO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s*
     zx_add_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->notSorted, "notSorted=\"", sizeof("notSorted=\"")-1);
   p = zx_attr_wo_enc(p, x->changeFormat, "changeFormat=\"", sizeof("changeFormat=\"")-1);
@@ -2242,7 +2258,7 @@ int zx_LEN_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x )
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2271,7 +2287,7 @@ int zx_LEN_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Modify", len);
   return len;
@@ -2299,7 +2315,7 @@ int zx_LEN_WO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x )
     len += zx_len_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2328,7 +2344,7 @@ int zx_LEN_WO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Modify", len);
   return len;
@@ -2350,11 +2366,13 @@ char* zx_ENC_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x, 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:Modify");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -2419,13 +2437,13 @@ char* zx_ENC_WO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x, 
   ZX_OUT_MEM(p, "Modify", sizeof("Modify")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
     zx_add_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->itemID, "itemID=\"", sizeof("itemID=\"")-1);
 
@@ -2532,12 +2550,12 @@ int zx_LEN_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->notChangedSince, sizeof("notChangedSince")-1);
-  len += zx_attr_so_len(x->overrideAllowed, sizeof("overrideAllowed")-1);
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
-  len += zx_attr_so_len(x->objectType, sizeof("dst:objectType")-1);
-  len += zx_attr_so_len(x->predefined, sizeof("dst:predefined")-1);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->notChangedSince, sizeof("notChangedSince")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->overrideAllowed, sizeof("overrideAllowed")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->objectType, sizeof("dst:objectType")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->predefined, sizeof("dst:predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2553,7 +2571,7 @@ int zx_LEN_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:ModifyItem", len);
   return len;
@@ -2585,12 +2603,12 @@ int zx_LEN_WO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_
     len += zx_len_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->notChangedSince, sizeof("notChangedSince")-1);
-  len += zx_attr_wo_len(x->overrideAllowed, sizeof("overrideAllowed")-1);
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
-  len += zx_attr_wo_len(x->objectType, sizeof("objectType")-1);
-  len += zx_attr_wo_len(x->predefined, sizeof("predefined")-1);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->notChangedSince, sizeof("notChangedSince")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->overrideAllowed, sizeof("overrideAllowed")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->objectType, sizeof("objectType")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->predefined, sizeof("predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2606,7 +2624,7 @@ int zx_LEN_WO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:ModifyItem", len);
   return len;
@@ -2628,11 +2646,13 @@ char* zx_ENC_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyIte
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:ModifyItem");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType || x->predefined)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
   p = zx_attr_so_enc(p, x->notChangedSince, " notChangedSince=\"", sizeof(" notChangedSince=\"")-1);
   p = zx_attr_so_enc(p, x->overrideAllowed, " overrideAllowed=\"", sizeof(" overrideAllowed=\"")-1);
@@ -2689,7 +2709,6 @@ char* zx_ENC_WO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyIte
   ZX_OUT_MEM(p, "ModifyItem", sizeof("ModifyItem")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
@@ -2700,6 +2719,7 @@ char* zx_ENC_WO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyIte
     zx_add_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
   p = zx_attr_wo_enc(p, x->notChangedSince, "notChangedSince=\"", sizeof("notChangedSince=\"")-1);
@@ -2811,8 +2831,8 @@ int zx_LEN_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyR
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->timeStamp, sizeof("timeStamp")-1);
-  len += zx_attr_so_len(x->itemIDRef, sizeof("dst:itemIDRef")-1);
+  len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2836,7 +2856,7 @@ int zx_LEN_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyR
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:ModifyResponse", len);
   return len;
@@ -2864,8 +2884,8 @@ int zx_LEN_WO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyR
     len += zx_len_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->timeStamp, sizeof("timeStamp")-1);
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_wo_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -2889,7 +2909,7 @@ int zx_LEN_WO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyR
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:ModifyResponse", len);
   return len;
@@ -2911,11 +2931,13 @@ char* zx_ENC_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_Modif
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:ModifyResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->timeStamp, " timeStamp=\"", sizeof(" timeStamp=\"")-1);
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
 
@@ -2976,13 +2998,13 @@ char* zx_ENC_WO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_Modif
   ZX_OUT_MEM(p, "ModifyResponse", sizeof("ModifyResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
     zx_add_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->timeStamp, "timeStamp=\"", sizeof("timeStamp=\"")-1);
   p = zx_attr_wo_enc(p, x->itemIDRef, "itemIDRef=\"", sizeof("itemIDRef=\"")-1);
@@ -3106,7 +3128,7 @@ int zx_LEN_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:NewData", len);
   return len;
@@ -3150,7 +3172,7 @@ int zx_LEN_WO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:NewData", len);
   return len;
@@ -3172,9 +3194,11 @@ char* zx_ENC_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:NewData");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
 #else
@@ -3228,11 +3252,11 @@ char* zx_ENC_WO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x
   ZX_OUT_MEM(p, "NewData", sizeof("NewData")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -3336,10 +3360,10 @@ int zx_LEN_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notificat
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->endReason, sizeof("endReason")-1);
-  len += zx_attr_so_len(x->expires, sizeof("expires")-1);
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->subscriptionID, sizeof("subscriptionID")-1);
+  len += zx_attr_so_len(c, x->endReason, sizeof("endReason")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->expires, sizeof("expires")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->subscriptionID, sizeof("subscriptionID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3358,7 +3382,7 @@ int zx_LEN_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notificat
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Notification", len);
   return len;
@@ -3384,10 +3408,10 @@ int zx_LEN_WO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notificat
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->endReason, sizeof("endReason")-1);
-  len += zx_attr_wo_len(x->expires, sizeof("expires")-1);
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->subscriptionID, sizeof("subscriptionID")-1);
+  len += zx_attr_wo_len(c, x->endReason, sizeof("endReason")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->expires, sizeof("expires")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->subscriptionID, sizeof("subscriptionID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3406,7 +3430,7 @@ int zx_LEN_WO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notificat
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Notification", len);
   return len;
@@ -3428,9 +3452,11 @@ char* zx_ENC_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notific
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:Notification");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->endReason, " endReason=\"", sizeof(" endReason=\"")-1);
   p = zx_attr_so_enc(p, x->expires, " expires=\"", sizeof(" expires=\"")-1);
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
@@ -3488,11 +3514,11 @@ char* zx_ENC_WO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notific
   ZX_OUT_MEM(p, "Notification", sizeof("Notification")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->endReason, "endReason=\"", sizeof("endReason=\"")-1);
   p = zx_attr_wo_enc(p, x->expires, "expires=\"", sizeof("expires=\"")-1);
@@ -3602,8 +3628,8 @@ int zx_LEN_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x )
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->timeStamp, sizeof("timeStamp")-1);
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
+  len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3622,7 +3648,7 @@ int zx_LEN_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Notify", len);
   return len;
@@ -3650,8 +3676,8 @@ int zx_LEN_WO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x )
     len += zx_len_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->timeStamp, sizeof("timeStamp")-1);
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
+  len += zx_attr_wo_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3670,7 +3696,7 @@ int zx_LEN_WO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Notify", len);
   return len;
@@ -3692,11 +3718,13 @@ char* zx_ENC_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x, 
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:Notify");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->timeStamp, " timeStamp=\"", sizeof(" timeStamp=\"")-1);
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
@@ -3752,13 +3780,13 @@ char* zx_ENC_WO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x, 
   ZX_OUT_MEM(p, "Notify", sizeof("Notify")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
     zx_add_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->timeStamp, "timeStamp=\"", sizeof("timeStamp=\"")-1);
   p = zx_attr_wo_enc(p, x->itemID, "itemID=\"", sizeof("itemID=\"")-1);
@@ -3864,7 +3892,7 @@ int zx_LEN_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyR
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3883,7 +3911,7 @@ int zx_LEN_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyR
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:NotifyResponse", len);
   return len;
@@ -3909,7 +3937,7 @@ int zx_LEN_WO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyR
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -3928,7 +3956,7 @@ int zx_LEN_WO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyR
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:NotifyResponse", len);
   return len;
@@ -3950,9 +3978,11 @@ char* zx_ENC_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_Notif
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:NotifyResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->itemIDRef, " itemIDRef=\"", sizeof(" itemIDRef=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -4007,11 +4037,11 @@ char* zx_ENC_WO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_Notif
   ZX_OUT_MEM(p, "NotifyResponse", sizeof("NotifyResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->itemIDRef, "itemIDRef=\"", sizeof("itemIDRef=\"")-1);
 
@@ -4118,7 +4148,7 @@ int zx_LEN_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x )
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -4147,7 +4177,7 @@ int zx_LEN_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x )
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Query", len);
   return len;
@@ -4175,7 +4205,7 @@ int zx_LEN_WO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x )
     len += zx_len_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -4204,7 +4234,7 @@ int zx_LEN_WO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x )
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Query", len);
   return len;
@@ -4226,11 +4256,13 @@ char* zx_ENC_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x, ch
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:Query");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
   p = zx_enc_unknown_attrs(p, x->gg.any_attr);
@@ -4295,13 +4327,13 @@ char* zx_ENC_WO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x, ch
   ZX_OUT_MEM(p, "Query", sizeof("Query")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
     zx_add_xmlns_if_not_seen(c, x->itemID->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->itemID, "itemID=\"", sizeof("itemID=\"")-1);
 
@@ -4408,17 +4440,17 @@ int zx_LEN_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s*
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->changedSince, sizeof("changedSince")-1);
-  len += zx_attr_so_len(x->contingency, sizeof("contingency")-1);
-  len += zx_attr_so_len(x->count, sizeof("count")-1);
-  len += zx_attr_so_len(x->includeCommonAttributes, sizeof("includeCommonAttributes")-1);
-  len += zx_attr_so_len(x->offset, sizeof("offset")-1);
-  len += zx_attr_so_len(x->setID, sizeof("setID")-1);
-  len += zx_attr_so_len(x->setReq, sizeof("setReq")-1);
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
-  len += zx_attr_so_len(x->itemIDRef, sizeof("dst:itemIDRef")-1);
-  len += zx_attr_so_len(x->objectType, sizeof("dst:objectType")-1);
-  len += zx_attr_so_len(x->predefined, sizeof("dst:predefined")-1);
+  len += zx_attr_so_len(c, x->changedSince, sizeof("changedSince")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->contingency, sizeof("contingency")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->count, sizeof("count")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->includeCommonAttributes, sizeof("includeCommonAttributes")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->offset, sizeof("offset")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->setID, sizeof("setID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->setReq, sizeof("setReq")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->objectType, sizeof("dst:objectType")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->predefined, sizeof("dst:predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -4433,7 +4465,7 @@ int zx_LEN_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s*
     len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Sort")-1, zx_ns_tab+zx_xmlns_ix_idhrxml);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:QueryItem", len);
   return len;
@@ -4467,17 +4499,17 @@ int zx_LEN_WO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s*
     len += zx_len_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->changedSince, sizeof("changedSince")-1);
-  len += zx_attr_wo_len(x->contingency, sizeof("contingency")-1);
-  len += zx_attr_wo_len(x->count, sizeof("count")-1);
-  len += zx_attr_wo_len(x->includeCommonAttributes, sizeof("includeCommonAttributes")-1);
-  len += zx_attr_wo_len(x->offset, sizeof("offset")-1);
-  len += zx_attr_wo_len(x->setID, sizeof("setID")-1);
-  len += zx_attr_wo_len(x->setReq, sizeof("setReq")-1);
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
-  len += zx_attr_wo_len(x->objectType, sizeof("objectType")-1);
-  len += zx_attr_wo_len(x->predefined, sizeof("predefined")-1);
+  len += zx_attr_wo_len(c, x->changedSince, sizeof("changedSince")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->contingency, sizeof("contingency")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->count, sizeof("count")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->includeCommonAttributes, sizeof("includeCommonAttributes")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->offset, sizeof("offset")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->setID, sizeof("setID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->setReq, sizeof("setReq")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->objectType, sizeof("objectType")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->predefined, sizeof("predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -4492,7 +4524,7 @@ int zx_LEN_WO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s*
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Sort")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:QueryItem", len);
   return len;
@@ -4514,11 +4546,13 @@ char* zx_ENC_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:QueryItem");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->itemIDRef || x->objectType || x->predefined)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->changedSince, " changedSince=\"", sizeof(" changedSince=\"")-1);
   p = zx_attr_so_enc(p, x->contingency, " contingency=\"", sizeof(" contingency=\"")-1);
   p = zx_attr_so_enc(p, x->count, " count=\"", sizeof(" count=\"")-1);
@@ -4579,7 +4613,6 @@ char* zx_ENC_WO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_
   ZX_OUT_MEM(p, "QueryItem", sizeof("QueryItem")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
@@ -4592,6 +4625,7 @@ char* zx_ENC_WO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_
     zx_add_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->changedSince, "changedSince=\"", sizeof("changedSince=\"")-1);
   p = zx_attr_wo_enc(p, x->contingency, "contingency=\"", sizeof("contingency=\"")-1);
@@ -4708,8 +4742,8 @@ int zx_LEN_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryRes
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->timeStamp, sizeof("timeStamp")-1);
-  len += zx_attr_so_len(x->itemIDRef, sizeof("dst:itemIDRef")-1);
+  len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -4738,7 +4772,7 @@ int zx_LEN_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryRes
   }
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:QueryResponse", len);
   return len;
@@ -4766,8 +4800,8 @@ int zx_LEN_WO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryRes
     len += zx_len_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->timeStamp, sizeof("timeStamp")-1);
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
+  len += zx_attr_wo_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -4796,7 +4830,7 @@ int zx_LEN_WO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryRes
   }
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:QueryResponse", len);
   return len;
@@ -4818,11 +4852,13 @@ char* zx_ENC_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryR
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:QueryResponse");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->timeStamp, " timeStamp=\"", sizeof(" timeStamp=\"")-1);
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
 
@@ -4888,13 +4924,13 @@ char* zx_ENC_WO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryR
   ZX_OUT_MEM(p, "QueryResponse", sizeof("QueryResponse")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
     zx_add_xmlns_if_not_seen(c, x->itemIDRef->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->timeStamp, "timeStamp=\"", sizeof("timeStamp=\"")-1);
   p = zx_attr_wo_enc(p, x->itemIDRef, "itemIDRef=\"", sizeof("itemIDRef=\"")-1);
@@ -5002,13 +5038,13 @@ int zx_LEN_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuer
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->changedSince, sizeof("changedSince")-1);
-  len += zx_attr_so_len(x->contingency, sizeof("contingency")-1);
-  len += zx_attr_so_len(x->includeCommonAttributes, sizeof("includeCommonAttributes")-1);
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
-  len += zx_attr_so_len(x->itemIDRef, sizeof("dst:itemIDRef")-1);
-  len += zx_attr_so_len(x->objectType, sizeof("dst:objectType")-1);
-  len += zx_attr_so_len(x->predefined, sizeof("dst:predefined")-1);
+  len += zx_attr_so_len(c, x->changedSince, sizeof("changedSince")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->contingency, sizeof("contingency")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->includeCommonAttributes, sizeof("includeCommonAttributes")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->objectType, sizeof("dst:objectType")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->predefined, sizeof("dst:predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -5023,7 +5059,7 @@ int zx_LEN_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuer
     len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Sort")-1, zx_ns_tab+zx_xmlns_ix_idhrxml);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:ResultQuery", len);
   return len;
@@ -5057,13 +5093,13 @@ int zx_LEN_WO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuer
     len += zx_len_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->changedSince, sizeof("changedSince")-1);
-  len += zx_attr_wo_len(x->contingency, sizeof("contingency")-1);
-  len += zx_attr_wo_len(x->includeCommonAttributes, sizeof("includeCommonAttributes")-1);
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
-  len += zx_attr_wo_len(x->itemIDRef, sizeof("itemIDRef")-1);
-  len += zx_attr_wo_len(x->objectType, sizeof("objectType")-1);
-  len += zx_attr_wo_len(x->predefined, sizeof("predefined")-1);
+  len += zx_attr_wo_len(c, x->changedSince, sizeof("changedSince")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->contingency, sizeof("contingency")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->includeCommonAttributes, sizeof("includeCommonAttributes")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->objectType, sizeof("objectType")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->predefined, sizeof("predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -5078,7 +5114,7 @@ int zx_LEN_WO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuer
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Sort")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:ResultQuery", len);
   return len;
@@ -5100,11 +5136,13 @@ char* zx_ENC_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQu
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:ResultQuery");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->itemIDRef || x->objectType || x->predefined)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->changedSince, " changedSince=\"", sizeof(" changedSince=\"")-1);
   p = zx_attr_so_enc(p, x->contingency, " contingency=\"", sizeof(" contingency=\"")-1);
   p = zx_attr_so_enc(p, x->includeCommonAttributes, " includeCommonAttributes=\"", sizeof(" includeCommonAttributes=\"")-1);
@@ -5161,7 +5199,6 @@ char* zx_ENC_WO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQu
   ZX_OUT_MEM(p, "ResultQuery", sizeof("ResultQuery")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
@@ -5174,6 +5211,7 @@ char* zx_ENC_WO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQu
     zx_add_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->changedSince, "changedSince=\"", sizeof("changedSince=\"")-1);
   p = zx_attr_wo_enc(p, x->contingency, "contingency=\"", sizeof("contingency=\"")-1);
@@ -5284,13 +5322,13 @@ int zx_LEN_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscript
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->adminNotifyToRef, sizeof("adminNotifyToRef")-1);
-  len += zx_attr_so_len(x->expires, sizeof("expires")-1);
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->includeData, sizeof("includeData")-1);
-  len += zx_attr_so_len(x->notifyToRef, sizeof("notifyToRef")-1);
-  len += zx_attr_so_len(x->starts, sizeof("starts")-1);
-  len += zx_attr_so_len(x->subscriptionID, sizeof("subscriptionID")-1);
+  len += zx_attr_so_len(c, x->adminNotifyToRef, sizeof("adminNotifyToRef")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->expires, sizeof("expires")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->includeData, sizeof("includeData")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->notifyToRef, sizeof("notifyToRef")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->starts, sizeof("starts")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->subscriptionID, sizeof("subscriptionID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -5318,7 +5356,7 @@ int zx_LEN_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscript
     len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Trigger")-1, zx_ns_tab+zx_xmlns_ix_idhrxml);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Subscription", len);
   return len;
@@ -5344,13 +5382,13 @@ int zx_LEN_WO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscript
     len += zx_len_inc_ns(c, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->adminNotifyToRef, sizeof("adminNotifyToRef")-1);
-  len += zx_attr_wo_len(x->expires, sizeof("expires")-1);
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->includeData, sizeof("includeData")-1);
-  len += zx_attr_wo_len(x->notifyToRef, sizeof("notifyToRef")-1);
-  len += zx_attr_wo_len(x->starts, sizeof("starts")-1);
-  len += zx_attr_wo_len(x->subscriptionID, sizeof("subscriptionID")-1);
+  len += zx_attr_wo_len(c, x->adminNotifyToRef, sizeof("adminNotifyToRef")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->expires, sizeof("expires")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->includeData, sizeof("includeData")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->notifyToRef, sizeof("notifyToRef")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->starts, sizeof("starts")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->subscriptionID, sizeof("subscriptionID")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -5378,7 +5416,7 @@ int zx_LEN_WO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscript
     len += zx_LEN_WO_simple_elem(c, se, sizeof("Trigger")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:Subscription", len);
   return len;
@@ -5400,9 +5438,11 @@ char* zx_ENC_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscri
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:Subscription");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->adminNotifyToRef, " adminNotifyToRef=\"", sizeof(" adminNotifyToRef=\"")-1);
   p = zx_attr_so_enc(p, x->expires, " expires=\"", sizeof(" expires=\"")-1);
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
@@ -5472,11 +5512,11 @@ char* zx_ENC_WO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscri
   ZX_OUT_MEM(p, "Subscription", sizeof("Subscription")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->adminNotifyToRef, "adminNotifyToRef=\"", sizeof("adminNotifyToRef=\"")-1);
   p = zx_attr_wo_enc(p, x->expires, "expires=\"", sizeof("expires=\"")-1);
@@ -5589,10 +5629,10 @@ int zx_LEN_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
-  len += zx_attr_so_len(x->id, sizeof("id")-1);
-  len += zx_attr_so_len(x->itemID, sizeof("dst:itemID")-1);
-  len += zx_attr_so_len(x->objectType, sizeof("dst:objectType")-1);
-  len += zx_attr_so_len(x->predefined, sizeof("dst:predefined")-1);
+  len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->objectType, sizeof("dst:objectType")-1, &pop_seen);
+  len += zx_attr_so_len(c, x->predefined, sizeof("dst:predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -5603,7 +5643,7 @@ int zx_LEN_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x
     len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:TestOp")-1, zx_ns_tab+zx_xmlns_ix_idhrxml);
 
 
-  len += zx_len_so_common(c, &x->gg);
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:TestItem", len);
   return len;
@@ -5635,10 +5675,10 @@ int zx_LEN_WO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x
     len += zx_len_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   len += zx_len_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
-  len += zx_attr_wo_len(x->id, sizeof("id")-1);
-  len += zx_attr_wo_len(x->itemID, sizeof("itemID")-1);
-  len += zx_attr_wo_len(x->objectType, sizeof("objectType")-1);
-  len += zx_attr_wo_len(x->predefined, sizeof("predefined")-1);
+  len += zx_attr_wo_len(c, x->id, sizeof("id")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->objectType, sizeof("objectType")-1, &pop_seen);
+  len += zx_attr_wo_len(c, x->predefined, sizeof("predefined")-1, &pop_seen);
 
 #else
   /* root node has no begin tag */
@@ -5649,7 +5689,7 @@ int zx_LEN_WO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x
     len += zx_LEN_WO_simple_elem(c, se, sizeof("TestOp")-1);
 
 
-  len += zx_len_wo_common(c, &x->gg); 
+  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
   zx_pop_seen(pop_seen);
   ENC_LEN_DEBUG(x, "idhrxml:TestItem", len);
   return len;
@@ -5671,11 +5711,13 @@ char* zx_ENC_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s*
   /* *** in simple_elem case should output ns prefix from ns node. */
   ZX_OUT_TAG(p, "<idhrxml:TestItem");
   if (c->inc_ns)
-    p = zx_enc_inc_ns(c, p, &pop_seen);
+    zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType || x->predefined)
-    p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
-  p = zx_enc_xmlns_if_not_seen(c, p, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_dst, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xmlns_ix_idhrxml, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_so_enc(p, x->id, " id=\"", sizeof(" id=\"")-1);
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
   p = zx_attr_so_enc(p, x->objectType, " dst:objectType=\"", sizeof(" dst:objectType=\"")-1);
@@ -5725,7 +5767,6 @@ char* zx_ENC_WO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s*
   ZX_OUT_MEM(p, "TestItem", sizeof("TestItem")-1);
   qq = p;
 
-  /* *** sort the namespaces */
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
@@ -5736,6 +5777,7 @@ char* zx_ENC_WO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s*
     zx_add_xmlns_if_not_seen(c, x->predefined->g.ns, &pop_seen);
   zx_add_xmlns_if_not_seen(c, x->gg.g.ns, &pop_seen);
 
+  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
   p = zx_attr_wo_enc(p, x->id, "id=\"", sizeof("id=\"")-1);
   p = zx_attr_wo_enc(p, x->itemID, "itemID=\"", sizeof("itemID=\"")-1);

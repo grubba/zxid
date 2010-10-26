@@ -43,7 +43,7 @@ struct zx_str* zx_EASY_ENC_WO_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x
 struct zx_a_Action_s {
   ZX_ELEM_EXT
   zx_a_Action_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */
@@ -97,7 +97,7 @@ struct zx_str* zx_EASY_ENC_WO_a_Address(struct zx_ctx* c, struct zx_a_Address_s*
 struct zx_a_Address_s {
   ZX_ELEM_EXT
   zx_a_Address_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */
@@ -154,7 +154,7 @@ struct zx_a_EndpointReference_s {
   struct zx_a_Address_s* Address;	/* {1,1}  */
   struct zx_a_ReferenceParameters_s* ReferenceParameters;	/* {0,1} nada */
   struct zx_a_Metadata_s* Metadata;	/* {0,1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* notOnOrAfter;	/* {0,1} attribute xs:dateTime */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
@@ -238,7 +238,7 @@ struct zx_a_FaultTo_s {
   struct zx_a_Address_s* Address;	/* {1,1}  */
   struct zx_a_ReferenceParameters_s* ReferenceParameters;	/* {0,1} nada */
   struct zx_a_Metadata_s* Metadata;	/* {0,1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* notOnOrAfter;	/* {0,1} attribute xs:dateTime */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
@@ -322,7 +322,7 @@ struct zx_a_From_s {
   struct zx_a_Address_s* Address;	/* {1,1}  */
   struct zx_a_ReferenceParameters_s* ReferenceParameters;	/* {0,1} nada */
   struct zx_a_Metadata_s* Metadata;	/* {0,1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* notOnOrAfter;	/* {0,1} attribute xs:dateTime */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
@@ -403,7 +403,7 @@ struct zx_str* zx_EASY_ENC_WO_a_MessageID(struct zx_ctx* c, struct zx_a_MessageI
 struct zx_a_MessageID_s {
   ZX_ELEM_EXT
   zx_a_MessageID_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */
@@ -543,7 +543,7 @@ struct zx_a_ProblemAction_s {
   zx_a_ProblemAction_EXT
   struct zx_a_Action_s* Action;	/* {0,1} nada */
   struct zx_elem_s* SoapAction;	/* {0,1} xs:anyURI */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */
@@ -613,7 +613,7 @@ struct zx_str* zx_EASY_ENC_WO_a_ProblemHeader(struct zx_ctx* c, struct zx_a_Prob
 struct zx_a_ProblemHeader_s {
   ZX_ELEM_EXT
   zx_a_ProblemHeader_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */
@@ -667,7 +667,7 @@ struct zx_str* zx_EASY_ENC_WO_a_ProblemHeaderQName(struct zx_ctx* c, struct zx_a
 struct zx_a_ProblemHeaderQName_s {
   ZX_ELEM_EXT
   zx_a_ProblemHeaderQName_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */
@@ -721,7 +721,7 @@ struct zx_str* zx_EASY_ENC_WO_a_ProblemURI(struct zx_ctx* c, struct zx_a_Problem
 struct zx_a_ProblemURI_s {
   ZX_ELEM_EXT
   zx_a_ProblemURI_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */
@@ -776,7 +776,7 @@ struct zx_a_ReferenceParameters_s {
   ZX_ELEM_EXT
   zx_a_ReferenceParameters_EXT
   struct zx_b_TargetIdentity_s* TargetIdentity;	/* {0,-1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */
@@ -838,7 +838,7 @@ struct zx_str* zx_EASY_ENC_WO_a_RelatesTo(struct zx_ctx* c, struct zx_a_RelatesT
 struct zx_a_RelatesTo_s {
   ZX_ELEM_EXT
   zx_a_RelatesTo_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* RelationshipType;	/* {0,1} attribute a:RelationshipTypeOpenEnum */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
@@ -898,7 +898,7 @@ struct zx_a_ReplyTo_s {
   struct zx_a_Address_s* Address;	/* {1,1}  */
   struct zx_a_ReferenceParameters_s* ReferenceParameters;	/* {0,1} nada */
   struct zx_a_Metadata_s* Metadata;	/* {0,1} nada */
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* notOnOrAfter;	/* {0,1} attribute xs:dateTime */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
@@ -979,7 +979,7 @@ struct zx_str* zx_EASY_ENC_WO_a_RetryAfter(struct zx_ctx* c, struct zx_a_RetryAf
 struct zx_a_RetryAfter_s {
   ZX_ELEM_EXT
   zx_a_RetryAfter_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */
@@ -1033,7 +1033,7 @@ struct zx_str* zx_EASY_ENC_WO_a_To(struct zx_ctx* c, struct zx_a_To_s* x);
 struct zx_a_To_s {
   ZX_ELEM_EXT
   zx_a_To_EXT
-  struct zx_str* ID;	/* {0,1} attribute xs:anyURI */
+  struct zx_str* ID;	/* {0,1} attribute xs:ID */
   struct zx_str* id;	/* {0,1} attribute xs:ID */
   struct zx_str* Id;	/* {0,1} attribute xs:ID */
   struct zx_str* actor;	/* {0,1} attribute xs:anyURI */

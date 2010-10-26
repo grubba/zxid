@@ -2176,6 +2176,944 @@ void zx_root_DEL_EntitiesDescriptor(struct zx_root_s* x, int n)
 
 #ifdef ZX_ENA_GETPUT
 
+/* FUNC(zx_root_NUM_XACMLAuthzDecisionQuery) */
+
+int zx_root_NUM_XACMLAuthzDecisionQuery(struct zx_root_s* x)
+{
+  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->XACMLAuthzDecisionQuery; y; ++n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_XACMLAuthzDecisionQuery) */
+
+struct zx_xasp_XACMLAuthzDecisionQuery_s* zx_root_GET_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n)
+{
+  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
+  if (!x) return 0;
+  for (y = x->XACMLAuthzDecisionQuery; n>=0 && y; --n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_XACMLAuthzDecisionQuery) */
+
+struct zx_xasp_XACMLAuthzDecisionQuery_s* zx_root_POP_XACMLAuthzDecisionQuery(struct zx_root_s* x)
+{
+  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
+  if (!x) return 0;
+  y = x->XACMLAuthzDecisionQuery;
+  if (y)
+    x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_XACMLAuthzDecisionQuery) */
+
+void zx_root_PUSH_XACMLAuthzDecisionQuery(struct zx_root_s* x, struct zx_xasp_XACMLAuthzDecisionQuery_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->XACMLAuthzDecisionQuery->gg.g;
+  x->XACMLAuthzDecisionQuery = z;
+}
+
+/* FUNC(zx_root_REV_XACMLAuthzDecisionQuery) */
+
+void zx_root_REV_XACMLAuthzDecisionQuery(struct zx_root_s* x)
+{
+  struct zx_xasp_XACMLAuthzDecisionQuery_s* nxt;
+  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
+  if (!x) return;
+  y = x->XACMLAuthzDecisionQuery;
+  if (!y) return;
+  x->XACMLAuthzDecisionQuery = 0;
+  while (y) {
+    nxt = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n;
+    y->gg.g.n = &x->XACMLAuthzDecisionQuery->gg.g;
+    x->XACMLAuthzDecisionQuery = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_XACMLAuthzDecisionQuery) */
+
+void zx_root_PUT_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n, struct zx_xasp_XACMLAuthzDecisionQuery_s* z)
+{
+  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
+  if (!x || !z) return;
+  y = x->XACMLAuthzDecisionQuery;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->XACMLAuthzDecisionQuery = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_XACMLAuthzDecisionQuery) */
+
+void zx_root_ADD_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n, struct zx_xasp_XACMLAuthzDecisionQuery_s* z)
+{
+  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->XACMLAuthzDecisionQuery->gg.g;
+    x->XACMLAuthzDecisionQuery = z;
+    return;
+  case -1:
+    y = x->XACMLAuthzDecisionQuery;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->XACMLAuthzDecisionQuery; n > 1 && y; --n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_XACMLAuthzDecisionQuery) */
+
+void zx_root_DEL_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n)
+{
+  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)x->XACMLAuthzDecisionQuery->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)x->XACMLAuthzDecisionQuery;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->XACMLAuthzDecisionQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_root_NUM_XACMLPolicyQuery) */
+
+int zx_root_NUM_XACMLPolicyQuery(struct zx_root_s* x)
+{
+  struct zx_xasp_XACMLPolicyQuery_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->XACMLPolicyQuery; y; ++n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_XACMLPolicyQuery) */
+
+struct zx_xasp_XACMLPolicyQuery_s* zx_root_GET_XACMLPolicyQuery(struct zx_root_s* x, int n)
+{
+  struct zx_xasp_XACMLPolicyQuery_s* y;
+  if (!x) return 0;
+  for (y = x->XACMLPolicyQuery; n>=0 && y; --n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_XACMLPolicyQuery) */
+
+struct zx_xasp_XACMLPolicyQuery_s* zx_root_POP_XACMLPolicyQuery(struct zx_root_s* x)
+{
+  struct zx_xasp_XACMLPolicyQuery_s* y;
+  if (!x) return 0;
+  y = x->XACMLPolicyQuery;
+  if (y)
+    x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_XACMLPolicyQuery) */
+
+void zx_root_PUSH_XACMLPolicyQuery(struct zx_root_s* x, struct zx_xasp_XACMLPolicyQuery_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->XACMLPolicyQuery->gg.g;
+  x->XACMLPolicyQuery = z;
+}
+
+/* FUNC(zx_root_REV_XACMLPolicyQuery) */
+
+void zx_root_REV_XACMLPolicyQuery(struct zx_root_s* x)
+{
+  struct zx_xasp_XACMLPolicyQuery_s* nxt;
+  struct zx_xasp_XACMLPolicyQuery_s* y;
+  if (!x) return;
+  y = x->XACMLPolicyQuery;
+  if (!y) return;
+  x->XACMLPolicyQuery = 0;
+  while (y) {
+    nxt = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n;
+    y->gg.g.n = &x->XACMLPolicyQuery->gg.g;
+    x->XACMLPolicyQuery = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_XACMLPolicyQuery) */
+
+void zx_root_PUT_XACMLPolicyQuery(struct zx_root_s* x, int n, struct zx_xasp_XACMLPolicyQuery_s* z)
+{
+  struct zx_xasp_XACMLPolicyQuery_s* y;
+  if (!x || !z) return;
+  y = x->XACMLPolicyQuery;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->XACMLPolicyQuery = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_XACMLPolicyQuery) */
+
+void zx_root_ADD_XACMLPolicyQuery(struct zx_root_s* x, int n, struct zx_xasp_XACMLPolicyQuery_s* z)
+{
+  struct zx_xasp_XACMLPolicyQuery_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->XACMLPolicyQuery->gg.g;
+    x->XACMLPolicyQuery = z;
+    return;
+  case -1:
+    y = x->XACMLPolicyQuery;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->XACMLPolicyQuery; n > 1 && y; --n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_XACMLPolicyQuery) */
+
+void zx_root_DEL_XACMLPolicyQuery(struct zx_root_s* x, int n)
+{
+  struct zx_xasp_XACMLPolicyQuery_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)x->XACMLPolicyQuery->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_xasp_XACMLPolicyQuery_s*)x->XACMLPolicyQuery;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->XACMLPolicyQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_root_NUM_xaspcd1_XACMLAuthzDecisionQuery) */
+
+int zx_root_NUM_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x)
+{
+  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->xaspcd1_XACMLAuthzDecisionQuery; y; ++n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_xaspcd1_XACMLAuthzDecisionQuery) */
+
+struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zx_root_GET_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n)
+{
+  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
+  if (!x) return 0;
+  for (y = x->xaspcd1_XACMLAuthzDecisionQuery; n>=0 && y; --n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_xaspcd1_XACMLAuthzDecisionQuery) */
+
+struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zx_root_POP_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x)
+{
+  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
+  if (!x) return 0;
+  y = x->xaspcd1_XACMLAuthzDecisionQuery;
+  if (y)
+    x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_xaspcd1_XACMLAuthzDecisionQuery) */
+
+void zx_root_PUSH_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->xaspcd1_XACMLAuthzDecisionQuery->gg.g;
+  x->xaspcd1_XACMLAuthzDecisionQuery = z;
+}
+
+/* FUNC(zx_root_REV_xaspcd1_XACMLAuthzDecisionQuery) */
+
+void zx_root_REV_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x)
+{
+  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* nxt;
+  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
+  if (!x) return;
+  y = x->xaspcd1_XACMLAuthzDecisionQuery;
+  if (!y) return;
+  x->xaspcd1_XACMLAuthzDecisionQuery = 0;
+  while (y) {
+    nxt = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n;
+    y->gg.g.n = &x->xaspcd1_XACMLAuthzDecisionQuery->gg.g;
+    x->xaspcd1_XACMLAuthzDecisionQuery = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_xaspcd1_XACMLAuthzDecisionQuery) */
+
+void zx_root_PUT_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* z)
+{
+  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
+  if (!x || !z) return;
+  y = x->xaspcd1_XACMLAuthzDecisionQuery;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->xaspcd1_XACMLAuthzDecisionQuery = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_xaspcd1_XACMLAuthzDecisionQuery) */
+
+void zx_root_ADD_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* z)
+{
+  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->xaspcd1_XACMLAuthzDecisionQuery->gg.g;
+    x->xaspcd1_XACMLAuthzDecisionQuery = z;
+    return;
+  case -1:
+    y = x->xaspcd1_XACMLAuthzDecisionQuery;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->xaspcd1_XACMLAuthzDecisionQuery; n > 1 && y; --n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_xaspcd1_XACMLAuthzDecisionQuery) */
+
+void zx_root_DEL_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n)
+{
+  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)x->xaspcd1_XACMLAuthzDecisionQuery->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)x->xaspcd1_XACMLAuthzDecisionQuery;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->xaspcd1_XACMLAuthzDecisionQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_root_NUM_xaspcd1_XACMLPolicyQuery) */
+
+int zx_root_NUM_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x)
+{
+  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->xaspcd1_XACMLPolicyQuery; y; ++n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_xaspcd1_XACMLPolicyQuery) */
+
+struct zx_xaspcd1_XACMLPolicyQuery_s* zx_root_GET_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, int n)
+{
+  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
+  if (!x) return 0;
+  for (y = x->xaspcd1_XACMLPolicyQuery; n>=0 && y; --n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_xaspcd1_XACMLPolicyQuery) */
+
+struct zx_xaspcd1_XACMLPolicyQuery_s* zx_root_POP_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x)
+{
+  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
+  if (!x) return 0;
+  y = x->xaspcd1_XACMLPolicyQuery;
+  if (y)
+    x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_xaspcd1_XACMLPolicyQuery) */
+
+void zx_root_PUSH_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, struct zx_xaspcd1_XACMLPolicyQuery_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->xaspcd1_XACMLPolicyQuery->gg.g;
+  x->xaspcd1_XACMLPolicyQuery = z;
+}
+
+/* FUNC(zx_root_REV_xaspcd1_XACMLPolicyQuery) */
+
+void zx_root_REV_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x)
+{
+  struct zx_xaspcd1_XACMLPolicyQuery_s* nxt;
+  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
+  if (!x) return;
+  y = x->xaspcd1_XACMLPolicyQuery;
+  if (!y) return;
+  x->xaspcd1_XACMLPolicyQuery = 0;
+  while (y) {
+    nxt = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n;
+    y->gg.g.n = &x->xaspcd1_XACMLPolicyQuery->gg.g;
+    x->xaspcd1_XACMLPolicyQuery = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_xaspcd1_XACMLPolicyQuery) */
+
+void zx_root_PUT_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, int n, struct zx_xaspcd1_XACMLPolicyQuery_s* z)
+{
+  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
+  if (!x || !z) return;
+  y = x->xaspcd1_XACMLPolicyQuery;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->xaspcd1_XACMLPolicyQuery = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_xaspcd1_XACMLPolicyQuery) */
+
+void zx_root_ADD_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, int n, struct zx_xaspcd1_XACMLPolicyQuery_s* z)
+{
+  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->xaspcd1_XACMLPolicyQuery->gg.g;
+    x->xaspcd1_XACMLPolicyQuery = z;
+    return;
+  case -1:
+    y = x->xaspcd1_XACMLPolicyQuery;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->xaspcd1_XACMLPolicyQuery; n > 1 && y; --n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_xaspcd1_XACMLPolicyQuery) */
+
+void zx_root_DEL_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, int n)
+{
+  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)x->xaspcd1_XACMLPolicyQuery->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)x->xaspcd1_XACMLPolicyQuery;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->xaspcd1_XACMLPolicyQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_root_NUM_EndpointReference) */
+
+int zx_root_NUM_EndpointReference(struct zx_root_s* x)
+{
+  struct zx_a_EndpointReference_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->EndpointReference; y; ++n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_EndpointReference) */
+
+struct zx_a_EndpointReference_s* zx_root_GET_EndpointReference(struct zx_root_s* x, int n)
+{
+  struct zx_a_EndpointReference_s* y;
+  if (!x) return 0;
+  for (y = x->EndpointReference; n>=0 && y; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_EndpointReference) */
+
+struct zx_a_EndpointReference_s* zx_root_POP_EndpointReference(struct zx_root_s* x)
+{
+  struct zx_a_EndpointReference_s* y;
+  if (!x) return 0;
+  y = x->EndpointReference;
+  if (y)
+    x->EndpointReference = (struct zx_a_EndpointReference_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_EndpointReference) */
+
+void zx_root_PUSH_EndpointReference(struct zx_root_s* x, struct zx_a_EndpointReference_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->EndpointReference->gg.g;
+  x->EndpointReference = z;
+}
+
+/* FUNC(zx_root_REV_EndpointReference) */
+
+void zx_root_REV_EndpointReference(struct zx_root_s* x)
+{
+  struct zx_a_EndpointReference_s* nxt;
+  struct zx_a_EndpointReference_s* y;
+  if (!x) return;
+  y = x->EndpointReference;
+  if (!y) return;
+  x->EndpointReference = 0;
+  while (y) {
+    nxt = (struct zx_a_EndpointReference_s*)y->gg.g.n;
+    y->gg.g.n = &x->EndpointReference->gg.g;
+    x->EndpointReference = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_EndpointReference) */
+
+void zx_root_PUT_EndpointReference(struct zx_root_s* x, int n, struct zx_a_EndpointReference_s* z)
+{
+  struct zx_a_EndpointReference_s* y;
+  if (!x || !z) return;
+  y = x->EndpointReference;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->EndpointReference = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_EndpointReference) */
+
+void zx_root_ADD_EndpointReference(struct zx_root_s* x, int n, struct zx_a_EndpointReference_s* z)
+{
+  struct zx_a_EndpointReference_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->EndpointReference->gg.g;
+    x->EndpointReference = z;
+    return;
+  case -1:
+    y = x->EndpointReference;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->EndpointReference; n > 1 && y; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_EndpointReference) */
+
+void zx_root_DEL_EndpointReference(struct zx_root_s* x, int n)
+{
+  struct zx_a_EndpointReference_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->EndpointReference = (struct zx_a_EndpointReference_s*)x->EndpointReference->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_a_EndpointReference_s*)x->EndpointReference;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->EndpointReference; n > 1 && y->gg.g.n; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_root_NUM_Token) */
+
+int zx_root_NUM_Token(struct zx_root_s* x)
+{
+  struct zx_sec_Token_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->Token; y; ++n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_Token) */
+
+struct zx_sec_Token_s* zx_root_GET_Token(struct zx_root_s* x, int n)
+{
+  struct zx_sec_Token_s* y;
+  if (!x) return 0;
+  for (y = x->Token; n>=0 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_Token) */
+
+struct zx_sec_Token_s* zx_root_POP_Token(struct zx_root_s* x)
+{
+  struct zx_sec_Token_s* y;
+  if (!x) return 0;
+  y = x->Token;
+  if (y)
+    x->Token = (struct zx_sec_Token_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_Token) */
+
+void zx_root_PUSH_Token(struct zx_root_s* x, struct zx_sec_Token_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->Token->gg.g;
+  x->Token = z;
+}
+
+/* FUNC(zx_root_REV_Token) */
+
+void zx_root_REV_Token(struct zx_root_s* x)
+{
+  struct zx_sec_Token_s* nxt;
+  struct zx_sec_Token_s* y;
+  if (!x) return;
+  y = x->Token;
+  if (!y) return;
+  x->Token = 0;
+  while (y) {
+    nxt = (struct zx_sec_Token_s*)y->gg.g.n;
+    y->gg.g.n = &x->Token->gg.g;
+    x->Token = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_Token) */
+
+void zx_root_PUT_Token(struct zx_root_s* x, int n, struct zx_sec_Token_s* z)
+{
+  struct zx_sec_Token_s* y;
+  if (!x || !z) return;
+  y = x->Token;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->Token = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_Token) */
+
+void zx_root_ADD_Token(struct zx_root_s* x, int n, struct zx_sec_Token_s* z)
+{
+  struct zx_sec_Token_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->Token->gg.g;
+    x->Token = z;
+    return;
+  case -1:
+    y = x->Token;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Token; n > 1 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_Token) */
+
+void zx_root_DEL_Token(struct zx_root_s* x, int n)
+{
+  struct zx_sec_Token_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->Token = (struct zx_sec_Token_s*)x->Token->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_sec_Token_s*)x->Token;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Token; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
+/* FUNC(zx_root_NUM_Candidate) */
+
+int zx_root_NUM_Candidate(struct zx_root_s* x)
+{
+  struct zx_hrxml_Candidate_s* y;
+  int n = 0;
+  if (!x) return 0;
+  for (y = x->Candidate; y; ++n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+  return n;
+}
+
+/* FUNC(zx_root_GET_Candidate) */
+
+struct zx_hrxml_Candidate_s* zx_root_GET_Candidate(struct zx_root_s* x, int n)
+{
+  struct zx_hrxml_Candidate_s* y;
+  if (!x) return 0;
+  for (y = x->Candidate; n>=0 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+  return y;
+}
+
+/* FUNC(zx_root_POP_Candidate) */
+
+struct zx_hrxml_Candidate_s* zx_root_POP_Candidate(struct zx_root_s* x)
+{
+  struct zx_hrxml_Candidate_s* y;
+  if (!x) return 0;
+  y = x->Candidate;
+  if (y)
+    x->Candidate = (struct zx_hrxml_Candidate_s*)y->gg.g.n;
+  return y;
+}
+
+/* FUNC(zx_root_PUSH_Candidate) */
+
+void zx_root_PUSH_Candidate(struct zx_root_s* x, struct zx_hrxml_Candidate_s* z)
+{
+  if (!x || !z) return;
+  z->gg.g.n = &x->Candidate->gg.g;
+  x->Candidate = z;
+}
+
+/* FUNC(zx_root_REV_Candidate) */
+
+void zx_root_REV_Candidate(struct zx_root_s* x)
+{
+  struct zx_hrxml_Candidate_s* nxt;
+  struct zx_hrxml_Candidate_s* y;
+  if (!x) return;
+  y = x->Candidate;
+  if (!y) return;
+  x->Candidate = 0;
+  while (y) {
+    nxt = (struct zx_hrxml_Candidate_s*)y->gg.g.n;
+    y->gg.g.n = &x->Candidate->gg.g;
+    x->Candidate = y;
+    y = nxt;
+  }
+}
+
+/* FUNC(zx_root_PUT_Candidate) */
+
+void zx_root_PUT_Candidate(struct zx_root_s* x, int n, struct zx_hrxml_Candidate_s* z)
+{
+  struct zx_hrxml_Candidate_s* y;
+  if (!x || !z) return;
+  y = x->Candidate;
+  if (!y) return;
+  switch (n) {
+  case 0:
+    z->gg.g.n = y->gg.g.n;
+    x->Candidate = z;
+    return;
+  default:
+    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+    z->gg.g.n = y->gg.g.n->n;
+    y->gg.g.n = &z->gg.g;
+  }
+}
+
+/* FUNC(zx_root_ADD_Candidate) */
+
+void zx_root_ADD_Candidate(struct zx_root_s* x, int n, struct zx_hrxml_Candidate_s* z)
+{
+  struct zx_hrxml_Candidate_s* y;
+  if (!x || !z) return;
+  switch (n) {
+  case 0:
+  add_to_start:
+    z->gg.g.n = &x->Candidate->gg.g;
+    x->Candidate = z;
+    return;
+  case -1:
+    y = x->Candidate;
+    if (!y) goto add_to_start;
+    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Candidate; n > 1 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    if (!y) return;
+  }
+  z->gg.g.n = y->gg.g.n;
+  y->gg.g.n = &z->gg.g;
+}
+
+/* FUNC(zx_root_DEL_Candidate) */
+
+void zx_root_DEL_Candidate(struct zx_root_s* x, int n)
+{
+  struct zx_hrxml_Candidate_s* y;
+  if (!x) return;
+  switch (n) {
+  case 0:
+    x->Candidate = (struct zx_hrxml_Candidate_s*)x->Candidate->gg.g.n;
+    return;
+  case -1:
+    y = (struct zx_hrxml_Candidate_s*)x->Candidate;
+    if (!y) return;
+    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    break;
+  default:
+    for (y = x->Candidate; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    if (!y->gg.g.n) return;
+  }
+  y->gg.g.n = y->gg.g.n->n;
+}
+
+#endif
+
+
+
+#ifdef ZX_ENA_GETPUT
+
 /* FUNC(zx_root_NUM_sa11_Assertion) */
 
 int zx_root_NUM_sa11_Assertion(struct zx_root_s* x)
@@ -4443,944 +5381,6 @@ void zx_root_DEL_m20_EntitiesDescriptor(struct zx_root_s* x, int n)
     break;
   default:
     for (y = x->m20_EntitiesDescriptor; n > 1 && y->gg.g.n; --n, y = (struct zx_m20_EntitiesDescriptor_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_root_NUM_EndpointReference) */
-
-int zx_root_NUM_EndpointReference(struct zx_root_s* x)
-{
-  struct zx_a_EndpointReference_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->EndpointReference; y; ++n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_root_GET_EndpointReference) */
-
-struct zx_a_EndpointReference_s* zx_root_GET_EndpointReference(struct zx_root_s* x, int n)
-{
-  struct zx_a_EndpointReference_s* y;
-  if (!x) return 0;
-  for (y = x->EndpointReference; n>=0 && y; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_root_POP_EndpointReference) */
-
-struct zx_a_EndpointReference_s* zx_root_POP_EndpointReference(struct zx_root_s* x)
-{
-  struct zx_a_EndpointReference_s* y;
-  if (!x) return 0;
-  y = x->EndpointReference;
-  if (y)
-    x->EndpointReference = (struct zx_a_EndpointReference_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_root_PUSH_EndpointReference) */
-
-void zx_root_PUSH_EndpointReference(struct zx_root_s* x, struct zx_a_EndpointReference_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->EndpointReference->gg.g;
-  x->EndpointReference = z;
-}
-
-/* FUNC(zx_root_REV_EndpointReference) */
-
-void zx_root_REV_EndpointReference(struct zx_root_s* x)
-{
-  struct zx_a_EndpointReference_s* nxt;
-  struct zx_a_EndpointReference_s* y;
-  if (!x) return;
-  y = x->EndpointReference;
-  if (!y) return;
-  x->EndpointReference = 0;
-  while (y) {
-    nxt = (struct zx_a_EndpointReference_s*)y->gg.g.n;
-    y->gg.g.n = &x->EndpointReference->gg.g;
-    x->EndpointReference = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_root_PUT_EndpointReference) */
-
-void zx_root_PUT_EndpointReference(struct zx_root_s* x, int n, struct zx_a_EndpointReference_s* z)
-{
-  struct zx_a_EndpointReference_s* y;
-  if (!x || !z) return;
-  y = x->EndpointReference;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->EndpointReference = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_root_ADD_EndpointReference) */
-
-void zx_root_ADD_EndpointReference(struct zx_root_s* x, int n, struct zx_a_EndpointReference_s* z)
-{
-  struct zx_a_EndpointReference_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->EndpointReference->gg.g;
-    x->EndpointReference = z;
-    return;
-  case -1:
-    y = x->EndpointReference;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->EndpointReference; n > 1 && y; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_root_DEL_EndpointReference) */
-
-void zx_root_DEL_EndpointReference(struct zx_root_s* x, int n)
-{
-  struct zx_a_EndpointReference_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->EndpointReference = (struct zx_a_EndpointReference_s*)x->EndpointReference->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_a_EndpointReference_s*)x->EndpointReference;
-    if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->EndpointReference; n > 1 && y->gg.g.n; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_root_NUM_Token) */
-
-int zx_root_NUM_Token(struct zx_root_s* x)
-{
-  struct zx_sec_Token_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->Token; y; ++n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_root_GET_Token) */
-
-struct zx_sec_Token_s* zx_root_GET_Token(struct zx_root_s* x, int n)
-{
-  struct zx_sec_Token_s* y;
-  if (!x) return 0;
-  for (y = x->Token; n>=0 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_root_POP_Token) */
-
-struct zx_sec_Token_s* zx_root_POP_Token(struct zx_root_s* x)
-{
-  struct zx_sec_Token_s* y;
-  if (!x) return 0;
-  y = x->Token;
-  if (y)
-    x->Token = (struct zx_sec_Token_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_root_PUSH_Token) */
-
-void zx_root_PUSH_Token(struct zx_root_s* x, struct zx_sec_Token_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->Token->gg.g;
-  x->Token = z;
-}
-
-/* FUNC(zx_root_REV_Token) */
-
-void zx_root_REV_Token(struct zx_root_s* x)
-{
-  struct zx_sec_Token_s* nxt;
-  struct zx_sec_Token_s* y;
-  if (!x) return;
-  y = x->Token;
-  if (!y) return;
-  x->Token = 0;
-  while (y) {
-    nxt = (struct zx_sec_Token_s*)y->gg.g.n;
-    y->gg.g.n = &x->Token->gg.g;
-    x->Token = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_root_PUT_Token) */
-
-void zx_root_PUT_Token(struct zx_root_s* x, int n, struct zx_sec_Token_s* z)
-{
-  struct zx_sec_Token_s* y;
-  if (!x || !z) return;
-  y = x->Token;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->Token = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_root_ADD_Token) */
-
-void zx_root_ADD_Token(struct zx_root_s* x, int n, struct zx_sec_Token_s* z)
-{
-  struct zx_sec_Token_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->Token->gg.g;
-    x->Token = z;
-    return;
-  case -1:
-    y = x->Token;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Token; n > 1 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_root_DEL_Token) */
-
-void zx_root_DEL_Token(struct zx_root_s* x, int n)
-{
-  struct zx_sec_Token_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->Token = (struct zx_sec_Token_s*)x->Token->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_sec_Token_s*)x->Token;
-    if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Token; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_root_NUM_Candidate) */
-
-int zx_root_NUM_Candidate(struct zx_root_s* x)
-{
-  struct zx_hrxml_Candidate_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->Candidate; y; ++n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_root_GET_Candidate) */
-
-struct zx_hrxml_Candidate_s* zx_root_GET_Candidate(struct zx_root_s* x, int n)
-{
-  struct zx_hrxml_Candidate_s* y;
-  if (!x) return 0;
-  for (y = x->Candidate; n>=0 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_root_POP_Candidate) */
-
-struct zx_hrxml_Candidate_s* zx_root_POP_Candidate(struct zx_root_s* x)
-{
-  struct zx_hrxml_Candidate_s* y;
-  if (!x) return 0;
-  y = x->Candidate;
-  if (y)
-    x->Candidate = (struct zx_hrxml_Candidate_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_root_PUSH_Candidate) */
-
-void zx_root_PUSH_Candidate(struct zx_root_s* x, struct zx_hrxml_Candidate_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->Candidate->gg.g;
-  x->Candidate = z;
-}
-
-/* FUNC(zx_root_REV_Candidate) */
-
-void zx_root_REV_Candidate(struct zx_root_s* x)
-{
-  struct zx_hrxml_Candidate_s* nxt;
-  struct zx_hrxml_Candidate_s* y;
-  if (!x) return;
-  y = x->Candidate;
-  if (!y) return;
-  x->Candidate = 0;
-  while (y) {
-    nxt = (struct zx_hrxml_Candidate_s*)y->gg.g.n;
-    y->gg.g.n = &x->Candidate->gg.g;
-    x->Candidate = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_root_PUT_Candidate) */
-
-void zx_root_PUT_Candidate(struct zx_root_s* x, int n, struct zx_hrxml_Candidate_s* z)
-{
-  struct zx_hrxml_Candidate_s* y;
-  if (!x || !z) return;
-  y = x->Candidate;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->Candidate = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_root_ADD_Candidate) */
-
-void zx_root_ADD_Candidate(struct zx_root_s* x, int n, struct zx_hrxml_Candidate_s* z)
-{
-  struct zx_hrxml_Candidate_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->Candidate->gg.g;
-    x->Candidate = z;
-    return;
-  case -1:
-    y = x->Candidate;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Candidate; n > 1 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_root_DEL_Candidate) */
-
-void zx_root_DEL_Candidate(struct zx_root_s* x, int n)
-{
-  struct zx_hrxml_Candidate_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->Candidate = (struct zx_hrxml_Candidate_s*)x->Candidate->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_hrxml_Candidate_s*)x->Candidate;
-    if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->Candidate; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_root_NUM_XACMLAuthzDecisionQuery) */
-
-int zx_root_NUM_XACMLAuthzDecisionQuery(struct zx_root_s* x)
-{
-  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->XACMLAuthzDecisionQuery; y; ++n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_root_GET_XACMLAuthzDecisionQuery) */
-
-struct zx_xasp_XACMLAuthzDecisionQuery_s* zx_root_GET_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n)
-{
-  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
-  if (!x) return 0;
-  for (y = x->XACMLAuthzDecisionQuery; n>=0 && y; --n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_root_POP_XACMLAuthzDecisionQuery) */
-
-struct zx_xasp_XACMLAuthzDecisionQuery_s* zx_root_POP_XACMLAuthzDecisionQuery(struct zx_root_s* x)
-{
-  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
-  if (!x) return 0;
-  y = x->XACMLAuthzDecisionQuery;
-  if (y)
-    x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_root_PUSH_XACMLAuthzDecisionQuery) */
-
-void zx_root_PUSH_XACMLAuthzDecisionQuery(struct zx_root_s* x, struct zx_xasp_XACMLAuthzDecisionQuery_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->XACMLAuthzDecisionQuery->gg.g;
-  x->XACMLAuthzDecisionQuery = z;
-}
-
-/* FUNC(zx_root_REV_XACMLAuthzDecisionQuery) */
-
-void zx_root_REV_XACMLAuthzDecisionQuery(struct zx_root_s* x)
-{
-  struct zx_xasp_XACMLAuthzDecisionQuery_s* nxt;
-  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
-  if (!x) return;
-  y = x->XACMLAuthzDecisionQuery;
-  if (!y) return;
-  x->XACMLAuthzDecisionQuery = 0;
-  while (y) {
-    nxt = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n;
-    y->gg.g.n = &x->XACMLAuthzDecisionQuery->gg.g;
-    x->XACMLAuthzDecisionQuery = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_root_PUT_XACMLAuthzDecisionQuery) */
-
-void zx_root_PUT_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n, struct zx_xasp_XACMLAuthzDecisionQuery_s* z)
-{
-  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
-  if (!x || !z) return;
-  y = x->XACMLAuthzDecisionQuery;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->XACMLAuthzDecisionQuery = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_root_ADD_XACMLAuthzDecisionQuery) */
-
-void zx_root_ADD_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n, struct zx_xasp_XACMLAuthzDecisionQuery_s* z)
-{
-  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->XACMLAuthzDecisionQuery->gg.g;
-    x->XACMLAuthzDecisionQuery = z;
-    return;
-  case -1:
-    y = x->XACMLAuthzDecisionQuery;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->XACMLAuthzDecisionQuery; n > 1 && y; --n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_root_DEL_XACMLAuthzDecisionQuery) */
-
-void zx_root_DEL_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n)
-{
-  struct zx_xasp_XACMLAuthzDecisionQuery_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->XACMLAuthzDecisionQuery = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)x->XACMLAuthzDecisionQuery->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)x->XACMLAuthzDecisionQuery;
-    if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->XACMLAuthzDecisionQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_xasp_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_root_NUM_XACMLPolicyQuery) */
-
-int zx_root_NUM_XACMLPolicyQuery(struct zx_root_s* x)
-{
-  struct zx_xasp_XACMLPolicyQuery_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->XACMLPolicyQuery; y; ++n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_root_GET_XACMLPolicyQuery) */
-
-struct zx_xasp_XACMLPolicyQuery_s* zx_root_GET_XACMLPolicyQuery(struct zx_root_s* x, int n)
-{
-  struct zx_xasp_XACMLPolicyQuery_s* y;
-  if (!x) return 0;
-  for (y = x->XACMLPolicyQuery; n>=0 && y; --n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_root_POP_XACMLPolicyQuery) */
-
-struct zx_xasp_XACMLPolicyQuery_s* zx_root_POP_XACMLPolicyQuery(struct zx_root_s* x)
-{
-  struct zx_xasp_XACMLPolicyQuery_s* y;
-  if (!x) return 0;
-  y = x->XACMLPolicyQuery;
-  if (y)
-    x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_root_PUSH_XACMLPolicyQuery) */
-
-void zx_root_PUSH_XACMLPolicyQuery(struct zx_root_s* x, struct zx_xasp_XACMLPolicyQuery_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->XACMLPolicyQuery->gg.g;
-  x->XACMLPolicyQuery = z;
-}
-
-/* FUNC(zx_root_REV_XACMLPolicyQuery) */
-
-void zx_root_REV_XACMLPolicyQuery(struct zx_root_s* x)
-{
-  struct zx_xasp_XACMLPolicyQuery_s* nxt;
-  struct zx_xasp_XACMLPolicyQuery_s* y;
-  if (!x) return;
-  y = x->XACMLPolicyQuery;
-  if (!y) return;
-  x->XACMLPolicyQuery = 0;
-  while (y) {
-    nxt = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n;
-    y->gg.g.n = &x->XACMLPolicyQuery->gg.g;
-    x->XACMLPolicyQuery = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_root_PUT_XACMLPolicyQuery) */
-
-void zx_root_PUT_XACMLPolicyQuery(struct zx_root_s* x, int n, struct zx_xasp_XACMLPolicyQuery_s* z)
-{
-  struct zx_xasp_XACMLPolicyQuery_s* y;
-  if (!x || !z) return;
-  y = x->XACMLPolicyQuery;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->XACMLPolicyQuery = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_root_ADD_XACMLPolicyQuery) */
-
-void zx_root_ADD_XACMLPolicyQuery(struct zx_root_s* x, int n, struct zx_xasp_XACMLPolicyQuery_s* z)
-{
-  struct zx_xasp_XACMLPolicyQuery_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->XACMLPolicyQuery->gg.g;
-    x->XACMLPolicyQuery = z;
-    return;
-  case -1:
-    y = x->XACMLPolicyQuery;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->XACMLPolicyQuery; n > 1 && y; --n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_root_DEL_XACMLPolicyQuery) */
-
-void zx_root_DEL_XACMLPolicyQuery(struct zx_root_s* x, int n)
-{
-  struct zx_xasp_XACMLPolicyQuery_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->XACMLPolicyQuery = (struct zx_xasp_XACMLPolicyQuery_s*)x->XACMLPolicyQuery->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_xasp_XACMLPolicyQuery_s*)x->XACMLPolicyQuery;
-    if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->XACMLPolicyQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_xasp_XACMLPolicyQuery_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_root_NUM_xaspcd1_XACMLAuthzDecisionQuery) */
-
-int zx_root_NUM_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x)
-{
-  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->xaspcd1_XACMLAuthzDecisionQuery; y; ++n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_root_GET_xaspcd1_XACMLAuthzDecisionQuery) */
-
-struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zx_root_GET_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n)
-{
-  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
-  if (!x) return 0;
-  for (y = x->xaspcd1_XACMLAuthzDecisionQuery; n>=0 && y; --n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_root_POP_xaspcd1_XACMLAuthzDecisionQuery) */
-
-struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zx_root_POP_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x)
-{
-  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
-  if (!x) return 0;
-  y = x->xaspcd1_XACMLAuthzDecisionQuery;
-  if (y)
-    x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_root_PUSH_xaspcd1_XACMLAuthzDecisionQuery) */
-
-void zx_root_PUSH_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->xaspcd1_XACMLAuthzDecisionQuery->gg.g;
-  x->xaspcd1_XACMLAuthzDecisionQuery = z;
-}
-
-/* FUNC(zx_root_REV_xaspcd1_XACMLAuthzDecisionQuery) */
-
-void zx_root_REV_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x)
-{
-  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* nxt;
-  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
-  if (!x) return;
-  y = x->xaspcd1_XACMLAuthzDecisionQuery;
-  if (!y) return;
-  x->xaspcd1_XACMLAuthzDecisionQuery = 0;
-  while (y) {
-    nxt = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n;
-    y->gg.g.n = &x->xaspcd1_XACMLAuthzDecisionQuery->gg.g;
-    x->xaspcd1_XACMLAuthzDecisionQuery = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_root_PUT_xaspcd1_XACMLAuthzDecisionQuery) */
-
-void zx_root_PUT_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* z)
-{
-  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
-  if (!x || !z) return;
-  y = x->xaspcd1_XACMLAuthzDecisionQuery;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->xaspcd1_XACMLAuthzDecisionQuery = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_root_ADD_xaspcd1_XACMLAuthzDecisionQuery) */
-
-void zx_root_ADD_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* z)
-{
-  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->xaspcd1_XACMLAuthzDecisionQuery->gg.g;
-    x->xaspcd1_XACMLAuthzDecisionQuery = z;
-    return;
-  case -1:
-    y = x->xaspcd1_XACMLAuthzDecisionQuery;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->xaspcd1_XACMLAuthzDecisionQuery; n > 1 && y; --n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_root_DEL_xaspcd1_XACMLAuthzDecisionQuery) */
-
-void zx_root_DEL_xaspcd1_XACMLAuthzDecisionQuery(struct zx_root_s* x, int n)
-{
-  struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->xaspcd1_XACMLAuthzDecisionQuery = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)x->xaspcd1_XACMLAuthzDecisionQuery->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)x->xaspcd1_XACMLAuthzDecisionQuery;
-    if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->xaspcd1_XACMLAuthzDecisionQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-  }
-  y->gg.g.n = y->gg.g.n->n;
-}
-
-#endif
-
-
-
-#ifdef ZX_ENA_GETPUT
-
-/* FUNC(zx_root_NUM_xaspcd1_XACMLPolicyQuery) */
-
-int zx_root_NUM_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x)
-{
-  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
-  int n = 0;
-  if (!x) return 0;
-  for (y = x->xaspcd1_XACMLPolicyQuery; y; ++n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
-  return n;
-}
-
-/* FUNC(zx_root_GET_xaspcd1_XACMLPolicyQuery) */
-
-struct zx_xaspcd1_XACMLPolicyQuery_s* zx_root_GET_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, int n)
-{
-  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
-  if (!x) return 0;
-  for (y = x->xaspcd1_XACMLPolicyQuery; n>=0 && y; --n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
-  return y;
-}
-
-/* FUNC(zx_root_POP_xaspcd1_XACMLPolicyQuery) */
-
-struct zx_xaspcd1_XACMLPolicyQuery_s* zx_root_POP_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x)
-{
-  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
-  if (!x) return 0;
-  y = x->xaspcd1_XACMLPolicyQuery;
-  if (y)
-    x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n;
-  return y;
-}
-
-/* FUNC(zx_root_PUSH_xaspcd1_XACMLPolicyQuery) */
-
-void zx_root_PUSH_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, struct zx_xaspcd1_XACMLPolicyQuery_s* z)
-{
-  if (!x || !z) return;
-  z->gg.g.n = &x->xaspcd1_XACMLPolicyQuery->gg.g;
-  x->xaspcd1_XACMLPolicyQuery = z;
-}
-
-/* FUNC(zx_root_REV_xaspcd1_XACMLPolicyQuery) */
-
-void zx_root_REV_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x)
-{
-  struct zx_xaspcd1_XACMLPolicyQuery_s* nxt;
-  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
-  if (!x) return;
-  y = x->xaspcd1_XACMLPolicyQuery;
-  if (!y) return;
-  x->xaspcd1_XACMLPolicyQuery = 0;
-  while (y) {
-    nxt = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n;
-    y->gg.g.n = &x->xaspcd1_XACMLPolicyQuery->gg.g;
-    x->xaspcd1_XACMLPolicyQuery = y;
-    y = nxt;
-  }
-}
-
-/* FUNC(zx_root_PUT_xaspcd1_XACMLPolicyQuery) */
-
-void zx_root_PUT_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, int n, struct zx_xaspcd1_XACMLPolicyQuery_s* z)
-{
-  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
-  if (!x || !z) return;
-  y = x->xaspcd1_XACMLPolicyQuery;
-  if (!y) return;
-  switch (n) {
-  case 0:
-    z->gg.g.n = y->gg.g.n;
-    x->xaspcd1_XACMLPolicyQuery = z;
-    return;
-  default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
-    if (!y->gg.g.n) return;
-    z->gg.g.n = y->gg.g.n->n;
-    y->gg.g.n = &z->gg.g;
-  }
-}
-
-/* FUNC(zx_root_ADD_xaspcd1_XACMLPolicyQuery) */
-
-void zx_root_ADD_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, int n, struct zx_xaspcd1_XACMLPolicyQuery_s* z)
-{
-  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
-  if (!x || !z) return;
-  switch (n) {
-  case 0:
-  add_to_start:
-    z->gg.g.n = &x->xaspcd1_XACMLPolicyQuery->gg.g;
-    x->xaspcd1_XACMLPolicyQuery = z;
-    return;
-  case -1:
-    y = x->xaspcd1_XACMLPolicyQuery;
-    if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->xaspcd1_XACMLPolicyQuery; n > 1 && y; --n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
-    if (!y) return;
-  }
-  z->gg.g.n = y->gg.g.n;
-  y->gg.g.n = &z->gg.g;
-}
-
-/* FUNC(zx_root_DEL_xaspcd1_XACMLPolicyQuery) */
-
-void zx_root_DEL_xaspcd1_XACMLPolicyQuery(struct zx_root_s* x, int n)
-{
-  struct zx_xaspcd1_XACMLPolicyQuery_s* y;
-  if (!x) return;
-  switch (n) {
-  case 0:
-    x->xaspcd1_XACMLPolicyQuery = (struct zx_xaspcd1_XACMLPolicyQuery_s*)x->xaspcd1_XACMLPolicyQuery->gg.g.n;
-    return;
-  case -1:
-    y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)x->xaspcd1_XACMLPolicyQuery;
-    if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
-    break;
-  default:
-    for (y = x->xaspcd1_XACMLPolicyQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_xaspcd1_XACMLPolicyQuery_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

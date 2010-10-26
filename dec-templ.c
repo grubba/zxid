@@ -29,7 +29,6 @@
 struct ELSTRUCT* TXDEC_ELNAME(struct zx_ctx* c, struct zx_ns_s* ns ROOT_N_DECODE)
 {
   int tok;
-  struct zx_elem_s* iternode;
   struct zx_elem_s* el;
   struct zx_str* ss;
   struct zx_ns_s* pop_seen;
@@ -49,15 +48,13 @@ struct ELSTRUCT* TXDEC_ELNAME(struct zx_ctx* c, struct zx_ns_s* ns ROOT_N_DECODE
     ZX_SKIP_WS(c,x);
     if (ONE_OF_2(*c->p, '>', '/'))
       break;
-    if (!(data = zx_dec_attr_val(c, &name))) {
-      D("Decoding attr_val failed %p", c->p);
+    if (!(data = zx_dec_attr_val(c, &name, (const char*)__FUNCTION__)))
       return x;
-    }
     tok = TXattr_lookup(c, name, data-2, &ns);
     switch (tok) {
 ATTRS;
     case ZX_TOK_XMLNS:
-      ZX_XMLNS_DEC_EXT(ss);
+      ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
       ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
       ns->n = x->gg.xmlns;
@@ -66,7 +63,7 @@ ATTRS;
     default:
       ss = zx_dec_unknown_attr(c, &x->gg, name, data, tok, x->gg.g.tok);
     }
-    ss->g.ns = ns;
+    ss->g.ns = ns;    /* Fill in the rest of the ss fields (its already linked to right list). */
     ss->g.tok = tok;
     ss->g.err |= ZXERR_ATTR_FLAG;
     ss->len = c->p - data;
@@ -113,10 +110,8 @@ next_attr:
 	if (tok != x->gg.g.tok)
 #endif
 	{
-	  ERR("Mismatching close tag(%.*s) tok=%d context=%d", c->p-name, name, tok, x->gg.g.tok);
-	  zx_xml_parse_err(c, '-', (const char*)__FUNCTION__, "Mismatching close tag");
+	  zx_xml_parse_err_mismatching_close_tag(c, (const char*)__FUNCTION__, name, tok);
 	  ZX_DEC_TAG_MISMATCH_CLOSE(x->gg.g);
-	  ++c->p;
 	  return x;
 	}
 	/* Legitimate close tag. Normal exit from this function. */
@@ -125,12 +120,8 @@ next_attr:
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  name = c->p;
-	  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
-	  if (!*c->p) {
-	    D("Incomplete %s", name);
+	  if (!(name = zx_scan_elem_start(c, (const char*)__FUNCTION__)))
 	    return x;
-	  }
 	  pop_seen = zx_scan_xmlns(c);  /* Prescan namespaces so that token can be correctly recognized. */
 	  tok = TXelem_lookup(c, name, c->p, &ns);
 	  switch (tok) {
@@ -154,12 +145,7 @@ ELEMS;
     goto potential_tag;
   }
  out:
-  iternode = x->gg.kids;
-  REVERSE_LIST_NEXT(x->gg.kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->gg.any_elem);
-  REVERSE_LIST_NEXT(x->gg.any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->gg.any_attr);
-  REVERSE_LIST_NEXT(x->gg.any_attr, ss, g.n);
+  zx_dec_reverse_lists(&x->gg);
   ZX_END_DEC_EXT(x);
   return x;
 
@@ -189,8 +175,8 @@ struct zx_elem_s* TXknown_or_unknown_elem(struct zx_ctx* c, int tok, struct zx_e
   } else {
     D("Known element(%.*s) tok(%d) in wrong context(%d)", len, name, tok, x->g.tok);
   }
-  for (p = name; p < name + len && *p != ':'; ++p) ;  /* look for namespace prefix */
-  if (p < name + len) {
+  p = memchr(name, ':', len);  /* look for namespace prefix */
+  if (p) {
     /*prefix = name;*/
     len -= p+1-name;
     name = p+1;
@@ -216,29 +202,27 @@ int TXattr_lookup(struct zx_ctx* c, const char* name, const char* lim, struct zx
   const char* prefix;
   const char* p;
   
-  for (p = name; p < lim && *p != ':'; ++p) ;  /* look for namespace prefix */
-  if (p < lim) {
+  p = memchr(name, ':', lim-name);  /* look for namespace prefix */
+  if (p) {
     prefix = name;
     name = p+1;
   } else
     prefix = 0;
 
-  if (prefix)
+  /* Look for namespace declaration. Skip as these were prescanned (see above in this file). */
+  if (prefix) {
+    if ((name-1)-prefix == sizeof("xmlns")-1 && !memcmp("xmlns", prefix, sizeof("xmlns")-1))
+      return ZX_TOK_XMLNS;
     *ns = zx_prefix_seen_whine(c, prefix ? (name-1)-prefix : 0, prefix, "TXattr_lookup", 0);
-  else
+  } else {
+    if (lim-name == sizeof("xmlns")-1 && !memcmp("xmlns", name, sizeof("xmlns")-1))
+      return ZX_TOK_XMLNS;
     *ns = 0;
+  }
   
   zt = TXattr2tok(name, lim-name);
-  if (!zt) {
-    if (prefix ? ((name-1)-prefix == sizeof("xmlns")-1
-		  && !memcmp("xmlns", prefix, sizeof("xmlns")-1))
-	: (lim-name == sizeof("xmlns")-1
-	   && !memcmp("xmlns", name, sizeof("xmlns")-1))) {
-      /* Namespace declaration. Skip because these were prescanned (see above in this file). */
-      return ZX_TOK_XMLNS;
-    }
+  if (!zt)
     return ZX_TOK_NOT_FOUND;
-  }
 
   /* Look for token whose namespace matches. */
   zt = zx_tok_by_ns(zt, TXattrs + sizeof(TXattrs) / sizeof(struct zx_tok), lim-name, name, *ns);
@@ -256,8 +240,8 @@ int TXelem_lookup(struct zx_ctx* c, const char* name, const char* lim, struct zx
   const char* prefix;
   const char* p;
   
-  for (p = name; p < lim && *p != ':'; ++p) ;  /* look for namespace prefix */
-  if (p < lim) {
+  p = memchr(name, ':', lim-name);  /* look for namespace prefix */
+  if (p) {
     prefix = name;
     name = p+1;
   } else
