@@ -2718,13 +2718,12 @@ XS(_wrap_zx_ns_s_prefix_set) {
     arg1 = (struct zx_ns_s *)(argp1);
     res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zx_ns_s_prefix_set" "', argument " "2"" of type '" "char *""'");
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zx_ns_s_prefix_set" "', argument " "2"" of type '" "char const *""'");
     }
     arg2 = (char *)(buf2);
-    if (arg1->prefix) free((char*)arg1->prefix);
     if (arg2) {
-      size_t size = strlen((const char *)(arg2)) + 1;
-      arg1->prefix = (char *)(char *)memcpy((char *)malloc((size)*sizeof(char)), (const char *)(arg2), sizeof(char)*(size));
+      size_t size = strlen((const char *)((const char *)(arg2))) + 1;
+      arg1->prefix = (char const *)(char *)memcpy((char *)malloc((size)*sizeof(char)), arg2, sizeof(char)*(size));
     } else {
       arg1->prefix = 0;
     }
@@ -2855,13 +2854,12 @@ XS(_wrap_zx_ns_s_url_set) {
     arg1 = (struct zx_ns_s *)(argp1);
     res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zx_ns_s_url_set" "', argument " "2"" of type '" "char *""'");
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zx_ns_s_url_set" "', argument " "2"" of type '" "char const *""'");
     }
     arg2 = (char *)(buf2);
-    if (arg1->url) free((char*)arg1->url);
     if (arg2) {
-      size_t size = strlen((const char *)(arg2)) + 1;
-      arg1->url = (char *)(char *)memcpy((char *)malloc((size)*sizeof(char)), (const char *)(arg2), sizeof(char)*(size));
+      size_t size = strlen((const char *)((const char *)(arg2))) + 1;
+      arg1->url = (char const *)(char *)memcpy((char *)malloc((size)*sizeof(char)), arg2, sizeof(char)*(size));
     } else {
       arg1->url = 0;
     }
@@ -7275,6 +7273,44 @@ XS(_wrap_zx_report_openssl_error) {
 }
 
 
+XS(_wrap_zx_dump_ns_tab) {
+  {
+    struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: zx_dump_ns_tab(c,flags);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zx_ctx, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "zx_dump_ns_tab" "', argument " "1"" of type '" "struct zx_ctx *""'"); 
+    }
+    arg1 = (struct zx_ctx *)(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zx_dump_ns_tab" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = (int)(val2);
+    result = (int)zx_dump_ns_tab(arg1,arg2);
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1((int)(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_zx_new_ns) {
   {
     struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
@@ -7282,6 +7318,7 @@ XS(_wrap_zx_new_ns) {
     char *arg3 = (char *) 0 ;
     int arg4 ;
     char *arg5 = (char *) 0 ;
+    int arg6 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     int val2 ;
@@ -7294,12 +7331,14 @@ XS(_wrap_zx_new_ns) {
     int res5 ;
     char *buf5 = 0 ;
     int alloc5 = 0 ;
+    int val6 ;
+    int ecode6 = 0 ;
     int argvi = 0;
     struct zx_ns_s *result = 0 ;
     dXSARGS;
     
-    if ((items < 5) || (items > 5)) {
-      SWIG_croak("Usage: zx_new_ns(c,prefix_len,prefix,url_len,url);");
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: zx_new_ns(c,prefix_len,prefix,url_len,url,unknown);");
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_zx_ctx, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
@@ -7326,13 +7365,19 @@ XS(_wrap_zx_new_ns) {
       SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "zx_new_ns" "', argument " "5"" of type '" "char const *""'");
     }
     arg5 = (char *)(buf5);
-    result = (struct zx_ns_s *)zx_new_ns(arg1,arg2,(char const *)arg3,arg4,(char const *)arg5);
+    ecode6 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "zx_new_ns" "', argument " "6"" of type '" "int""'");
+    } 
+    arg6 = (int)(val6);
+    result = (struct zx_ns_s *)zx_new_ns(arg1,arg2,(char const *)arg3,arg4,(char const *)arg5,arg6);
     ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_zx_ns_s, 0 | SWIG_SHADOW); argvi++ ;
     
     
     if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
     
     if (alloc5 == SWIG_NEWOBJ) free((char*)buf5);
+    
     XSRETURN(argvi);
   fail:
     
@@ -7340,6 +7385,7 @@ XS(_wrap_zx_new_ns) {
     if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
     
     if (alloc5 == SWIG_NEWOBJ) free((char*)buf5);
+    
     SWIG_croak_null();
   }
 }
@@ -32453,10 +32499,10 @@ XS(_wrap_zxid_get_meta) {
     arg1 = (zxid_conf *)(argp1);
     res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_get_meta" "', argument " "2"" of type '" "char *""'");
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "zxid_get_meta" "', argument " "2"" of type '" "char const *""'");
     }
     arg2 = (char *)(buf2);
-    result = (zxid_entity *)zxid_get_meta(arg1,arg2);
+    result = (zxid_entity *)zxid_get_meta(arg1,(char const *)arg2);
     ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_zxid_entity, 0 | SWIG_SHADOW); argvi++ ;
     
     if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
@@ -49027,6 +49073,7 @@ static swig_command_info swig_commands[] = {
 {"Net::SAMLc::zx_date_time_to_secs", _wrap_zx_date_time_to_secs},
 {"Net::SAMLc::write2_or_append_lock_c_path", _wrap_write2_or_append_lock_c_path},
 {"Net::SAMLc::zx_report_openssl_error", _wrap_zx_report_openssl_error},
+{"Net::SAMLc::zx_dump_ns_tab", _wrap_zx_dump_ns_tab},
 {"Net::SAMLc::zx_new_ns", _wrap_zx_new_ns},
 {"Net::SAMLc::zx_locate_ns_by_prefix", _wrap_zx_locate_ns_by_prefix},
 {"Net::SAMLc::zx_prefix_seen", _wrap_zx_prefix_seen},

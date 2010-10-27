@@ -146,6 +146,7 @@ struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, 
 static struct zx_ns_s* zx_xmlns_decl(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url)
 {
   struct zx_ns_s* alias;
+  struct zx_ns_s* new_ns;
   struct zx_ns_s* ns;
 
   ns = zx_locate_ns_by_url(c, url_len, url);
@@ -155,14 +156,14 @@ static struct zx_ns_s* zx_xmlns_decl(struct zx_ctx* c, int prefix_len, const cha
     if (!ns) {
       /* Namespace not known by compiled in schemata. */
       D("Namespace not found by prefix(%.*s) or URL(%.*s) (probably unknown or wrong namespace URL)", prefix_len, prefix, url_len, url);
-      alias = zx_new_ns(c, prefix_len, prefix, url_len, url, 1);
-      alias->n = c->unknown_ns;
-      c->unknown_ns = alias;
-      return alias;
+      new_ns = zx_new_ns(c, prefix_len, prefix, url_len, url, 1);
+      new_ns->n = c->unknown_ns;
+      c->unknown_ns = new_ns;
+      return new_ns;
     }
   }
   /* Always alloc a new one because we may need to push to stack multiple instances of same ns. */
-  alias = zx_new_ns(c, prefix_len, prefix, url_len, url, 0);
+  new_ns = zx_new_ns(c, prefix_len, prefix, url_len, url, 0);
 
   /* Avoid adding to alias list if prefix is already known. */
   if (ns->prefix_len == prefix_len && (!prefix_len || !memcmp(ns->prefix, prefix, prefix_len)))

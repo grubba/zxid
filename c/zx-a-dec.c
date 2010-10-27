@@ -144,7 +144,7 @@ struct zx_a_Action_s* zx_DEC_a_Action(struct zx_ctx* c, struct zx_ns_s* ns )
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -320,7 +320,7 @@ struct zx_a_Address_s* zx_DEC_a_Address(struct zx_ctx* c, struct zx_ns_s* ns )
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -502,7 +502,7 @@ struct zx_a_EndpointReference_s* zx_DEC_a_EndpointReference(struct zx_ctx* c, st
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -699,7 +699,7 @@ struct zx_a_FaultTo_s* zx_DEC_a_FaultTo(struct zx_ctx* c, struct zx_ns_s* ns )
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -896,7 +896,7 @@ struct zx_a_From_s* zx_DEC_a_From(struct zx_ctx* c, struct zx_ns_s* ns )
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1087,7 +1087,7 @@ struct zx_a_MessageID_s* zx_DEC_a_MessageID(struct zx_ctx* c, struct zx_ns_s* ns
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1233,7 +1233,7 @@ struct zx_a_Metadata_s* zx_DEC_a_Metadata(struct zx_ctx* c, struct zx_ns_s* ns )
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1434,7 +1434,7 @@ struct zx_a_ProblemAction_s* zx_DEC_a_ProblemAction(struct zx_ctx* c, struct zx_
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1620,7 +1620,7 @@ struct zx_a_ProblemHeader_s* zx_DEC_a_ProblemHeader(struct zx_ctx* c, struct zx_
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1796,7 +1796,7 @@ struct zx_a_ProblemHeaderQName_s* zx_DEC_a_ProblemHeaderQName(struct zx_ctx* c, 
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1972,7 +1972,7 @@ struct zx_a_ProblemURI_s* zx_DEC_a_ProblemURI(struct zx_ctx* c, struct zx_ns_s* 
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -2148,7 +2148,7 @@ struct zx_a_ReferenceParameters_s* zx_DEC_a_ReferenceParameters(struct zx_ctx* c
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -2335,7 +2335,7 @@ struct zx_a_RelatesTo_s* zx_DEC_a_RelatesTo(struct zx_ctx* c, struct zx_ns_s* ns
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -2517,7 +2517,7 @@ struct zx_a_ReplyTo_s* zx_DEC_a_ReplyTo(struct zx_ctx* c, struct zx_ns_s* ns )
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -2708,7 +2708,7 @@ struct zx_a_RetryAfter_s* zx_DEC_a_RetryAfter(struct zx_ctx* c, struct zx_ns_s* 
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -2884,7 +2884,7 @@ struct zx_a_To_s* zx_DEC_a_To(struct zx_ctx* c, struct zx_ns_s* ns )
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;

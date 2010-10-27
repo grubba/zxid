@@ -120,7 +120,7 @@ struct zx_xenc_AgreementMethod_s* zx_DEC_xenc_AgreementMethod(struct zx_ctx* c, 
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -281,7 +281,7 @@ struct zx_xenc_CipherData_s* zx_DEC_xenc_CipherData(struct zx_ctx* c, struct zx_
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -443,7 +443,7 @@ struct zx_xenc_CipherReference_s* zx_DEC_xenc_CipherReference(struct zx_ctx* c, 
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -600,7 +600,7 @@ struct zx_xenc_DataReference_s* zx_DEC_xenc_DataReference(struct zx_ctx* c, stru
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -770,7 +770,7 @@ struct zx_xenc_EncryptedData_s* zx_DEC_xenc_EncryptedData(struct zx_ctx* c, stru
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -966,7 +966,7 @@ struct zx_xenc_EncryptedKey_s* zx_DEC_xenc_EncryptedKey(struct zx_ctx* c, struct
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1148,7 +1148,7 @@ struct zx_xenc_EncryptionMethod_s* zx_DEC_xenc_EncryptionMethod(struct zx_ctx* c
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1310,7 +1310,7 @@ struct zx_xenc_EncryptionProperties_s* zx_DEC_xenc_EncryptionProperties(struct z
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1473,7 +1473,7 @@ struct zx_xenc_EncryptionProperty_s* zx_DEC_xenc_EncryptionProperty(struct zx_ct
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1625,7 +1625,7 @@ struct zx_xenc_KeyReference_s* zx_DEC_xenc_KeyReference(struct zx_ctx* c, struct
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1777,7 +1777,7 @@ struct zx_xenc_OriginatorKeyInfo_s* zx_DEC_xenc_OriginatorKeyInfo(struct zx_ctx*
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -1969,7 +1969,7 @@ struct zx_xenc_RecipientKeyInfo_s* zx_DEC_xenc_RecipientKeyInfo(struct zx_ctx* c
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -2155,7 +2155,7 @@ struct zx_xenc_ReferenceList_s* zx_DEC_xenc_ReferenceList(struct zx_ctx* c, stru
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -2311,7 +2311,7 @@ struct zx_xenc_Transforms_s* zx_DEC_xenc_Transforms(struct zx_ctx* c, struct zx_
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;

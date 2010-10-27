@@ -1312,10 +1312,10 @@ tas3copyrel: tas3rel
 ###
 
 precheck/chk-zlib.exe: precheck/chk-zlib.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< -lz
 
 precheck/chk-openssl.exe: precheck/chk-openssl.$(OBJ_EXT)
-	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)
+	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< -lssl -lcrypto
 
 precheck/chk-curl.exe: precheck/chk-curl.$(OBJ_EXT)
 	$(LD) $(LDFLAGS) $(OUTOPT)$@ $< $(LIBS)

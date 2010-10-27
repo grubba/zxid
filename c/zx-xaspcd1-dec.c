@@ -162,7 +162,7 @@ struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zx_DEC_xaspcd1_XACMLAuthzDecisionQu
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;
@@ -373,7 +373,7 @@ struct zx_xaspcd1_XACMLPolicyQuery_s* zx_DEC_xaspcd1_XACMLPolicyQuery(struct zx_
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;

@@ -2796,13 +2796,30 @@ SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zx_1report_1openssl_1error(JNIE
 }
 
 
-SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zx_1new_1ns(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2, jstring jarg3, jint jarg4, jstring jarg5) {
+SWIGEXPORT jint JNICALL Java_zxidjava_zxidjniJNI_zx_1dump_1ns_1tab(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
+  jint jresult = 0 ;
+  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+  int arg2 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct zx_ctx **)&jarg1; 
+  arg2 = (int)jarg2; 
+  result = (int)zx_dump_ns_tab(arg1,arg2);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zx_1new_1ns(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2, jstring jarg3, jint jarg4, jstring jarg5, jint jarg6) {
   jlong jresult = 0 ;
   struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
   int arg2 ;
   char *arg3 = (char *) 0 ;
   int arg4 ;
   char *arg5 = (char *) 0 ;
+  int arg6 ;
   struct zx_ns_s *result = 0 ;
   
   (void)jenv;
@@ -2820,7 +2837,8 @@ SWIGEXPORT jlong JNICALL Java_zxidjava_zxidjniJNI_zx_1new_1ns(JNIEnv *jenv, jcla
     arg5 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg5, 0);
     if (!arg5) return 0;
   }
-  result = (struct zx_ns_s *)zx_new_ns(arg1,arg2,arg3,arg4,arg5);
+  arg6 = (int)jarg6; 
+  result = (struct zx_ns_s *)zx_new_ns(arg1,arg2,arg3,arg4,arg5,arg6);
   *(struct zx_ns_s **)&jresult = result; 
   if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, ( char *)arg3);
   if (arg5) (*jenv)->ReleaseStringUTFChars(jenv, jarg5, ( char *)arg5);
@@ -26486,7 +26504,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1COMPILE_1DATE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "1288061018";
+  result = (char *) "1288147084";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }
@@ -26498,7 +26516,7 @@ SWIGEXPORT jstring JNICALL Java_zxidjava_zxidjniJNI_ZXID_1REV_1get(JNIEnv *jenv,
   
   (void)jenv;
   (void)jcls;
-  result = (char *) "$Id: 0.70 20101023-102654 sampo@ $";
+  result = (char *) "$Id: 0.70-2-gbc9103a 20101027-022717 sampo@ $";
   if (result) jresult = (*jenv)->NewStringUTF(jenv, ( char *)result);
   return jresult;
 }

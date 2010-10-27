@@ -419,7 +419,7 @@ struct zx_elem_s* zx_DEC_simple_elem(struct zx_ctx* c, struct zx_ns_s* ns , int 
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->xmlns;
       x->xmlns = ns;
       goto next_attr;
@@ -567,7 +567,7 @@ struct zx_any_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_ns_s* ns , c
     case ZX_TOK_XMLNS:
       ZX_XMLNS_DEC_EXT(name);
       DD("xmlns detected(%.*s)", data-2-name, name);
-      ns = zx_new_ns(c, data-2-name, name, c->p - data, data);
+      ns = zx_new_ns(c, data-2-name, name, c->p - data, data, 0);
       ns->n = x->gg.xmlns;
       x->gg.xmlns = ns;
       goto next_attr;

@@ -2187,9 +2187,8 @@ ZEND_NAMED_FUNCTION(_wrap_zx_ns_s_prefix_set) {
   /*@SWIG@*/;
   
   {
-    if (arg1->prefix) free((char *)arg1->prefix);
     if (arg2) {
-      arg1->prefix = (char *) malloc(strlen((const char *)arg2)+1);
+      arg1->prefix = (char const *) malloc(strlen((const char *)arg2)+1);
       strcpy((char *)arg1->prefix, (const char *)arg2);
     } else {
       arg1->prefix = 0;
@@ -2315,9 +2314,8 @@ ZEND_NAMED_FUNCTION(_wrap_zx_ns_s_url_set) {
   /*@SWIG@*/;
   
   {
-    if (arg1->url) free((char *)arg1->url);
     if (arg2) {
-      arg1->url = (char *) malloc(strlen((const char *)arg2)+1);
+      arg1->url = (char const *) malloc(strlen((const char *)arg2)+1);
       strcpy((char *)arg1->url, (const char *)arg2);
     } else {
       arg1->url = 0;
@@ -6184,17 +6182,50 @@ fail:
 }
 
 
+ZEND_NAMED_FUNCTION(_wrap_zx_dump_ns_tab) {
+  struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
+  int arg2 ;
+  zval **args[2];
+  int result;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_zx_ctx, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of zx_dump_ns_tab. Expected SWIGTYPE_p_zx_ctx");
+    }
+  }
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+  convert_to_long_ex(args[1]);
+  arg2 = (int) Z_LVAL_PP(args[1]);
+  /*@SWIG@*/;
+  
+  result = (int)zx_dump_ns_tab(arg1,arg2);
+  {
+    ZVAL_LONG(return_value,result);
+  }
+  return;
+fail:
+  zend_error_noreturn(SWIG_ErrorCode(),"%s",SWIG_ErrorMsg());
+}
+
+
 ZEND_NAMED_FUNCTION(_wrap_zx_new_ns) {
   struct zx_ctx *arg1 = (struct zx_ctx *) 0 ;
   int arg2 ;
   char *arg3 = (char *) 0 ;
   int arg4 ;
   char *arg5 = (char *) 0 ;
-  zval **args[5];
+  int arg6 ;
+  zval **args[6];
   struct zx_ns_s *result = 0 ;
   
   SWIG_ResetError();
-  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+  if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
@@ -6235,7 +6266,13 @@ ZEND_NAMED_FUNCTION(_wrap_zx_new_ns) {
   }
   /*@SWIG@*/;
   
-  result = (struct zx_ns_s *)zx_new_ns(arg1,arg2,(char const *)arg3,arg4,(char const *)arg5);
+  
+  /*@SWIG:/apps/share/swig/1.3.40/php/utils.i,7,CONVERT_INT_IN@*/
+  convert_to_long_ex(args[5]);
+  arg6 = (int) Z_LVAL_PP(args[5]);
+  /*@SWIG@*/;
+  
+  result = (struct zx_ns_s *)zx_new_ns(arg1,arg2,(char const *)arg3,arg4,(char const *)arg5,arg6);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zx_ns_s, 0);
   
@@ -29021,7 +29058,7 @@ ZEND_NAMED_FUNCTION(_wrap_zxid_get_meta) {
   }
   /*@SWIG@*/;
   
-  result = (zxid_entity *)zxid_get_meta(arg1,arg2);
+  result = (zxid_entity *)zxid_get_meta(arg1,(char const *)arg2);
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_zxid_entity, 0);
   
@@ -43027,6 +43064,7 @@ static zend_function_entry zxid_functions[] = {
  SWIG_ZEND_NAMED_FE(zx_date_time_to_secs,_wrap_zx_date_time_to_secs,NULL)
  SWIG_ZEND_NAMED_FE(write2_or_append_lock_c_path,_wrap_write2_or_append_lock_c_path,NULL)
  SWIG_ZEND_NAMED_FE(zx_report_openssl_error,_wrap_zx_report_openssl_error,NULL)
+ SWIG_ZEND_NAMED_FE(zx_dump_ns_tab,_wrap_zx_dump_ns_tab,NULL)
  SWIG_ZEND_NAMED_FE(zx_new_ns,_wrap_zx_new_ns,NULL)
  SWIG_ZEND_NAMED_FE(zx_locate_ns_by_prefix,_wrap_zx_locate_ns_by_prefix,NULL)
  SWIG_ZEND_NAMED_FE(zx_prefix_seen,_wrap_zx_prefix_seen,NULL)

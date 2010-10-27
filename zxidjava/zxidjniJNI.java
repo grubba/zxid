@@ -177,7 +177,8 @@ class zxidjniJNI {
   public final static native int zx_date_time_to_secs(String jarg1);
   public final static native int write2_or_append_lock_c_path(String jarg1, int jarg2, String jarg3, int jarg4, String jarg5, String jarg6, int jarg7, int jarg8);
   public final static native int zx_report_openssl_error(String jarg1);
-  public final static native long zx_new_ns(long jarg1, int jarg2, String jarg3, int jarg4, String jarg5);
+  public final static native int zx_dump_ns_tab(long jarg1, int jarg2);
+  public final static native long zx_new_ns(long jarg1, int jarg2, String jarg3, int jarg4, String jarg5, int jarg6);
   public final static native long zx_locate_ns_by_prefix(long jarg1, int jarg2, String jarg3);
   public final static native long zx_prefix_seen(long jarg1, int jarg2, String jarg3);
   public final static native long zx_prefix_seen_whine(long jarg1, int jarg2, String jarg3, String jarg4, int jarg5);

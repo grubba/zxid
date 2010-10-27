@@ -643,8 +643,12 @@ public class zxidjni implements zxidjniConstants {
     return zxidjniJNI.zx_report_openssl_error(logkey);
   }
 
-  public static SWIGTYPE_p_zx_ns_s zx_new_ns(SWIGTYPE_p_zx_ctx c, int prefix_len, String prefix, int url_len, String url) {
-    long cPtr = zxidjniJNI.zx_new_ns(SWIGTYPE_p_zx_ctx.getCPtr(c), prefix_len, prefix, url_len, url);
+  public static int zx_dump_ns_tab(SWIGTYPE_p_zx_ctx c, int flags) {
+    return zxidjniJNI.zx_dump_ns_tab(SWIGTYPE_p_zx_ctx.getCPtr(c), flags);
+  }
+
+  public static SWIGTYPE_p_zx_ns_s zx_new_ns(SWIGTYPE_p_zx_ctx c, int prefix_len, String prefix, int url_len, String url, int unknown) {
+    long cPtr = zxidjniJNI.zx_new_ns(SWIGTYPE_p_zx_ctx.getCPtr(c), prefix_len, prefix, url_len, url, unknown);
     return (cPtr == 0) ? null : new SWIGTYPE_p_zx_ns_s(cPtr, false);
   }
 
