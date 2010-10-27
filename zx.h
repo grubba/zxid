@@ -92,9 +92,9 @@ struct zx_ns_s {
   char pad3;
 #endif
   int prefix_len;
-  char* prefix;
+  const char* prefix;
   int url_len;  /* 0 = end of nstab */
-  char* url;
+  const char* url;
 };
 
 /* Context tracks the input and namespaces. It is also passed to memory allocator. */

@@ -768,7 +768,7 @@ sub ED {  # enc-dec command with diff
     
     unlink "tmp/$tsti.out";
     
-    my $latency = call_system($test, $timeout, $slow, "./zxencdectest -d -i $n_iter <$file >tmp/$tsti.out 2>tmp/tst.err", $exitval);
+    my $latency = call_system($test, $timeout, $slow, "./zxencdectest -i $n_iter <$file >tmp/$tsti.out 2>tmp/tst.err", $exitval);
     return if $latency == -1;
     
     if (system "/usr/bin/diff t/$tsti.out tmp/$tsti.out") {

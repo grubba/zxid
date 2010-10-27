@@ -966,15 +966,18 @@ void zx_xml_parse_err_mismatching_close_tag(struct zx_ctx* c, const char* func, 
   ++c->p;
 }
 
-/*() Called from innards for dec-templ.c for CSE. */
+/*() Assumoing current c->p points to a name, scan until end of the name.
+ * Called from innards for dec-templ.c for CSE. */
 
 const char* zx_scan_elem_start(struct zx_ctx* c, const char* func)
 {
   const char* name = c->p;
-  for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;
+  int len = strcspn(c->p, " >/\n\r\t");
+  c->p += len;
+  /*for (++c->p; *c->p && !ONE_OF_6(*c->p, ' ', '>', '/', '\n', '\r', '\t'); ++c->p) ;*/
   if (*c->p)
     return name;
-  D("%s: Incomplete %s", func, name);
+  ERR("%s: Incomplete %s", func, name);
   return 0;
 }
 

@@ -126,11 +126,11 @@ struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, 
   if (unknown) {
     /* Reallocating these is necessary for unknown namespaces */
     ns->prefix = ZX_ALLOC(c, prefix_len+1);
+    memcpy((char*)ns->prefix, prefix, prefix_len);
+    *((char*)ns->prefix+prefix_len) = 0;
     ns->url = ZX_ALLOC(c, url_len+1);
-    memcpy(ns->prefix, prefix, prefix_len);
-    memcpy(ns->url, url, url_len);
-    ns->prefix[prefix_len] = 0;
-    ns->url[url_len] = 0;
+    memcpy((char*)ns->url, url, url_len);
+    *((char*)ns->url+url_len) = 0;
   } else {
     ns->prefix = prefix;
     ns->url = url;

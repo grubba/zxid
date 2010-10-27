@@ -252,7 +252,7 @@ int write_all_fd(fdtype fd, const char* p, int pending)
   int wrote;
   if ((fd == BADFD) || !pending || !p) return 0;
   while (pending) {
-    wrote = write(fd, p, pending);
+    wrote = write(fd, (char*)p, pending);
     if (wrote <= 0) return 0;
     pending -= wrote;
     p += wrote;
