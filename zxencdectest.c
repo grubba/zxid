@@ -383,11 +383,11 @@ int main(int argc, char** argv, char** env)
     if (!so_p)
       DIE("encoding error");
 
-    len_wo = zx_LEN_WO_root(&ctx, r);
+    len_wo = zx_LEN_WO_any_elem(&ctx, r);
     D("Enc wo len %d chars", len_wo);
 
     ctx.bas = wo_out;
-    wo_p = zx_ENC_WO_root(&ctx, r, wo_out);
+    wo_p = zx_ENC_WO_any_elem(&ctx, r, wo_out);
     if (!wo_p)
       DIE("encoding error");
 

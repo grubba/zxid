@@ -318,7 +318,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   if (az_stmt && az_stmt->Response && az_stmt->Response->Result) {
     decision = az_stmt->Response->Result->Decision;
     if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
-      ss = zx_EASY_ENC_WO_xac_Response(cf->ctx, az_stmt->Response);
+      ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &az_stmt->Response->gg);
       if (!ss || !ss->len)
 	return 0;
       res = ss->s;
@@ -331,7 +331,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   if (az_stmt_cd1 && az_stmt_cd1->Response && az_stmt_cd1->Response->Result) {
     decision = az_stmt_cd1->Response->Result->Decision;
     if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
-      ss = zx_EASY_ENC_WO_xac_Response(cf->ctx, az_stmt_cd1->Response);
+      ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &az_stmt_cd1->Response->gg);
       if (!ss || !ss->len)
 	return 0;
       res = ss->s;
@@ -344,7 +344,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   if (stmt && stmt->Response && stmt->Response->Result) {  /* Response here is xac:Response */
     decision = stmt->Response->Result->Decision;
     if (ZX_CONTENT_EQ_CONST(decision, "Permit")) {
-      ss = zx_EASY_ENC_WO_xac_Response(cf->ctx, stmt->Response);
+      ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &stmt->Response->gg);
       if (!ss || !ss->len)
 	return 0;
       res = ss->s;
@@ -413,7 +413,7 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
 
   az_stmt = resp->Assertion->XACMLAuthzDecisionStatement;
   if (az_stmt && az_stmt->Response) {
-    ss = zx_EASY_ENC_WO_xac_Response(cf->ctx, az_stmt->Response);
+    ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &az_stmt->Response->gg);
     if (!ss || !ss->len)
       return 0;
     res = ss->s;
@@ -423,7 +423,7 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
   }
   az_stmt_cd1 = resp->Assertion->xasacd1_XACMLAuthzDecisionStatement;
   if (az_stmt_cd1 && az_stmt_cd1->Response) {
-    ss = zx_EASY_ENC_WO_xac_Response(cf->ctx, az_stmt_cd1->Response);
+    ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &az_stmt_cd1->Response->gg);
     if (!ss || !ss->len)
       return 0;
     res = ss->s;
@@ -433,7 +433,7 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
   }
   stmt = resp->Assertion->Statement;
   if (stmt && stmt->Response) {  /* Response here is xac:Response */
-    ss = zx_EASY_ENC_WO_xac_Response(cf->ctx, stmt->Response);
+    ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &stmt->Response->gg);
     if (!ss || !ss->len)
       return 0;
     res = ss->s;

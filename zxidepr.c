@@ -151,7 +151,7 @@ int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
     ERR("EPR is not a ID-WSF 2.0 Bootstrap: no Metadata %p", epr);
     return 0;
   }
-  ss = zx_EASY_ENC_WO_a_EndpointReference(cf->ctx, epr);
+  ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &epr->gg);
   if (!ss) {
     ERR("Encoding EndpointReference failed %p", epr);
     return 0;
@@ -228,7 +228,7 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 	    ++wsf11;
 	    D("Detected wsf11 resource offering. %d", wsf11);
 #if 0	    
-	    ss = zx_EASY_ENC_WO_di12_ResourceOffering(cf->ctx, av->ResourceOffering);
+	    ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &av->ResourceOffering->gg);
 	    
 	    zxid_epr_path(cf, ZXID_SES_DIR, ses->sid, path, sizeof(path),
 			  av->EndpointReference->Metadata->ServiceType->content, ss);
@@ -631,7 +631,7 @@ void zxid_set_call_tgttok(zxid_conf* cf, zxid_ses* ses, zxid_tok* tok) {
 struct zx_str* zxid_token2str(zxid_conf* cf, zxid_tok* tok) {
   if (!tok)
     return 0;
-  return zx_EASY_ENC_WO_sec_Token(cf->ctx, tok);
+  return zx_EASY_ENC_WO_any_elem(cf->ctx, &tok->gg);
 }
 
 /*() Parse string into token. */
@@ -667,7 +667,7 @@ zxid_tok* zxid_str2token(zxid_conf* cf, struct zx_str* ss) {
 struct zx_str* zxid_a7n2str(zxid_conf* cf, zxid_a7n* a7n) {
   if (!a7n)
     return 0;
-  return zx_EASY_ENC_WO_sa_Assertion(cf->ctx, a7n);
+  return zx_EASY_ENC_WO_any_elem(cf->ctx, &a7n->gg);
 }
 
 /*() Parse string into assertion. */
@@ -695,7 +695,7 @@ zxid_a7n* zxid_str2a7n(zxid_conf* cf, struct zx_str* ss) {
 struct zx_str* zxid_nid2str(zxid_conf* cf, zxid_nid* nid) {
   if (!nid)
     return 0;
-  return zx_EASY_ENC_WO_sa_NameID(cf->ctx, nid);
+  return zx_EASY_ENC_WO_any_elem(cf->ctx, &nid->gg);
 }
 
 /*() Parse string into NameID. */

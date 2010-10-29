@@ -318,81 +318,85 @@ c/zx-getput.c    - Generated from getput-templ.c and various .sg files
 c/zx-ns.c        - Generated: initializations of namespace tables
 c/zx-ns.h        - Generated: namespace constant and macro definitions
 
+c/zx-a.gperf     - Generated input for perfect hash for looking up elements within namespace
+c/zx-a.c         - Generated: perfect hash for looking up elements within namespace
 c/zx-a-data.h    - Generated: Web Services Addressing data structures
 c/zx-a-aux.c     - Generated from aux-templ.c: WS-Addr aux functions
 c/zx-a-dec.c     - Generated from dec-templ.c: WS-Addr decoders
 c/zx-a-enc.c     - Generated from enc-templ.c: WS-Addr encoders
 c/zx-a-getput.c  - Generated from getput-templ.c
 
-c/zx-ac-data.h;    c/zx-ac-aux.c;    c/zx-ac-dec.c;    c/zx-ac-enc.c;    c/zx-ac-getput.c
-c/zx-b-data.h;     c/zx-b-aux.c;     c/zx-b-dec.c;     c/zx-b-enc.c;     c/zx-b-getput.c
-c/zx-b12-data.h;   c/zx-b12-aux.c;   c/zx-b12-dec.c;   c/zx-b12-enc.c;   c/zx-b12-getput.c
-c/zx-di-data.h;    c/zx-di-aux.c;    c/zx-di-dec.c;    c/zx-di-enc.c;    c/zx-di-getput.c
-c/zx-di12-data.h;  c/zx-di12-aux.c;  c/zx-di12-dec.c;  c/zx-di12-enc.c;  c/zx-di12-getput.c
-c/zx-ds-data.h;    c/zx-ds-aux.c;    c/zx-ds-dec.c;    c/zx-ds-enc.c;    c/zx-ds-getput.c
-c/zx-e-data.h;     c/zx-e-aux.c;     c/zx-e-dec.c;     c/zx-e-enc.c;     c/zx-e-getput.c
-c/zx-ff12-data.h;  c/zx-ff12-aux.c;  c/zx-ff12-dec.c;  c/zx-ff12-enc.c;  c/zx-ff12-getput.c
-c/zx-is-data.h;    c/zx-is-aux.c;    c/zx-is-dec.c;    c/zx-is-enc.c;    c/zx-is-getput.c
-c/zx-is12-data.h;  c/zx-is12-aux.c;  c/zx-is12-dec.c;  c/zx-is12-enc.c;  c/zx-is12-getput.c
-c/zx-lu-data.h;    c/zx-lu-aux.c;    c/zx-lu-dec.c;    c/zx-lu-enc.c;    c/zx-lu-getput.c
-c/zx-m20-data.h;   c/zx-m20-aux.c;   c/zx-m20-dec.c;   c/zx-m20-enc.c;   c/zx-m20-getput.c
-c/zx-md-data.h;    c/zx-md-aux.c;    c/zx-md-dec.c;    c/zx-md-enc.c;    c/zx-md-getput.c
-c/zx-ecp-data.h;   c/zx-ecp-aux.c;   c/zx-ecp-dec.c;   c/zx-ecp-enc.c;   c/zx-ecp-getput.c
-c/zx-paos-data.h;  c/zx-paos-aux.c;  c/zx-paos-dec.c;  c/zx-paos-enc.c;  c/zx-paos-getput.c
-c/zx-sa-data.h;    c/zx-sa-aux.c;    c/zx-sa-dec.c;    c/zx-sa-enc.c;    c/zx-sa-getput.c
-c/zx-sa11-data.h;  c/zx-sa11-aux.c;  c/zx-sa11-dec.c;  c/zx-sa11-enc.c;  c/zx-sa11-getput.c
-c/zx-sbf-data.h;   c/zx-sbf-aux.c;   c/zx-sbf-dec.c;   c/zx-sbf-enc.c;   c/zx-sbf-getput.c
-c/zx-sec-data.h;   c/zx-sec-aux.c;   c/zx-sec-dec.c;   c/zx-sec-enc.c;   c/zx-sec-getput.c
-c/zx-sec12-data.h; c/zx-sec12-aux.c; c/zx-sec12-dec.c; c/zx-sec12-enc.c; c/zx-sec12-getput.c
-c/zx-sp-data.h;    c/zx-sp-aux.c;    c/zx-sp-dec.c;    c/zx-sp-enc.c;    c/zx-sp-getput.c
-c/zx-sp11-data.h;  c/zx-sp11-aux.c;  c/zx-sp11-dec.c;  c/zx-sp11-enc.c;  c/zx-sp11-getput.c
-c/zx-wsse-data.h;  c/zx-wsse-aux.c;  c/zx-wsse-dec.c;  c/zx-wsse-enc.c;  c/zx-wsse-getput.c
-c/zx-wsu-data.h;   c/zx-wsu-aux.c;   c/zx-wsu-dec.c;   c/zx-wsu-enc.c;   c/zx-wsu-getput.c
-c/zx-xenc-data.h;  c/zx-xenc-aux.c;  c/zx-xenc-dec.c;  c/zx-xenc-enc.c;  c/zx-xenc-getput.c
-c/zx-exca-data.h;  c/zx-exca-aux.c;  c/zx-exca-dec.c;  c/zx-exca-enc.c;  c/zx-exca-getput.c
-c/zx-xsi-data.h;   c/zx-xsi-aux.c;   c/zx-xsi-dec.c;   c/zx-xsi-enc.c;   c/zx-xsi-getput.c
-c/zx-xs-data.h;    c/zx-xs-aux.c;    c/zx-xs-dec.c;    c/zx-xs-enc.c;    c/zx-xs-getput.c
-c/zx-xml-data.h;   c/zx-xml-aux.c;   c/zx-xml-dec.c;   c/zx-xml-enc.c;   c/zx-xml-getput.c
+c/zx-ac.c   c/zx-ac.gperf   c/zx-ac-data.h;    c/zx-ac-aux.c;    c/zx-ac-dec.c;    c/zx-ac-enc.c;    c/zx-ac-getput.c
+c/zx-b.c    c/zx-b.gperf    c/zx-b-data.h;     c/zx-b-aux.c;     c/zx-b-dec.c;     c/zx-b-enc.c;     c/zx-b-getput.c
+c/zx-b12.c  c/zx-b12.gperf  c/zx-b12-data.h;   c/zx-b12-aux.c;   c/zx-b12-dec.c;   c/zx-b12-enc.c;   c/zx-b12-getput.c
+c/zx-di.c   c/zx-di.gperf   c/zx-di-data.h;    c/zx-di-aux.c;    c/zx-di-dec.c;    c/zx-di-enc.c;    c/zx-di-getput.c
+c/zx-di12.c c/zx-di12.gperf c/zx-di12-data.h;  c/zx-di12-aux.c;  c/zx-di12-dec.c;  c/zx-di12-enc.c;  c/zx-di12-getput.c
+c/zx-ds.c   c/zx-ds.gperf   c/zx-ds-data.h;    c/zx-ds-aux.c;    c/zx-ds-dec.c;    c/zx-ds-enc.c;    c/zx-ds-getput.c
+c/zx-e.c    c/zx-e.gperf    c/zx-e-data.h;     c/zx-e-aux.c;     c/zx-e-dec.c;     c/zx-e-enc.c;     c/zx-e-getput.c
+c/zx-ff12.c c/zx-ff12.gperf c/zx-ff12-data.h;  c/zx-ff12-aux.c;  c/zx-ff12-dec.c;  c/zx-ff12-enc.c;  c/zx-ff12-getput.c
+c/zx-is.c   c/zx-is.gperf   c/zx-is-data.h;    c/zx-is-aux.c;    c/zx-is-dec.c;    c/zx-is-enc.c;    c/zx-is-getput.c
+c/zx-is12.c c/zx-is12.gperf c/zx-is12-data.h;  c/zx-is12-aux.c;  c/zx-is12-dec.c;  c/zx-is12-enc.c;  c/zx-is12-getput.c
+c/zx-lu.c   c/zx-lu.gperf   c/zx-lu-data.h;    c/zx-lu-aux.c;    c/zx-lu-dec.c;    c/zx-lu-enc.c;    c/zx-lu-getput.c
+c/zx-m20.c  c/zx-m20.gperf  c/zx-m20-data.h;   c/zx-m20-aux.c;   c/zx-m20-dec.c;   c/zx-m20-enc.c;   c/zx-m20-getput.c
+c/zx-md.c   c/zx-md.gperf   c/zx-md-data.h;    c/zx-md-aux.c;    c/zx-md-dec.c;    c/zx-md-enc.c;    c/zx-md-getput.c
+c/zx-ecp.   c/zx-ecp.gperf  c/zx-ecp-data.h;   c/zx-ecp-aux.c;   c/zx-ecp-dec.c;   c/zx-ecp-enc.c;   c/zx-ecp-getput.c
+c/zx-paos.c c/zx-paos.gperf c/zx-paos-data.h;  c/zx-paos-aux.c;  c/zx-paos-dec.c;  c/zx-paos-enc.c;  c/zx-paos-getput.c
+c/zx-sa.c   c/zx-sa.gperf   c/zx-sa-data.h;    c/zx-sa-aux.c;    c/zx-sa-dec.c;    c/zx-sa-enc.c;    c/zx-sa-getput.c
+c/zx-sa11.c c/zx-sa11.gperf c/zx-sa11-data.h;  c/zx-sa11-aux.c;  c/zx-sa11-dec.c;  c/zx-sa11-enc.c;  c/zx-sa11-getput.c
+c/zx-sbf.c  c/zx-sbf.gperf  c/zx-sbf-data.h;   c/zx-sbf-aux.c;   c/zx-sbf-dec.c;   c/zx-sbf-enc.c;   c/zx-sbf-getput.c
+c/zx-sec.c  c/zx-sec.gperf  c/zx-sec-data.h;   c/zx-sec-aux.c;   c/zx-sec-dec.c;   c/zx-sec-enc.c;   c/zx-sec-getput.c
+c/zx-sec12.c c/zx-sec12.gperf c/zx-sec12-data.h; c/zx-sec12-aux.c; c/zx-sec12-dec.c; c/zx-sec12-enc.c; c/zx-sec12-getput.c
+c/zx-sp.c   c/zx-sp.gperf   c/zx-sp-data.h;    c/zx-sp-aux.c;    c/zx-sp-dec.c;    c/zx-sp-enc.c;    c/zx-sp-getput.c
+c/zx-sp11.c c/zx-sp11.gperf c/zx-sp11-data.h;  c/zx-sp11-aux.c;  c/zx-sp11-dec.c;  c/zx-sp11-enc.c;  c/zx-sp11-getput.c
+c/zx-wsse.c c/zx-wsse.gperf c/zx-wsse-data.h;  c/zx-wsse-aux.c;  c/zx-wsse-dec.c;  c/zx-wsse-enc.c;  c/zx-wsse-getput.c
+c/zx-wsu.c  c/zx-wsu.gperf  c/zx-wsu-data.h;   c/zx-wsu-aux.c;   c/zx-wsu-dec.c;   c/zx-wsu-enc.c;   c/zx-wsu-getput.c
+c/zx-xenc.c c/zx-xenc.gperf c/zx-xenc-data.h;  c/zx-xenc-aux.c;  c/zx-xenc-dec.c;  c/zx-xenc-enc.c;  c/zx-xenc-getput.c
+c/zx-exca.c c/zx-exca.gperf c/zx-exca-data.h;  c/zx-exca-aux.c;  c/zx-exca-dec.c;  c/zx-exca-enc.c;  c/zx-exca-getput.c
+c/zx-xsi.c  c/zx-xsi.gperf  c/zx-xsi-data.h;   c/zx-xsi-aux.c;   c/zx-xsi-dec.c;   c/zx-xsi-enc.c;   c/zx-xsi-getput.c
+c/zx-xs.c   c/zx-xs.gperf   c/zx-xs-data.h;    c/zx-xs-aux.c;    c/zx-xs-dec.c;    c/zx-xs-enc.c;    c/zx-xs-getput.c
+c/zx-xml.c  c/zx-xml.gperf  c/zx-xml-data.h;   c/zx-xml-aux.c;   c/zx-xml-dec.c;   c/zx-xml-enc.c;   c/zx-xml-getput.c
 
-c/zx-dap-data.h;   c/zx-dap-aux.c;   c/zx-dap-dec.c;   c/zx-dap-enc.c;   c/zx-dap-getput.c
-c/zx-ps-data.h;    c/zx-ps-aux.c;    c/zx-ps-dec.c;    c/zx-ps-enc.c;    c/zx-ps-getput.c
-c/zx-im-data.h;    c/zx-im-aux.c;    c/zx-im-dec.c;    c/zx-im-enc.c;    c/zx-im-getput.c
-c/zx-as-data.h;    c/zx-as-aux.c;    c/zx-as-dec.c;    c/zx-as-enc.c;    c/zx-as-getput.c
-c/zx-subs-data.h;  c/zx-subs-aux.c;  c/zx-subs-dec.c;  c/zx-subs-enc.c;  c/zx-subs-getput.c
-c/zx-dst-data.h;   c/zx-dst-aux.c;   c/zx-dst-dec.c;   c/zx-dst-enc.c;   c/zx-dst-getput.c
-c/zx-cb-data.h;    c/zx-cb-aux.c;    c/zx-cb-dec.c;    c/zx-cb-enc.c;    c/zx-cb-getput.c
-c/zx-cdm-data.h;   c/zx-cdm-aux.c;   c/zx-cdm-dec.c;   c/zx-cdm-enc.c;   c/zx-cdm-getput.c
-c/zx-gl-data.h;    c/zx-gl-aux.c;    c/zx-gl-dec.c;    c/zx-gl-enc.c;    c/zx-gl-getput.c
-c/zx-mm7-data.h;   c/zx-mm7-aux.c;   c/zx-mm7-dec.c;   c/zx-mm7-enc.c;   c/zx-mm7-getput.c
+c/zx-dap.c  c/zx-dap.gperf  c/zx-dap-data.h;   c/zx-dap-aux.c;   c/zx-dap-dec.c;   c/zx-dap-enc.c;   c/zx-dap-getput.c
+c/zx-ps.c   c/zx-ps.gperf   c/zx-ps-data.h;    c/zx-ps-aux.c;    c/zx-ps-dec.c;    c/zx-ps-enc.c;    c/zx-ps-getput.c
+c/zx-im.c   c/zx-im.gperf   c/zx-im-data.h;    c/zx-im-aux.c;    c/zx-im-dec.c;    c/zx-im-enc.c;    c/zx-im-getput.c
+c/zx-as.c   c/zx-as.gperf   c/zx-as-data.h;    c/zx-as-aux.c;    c/zx-as-dec.c;    c/zx-as-enc.c;    c/zx-as-getput.c
+c/zx-subs.c c/zx-subs.gperf c/zx-subs-data.h;  c/zx-subs-aux.c;  c/zx-subs-dec.c;  c/zx-subs-enc.c;  c/zx-subs-getput.c
+c/zx-dst.c  c/zx-dst.gperf  c/zx-dst-data.h;   c/zx-dst-aux.c;   c/zx-dst-dec.c;   c/zx-dst-enc.c;   c/zx-dst-getput.c
+c/zx-cb.c   c/zx-cb.gperf   c/zx-cb-data.h;    c/zx-cb-aux.c;    c/zx-cb-dec.c;    c/zx-cb-enc.c;    c/zx-cb-getput.c
+c/zx-cdm.c  c/zx-cdm.gperf  c/zx-cdm-data.h;   c/zx-cdm-aux.c;   c/zx-cdm-dec.c;   c/zx-cdm-enc.c;   c/zx-cdm-getput.c
+c/zx-gl.c   c/zx-gl.gperf   c/zx-gl-data.h;    c/zx-gl-aux.c;    c/zx-gl-dec.c;    c/zx-gl-enc.c;    c/zx-gl-getput.c
+c/zx-mm7.c  c/zx-mm7.gperf  c/zx-mm7-data.h;   c/zx-mm7-aux.c;   c/zx-mm7-dec.c;   c/zx-mm7-enc.c;   c/zx-mm7-getput.c
 
-c/zx-xa-data.h;    c/zx-xa-aux.c;    c/zx-xa-dec.c;    c/zx-xa-enc.c;    c/zx-xa-getput.c
-c/zx-xac-data.h;   c/zx-xac-aux.c;   c/zx-xac-dec.c;   c/zx-xac-enc.c;   c/zx-xac-getput.c
-c/zx-xasa-data.h;  c/zx-xasa-aux.c;  c/zx-xasa-dec.c;  c/zx-xasa-enc.c;  c/zx-xasa-getput.c
-c/zx-xasp-data.h;  c/zx-xasp-aux.c;  c/zx-xasp-dec.c;  c/zx-xasp-enc.c;  c/zx-xasp-getput.c
-c/zx-xasacd1-data.h;  c/zx-xasacd1-aux.c;  c/zx-xasacd1-dec.c;  c/zx-xasacd1-enc.c;  c/zx-xasacd1-getput.c
-c/zx-xaspcd1-data.h;  c/zx-xaspcd1-aux.c;  c/zx-xaspcd1-dec.c;  c/zx-xaspcd1-enc.c;  c/zx-xaspcd1-getput.c
-c/zx-wst-data.h;   c/zx-wst-aux.c;   c/zx-wst-dec.c;   c/zx-wst-enc.c;   c/zx-wst-getput.c
-c/zx-wsp-data.h;   c/zx-wsp-aux.c;   c/zx-wsp-dec.c;   c/zx-wsp-enc.c;   c/zx-wsp-getput.c
-c/zx-wsc-data.h;   c/zx-wsc-aux.c;   c/zx-wsc-dec.c;   c/zx-wsc-enc.c;   c/zx-wsc-getput.c
+c/zx-xa.c   c/zx-xa.gperf   c/zx-xa-data.h;    c/zx-xa-aux.c;    c/zx-xa-dec.c;    c/zx-xa-enc.c;    c/zx-xa-getput.c
+c/zx-xac.c  c/zx-xac.gperf  c/zx-xac-data.h;   c/zx-xac-aux.c;   c/zx-xac-dec.c;   c/zx-xac-enc.c;   c/zx-xac-getput.c
+c/zx-xasa.c c/zx-xasa.gperf c/zx-xasa-data.h;  c/zx-xasa-aux.c;  c/zx-xasa-dec.c;  c/zx-xasa-enc.c;  c/zx-xasa-getput.c
+c/zx-xasp.c c/zx-xasp.gperf c/zx-xasp-data.h;  c/zx-xasp-aux.c;  c/zx-xasp-dec.c;  c/zx-xasp-enc.c;  c/zx-xasp-getput.c
+c/zx-xasacd1.c c/zx-xasacd1.gperf c/zx-xasacd1-data.h;  c/zx-xasacd1-aux.c;  c/zx-xasacd1-dec.c;  c/zx-xasacd1-enc.c;  c/zx-xasacd1-getput.c
+c/zx-xaspcd1.c c/zx-xaspcd1.gperf c/zx-xaspcd1-data.h;  c/zx-xaspcd1-aux.c;  c/zx-xaspcd1-dec.c;  c/zx-xaspcd1-enc.c;  c/zx-xaspcd1-getput.c
+c/zx-wst.c  c/zx-wst.gperf  c/zx-wst-data.h;   c/zx-wst-aux.c;   c/zx-wst-dec.c;   c/zx-wst-enc.c;   c/zx-wst-getput.c
+c/zx-wsp.c  c/zx-wsp.gperf  c/zx-wsp-data.h;   c/zx-wsp-aux.c;   c/zx-wsp-dec.c;   c/zx-wsp-enc.c;   c/zx-wsp-getput.c
+c/zx-wsc.c  c/zx-wsc.gperf  c/zx-wsc-data.h;   c/zx-wsc-aux.c;   c/zx-wsc-dec.c;   c/zx-wsc-enc.c;   c/zx-wsc-getput.c
 
 # Advanced Client
 
-c/zx-dp-data.h;    c/zx-dp-aux.c;    c/zx-dp-dec.c;    c/zx-dp-enc.c;    c/zx-dp-getput.c
-c/zx-pmm-data.h;   c/zx-pmm-aux.c;   c/zx-pmm-dec.c;   c/zx-pmm-enc.c;   c/zx-pmm-getput.c
-c/zx-prov-data.h;  c/zx-prov-aux.c;  c/zx-prov-dec.c;  c/zx-prov-enc.c;  c/zx-prov-getput.c
-c/zx-idp-data.h;   c/zx-idp-aux.c;   c/zx-idp-dec.c;   c/zx-idp-enc.c;   c/zx-idp-getput.c
-c/zx-shps-data.h;  c/zx-shps-aux.c;  c/zx-shps-dec.c;  c/zx-shps-enc.c;  c/zx-shps-getput.c
+c/zx-dp.c   c/zx-dp.gperf   c/zx-dp-data.h;    c/zx-dp-aux.c;    c/zx-dp-dec.c;    c/zx-dp-enc.c;    c/zx-dp-getput.c
+c/zx-pmm.c  c/zx-pmm.gperf  c/zx-pmm-data.h;   c/zx-pmm-aux.c;   c/zx-pmm-dec.c;   c/zx-pmm-enc.c;   c/zx-pmm-getput.c
+c/zx-prov.c c/zx-prov.gperf c/zx-prov-data.h;  c/zx-prov-aux.c;  c/zx-prov-dec.c;  c/zx-prov-enc.c;  c/zx-prov-getput.c
+c/zx-idp.c  c/zx-idp.gperf  c/zx-idp-data.h;   c/zx-idp-aux.c;   c/zx-idp-dec.c;   c/zx-idp-enc.c;   c/zx-idp-getput.c
+c/zx-shps.c c/zx-shps.gperf c/zx-shps-data.h;  c/zx-shps-aux.c;  c/zx-shps-dec.c;  c/zx-shps-enc.c;  c/zx-shps-getput.c
 
-c/zx-tas3-data.h;  c/zx-tas3-aux.c;  c/zx-tas3-dec.c;  c/zx-tas3-enc.c;  c/zx-tas3-getput.c
-c/zx-tas3sol-data.h; c/zx-tas3sol-aux.c; c/zx-tas3sol-dec.c; c/zx-tas3sol-enc.c; c/zx-tas3sol-getput.c
-c/zx-shibmd-data.h;  c/zx-shibmd-aux.c;  c/zx-shibmd-dec.c;  c/zx-shibmd-enc.c;  c/zx-shibmd-getput.c
-c/zx-idpdisc-data.h; c/zx-idpdisc-aux.c; c/zx-idpdisc-dec.c; c/zx-idpdisc-enc.c; c/zx-idpdisc-getput.c
+# TAS3 stuff
+
+c/zx-tas3.c c/zx-tas3.gperf c/zx-tas3-data.h;  c/zx-tas3-aux.c;  c/zx-tas3-dec.c;  c/zx-tas3-enc.c;  c/zx-tas3-getput.c
+c/zx-tas3sol.c c/zx-tas3sol.gperf c/zx-tas3sol-data.h; c/zx-tas3sol-aux.c; c/zx-tas3sol-dec.c; c/zx-tas3sol-enc.c; c/zx-tas3sol-getput.c
+c/zx-shibmd.c c/zx-shibmd.gperf  c/zx-shibmd-data.h;  c/zx-shibmd-aux.c;  c/zx-shibmd-dec.c;  c/zx-shibmd-enc.c;  c/zx-shibmd-getput.c
+c/zx-idpdisc.c c/zx-idpdisc.gperf c/zx-idpdisc-data.h; c/zx-idpdisc-aux.c; c/zx-idpdisc-dec.c; c/zx-idpdisc-enc.c; c/zx-idpdisc-getput.c
 
 # Unofficial stuff
 
-c/zx-hrxml-data.h; c/zx-hrxml-aux.c; c/zx-hrxml-dec.c; c/zx-hrxml-enc.c; c/zx-hrxml-getput.c
-c/zx-idhrxml-data.h; c/zx-idhrxml-aux.c; c/zx-idhrxml-dec.c; c/zx-idhrxml-enc.c; c/zx-idhrxml-getput.c
-c/zx-demomed-data.h; c/zx-demomed-aux.c; c/zx-demomed-dec.c; c/zx-demomed-enc.c; c/zx-demomed-getput.c
+c/zx-hrxml.c c/zx-hrxml.gperf   c/zx-hrxml-data.h; c/zx-hrxml-aux.c; c/zx-hrxml-dec.c; c/zx-hrxml-enc.c; c/zx-hrxml-getput.c
+c/zx-idhrxml.c c/zx-idhrxml.gperf c/zx-idhrxml-data.h; c/zx-idhrxml-aux.c; c/zx-idhrxml-dec.c; c/zx-idhrxml-enc.c; c/zx-idhrxml-getput.c
+c/zx-demomed.c c/zx-demomed.gperf c/zx-demomed-data.h; c/zx-demomed-aux.c; c/zx-demomed-dec.c; c/zx-demomed-enc.c; c/zx-demomed-getput.c
 
 # Expected output for various test cases
 

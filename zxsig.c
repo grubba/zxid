@@ -274,7 +274,7 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
     return ZXSIG_BAD_CERT;
   }
   c->exclude_sig = 0;
-  ss = zx_EASY_ENC_WO_ds_SignedInfo(c, sig->SignedInfo);
+  ss = zx_EASY_ENC_WO_any_elem(c, &sig->SignedInfo->gg);
   zxsig_canon_crnl_inplace(ss);
   evp_pkey = X509_get_pubkey(cert);
   if (!evp_pkey) goto certerr;

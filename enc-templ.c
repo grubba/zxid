@@ -81,39 +81,6 @@ ELEMS_SO_LEN;
   return len;
 }
 
-/* FUNC(TXLEN_WO_ELNAME) */
-
-/* Compute length of an element (and its subelements). The XML attributes
- * and elements are processed in wire order and no assumptions
- * are made about namespace prefixes. */
-
-/* Called by: */
-int TXLEN_WO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x SIMPLELEN)
-{
-  struct zx_ns_s* pop_seen = 0;
-  struct zx_elem_s* se MAYBE_UNUSED;
-#if 1 /* NORMALMODE */
-  int len = 1 + sizeof("ELTAG")-1 + 1 + 2 + sizeof("ELTAG")-1 + 1;
-  
-  if (x->gg.g.ns && x->gg.g.ns->prefix_len)
-    len += (x->gg.g.ns->prefix_len + 1) * 2;
-  if (c->inc_ns_len)
-    len += zx_len_inc_ns(c, &pop_seen);
-XMLNS_WO_LEN;
-ATTRS_WO_LEN;
-#else
-  /* root node has no begin tag */
-  int len = 0;
-#endif
-  
-ELEMS_WO_LEN;
-
-  len += zx_len_wo_common(c, &x->gg, &pop_seen); 
-  zx_pop_seen(pop_seen);
-  ENC_LEN_DEBUG(x, "ELNSCELTAG", len);
-  return len;
-}
-
 /* FUNC(TXENC_SO_ELNAME) */
 
 /* Render element into string. The XML attributes and elements are
@@ -153,57 +120,6 @@ ELEMS_SO_ENC;
   return p;
 }
 
-/* FUNC(TXENC_WO_ELNAME) */
-
-/* Render element into string. The XML attributes and elements are
- * processed in wire order by chasing wo pointers. This is what you want for
- * validating signatures on other people's XML documents. */
-
-/* Called by: */
-char* TXENC_WO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, char* p SIMPLETAGLEN)
-{
-  struct zx_elem_s* kid;
-  struct zx_ns_s* pop_seen = 0;
-  char* q;
-  char* qq;
-  ENC_LEN_DEBUG_BASE;
-#if 1 /* NORMALMODE */
-  ZX_OUT_CH(p, '<');
-  q = p;
-  if (x->gg.g.ns && x->gg.g.ns->prefix_len) {
-    ZX_OUT_MEM(p, x->gg.g.ns->prefix, x->gg.g.ns->prefix_len);
-    ZX_OUT_CH(p, ':');
-  }
-  ZX_OUT_MEM(p, "ELTAG", sizeof("ELTAG")-1);
-  qq = p;
-
-  if (c->inc_ns)
-    zx_add_inc_ns(c, &pop_seen);
-XMLNS_WO_SEE;
-  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
-  p = zx_enc_seen(p, pop_seen); 
-ATTRS_WO_ENC;
-  p = zx_enc_unknown_attrs(p, x->gg.any_attr);
-#else
-  /* root node has no begin tag */
-#endif
-  
-  for (kid = x->gg.kids; kid; kid = ((struct zx_elem_s*)(kid->g.wo)))
-    p = TXENC_WO_any_elem(c, kid, p);
-  
-#if 1 /* NORMALMODE */
-  ZX_OUT_CH(p, '<');
-  ZX_OUT_CH(p, '/');
-  ZX_OUT_MEM(p, q, qq-q);
-  ZX_OUT_CH(p, '>');
-  zx_pop_seen(pop_seen);
-#else
-  /* root node has no end tag either */
-#endif
-  ENC_LEN_DEBUG(x, "ELNSCELTAG", p-enc_base);
-  return p;
-}
-
 /* FUNC(TXEASY_ENC_SO_ELNAME) */
 
 /* Called by: */
@@ -218,6 +134,7 @@ struct zx_str* TXEASY_ENC_SO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x SIMPLET
   return zx_easy_enc_common(c, TXENC_SO_ELNAME(c, x, buf SIMPLETAGLENNSARG), buf, len);
 }
 
+#if 0  /* *** Scheduled for removal */
 /* FUNC(TXEASY_ENC_WO_ELNAME) */
 
 /* Called by: */
@@ -231,92 +148,9 @@ struct zx_str* TXEASY_ENC_WO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x SIMPLET
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, TXENC_WO_ELNAME(c, x, buf SIMPLETAGLENARG), buf, len);
 }
+#endif
 
 #if 1 /* ENC_WO_SUBTEMPL */
-
-/* FUNC(TXENC_WO_any_elem) */
-
-/* Called by: */
-int TXLEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
-{
-  struct zx_ns_s* pop_seen = 0;
-  int len;
-  //struct zx_elem_s* kid;
-  switch (x->g.tok) {
-ANYELEM_WO_LEN;
-  case ZX_TOK_NOT_FOUND:
-    len = 1 + ZX_ANY_EL(x)->name_len + 1 + 2 + ZX_ANY_EL(x)->name_len + 1;
-    if (x->g.ns && x->g.ns->prefix_len)
-      len += (x->g.ns->prefix_len + 1) * 2;
-    if (c->inc_ns_len)
-      len += zx_len_inc_ns(c, &pop_seen);
-    len += zx_len_wo_common(c, x, &pop_seen);
-    zx_pop_seen(pop_seen);
-    return len;
-  case ZX_TOK_DATA:
-    return ((struct zx_str*)x)->len;
-    break;
-  default:
-    NEVER("Impossible token(%d)", x->g.tok);
-  }
-  return 0;
-}
-
-/* FUNC(TXENC_WO_any_elem) */
-
-/* Called by: */
-char* TXENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
-{
-  struct zx_ns_s* pop_seen = 0;
-  struct zx_elem_s* kid;
-  switch (x->g.tok) {
-ANYELEM_WO_ENC;
-  case ZX_TOK_NOT_FOUND:
-    pop_seen = 0;
-    ZX_OUT_CH(p, '<');
-    if (x->g.ns && x->g.ns->prefix_len) {
-      ZX_OUT_MEM(p, x->g.ns->prefix, x->g.ns->prefix_len);
-      ZX_OUT_CH(p, ':');
-    }
-    ZX_OUT_MEM(p, ZX_ANY_EL(x)->name, ZX_ANY_EL(x)->name_len);
-    zx_add_xmlns_if_not_seen(c, x->g.ns, &pop_seen);
-    if (c->inc_ns)
-      zx_add_inc_ns(c, &pop_seen);
-    zx_see_unknown_attrs_ns(c, x->any_attr, &pop_seen);
-    p = zx_enc_seen(p, pop_seen); 
-    p = zx_enc_unknown_attrs(p, x->any_attr);
-  
-    for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.wo)))
-      p = TXENC_WO_any_elem(c, kid, p);
-  
-    ZX_OUT_CH(p, '<');
-    ZX_OUT_CH(p, '/');
-    if (x->g.ns && x->g.ns->prefix_len) {
-      ZX_OUT_MEM(p, x->g.ns->prefix, x->g.ns->prefix_len);
-      ZX_OUT_CH(p, ':');
-    }
-    ZX_OUT_MEM(p, ZX_ANY_EL(x)->name, ZX_ANY_EL(x)->name_len);
-    ZX_OUT_CH(p, '>');
-    zx_pop_seen(pop_seen);
-    break;
-  case ZX_TOK_DATA:
-    ZX_OUT_STR(p, x);
-    break;
-  default:
-    NEVER("Impossible token(%d)", x->g.tok);
-  }
-  return p;
-}
-
-/* FUNC(TXEASY_ENC_WO_any_elem) */
-
-/* Called by: */
-struct zx_str* TXEASY_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
-{
-  int len = TXLEN_WO_any_elem(c, x);
-  char* buf = ZX_ALLOC(c, len+1);
-  return zx_easy_enc_common(c, TXENC_WO_any_elem(c, x, buf), buf, len);
-}
 
 #endif
 

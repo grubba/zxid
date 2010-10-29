@@ -586,6 +586,25 @@ endif
 # Generated files (the zxid/c subdirectory) (see also Manifest if you add files)
 #
 
+ZX_GEN_GPERF=\
+ c/zx-a.gperf    c/zx-di12.gperf  c/zx-lu.gperf    c/zx-xenc.gperf \
+ c/zx-ac.gperf   c/zx-m20.gperf   c/zx-sec.gperf   c/zx-exca.gperf \
+ c/zx-b.gperf    c/zx-ds.gperf    c/zx-md.gperf    c/zx-sec12.gperf \
+ c/zx-b12.gperf  c/zx-e.gperf     c/zx-ns.h         c/zx-sp.gperf \
+ c/zx-ff12.gperf c/zx-sa.gperf    c/zx-sp11.gperf \
+ c/zx.gperf      c/zx-is.gperf    c/zx-sa11.gperf  c/zx-wsse.gperf \
+ c/zx-di.gperf   c/zx-is12.gperf  c/zx-sbf.gperf   c/zx-wsu.gperf \
+ c/zx-ecp.gperf  c/zx-paos.gperf  c/zx-dap.gperf   c/zx-ps.gperf \
+ c/zx-im.gperf   c/zx-as.gperf    c/zx-subs.gperf  c/zx-dst.gperf \
+ c/zx-cb.gperf   c/zx-cdm.gperf   c/zx-gl.gperf    c/zx-mm7.gperf \
+ c/zx-wst.gperf  c/zx-wsp.gperf   c/zx-wsc.gperf \
+ c/zx-xa.gperf   c/zx-xac.gperf   c/zx-xasa.gperf  c/zx-xasp.gperf \
+ c/zx-xasacd1.gperf  c/zx-xaspcd1.gperf \
+ c/zx-dp.gperf   c/zx-pmm.gperf   c/zx-prov.gperf  c/zx-idp.gperf c/zx-shps.gperf \
+ c/zx-demomed.gperf c/zx-hrxml.gperf c/zx-idhrxml.gperf \
+ c/zx-xsi.gperf  c/zx-xs.gperf    c/zx-xml.gperf \
+ c/zx-tas3.gperf  c/zx-tas3sol.gperf c/zx-shibmd.gperf c/zx-idpdisc.gperf
+
 ZX_GEN_H=\
  c/zx-a-data.h    c/zx-di12-data.h  c/zx-lu-data.h    c/zx-xenc-data.h \
  c/zx-ac-data.h   c/zx-m20-data.h   c/zx-sec-data.h   c/zx-exca-data.h \
@@ -672,18 +691,36 @@ ifeq ($(ENA_GEN),1)
 
 ### Schema based code generation
 ### If this runs over and over again, check timestamps in sg/ directory, or make -d -p
+# gperf mystery flags explanation (most of these should be set via directives in .gperf source)
+#  -t  programmer supplied struct type
+#  -T  prevent the struct type from leaking in output (it is properly available from zx.h)
+#  -K  indicate key field name (when not "name")
+#  -D  duplicates allowed
+#  -C  constant (readonly) tables
+#  -l  compare key lengths before strcmp, nul byte compatibility
+#  -G  global static table (i.e. not hidden as function static variable)
+#  -P  pic tables (starting with int) for faster dynamic linking
+#  -W arg  Word array name
+#  -N arg  Lookup function name
 
-c/zx-attrs.gperf c/zx-elems.gperf $(ZX_GEN_C) $(ZX_GEN_H): $(ZX_SG) dec-templ.c enc-templ.c aux-templ.c getput-templ.c
+c/zx-ns.gperf c/zx-attrs.gperf c/zx-elems.gperf $(ZX_GEN_C) $(ZX_GEN_H): $(ZX_SG) dec-templ.c enc-templ.c aux-templ.c getput-templ.c
 	@ls $(XSD2SG_PL) || ( echo "You need to install xsd2sg.pl from Plaindoc distribution at http://zxid.org/plaindoc/pd.html. Not found $(XSD2SG)" && exit 2 )
 	$(XSD2SG) -z zx -gen c/zx -p zx_ $(ZX_ROOTS) -S $(ZX_SG) >junk
 
+c/zx-ns.c: c/zx-ns.gperf
+	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
+	$(GPERF) $< | $(PERL) ./sed-zxid.pl nss >$@
+
+%.c: %.gperf
+	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
+	$(GPERF) -l $< | $(PERL) ./sed-zxid.pl elems >$@
+
+#c/zx-elems.c: c/zx-elems.gperf    *** old, unified table. Modern is per namespace tables.
+#	$(GPERF) -t -T -D -C -l -G -W zx_elems -N zx_elem2tok $< | $(PERL) ./sed-zxid.pl elems >$@
+
 c/zx-attrs.c: c/zx-attrs.gperf
 	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
-	$(GPERF) -t -D -C -T -l -G -W zx_attrs -N zx_attr2tok $< | $(PERL) ./sed-zxid.pl attrs >$@
-
-c/zx-elems.c: c/zx-elems.gperf
-	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
-	$(GPERF) -t -D -C -T -l -G -W zx_elems -N zx_elem2tok $< | $(PERL) ./sed-zxid.pl elems >$@
+	$(GPERF) -D -l $< | $(PERL) ./sed-zxid.pl attrs >$@
 
 c/zx-const.h: c/zx-attrs.c c/zx-elems.c
 	cat c/zx-attrs.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ATTR zx_attrs >$@
@@ -1166,10 +1203,10 @@ $(LIBZXID_A): $(ZXID_LIB_OBJ) $(ZX_OBJ)
 else
 
 ifeq ($(TARGET),win32cl)
-$(LIBZXID_A): $(ZX_GEN_C:.c=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+$(LIBZXID_A): $(ZX_GEN_C:.c=.obj) $(ZX_GEN_GPERF:.gperf=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) $(OUTOPT)zxid.lib $^
 else
-$(LIBZXID_A): $(ZX_GEN_C:.c=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+$(LIBZXID_A): $(ZX_GEN_C:.c=.o) $(ZX_GEN_GPERF:.gperf=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) $(LIBZXID_A) $^
 endif
 endif
@@ -1501,7 +1538,7 @@ miniclean: perlclean phpclean pyclean rubyclean csharpclean javaclean docclean p
 
 cleany: clean perlcleaner phpcleaner pycleaner rubycleaner csharpcleaner javacleaner cleangcov
 	@$(ECHO) ------------------ Making cleany
-	rm -f c/*.[hc] c/*.gperf c/*.y
+	rm -f c/*.[hc] c/*.gperf c/*.y c/*.ds
 	rm -rf pulver; mkdir pulver
 
 cleaner: cleany

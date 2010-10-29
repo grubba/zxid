@@ -443,7 +443,7 @@ int main(int argc, char** argv, char** env)
     D("Enc wo len %d chars", len_wo);
 
     ctx.bas = wo_out;
-    wo_p = zx_ENC_WO_root(&ctx, r, wo_out);
+    wo_p = zx_ENC_WO_root(&ctx, r, wo_out);  /* *** trouble */
     if (!wo_p)
       DIE("encoding error");
 

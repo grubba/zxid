@@ -14,6 +14,7 @@
  * 23.9.2006, mild re-engineering for WO support --Sampo
  * 23.2.2008, added support for function pointers to malloc(),
  *            realloc(), and free() --Sampo
+ * 27.10.2010, namespace re-engineering --Sampo
  *
  * This file is included from various generated grammar files.
  */
@@ -42,31 +43,10 @@
 #define fdtype int
 #endif
 
-//#ifndef const
-//#define const  /* const causes swig java to break */
-//#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* Error Codes (low level or XML parsing) */
-
-#define ZXERR_EOF             0x0001  /* return due to EOF condition */
-#define ZXERR_MISMATCH_CLOSE  0x0002  /* mismatching close tag */
-#define ZXERR_BAD_ATTR_NS     0x0004  /* namespace violation in attribute */
-#define ZXERR_BAD_ELEM_NS     0x0008  /* namespace violation in element */
-#define ZXERR_MISSING_ATTR    0x0010  /* mandatory attribute(s) missing */
-#define ZXERR_EXTRA_ATTR      0x0020  /* unforeseen attribute(s) present */
-#define ZXERR_MISSING_ELEM    0x0040  /* mandatory element(s) missing or of wrong cardinality */
-#define ZXERR_EXTRA_ELEM      0x0080  /* unforeseen element(s) present */
-#define ZXERR_ELEM_ORDER      0x0100  /* ordering of elements violates schema */
-#define ZXERR_BAD_NS_PREFIX   0x0200  /* unknown namespace prefix has appeared */
-#define ZXERR_TAG_NOT_CLOSED  0x0400  /* open tag seen, but eof seen before close */
-#define ZXERR_MASK            0x7fff
-#define ZXERR_ATTR_FLAG       0x8000  /* Not an error. Marker to distinguish elements from attributes. */
-
-struct zx_any_elem_s;
 struct zx_any_attr_s;
 
 /*(s) Namespace management. The context references this table. The array is
@@ -78,6 +58,13 @@ struct zx_any_attr_s;
  * prefixes of namespaces not understood by the system. */
 
 struct zx_ns_s {
+  /*int name;              / * For gperf -P (%pic) string-pool offset when in hash. */
+  const char* url;          /* Needs to be first so gperf (without -P or %pic) works */
+  int url_len;              /* 0 = end of nstab */
+  int prefix_len;
+  const char* prefix;
+  int (*elem2tok)(const char* name, int len);  /* Pointer to the (xsd2sg + gperf generated) perfect hash function for determining tok in namespace */
+  struct zx_el_tok* el_tab; /* Table of element names (for perfoect hash). */
   struct zx_ns_s* n;        /* For holding runtime equivalences as a linked list. */
   struct zx_ns_s* m;        /* For a rt equivalence, pointer to the master entry. */
   struct zx_ns_s* seen;     /* Pointer to other "seen" namespaces with same prefix (stack) */
@@ -85,16 +72,6 @@ struct zx_ns_s {
   struct zx_ns_s* seen_p;   /* Previous prefix in seen structure (list) */
   struct zx_ns_s* seen_pop; /* Pop list for seen stack (used in the end of an element). */
   struct zx_ns_s* inc_n;    /* Next link for InclusiveNamespaces */
-#if 0
-  char flags;               /* 0x01 == unknown */
-  char pad1;
-  char pad2;
-  char pad3;
-#endif
-  int prefix_len;
-  const char* prefix;
-  int url_len;  /* 0 = end of nstab */
-  const char* url;
 };
 
 /* Context tracks the input and namespaces. It is also passed to memory allocator. */
@@ -133,30 +110,53 @@ struct zx_ctx {
   char pad7;
 };
 
-/* We arrange all structs to start with a common header (16 bytes on 32bit platforms) */
+/* We arrange all structs to start with a common header (16 bytes on 32bit platforms).
+ * This structure works as a binary clean string. When used as (a part of) an
+ * element, the namespace prefix and name of the element form the string. The
+ * token value does not need to be represented as it can be recovered by
+ * performing zx_elem2tok() lookup again. The namespace information is
+ * implicit in the placement of the element in its parent element's struct. */
+/* All attributes are represented directly as a string. */
+/* *** idea: combine n & wo. Multioccurrance in wo would have to be detected
+ * *** by checking if the next is still of the same type. As multioccurances
+ * *** are rare, this would not hurt much. */
 
-struct zx_node_s {
-  struct zx_node_s* n;    /* next pointer for compile time construction of data structures */
-  struct zx_node_s* wo;   /* next pointer for canonicalization order (wire order) */
-  struct zx_ns_s* ns;     /* namespace of an element or attribute */
-  short tok;              /* token number of the tag represented by this struct */
-  short err;              /* error mask */
+#define wo n
+
+struct zx_str {
+  struct zx_str* n;         /* next pointer for compile time construction of data structures */
+  /*struct zx_node_s* wo;   /* next pointer for canonicalization order (wire order) */
+  /*struct zx_ns_s* ns;       /* namespace of an element or attribute */
+  int tok;                  /* token number of the ns+tag represented by this struct */
+  int len;
+  const char* s;            /* Start of prefix:element in the scan buffer. */
 };
 
 //#define ZX_NEXT(x) ((void*)((struct zx_node_s*)(x))->n)
 //#define ZX_NEXT(x) ((void*)((x)->gg.g.n))
 #define ZX_NEXT(x) ((x)->gg.g.n)
 
+/* Attributes that are unforeseen (errornous or extensions). */
+
+struct zx_attr_s {
+  struct zx_str g;
+  int name_len;
+  char* name;
+};
+
+#define ZX_ANY_AT(x) ((struct zx_any_attr_s*)(x))
+
 /* Simple elements, base type for complex elements. */
 
 struct zx_elem_s {
-  struct zx_node_s g;              /* Common fields for all nodes */
-  struct zx_elem_s* kids;          /* root of wo list representing child elements */
-  struct zx_any_attr_s* any_attr;  /* list of attributes not understood by parser */
-  struct zx_any_elem_s* any_elem;  /* list of elements not understood by parser */
-  struct zx_ns_s* xmlns;           /* xmlns declarations (for inc_ns processing) */
-  struct zx_str* content;          /* non-element content, if any */
+  struct zx_str g;             /* Common fields for all nodes */
+  struct zx_elem_s* kids;      /* root of wo list representing child elements */
+  struct zx_attr_*  attr;      /* list of attributes */
+  struct zx_ns_s*   xmlns;     /* xmlns declarations (for inc_ns processing) */
+  struct zx_str*    content;   /* non-element content, if any */
 };
+
+#define ZX_ELEM_EXT struct zx_elem_s gg;   /* Used in generated data types */
 
 struct zx_elem_s* zx_new_simple_elem(struct zx_ctx* c, struct zx_str* ss);
 struct zx_elem_s* zx_ref_len_simple_elem(struct zx_ctx* c, int len, const char* s);
@@ -164,14 +164,6 @@ struct zx_elem_s* zx_ref_simple_elem(struct zx_ctx* c, const char* s);
 struct zx_elem_s* zx_dup_len_simple_elem(struct zx_ctx* c, int len, const char* s);
 struct zx_elem_s* zx_dup_simple_elem(struct zx_ctx* c, const char* s);
 #define ZX_SIMPLE_ELEM_CHK(el) ((el) && (el)->gg.content && (el)->gg.content->len && (el)->gg.content->s && (el)->gg.content->s[0])
-
-/* All attributes are represented as a string, as follows. */
-
-struct zx_str {
-  struct zx_node_s g;
-  int len;
-  char* s;
-};
 
 struct zx_str* zx_ref_str(struct zx_ctx* c, const char* s);  /* ref points to underlying data */
 struct zx_str* zx_ref_len_str(struct zx_ctx* c, int len, const char* s);
@@ -189,28 +181,6 @@ int   zx_str_ends_in(struct zx_str* ss, int len, const char* suffix);
 #define ZX_STR_ENDS_IN_CONST(ss, suffix) zx_str_ends_in((ss), sizeof(suffix)-1, (suffix))
 #define ZX_CONTENT_EQ_CONST(e, c) ((e) && (e)->content->len == sizeof(c)-1 && !memcmp((e)->content->s, (c), sizeof(c)-1))
 
-/* Elements that are unforeseen (errornous or extensions). */
-
-struct zx_any_elem_s {
-  struct zx_elem_s gg;
-  int name_len;
-  char* name;
-};
-
-#define ZX_ANY_EL(x) ((struct zx_any_elem_s*)(x))
-
-/* Attributes that are unforeseen (errornous or extensions). */
-
-struct zx_any_attr_s {
-  struct zx_str ss;
-  int name_len;
-  char* name;
-};
-
-#define ZX_ANY_AT(x) ((struct zx_any_attr_s*)(x))
-
-#define ZX_ELEM_EXT struct zx_elem_s gg;
-
 char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int needle_len);
 void* zx_alloc(struct zx_ctx* c, int size);
 void* zx_zalloc(struct zx_ctx* c, int size);
@@ -225,7 +195,8 @@ void  zx_reset_ctx(struct zx_ctx* ctx);
 struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 
 /* N.B. All string scanning assumes buffer is terminated with C string style nul byte. */
-#define ZX_SKIP_WS_P(c,p,x) MB for (; ONE_OF_4(*(p), ' ', '\n', '\r', '\t'); ++(p)) ; if (!*(p)) return x; ME
+/*#define ZX_SKIP_WS_P(c,p,x) MB for (; ONE_OF_4(*(p), ' ', '\n', '\r', '\t'); ++(p)) ; if (!*(p)) return x; ME*/
+#define ZX_SKIP_WS_P(c,p,x) MB p += strcspn((p)," \n\r\t"); if (!*(p)) return x; ME
 #define ZX_SKIP_WS(c,x)     ZX_SKIP_WS_P((c),(c)->p,x)
 #define ZX_LOOK_FOR_P(c,ch,p) MB char* pp = memchr((p), (ch), (c)->lim - (p)); if (!pp) goto look_for_not_found; else (p) = pp; ME
 #define ZX_LOOK_FOR(c,ch)   ZX_LOOK_FOR_P((c),(ch),(c)->p)
@@ -246,10 +217,15 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #endif
 
 /* Special token values. */
+#define ZX_TOK_NO_ATTR   (-7)
+#define ZX_TOK_ATTR_ERR  (-6)
+#define ZX_TOK_INCOMP    (-5)
 #define ZX_TOK_XMLNS     (-4)
-#define ZX_TOK_DATA      (-3)
-#define ZX_TOK_NOT_FOUND (-2)
-struct zx_tok { const char* name; const char* prefix; struct zx_ns_s* ns; };
+#define ZX_TOK_DATA      255
+#define ZX_TOK_NOT_FOUND 254
+#define ZX_TOK_ATTR_NOT_FOUND 253
+struct zx_el_tok { const char* name; };
+struct zx_tok { const char* name; };
 
 /*struct zx_note_s* zx_clone_any(struct zx_ctx* c, struct zx_note_s* n, int dup_strs); TBD */
 /*void zx_free_any(struct zx_ctx* c, struct zx_note_s* n, int free_strs); TBD */
@@ -263,7 +239,8 @@ void  zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, const char*
 int   zx_is_ns_prefix(struct zx_ns_s* ns, int len, const char* prefix);
 #endif
 int zx_dump_ns_tab(struct zx_ctx* c, int flags);
-struct zx_ns_s* zx_new_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url, int unknown);
+struct zx_ns_s* zx_new_unknown_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url);
+struct zx_ns_s* zx_new_known_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url);
 struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, const char* prefix);
 struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix);
 struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* prefix, const char* logkey, int mk_dummy_ns);
@@ -286,15 +263,15 @@ char* zx_md5_crypt(const char* pw, const char* salt, char* buf);
 
 /* Common Subexpression Elimination (CSE) for generated code. */
 
-const struct zx_tok* zx_tok_by_ns(const struct zx_tok* zt, const struct zx_tok* lim, int len, const char* name, struct zx_ns_s* ns);
 int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 void  zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 char* zx_enc_seen(char* p, struct zx_ns_s* ns);
 int   zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp);
-int   zx_len_wo_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp);
 void  zx_see_unknown_attrs_ns(struct zx_ctx* c, struct zx_any_attr_s* aa, struct zx_ns_s** pop_seenp);
 char* zx_enc_unknown_attrs(char* p, struct zx_any_attr_s* aa);
 char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_elem_s* x);
+char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p);
+struct zx_str* zx_EASY_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x);
 struct zx_str* zx_easy_enc_common(struct zx_ctx* c, char* p, char* buf, int len);
 int   zx_attr_so_len(struct zx_ctx* c, struct zx_str* attr, int name_size, struct zx_ns_s** pop_seenp);
 char* zx_attr_so_enc(char* p, struct zx_str* attr, char* name, int name_len);
@@ -319,25 +296,16 @@ void  zx_dup_strs_simple_elems(struct zx_ctx* c, struct zx_elem_s* se);
 void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, const char* start, const char* lim);
 int   zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el);
 int   zx_scan_pi_or_comment(struct zx_ctx* c);
-struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, const char* name, const char* data, int tok, int ctx_tok);
-const char* zx_dec_attr_val(struct zx_ctx* c, const char** name, const char* func);
+void zx_known_attr_wrong_context(struct zx_ctx* c, struct zx_elem_s* el);
+const char* zx_dec_attr_val(struct zx_ctx* c, const char* func);
 void zx_dec_reverse_lists(struct zx_elem_s* x);
 void  zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char* msg);
-void zx_xml_parse_err_mismatching_close_tag(struct zx_ctx* c, const char* func, const char* name, int tok);
 const char* zx_scan_elem_start(struct zx_ctx* c, const char* func);
+int zx_scan_elem_end(struct zx_ctx* c, const char* start, const char* func);
+struct zx_ns_s* zx_xmlns_detected(struct zx_ctx* c, struct zx_elem_s* x, const char* data);
 
 int   zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
 void  zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
-
-#if 0
-#define ZX_DEC_TAG_NOT_YET_CLOSED(x) (x).err |= ZXERR_TAG_NOT_CLOSED
-#define ZX_DEC_TAG_NOW_CLOSED(x)     (x).err &= ~ZXERR_TAG_NOT_CLOSED
-#define ZX_DEC_TAG_MISMATCH_CLOSE(x) (x).err |= ZXERR_MISMATCH_CLOSE
-#else
-#define ZX_DEC_TAG_NOT_YET_CLOSED(x)
-#define ZX_DEC_TAG_NOW_CLOSED(x)
-#define ZX_DEC_TAG_MISMATCH_CLOSE(x)
-#endif
 
 #define SIG_ALGO_RSA_SHA1  "http://www.w3.org/2000/09/xmldsig#rsa-sha1"
 #define SIG_ALGO_DSA_SHA1  "http://www.w3.org/2000/09/xmldsig#dsa-sha1"

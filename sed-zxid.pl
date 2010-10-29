@@ -10,14 +10,17 @@ $op = shift;
 undef $/;
 $_ = <STDIN>;
 
+if ($op eq 'nss') {
+    s/static const struct zx_ns_s/const struct zx_ns_s/g;
+    print;
+}
+
 if ($op eq 'attrs') {
-    s/lengthtable/zx_attrs_lens/g;
     s/static const struct zx_tok/const struct zx_tok/g;
     print;
 }
 
 if ($op eq 'elems') {
-    s/lengthtable/zx_elems_lens/g;
     s/static const struct zx_tok/const struct zx_tok/g;
     print;
 }

@@ -346,28 +346,41 @@ int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop
   return len;
 }
 
-/* Called by:  TXLEN_WO_ELNAME, TXLEN_WO_any_elem */
-int zx_len_wo_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp)
-{
-  int len = 0;
-  struct zx_str* ss;
-  struct zx_any_attr_s* aa;
-  struct zx_any_elem_s* ae;
-  
-  for (aa = x->any_attr; aa; aa = (struct zx_any_attr_s*)aa->ss.g.n) {  /* unknown attributes */
-    if (aa->ss.g.ns && aa->ss.g.ns->prefix_len)
-      len += aa->ss.g.ns->prefix_len + 1;
-    len += 1 + aa->name_len + 1 + 1 + aa->ss.len + 1;  /* attr="val" */
-    len += zx_len_xmlns_if_not_seen(c, aa->ss.g.ns, pop_seenp);
-  }
+/*() Compute length of an element (and its subelements). The XML attributes
+ * and elements are processed in wire order and no assumptions
+ * are made about namespace prefixes. */
 
-  for (ae = x->any_elem; ae; ae = (struct zx_any_elem_s*)ae->gg.g.n)    /* unknown elements */
-    len += zx_LEN_WO_simple_elem(c, &ae->gg, ae->name_len);
-  
-  for (ss = x->content; ss; ss = (struct zx_str*)ss->g.n)             /* content */
-    len += ss->len;
-  
-  return len;
+/* Called by: */
+int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
+{
+  struct zx_ns_s* pop_seen = 0;
+  int len;
+  //struct zx_elem_s* kid;
+  switch (x->g.tok) {
+  case ZX_TOK_DATA:
+    return x->g.len;
+  default:
+    /*    <              >   </             >  */
+    len = 1 + x->g.len + 1 + 2 + x->g.len + 1;
+    if (c->inc_ns_len)
+      len += zx_len_inc_ns(c, &pop_seen);
+
+    /* *** generalized attributes? */
+
+    for (aa = x->any_attr; aa; aa = (struct zx_any_attr_s*)aa->ss.g.n) {  /* unknown attributes */
+      if (aa->ss.g.ns && aa->ss.g.ns->prefix_len)
+	len += aa->ss.g.ns->prefix_len + 1;
+      len += 1 + aa->name_len + 1 + 1 + aa->ss.len + 1;  /* attr="val" */
+      len += zx_len_xmlns_if_not_seen(c, aa->ss.g.ns, &pop_seen);
+    }
+
+    for (kid = x->gg.kids; kid; kid = ((struct zx_elem_s*)(kid->g.wo)))
+      len += zx_LEN_WO_any_elem(c, kid);
+
+    zx_pop_seen(pop_seen);
+    return len;
+  }
+  return 0;
 }
 
 void zx_see_unknown_attrs_ns(struct zx_ctx* c, struct zx_any_attr_s* aa, struct zx_ns_s** pop_seenp)
@@ -410,6 +423,52 @@ char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_e
     ZX_OUT_MEM(p, ss->s, ss->len);
   
   return p;
+}
+
+/*() Render element into string. The XML attributes and elements are
+ * processed in wire order by chasing wo pointers. This is what you want for
+ * validating signatures on other people's XML documents. */
+
+/* Called by: */
+char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
+{
+  struct zx_ns_s* pop_seen = 0;
+  struct zx_elem_s* kid;
+  switch (x->g.tok) {
+  case ZX_TOK_DATA:
+    ZX_OUT_STR(p, x);
+    break;
+  default:
+    ZX_OUT_CH(p, '<');
+    ZX_OUT_MEM(p, x->g.s, x->g.len);
+    zx_add_xmlns_if_not_seen(c, x->g.ns, &pop_seen);
+    if (c->inc_ns)
+      zx_add_inc_ns(c, &pop_seen);
+    zx_see_unknown_attrs_ns(c, x->any_attr, &pop_seen);
+    p = zx_enc_seen(p, pop_seen); 
+ATTRS_WO_ENC;
+    p = zx_enc_unknown_attrs(p, x->any_attr);
+    
+    for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.wo)))
+      p = TXENC_WO_any_elem(c, kid, p);
+    
+    ZX_OUT_CH(p, '<');
+    ZX_OUT_CH(p, '/');
+    ZX_OUT_MEM(p, x->g.s, x->g.len);
+    ZX_OUT_CH(p, '>');
+    zx_pop_seen(pop_seen);
+  }
+  return p;
+}
+
+/*(i) Render any element in wire order, as often needed in validating canonicalizations. */
+
+/* Called by: */
+struct zx_str* zx_EASY_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
+{
+  int len = TXLEN_WO_any_elem(c, x);
+  char* buf = ZX_ALLOC(c, len+1);
+  return zx_easy_enc_common(c, TXENC_WO_any_elem(c, x, buf), buf, len);
 }
 
 /* Called by:  TXEASY_ENC_SO_ELNAME, TXEASY_ENC_WO_ELNAME, TXEASY_ENC_WO_any_elem */
@@ -815,10 +874,10 @@ int zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el)
   ss = ZX_ZALLOC(c, struct zx_str);
   ss->len = c->p - d;
   ss->s = (char*)d;
-  ss->g.tok = ZX_TOK_DATA;
-  ss->g.n = &el->content->g;
-  el->content = ss;
-  ss->g.wo = &el->kids->g;
+  ss->tok = ZX_TOK_DATA;
+  if (!el->content)
+    el->content = ss;
+  ss->wo = &el->kids->g;
   el->kids = (struct zx_elem_s*)ss;
   return 1;
 
@@ -881,41 +940,22 @@ int zx_scan_pi_or_comment(struct zx_ctx* c)
   return 1;
 }
 
-/* Called by:  TXDEC_ELNAME */
-struct zx_str* zx_dec_unknown_attr(struct zx_ctx* c, struct zx_elem_s* el, const char* name, const char* data, int tok, int ctx_tok)
-{
-  const char* p;
-  int namlen = data - name - 2;
-  struct zx_any_attr_s* attr = ZX_ZALLOC(c, struct zx_any_attr_s);
-  
-  if (tok == ZX_TOK_NOT_FOUND) {
-    D("Unknown attribute(%.*s) in context(%d)", namlen, name, ctx_tok);
-  } else {
-    D("Known attribute(%.*s) tok(%d) in wrong context(%d)", namlen, name, tok, ctx_tok);
-    tok = ZX_TOK_NOT_FOUND;
-  }
+/*() dec-templ.c CSE. */
 
-  p = memchr(name, ':', namlen);   /* namespace check */
-  if (p) {
-    namlen -= 1+p-name;
-    name = p+1;
-  }
-  attr->name_len = namlen;
-  attr->name = (char*)name;
-  attr->ss.g.n = &el->any_attr->ss.g;
-  el->any_attr = attr;
-  /*ZX_UNKNOWN_ATTR_DEC_EXT(attr);*/
-  return &attr->ss;
+/* Called by:  TXDEC_ELNAME */
+void zx_known_attr_wrong_context(struct zx_ctx* c, struct zx_elem_s* el)
+{
+  struct zx_attr_s* attr = el->attrs;
+  D("Known attribute(%.*s) in wrong context(%.*s)", attr->namlen, attr->name, el->g.len, el->g.s);
 }
 
 /*() Called from dec-templ.c for CSE elimination. */
 
 /* Called by:  TXDEC_ELNAME */
-const char* zx_dec_attr_val(struct zx_ctx* c, const char** name, const char* func)
+const char* zx_dec_attr_val(struct zx_ctx* c, const char* func)
 {
   const char* data;
   char quote;
-  *name = c->p;
   quote = '=';
   ZX_LOOK_FOR(c,'=');
   
@@ -931,7 +971,7 @@ const char* zx_dec_attr_val(struct zx_ctx* c, const char** name, const char* fun
   ZX_LOOK_FOR(c, quote);
   return data;
  look_for_not_found:
-  zx_xml_parse_err(c, quote, func, "zx_dev_attr_val: char not found");
+  zx_xml_parse_err(c, quote, func, "zx_dec_attr_val: char not found");
   return 0;
 }
 
@@ -943,10 +983,8 @@ void zx_dec_reverse_lists(struct zx_elem_s* x)
   struct zx_str* ss;
   iternode = x->kids;
   REVERSE_LIST_NEXT(x->kids, iternode, g.wo);
-  iternode = (struct zx_elem_s*)(x->any_elem);
-  REVERSE_LIST_NEXT(x->any_elem, iternode, g.n);
-  ss = (struct zx_str*)(x->any_attr);
-  REVERSE_LIST_NEXT(x->any_attr, ss, g.n);
+  ss = (struct zx_str*)(x->attr);
+  REVERSE_LIST_NEXT(x->attr, ss, n);
 }
 
 /* Called by:  TXDEC_ELNAME x2, zx_dec_attr_val x2, zx_scan_pi_or_comment, zx_scan_xmlns x2 */
@@ -957,17 +995,8 @@ void zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char
       c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
 }
 
-/*() This is very special error handler called from innards for dec-templ.c for CSE. */
-
-void zx_xml_parse_err_mismatching_close_tag(struct zx_ctx* c, const char* func, const char* name, int tok)
-{
-  const char* errloc = MAX(c->p - 20, c->bas);
-  ERR("%s: Mismatching close tag(%.*s) tok=%d pos=%d (%.*s)", func, c->p-name, name, tok, c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
-  ++c->p;
-}
-
-/*() Assumoing current c->p points to a name, scan until end of the name.
- * Called from innards for dec-templ.c for CSE. */
+/*() Assuming current c->p points to a name, scan until end of the name.
+ * Called from innards for dec-templ.c for CSE. Leaves c->p pointing to char after name. */
 
 const char* zx_scan_elem_start(struct zx_ctx* c, const char* func)
 {
@@ -979,6 +1008,24 @@ const char* zx_scan_elem_start(struct zx_ctx* c, const char* func)
     return name;
   ERR("%s: Incomplete %s", func, name);
   return 0;
+}
+
+/*() End of tag detection called from innards for dec-templ.c for CSE. */
+
+int zx_scan_elem_end(struct zx_ctx* c, const char* start, const char* func)
+{
+  const char* name;
+  const char* errloc;
+  ++c->p;
+  name = c->p;
+  ZX_LOOK_FOR(c,'>');
+  if (memcmp(start, name, c->p-name))	{
+    errloc = MAX(c->p - 20, c->bas);
+    ERR("%s: Mismatching close tag(%.*s) tok=%d pos=%d (%.*s)", func, c->p-name, name, tok, c->p - c->bas, MIN(c->lim - errloc, 40), errloc);
+    ++c->p;
+    return 0;
+  }
+  return 1;
 }
 
 /* Add inclusive namespaces. */

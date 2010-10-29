@@ -413,10 +413,10 @@ int main(int argc, char** argv, char** env)
     if (!p)
       DIE("encoding error");
 
-    len_wo = zx_LEN_WO_root(cf->ctx, r);
+    len_wo = zx_LEN_WO_any_elem(cf->ctx, r);
     D("Enc wo len %d chars", len_wo);
 
-    wo_p = zx_ENC_WO_root(cf->ctx, r, wo_out);
+    wo_p = zx_ENC_WO_any_elem(cf->ctx, r, wo_out);
     if (!wo_p)
       DIE("encoding error");
 #endif
