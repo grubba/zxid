@@ -328,10 +328,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
     if (!epr_buf)
       continue;
     
-    LOCK(cf->ctx->mx, "find epr");
-    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
-    r = zx_DEC_root(cf->ctx, 0, 1);
-    UNLOCK(cf->ctx->mx, "find epr");
+    r = zx_dec_zx_root(cf->ctx, epr_len, epr_buf, "find epr");
     if (!r || !r->EndpointReference) {
       ERR("No EPR found. Failed to parse epr_buf(%.*s)", epr_len, epr_buf);
       continue;
@@ -637,16 +634,13 @@ struct zx_str* zxid_token2str(zxid_conf* cf, zxid_tok* tok) {
 /*() Parse string into token. */
 
 zxid_tok* zxid_str2token(zxid_conf* cf, struct zx_str* ss) {
-  struct zx_root_s* r = 0;
+  struct zx_root_s* r;
   zxid_tok* tok;
 
   if (!ss || !ss->len || !ss->s)
     return 0;
   
-  LOCK(cf->ctx->mx, "decode token");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s+ss->len);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "decode token");
+  r = zx_dec_zx_root(cf->ctx, ss->len, ss->s, "decode token");
   if (!r) {
     ERR("Failed to parse token buf(%.*s)", ss->len, ss->s);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "BADXML", 0, "bad token");
@@ -673,15 +667,12 @@ struct zx_str* zxid_a7n2str(zxid_conf* cf, zxid_a7n* a7n) {
 /*() Parse string into assertion. */
 
 zxid_a7n* zxid_str2a7n(zxid_conf* cf, struct zx_str* ss) {
-  struct zx_root_s* r = 0;
+  struct zx_root_s* r;
 
   if (!ss || !ss->len || !ss->s)
     return 0;
   
-  LOCK(cf->ctx->mx, "decode a7n");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s+ss->len);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "decode a7n");
+  r = zx_dec_zx_root(cf->ctx, ss->len, ss->s, "decode a7n");
   if (!r) {
     ERR("Failed to parse assertion buf(%.*s)", ss->len, ss->s);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "BADXML", 0, "bad a7n");
@@ -701,15 +692,12 @@ struct zx_str* zxid_nid2str(zxid_conf* cf, zxid_nid* nid) {
 /*() Parse string into NameID. */
 
 zxid_nid* zxid_str2nid(zxid_conf* cf, struct zx_str* ss) {
-  struct zx_root_s* r = 0;
+  struct zx_root_s* r;
 
   if (!ss || !ss->len || !ss->s)
     return 0;
   
-  LOCK(cf->ctx->mx, "decode nid");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s+ss->len);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "decode nid");
+  r = zx_dec_zx_root(cf->ctx, ss->len, ss->s, "decode nid");
   if (!r) {
     ERR("Failed to parse NameID buf(%.*s)", ss->len, ss->s);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "BADXML", 0, "bad nid");

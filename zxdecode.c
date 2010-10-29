@@ -205,10 +205,7 @@ static int sig_validate(int len, char* p)
   ZERO(&cgi, sizeof(cgi));
   ZERO(&ses, sizeof(ses));
 
-  LOCK(cf->ctx->mx, "decode");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, p, p + len);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "decode");
+  r = zx_dec_zx_root(cf->ctx, len, p, "decode");
   if (!r) {
     ERR("Failed to parse buf(%.*s)", len, p);
     return 2;

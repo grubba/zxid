@@ -162,14 +162,11 @@ int main(int argc, char** argv)
   }
   D("Target nid(%s)", nid);
     
-  LOCK(cf->ctx->mx, "hrxml wsp");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, qs2, qs2+cl);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "hrxml wsp");
+  r = zx_dec_zx_root(cf->ctx, cl, qs2, "hrxml wsp");
 
-  D("Decoded nid(%s)", nid);
+  DD("Decoded nid(%s)", nid);
   
-  if (!r->Envelope) {
+  if (!r || !r->Envelope) {
     ERR("No SOAP Envelope found buf(%.*s)", got, buf);
     exit(1);
   }
@@ -251,11 +248,8 @@ int main(int argc, char** argv)
       return 0;
     }
     
-    LOCK(cf->ctx->mx, "hrxml wsp cand");
-    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + got);
-    r = zx_DEC_root(cf->ctx, 0, 1);
-    UNLOCK(cf->ctx->mx, "hrxml wsp cand");
-    if (!r->Candidate) {
+    r = zx_dec_zx_root(cf->ctx, got, buf, "hrxml wsp cand");
+    if (!r || !r->Candidate) {
       ERR("No hrxml:Candidate tag found in cv.xml(%s)", buf);
 #if 0
       env = ZXID_RESP_ENV(cf, "idhrxml:QueryResponse", "Fail", "No Candidate in data");

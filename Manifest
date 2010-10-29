@@ -78,6 +78,7 @@ zxdirent.c       - Kevlin Henney's dirent.c (modified by Sampo) for WIN32CL port
 zxlog.c          - Logging routines with encryption and signing
 zxsig.c          - XML DSIG support
 zxcrypto.c       - Cryptographical functions
+zxlibdec.c       - Functions used to capture commonalities in generated decoders
 zxlib.c          - Functions used to capture commonalities in generated code
 zxns.c           - Namespace manipulation functions for generated code
 zxutil.c         - Common library functions used by zx system

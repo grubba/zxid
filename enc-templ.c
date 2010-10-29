@@ -15,6 +15,7 @@
  ** 23.9.2006, added WO logic --Sampo
  ** 30.9.2007, improvements to WO encoding --Sampo
  ** 8.2.2010,  better handling of schema order encoding of unknown namespace prefixes --Sampo
+ ** 27.10.2010, re-engineered namespace handling --Sampo
  **
  ** N.B: wo=wire order (needed for exc-c14n), so=schema order
  ** N.B2: This template is meant to be processed by pd/xsd2sg.pl. Beware
@@ -99,10 +100,10 @@ char* TXENC_SO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, char* p SIMPLETAGLEN
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
 XMLNS_SO_SEE;
-  zx_see_unknown_attrs_ns(c, x->gg.any_attr, &pop_seen);
+  zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 ATTRS_SO_ENC;
-  p = zx_enc_unknown_attrs(p, x->gg.any_attr);
+  p = zx_enc_unknown_attrs(p, x->gg.attr);
 #else
   /* root node has no begin tag */
 #endif
@@ -133,22 +134,6 @@ struct zx_str* TXEASY_ENC_SO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x SIMPLET
   buf = ZX_ALLOC(c, len+1);
   return zx_easy_enc_common(c, TXENC_SO_ELNAME(c, x, buf SIMPLETAGLENNSARG), buf, len);
 }
-
-#if 0  /* *** Scheduled for removal */
-/* FUNC(TXEASY_ENC_WO_ELNAME) */
-
-/* Called by: */
-struct zx_str* TXEASY_ENC_WO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x SIMPLETAGLEN)
-{
-  int len;
-  char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(TXns_tab));
-  memcpy(c->ns_tab, TXns_tab, sizeof(TXns_tab));
-  len = TXLEN_WO_ELNAME(c, x SIMPLELENARG);
-  buf = ZX_ALLOC(c, len+1);
-  return zx_easy_enc_common(c, TXENC_WO_ELNAME(c, x, buf SIMPLETAGLENARG), buf, len);
-}
-#endif
 
 #if 1 /* ENC_WO_SUBTEMPL */
 

@@ -474,10 +474,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
   struct zx_root_s* r;
 #if 0
 #endif
-  LOCK(cf->ctx->mx, "add_env");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "add_env");
+  r = zx_dec_zx_root(cf->ctx, strlen(enve), enve, "add_env");
   if (!r) {
     ERR("Malformed XML enve(%s)", enve);
     return 0;
@@ -504,10 +501,7 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
     }
     /* Must be just payload */
     enve = zx_alloc_sprintf(cf->ctx, 0, "%s%s%s", zx_env_body_open, enve, zx_env_body_close);
-    LOCK(cf->ctx->mx, "add_env2");
-    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + strlen(enve));
-    r = zx_DEC_root(cf->ctx, 0, 1);
-    UNLOCK(cf->ctx->mx, "add_env2");
+    r = zx_dec_zx_root(cf->ctx, strlen(enve), enve, "add_env2");
     if (!r) {
       ERR("Malformed XML enve(%s)", enve);
       return 0;

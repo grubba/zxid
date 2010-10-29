@@ -405,10 +405,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   
   ss.s = (char*)enve;
   ss.len = strlen(enve);
-  LOCK(cf->ctx->mx, "valid");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, enve, enve + ss.len);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "valid");
+  r = zx_dec_zx_root(cf->ctx, ss.len, enve, "valid");
   if (!r) {
     ERR("Malformed XML enve(%s)", enve);
     zx_format_parse_error(cf->ctx, msg, sizeof(msg), "valid");

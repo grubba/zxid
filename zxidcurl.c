@@ -315,10 +315,7 @@ struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct z
   if (!ret)
     return 0;
   
-  LOCK(cf->ctx->mx, "soap_call");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ret->s, ret->s + ret->len);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "soap_call");
+  r = zx_dec_zx_root(cf->ctx, ret->len, ret->s, "soap_call");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP response url(%.*s) buf(%.*s)",
 	url->len, url->s, ret->len, ret->s);

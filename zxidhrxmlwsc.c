@@ -242,11 +242,8 @@ int main(int argc, char** argv)
     
     /* Parse the XML from the form field into data structure and include it as NewData. */
     
-    LOCK(cf->ctx->mx, "hrxml wsc");
-    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, cgi.data, cgi.data + strlen(cgi.data));
-    r = zx_DEC_root(cf->ctx, 0, 1);
-    UNLOCK(cf->ctx->mx, "hrxml wsc");
-    if (!r->Candidate) {
+    r = zx_dec_zx_root(cf->ctx, strlen(cgi.data), cgi.data, "hrxml wsc");
+    if (!r || !r->Candidate) {
       ERR("No hrxml:Candidate tag found in form field hrxmldata(%s)", cgi.data);
       hrxml_resp = "No hrxml:Candidate tag found in form field hrxmldata.";
       break;

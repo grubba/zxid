@@ -81,6 +81,7 @@ struct zx_ctx {
   const char* p;     /* Current scan pointer */
   const char* lim;
   struct zx_ns_s* ns_tab;      /* Array, such as zx_ns_tab, see zx_prepare_dec_ctx() */
+  int n_ns;                    /* Number of entries in ns_tab. */
   struct zx_ns_s* unknown_ns;  /* Linked list of unknown namespaces. */
   /* Namespace prefixes that have been "seen", each prefix is a stack.
    * We keep these prefixes in a doubly linked list so we can add and
@@ -140,6 +141,7 @@ struct zx_str {
 
 struct zx_attr_s {
   struct zx_str g;
+  struct zx_ns_s* ns;        /* namespace of the attribute */
   int name_len;
   char* name;
 };
@@ -151,7 +153,8 @@ struct zx_attr_s {
 struct zx_elem_s {
   struct zx_str g;             /* Common fields for all nodes */
   struct zx_elem_s* kids;      /* root of wo list representing child elements */
-  struct zx_attr_*  attr;      /* list of attributes */
+  struct zx_attr_s* attr;      /* list of attributes */
+  struct zx_ns_s*   ns;        /* namespace of the element */
   struct zx_ns_s*   xmlns;     /* xmlns declarations (for inc_ns processing) */
   struct zx_str*    content;   /* non-element content, if any */
 };
@@ -219,12 +222,19 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 /* Special token values. */
 #define ZX_TOK_NO_ATTR   (-7)
 #define ZX_TOK_ATTR_ERR  (-6)
-#define ZX_TOK_INCOMP    (-5)
 #define ZX_TOK_XMLNS     (-4)
-#define ZX_TOK_DATA      255
-#define ZX_TOK_NOT_FOUND 254
-#define ZX_TOK_ATTR_NOT_FOUND 253
-struct zx_el_tok { const char* name; };
+#define ZX_TOK_DATA      253
+#define ZX_TOK_ATTR_NOT_FOUND 254
+#define ZX_TOK_NOT_FOUND        0x000000ff
+#define ZX_TOK_NS_NOT_FOUND     0x0000ff00
+#define ZX_TOK_AND_NS_NOT_FOUND 0x0000ffff
+#define ZX_TOK_TOK_MASK         0x000000ff
+#define ZX_TOK_NS_MASK          0x0000ff00
+struct zx_el_tok {
+  const char* name;
+  int siz;  /* struct size to help allocation */
+  //struct zx_elem_s* (*dec)(struct zx_ctx* c, struct zx_elem_s* x); /* funcptr to decode switch */
+};
 struct zx_tok { const char* name; };
 
 /*struct zx_note_s* zx_clone_any(struct zx_ctx* c, struct zx_note_s* n, int dup_strs); TBD */
@@ -267,16 +277,13 @@ int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_n
 void  zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 char* zx_enc_seen(char* p, struct zx_ns_s* ns);
 int   zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp);
-void  zx_see_unknown_attrs_ns(struct zx_ctx* c, struct zx_any_attr_s* aa, struct zx_ns_s** pop_seenp);
-char* zx_enc_unknown_attrs(char* p, struct zx_any_attr_s* aa);
+void  zx_see_attr_ns(struct zx_ctx* c, struct zx_any_attr_s* aa, struct zx_ns_s** pop_seenp);
 char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_elem_s* x);
 char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x);
 struct zx_str* zx_easy_enc_common(struct zx_ctx* c, char* p, char* buf, int len);
 int   zx_attr_so_len(struct zx_ctx* c, struct zx_str* attr, int name_size, struct zx_ns_s** pop_seenp);
 char* zx_attr_so_enc(char* p, struct zx_str* attr, char* name, int name_len);
-int   zx_attr_wo_len(struct zx_ctx* c, struct zx_str* attr, int name_size, struct zx_ns_s** pop_seenp);
-char* zx_attr_wo_enc(char* p, struct zx_str* attr, char* name, int name_len);
 void  zx_free_attr(struct zx_ctx* c, struct zx_str* attr, int free_strs);
 void  zx_free_elem_common(struct zx_ctx* c, struct zx_elem_s* x, int free_strs);
 void  zx_free_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, int free_strs);
@@ -293,10 +300,12 @@ int   zx_walk_so_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, void* ctx,
 void  zx_dup_strs_simple_elems(struct zx_ctx* c, struct zx_elem_s* se);
 #endif
 
-void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, const char* start, const char* lim);
+void  zx_prepare_dec_ctx(struct zx_ctx* c, struct zx_ns_s* ns_tab, int n_ns, const char* start, const char* lim);
+struct zx_root_s* zx_dec_zx_root(struct zx_ctx* c, int len, const char* start, const char* func);
 int   zx_scan_data(struct zx_ctx* c, struct zx_elem_s* el);
 int   zx_scan_pi_or_comment(struct zx_ctx* c);
-void zx_known_attr_wrong_context(struct zx_ctx* c, struct zx_elem_s* el);
+void zx_known_attr_wrong_context(struct zx_ctx* c, struct zx_elem_s* x);
+void zx_known_elem_wrong_context(struct zx_ctx* c, struct zx_elem_s* x);
 const char* zx_dec_attr_val(struct zx_ctx* c, const char* func);
 void zx_dec_reverse_lists(struct zx_elem_s* x);
 void  zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char* msg);

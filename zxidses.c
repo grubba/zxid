@@ -62,10 +62,7 @@ int zxid_get_ses_sso_a7n(zxid_conf* cf, zxid_ses* ses)
     return 0;
   
   DD("a7n(%s)", ses->sso_a7n_buf);
-  LOCK(cf->ctx->mx, "sso a7n");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ses->sso_a7n_buf, ses->sso_a7n_buf + gotall);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "sso a7n");
+  r = zx_dec_zx_root(cf->ctx, gotall, ses->sso_a7n_buf, "sso a7n");
   if (!r) {
     ERR("Failed to decode the sso assertion of session sid(%s) from  path(%s), a7n data(%.*s)",
 	STRNULLCHK(ses->sid), ses->sso_a7n_path, gotall, ses->sso_a7n_buf);
@@ -80,10 +77,7 @@ int zxid_get_ses_sso_a7n(zxid_conf* cf, zxid_ses* ses)
     encid = ses->a7n->Subject->EncryptedID;
     if (!ses->nameid && encid) {
       ss = zxenc_privkey_dec(cf, encid->EncryptedData, encid->EncryptedKey);
-      LOCK(cf->ctx->mx, "ses nid");
-      zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s + ss->len);
-      r = zx_DEC_root(cf->ctx, 0, 1);
-      UNLOCK(cf->ctx->mx, "ses nid");
+      r = zx_dec_zx_root(cf->ctx, ss->len, ss->s, "ses nid");
       if (!r) {
 	ERR("Failed to parse EncryptedID buf(%.*s)", ss->len, ss->s);
 	return 0;

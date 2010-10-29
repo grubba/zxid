@@ -145,10 +145,7 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
   struct zx_md_EntityDescriptor_s* ed;
   struct zx_root_s* r;
 
-  LOCK(cf->ctx->mx, "parse meta");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, *md, lim);
-  r = zx_DEC_root(cf->ctx, 0, 5);
-  UNLOCK(cf->ctx->mx, "parse meta");
+  r = zx_dec_zx_root(cf->ctx, lim-*md, *md, "parse meta");  /* *** n_decode=5 */
   *md = (char*)cf->ctx->p;
   if (!r)
     return 0;

@@ -638,10 +638,7 @@ zxid_nid* zxid_decrypt_nameid(zxid_conf* cf, zxid_nid* nid, struct zx_sa_Encrypt
       ERR("Failed to decrypt NameID. Most probably certificate-private key mismatch or metadata problem. Could also be corrupt message. %d", 0);
       return 0;
     }
-    LOCK(cf->ctx->mx, "dec nid");
-    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s + ss->len);
-    r = zx_DEC_root(cf->ctx, 0, 1);
-    UNLOCK(cf->ctx->mx, "dec nid");
+    r = zx_dec_zx_root(cf->ctx, ss->len, ss->s, "dec nid");
     if (!r) {
       ERR("Failed to parse EncryptedID buf(%.*s)", ss->len, ss->s);
       return 0;
@@ -670,10 +667,7 @@ struct zx_str* zxid_decrypt_newnym(zxid_conf* cf, struct zx_str* newnym, struct 
     return newnym;
   if (encid) {
     ss = zxenc_privkey_dec(cf, encid->EncryptedData, encid->EncryptedKey);
-    LOCK(cf->ctx->mx, "dec newnym");
-    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s + ss->len);
-    r = zx_DEC_root(cf->ctx, 0, 1);
-    UNLOCK(cf->ctx->mx, "dec newnym");
+    r = zx_dec_zx_root(cf->ctx, ss->len, ss->s, "dec newnym");
     if (!r) {
       ERR("Failed to parse NewEncryptedID buf(%.*s)", ss->len, ss->s);
       return 0;

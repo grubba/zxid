@@ -237,10 +237,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
       ZX_FREE(cf->ctx, epr_buf);
       continue;
     }
-    LOCK(cf->ctx->mx, "gen boots");
-    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
-    r = zx_DEC_root(cf->ctx, 0, 1);
-    UNLOCK(cf->ctx->mx, "gen boots");
+    r = zx_dec_zx_root(cf->ctx, epr_len, epr_buf, "gen boots");
     if (!r) {
       ERR("Failed to XML parse epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
       ZX_FREE(cf->ctx, epr_buf);

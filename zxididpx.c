@@ -166,10 +166,7 @@ int zxid_idp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct z
 int zxid_idp_soap_parse(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int len, char* buf)
 {
   struct zx_root_s* r;
-  LOCK(cf->ctx->mx, "idp soap parse");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + len);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "idp soap parse");
+  r = zx_dec_zx_root(cf->ctx, len, buf, "idp soap parse");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP request buf(%.*s)", len, buf);
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "BADXML", 0, "sid(%s) bad soap req", ses->sid);

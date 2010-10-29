@@ -326,10 +326,7 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
     if (!epr_buf)
       continue;
     
-    LOCK(cf->ctx->mx, "lstses");
-    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
-    r = zx_DEC_root(cf->ctx, 0, 1);
-    UNLOCK(cf->ctx->mx, "lstses");
+    r = zx_dec_zx_root(cf->ctx, epr_len, epr_buf, "lstses");
     if (!r || !r->EndpointReference) {
       ERR("No EPR found. Failed to parse epr_buf(%.*s)", epr_len, epr_buf);
       continue;

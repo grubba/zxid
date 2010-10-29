@@ -142,10 +142,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       if (!epr_buf)
 	continue;
       
-      LOCK(cf->ctx->mx, "diq epr");
-      zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, epr_buf, epr_buf + epr_len);
-      r = zx_DEC_root(cf->ctx, 0, 1);
-      UNLOCK(cf->ctx->mx, "diq epr");
+      r = zx_dec_zx_root(cf->ctx, epr_len, epr_buf, "diq epr");
       if (!r) {
 	ERR("Failed to XML parse epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
 	ZX_FREE(cf->ctx, epr_buf);

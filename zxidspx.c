@@ -44,10 +44,7 @@ zxid_a7n* zxid_dec_a7n(zxid_conf* cf, zxid_a7n* a7n, struct zx_sa_EncryptedAsser
     if (!ss || !ss->s || !ss->len) {
       return 0;
     }
-    LOCK(cf->ctx->mx, "dec a7n");
-    zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, ss->s, ss->s + ss->len);
-    r = zx_DEC_root(cf->ctx, 0, 1);
-    UNLOCK(cf->ctx->mx, "dec a7n");
+    r = zx_dec_zx_root(cf->ctx, ss->len, ss->s, "dec a7n");
     if (!r) {
       ERR("Failed to parse EncryptedAssertion buf(%.*s)", ss->len, ss->s);
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "BADXML", 0, "bad EncryptedAssertion");
@@ -513,10 +510,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 int zxid_sp_soap_parse(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int len, char* buf)
 {
   struct zx_root_s* r;
-  LOCK(cf->ctx->mx, "sp soap parse");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, buf, buf + len);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "sp soap parse");
+  r = zx_dec_zx_root(cf->ctx, len, buf, "sp soap parse");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP request buf(%.*s)", len, buf);
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "BADXML", 0, "sid(%s) bad soap req", STRNULLCHK(ses->sid));

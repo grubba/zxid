@@ -118,10 +118,7 @@ struct zx_root_s* zxid_decode_redir_or_post(zxid_conf* cf, zxid_cgi* cgi, zxid_s
     ZX_FREE(cf->ctx, msg);
   }
   
-  LOCK(cf->ctx->mx, "decode redir or post");
-  zx_prepare_dec_ctx(cf->ctx, zx_ns_tab, p, p + len);
-  r = zx_DEC_root(cf->ctx, 0, 1);
-  UNLOCK(cf->ctx->mx, "decode redir or post");
+  r = zx_dec_zx_root(cf->ctx, len, p, "decode redir or post");
   if (!r) {
     ERR("Failed to parse redir buf(%.*s)", len, p);
     zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "BADXML", 0, "sid(%s) bad redir", STRNULLCHK(ses->sid));
