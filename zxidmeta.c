@@ -63,7 +63,7 @@ static void zxid_process_keys(zxid_conf* cf, zxid_entity* ent, struct zx_md_KeyD
   char* e;
   X509* x;
 
-  for (; kd; kd = (struct zx_md_KeyDescriptor_s*)kd->gg.g.n) {
+  for (; kd && kd->gg.g.tok == zx_md_KeyDescriptor_ELEM; kd = (struct zx_md_KeyDescriptor_s*)kd->gg.g.n) {
     if (!kd->KeyInfo || !kd->KeyInfo->X509Data || !kd->KeyInfo->X509Data->X509Certificate || !kd->KeyInfo->X509Data->X509Certificate->content) {
       ERR("KeyDescriptor for %s missing essential subelements KeyInfo=%p", logkey, kd->KeyInfo);
       return;
@@ -75,7 +75,7 @@ static void zxid_process_keys(zxid_conf* cf, zxid_entity* ent, struct zx_md_KeyD
     e = unbase64_raw(p, e, pp, zx_std_index_64);
     x = 0;  /* Forces d2i_X509() to alloc the memory. */
     if (!d2i_X509(&x, (const unsigned char**)&pp /* *** compile warning */, e-pp) || !x) {
-      ERR("DER decoding of X509 certificate for %s failed. use(%.*s)", logkey, kd->use->len, kd->use->s);
+      ERR("DER decoding of X509 certificate for %s failed. use(%.*s)", logkey, kd->use->g.len, kd->use->g.s);
       D("Extracted %s base64 form of cert(%.*s)", logkey, len, p);
       return;
     }
@@ -85,14 +85,14 @@ static void zxid_process_keys(zxid_conf* cf, zxid_entity* ent, struct zx_md_KeyD
       D("KeyDescriptor is missing use attribute. Assume this certificate can be used for both signing and encryption. %d", 0);
       return;
     }
-    if (!memcmp("signing", kd->use->s, kd->use->len)) {
+    if (!memcmp("signing", kd->use->g.s, kd->use->g.len)) {
       ent->sign_cert = x;
       DD("Extracted %s sign cert(%.*s)", logkey, len, p);
-    } else if (!memcmp("encryption", kd->use->s, kd->use->len)) {
+    } else if (!memcmp("encryption", kd->use->g.s, kd->use->g.len)) {
       ent->enc_cert = x;
       DD("Extracted %s enc cert(%.*s)", logkey, len, p);
     } else {
-      ERR("Unknown key use(%.*s)", kd->use->len, kd->use->s);
+      ERR("Unknown key use(%.*s)", kd->use->g.len, kd->use->g.s);
       D("Extracted %s cert(%.*s)", logkey, len, p);
     }
   }
@@ -105,8 +105,8 @@ static zxid_entity* zxid_mk_ent(zxid_conf* cf, struct zx_md_EntityDescriptor_s* 
   ent->ed = ed;
   if (!ed->entityID)
     goto bad_md;
-  ent->eid = zx_str_to_c(cf->ctx, ed->entityID);
-  sha1_safe_base64(ent->sha1_name, ed->entityID->len, ent->eid);
+  ent->eid = zx_str_to_c(cf->ctx, &ed->entityID->g);
+  sha1_safe_base64(ent->sha1_name, ed->entityID->g.len, ent->eid);
   ent->sha1_name[27] = 0;
   
   if (ed->Organization && ed->Organization->OrganizationDisplayName
@@ -156,7 +156,7 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
   } else if (r->EntitiesDescriptor) {
     if (!r->EntitiesDescriptor->EntityDescriptor)
       goto bad_md;
-    for (ed = r->EntitiesDescriptor->EntityDescriptor; ed; ed = (struct zx_md_EntityDescriptor_s*)ZX_NEXT(ed)) {
+    for (ed = r->EntitiesDescriptor->EntityDescriptor; ed && ed->gg.g.tok == zx_md_EntityDescriptor_ELEM; ed = (struct zx_md_EntityDescriptor_s*)ZX_NEXT(ed)) {
       ent = zxid_mk_ent(cf, ed);
       ent->n = ee;
       ee = ent;
@@ -340,7 +340,7 @@ zxid_entity* zxid_get_ent_ss(zxid_conf* cf, struct zx_str* eid)
 	  match = ent;
 	}
 	/* Check whether entity is already in the cache. */
-	if (zxid_get_ent_from_cache(cf, ent->ed->entityID)) {
+	if (zxid_get_ent_from_cache(cf, &ent->ed->entityID->g)) {
 	  INFO("While fetching metadata for eid(%.*s) got metadata for eid(%s), but the metadata was already in the cache. New metadata ignored.", eid->len, eid->s, ent->eid);
 	  ent = ent->n;
 	} else {
@@ -555,7 +555,7 @@ struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, X509* x)
 struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, char* use, X509* x)
 {
   struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx);
-  kd->use = zx_ref_str(cf->ctx, use);
+  kd->use = zx_ref_attr(cf->ctx, zx_use_ATTR, use);
   kd->KeyInfo = zxid_key_info(cf, x);
   return kd;
 }
@@ -566,10 +566,10 @@ struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, char* use, X509* x)
 struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_ArtifactResolutionService_s* d = zx_NEW_md_ArtifactResolutionService(cf->ctx);
-  d->Binding = zx_ref_str(cf->ctx, binding);
-  d->Location = zx_strf(cf->ctx, "%s%s", cf->url, loc);
+  d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
+  d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_strf(cf->ctx, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
   return d;
 }
 
@@ -579,10 +579,10 @@ struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, char* bind
 struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_SingleSignOnService_s* d = zx_NEW_md_SingleSignOnService(cf->ctx);
-  d->Binding = zx_ref_str(cf->ctx, binding);
-  d->Location = zx_strf(cf->ctx, "%s%s", cf->url, loc);
+  d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
+  d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_strf(cf->ctx, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
   return d;
 }
 
@@ -592,10 +592,10 @@ struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, char* binding, 
 struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_SingleLogoutService_s* d = zx_NEW_md_SingleLogoutService(cf->ctx);
-  d->Binding = zx_ref_str(cf->ctx, binding);
-  d->Location = zx_strf(cf->ctx, "%s%s", cf->url, loc);
+  d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
+  d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_strf(cf->ctx, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
   return d;
 }
 
@@ -605,10 +605,10 @@ struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, char* binding, 
 struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_ManageNameIDService_s* d = zx_NEW_md_ManageNameIDService(cf->ctx);
-  d->Binding = zx_ref_str(cf->ctx, binding);
-  d->Location = zx_strf(cf->ctx, "%s%s", cf->url, loc);
+  d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
+  d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_strf(cf->ctx, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
   return d;
 }
 
@@ -618,10 +618,10 @@ struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, char* binding, 
 struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
 {
   struct zx_md_NameIDMappingService_s* d = zx_NEW_md_NameIDMappingService(cf->ctx);
-  d->Binding = zx_ref_str(cf->ctx, binding);
-  d->Location = zx_strf(cf->ctx, "%s%s", cf->url, loc);
+  d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
+  d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
-    d->ResponseLocation = zx_strf(cf->ctx, "%s%s", cf->url, resp_loc);
+    d->ResponseLocation = zx_attrf(cf->ctx, zx_ResponseLocation_ATTR, "%s%s", cf->url, resp_loc);
   return d;
 }
 
@@ -631,9 +631,9 @@ struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, char* bindin
 struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, char* binding, char* loc, char* ix)
 {
   struct zx_md_AssertionConsumerService_s* d = zx_NEW_md_AssertionConsumerService(cf->ctx);
-  d->Binding = zx_ref_str(cf->ctx, binding);
-  d->Location = zx_strf(cf->ctx, "%s%s", cf->url, loc);
-  d->index = zx_ref_str(cf->ctx, ix);
+  d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
+  d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
+  d->index = zx_ref_attr(cf->ctx, zx_index_ATTR, ix);
   return d;
 }
 
@@ -648,10 +648,10 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf)
   struct zx_md_SingleLogoutService_s* z2;
   struct zx_md_KeyDescriptor_s* zk;
   struct zx_md_SPSSODescriptor_s* sp_ssod = zx_NEW_md_SPSSODescriptor(cf->ctx);
-  sp_ssod->AuthnRequestsSigned        = zx_ref_str(cf->ctx, cf->authn_req_sign?"1":"0");
-  sp_ssod->WantAssertionsSigned       = zx_ref_str(cf->ctx, cf->want_sso_a7n_signed?"1":"0");
-  sp_ssod->errorURL                   = zx_strf(cf->ctx, "%s?o=E", cf->url);
-  sp_ssod->protocolSupportEnumeration = zx_ref_str(cf->ctx, SAML2_PROTO);
+  sp_ssod->AuthnRequestsSigned        = zx_ref_attr(cf->ctx, zx_AuthnRequestsSigned_ATTR, cf->authn_req_sign?"1":"0");
+  sp_ssod->WantAssertionsSigned       = zx_ref_attr(cf->ctx, zx_WantAssertionsSigned_ATTR, cf->want_sso_a7n_signed?"1":"0");
+  sp_ssod->errorURL                   = zx_attrf(cf->ctx, zx_errorURL_ATTR, "%s?o=E", cf->url);
+  sp_ssod->protocolSupportEnumeration = zx_ref_attr(cf->ctx, zx_protocolSupportEnumeration_ATTR, SAML2_PROTO);
 
   LOCK(cf->mx, "read certs for our md");
   if (!cf->enc_cert)
@@ -736,9 +736,9 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf)
   struct zx_md_SingleSignOnService_s* z4;
   struct zx_md_KeyDescriptor_s* zk;
   struct zx_md_IDPSSODescriptor_s* idp_ssod = zx_NEW_md_IDPSSODescriptor(cf->ctx);
-  idp_ssod->WantAuthnRequestsSigned    = zx_ref_str(cf->ctx, cf->want_authn_req_signed?"1":"0");
-  idp_ssod->errorURL                   = zx_strf(cf->ctx, "%s?o=E", cf->url);
-  idp_ssod->protocolSupportEnumeration = zx_ref_str(cf->ctx, SAML2_PROTO);
+  idp_ssod->WantAuthnRequestsSigned    = zx_ref_attr(cf->ctx, zx_WantAuthnRequestsSigned_ATTR, cf->want_authn_req_signed?"1":"0");
+  idp_ssod->errorURL                   = zx_attrf(cf->ctx, zx_errorURL_ATTR, "%s?o=E", cf->url);
+  idp_ssod->protocolSupportEnumeration = zx_ref_attr(cf->ctx, zx_protocolSupportEnumeration_ATTR, SAML2_PROTO);
 
   LOCK(cf->mx, "read certs for our md idp");
   if (!cf->enc_cert)
@@ -812,18 +812,18 @@ struct zx_md_Organization_s* zxid_org_desc(zxid_conf* cf)
 {
   struct zx_md_Organization_s* org = zx_NEW_md_Organization(cf->ctx);
   org->OrganizationDisplayName = zx_NEW_md_OrganizationDisplayName(cf->ctx);
-  org->OrganizationDisplayName->lang = zx_ref_str(cf->ctx, "en");  /* *** config */
+  org->OrganizationDisplayName->lang = zx_ref_attr(cf->ctx, zx_lang_ATTR, "en");  /* *** config */
   org->OrganizationDisplayName->gg.content = zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name));
 
   org->OrganizationName = zx_NEW_md_OrganizationName(cf->ctx);
-  org->OrganizationName->lang = zx_ref_str(cf->ctx, "en");  /* *** config */
+  org->OrganizationName->lang = zx_ref_attr(cf->ctx, zx_lang_ATTR, "en");  /* *** config */
   if (cf->org_name && cf->org_name[0])
     org->OrganizationName->gg.content = zx_ref_str(cf->ctx, cf->org_name);
   else
     org->OrganizationName->gg.content = zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name));
 
   org->OrganizationURL = zx_NEW_md_OrganizationURL(cf->ctx);
-  org->OrganizationURL->lang = zx_ref_str(cf->ctx, "en");  /* *** config */
+  org->OrganizationURL->lang = zx_ref_attr(cf->ctx, zx_lang_ATTR, "en");  /* *** config */
   if (cf->org_url && cf->org_url[0])
     org->OrganizationURL->gg.content = zx_ref_str(cf->ctx, cf->org_url);
   else
@@ -839,7 +839,7 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf)
 {
   struct zx_md_ContactPerson_s* contact = zx_NEW_md_ContactPerson(cf->ctx);
 
-  contact->contactType = zx_ref_str(cf->ctx, "administrative");  /* *** config */
+  contact->contactType = zx_ref_attr(cf->ctx, zx_contactType_ATTR, "administrative");  /* *** config */
 
   if (cf->contact_org) {
     if (cf->contact_org[0])
@@ -885,6 +885,20 @@ struct zx_str* zxid_my_entity_id(zxid_conf* cf)
   }
 }
 
+struct zx_attr_s* zxid_my_entity_id_attr(zxid_conf* cf, int tok)
+{
+  if (cf->non_standard_entityid) {
+    D("my_entity_id non_standard_entytid(%s)", cf->non_standard_entityid);
+    return zx_attrf(cf->ctx, tok, "%s", cf->non_standard_entityid);
+  } else if (cf->bare_url_entityid) {
+    D("my_entity_id bare url(%s)", cf->url);
+    return zx_attrf(cf->ctx, tok, "%s", cf->url);
+  } else {
+    D("my_entity_id url(%s)", cf->url);
+    return zx_attrf(cf->ctx, tok, "%s?o=B", cf->url);
+  }
+}
+
 /*() Dynamically determine our Common Domain Cookie (IdP discovery) URL. */
 
 /* Called by: */
@@ -903,7 +917,7 @@ struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_str* nameid, char* a
   struct zx_sa_Issuer_s* is = zx_NEW_sa_Issuer(cf->ctx);
   is->gg.content = nameid;
   if (affiliation && affiliation[0])
-    is->NameQualifier = zx_ref_str(cf->ctx, affiliation);
+    is->NameQualifier = zx_ref_attr(cf->ctx, zx_NameQualifier_ATTR, affiliation);
   /*is->Format = zx_ref_str(cf->ctx, );*/
   return is;
 }
@@ -924,7 +938,7 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
   struct zx_md_EntityDescriptor_s* ed;
   
   ed = zx_NEW_md_EntityDescriptor(cf->ctx);
-  ed->entityID = zxid_my_entity_id(cf);
+  ed->entityID = zxid_my_entity_id_attr(cf, zx_entityID_ATTR);
   ed->SPSSODescriptor = zxid_sp_sso_desc(cf);
   if (cf->idp_ena)
     ed->IDPSSODescriptor = zxid_idp_sso_desc(cf);

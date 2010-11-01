@@ -47,8 +47,6 @@
 extern "C" {
 #endif
 
-struct zx_any_attr_s;
-
 /*(s) Namespace management. The context references this table. The array is
  * terminated by an element with empty URL (url_len == 0). The elements
  * of the array are the official namespace prefixes derived from
@@ -63,16 +61,18 @@ struct zx_ns_s {
   int url_len;              /* 0 = end of nstab */
   int prefix_len;
   const char* prefix;
-  int (*elem2tok)(const char* name, int len);  /* Pointer to the (xsd2sg + gperf generated) perfect hash function for determining tok in namespace */
+  struct zx_el_tok* (*elem2tok)(const char* name, int len);  /* Pointer to the (xsd2sg + gperf generated) perfect hash function for determining tok in namespace */
   struct zx_el_tok* el_tab; /* Table of element names (for perfoect hash). */
   struct zx_ns_s* n;        /* For holding runtime equivalences as a linked list. */
-  struct zx_ns_s* m;        /* For a rt equivalence, pointer to the master entry. */
+  struct zx_ns_s* master;   /* For a rt equivalence, pointer to the master entry. */
   struct zx_ns_s* seen;     /* Pointer to other "seen" namespaces with same prefix (stack) */
   struct zx_ns_s* seen_n;   /* Next prefix in seen structure (list) */
   struct zx_ns_s* seen_p;   /* Previous prefix in seen structure (list) */
   struct zx_ns_s* seen_pop; /* Pop list for seen stack (used in the end of an element). */
   struct zx_ns_s* inc_n;    /* Next link for InclusiveNamespaces */
 };
+
+/*struct zx_ns_s zx_ns_tab[]; include c/zx-ns.h instead */
 
 /* Context tracks the input and namespaces. It is also passed to memory allocator. */
 
@@ -122,15 +122,13 @@ struct zx_ctx {
  * *** by checking if the next is still of the same type. As multioccurances
  * *** are rare, this would not hurt much. */
 
-#define wo n
+//#define wo n
 
 struct zx_str {
-  struct zx_str* n;         /* next pointer for compile time construction of data structures */
-  /*struct zx_node_s* wo;   /* next pointer for canonicalization order (wire order) */
-  /*struct zx_ns_s* ns;       /* namespace of an element or attribute */
-  int tok;                  /* token number of the ns+tag represented by this struct */
+  struct zx_str* n;  /* next pointer for compile time construction of data structures */
+  int tok;           /* token number of the ns+tag represented by this struct */
   int len;
-  const char* s;            /* Start of prefix:element in the scan buffer. */
+  char* s;           /* Start of prefix:element in the scan buffer. */
 };
 
 //#define ZX_NEXT(x) ((void*)((struct zx_node_s*)(x))->n)
@@ -146,7 +144,7 @@ struct zx_attr_s {
   char* name;
 };
 
-#define ZX_ANY_AT(x) ((struct zx_any_attr_s*)(x))
+  //#define ZX_ANY_AT(x) ((struct zx_any_attr_s*)(x))
 
 /* Simple elements, base type for complex elements. */
 
@@ -168,13 +166,21 @@ struct zx_elem_s* zx_dup_len_simple_elem(struct zx_ctx* c, int len, const char* 
 struct zx_elem_s* zx_dup_simple_elem(struct zx_ctx* c, const char* s);
 #define ZX_SIMPLE_ELEM_CHK(el) ((el) && (el)->gg.content && (el)->gg.content->len && (el)->gg.content->s && (el)->gg.content->s[0])
 
+struct zx_attr_s* zx_ref_len_attr(struct zx_ctx* c, int tok, int len, const char* s);
+struct zx_attr_s* zx_ref_attr(struct zx_ctx* c, int tok, const char* s);
+struct zx_attr_s* zx_new_len_attr(struct zx_ctx* c, int tok, int len);
+struct zx_attr_s* zx_dup_len_attr(struct zx_ctx* c, int tok, int len, const char* s);
+struct zx_attr_s* zx_dup_attr(struct zx_ctx* c, int tok, const char* s);
+struct zx_attr_s* zx_attrf(struct zx_ctx* c, int tok, const char* f, ...);
+
 struct zx_str* zx_ref_str(struct zx_ctx* c, const char* s);  /* ref points to underlying data */
 struct zx_str* zx_ref_len_str(struct zx_ctx* c, int len, const char* s);
 struct zx_str* zx_new_len_str(struct zx_ctx* c, int len);
-struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s);  /* data is new memory */
 struct zx_str* zx_dup_len_str(struct zx_ctx* c, int len, const char* s);
-char* zx_alloc_sprintf(struct zx_ctx* c, int* retlen, const char* f, ...);
+struct zx_str* zx_dup_str(struct zx_ctx* c, const char* s);  /* data is new memory */
 struct zx_str* zx_strf(struct zx_ctx* c, const char* f, ...);  /* data is new memory */
+
+char* zx_alloc_sprintf(struct zx_ctx* c, int* retlen, const char* f, ...);
 void  zx_str_free(struct zx_ctx* c, struct zx_str* ss);   /* free both ss->s and ss */
 char* zx_str_to_c(struct zx_ctx* c, struct zx_str* ss);
 void  zx_str_conv(struct zx_str* ss, int* out_len, char** out_s);  /* SWIG typemap friendly */
@@ -199,7 +205,7 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 
 /* N.B. All string scanning assumes buffer is terminated with C string style nul byte. */
 /*#define ZX_SKIP_WS_P(c,p,x) MB for (; ONE_OF_4(*(p), ' ', '\n', '\r', '\t'); ++(p)) ; if (!*(p)) return x; ME*/
-#define ZX_SKIP_WS_P(c,p,x) MB p += strcspn((p)," \n\r\t"); if (!*(p)) return x; ME
+#define ZX_SKIP_WS_P(c,p,x) MB p += strspn((p)," \n\r\t"); if (!*(p)) return x; ME
 #define ZX_SKIP_WS(c,x)     ZX_SKIP_WS_P((c),(c)->p,x)
 #define ZX_LOOK_FOR_P(c,ch,p) MB char* pp = memchr((p), (ch), (c)->lim - (p)); if (!pp) goto look_for_not_found; else (p) = pp; ME
 #define ZX_LOOK_FOR(c,ch)   ZX_LOOK_FOR_P((c),(ch),(c)->p)
@@ -223,19 +229,23 @@ struct zx_ctx* zx_init_ctx();   /* from malloc(3) */
 #define ZX_TOK_NO_ATTR   (-7)
 #define ZX_TOK_ATTR_ERR  (-6)
 #define ZX_TOK_XMLNS     (-4)
-#define ZX_TOK_DATA      253
-#define ZX_TOK_ATTR_NOT_FOUND 254
-#define ZX_TOK_NOT_FOUND        0x000000ff
-#define ZX_TOK_NS_NOT_FOUND     0x0000ff00
-#define ZX_TOK_AND_NS_NOT_FOUND 0x0000ffff
-#define ZX_TOK_TOK_MASK         0x000000ff
-#define ZX_TOK_NS_MASK          0x0000ff00
+#define zx_root_ELEM            0x00fffffc
+#define ZX_TOK_DATA             0x0000fffd
+#define ZX_TOK_ATTR_NOT_FOUND   0x0000fffe
+#define ZX_TOK_NOT_FOUND        0x0000ffff
+#define ZX_TOK_NS_NOT_FOUND     0x00ff0000
+#define ZX_TOK_AND_NS_NOT_FOUND 0x00ffffff  /* Decimal 16777215 */
+#define ZX_TOK_TOK_MASK         0x0000ffff
+#define ZX_TOK_NS_MASK          0x00ff0000
+#define ZX_TOK_NS_SHIFT         16
+#define ZX_TOK_FLAGS_MASK       0xff000000
+
 struct zx_el_tok {
   const char* name;
   int siz;  /* struct size to help allocation */
   //struct zx_elem_s* (*dec)(struct zx_ctx* c, struct zx_elem_s* x); /* funcptr to decode switch */
 };
-struct zx_tok { const char* name; };
+struct zx_at_tok { const char* name; };
 
 /*struct zx_note_s* zx_clone_any(struct zx_ctx* c, struct zx_note_s* n, int dup_strs); TBD */
 /*void zx_free_any(struct zx_ctx* c, struct zx_note_s* n, int free_strs); TBD */
@@ -245,13 +255,10 @@ int   write2_or_append_lock_c_path(const char* c_path, int len1, const char* dat
 int   zx_report_openssl_error(const char* logkey);
 
 #if 0
-void  zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_any_elem_s* x, const char* nam, int namlen);
+void  zx_fix_any_elem_dec(struct zx_ctx* c, struct zx_elem_s* x, const char* nam, int namlen);
 int   zx_is_ns_prefix(struct zx_ns_s* ns, int len, const char* prefix);
 #endif
 int zx_dump_ns_tab(struct zx_ctx* c, int flags);
-struct zx_ns_s* zx_new_unknown_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url);
-struct zx_ns_s* zx_new_known_ns(struct zx_ctx* c, int prefix_len, const char* prefix, int url_len, const char* url);
-struct zx_ns_s* zx_locate_ns_by_prefix(struct zx_ctx* c, int len, const char* prefix);
 struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix);
 struct zx_ns_s* zx_prefix_seen_whine(struct zx_ctx* c, int len, const char* prefix, const char* logkey, int mk_dummy_ns);
 struct zx_ns_s* zx_scan_xmlns(struct zx_ctx* c);
@@ -277,14 +284,15 @@ int   zx_len_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_n
 void  zx_add_xmlns_if_not_seen(struct zx_ctx* c, struct zx_ns_s* ns, struct zx_ns_s** pop_seen);
 char* zx_enc_seen(char* p, struct zx_ns_s* ns);
 int   zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp);
-void  zx_see_attr_ns(struct zx_ctx* c, struct zx_any_attr_s* aa, struct zx_ns_s** pop_seenp);
+void  zx_see_attr_ns(struct zx_ctx* c, struct zx_attr_s* aa, struct zx_ns_s** pop_seenp);
 char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_elem_s* x);
 char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x);
 struct zx_str* zx_easy_enc_common(struct zx_ctx* c, char* p, char* buf, int len);
-int   zx_attr_so_len(struct zx_ctx* c, struct zx_str* attr, int name_size, struct zx_ns_s** pop_seenp);
-char* zx_attr_so_enc(char* p, struct zx_str* attr, char* name, int name_len);
-void  zx_free_attr(struct zx_ctx* c, struct zx_str* attr, int free_strs);
+int   zx_attr_so_len(struct zx_ctx* c, struct zx_attr_s* attr, int name_len, struct zx_ns_s** pop_seenp);
+char* zx_attr_so_enc(char* p, struct zx_attr_s* attr, char* name, int name_len);
+char* zx_attr_wo_enc(char* p, struct zx_attr_s* attr);
+void  zx_free_attr(struct zx_ctx* c, struct zx_attr_s* attr, int free_strs);
 void  zx_free_elem_common(struct zx_ctx* c, struct zx_elem_s* x, int free_strs);
 void  zx_free_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, int free_strs);
 
@@ -315,6 +323,11 @@ struct zx_ns_s* zx_xmlns_detected(struct zx_ctx* c, struct zx_elem_s* x, const c
 
 int   zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
 void  zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
+
+/* These do not have their own elems, so the table andlookup were not generated. Supply dummies. */
+#define zx_xs__ELEM_MAX 1
+#define zx_xsi__ELEM_MAX 1
+#define zx_xml__ELEM_MAX 1
 
 #define SIG_ALGO_RSA_SHA1  "http://www.w3.org/2000/09/xmldsig#rsa-sha1"
 #define SIG_ALGO_DSA_SHA1  "http://www.w3.org/2000/09/xmldsig#dsa-sha1"

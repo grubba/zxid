@@ -47,7 +47,7 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
   
   if (sign) {
     ZERO(&refs, sizeof(refs));
-    refs.id = a7n->ID;
+    refs.id = &a7n->ID->g;
     refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert anoint a7n"))
       a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -57,26 +57,26 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
   /* Log the issued a7n */
 
   if (cf->loguser)
-    zxlogusr(cf, uid, &ourts, &ourts, 0, issued_to, 0, a7n->ID,
+    zxlogusr(cf, uid, &ourts, &ourts, 0, issued_to, 0, &a7n->ID->g,
 	     (a7n->Subject->NameID && a7n->Subject->NameID->gg.content
 	      ?a7n->Subject->NameID->gg.content
 	      :(zx_dup_str(cf->ctx, (a7n->Subject->EncryptedID?"ENC":"-")))),
 	     sign?"U":"N", "K", lk, "-", 0);
 
-  zxlog(cf, &ourts, &ourts, 0, issued_to, 0, a7n->ID,
+  zxlog(cf, &ourts, &ourts, 0, issued_to, 0, &a7n->ID->g,
 	(a7n->Subject->NameID && a7n->Subject->NameID->gg.content
 	 ?a7n->Subject->NameID->gg.content
 	 :(zx_dup_str(cf->ctx, (a7n->Subject->EncryptedID?"ENC":"-")))),
 	sign?"U":"N", "K", lk, "-", 0);
   
   if (cf->log_issue_a7n) {
-    logpath = zxlog_path(cf, issued_to, a7n->ID, ZXLOG_ISSUE_DIR, ZXLOG_A7N_KIND, 1);
+    logpath = zxlog_path(cf, issued_to, &a7n->ID->g, ZXLOG_ISSUE_DIR, ZXLOG_A7N_KIND, 1);
     if (logpath) {
       ss = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
       if (zxlog_dup_check(cf, logpath, "IdP POST Assertion")) {
-	ERR("Duplicate Assertion ID(%.*s)", a7n->ID->len, a7n->ID->s);
+	ERR("Duplicate Assertion ID(%.*s)", a7n->ID->g.len, a7n->ID->g.s);
 	if (cf->dup_a7n_fatal) {
-	  ERR("FATAL (by configuration): Duplicate Assertion ID(%.*s)", a7n->ID->len, a7n->ID->s);
+	  ERR("FATAL (by configuration): Duplicate Assertion ID(%.*s)", a7n->ID->g.len, a7n->ID->g.s);
 	  zxlog_blob(cf, 1, logpath, ss, "anoint_a7n dup");
 	  zx_str_free(cf->ctx, ss);
 	  zx_str_free(cf->ctx, logpath);
@@ -101,6 +101,7 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
 {
   X509* sign_cert;
   RSA*  sign_pkey;
+  zxid_a7n* a7n;
   struct zxsig_ref refs;
   struct zx_str* ss;
   struct zx_str* logpath;
@@ -109,7 +110,7 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
   
   if (sign) {
     ZERO(&refs, sizeof(refs));
-    refs.id = resp->ID;
+    refs.id = &resp->ID->g;
     refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, resp);
     if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert anoint resp"))
       resp->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -118,23 +119,24 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
   
   /* Log the issued Response */
   
-  zxlog(cf, &ourts, &ourts, 0, ar->Issuer->gg.content, resp->ID,
-	resp->Assertion&&resp->Assertion->ID?resp->Assertion->ID:zx_dup_str(cf->ctx, "-"),
-	(resp->Assertion
-	 ?(resp->Assertion->Subject->NameID && resp->Assertion->Subject->NameID->gg.content
-	   ?resp->Assertion->Subject->NameID->gg.content
-	   :(zx_dup_str(cf->ctx, (resp->Assertion->Subject->EncryptedID?"ENC":"-"))))
+  a7n = resp->Assertion;
+  zxlog(cf, &ourts, &ourts, 0, ar->Issuer->gg.content, &resp->ID->g,
+	a7n&&a7n->ID?&a7n->ID->g:zx_dup_str(cf->ctx, "-"),
+	(a7n
+	 ?(a7n->Subject->NameID && a7n->Subject->NameID->gg.content
+	   ?a7n->Subject->NameID->gg.content
+	   :(zx_dup_str(cf->ctx, (a7n->Subject->EncryptedID?"ENC":"-"))))
 	 :zx_dup_str(cf->ctx,"-")),
 	sign?"U":"N", "K", "SSORESP", "-", 0);
 
   if (cf->log_issue_msg) {
-    logpath = zxlog_path(cf, ar->Issuer->gg.content, resp->ID, ZXLOG_ISSUE_DIR, ZXLOG_MSG_KIND,1);
+    logpath = zxlog_path(cf, ar->Issuer->gg.content, &resp->ID->g, ZXLOG_ISSUE_DIR, ZXLOG_MSG_KIND,1);
     if (logpath) {
       ss = zx_EASY_ENC_SO_sp_Response(cf->ctx, resp);
       if (zxlog_dup_check(cf, logpath, "IdP POST Response")) {
-	ERR("Duplicate Response ID(%.*s)", resp->ID->len, resp->ID->s);
+	ERR("Duplicate Response ID(%.*s)", resp->ID->g.len, resp->ID->g.s);
 	if (cf->dup_msg_fatal) {
-	  ERR("FATAL (by configuration): Duplicate Response ID(%.*s)", resp->ID->len, resp->ID->s);
+	  ERR("FATAL (by configuration): Duplicate Response ID(%.*s)", resp->ID->g.len, resp->ID->g.s);
 	  zxlog_blob(cf, 1, logpath, ss, "anoint_sso_resp dup");
 	  zx_str_free(cf->ctx, ss);
 	  zx_str_free(cf->ctx, logpath);
@@ -320,7 +322,7 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
     at_stmt->Attribute = at;
     if (cf->idpatopt & 0x01) {
       at = zxid_mk_attribute(cf, "urn:oid:1.3.6.1.4.1.5923.1.1.1.6" /* eduPersonPrincipalName */, zx_dup_cstr(cf->ctx, dir));
-      at->NameFormat = zx_dup_str(cf->ctx, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
+      at->NameFormat = zx_dup_attr(cf->ctx, zx_NameFormat_ATTR, "urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
       ZX_NEXT(at) = (void*)at_stmt->Attribute;
       at_stmt->Attribute = at;
     }
@@ -362,7 +364,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
   char dir[ZXID_MAX_DIR];
   zxid_nid* nameid;
   struct zx_str* nid;
-  struct zx_str* idp_eid;
+  struct zx_attr_s* idp_eid;
 
   got = read_all(sizeof(buf)-1, buf, "idpsso", 0, "%s" ZXID_UID_DIR "%s/%s/.mni" , cf->path, uid, sp_name_buf);
 
@@ -379,19 +381,19 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
 	D_DEDENT("allowcreate: ");
 	return 0;
       }
-      idp_eid = zxid_my_entity_id(cf);
+      
       nid = zxid_mk_id(cf, "F", ZXID_ID_BITS);
       nameid = zx_NEW_sa_NameID(cf->ctx);
-      nameid->Format = zx_ref_str(cf->ctx, SAML2_PERSISTENT_NID_FMT);
-      nameid->NameQualifier = idp_eid;
-      nameid->SPNameQualifier = affil;
+      nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, SAML2_PERSISTENT_NID_FMT);
+      nameid->NameQualifier = idp_eid = zxid_my_entity_id_attr(cf, zx_NameQualifier_ATTR);
+      nameid->SPNameQualifier = zx_ref_len_attr(cf->ctx, zx_SPNameQualifier_ATTR, affil->len, affil->s);
       nameid->gg.content = nid;
 
       if (!write_all_path_fmt("put_fed", ZXID_MAX_USER, buf,
 			      "%s%s", dir, "/.mni",
 			      "%.*s|%.*s|%.*s|%.*s|",
 			      sizeof(SAML2_PERSISTENT_NID_FMT), SAML2_PERSISTENT_NID_FMT,
-			      idp_eid->len, idp_eid->s,
+			      idp_eid->g.len, idp_eid->g.s,
 			      affil->len, affil->s,
 			      nid->len, nid->s)) {
 	zxlog(cf, 0, srcts, 0, issuer, req_id, 0, nid, "N", "S", "EFILE", uid, "put_fed fail, permissions?");
@@ -447,7 +449,7 @@ void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_
   char dir[ZXID_MAX_DIR];
 
   D_INDENT("mk_trans: ");
-  nameid->Format = zx_dup_str(cf->ctx, SAML2_TRANSIENT_NID_FMT);
+  nameid->Format = zx_dup_attr(cf->ctx, zx_Format_ATTR, SAML2_TRANSIENT_NID_FMT);
   nameid->gg.content = nid = zxid_mk_id(cf, "T", ZXID_ID_BITS);
   
   /* Create entry for reverse mapping from pseudonym nid to uid */
@@ -499,7 +501,7 @@ char* zxid_add_fed_tok_to_epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int
   }
   
   if (sp_meta->ed && sp_meta->ed->AffiliationDescriptor
-      && (affil = sp_meta->ed->AffiliationDescriptor->affiliationOwnerID)
+      && (affil = &sp_meta->ed->AffiliationDescriptor->affiliationOwnerID->g)
       && affil->s && affil->len)
     ; /* affil is good */
   else
@@ -565,30 +567,29 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
   char sp_name_buf[1024];
   D("sp_eid(%s)", sp_meta->eid);
 
-  if (ar->IssueInstant && ar->IssueInstant->s)
-    srcts->tv_sec = zx_date_time_to_secs(ar->IssueInstant->s);
+  if (ar->IssueInstant && ar->IssueInstant->g.len && ar->IssueInstant->g.s)
+    srcts->tv_sec = zx_date_time_to_secs(ar->IssueInstant->g.s);
   
   nidpol = ar->NameIDPolicy;
-  if (!cgi->allow_create && nidpol && nidpol->AllowCreate && nidpol->AllowCreate->s) {
-    D("No allow_create from form, extract from SAMLRequest (%.*s) len=%d", nidpol->AllowCreate->len, nidpol->AllowCreate->s, nidpol->AllowCreate->len);
-    cgi->allow_create = ZXID_XML_TRUE_TEST(nidpol->AllowCreate) ? '1' : '0';
+  if (!cgi->allow_create && nidpol && nidpol->AllowCreate && nidpol->AllowCreate->g.s) {
+    D("No allow_create from form, extract from SAMLRequest (%.*s) len=%d", nidpol->AllowCreate->g.len, nidpol->AllowCreate->g.s, nidpol->AllowCreate->g.len);
+    cgi->allow_create = ZXID_XML_TRUE_TEST(&nidpol->AllowCreate->g) ? '1' : '0';
   }
 
-  if ((!cgi->nid_fmt || !cgi->nid_fmt[0])
-      && nidpol && nidpol->Format && nidpol->Format->s) {
-    D("No Name ID Format from form, extract from SAMLRequest (%.*s) len=%d", nidpol->Format->len, nidpol->Format->s, nidpol->Format->len);
-    cgi->nid_fmt = nidpol->Format->len == sizeof(SAML2_TRANSIENT_NID_FMT)-1
-      && !memcmp(nidpol->Format->s, SAML2_TRANSIENT_NID_FMT, sizeof(SAML2_TRANSIENT_NID_FMT)-1)
+  if ((!cgi->nid_fmt || !cgi->nid_fmt[0]) && nidpol && nidpol->Format && nidpol->Format->g.s) {
+    D("No Name ID Format from form, extract from SAMLRequest (%.*s) len=%d", nidpol->Format->g.len, nidpol->Format->g.s, nidpol->Format->g.len);
+    cgi->nid_fmt = nidpol->Format->g.len == sizeof(SAML2_TRANSIENT_NID_FMT)-1
+      && !memcmp(nidpol->Format->g.s, SAML2_TRANSIENT_NID_FMT, sizeof(SAML2_TRANSIENT_NID_FMT)-1)
       ? "trnsnt" : "prstnt";
   }
 
   /* Check for federation. */
   
-  affil = nidpol && nidpol->SPNameQualifier ? nidpol->SPNameQualifier : ar->Issuer->gg.content;
+  affil = nidpol && nidpol->SPNameQualifier ? &nidpol->SPNameQualifier->g : ar->Issuer->gg.content;
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
   D("sp_name_buf(%s)  allow_create=%d", sp_name_buf, cgi->allow_create);
   *nameid = zxid_check_fed(cf, affil, ses->uid, cgi->allow_create,
-			  srcts, ar->Issuer->gg.content, ar->ID, sp_name_buf);
+			  srcts, ar->Issuer->gg.content, &ar->ID->g, sp_name_buf);
 
   if (*nameid) {
     if (cgi->nid_fmt && !strcmp(cgi->nid_fmt, "trnsnt")) {
@@ -611,10 +612,10 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
    * profile seems to make it mandatory. See profiles ll.554-560. */
 
   a7n->Subject->SubjectConfirmation = zx_NEW_sa_SubjectConfirmation(cf->ctx);
-  a7n->Subject->SubjectConfirmation->Method = zx_dup_str(cf->ctx, SAML2_BEARER);
+  a7n->Subject->SubjectConfirmation->Method = zx_dup_attr(cf->ctx, zx_Method_ATTR, SAML2_BEARER);
   a7n->Subject->SubjectConfirmation->SubjectConfirmationData = zx_NEW_sa_SubjectConfirmationData(cf->ctx);
   if (acsurl)
-    a7n->Subject->SubjectConfirmation->SubjectConfirmationData->Recipient = acsurl;
+    a7n->Subject->SubjectConfirmation->SubjectConfirmationData->Recipient = zx_ref_len_attr(cf->ctx, zx_Recipient_ATTR, acsurl->len, acsurl->s);
   a7n->Subject->SubjectConfirmation->SubjectConfirmationData->NotOnOrAfter = a7n->Conditions->NotOnOrAfter;
 
   return a7n;
@@ -661,17 +662,17 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     if (ar->ProtocolBinding || ar->AssertionConsumerServiceURL) {
       ERR("When SP specifies AssertionConsumerServiceIndex in AuthnRequest, it SHOULD NOT specify ProtocolBinding(%p) or AssertionConsumerServiceURL(%p). They are ignored. AssertionConsumerServiceIndex approach is the preferred approach.", ar->ProtocolBinding, ar->AssertionConsumerServiceURL);
     }
-    acsurl = zxid_sp_loc_by_index_raw(cf, cgi, sp_meta, ZXID_ACS_SVC, ar->AssertionConsumerServiceIndex, &binding);
+    acsurl = zxid_sp_loc_by_index_raw(cf, cgi, sp_meta, ZXID_ACS_SVC, &ar->AssertionConsumerServiceIndex->g, &binding);
   } else if (ar->ProtocolBinding) {
-    p = zx_str_to_c(cf->ctx, ar->ProtocolBinding);
+    p = zx_str_to_c(cf->ctx, &ar->ProtocolBinding->g);
     acsurl = zxid_sp_loc_raw(cf, cgi, sp_meta, ZXID_ACS_SVC, p, 0);
     ZX_FREE(cf->ctx, p);
     if (acsurl && ar->AssertionConsumerServiceURL) {
-      if (acsurl->len != ar->AssertionConsumerServiceURL->len
-	  || memcmp(acsurl->s, ar->AssertionConsumerServiceURL->s, acsurl->len)) {
-	ERR("SECURITY/SPOOFING: SP specified in AuthnRequest an AssertionConsumerServiceURL(%.*s) but this does not agree with the metadata specified url(%.*s) for Binding(%.*s). SP would be better off using AssertionConsumerServiceIndex approach. The metadata is relied on and the AssertionConsumerServiceURL is ignored.", ar->AssertionConsumerServiceURL->len, ar->AssertionConsumerServiceURL->s, acsurl->len, acsurl->s, ar->ProtocolBinding->len, ar->ProtocolBinding->s);
+      if (acsurl->len != ar->AssertionConsumerServiceURL->g.len
+	  || memcmp(acsurl->s, ar->AssertionConsumerServiceURL->g.s, acsurl->len)) {
+	ERR("SECURITY/SPOOFING: SP specified in AuthnRequest an AssertionConsumerServiceURL(%.*s) but this does not agree with the metadata specified url(%.*s) for Binding(%.*s). SP would be better off using AssertionConsumerServiceIndex approach. The metadata is relied on and the AssertionConsumerServiceURL is ignored.", ar->AssertionConsumerServiceURL->g.len, ar->AssertionConsumerServiceURL->g.s, acsurl->len, acsurl->s, ar->ProtocolBinding->g.len, ar->ProtocolBinding->g.s);
       }
-      binding = zxid_protocol_binding_map_saml2(ar->ProtocolBinding);
+      binding = zxid_protocol_binding_map_saml2(&ar->ProtocolBinding->g);
     }
   }
   if (!acsurl) {
@@ -687,8 +688,8 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
 	ERR("SP metadata does not contain any AssertionConsumerService. Can not complete SSO (SP metadata problem) %d", 0);
 	return zx_dup_str(cf->ctx, "* ERR");
       }
-      acsurl = sp_meta->ed->SPSSODescriptor->AssertionConsumerService->Location;
-      binding = zxid_protocol_binding_map_saml2(sp_meta->ed->SPSSODescriptor->AssertionConsumerService->Binding);
+      acsurl = &sp_meta->ed->SPSSODescriptor->AssertionConsumerService->Location->g;
+      binding = zxid_protocol_binding_map_saml2(&sp_meta->ed->SPSSODescriptor->AssertionConsumerService->Binding->g);
     }
   }
 
@@ -704,7 +705,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     
     if (cf->sso_sign & ZXID_SSO_SIGN_A7N) {
       ZERO(&refs, sizeof(refs));
-      refs.id = a7n->ID;
+      refs.id = &a7n->ID->g;
       refs.canon = zx_EASY_ENC_SO_sa_Assertion(cf->ctx, a7n);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert paos"))
 	a7n->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -726,16 +727,16 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
 
     e->Header = zx_NEW_e_Header(cf->ctx);
     e->Header->ecp_Response = zx_NEW_ecp_Response(cf->ctx);
-    e->Header->ecp_Response->mustUnderstand = zx_dup_str(cf->ctx, "1");
-    e->Header->ecp_Response->actor = zx_dup_str(cf->ctx, SOAP_ACTOR_NEXT);
-    e->Header->ecp_Response->AssertionConsumerServiceURL = acsurl;
+    e->Header->ecp_Response->mustUnderstand = zx_dup_attr(cf->ctx, zx_e_mustUnderstand_ATTR, "1");
+    e->Header->ecp_Response->actor = zx_dup_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+    e->Header->ecp_Response->AssertionConsumerServiceURL = zx_ref_len_attr(cf->ctx, zx_AssertionConsumerServiceURL_ATTR, acsurl->len, acsurl->s);
 
     e->Body = zx_NEW_e_Body(cf->ctx);
     e->Body->Response = resp;
     
     ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, e);
 
-    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, a7n->ID, nameid->gg.content, "N", "K", logop, ses->uid, "PAOS2");
+    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, ses->uid, "PAOS2");
 
 
     /* *** Check what HTTP level headers PAOS needs */
@@ -763,7 +764,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     if (!ss)
       return zx_dup_str(cf->ctx, "* ERR");
 
-    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, a7n->ID, nameid->gg.content, "N", "K", logop, ses->uid, "SIMPSIG");
+    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, ses->uid, "SIMPSIG");
 
     return zx_strf(cf->ctx, "Content-type: text/html\r\nContent-Length: %d\r\n%s%s%s\r\n%.*s",
 		   ss->len,
@@ -794,7 +795,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     if (!ss)
       return zx_dup_str(cf->ctx, "* ERR");
     
-    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, a7n->ID, nameid->gg.content, "N", "K", logop, ses->uid, "BRWS-POST");
+    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, ses->uid, "BRWS-POST");
     
     return zx_strf(cf->ctx, "Content-type: text/html\r\nContent-Length: %d\r\n%s%s%s\r\n%.*s",
 		   ss->len,
@@ -824,7 +825,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     zx_str_free(cf->ctx, payload);
     /* *** Do artifact processing */
 
-    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, a7n->ID, nameid->gg.content, "N", "K", logop, ses->uid, "BRWS-ART");
+    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, ses->uid, "BRWS-ART");
 
 
   default:

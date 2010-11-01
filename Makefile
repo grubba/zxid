@@ -362,7 +362,7 @@ CFLAGS+= $(CDEF) $(CDIR)
 
 ZXIDHDRS=zx.h zxid.h zxidnoswig.h c/zxidvers.h
 ZXID_LIB_OBJ=zxidsimp.$(OBJ_EXT) zxidpool.$(OBJ_EXT) zxidpsso.$(OBJ_EXT) zxidsso.$(OBJ_EXT) zxidslo.$(OBJ_EXT) zxiddec.$(OBJ_EXT) zxidspx.$(OBJ_EXT) zxididpx.$(OBJ_EXT) zxidmni.$(OBJ_EXT) zxidpep.$(OBJ_EXT) zxidpdp.$(OBJ_EXT) zxidmk.$(OBJ_EXT) zxida7n.$(OBJ_EXT) zxidses.$(OBJ_EXT) zxiduser.$(OBJ_EXT) zxidcgi.$(OBJ_EXT) zxidconf.$(OBJ_EXT) zxidecp.$(OBJ_EXT) zxidcdc.$(OBJ_EXT) zxidloc.$(OBJ_EXT) zxidlib.$(OBJ_EXT) zxidmeta.$(OBJ_EXT) zxidcurl.$(OBJ_EXT) zxidepr.$(OBJ_EXT) zxida7n.$(OBJ_EXT) ykcrc.$(OBJ_EXT) ykaes.$(OBJ_EXT) $(PLATFORM_OBJ)
-ZX_OBJ=zxlibdec.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) c/license.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT) c/zx-elems.$(OBJ_EXT)
+ZX_OBJ=zxlibdec.$(OBJ_EXT) zxlib.$(OBJ_EXT) zxns.$(OBJ_EXT) zxutil.$(OBJ_EXT) zxlog.$(OBJ_EXT) zxsig.$(OBJ_EXT) zxcrypto.$(OBJ_EXT) c/license.$(OBJ_EXT) c/zx-attrs.$(OBJ_EXT)  c/zx-ns.$(OBJ_EXT)
 WSF_OBJ=zxidmkwsf.$(OBJ_EXT) zxidwsf.$(OBJ_EXT) zxidwsc.$(OBJ_EXT) zxidwsp.$(OBJ_EXT) zxiddi.$(OBJ_EXT) zxidim.$(OBJ_EXT) zxidps.$(OBJ_EXT)
 SMIME_LIB_OBJ=certauth.$(OBJ_EXT) keygen.$(OBJ_EXT) pkcs12.$(OBJ_EXT) smime-enc.$(OBJ_EXT) smime-qry.$(OBJ_EXT) smime-vfy.$(OBJ_EXT) smimemime.$(OBJ_EXT) smimeutil.$(OBJ_EXT)
 
@@ -590,19 +590,18 @@ ZX_GEN_GPERF=\
  c/zx-a.gperf    c/zx-di12.gperf  c/zx-lu.gperf    c/zx-xenc.gperf \
  c/zx-ac.gperf   c/zx-m20.gperf   c/zx-sec.gperf   c/zx-exca.gperf \
  c/zx-b.gperf    c/zx-ds.gperf    c/zx-md.gperf    c/zx-sec12.gperf \
- c/zx-b12.gperf  c/zx-e.gperf     c/zx-ns.h         c/zx-sp.gperf \
+ c/zx-b12.gperf  c/zx-e.gperf     c/zx-sp.gperf \
  c/zx-ff12.gperf c/zx-sa.gperf    c/zx-sp11.gperf \
- c/zx.gperf      c/zx-is.gperf    c/zx-sa11.gperf  c/zx-wsse.gperf \
+ c/zx-is.gperf   c/zx-sa11.gperf  c/zx-wsse.gperf \
  c/zx-di.gperf   c/zx-is12.gperf  c/zx-sbf.gperf   c/zx-wsu.gperf \
  c/zx-ecp.gperf  c/zx-paos.gperf  c/zx-dap.gperf   c/zx-ps.gperf \
  c/zx-im.gperf   c/zx-as.gperf    c/zx-subs.gperf  c/zx-dst.gperf \
  c/zx-cb.gperf   c/zx-cdm.gperf   c/zx-gl.gperf    c/zx-mm7.gperf \
  c/zx-wst.gperf  c/zx-wsp.gperf   c/zx-wsc.gperf \
  c/zx-xa.gperf   c/zx-xac.gperf   c/zx-xasa.gperf  c/zx-xasp.gperf \
- c/zx-xasacd1.gperf  c/zx-xaspcd1.gperf \
+ c/zx-xasacd1.gperf               c/zx-xaspcd1.gperf \
  c/zx-dp.gperf   c/zx-pmm.gperf   c/zx-prov.gperf  c/zx-idp.gperf c/zx-shps.gperf \
  c/zx-demomed.gperf c/zx-hrxml.gperf c/zx-idhrxml.gperf \
- c/zx-xsi.gperf  c/zx-xs.gperf    c/zx-xml.gperf \
  c/zx-tas3.gperf  c/zx-tas3sol.gperf c/zx-shibmd.gperf c/zx-idpdisc.gperf
 
 ZX_GEN_H=\
@@ -624,7 +623,7 @@ ZX_GEN_H=\
  c/zx-xsi-data.h  c/zx-xs-data.h    c/zx-xml-data.h \
  c/zx-tas3-data.h  c/zx-tas3sol-data.h c/zx-shibmd-data.h c/zx-idpdisc-data.h
 
-ZX_GEN_C=\
+ZX_GEN_C= \
  c/zx-a-aux.c      c/zx-di12-dec.c    c/zx-is-enc.c      c/zx-sa11-dec.c     c/zx-sp11-dec.c \
  c/zx-a-dec.c      c/zx-di12-enc.c    c/zx-is-getput.c   c/zx-sa11-enc.c     c/zx-sp11-enc.c \
  c/zx-a-enc.c      c/zx-di12-getput.c c/zx-is12-aux.c    c/zx-sa11-getput.c  c/zx-sp11-getput.c \
@@ -643,7 +642,7 @@ ZX_GEN_C=\
  c/zx-b12-dec.c    c/zx-md-dec.c      c/zx-sec12-aux.c \
  c/zx-b12-enc.c    c/zx-enc.c         c/zx-md-enc.c      c/zx-sec12-dec.c \
  c/zx-b12-getput.c c/zx-ff12-aux.c    c/zx-md-getput.c   c/zx-sec12-enc.c \
- c/zx-dec.c        c/zx-ff12-dec.c    c/zx-ns.c          c/zx-sec12-getput.c \
+ c/zx-dec.c        c/zx-ff12-dec.c                       c/zx-sec12-getput.c \
  c/zx-di-aux.c     c/zx-ff12-enc.c    c/zx-sa-aux.c      c/zx-sp-aux.c \
  c/zx-di-dec.c     c/zx-ff12-getput.c c/zx-sa-dec.c      c/zx-sp-dec.c \
  c/zx-di-enc.c     c/zx-getput.c      c/zx-sa-enc.c      c/zx-sp-enc.c \
@@ -703,7 +702,7 @@ ifeq ($(ENA_GEN),1)
 #  -W arg  Word array name
 #  -N arg  Lookup function name
 
-c/zx-ns.gperf c/zx-attrs.gperf c/zx-elems.gperf $(ZX_GEN_C) $(ZX_GEN_H): $(ZX_SG) dec-templ.c enc-templ.c aux-templ.c getput-templ.c
+c/zx-ns.gperf c/zx-attrs.gperf $(ZX_GEN_GPERF) $(ZX_GEN_C) $(ZX_GEN_H): $(ZX_SG) dec-templ.c enc-templ.c aux-templ.c getput-templ.c
 	@ls $(XSD2SG_PL) || ( echo "You need to install xsd2sg.pl from Plaindoc distribution at http://zxid.org/plaindoc/pd.html. Not found $(XSD2SG)" && exit 2 )
 	$(XSD2SG) -z zx -gen c/zx -p zx_ $(ZX_ROOTS) -S $(ZX_SG) >junk
 
@@ -711,9 +710,11 @@ c/zx-ns.c: c/zx-ns.gperf
 	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
 	$(GPERF) $< | $(PERL) ./sed-zxid.pl nss >$@
 
-%.c: %.gperf
+c/%.c: c/%.gperf
 	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
 	$(GPERF) -l $< | $(PERL) ./sed-zxid.pl elems >$@
+
+#	cat $@ | $(PERL) gen-consts-from-gperf-output.pl zx_ _ELEM zx_el_tab >>$(@:.c=-data.h)
 
 #c/zx-elems.c: c/zx-elems.gperf    *** old, unified table. Modern is per namespace tables.
 #	$(GPERF) -t -T -D -C -l -G -W zx_elems -N zx_elem2tok $< | $(PERL) ./sed-zxid.pl elems >$@
@@ -722,9 +723,18 @@ c/zx-attrs.c: c/zx-attrs.gperf
 	@which $(GPERF) || ( echo "You need to install gperf from ftp.gnu.org. Not found $(GPERF)" && exit 2 )
 	$(GPERF) -D -l $< | $(PERL) ./sed-zxid.pl attrs >$@
 
-c/zx-const.h: c/zx-attrs.c c/zx-elems.c
-	cat c/zx-attrs.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ATTR zx_attrs >$@
-	cat c/zx-elems.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ELEM zx_elems >>$@
+c/zx-const-elems.h: $(ZX_GEN_GPERF:.gperf=.c)
+	cat $^ | $(PERL) gen-consts-from-gperf-output.pl zx_ '_ELEM' $(ZX_GEN_GPERF:c/zx-%.gperf=zx_%_el_tab) >$@
+
+c/zx-const.h: c/zx-ns.c c/zx-attrs.c c/zx-const-elems.h
+	cat c/zx-ns.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _NS zx_ns_tab >$@
+	cat c/zx-attrs.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ATTR zx_at_tab >>$@
+	cat c/zx-const-elems.h >>$@
+
+
+#c/zx-const.h: c/zx-attrs.c c/zx-ns.c
+#	cat c/zx-attrs.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _ATTR zx_at_tab >$@
+#	cat c/zx-ns.c | $(PERL) gen-consts-from-gperf-output.pl zx_ _NS zx_ns_tab >>$@
 
 # Other
 
@@ -1206,7 +1216,7 @@ ifeq ($(TARGET),win32cl)
 $(LIBZXID_A): $(ZX_GEN_C:.c=.obj) $(ZX_GEN_GPERF:.gperf=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) $(OUTOPT)zxid.lib $^
 else
-$(LIBZXID_A): $(ZX_GEN_C:.c=.o) $(ZX_GEN_GPERF:.gperf=.obj) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
+$(LIBZXID_A): $(ZX_GEN_C:.c=.o) $(ZX_GEN_GPERF:.gperf=.o) $(ZXID_LIB_OBJ) $(ZX_OBJ) $(WSF_OBJ) $(SMIME_LIB_OBJ)
 	$(AR) $(LIBZXID_A) $^
 endif
 endif
@@ -1380,6 +1390,7 @@ precheck: precheck/chk-zlib.$(OBJ_EXT) precheck/chk-zlib.exe precheck/chk-openss
 	which cc
 	which gcc
 	$(CC) -v
+	@$(ECHO)
 	precheck/chk-zlib.exe
 	precheck/chk-openssl.exe
 	precheck/chk-curl.exe

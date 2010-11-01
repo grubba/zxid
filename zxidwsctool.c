@@ -253,12 +253,12 @@ int main(int argc, char** argv)
 
       if (env)
 	if (env->Body->GetObjectListResponse) {
-	  if (!memcmp(env->Body->GetObjectListResponse->Status->code->s, "OK", 2)) {
+	  if (!memcmp(env->Body->GetObjectListResponse->Status->code->g.s, "OK", 2)) {
 	    first_objinfo = env->Body->GetObjectListResponse->ObjectInfo;
 	    D("Successful response %p", first_objinfo);
 	    for (objinfo = first_objinfo; objinfo; objinfo = (struct zx_demomed_ObjectInfo_s*)objinfo->gg.g.n) {
 	      D("objectID(%.*s) Dir(%.*s) Name(%.*s) Type(%.*s) Created(%.*s) Comment(%.*s)",
-		objinfo->objectID->len,            objinfo->objectID->s,
+		objinfo->objectID->g.len,       objinfo->objectID->g.s,
 		objinfo->Dir->content->len,     objinfo->Dir->content->s,
 		objinfo->Name->content->len,    objinfo->Name->content->s,
 		objinfo->Type->content->len,    objinfo->Type->content->s,
@@ -267,7 +267,7 @@ int main(int argc, char** argv)
 		objinfo->Comment?objinfo->Comment->content->s:"");
 	    }
 	  } else {
-	    D("Non OK status(%.*s)", env->Body->GetObjectListResponse->Status->code->len, env->Body->GetObjectListResponse->Status->code->s);
+	    D("Non OK status(%.*s)", env->Body->GetObjectListResponse->Status->code->g.len, env->Body->GetObjectListResponse->Status->code->g.s);
 	  }
 	} else
 	  ERR("There was no result %p", env->Body);
@@ -280,20 +280,20 @@ int main(int argc, char** argv)
       env->Header = zx_NEW_e_Header(cf->ctx);
       env->Body = zx_NEW_e_Body(cf->ctx);
       env->Body->GetObjectRequest = zx_NEW_demomed_GetObjectRequest(cf->ctx);
-      env->Body->GetObjectRequest->ObjectID = zx_new_simple_elem(cf->ctx, first_objinfo->objectID);
+      env->Body->GetObjectRequest->ObjectID = zx_new_simple_elem(cf->ctx, &first_objinfo->objectID->g);
 
       env = zxid_wsc_call(cf, ses, epr, env, 0);
 
       if (env)
 	if (env->Body->GetObjectResponse) {
-	  if (!memcmp(env->Body->GetObjectResponse->Status->code->s, "OK", 2)) {
+	  if (!memcmp(env->Body->GetObjectResponse->Status->code->g.s, "OK", 2)) {
 	    first_objdata = env->Body->GetObjectResponse->ObjectData;
 	    D("Successful response %p", first_objdata);
 	    for (objdata = first_objdata; objdata; objdata = (struct zx_demomed_ObjectData_s*)objdata->gg.g.n) {
 	      // show image
 	    }
 	  } else {
-	    D("Non OK status(%.*s)", env->Body->GetObjectResponse->Status->code->len, env->Body->GetObjectListResponse->Status->code->s);
+	    D("Non OK status(%.*s)", env->Body->GetObjectResponse->Status->code->g.len, env->Body->GetObjectListResponse->Status->code->g.s);
 	  }
 	} else
 	  ERR("There was no result %p", env->Body);

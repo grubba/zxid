@@ -11,17 +11,20 @@ undef $/;
 $_ = <STDIN>;
 
 if ($op eq 'nss') {
-    s/static const struct zx_ns_s/const struct zx_ns_s/g;
+    #s%^(\#line.*)$%/* $1 */%gm;
+    s/static struct zx_ns_s/struct zx_ns_s/g;
     print;
 }
 
 if ($op eq 'attrs') {
-    s/static const struct zx_tok/const struct zx_tok/g;
+    #s%^(\#line.*)$%/* $1 */%gm;
+    s/static struct zx_at_tok/struct zx_at_tok/g;
     print;
 }
 
 if ($op eq 'elems') {
-    s/static const struct zx_tok/const struct zx_tok/g;
+    #s%^(\#line.*)$%/* $1 */%gm;
+    s/static struct zx_el_tok/struct zx_el_tok/g;
     print;
 }
 
@@ -61,5 +64,6 @@ if ($op eq 'zxidvers') {
 #endif
 ZXIDVERS
 ;
+
 }
 __END__

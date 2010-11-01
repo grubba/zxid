@@ -92,6 +92,7 @@ ELEMS_SO_LEN;
 char* TXENC_SO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, char* p SIMPLETAGLENNS)
 {
   struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_attr_s* attr MAYBE_UNUSED;
   struct zx_ns_s* pop_seen = 0;
   ENC_LEN_DEBUG_BASE;
 #if 1 /* NORMALMODE */
@@ -103,7 +104,9 @@ XMLNS_SO_SEE;
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
 ATTRS_SO_ENC;
-  p = zx_enc_unknown_attrs(p, x->gg.attr);
+  for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
+    p = zx_attr_wo_enc(p, attr);
+  ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
 #endif
@@ -136,7 +139,7 @@ struct zx_str* TXEASY_ENC_SO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x SIMPLET
 }
 
 #if 1 /* ENC_WO_SUBTEMPL */
-
+/* Empty ENC_WO_SUBTEMPL */
 #endif
 
 /* EOF */

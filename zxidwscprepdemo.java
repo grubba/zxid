@@ -23,6 +23,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.Enumeration;
 
 public class zxidwscprepdemo extends HttpServlet {
     static final boolean verbose = false;
@@ -158,7 +159,7 @@ public class zxidwscprepdemo extends HttpServlet {
 
 	// Render logout buttons (optional)
 
-	out.print("[<a href=\"sso?gl=1&s="+ses.getValue("sesid")+"\">Local Logout</a> | <a href=\"sso?gr=1&s="+ses.getValue("sesid")+"\">Single Logout</a>]\n");
+	out.print("[<a href=\"sso?gl=1&s="+ses.getAttribute("sesid")+"\">Local Logout</a> | <a href=\"sso?gr=1&s="+ses.getAttribute("sesid")+"\">Single Logout</a>]\n");
 
 	out.print("<table align=right><tr><td>");
 	out.print("<img src=\"tas3-recurs-demo.png\" border=0>");
@@ -167,21 +168,22 @@ public class zxidwscprepdemo extends HttpServlet {
 	// Render protected content page (your application starts working)
 
 	out.print("<h4>HttpSession dump:</h4>");
-	String[] val_names = ses.getValueNames();
-	for (int i = 0; i < val_names.length; ++i) {
-	    if (val_names[i].equals("cn")
-		|| val_names[i].equals("role")
-		|| val_names[i].equals("o")
-		|| val_names[i].equals("ou")
-		|| val_names[i].equals("idpnid")
-		|| val_names[i].equals("nidfmt")
-		|| val_names[i].equals("affid")
-		|| val_names[i].equals("eid")
-		|| val_names[i].equals("urn:liberty:disco:2006-08:DiscoveryEPR")) {
-		out.print("<b>" + val_names[i] + "</b>: " + ses.getValue(val_names[i]) + "<br>\n");
+	Enumeration val_names = ses.getAttributeNames();
+	while (val_names.hasMoreElements()) {
+	    String name = (String)val_names.nextElement();
+	    if (name.equals("cn")
+		|| name.equals("role")
+		|| name.equals("o")
+		|| name.equals("ou")
+		|| name.equals("idpnid")
+		|| name.equals("nidfmt")
+		|| name.equals("affid")
+		|| name.equals("eid")
+		|| name.equals("urn:liberty:disco:2006-08:DiscoveryEPR")) {
+		out.print("<b>" + name + "</b>: " + ses.getAttribute(name) + "<br>\n");
 	    } else {
 		if (verbose)
-		    out.print(val_names[i] + ": " + ses.getValue(val_names[i]) + "<br>\n");
+		    out.print(name + ": " + ses.getAttribute(name) + "<br>\n");
 	    }
 	}
 	out.print("<p>");
@@ -193,7 +195,7 @@ public class zxidwscprepdemo extends HttpServlet {
 	// Demo web service call to zxidhrxmlwsp
 
 	String ret;
-	String sid = ses.getValue("sesid").toString();
+	String sid = ses.getAttribute("sesid").toString();
 	zxid_ses zxses = zxidjni.fetch_ses(cf, sid);
 	
 	// Demo another web service call, this time the service by zxidwspdemo.java

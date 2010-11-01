@@ -117,7 +117,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No b:Sender header found (or missing providerID or affiliationID).", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
-  issuer = hdr->Sender->providerID;
+  issuer = &hdr->Sender->providerID->g;
   
   /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   
@@ -181,10 +181,10 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
 
   if (hdr->Status && hdr->Status->code
-      && (hdr->Status->code->len != 2
-	  || hdr->Status->code->s[0] != 'O'
-	  || hdr->Status->code->s[1] != 'K')) {
-    ERR("TAS3 or app level error code(%.*s)", hdr->Status->code->len, hdr->Status->code->s);
+      && (hdr->Status->code->g.len != 2
+	  || hdr->Status->code->g.s[0] != 'O'
+	  || hdr->Status->code->g.s[1] != 'K')) {
+    ERR("TAS3 or app level error code(%.*s)", hdr->Status->code->g.len, hdr->Status->code->g.s);
     return 0;
   }
   
@@ -219,7 +219,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     }
   }
   zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate response");
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n?ses->a7n->ID:0, ses->nameid?ses->nameid->gg.content:0, "N", "K", "VALID", logpath->s, 0);
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n?&ses->a7n->ID->g:0, ses->nameid?ses->nameid->gg.content:0, "N", "K", "VALID", logpath->s, 0);
   return 1;
 }
 
@@ -243,8 +243,8 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
       tok = epr->Metadata->SecurityContext->Token;
     }
     hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx);
-    hdr->TargetIdentity->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-    hdr->TargetIdentity->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+    hdr->TargetIdentity->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+    hdr->TargetIdentity->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
     if (tok->EncryptedAssertion)
       hdr->TargetIdentity->EncryptedAssertion = tok->EncryptedAssertion;
     else if (tok->Assertion)
@@ -256,22 +256,22 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
 
   hdr->To = zx_NEW_a_To(cf->ctx);
   hdr->To->gg.content = epr->Address->gg.content;
-  hdr->To->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->To->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->To->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->To->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
   /* Mandatory for a request. */
   hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx);
   /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));*/
   hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_dup_str(cf->ctx, A_ANON));
-  hdr->ReplyTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->ReplyTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->ReplyTo->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
 #if 0
   /* Omission means to use same address as ReplyTo */
   hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx);
   hdr->FaultTo->Address = zx_mk_addr(cf->ctx, zx_strf(cf->ctx, "%s?o=P", cf->url));
-  hdr->FaultTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->FaultTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->FaultTo->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->FaultTo->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 #endif
 
   zxid_attach_sol1_usage_directive(cf, ses, env, TAS3_PLEDGE, cf->wsc_localpdp_obl_pledge);
@@ -344,9 +344,9 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
     zxid_choose_security_token(cf, ses, epr, sec);
     str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx);
     str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx);
-    str->KeyIdentifier->ValueType = zx_ref_str(cf->ctx, SAMLID_TOK_PROFILE);
+    str->KeyIdentifier->ValueType = zx_ref_attr(cf->ctx, zx_ValueType_ATTR, SAMLID_TOK_PROFILE);
     if (sec->Assertion)
-      str->KeyIdentifier->gg.content = sec->Assertion->ID;
+      str->KeyIdentifier->gg.content = &sec->Assertion->ID->g;
     /* *** In case of encrypted assertion, how is the KeyIdentifier populated? */
     
     zxid_wsf_sign(cf, cf->wsc_sign, sec, str, hdr, env->Body);

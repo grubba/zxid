@@ -32,9 +32,9 @@ EndpointReference	 -> %a:EndpointReferenceType
 
 ReferenceParameters	 -> %a:ReferenceParametersType
 %ReferenceParametersType:
-  &@a:hdrs        # Added by Sampo
   b:TargetIdentity*
   any*  processContents(lax)
+  &@a:hdrs        # Added by Sampo
   @any
   ;
 

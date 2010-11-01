@@ -500,9 +500,9 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
   for (as = a7n->AttributeStatement; as; as = (struct zx_sa_AttributeStatement_s*)ZX_NEXT(as)) {
     for (at = as->Attribute; at; at = (struct zx_sa_Attribute_s*)ZX_NEXT(at)) {      
       if (at->Name)
-	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, at->Name), a7n->Issuer ? a7n->Issuer->gg.content : 0);
+	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, &at->Name->g), a7n->Issuer ? a7n->Issuer->gg.content : 0);
       if (at->FriendlyName)
-	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, at->FriendlyName), a7n->Issuer ? a7n->Issuer->gg.content : 0);
+	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, &at->FriendlyName->g), a7n->Issuer ? a7n->Issuer->gg.content : 0);
     }
   }
 }
@@ -651,7 +651,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
   zxid_add_attr_to_ses(cf, ses, "issuer", issuer);
   zxid_add_attr_to_ses(cf, ses, "ssoa7npath",zx_dup_str(cf->ctx, STRNULLCHK(ses->sso_a7n_path)));
   
-  affid = ses->nameid&&ses->nameid->NameQualifier?ses->nameid->NameQualifier:0;
+  affid = ses->nameid&&ses->nameid->NameQualifier?&ses->nameid->NameQualifier->g:0;
   nid = ses->nameid&&ses->nameid->gg.content?ses->nameid->gg.content:0;
   zxid_add_attr_to_ses(cf, ses, "affid",  affid);
   zxid_add_attr_to_ses(cf, ses, "idpnid", nid);
@@ -680,7 +680,7 @@ void zxid_ses_to_pool(zxid_conf* cf, zxid_ses* ses)
     zxid_add_attr_to_ses(cf, ses, "tgtissuer", tgtissuer);
   zxid_add_attr_to_ses(cf, ses, "tgta7npath",zx_dup_str(cf->ctx, STRNULLCHK(ses->tgt_a7n_path)));
 
-  tgtaffid = ses->tgtnameid&&ses->tgtnameid->NameQualifier?ses->tgtnameid->NameQualifier:0;
+  tgtaffid = ses->tgtnameid&&ses->tgtnameid->NameQualifier?&ses->tgtnameid->NameQualifier->g:0;
   tgtnid = ses->tgtnameid&&ses->tgtnameid->gg.content?ses->tgtnameid->gg.content:0;
   if (!tgtissuer) tgtissuer = issuer;  /* Default: requestor is the target */
   if (!tgtaffid)  tgtaffid = affid;

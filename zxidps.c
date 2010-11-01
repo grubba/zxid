@@ -140,14 +140,14 @@ char* zxid_render_str_list(zxid_conf* cf, struct zx_str* strs, const char* attr_
   
   /* Length computation phase */
   
-  for (str = strs; str; str = (void*)str->g.n)
+  for (str = strs; str; str = str->n)
     len += atn_len + sizeof(": ")-1 + str->len + 1;
   
   ret = p = ZX_ALLOC(cf->ctx, len+1);
   
   /* Rendering phase */
   
-  for (str = strs; str; str = (void*)str->g.n) {
+  for (str = strs; str; str = str->n) {
     n = sprintf(p, "%s: %.*s\n", attr_name, str->len, str->s);
     p += n;
   }
@@ -256,7 +256,7 @@ int zxid_parse_psobj(zxid_conf* cf, struct zxid_psobj* obj, char* p, const char*
       }
       if (!strcmp(name, "invid")) {
 	ss = zx_dup_str(cf->ctx, val);
-	ss->g.n = (void*)obj->invids;
+	ss->n = obj->invids;
 	obj->invids = ss;
 	goto next;
       }
@@ -287,7 +287,7 @@ int zxid_parse_psobj(zxid_conf* cf, struct zxid_psobj* obj, char* p, const char*
     case 't':
       if (!strcmp(name, "tag")) {
 	ss = zx_dup_str(cf->ctx, val);
-	ss->g.n = (void*)obj->tags;
+	ss->n = obj->tags;
 	obj->tags = ss;
 	goto next;
       }
@@ -563,20 +563,20 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
   resp->Object->ObjectID = zx_new_simple_elem(cf->ctx, zxid_psobj_enc(cf, issuer,"ZO",obj->psobj));
   resp->Object->DisplayName = zx_NEW_ps_DisplayName(cf->ctx);
   resp->Object->DisplayName->gg.content = obj->dispname;
-  resp->Object->DisplayName->Locale = zx_dup_str(cf->ctx, "xx");  /* unknown locale */
-  for (tag = obj->tags; tag; tag = (void*)tag->g.n) {
+  resp->Object->DisplayName->Locale = zx_dup_attr(cf->ctx, zx_Locale_ATTR, "xx");  /* unknown locale */
+  for (tag = obj->tags; tag; tag = tag->n) {
     pstag = zx_NEW_ps_Tag(cf->ctx);
     pstag->gg.content = tag;
-    pstag->gg.g.n = (void*)resp->Object->Tag;
+    pstag->gg.g.n = &resp->Object->Tag->gg.g;
     resp->Object->Tag = pstag;
   }
-  resp->Object->NodeType = zx_dup_str(cf->ctx, obj->nodetype?PS_COL:PS_ENT);
-  resp->Object->CreatedDateTime = zxid_date_time(cf, obj->create_secs);
-  resp->Object->ModifiedDateTime = zxid_date_time(cf, obj->mod_secs);
+  resp->Object->NodeType = zx_dup_attr(cf->ctx, zx_NodeType_ATTR, obj->nodetype?PS_COL:PS_ENT);
+  resp->Object->CreatedDateTime = zxid_date_time_attr(cf, zx_CreatedDateTime_ATTR, obj->create_secs);
+  resp->Object->ModifiedDateTime = zxid_date_time_attr(cf, zx_TimeStamp_ATTR, obj->mod_secs);
   resp->TimeStamp = resp->Object->CreatedDateTime;
-  resp->id = inv->invid;  /* *** why is ID requred by schema at all? */
+  resp->id = zx_ref_len_attr(cf->ctx, zx_id_ATTR, inv->invid->len, inv->invid->s);  /* *** why is ID requred by schema at all? */
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
-  zxlog(cf, 0, 0, 0, issuer, 0, a7n->ID, nameid->gg.content, "N", "K", "PSINV", 0, "inv=%.*s", inv->invid->len, inv->invid->s);
+  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, nameid->gg.content, "N", "K", "PSINV", 0, "inv=%.*s", inv->invid->len, inv->invid->s);
   D_DEDENT("ps_inv: ");
   return resp;
 }
@@ -606,7 +606,7 @@ struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_
     // ***
   }
 
-  zxlog(cf, 0, 0, 0, issuer, 0, a7n->ID, nameid->gg.content, "N", "K", "PSRESOLVOK", 0, "n=%d", n_resolv);
+  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, nameid->gg.content, "N", "K", "PSRESOLVOK", 0, "n=%d", n_resolv);
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
   D_DEDENT("ps_resolv: ");
   return resp;

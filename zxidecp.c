@@ -73,7 +73,7 @@ struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
     for (sso_svc = idp->ed->IDPSSODescriptor->SingleSignOnService;
 	 sso_svc;
 	 sso_svc = (struct zx_md_SingleSignOnService_s*)sso_svc->gg.g.n)
-      if (sso_svc->Binding && !memcmp(binding, sso_svc->Binding->s, sso_svc->Binding->len))
+      if (sso_svc->Binding && !memcmp(binding, sso_svc->Binding->g.s, sso_svc->Binding->g.len))
 	break;
     if (!sso_svc) {
       D("Entity(%s) does not have any IdP SSO Service with binding(%s)", idp->eid, binding);

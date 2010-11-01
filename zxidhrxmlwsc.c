@@ -261,11 +261,11 @@ int main(int argc, char** argv)
       ERR("There was no result %p", env->Body);
       break;
     }
-    if (!memcmp(env->Body->idhrxml_CreateResponse->Status->code->s, "OK", 2)) {
+    if (!memcmp(env->Body->idhrxml_CreateResponse->Status->code->g.s, "OK", 2)) {
       hrxml_resp = "Create OK.";
     } else {
       hrxml_resp = "Create Failed.";
-      D("Non OK status(%.*s)", env->Body->idhrxml_CreateResponse->Status->code->len, env->Body->idhrxml_CreateResponse->Status->code->s);
+      D("Non OK status(%.*s)", env->Body->idhrxml_CreateResponse->Status->code->g.len, env->Body->idhrxml_CreateResponse->Status->code->g.s);
     }
     D("Here %p", epr);
     break;
@@ -293,7 +293,7 @@ int main(int argc, char** argv)
       ERR("There was no result %p", env->Body);
       break;
     }
-    if (!memcmp(env->Body->idhrxml_QueryResponse->Status->code->s, "OK", 2)) {
+    if (!memcmp(env->Body->idhrxml_QueryResponse->Status->code->g.s, "OK", 2)) {
       if (!env->Body->idhrxml_QueryResponse->Data) {
 	hrxml_resp = "No data in otherwise successful response.";
 	ERR("There was no data %p", env->Body);
@@ -308,7 +308,7 @@ int main(int argc, char** argv)
       hrxml_resp = ss->s;
     } else {
       hrxml_resp = "Query Failed.";
-      D("Non OK status(%.*s)", env->Body->idhrxml_QueryResponse->Status->code->len, env->Body->idhrxml_QueryResponse->Status->code->s);
+      D("Non OK status(%.*s)", env->Body->idhrxml_QueryResponse->Status->code->g.len, env->Body->idhrxml_QueryResponse->Status->code->g.s);
     }
     break;
 
@@ -336,11 +336,11 @@ int main(int argc, char** argv)
       ERR("There was no result %p", env->Body);
       break;
     }
-    if (!memcmp(env->Body->idhrxml_DeleteResponse->Status->code->s, "OK", 2)) {
+    if (!memcmp(env->Body->idhrxml_DeleteResponse->Status->code->g.s, "OK", 2)) {
       hrxml_resp = "Delete OK.";
     } else {
       hrxml_resp = "Delete Failed.";
-      D("Non OK status(%.*s)", env->Body->idhrxml_DeleteResponse->Status->code->len, env->Body->idhrxml_DeleteResponse->Status->code->s);
+      D("Non OK status(%.*s)", env->Body->idhrxml_DeleteResponse->Status->code->g.len, env->Body->idhrxml_DeleteResponse->Status->code->g.s);
     }
     break;
   }

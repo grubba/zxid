@@ -47,7 +47,7 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struc
   nameid = zxid_decrypt_nameid(cf, a7n->Subject->NameID, a7n->Subject->EncryptedID);
   if (nameidp)
     *nameidp = nameid;
-  affil = nameid->SPNameQualifier ? nameid->SPNameQualifier : zxid_my_entity_id(cf);
+  affil = nameid->SPNameQualifier ? &nameid->SPNameQualifier->g : zxid_my_entity_id(cf);
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
   len = read_all(len-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
   if (!len) {
@@ -255,12 +255,12 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       epr->gg.g.n = (void*)resp->EndpointReference;
       resp->EndpointReference = epr;
 
-      zxlog(cf, 0, 0, 0, issuer, 0, a7n->ID, nameid->gg.content, "N", "K", logop, uid, "");
+      zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, uid, "");
 
-      if (rs->resultsType && rs->resultsType->s
-	  && (!memcmp(rs->resultsType->s, "only-one", rs->resultsType->len)
-	      || !memcmp(rs->resultsType->s, "best", rs->resultsType->len))) {
-	D("only-one or best requested (%.*s)", rs->resultsType->len, rs->resultsType->s);
+      if (rs->resultsType && rs->resultsType->g.s
+	  && (!memcmp(rs->resultsType->g.s, "only-one", rs->resultsType->g.len)
+	      || !memcmp(rs->resultsType->g.s, "best", rs->resultsType->g.len))) {
+	D("only-one or best requested (%.*s)", rs->resultsType->g.len, rs->resultsType->g.s);
 	break;
       }
       
@@ -273,7 +273,7 @@ next_file:
   el = req->RequestedService->ServiceType && req->RequestedService->ServiceType->content
     ? req->RequestedService->ServiceType : 0;
   D("TOTAL discovered %d svctype(%.*s)", n_discovered, el?el->content->len:0, el?el->content->s:"");
-  zxlog(cf, 0, 0, 0, issuer, 0, a7n->ID, nameid->gg.content, "N", "K", "DIOK", 0, "%.*s n=%d", el?el->content->len:1, el?el->content->s:"-", n_discovered);
+  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, nameid->gg.content, "N", "K", "DIOK", 0, "%.*s n=%d", el?el->content->len:1, el?el->content->s:"-", n_discovered);
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
   D_DEDENT("di_query: ");
   return resp;

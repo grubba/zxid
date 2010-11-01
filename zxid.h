@@ -702,6 +702,7 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi);
 int zxid_send_sp_meta(zxid_conf* cf, zxid_cgi* cgi);
 struct zx_str* zxid_sp_carml(zxid_conf* cf);
 struct zx_str* zxid_my_entity_id(zxid_conf* cf);
+struct zx_attr_s* zxid_my_entity_id_attr(zxid_conf* cf, int tok);
 struct zx_str* zxid_my_cdc_url(zxid_conf* cf);
 struct zx_sa_Issuer_s* zxid_my_issuer(zxid_conf* cf);
 
@@ -774,8 +775,12 @@ int zxid_pw_authn(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses);
 
 int   zxid_version();
 char* zxid_version_str();
+
 struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs);
 struct zx_str* zxid_mk_id(zxid_conf* cf, char* prefix, int bits); /* pseudo random ident. */
+
+struct zx_attr_s* zxid_date_time_attr(zxid_conf* cf, int tok, time_t secs);
+struct zx_attr_s* zxid_mk_id_attr(zxid_conf* cf, int tok, char* prefix, int bits);
 
 struct zx_str* zxid_http_post_raw(zxid_conf* cf, int url_len, const char* url, int len, const char* data);
 struct zx_root_s* zxid_soap_call_raw(zxid_conf* cf, struct zx_str* url, struct zx_str* data, char** ret_enve);

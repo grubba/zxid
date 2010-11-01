@@ -46,7 +46,7 @@ int zxid_sp_slo_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     struct zx_str* ses_ix;
     zxid_entity* idp_meta;
     
-    ses_ix = ses->a7n->AuthnStatement?ses->a7n->AuthnStatement->SessionIndex:0;
+    ses_ix = ses->a7n->AuthnStatement?&ses->a7n->AuthnStatement->SessionIndex->g:0;
     if (cf->log_level>0)
       zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "W", "SLOSOAP", ses->sid, "sesix(%.*s)", ses_ix?ses_ix->len:1, ses_ix?ses_ix->s:"?");
     
@@ -58,7 +58,7 @@ int zxid_sp_slo_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     body->LogoutRequest = zxid_mk_logout(cf, zxid_get_user_nameid(cf, ses->nameid), ses_ix, idp_meta);
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
-      refs.id = body->LogoutRequest->ID;
+      refs.id = &body->LogoutRequest->ID->g;
       refs.canon = zx_EASY_ENC_SO_sp_LogoutRequest(cf->ctx, body->LogoutRequest);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slo"))
 	body->LogoutRequest->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -101,7 +101,7 @@ struct zx_str* zxid_sp_slo_redir(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     zxid_entity* idp_meta;
     struct zx_str* ses_ix;
 
-    ses_ix = ses->a7n->AuthnStatement?ses->a7n->AuthnStatement->SessionIndex:0;
+    ses_ix = ses->a7n->AuthnStatement?&ses->a7n->AuthnStatement->SessionIndex->g:0;
     if (cf->log_level>0)
       zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "W", "SLOREDIR", ses->sid, "sesix(%.*s)", ses_ix?ses_ix->len:1, ses_ix?ses_ix->s:"?");
     
@@ -113,7 +113,7 @@ struct zx_str* zxid_sp_slo_redir(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     if (!loc)
       return zx_dup_str(cf->ctx, "* ERR");
     r = zxid_mk_logout(cf, zxid_get_user_nameid(cf, ses->nameid), ses_ix, idp_meta);
-    r->Destination = loc;
+    r->Destination = zx_ref_len_attr(cf->ctx, zx_Destination_ATTR, loc->len, loc->s);
     rs = zx_EASY_ENC_SO_sp_LogoutRequest(cf->ctx, r);
     D("SLO(%.*s)", rs->len, rs->s);
     return zxid_saml2_redir(cf, loc, rs, 0);
@@ -149,8 +149,8 @@ struct zx_str* zxid_slo_resp_redir(zxid_conf* cf, zxid_cgi* cgi, struct zx_sp_Lo
 
   zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "SLORESREDIR", 0, "");
 
-  res = zxid_mk_logout_resp(cf, zxid_OK(cf), req->ID);
-  res->Destination = loc;
+  res = zxid_mk_logout_resp(cf, zxid_OK(cf), &req->ID->g);
+  res->Destination = zx_ref_len_attr(cf->ctx, zx_Destination_ATTR, loc->len, loc->s);
   ss = zx_EASY_ENC_SO_sp_LogoutResponse(cf->ctx, res);
   ss2 = zxid_saml2_resp_redir(cf, loc, ss, cgi->rs);
   /*zx_str_free(cf->ctx, loc); Do NOT free loc as it is still referenced by the metadata. */

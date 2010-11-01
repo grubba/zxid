@@ -19,22 +19,26 @@
  ** of special markers that xsd2sg.pl expects to find and understand.
  **/
 
-/* FUNC(TXDEC_ELNAME) */
+
+/* These macros allow extension macros such as ZX_START_DEC_EXT(x) to be parametrised. */
 
 #define EL_NAME   ELNAME
 #define EL_STRUCT ELSTRUCT
 #define EL_NS     ELNS
 #define EL_TAG    ELTAG
 
-/* When per element decoder is called, the c->p will point to just past
- * the element name. The namespace prescan has also already been done. */
+/* FUNC(TXDEC_ELNAME) */
+
+/*() Element Decoder. When per element decoder is called, the c->p
+ * will point to just past the element name. The element has already
+ * been allocated to the correct size and the namespace prescan has
+ * already been done. */
 
 /* Called by: */
-struct zx_elem_s* TXDEC_ELNAME(struct zx_ctx* c, EL_STRUCT* x ROOT_N_DECODE)
+struct ELSTRUCT* TXDEC_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x ROOT_N_DECODE)
 {
-  int tok; 
+  int tok MAYBE_UNUSED;  /* Unused in zx_DEC_root() */
   struct zx_elem_s* el;
-  struct zx_str* ss;
   struct zx_ns_s* pop_seen;
 
   ZX_START_DEC_EXT(x);
@@ -43,15 +47,14 @@ struct zx_elem_s* TXDEC_ELNAME(struct zx_ctx* c, EL_STRUCT* x ROOT_N_DECODE)
   /* The tag name has already been detected. Process attributes until '>' */
   
   for (; c->p; ++c->p) {
-    tok = TXattr_lookup(c, &x->gg, (const char*)__FUNCTION__);
+    tok = TXattr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
 ATTRS;
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
-    case ZX_TOK_INCOMP:
     case ZX_TOK_ATTR_ERR: return x; 
     case ZX_TOK_NO_ATTR: goto no_attr;
-    default: zx_known_attr_wrong_context(c, &x->gg);
+    default: zx_known_attr_wrong_context(c, (struct zx_elem_s*)x);
     }
   }
 no_attr:
@@ -81,20 +84,20 @@ no_attr:
 	  break;
 	goto next_elem;
       case '/':  /* close tag */
-	if (!zx_scan_elem_end(c, x->gg.g.s, (const char*)__FUNCTION__))
+	if (!zx_scan_elem_end(c, ((struct zx_elem_s*)x)->g.s, (const char*)__FUNCTION__))
 	  return x;
 	/* Legitimate close tag. Normal exit from this function. */
 	++c->p;
 	goto out;
       default:
 	if (A_Z_a_z_(*c->p)) {
-	  el = TXelem_lookup(c, &x->gg, &pop_seen);
+	  el = TXelem_lookup(c, (struct zx_elem_s*)x, &pop_seen);
 	  if (!el)
 	    return x;
 	  switch (el->g.tok) {
 ELEMS;
 	  default:
-	    zx_known_elem_wrong_context(c, &x->gg);
+	    zx_known_elem_wrong_context(c, (struct zx_elem_s*)x);
 	    break;
 	  }
 	  zx_pop_seen(pop_seen);
@@ -103,17 +106,13 @@ ELEMS;
       }
       /* false alarm <, fall thru */
     }
-    if (!zx_scan_data(c, &x->gg))
+    if (!zx_scan_data(c, (struct zx_elem_s*)x))
       return x;
     goto potential_tag;
   }
  out:
-  zx_dec_reverse_lists(&x->gg);
+  zx_dec_reverse_lists((struct zx_elem_s*)x);
   ZX_END_DEC_EXT(x);
-  return x;
-
- look_for_not_found:
-  zx_xml_parse_err(c, '>', (const char*)__FUNCTION__, "char not found");
   return x;
 }
 
@@ -124,6 +123,7 @@ ELEMS;
 
 #if 1 /* DEC_LOOKUP_SUBTEMPL */
 /* This subtemplate is only expanded once (i.e. not per namespace per element) */
+/* Empty template, see zxlibdec.c for generic parts. */
 #endif
 
 /* EOF */

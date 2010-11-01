@@ -62,7 +62,7 @@ public class zxidsrvlet extends HttpServlet {
 	    String[] avs = ret.split("&");
 	    for (int i = 0; i < avs.length; ++i) {
 		String av[] = avs[i].split("=");
-		ses.putValue(av[0], URLDecoder.decode(av.length > 1 ? av[1] : ""));
+		ses.setAttribute(av[0], URLDecoder.decode(av.length > 1 ? av[1] : "", "UTF-8"));
 	    }
 
 	    /* Make sure cookie is visible to other servlets on the same server.
@@ -77,14 +77,14 @@ public class zxidsrvlet extends HttpServlet {
 		}
 	    }
 
-	    System.err.print("Logged in. jses("+ses.getId()+") rs("+ses.getValue("rs")+")\n");
-	    String rs = URLDecoder.decode(ses.getValue("rs").toString());
+	    System.err.print("Logged in. jses("+ses.getId()+") rs("+ses.getAttribute("rs")+")\n");
+	    String rs = URLDecoder.decode(ses.getAttribute("rs").toString(), "UTF-8");
 	    if (rs != null && rs.length() > 0 && rs.charAt(rs.length()-1) != '-')
 		res.sendRedirect(rs);
 
 	    /* Redirect was not viable. Just show the management screen. */
 	    
-	    ret = zxidjni.fed_mgmt_cf(cf, null, -1, ses.getValue("sesid").toString(), 0x3d54);
+	    ret = zxidjni.fed_mgmt_cf(cf, null, -1, ses.getAttribute("sesid").toString(), 0x3d54);
 	    res.setContentType("text/html");
 	    res.setContentLength(ret.length());
 	    res.getOutputStream().print(ret);

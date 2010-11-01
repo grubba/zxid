@@ -49,7 +49,7 @@ struct zx_str* zxid_idp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
     for (slo_svc = idp_meta->ed->IDPSSODescriptor->SingleLogoutService;
 	 slo_svc;
 	 slo_svc = (struct zx_md_SingleLogoutService_s*)slo_svc->gg.g.n)
-      if (slo_svc->Binding  && !memcmp(binding, slo_svc->Binding->s, slo_svc->Binding->len)
+      if (slo_svc->Binding  && !memcmp(binding, slo_svc->Binding->g.s, slo_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && slo_svc->Location)
 	break;
@@ -63,7 +63,7 @@ struct zx_str* zxid_idp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
     for (mni_svc = idp_meta->ed->IDPSSODescriptor->ManageNameIDService;
 	 mni_svc;
 	 mni_svc = (struct zx_md_ManageNameIDService_s*)mni_svc->gg.g.n)
-      if (mni_svc->Binding  && !memcmp(binding, mni_svc->Binding->s, mni_svc->Binding->len)
+      if (mni_svc->Binding  && !memcmp(binding, mni_svc->Binding->g.s, mni_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && mni_svc->Location)
 	break;
@@ -168,8 +168,8 @@ struct zx_str* zxid_sp_loc_by_index_raw(zxid_conf* cf, zxid_cgi* cgi,
     for (acs_svc = sp_meta->ed->SPSSODescriptor->AssertionConsumerService;
 	 acs_svc;
 	 acs_svc = (struct zx_md_AssertionConsumerService_s*)acs_svc->gg.g.n)
-      if (acs_svc->index && ix->len == acs_svc->index->len
-	  && !memcmp(ix->s, acs_svc->index->s, ix->len)
+      if (acs_svc->index && ix->len == acs_svc->index->g.len
+	  && !memcmp(ix->s, acs_svc->index->g.s, ix->len)
 	  && acs_svc->Location)
 	break;
     if (!acs_svc)
@@ -211,7 +211,7 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
     for (slo_svc = sp_meta->ed->SPSSODescriptor->SingleLogoutService;
 	 slo_svc;
 	 slo_svc = (struct zx_md_SingleLogoutService_s*)slo_svc->gg.g.n)
-      if (slo_svc->Binding  && !memcmp(binding, slo_svc->Binding->s, slo_svc->Binding->len)
+      if (slo_svc->Binding  && !memcmp(binding, slo_svc->Binding->g.s, slo_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && slo_svc->Location)
 	break;
@@ -225,7 +225,7 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
     for (mni_svc = sp_meta->ed->SPSSODescriptor->ManageNameIDService;
 	 mni_svc;
 	 mni_svc = (struct zx_md_ManageNameIDService_s*)mni_svc->gg.g.n)
-      if (mni_svc->Binding  && !memcmp(binding, mni_svc->Binding->s, mni_svc->Binding->len)
+      if (mni_svc->Binding  && !memcmp(binding, mni_svc->Binding->g.s, mni_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && mni_svc->Location)
 	break;
@@ -239,7 +239,7 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
     for (acs_svc = sp_meta->ed->SPSSODescriptor->AssertionConsumerService;
 	 acs_svc;
 	 acs_svc = (struct zx_md_AssertionConsumerService_s*)acs_svc->gg.g.n)
-      if (acs_svc->Binding  && !memcmp(binding, acs_svc->Binding->s, acs_svc->Binding->len)
+      if (acs_svc->Binding  && !memcmp(binding, acs_svc->Binding->g.s, acs_svc->Binding->g.len)
 	  /*&& svc->index && !memcmp(end_pt_ix, svc->index->s, svc->index->len)*/
 	  && acs_svc->Location)
 	break;

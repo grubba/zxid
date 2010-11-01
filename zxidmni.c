@@ -50,7 +50,7 @@ int zxid_sp_mni_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_str*
     body->ManageNameIDRequest = zxid_mk_mni(cf, zxid_get_user_nameid(cf, ses->nameid), new_nym, idp_meta);
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
-      refs.id = body->ManageNameIDRequest->ID;
+      refs.id = &body->ManageNameIDRequest->ID->g;
       refs.canon = zx_EASY_ENC_SO_sp_ManageNameIDRequest(cf->ctx, body->ManageNameIDRequest);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mni"))
 	body->ManageNameIDRequest->Signature
@@ -99,7 +99,7 @@ struct zx_str* zxid_sp_mni_redir(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, st
     if (!loc)
       return zx_dup_str(cf->ctx, "* ERR");
     r = zxid_mk_mni(cf, zxid_get_user_nameid(cf, ses->nameid), new_nym, 0);
-    r->Destination = loc;
+    r->Destination = zx_ref_len_attr(cf->ctx, zx_Destination_ATTR, loc->len, loc->s);
     rs = zx_EASY_ENC_SO_sp_ManageNameIDRequest(cf->ctx, r);
     D("NIReq(%.*s)", rs->len, rs->s);
     return zxid_saml2_redir(cf, loc, rs, 0);
@@ -139,7 +139,7 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mni_do(zxid_conf* cf, zxid_cgi* cgi, z
     D("MNI Change newnym(%.*s)", newnym->len, newnym->s);
     zxid_user_change_nameid(cf, nid, newnym);
   }
-  return zxid_mk_mni_resp(cf, zxid_OK(cf), mni->ID);
+  return zxid_mk_mni_resp(cf, zxid_OK(cf), &mni->ID->g);
 }
 
 /*() Wrapper for zxid_mni_do(), which see. */
@@ -148,9 +148,9 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mni_do(zxid_conf* cf, zxid_cgi* cgi, z
 struct zx_str* zxid_mni_do_ss(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_sp_ManageNameIDRequest_s* mni, struct zx_str* loc)
 {
   struct zx_sp_ManageNameIDResponse_s* res;
-  res = zxid_mk_mni_resp(cf, zxid_OK(cf), mni->ID);
+  res = zxid_mk_mni_resp(cf, zxid_OK(cf), &mni->ID->g);
   res = zxid_mni_do(cf, cgi, ses, mni);
-  res->Destination = loc;
+  res->Destination = zx_ref_len_attr(cf->ctx, zx_Destination_ATTR, loc->len, loc->s);
   return zx_EASY_ENC_SO_sp_ManageNameIDResponse(cf->ctx, res);
 }
 

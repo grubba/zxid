@@ -41,6 +41,9 @@
 /* Called by: */
 void TXFREE_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, int free_strs)
 {
+  struct zx_elem_s* e  MAYBE_UNUSED;
+  struct zx_elem_s* en MAYBE_UNUSED;
+
   /* *** deal with xmlns specifications in exc c14n way */
 
 ATTRS_FREE;
@@ -75,6 +78,7 @@ struct ELSTRUCT* TXNEW_ELNAME(struct zx_ctx* c)
 /* Called by: */
 void TXDUP_STRS_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x)
 {
+  struct zx_elem_s* se  MAYBE_UNUSED;
   zx_dup_strs_common(c, &x->gg);
   /* *** deal with xmlns specifications in exc c14n way */
 
@@ -90,6 +94,10 @@ ELEMS_DUP_STRS;
 /* Called by: */
 struct ELSTRUCT* TXDEEP_CLONE_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, int dup_strs)
 {
+  struct zx_elem_s* e   MAYBE_UNUSED;
+  struct zx_elem_s* en  MAYBE_UNUSED;
+  struct zx_elem_s* enn MAYBE_UNUSED;
+
   x = (struct ELSTRUCT*)zx_clone_elem_common(c, &x->gg, sizeof(struct ELSTRUCT), dup_strs);
   /* *** deal with xmlns specifications in exc c14n way */
 
@@ -104,6 +112,7 @@ ELEMS_CLONE;
  
 int TXWALK_SO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
 {
+  struct zx_elem_s* e   MAYBE_UNUSED;
   int ret = callback(&x->gg.g, ctx);
   if (ret)
     return ret;

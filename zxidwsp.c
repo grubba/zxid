@@ -59,71 +59,71 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   /* Populate SOAP headers. */
   
   hdr->Framework = zx_NEW_sbf_Framework(cf->ctx);
-  hdr->Framework->version = zx_ref_str(cf->ctx, "2.0");
-  hdr->Framework->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Framework->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->Framework->version = zx_ref_attr(cf->ctx, zx_version_ATTR, "2.0");
+  hdr->Framework->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->Framework->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
 #if 1
   /* *** Conor claims Sender is not mandatory */
   hdr->Sender = zx_NEW_b_Sender(cf->ctx);
-  hdr->Sender->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Sender->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->Sender->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->Sender->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
   if (cf->affiliation)
-    hdr->Sender->affiliationID = zx_ref_str(cf->ctx, cf->affiliation);
-  hdr->Sender->providerID = zxid_my_entity_id(cf);
+    hdr->Sender->affiliationID = zx_ref_attr(cf->ctx, zx_affiliationID_ATTR, cf->affiliation);
+  hdr->Sender->providerID = zxid_my_entity_id_attr(cf, zx_providerID_ATTR);
 #endif
 
 #if 0
   hdr->Action = zx_NEW_a_Action(cf->ctx);
   hdr->Action->gg.content = zx_ref_str(cf->ctx, ***);
-  hdr->Action->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Action->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->Action->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->Action->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 #endif
 
 #if 0
   hdr->From = zx_NEW_a_From(cf->ctx);
   hdr->From->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));
-  hdr->From->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->From->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->From->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->From->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 #endif
 
 #if 0
   hdr->ReferenceParameters = zx_NEW_a_ReferenceParameters(cf->ctx);
-  hdr->ReferenceParameters->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->ReferenceParameters->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->ReferenceParameters->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->ReferenceParameters->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 #endif
 
 #if 0
   hdr->Credentials = zx_NEW_tas3_Credentials(cf->ctx);
-  hdr->Credentials->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->Credentials->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->Credentials->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->Credentials->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 #endif
 
 #if 0
   /* If you want this header, you should
    * create it prior to calling zxid_wsc_call() */
   hdr->UsageDirective = zx_NEW_b_UsageDirective(cf->ctx);
-  hdr->UsageDirective->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->UsageDirective->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->UsageDirective->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->UsageDirective->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 #endif
 
 #if 0
   /* Interaction or redirection. If you want this header, you should
    * create it prior to calling zxid_wsc_call() */
   hdr->UserInteraction = zx_NEW_b_UserInteraction(cf->ctx);
-  hdr->UserInteraction->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->UserInteraction->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->UserInteraction->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->UserInteraction->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 #endif
   
   sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx);
-  sec->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  sec->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  sec->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  sec->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
   sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx);
   sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx);
   
   hdr->MessageID = zx_NEW_a_MessageID(cf->ctx);
-  hdr->MessageID->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->MessageID->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  hdr->MessageID->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->MessageID->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
   if (is_resp) {
     sec->Timestamp->Created->gg.content = zxid_date_time(cf, time(0));
@@ -140,8 +140,8 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
     if (ses->wsp_msgid && *ses->wsp_msgid) {
       hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx);
       hdr->RelatesTo->gg.content = zx_ref_str(cf->ctx, ses->wsp_msgid);
-      hdr->RelatesTo->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-      hdr->RelatesTo->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+      hdr->RelatesTo->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+      hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
     }
 #endif
 
@@ -271,7 +271,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
     return 0;
   }
   
-  if (nameid->Format && !memcmp(nameid->Format->s,SAML2_TRANSIENT_NID_FMT,nameid->Format->len)) {
+  if (nameid->Format && !memcmp(nameid->Format->g.s, SAML2_TRANSIENT_NID_FMT, nameid->Format->g.len)) {
     fmt = 0;
   } else {
     fmt = 1;  /* anything nontransient may be a federation */
@@ -335,7 +335,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
   
   if (cf->log_rely_a7n) {
     DD("Logging... %d", 0);
-    logpath = zxlog_path(cf, issuer, a7n->ID, ZXLOG_RELY_DIR, ZXLOG_A7N_KIND, 1);
+    logpath = zxlog_path(cf, issuer, &a7n->ID->g, ZXLOG_RELY_DIR, ZXLOG_A7N_KIND, 1);
     if (logpath) {
       ses->sso_a7n_path = ses->tgt_a7n_path = zx_str_to_c(cf->ctx, logpath);
       a7nss = zx_EASY_ENC_WO_any_elem(cf->ctx, &a7n->gg);
@@ -346,7 +346,7 @@ static int zxid_wsf_validate_a7n(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n, co
 	}
       }
       zxlog_blob(cf, cf->log_rely_a7n, logpath, a7nss, "wsp_validate");
-      zxlog(cf, 0, srcts, 0, issuer, 0, a7n->ID, nameid->gg.content, "N", "K", "A7N VALID", logpath->s, 0);
+      zxlog(cf, 0, srcts, 0, issuer, 0, &a7n->ID->g, nameid->gg.content, "N", "K", "A7N VALID", logpath->s, 0);
     }
   }
   return 1;
@@ -450,7 +450,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     D_DEDENT("valid: ");
     return 0;
   }
-  issuer = hdr->Sender->providerID;
+  issuer = &hdr->Sender->providerID->g;
   
   /* Validate message signature (*** add Issuer trusted check, CA validation, etc.) */
   
@@ -556,7 +556,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   }
 
   if (hdr->UsageDirective && hdr->UsageDirective->Obligation
-      && ZX_STR_EQ(hdr->UsageDirective->Obligation->ObligationId, TAS3_SOL1_ENGINE)) {
+      && ZX_STR_EQ(&hdr->UsageDirective->Obligation->ObligationId->g, TAS3_SOL1_ENGINE)) {
     /* *** extract usage directive */
   }
 
@@ -564,8 +564,8 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
   zxid_put_ses(cf, ses);
   zxid_ses_to_pool(cf, ses);
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
-  zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "PNEWSES", ses->sid, 0);
+  zxid_put_user(cf, &ses->nameid->Format->g, &ses->nameid->NameQualifier->g, &ses->nameid->SPNameQualifier->g, ses->nameid->gg.content, 0);
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, &ses->a7n->ID->g, ses->nameid->gg.content, "N", "K", "PNEWSES", ses->sid, 0);
   
   /* Call Rq-In PDP */
   
@@ -596,7 +596,7 @@ char* zxid_wsp_validate(zxid_conf* cf, zxid_ses* ses, const char* az_cred, const
     }
   }
   zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate request");
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n->ID, ses->nameid->gg.content, "N", "K", "VALID", logpath->s, 0);
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, &ses->a7n->ID->g, ses->nameid->gg.content, "N", "K", "VALID", logpath->s, 0);
   
   D_DEDENT("valid: ");
   return ses->tgt;

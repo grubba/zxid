@@ -110,9 +110,9 @@ void test_ibm_cert_problem_enc_dec()
   cf = zxid_new_conf("/var/zxid/");
 
   nameid = zx_NEW_sa_NameID(cf->ctx);
-  nameid->Format = zx_ref_str(cf->ctx, "persistent");
-  nameid->NameQualifier = zx_ref_str(cf->ctx, "ibmidp");
-  /*nameid->SPNameQualifier = zx_ref_str(cf->ctx, spqual);*/
+  nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, "persistent");
+  nameid->NameQualifier = zx_ref_attr(cf->ctx, zx_NameQualifier_ATTR, "ibmidp");
+  /*nameid->SPNameQualifier = zx_ref_attr(cf->ctx, zx_SPNameQualifier_ATTR, spqual);*/
   nameid->gg.content = zx_ref_str(cf->ctx, "a-persistent-nid");
 
 #if 0

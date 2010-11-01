@@ -65,14 +65,14 @@ struct zx_sa_Attribute_s* zxid_find_attribute(zxid_a7n* a7n, int nfmt_len, char*
   for (as = a7n->AttributeStatement; as; as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n)
     for (at = as->Attribute; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n)
       if ((nfmt_len ? (at->NameFormat
-		       && at->NameFormat->len == nfmt_len
-		       && !memcmp(at->NameFormat->s, nfmt, nfmt_len)) : 1)
+		       && at->NameFormat->g.len == nfmt_len
+		       && !memcmp(at->NameFormat->g.s, nfmt, nfmt_len)) : 1)
 	  && (name_len ? (at->Name
-			  && at->Name->len == name_len
-			  && !memcmp(at->Name->s, name, name_len)) : 1)
+			  && at->Name->g.len == name_len
+			  && !memcmp(at->Name->g.s, name, name_len)) : 1)
 	  && (friendly_len ? (at->FriendlyName
-			      && at->FriendlyName->len == friendly_len
-			      && !memcmp(at->FriendlyName->s, friendly, friendly_len)) : 1)) {
+			      && at->FriendlyName->g.len == friendly_len
+			      && !memcmp(at->FriendlyName->g.s, friendly, friendly_len)) : 1)) {
 	--n;
 	if (!n)
 	  return at;

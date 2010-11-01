@@ -238,8 +238,8 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, z
 
   if (azq->Request && azq->Request->Subject) {
     for (xac_at = azq->Request->Subject->Attribute; xac_at; xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
-      if (xac_at->AttributeId->len == sizeof("role")-1
-	  && !memcmp(xac_at->AttributeId->s, "role", sizeof("role")-1)) {
+      if (xac_at->AttributeId->g.len == sizeof("role")-1
+	  && !memcmp(xac_at->AttributeId->g.s, "role", sizeof("role")-1)) {
 	if (xac_at->AttributeValue && xac_at->AttributeValue->content
 	    && xac_at->AttributeValue->content->len == sizeof("deny")-1
 	    && !memcmp(xac_at->AttributeValue->content->s, "deny", sizeof("deny")-1)) {
@@ -283,8 +283,8 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
 
   if (azq->Request && azq->Request->Subject) {
     for (xac_at = azq->Request->Subject->Attribute; xac_at; xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
-      if (xac_at->AttributeId->len == sizeof("role")-1
-	  && !memcmp(xac_at->AttributeId->s, "role", sizeof("role")-1)) {
+      if (xac_at->AttributeId->g.len == sizeof("role")-1
+	  && !memcmp(xac_at->AttributeId->g.s, "role", sizeof("role")-1)) {
 	if (xac_at->AttributeValue && xac_at->AttributeValue->content
 	    && xac_at->AttributeValue->content->len == sizeof("deny")-1
 	    && !memcmp(xac_at->AttributeValue->content->s, "deny", sizeof("deny")-1)) {
@@ -348,10 +348,10 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
   if (bdy->LogoutRequest) {
     if (!zxid_sp_slo_do(cf, cgi, ses, bdy->LogoutRequest))
       return 0;
-    body->LogoutResponse = zxid_mk_logout_resp(cf, zxid_OK(cf), bdy->LogoutRequest->ID);
+    body->LogoutResponse = zxid_mk_logout_resp(cf, zxid_OK(cf), &bdy->LogoutRequest->ID->g);
     if (cf->sso_soap_resp_sign) {
       ZERO(&refs, sizeof(refs));
-      refs.id = body->LogoutResponse->ID;
+      refs.id = &body->LogoutResponse->ID->g;
       refs.canon = zx_EASY_ENC_SO_sp_LogoutResponse(cf->ctx, body->LogoutResponse);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert slor"))
 	body->LogoutResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -364,7 +364,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     body->ManageNameIDResponse = zxid_mni_do(cf, cgi, ses, bdy->ManageNameIDRequest);
     if (cf->sso_soap_resp_sign) {
       ZERO(&refs, sizeof(refs));
-      refs.id = body->ManageNameIDResponse->ID;
+      refs.id = &body->ManageNameIDResponse->ID->g;
       refs.canon = zx_EASY_ENC_SO_sp_ManageNameIDResponse(cf->ctx, body->ManageNameIDResponse);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
 	body->ManageNameIDResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -378,7 +378,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     if (bdy->SASLRequest) {
       if (hdr && hdr->Sender
 	  && hdr->Sender->providerID)
-	issuer = hdr->Sender->providerID;
+	issuer = &hdr->Sender->providerID->g;
       else
 	issuer = 0;
       //issuer = bdy->SASLRequest->Issuer->gg.content;
@@ -403,7 +403,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       body->Response = zxid_xacml_az_do(cf, cgi, ses, bdy->XACMLAuthzDecisionQuery);
       if (cf->sso_soap_resp_sign) {
 	ZERO(&refs, sizeof(refs));
-	refs.id = body->Response->ID;
+	refs.id = &body->Response->ID->g;
 	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
 	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -416,7 +416,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       body->Response = zxid_xacml_az_cd1_do(cf, cgi, ses, bdy->xaspcd1_XACMLAuthzDecisionQuery);
       if (cf->sso_soap_resp_sign) {
 	ZERO(&refs, sizeof(refs));
-	refs.id = body->Response->ID;
+	refs.id = &body->Response->ID->g;
 	refs.canon = zx_EASY_ENC_SO_sp_Response(cf->ctx, body->Response);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert azr"))
 	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -438,7 +438,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       body->NameIDMappingResponse = zxid_nidmap_do(cf, bdy->NameIDMappingRequest);
       if (cf->sso_soap_resp_sign) {
 	ZERO(&refs, sizeof(refs));
-	refs.id = body->NameIDMappingResponse->ID;
+	refs.id = &body->NameIDMappingResponse->ID->g;
 	refs.canon = zx_EASY_ENC_SO_sp_NameIDMappingResponse(cf->ctx, body->NameIDMappingResponse);
 	if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert mnir"))
 	  body->NameIDMappingResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
@@ -451,7 +451,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
       goto malformed;
     }
     
-    issuer = hdr->Sender->providerID;
+    issuer = &hdr->Sender->providerID->g;
     a7n = zxid_dec_a7n(cf, hdr->Security->Assertion, hdr->Security->EncryptedAssertion);
     
     if (bdy->Query) { /* Discovery 2.0 Query */

@@ -168,7 +168,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
     for (sso_svc = idp_meta->ed->IDPSSODescriptor->SingleSignOnService;
 	 sso_svc;
 	 sso_svc = (struct zx_md_SingleSignOnService_s*)sso_svc->gg.g.n)
-      if (sso_svc->Binding && !memcmp(SAML2_REDIR, sso_svc->Binding->s, sso_svc->Binding->len))
+      if (sso_svc->Binding && !memcmp(SAML2_REDIR, sso_svc->Binding->g.s, sso_svc->Binding->g.len))
 	break;
     if (!sso_svc) {
       ERR("IdP Entity(%s) does not have any IdP SSO Service with " SAML2_REDIR " binding (metadata problem)", cgi->eid);
@@ -190,7 +190,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
   }
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "ANREDIR", cgi->eid, 0);
-  ars = zxid_saml2_redir_url(cf, sso_svc->Location, ars, cgi->rs);
+  ars = zxid_saml2_redir_url(cf, &sso_svc->Location->g, ars, cgi->rs);
   D_DEDENT("start_sso: ");
   return ars;
 }
@@ -291,8 +291,8 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     for (ar_svc = idp_meta->ed->IDPSSODescriptor->ArtifactResolutionService;
 	 ar_svc;
 	 ar_svc = (struct zx_md_ArtifactResolutionService_s*)ar_svc->gg.g.n)
-      if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->s, ar_svc->Binding->len)
-	  && ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->s, ar_svc->index->len)
+      if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->g.s, ar_svc->Binding->g.len)
+	  && ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->g.s, ar_svc->index->g.len)
 	  && ar_svc->Location)
 	break;
     if (!ar_svc) {
@@ -304,7 +304,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
     
     body = zx_NEW_e_Body(cf->ctx);
     body->ArtifactResolve = zxid_mk_art_deref(cf, idp_meta, cgi->saml_art);
-    r = zxid_soap_call_body(cf, ar_svc->Location, body);
+    r = zxid_soap_call_body(cf, &ar_svc->Location->g, body);
     len =  zxid_sp_soap_dispatch(cf, cgi, ses, r);
     D_DEDENT("deref: ");
     return len;
@@ -443,8 +443,8 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
   }
  found_audience:
   
-  if (a7n->Conditions->NotOnOrAfter && a7n->Conditions->NotOnOrAfter->len > 18) {
-    secs = zx_date_time_to_secs(a7n->Conditions->NotOnOrAfter->s);
+  if (a7n->Conditions->NotOnOrAfter && a7n->Conditions->NotOnOrAfter->g.len > 18) {
+    secs = zx_date_time_to_secs(a7n->Conditions->NotOnOrAfter->g.s);
     if (secs <= ourts->tv_sec) {
       if (secs + cf->after_slop <= ourts->tv_sec) {
 	ERR("NotOnOrAfter rejected with slop of %d. Time to expiry %ld secs. Our gettimeofday: %ld secs, remote: %d secs", cf->after_slop, secs - ourts->tv_sec, ourts->tv_sec, secs);
@@ -469,8 +469,8 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
     INFO("Assertion does not have NotOnOrAfter. %d", 0);
   }
   
-  if (a7n->Conditions->NotBefore && a7n->Conditions->NotBefore->len > 18) {
-    secs = zx_date_time_to_secs(a7n->Conditions->NotBefore->s);
+  if (a7n->Conditions->NotBefore && a7n->Conditions->NotBefore->g.len > 18) {
+    secs = zx_date_time_to_secs(a7n->Conditions->NotBefore->g.s);
     if (secs > ourts->tv_sec) {
       if (secs - cf->before_slop > ourts->tv_sec) {
 	ERR("NotBefore rejected with slop of %d. Time to validity %ld secs. Our gettimeofday: %ld secs, remote: %d secs", cf->before_slop, secs - ourts->tv_sec, ourts->tv_sec, secs);
@@ -497,7 +497,7 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
   return ZXSIG_OK;
 }
 
-struct zx_str unknown_str = {{0,0,0,0,0}, 1, "??"};  /* Static string used as dummy value. */
+struct zx_str unknown_str = {0,0,1,"??"};  /* Static string used as dummy value. */
 
 /*(i) zxid_sp_sso_finalize() gets called irrespective of binding (POST, Artifact)
  * and validates the SSO a7n, including the authentication statement.
@@ -533,11 +533,11 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
     ERR("SSO failed: no assertion supplied, or assertion didn't contain AuthnStatement. %p", a7n);
     goto erro;
   }
-  if (!a7n->IssueInstant || !a7n->IssueInstant->len || !a7n->IssueInstant->s || !a7n->IssueInstant->s[0]) {
+  if (!a7n->IssueInstant || !a7n->IssueInstant->g.len || !a7n->IssueInstant->g.s || !a7n->IssueInstant->g.s[0]) {
     ERR("SSO failed: assertion does not have IssueInstant or it is empty. %p", a7n->IssueInstant);
     goto erro;
   }
-  srcts.tv_sec = zx_date_time_to_secs(a7n->IssueInstant->s);
+  srcts.tv_sec = zx_date_time_to_secs(a7n->IssueInstant->g.s);
   if (!a7n->Issuer || !a7n->Issuer->gg.content) {
     ERR("SSO failed: assertion does not have Issuer. %p", a7n->Issuer);
     goto erro;
@@ -564,7 +564,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
   
   subj = ses->nameid->gg.content;
   ses->nid = zx_str_to_c(cf->ctx, subj);
-  if (ses->nameid->Format && !memcmp(ses->nameid->Format->s, SAML2_TRANSIENT_NID_FMT, ses->nameid->Format->len)) {
+  if (ses->nameid->Format && !memcmp(ses->nameid->Format->g.s, SAML2_TRANSIENT_NID_FMT, ses->nameid->Format->g.len)) {
     ses->nidfmt = 0;
   } else {
     ses->nidfmt = 1;  /* anything nontransient may be a federation */
@@ -577,7 +577,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
   ses->tgtfmt = ses->nidfmt;
 
   if (a7n->AuthnStatement->SessionIndex)
-    ses->sesix = zx_str_to_c(cf->ctx, a7n->AuthnStatement->SessionIndex);
+    ses->sesix = zx_str_to_c(cf->ctx, &a7n->AuthnStatement->SessionIndex->g);
   
   D("SSOA7N received. NID(%s) FMT(%d) SESIX(%s)", ses->nid, ses->nidfmt, ses->sesix?ses->sesix:"");
   
@@ -630,7 +630,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
   
   if (cf->log_rely_a7n) {
     DD("Logging... %d", 0);
-    logpath = zxlog_path(cf, issuer, a7n->ID, ZXLOG_RELY_DIR, ZXLOG_A7N_KIND, 1);
+    logpath = zxlog_path(cf, issuer, &a7n->ID->g, ZXLOG_RELY_DIR, ZXLOG_A7N_KIND, 1);
     if (logpath) {
       ses->sso_a7n_path = ses->tgt_a7n_path = zx_str_to_c(cf->ctx, logpath);
       ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &a7n->gg);
@@ -650,11 +650,11 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
   cgi->msg = "SSO completed and session created.";
   cgi->op = '-';  /* Make sure management screen does not try to redispatch. */
-  zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);
+  zxid_put_user(cf, &ses->nameid->Format->g, &ses->nameid->NameQualifier->g, &ses->nameid->SPNameQualifier->g, ses->nameid->gg.content, 0);
   DD("Logging... %d", 0);
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, a7n->ID, subj,
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, &a7n->ID->g, subj,
 	cgi->sigval, "K", "NEWSES", ses->sid, "sesix(%s)", ses->sesix?ses->sesix:"-");
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, a7n->ID, subj,
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, &a7n->ID->g, subj,
 	cgi->sigval, "K", ses->nidfmt?"FEDSSO":"TMPSSO", ses->sesix?ses->sesix:"-", 0);
   D_DEDENT("ssof: ");
   return ZXID_SSO_OK;
@@ -662,7 +662,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
 erro:
   ERR("SSO fail (%s)", err);
   cgi->msg = "SSO failed. This could be due to signature, timeout, etc., technical failures, or by policy.";
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, a7n?a7n->ID:0, subj,
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, a7n?&a7n->ID->g:0, subj,
 	cgi->sigval, err, ses->nidfmt?"FEDSSO":"TMPSSO", ses->sesix?ses->sesix:"-", "Error.");
   D_DEDENT("ssof: ");
   return 0;
@@ -748,7 +748,7 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
   for (ar_svc = idp_meta->ed->IDPSSODescriptor->SingleLogoutService;
        ar_svc;
        ar_svc = (struct zx_md_SingleLogoutService_s*)ar_svc->gg.g.n)
-    if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->s, ar_svc->Binding->len)
+    if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->g.s, ar_svc->Binding->g.len)
 	/*&& ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->s, ar_svc->index->len)*/
 	&& ar_svc->Location)
       break;
@@ -774,9 +774,9 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
   
   body = zx_NEW_e_Body(cf->ctx);
   body->SASLRequest = zx_NEW_as_SASLRequest(cf->ctx);
-  body->SASLRequest->mechanism = zx_dup_str(cf->ctx, "PLAIN");
+  body->SASLRequest->mechanism = zx_dup_attr(cf->ctx, zx_mechanism_ATTR, "PLAIN");
   body->SASLRequest->Data = zx_ref_len_simple_elem(cf->ctx, p-b64, b64);
-  r = zxid_soap_call_body(cf, ar_svc->Location, body);
+  r = zxid_soap_call_body(cf, &ar_svc->Location->g, body);
   /* *** free the body */
   
   if (!r || !r->Envelope || !r->Envelope->Body || !(res = r->Envelope->Body->SASLResponse)) {
@@ -786,17 +786,17 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
     return 0;
   }
   
-  if (!res->Status || !res->Status->code || !res->Status->code->len || !res->Status->code->s) {
+  if (!res->Status || !res->Status->code || !res->Status->code->g.len || !res->Status->code->g.s) {
     ERR("Autentication Service call failed idp(%s). Missing Status code.", idp_meta->eid);
     zxlog(cf, 0,0,0,0,0,0,0, "N", "B", "ERR", 0, "Missing Status code eid(%s)", idp_meta->eid);
     D_DEDENT("as_call: ");
     return 0;
   }
 
-  if (res->Status->code->len != 2
-      || res->Status->code->s[0]!='O' || res->Status->code->s[1]!='K') {  /* "OK" */
-    ERR("Autentication Service call failed idp(%s). Status code(%.*s).", idp_meta->eid, res->Status->code->len, res->Status->code->s);
-    zxlog(cf, 0,0,0,0,0,0,0, "N", "B", "ERR", 0, "Missing Status code(%.*s) eid(%s)", res->Status->code->len, res->Status->code->s, idp_meta->eid);
+  if (res->Status->code->g.len != 2
+      || res->Status->code->g.s[0]!='O' || res->Status->code->g.s[1]!='K') {  /* "OK" */
+    ERR("Autentication Service call failed idp(%s). Status code(%.*s).", idp_meta->eid, res->Status->code->g.len, res->Status->code->g.s);
+    zxlog(cf, 0,0,0,0,0,0,0, "N", "B", "ERR", 0, "Missing Status code(%.*s) eid(%s)", res->Status->code->g.len, res->Status->code->g.s, idp_meta->eid);
     D_DEDENT("as_call: ");
     return 0;
   }

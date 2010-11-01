@@ -79,6 +79,20 @@ struct zx_str* zxid_mk_id(zxid_conf* cf, char* prefix, int bits)
   return zx_strf(cf->ctx, "%s%.*s", prefix?prefix:"", p-base64_buf, base64_buf);
 }
 
+struct zx_attr_s* zxid_mk_id_attr(zxid_conf* cf, int tok, char* prefix, int bits)
+{
+  char bit_buf[ZXID_ID_MAX_BITS/8];
+  char base64_buf[ZXID_ID_MAX_BITS/6 + 1];
+  char* p;
+  if (bits > ZXID_ID_MAX_BITS || bits & 0x07) {
+    ERR("Requested bits(%d) more than internal limit(%d), or bits not divisible by 8.", bits, ZXID_ID_MAX_BITS);
+    return 0;
+  }
+  zx_rand(bit_buf, bits >> 3);
+  p = base64_fancy_raw(bit_buf, bits >> 3, base64_buf, safe_basis_64, 1<<31, 0, 0, '.');
+  return zx_attrf(cf->ctx, tok, "%s%.*s", prefix?prefix:"", p-base64_buf, base64_buf);
+}
+
 /*() Format a date-time string as usually used in XML, SAML, and Liberty. Apparently
  * there are two ways to format this: with or with-out milliseconds. ZXID accepts
  * either form as input, as they are both legal, but will only generate the
@@ -100,6 +114,22 @@ struct zx_str* zxid_date_time(zxid_conf* cf, time_t secs)
   /*                      "2002-10-31T21:42:14Z" */
   return zx_strf(cf->ctx, "%04d-%02d-%02dT%02d:%02d:%02dZ",
 		 t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
+#endif
+}
+
+struct zx_attr_s* zxid_date_time_attr(zxid_conf* cf, int tok, time_t secs)
+{
+  struct tm t;
+  secs += cf->timeskew;
+  GMTIME_R(secs, t);
+#if 0
+  /*                            "2002-10-31T21:42:14.002Z" */
+  return zx_attrf(cf->ctx, tok, "%04d-%02d-%02dT%02d:%02d:%02d.002Z",
+		  t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
+#else
+  /*                            "2002-10-31T21:42:14Z" */
+  return zx_attrf(cf->ctx, tok, "%04d-%02d-%02dT%02d:%02d:%02dZ",
+		  t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
 #endif
 }
 
@@ -373,7 +403,7 @@ struct zx_str* zxid_saml2_post_enc(zxid_conf* cf, char* field, struct zx_str* pa
   return payload;
 }
 
-struct zx_str zxstr_unknown = { {0,0,0,0,0}, sizeof("UNKNOWN")-1, "UNKNOWN" };
+struct zx_str zxstr_unknown = {0,0,sizeof("UNKNOWN")-1, "UNKNOWN"};
 
 /*(i) Encode and sign a URL according to SAML2 redirect binding.
  * zxid_decode_redir_or_post() performs the opposite operation.
@@ -581,7 +611,7 @@ int zxid_saml_ok(zxid_conf* cf, zxid_cgi* cgi, struct zx_sp_Status_s* st, char* 
   struct zx_str* sc1 = 0;
   struct zx_str* sc2 = 0;
   struct zx_sp_StatusCode_s* sc = st->StatusCode;
-  if (!memcmp(SAML2_SC_SUCCESS, sc->Value->s, sc->Value->len)) {
+  if (!memcmp(SAML2_SC_SUCCESS, sc->Value->g.s, sc->Value->g.len)) {
     D("SAML ok what(%s)", what);
     if (cf->log_level>0)
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "K", "SAMLOK", what, 0);
@@ -589,12 +619,12 @@ int zxid_saml_ok(zxid_conf* cf, zxid_cgi* cgi, struct zx_sp_Status_s* st, char* 
   }
   if (st->StatusMessage && (m = st->StatusMessage->content))
     ERR("SAML Fail what(%s) msg(%.*s)", what, m->len, m->s);
-  if (sc1 = sc->Value)
+  if (sc1 = &sc->Value->g)
     ERR("SAML Fail what(%s) SC1(%.*s)", what, sc1->len, sc1->s);
   if (sc->StatusCode)
-    sc2 = sc->StatusCode->Value;
+    sc2 = &sc->StatusCode->Value->g;
   for (sc = sc->StatusCode; sc; sc = sc->StatusCode)
-    ERR("SAML Fail what(%s) subcode(%.*s)", what, sc->Value->len, sc->Value->s);
+    ERR("SAML Fail what(%s) subcode(%.*s)", what, sc->Value->g.len, sc->Value->g.s);
     
   ss = zx_strf(cf->ctx, "SAML Fail what(%s) msg(%.*s) SC1(%.*s) subcode(%.*s)", what,
 	       m?m->len:0, m?m->s:"",

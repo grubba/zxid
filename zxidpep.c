@@ -184,8 +184,8 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
    * part of the same entity). This is TAS3 specific hack. */
 
   sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx);
-  sec->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  sec->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
+  sec->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  sec->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
   sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx);
   sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx);
   sec->Assertion = ses->tgta7n;
@@ -212,7 +212,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
     body->xaspcd1_XACMLAuthzDecisionQuery = zxid_mk_az_cd1(cf, subj, rsrc, act, env);
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
-      refs.id = body->xaspcd1_XACMLAuthzDecisionQuery->ID;
+      refs.id = &body->xaspcd1_XACMLAuthzDecisionQuery->ID->g;
       refs.canon = zx_EASY_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(cf->ctx, body->xaspcd1_XACMLAuthzDecisionQuery);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az cd1"))
 	body->xaspcd1_XACMLAuthzDecisionQuery->Signature
@@ -223,7 +223,7 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
     body->XACMLAuthzDecisionQuery = zxid_mk_az(cf, subj, rsrc, act, env);
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
-      refs.id = body->XACMLAuthzDecisionQuery->ID;
+      refs.id = &body->XACMLAuthzDecisionQuery->ID->g;
       refs.canon = zx_EASY_ENC_SO_xasp_XACMLAuthzDecisionQuery(cf->ctx, body->XACMLAuthzDecisionQuery);
       if (zxid_lazy_load_sign_cert_and_pkey(cf, &sign_cert, &sign_pkey, "use sign cert az"))
 	body->XACMLAuthzDecisionQuery->Signature

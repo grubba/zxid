@@ -42,11 +42,11 @@
 struct zx_lu_Status_s* zxid_mk_lu_Status(zxid_conf* cf, const char* sc1, const char* sc2, const char* msg, const char* ref)
 {
   struct zx_lu_Status_s* st = zx_NEW_lu_Status(cf->ctx);
-  st->code = zx_dup_str(cf->ctx, STRNULLCHKQ(sc1));
+  st->code = zx_dup_attr(cf->ctx, zx_code_ATTR, STRNULLCHKQ(sc1));
   if (msg)
-    st->comment = zx_dup_str(cf->ctx, msg);
+    st->comment = zx_dup_attr(cf->ctx, zx_comment_ATTR, msg);
   if (ref)
-    st->ref = zx_dup_str(cf->ctx, ref);
+    st->ref = zx_dup_attr(cf->ctx, zx_ref_ATTR, ref);
   if (sc2)
     st->Status = zxid_mk_lu_Status(cf, sc2, 0, 0, 0);
   return st;
@@ -59,15 +59,15 @@ zxid_tas3_status* zxid_mk_tas3_status(zxid_conf* cf, const char* ctlpt, const ch
 {
   zxid_tas3_status* st = zx_NEW_tas3_Status(cf->ctx);
   if (ctlpt)
-    st->ctlpt = zx_dup_str(cf->ctx, ctlpt);
-  st->code = zx_dup_str(cf->ctx, STRNULLCHKQ(sc1));
+    st->ctlpt = zx_dup_attr(cf->ctx, zx_ctlpt_ATTR, ctlpt);
+  st->code = zx_dup_attr(cf->ctx, zx_code_ATTR, STRNULLCHKQ(sc1));
   if (msg)
-    st->comment = zx_dup_str(cf->ctx, msg);
+    st->comment = zx_dup_attr(cf->ctx, zx_comment_ATTR, msg);
   if (ref)
-    st->ref = zx_dup_str(cf->ctx, ref);
+    st->ref = zx_dup_attr(cf->ctx, zx_ref_ATTR, ref);
   if (sc2)
     st->Status = zxid_mk_lu_Status(cf, sc2, 0, 0, 0);
-  st->mustUnderstand = zx_dup_str(cf->ctx, "0");
+  st->mustUnderstand = zx_dup_attr(cf->ctx, zx_e_mustUnderstand_ATTR, "0");
   return st;
 }
 
@@ -128,9 +128,9 @@ char* zxid_get_tas3_fault_sc1(zxid_conf* cf, zxid_fault* flt) {
 }
 /* Called by: */
 char* zxid_get_tas3_fault_sc2(zxid_conf* cf, zxid_fault* flt) {
-  if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->code || !flt->detail->Status->code->s)
+  if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->code || !flt->detail->Status->code->g.s)
     return 0;
-  return zx_str_to_c(cf->ctx, flt->detail->Status->code);
+  return zx_str_to_c(cf->ctx, &flt->detail->Status->code->g);
 }
 /* Called by: */
 char* zxid_get_tas3_fault_comment(zxid_conf* cf, zxid_fault* flt) {
@@ -140,9 +140,9 @@ char* zxid_get_tas3_fault_comment(zxid_conf* cf, zxid_fault* flt) {
 }
 /* Called by: */
 char* zxid_get_tas3_fault_ref(zxid_conf* cf, zxid_fault* flt) {
-  if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->ref || !flt->detail->Status->ref->s)
+  if (!flt || !flt->detail || !flt->detail->Status || !flt->detail->Status->ref || !flt->detail->Status->ref->g.s)
     return 0;
-  return zx_str_to_c(cf->ctx, flt->detail->Status->ref);
+  return zx_str_to_c(cf->ctx, &flt->detail->Status->ref->g);
 }
 /* Called by: */
 char* zxid_get_tas3_fault_actor(zxid_conf* cf, zxid_fault* flt) {
@@ -185,33 +185,33 @@ zxid_tas3_status* zxid_get_tas3_status(zxid_conf* cf, zxid_ses* ses) {
 
 /* Called by: */
 char* zxid_get_tas3_status_sc1(zxid_conf* cf, zxid_tas3_status* st) {
-  if (!st || !st->code || !st->code->s)
+  if (!st || !st->code || !st->code->g.s)
     return 0;
-  return zx_str_to_c(cf->ctx, st->code);
+  return zx_str_to_c(cf->ctx, &st->code->g);
 }
 /* Called by: */
 char* zxid_get_tas3_status_sc2(zxid_conf* cf, zxid_tas3_status* st) {
-  if (!st || !st->Status || !st->Status->code || !st->Status->code->s)
+  if (!st || !st->Status || !st->Status->code || !st->Status->code->g.s)
     return 0;
-  return zx_str_to_c(cf->ctx, st->Status->code);
+  return zx_str_to_c(cf->ctx, &st->Status->code->g);
 }
 /* Called by: */
 char* zxid_get_tas3_status_comment(zxid_conf* cf, zxid_tas3_status* st) {
-  if (!st || !st->comment || !st->comment->s)
+  if (!st || !st->comment || !st->comment->g.s)
     return 0;
-  return zx_str_to_c(cf->ctx, st->comment);
+  return zx_str_to_c(cf->ctx, &st->comment->g);
 }
 /* Called by: */
 char* zxid_get_tas3_status_ref(zxid_conf* cf, zxid_tas3_status* st) {
-  if (!st || !st->ref || !st->ref->s)
+  if (!st || !st->ref || !st->ref->g.s)
     return 0;
-  return zx_str_to_c(cf->ctx, st->ref);
+  return zx_str_to_c(cf->ctx, &st->ref->g);
 }
 /* Called by: */
 char* zxid_get_tas3_status_ctlpt(zxid_conf* cf, zxid_tas3_status* st) {
-  if (!st || !st->ctlpt || !st->ctlpt->s)
+  if (!st || !st->ctlpt || !st->ctlpt->g.s)
     return 0;
-  return zx_str_to_c(cf->ctx, st->ctlpt);
+  return zx_str_to_c(cf->ctx, &st->ctlpt->g);
 }
 
 /*() Low level constructor for discovery <di:RequestedService>. */
@@ -227,7 +227,7 @@ static struct zx_di_RequestedService_s* zxid_mk_di_req_svc(zxid_conf* cf, int re
   rs->SecurityMechID = zx_ref_simple_elem(cf->ctx, WSF20_SEC_MECH_TLS_SAML2);
 #endif
   rs->Framework = zx_NEW_di_Framework(cf->ctx);
-  rs->Framework->version = zx_ref_str(cf->ctx, "2.0");  /* Request specific framework, omit=any */
+  rs->Framework->version = zx_ref_attr(cf->ctx, zx_version_ATTR, "2.0");  /* Request specific framework, omit=any */
   if (svc_type)
     rs->ServiceType = zx_ref_simple_elem(cf->ctx, svc_type);
   if (url)
@@ -274,12 +274,12 @@ struct zx_dap_Select_s* zxid_mk_dap_select(zxid_conf* cf, char* dn, char* filter
   struct zx_dap_Select_s* sel = zx_NEW_dap_Select(cf->ctx);
   if (dn)           sel->dn = zx_ref_simple_elem(cf->ctx, dn);
   if (filter)       sel->filter = zx_ref_simple_elem(cf->ctx, filter);
-  if (attributes)   sel->attributes = zx_ref_str(cf->ctx, attributes);
-  if (derefaliases) sel->derefaliases = zx_strf(cf->ctx, "%d", derefaliases);
-  if (scope)        sel->scope = zx_strf(cf->ctx, "%d", scope);
-  if (sizelimit)    sel->sizelimit = zx_strf(cf->ctx, "%d", sizelimit);
-  if (timelimit)    sel->timelimit = zx_strf(cf->ctx, "%d", timelimit);
-  if (typesonly)    sel->typesonly = zx_ref_str(cf->ctx, ZXID_TRUE);
+  if (attributes)   sel->attributes = zx_ref_attr(cf->ctx, zx_attributes_ATTR, attributes);
+  if (derefaliases) sel->derefaliases = zx_attrf(cf->ctx, zx_derefaliases_ATTR, "%d", derefaliases);
+  if (scope)        sel->scope = zx_attrf(cf->ctx, zx_scope_ATTR, "%d", scope);
+  if (sizelimit)    sel->sizelimit = zx_attrf(cf->ctx, zx_sizelimit_ATTR, "%d", sizelimit);
+  if (timelimit)    sel->timelimit = zx_attrf(cf->ctx, zx_timelimit_ATTR, "%d", timelimit);
+  if (typesonly)    sel->typesonly = zx_ref_attr(cf->ctx, zx_typesonly_ATTR, ZXID_TRUE);
   return sel;
 }
 
@@ -290,9 +290,9 @@ struct zx_dap_QueryItem_s* zxid_mk_dap_query_item(zxid_conf* cf, struct zx_dap_S
 {
   struct zx_dap_QueryItem_s* qi = zx_NEW_dap_QueryItem(cf->ctx);
   qi->Select = sel;
-  if (objtype)       qi->objectType = zx_ref_str(cf->ctx, objtype);
-  if (changed_since) qi->changedSince = zx_ref_str(cf->ctx, changed_since);
-  if (predef)        qi->predefined = zx_ref_str(cf->ctx, predef);
+  if (objtype)       qi->objectType = zx_ref_attr(cf->ctx, zx_objectType_ATTR, objtype);
+  if (changed_since) qi->changedSince = zx_ref_attr(cf->ctx, zx_changedSince_ATTR, changed_since);
+  if (predef)        qi->predefined = zx_ref_attr(cf->ctx, zx_predefined_ATTR, predef);
   if (sort)          qi->Sort = zx_ref_simple_elem(cf->ctx, sort);
 
 #if 0
@@ -308,18 +308,18 @@ struct zx_dap_QueryItem_s* zxid_mk_dap_query_item(zxid_conf* cf, struct zx_dap_S
   }
 #endif
 
-  if (incl_common_attr) qi->includeCommonAttributes = zx_ref_str(cf->ctx, ZXID_TRUE);
-  if (offset)           qi->offset = zx_strf(cf->ctx, "%d", offset);
-  if (count)            qi->count = zx_strf(cf->ctx, "%d", count);
+  if (incl_common_attr) qi->includeCommonAttributes = zx_ref_attr(cf->ctx, zx_includeCommonAttributes_ATTR, ZXID_TRUE);
+  if (offset)           qi->offset = zx_attrf(cf->ctx, zx_offset_ATTR, "%d", offset);
+  if (count)            qi->count  = zx_attrf(cf->ctx, zx_count_ATTR,  "%d", count);
   
-  if (setreq) qi->setReq = zx_ref_str(cf->ctx, setreq);  /* Request new set */
-  if (setid)  qi->setID = zx_ref_str(cf->ctx, setid);    /* Continue to use existing set */
+  if (setreq) qi->setReq = zx_ref_attr(cf->ctx, zx_setReq_ATTR, setreq);  /* Request new set */
+  if (setid)  qi->setID  = zx_ref_attr(cf->ctx, zx_setID_ATTR, setid);    /* Continue to use existing set */
   
-  qi->itemID = zxid_mk_id(cf, "qi", ZXID_ID_BITS);
+  qi->itemID = zxid_mk_id_attr(cf, zx_itemID_ATTR, "qi", ZXID_ID_BITS);
   
   if (contingent_itemidref) {
-    qi->itemIDRef = zx_ref_str(cf->ctx, contingent_itemidref);
-    qi->contingency = zx_ref_str(cf->ctx, ZXID_TRUE);
+    qi->itemIDRef = zx_ref_attr(cf->ctx, zx_itemIDRef_ATTR, contingent_itemidref);
+    qi->contingency = zx_ref_attr(cf->ctx, zx_contingency_ATTR, ZXID_TRUE);
   }
   return qi;
 }
@@ -334,12 +334,12 @@ struct zx_dap_TestOp_s* zxid_mk_dap_testop(zxid_conf* cf, char* dn, char* filter
   struct zx_dap_TestOp_s* sel = zx_NEW_dap_TestOp(cf->ctx);
   if (dn)           sel->dn = zx_ref_simple_elem(cf->ctx, dn);
   if (filter)       sel->filter = zx_ref_simple_elem(cf->ctx, filter);
-  if (attributes)   sel->attributes = zx_ref_str(cf->ctx, attributes);
-  if (derefaliases) sel->derefaliases = zx_strf(cf->ctx, "%d", derefaliases);
-  if (scope)        sel->scope = zx_strf(cf->ctx, "%d", scope);
-  if (sizelimit)    sel->sizelimit = zx_strf(cf->ctx, "%d", sizelimit);
-  if (timelimit)    sel->timelimit = zx_strf(cf->ctx, "%d", timelimit);
-  if (typesonly)    sel->typesonly = zx_ref_str(cf->ctx, ZXID_TRUE);
+  if (attributes)   sel->attributes = zx_ref_attr(cf->ctx, zx_attributes_ATTR, attributes);
+  if (derefaliases) sel->derefaliases = zx_attrf(cf->ctx, zx_derefaliases_ATTR, "%d", derefaliases);
+  if (scope)        sel->scope = zx_attrf(cf->ctx, zx_scope_ATTR, "%d", scope);
+  if (sizelimit)    sel->sizelimit = zx_attrf(cf->ctx, zx_sizelimit_ATTR, "%d", sizelimit);
+  if (timelimit)    sel->timelimit = zx_attrf(cf->ctx, zx_timelimit_ATTR, "%d", timelimit);
+  if (typesonly)    sel->typesonly = zx_ref_attr(cf->ctx, zx_typesonly_ATTR, ZXID_TRUE);
   return sel;
 }
 
@@ -350,9 +350,9 @@ struct zx_dap_TestItem_s* zxid_mk_dap_test_item(zxid_conf* cf, struct zx_dap_Tes
 {
   struct zx_dap_TestItem_s* ti = zx_NEW_dap_TestItem(cf->ctx);
   ti->TestOp = top;
-  ti->id = ti->itemID = zxid_mk_id(cf, "ti", ZXID_ID_BITS);
-  if (objtype) ti->objectType = zx_ref_str(cf->ctx, objtype);
-  if (predef)  ti->predefined = zx_ref_str(cf->ctx, predef);
+  ti->id = ti->itemID = zxid_mk_id_attr(cf, zx_id_ATTR, "ti", ZXID_ID_BITS);
+  if (objtype) ti->objectType = zx_ref_attr(cf->ctx, zx_objectType_ATTR, objtype);
+  if (predef)  ti->predefined = zx_ref_attr(cf->ctx, zx_predefined_ATTR, predef);
   return ti;
 }
 
@@ -365,9 +365,9 @@ struct zx_dap_ResultQuery_s* zxid_mk_dap_resquery(zxid_conf* cf, struct zx_dap_S
 {
   struct zx_dap_ResultQuery_s* qi = zx_NEW_dap_ResultQuery(cf->ctx);
   qi->Select = sel;
-  if (objtype)       qi->objectType = zx_ref_str(cf->ctx, objtype);
-  if (changed_since) qi->changedSince = zx_ref_str(cf->ctx, changed_since);
-  if (predef)        qi->predefined = zx_ref_str(cf->ctx, predef);
+  if (changed_since) qi->changedSince = zx_ref_attr(cf->ctx, zx_changedSince_ATTR, changed_since);
+  if (objtype)       qi->objectType = zx_ref_attr(cf->ctx, zx_objectType_ATTR, objtype);
+  if (predef)        qi->predefined = zx_ref_attr(cf->ctx, zx_predefined_ATTR, predef);
   if (sort)          qi->Sort = zx_ref_simple_elem(cf->ctx, sort);
 
 #if 0
@@ -383,13 +383,13 @@ struct zx_dap_ResultQuery_s* zxid_mk_dap_resquery(zxid_conf* cf, struct zx_dap_S
   }
 #endif
   
-  if (incl_common_attr) qi->includeCommonAttributes = zx_ref_str(cf->ctx, ZXID_TRUE);
+  if (incl_common_attr) qi->includeCommonAttributes = zx_ref_attr(cf->ctx, zx_includeCommonAttributes_ATTR, ZXID_TRUE);
   
-  qi->itemID = zxid_mk_id(cf, "qi", ZXID_ID_BITS);
+  qi->itemID = zxid_mk_id_attr(cf, zx_itemID_ATTR, "qi", ZXID_ID_BITS);
   
   if (contingent_itemidref) {
-    qi->itemIDRef = zx_ref_str(cf->ctx, contingent_itemidref);
-    qi->contingency = zx_ref_str(cf->ctx, ZXID_TRUE);
+    qi->itemIDRef = zx_ref_attr(cf->ctx, zx_itemIDRef_ATTR, contingent_itemidref);
+    qi->contingency = zx_ref_attr(cf->ctx, zx_contingency_ATTR, ZXID_TRUE);
   }
   return qi;
 }
@@ -402,19 +402,19 @@ struct zx_dap_Subscription_s* zxid_mk_dap_subscription(zxid_conf* cf, char* subs
   struct zx_dap_Subscription_s* subs = zx_NEW_dap_Subscription(cf->ctx);
   if (itemidref) {
     subs->RefItem = zx_NEW_subs_RefItem(cf->ctx);
-    subs->RefItem->itemIDRef = zx_ref_str(cf->ctx, itemidref);
+    subs->RefItem->itemIDRef = zx_ref_attr(cf->ctx, zx_itemIDRef_ATTR, itemidref);
     if (subsID)
-      subs->RefItem->subscriptionID = zx_ref_str(cf->ctx, subsID);
+      subs->RefItem->subscriptionID = zx_ref_attr(cf->ctx, zx_subscriptionID_ATTR, subsID);
   }
   subs->ResultQuery = rq;
   if (aggreg)  subs->Aggregation = zx_ref_simple_elem(cf->ctx, aggreg);
   if (trig)    subs->Trigger = zx_ref_simple_elem(cf->ctx, trig);
-  if (starts)  subs->starts = zx_ref_str(cf->ctx, starts);
-  if (expires) subs->expires = zx_ref_str(cf->ctx, expires);
-  if (incl_data)   subs->includeData = zx_ref_str(cf->ctx, ZXID_TRUE);
-  if (admin_notif) subs->adminNotifyToRef = zx_ref_str(cf->ctx, admin_notif);
-  if (notify_ref)  subs->notifyToRef = zx_ref_str(cf->ctx, notify_ref);
-  subs->subscriptionID = zxid_mk_id(cf, "subs", ZXID_ID_BITS);;
+  if (starts)  subs->starts = zx_ref_attr(cf->ctx, zx_starts_ATTR, starts);
+  if (expires) subs->expires = zx_ref_attr(cf->ctx, zx_expires_ATTR, expires);
+  if (incl_data)   subs->includeData = zx_ref_attr(cf->ctx, zx_includeData_ATTR, ZXID_TRUE);
+  if (admin_notif) subs->adminNotifyToRef = zx_ref_attr(cf->ctx, zx_adminNotifyToRef_ATTR, admin_notif);
+  if (notify_ref)  subs->notifyToRef = zx_ref_attr(cf->ctx, zx_notifyToRef_ATTR, notify_ref);
+  subs->subscriptionID = zxid_mk_id_attr(cf, zx_subscriptionID_ATTR, "subs", ZXID_ID_BITS);;
   return subs;
 }
 
@@ -429,7 +429,7 @@ struct zx_dap_Query_s* zxid_mk_dap_query(zxid_conf* cf, struct zx_dap_TestItem_s
   q->TestItem = tis;
   q->QueryItem = qis;
   q->Subscription = subs;
-  q->itemID = zx_ref_str(cf->ctx, "QRY");
+  q->itemID = zx_ref_attr(cf->ctx, zx_itemID_ATTR, "QRY");
   return q;
 }
 
