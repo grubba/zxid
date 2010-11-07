@@ -137,13 +137,15 @@ D. plaindoc from http://mercnet.pt/plaindoc/pd.html (only for
    build process, for code generation from .sg, and for documentation)
 
 Although technically not needed to build zxid, you will need an IdP
-to test against. We do not, at the time, supply one, so you
-will need to find a third party, perhaps a free download of one of the
-commercial ones like
+to test against. You can use the free IdP at https://zxidp.org/index-idp.html
+- it allows anyone to register a user and any SP to join the Circle
+of Trust. Or you can compile and configure the zxididp, see zxid-idp.pd.
 
+<<ignore:
 * http://symlabs.com/Products/SFIAM.html
 * Lasso: http://lasso.entrouvert.org/
 * The IDP:  http://authentic.labs.libre-entreprise.org/ 
+>>
 
 2.2 Canned Tutorial: Running ZXID as CGI under mini_httpd
 ---------------------------------------------------------

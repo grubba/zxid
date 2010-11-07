@@ -69,9 +69,9 @@ struct zx_tas3_Credentials_s* zx_DEC_tas3_Credentials(struct zx_ctx* c, struct z
     switch (tok) {
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_usage_ATTR:  x->usage = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -333,9 +333,9 @@ struct zx_tas3_ESLPolicies_s* zx_DEC_tas3_ESLPolicies(struct zx_ctx* c, struct z
     switch (tok) {
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_usage_ATTR:  x->usage = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -562,9 +562,9 @@ struct zx_tas3_Status_s* zx_DEC_tas3_Status(struct zx_ctx* c, struct zx_tas3_Sta
     case zx_ctlpt_ATTR:  x->ctlpt = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_ref_ATTR:  x->ref = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

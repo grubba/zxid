@@ -323,11 +323,12 @@ struct zx_ns_s* zx_xmlns_detected(struct zx_ctx* c, struct zx_elem_s* x, const c
 
 int   zx_len_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
 void  zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp);
+int   zx_in_inc_ns(struct zx_ctx* c, struct zx_ns_s* new_ns);
 
 /* These do not have their own elems, so the table andlookup were not generated. Supply dummies. */
 #define zx_xs__ELEM_MAX 1
 #define zx_xsi__ELEM_MAX 1
-#define zx_xml__ELEM_MAX 1
+  //#define zx_xml__ELEM_MAX 1
 
 #define SIG_ALGO_RSA_SHA1  "http://www.w3.org/2000/09/xmldsig#rsa-sha1"
 #define SIG_ALGO_DSA_SHA1  "http://www.w3.org/2000/09/xmldsig#dsa-sha1"

@@ -38,4 +38,131 @@
 #include "c/zx-xml-data.h"
 #include "c/zx-ns.h"
 
+
+
+#ifdef EL_NAME
+#undef EL_NAME
+#endif
+#ifdef EL_STRUCT
+#undef EL_STRUCT
+#endif
+#ifdef EL_NS
+#undef EL_NS
+#endif
+#ifdef EL_TAG
+#undef EL_TAG
+#endif
+
+#define EL_NAME   xml_DummyToPullLang
+#define EL_STRUCT zx_xml_DummyToPullLang_s
+#define EL_NS     xml
+#define EL_TAG    DummyToPullLang
+
+#ifndef MAYBE_UNUSED
+#define MAYBE_UNUSED   /* May appear as unused variable, but is needed by some generated code. */
+#endif
+
+#if 0
+#define ENC_LEN_DEBUG(x,tag,len) D("x=%p tag(%s) len=%d",(x),(tag),(len))
+#define ENC_LEN_DEBUG_BASE char* enc_base = p
+#else
+#define ENC_LEN_DEBUG(x,tag,len)
+#define ENC_LEN_DEBUG_BASE
+#endif
+
+/* FUNC(zx_LEN_SO_xml_DummyToPullLang) */
+
+/* Compute length of an element (and its subelements). The XML attributes
+ * and elements are processed in schema order. */
+
+/* Called by: */
+int zx_LEN_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x )
+{
+  struct zx_ns_s* pop_seen = 0;
+  struct zx_elem_s* se MAYBE_UNUSED;
+#if 1 /* NORMALMODE */
+  /* *** in simple_elem case should output ns prefix from ns node. */
+  int len = sizeof("<xml:DummyToPullLang")-1 + 1 + sizeof("</xml:DummyToPullLang>")-1;
+  if (c->inc_ns_len)
+    len += zx_len_inc_ns(c, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+
+  len += zx_attr_so_len(c, x->lang, sizeof("lang")-1, &pop_seen);
+
+#else
+  /* root node has no begin tag */
+  int len = 0;
+#endif
+  
+
+
+  len += zx_len_so_common(c, &x->gg, &pop_seen);
+  zx_pop_seen(pop_seen);
+  ENC_LEN_DEBUG(x, "xml:DummyToPullLang", len);
+  return len;
+}
+
+/* FUNC(zx_ENC_SO_xml_DummyToPullLang) */
+
+/* Render element into string. The XML attributes and elements are
+ * processed in schema order. This is what you generally want for
+ * rendering new data structure to a string. The wo pointers are not used. */
+
+/* Called by: */
+char* zx_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, char* p )
+{
+  struct zx_elem_s* se MAYBE_UNUSED;
+  struct zx_attr_s* attr MAYBE_UNUSED;
+  struct zx_ns_s* pop_seen = 0;
+  ENC_LEN_DEBUG_BASE;
+#if 1 /* NORMALMODE */
+  /* *** in simple_elem case should output ns prefix from ns node. */
+  ZX_OUT_TAG(p, "<xml:DummyToPullLang");
+  if (c->inc_ns)
+    zx_add_inc_ns(c, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+
+  zx_see_attr_ns(c, x->gg.attr, &pop_seen);
+  p = zx_enc_seen(p, pop_seen); 
+  p = zx_attr_so_enc(p, x->lang, " lang=\"", sizeof(" lang=\"")-1);
+
+  for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
+    p = zx_attr_wo_enc(p, attr);
+  ZX_OUT_CH(p, '>');
+#else
+  /* root node has no begin tag */
+#endif
+  
+
+  p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
+  
+#if 1 /* NORMALMODE */
+  ZX_OUT_CLOSE_TAG(p, "</xml:DummyToPullLang>");
+  zx_pop_seen(pop_seen);
+#else
+  /* root node has no end tag either */
+#endif
+  ENC_LEN_DEBUG(x, "xml:DummyToPullLang", p-enc_base);
+  return p;
+}
+
+/* FUNC(zx_EASY_ENC_SO_xml_DummyToPullLang) */
+
+/* Called by: */
+struct zx_str* zx_EASY_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x )
+{
+  int len;
+  char* buf;
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
+  len = zx_LEN_SO_xml_DummyToPullLang(c, x );
+  buf = ZX_ALLOC(c, len+1);
+  return zx_easy_enc_common(c, zx_ENC_SO_xml_DummyToPullLang(c, x, buf ), buf, len);
+}
+
+#if 1 /* ENC_WO_SUBTEMPL */
+/* Empty ENC_WO_SUBTEMPL */
+#endif
+
+
 /* EOF -- c/zx-xml-enc.c */

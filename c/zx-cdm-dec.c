@@ -67,8 +67,8 @@ struct zx_cdm_ADR_s* zx_DEC_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -246,8 +246,8 @@ struct zx_cdm_AGENT_s* zx_DEC_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -365,11 +365,11 @@ struct zx_cdm_BDAY_s* zx_DEC_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -477,11 +477,11 @@ struct zx_cdm_BINVAL_s* zx_DEC_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -589,11 +589,11 @@ struct zx_cdm_CALADRURI_s* zx_DEC_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -711,11 +711,11 @@ struct zx_cdm_CALURI_s* zx_DEC_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -833,11 +833,11 @@ struct zx_cdm_CAPURI_s* zx_DEC_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -955,8 +955,8 @@ struct zx_cdm_CATEGORIES_s* zx_DEC_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cd
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1069,11 +1069,11 @@ struct zx_cdm_CLASS_s* zx_DEC_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1196,11 +1196,11 @@ struct zx_cdm_CRED_s* zx_DEC_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1308,7 +1308,7 @@ struct zx_cdm_CTRY_s* zx_DEC_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1416,7 +1416,7 @@ struct zx_cdm_DESC_s* zx_DEC_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1524,8 +1524,8 @@ struct zx_cdm_EMAIL_s* zx_DEC_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1663,7 +1663,7 @@ struct zx_cdm_EXTADR_s* zx_DEC_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1771,11 +1771,11 @@ struct zx_cdm_EXTVAL_s* zx_DEC_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1883,7 +1883,7 @@ struct zx_cdm_FAMILY_s* zx_DEC_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1991,11 +1991,11 @@ struct zx_cdm_FBURL_s* zx_DEC_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2113,7 +2113,7 @@ struct zx_cdm_FN_s* zx_DEC_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2221,8 +2221,8 @@ struct zx_cdm_GEO_s* zx_DEC_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2340,7 +2340,7 @@ struct zx_cdm_GIVEN_s* zx_DEC_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2448,11 +2448,11 @@ struct zx_cdm_JABBERID_s* zx_DEC_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JA
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2677,11 +2677,11 @@ struct zx_cdm_KEYWORD_s* zx_DEC_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYW
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2789,8 +2789,8 @@ struct zx_cdm_LABEL_s* zx_DEC_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2938,11 +2938,11 @@ struct zx_cdm_LAT_s* zx_DEC_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3050,7 +3050,7 @@ struct zx_cdm_LINE_s* zx_DEC_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3158,11 +3158,11 @@ struct zx_cdm_LISTMEMBER_s* zx_DEC_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cd
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3270,7 +3270,7 @@ struct zx_cdm_LOCALITY_s* zx_DEC_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LO
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3378,8 +3378,8 @@ struct zx_cdm_LOGO_s* zx_DEC_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3502,11 +3502,11 @@ struct zx_cdm_LON_s* zx_DEC_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3614,11 +3614,11 @@ struct zx_cdm_MAILER_s* zx_DEC_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3726,7 +3726,7 @@ struct zx_cdm_MIDDLE_s* zx_DEC_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3834,8 +3834,8 @@ struct zx_cdm_N_s* zx_DEC_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3968,7 +3968,7 @@ struct zx_cdm_NICKNAME_s* zx_DEC_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NI
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4076,7 +4076,7 @@ struct zx_cdm_NOTE_s* zx_DEC_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4184,11 +4184,11 @@ struct zx_cdm_NUMBER_s* zx_DEC_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4296,8 +4296,8 @@ struct zx_cdm_ORG_s* zx_DEC_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4415,7 +4415,7 @@ struct zx_cdm_ORGNAME_s* zx_DEC_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGN
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4523,7 +4523,7 @@ struct zx_cdm_ORGUNIT_s* zx_DEC_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGU
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4631,7 +4631,7 @@ struct zx_cdm_PCODE_s* zx_DEC_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4739,7 +4739,7 @@ struct zx_cdm_PHONETIC_s* zx_DEC_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PH
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4847,8 +4847,8 @@ struct zx_cdm_PHOTO_s* zx_DEC_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4971,7 +4971,7 @@ struct zx_cdm_PHYSICALACCESS_s* zx_DEC_cdm_PHYSICALACCESS(struct zx_ctx* c, stru
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -5079,7 +5079,7 @@ struct zx_cdm_POBOX_s* zx_DEC_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -5187,7 +5187,7 @@ struct zx_cdm_PREFIX_s* zx_DEC_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -5295,11 +5295,11 @@ struct zx_cdm_PRODID_s* zx_DEC_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -5407,7 +5407,7 @@ struct zx_cdm_REGION_s* zx_DEC_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -5515,11 +5515,11 @@ struct zx_cdm_REV_s* zx_DEC_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -5627,7 +5627,7 @@ struct zx_cdm_ROLE_s* zx_DEC_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -5735,7 +5735,7 @@ struct zx_cdm_SORT_STRING_s* zx_DEC_cdm_SORT_STRING(struct zx_ctx* c, struct zx_
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -5843,8 +5843,8 @@ struct zx_cdm_SOUND_s* zx_DEC_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -5967,7 +5967,7 @@ struct zx_cdm_STREET_s* zx_DEC_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -6075,7 +6075,7 @@ struct zx_cdm_SUFFIX_s* zx_DEC_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -6183,8 +6183,8 @@ struct zx_cdm_TEL_s* zx_DEC_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -6362,7 +6362,7 @@ struct zx_cdm_TITLE_s* zx_DEC_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_group_ATTR:  x->group = x->gg.attr; break;
+    case zx_group_ATTR|zx_cb_NS:  x->group = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -6470,11 +6470,11 @@ struct zx_cdm_TYPE_s* zx_DEC_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -6582,11 +6582,11 @@ struct zx_cdm_TZ_s* zx_DEC_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -6694,11 +6694,11 @@ struct zx_cdm_UID_s* zx_DEC_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -6806,11 +6806,11 @@ struct zx_cdm_URI_s* zx_DEC_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -6918,11 +6918,11 @@ struct zx_cdm_URL_s* zx_DEC_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -7030,11 +7030,11 @@ struct zx_cdm_USERID_s* zx_DEC_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -7142,11 +7142,11 @@ struct zx_cdm_VERSION_s* zx_DEC_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERS
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -7254,8 +7254,8 @@ struct zx_cdm_vCard_s* zx_DEC_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

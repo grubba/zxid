@@ -67,7 +67,7 @@ struct zx_dst_TestResult_s* zx_DEC_dst_TestResult(struct zx_ctx* c, struct zx_ds
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_dst_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
+    case zx_itemIDRef_ATTR|zx_dst_NS:  x->itemIDRef = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

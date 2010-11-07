@@ -429,7 +429,7 @@ struct zx_wsp_Policy_s* zx_DEC_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_Name_ATTR:  x->Name = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

@@ -2505,7 +2505,7 @@ struct zx_hrxml_Candidate_s* zx_DEC_hrxml_Candidate(struct zx_ctx* c, struct zx_
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2648,7 +2648,7 @@ struct zx_hrxml_CandidateProfile_s* zx_DEC_hrxml_CandidateProfile(struct zx_ctx*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -4572,7 +4572,7 @@ struct zx_hrxml_Considerations_s* zx_DEC_hrxml_Considerations(struct zx_ctx* c, 
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -6913,7 +6913,7 @@ struct zx_hrxml_Description_s* zx_DEC_hrxml_Description(struct zx_ctx* c, struct
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -7022,7 +7022,7 @@ struct zx_hrxml_Details_s* zx_DEC_hrxml_Details(struct zx_ctx* c, struct zx_hrxm
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_type_ATTR:  x->type = x->gg.attr; break;
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -7477,7 +7477,7 @@ struct zx_hrxml_DoingBusinessAs_s* zx_DEC_hrxml_DoingBusinessAs(struct zx_ctx* c
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -15628,7 +15628,7 @@ struct zx_hrxml_ParkingInstructions_s* zx_DEC_hrxml_ParkingInstructions(struct z
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -21101,7 +21101,7 @@ struct zx_hrxml_Resume_s* zx_DEC_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -26459,7 +26459,7 @@ struct zx_hrxml_TravelDirections_s* zx_DEC_hrxml_TravelDirections(struct zx_ctx*
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

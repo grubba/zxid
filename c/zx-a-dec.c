@@ -69,9 +69,9 @@ struct zx_a_Action_s* zx_DEC_a_Action(struct zx_ctx* c, struct zx_a_Action_s* x 
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -181,9 +181,9 @@ struct zx_a_Address_s* zx_DEC_a_Address(struct zx_ctx* c, struct zx_a_Address_s*
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -294,9 +294,9 @@ struct zx_a_EndpointReference_s* zx_DEC_a_EndpointReference(struct zx_ctx* c, st
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_notOnOrAfter_ATTR:  x->notOnOrAfter = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -422,9 +422,9 @@ struct zx_a_FaultTo_s* zx_DEC_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s*
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_notOnOrAfter_ATTR:  x->notOnOrAfter = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -550,9 +550,9 @@ struct zx_a_From_s* zx_DEC_a_From(struct zx_ctx* c, struct zx_a_From_s* x )
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_notOnOrAfter_ATTR:  x->notOnOrAfter = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -677,9 +677,9 @@ struct zx_a_MessageID_s* zx_DEC_a_MessageID(struct zx_ctx* c, struct zx_a_Messag
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -921,9 +921,9 @@ struct zx_a_ProblemAction_s* zx_DEC_a_ProblemAction(struct zx_ctx* c, struct zx_
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1043,9 +1043,9 @@ struct zx_a_ProblemHeader_s* zx_DEC_a_ProblemHeader(struct zx_ctx* c, struct zx_
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1155,9 +1155,9 @@ struct zx_a_ProblemHeaderQName_s* zx_DEC_a_ProblemHeaderQName(struct zx_ctx* c, 
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1267,9 +1267,9 @@ struct zx_a_ProblemURI_s* zx_DEC_a_ProblemURI(struct zx_ctx* c, struct zx_a_Prob
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1379,9 +1379,9 @@ struct zx_a_ReferenceParameters_s* zx_DEC_a_ReferenceParameters(struct zx_ctx* c
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1497,9 +1497,9 @@ struct zx_a_RelatesTo_s* zx_DEC_a_RelatesTo(struct zx_ctx* c, struct zx_a_Relate
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_RelationshipType_ATTR:  x->RelationshipType = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1610,9 +1610,9 @@ struct zx_a_ReplyTo_s* zx_DEC_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s*
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_notOnOrAfter_ATTR:  x->notOnOrAfter = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1737,9 +1737,9 @@ struct zx_a_RetryAfter_s* zx_DEC_a_RetryAfter(struct zx_ctx* c, struct zx_a_Retr
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1849,9 +1849,9 @@ struct zx_a_To_s* zx_DEC_a_To(struct zx_ctx* c, struct zx_a_To_s* x )
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

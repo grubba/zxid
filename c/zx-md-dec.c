@@ -2748,7 +2748,7 @@ struct zx_md_OrganizationDisplayName_s* zx_DEC_md_OrganizationDisplayName(struct
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2856,7 +2856,7 @@ struct zx_md_OrganizationName_s* zx_DEC_md_OrganizationName(struct zx_ctx* c, st
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2964,7 +2964,7 @@ struct zx_md_OrganizationURL_s* zx_DEC_md_OrganizationURL(struct zx_ctx* c, stru
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3646,7 +3646,7 @@ struct zx_md_ServiceDescription_s* zx_DEC_md_ServiceDescription(struct zx_ctx* c
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3754,7 +3754,7 @@ struct zx_md_ServiceName_s* zx_DEC_md_ServiceName(struct zx_ctx* c, struct zx_md
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

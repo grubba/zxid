@@ -226,8 +226,10 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
 	    continue;
 	  }
 	  p += siz + 1;
-	  ns->inc_n = c->inc_ns;
-	  c->inc_ns = ns;
+	  if (!zx_in_inc_ns(c, ns)) {
+	    ns->inc_n = c->inc_ns;
+	    c->inc_ns = ns;
+	  }
 	}
       }
     }

@@ -70,9 +70,9 @@ struct zx_shps_CallbackEPR_s* zx_DEC_shps_CallbackEPR(struct zx_ctx* c, struct z
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_notOnOrAfter_ATTR:  x->notOnOrAfter = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

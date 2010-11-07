@@ -25,6 +25,9 @@
 #include "c/zx-ns.h"
 #include "c/zx-data.h"
 
+#define zx_e_actor_ATTR (zx_e_NS|zx_actor_ATTR)
+#define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
+
 #define XS_STRING "http://www.w3.org/2001/XMLSchema#string"
 #define BOOL_STR_TEST(x) ((x) && (x) != '0')
 

@@ -455,6 +455,22 @@ easily *without using the IDE*, i.e. using simple text editor.
 
    No confusion as far as I can see.
 
+4. Q: What the "Entity ID" and the "Service Type" should be?
+
+   While entityID and Service Type selection are flexible and there is sophisticated
+   philosophy behind them, the short answers are:
+
+   a. entityID should be the URL from which your metadata can be fetched. The
+      URL should match the entityID field inside the metadata document. In
+      zxid deployments the entityID usually ends in "?o=B" and be beginning
+      part depends on the URL configuration parameter.
+   b. Service Type should be the namespace URI of the (first) top level child
+      of SOAP envelope Body element.
+
+Cheers,
+--Sampo
+
+
 97.3.1 No certificates appear in metadata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

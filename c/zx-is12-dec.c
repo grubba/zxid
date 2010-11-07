@@ -1975,8 +1975,8 @@ struct zx_is12_UserInteraction_s* zx_DEC_is12_UserInteraction(struct zx_ctx* c, 
     case zx_language_ATTR:  x->language = x->gg.attr; break;
     case zx_maxInteractTime_ATTR:  x->maxInteractTime = x->gg.attr; break;
     case zx_redirect_ATTR:  x->redirect = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

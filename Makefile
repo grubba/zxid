@@ -602,7 +602,8 @@ ZX_GEN_GPERF=\
  c/zx-xasacd1.gperf               c/zx-xaspcd1.gperf \
  c/zx-dp.gperf   c/zx-pmm.gperf   c/zx-prov.gperf  c/zx-idp.gperf c/zx-shps.gperf \
  c/zx-demomed.gperf c/zx-hrxml.gperf c/zx-idhrxml.gperf \
- c/zx-tas3.gperf  c/zx-tas3sol.gperf c/zx-shibmd.gperf c/zx-idpdisc.gperf
+ c/zx-tas3.gperf  c/zx-tas3sol.gperf c/zx-shibmd.gperf c/zx-idpdisc.gperf \
+ c/zx-xml.gperf
 
 ZX_GEN_H=\
  c/zx-a-data.h    c/zx-di12-data.h  c/zx-lu-data.h    c/zx-xenc-data.h \
@@ -1623,7 +1624,7 @@ winbindist:
 #   make tas3copyrel    # tas3pool -u T3-ZXID-LINUX-X86_0.54.zip
 #    ./pool-submit.sh 0.62
 #   make gen ENA_GEN=1
-# zxid.user@lists.unh.edu
+# zxid.user@lists.unh.edu, wsf-dev@lists.openliberty.org
 
 #WEBROOT=sampo@zxid.org:zxid.org
 WEBROOT=sampo@zxidp.org:/var/zxid/webroot

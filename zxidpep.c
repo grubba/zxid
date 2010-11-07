@@ -24,6 +24,9 @@
 #include "c/zx-data.h"
 #include "c/zx-e-data.h"
 
+#define zx_e_actor_ATTR (zx_e_NS|zx_actor_ATTR)
+#define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
+
 #if 0
 #define XS_STRING "xs:string"
 #else

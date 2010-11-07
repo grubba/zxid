@@ -29,4 +29,13 @@
 #include "c/zx-data.h"
 #include "c/zx-xml-data.h"
 
+/* FUNC(zx_xml_DummyToPullLang_GET_lang) */
+struct zx_attr_s* zx_xml_DummyToPullLang_GET_lang(struct zx_xml_DummyToPullLang_s* x) { return x->lang; }
+/* FUNC(zx_xml_DummyToPullLang_PUT_lang) */
+void zx_xml_DummyToPullLang_PUT_lang(struct zx_xml_DummyToPullLang_s* x, struct zx_attr_s* y) { x->lang = y; }
+
+
+
+
+
 /* EOF -- c/zx-xml-getput.c */

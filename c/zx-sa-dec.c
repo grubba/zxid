@@ -719,7 +719,7 @@ struct zx_sa_AttributeValue_s* zx_DEC_sa_AttributeValue(struct zx_ctx* c, struct
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xsi_type_ATTR:  x->type = x->gg.attr; break;
+    case zx_type_ATTR|zx_xsi_NS:  x->type = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2478,7 +2478,7 @@ struct zx_sa_Statement_s* zx_DEC_sa_Statement(struct zx_ctx* c, struct zx_sa_Sta
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xsi_type_ATTR:  x->type = x->gg.attr; break;
+    case zx_type_ATTR|zx_xsi_NS:  x->type = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2856,7 +2856,7 @@ struct zx_sa_SubjectConfirmationData_s* zx_DEC_sa_SubjectConfirmationData(struct
     case zx_NotBefore_ATTR:  x->NotBefore = x->gg.attr; break;
     case zx_NotOnOrAfter_ATTR:  x->NotOnOrAfter = x->gg.attr; break;
     case zx_Recipient_ATTR:  x->Recipient = x->gg.attr; break;
-    case zx_xsi_type_ATTR:  x->type = x->gg.attr; break;
+    case zx_type_ATTR|zx_xsi_NS:  x->type = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

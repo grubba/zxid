@@ -68,7 +68,7 @@ struct zx_subs_RefItem_s* zx_DEC_subs_RefItem(struct zx_ctx* c, struct zx_subs_R
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_subscriptionID_ATTR:  x->subscriptionID = x->gg.attr; break;
-    case zx_lu_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
+    case zx_itemIDRef_ATTR|zx_lu_NS:  x->itemIDRef = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

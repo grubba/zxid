@@ -79,7 +79,7 @@
 #define ZX_ELEM_EXT  /* This extension point should be defined by who includes this file. */
 #endif
 
-#define zx_N_ATTR 353
+#define zx_N_ATTR 333
 extern const struct zx_at_tok zx_at_tab[zx__ATTR_MAX]; /* gperf generated, see zx-attrs.c */
 const struct zx_at_tok* zx_attr2tok(const char* s, unsigned int len);
 

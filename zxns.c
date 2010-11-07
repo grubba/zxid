@@ -22,6 +22,7 @@
 #include "errmac.h"
 #include "zx.h"
 #include "c/zx-data.h"  /* Also generic zx_simple_elem, etc. */
+#include "c/zx-ns.h"
 
 /* ------------- All the manner namespace management ------------- */
 
@@ -192,6 +193,8 @@ known_prefix:
 struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix)
 {
   struct zx_ns_s* ns;
+  if (len == 3 && !memcmp(prefix, "xml", 3))
+      return zx_ns_tab + (zx_xml_NS >> 16);
   for (ns = c->guard_seen_n.seen_n; ns->seen_n; ns = ns->seen_n)
     if (ns->prefix_len == len && (!len || !memcmp(ns->prefix, prefix, len)))
       return ns;
@@ -519,9 +522,10 @@ struct zx_ns_s* zx_xmlns_detected(struct zx_ctx* c, struct zx_elem_s* x, const c
 
 struct zx_el_tok zx_xs_el_tab[zx_xs__ELEM_MAX] = { {""} };
 struct zx_el_tok zx_xsi_el_tab[zx_xsi__ELEM_MAX] = { {""} };
-struct zx_el_tok zx_xml_el_tab[zx_xml__ELEM_MAX] = { {""} };
 struct zx_el_tok* zx_xs_elem2tok(const char* str, unsigned int len) { return 0; }
 struct zx_el_tok* zx_xsi_elem2tok(const char* str, unsigned int len) { return 0; }
-struct zx_el_tok* zx_xml_elem2tok(const char* str, unsigned int len) { return 0; }
+
+//struct zx_el_tok zx_xml_el_tab[zx_xml__ELEM_MAX] = { {""} };
+//struct zx_el_tok* zx_xml_elem2tok(const char* str, unsigned int len) { return 0; }
 
 /* EOF -- zxns.c */

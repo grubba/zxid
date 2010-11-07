@@ -1123,6 +1123,16 @@ to the attributes in the session.
 
 <<img: meta-fetch: Relevant parts of the call graph for metadata fetching.>>
 
+<<ignore:
+
+Some OAuth APIs to look at
+
+http://wiki.oauth.net/w/page/OAuth-2
+http://developer.cliqset.com/api#TOC-OAuth-2.0-Overview
+http://www.dailymotion.com/doc/api
+
+>>
+
 <<if: ZXIDBOOK>>
 <<else: >>
 <<doc-end.pd>>

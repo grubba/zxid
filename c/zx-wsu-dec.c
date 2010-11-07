@@ -69,7 +69,7 @@ struct zx_wsu_Created_s* zx_DEC_wsu_Created(struct zx_ctx* c, struct zx_wsu_Crea
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -179,7 +179,7 @@ struct zx_wsu_Expires_s* zx_DEC_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expi
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -289,7 +289,7 @@ struct zx_wsu_Timestamp_s* zx_DEC_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_
     switch (tok) {
     case zx_ID_ATTR:  x->ID = x->gg.attr; break;
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

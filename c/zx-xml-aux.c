@@ -28,4 +28,137 @@
 #include "c/zx-data.h"
 #include "c/zx-xml-data.h"
 
+
+
+#ifdef EL_NAME
+#undef EL_NAME
+#endif
+#ifdef EL_STRUCT
+#undef EL_STRUCT
+#endif
+#ifdef EL_NS
+#undef EL_NS
+#endif
+#ifdef EL_TAG
+#undef EL_TAG
+#endif
+
+#define EL_NAME   xml_DummyToPullLang
+#define EL_STRUCT zx_xml_DummyToPullLang_s
+#define EL_NS     xml
+#define EL_TAG    DummyToPullLang
+
+/* FUNC(zx_FREE_xml_DummyToPullLang) */
+
+/* Depth first traversal of data structure to free it and its subelements. Simple
+ * strings are handled as a special case according to the free_strs flag. This
+ * is useful if the strings point to underlying data from the wire that was
+ * allocated differently. */
+
+/* Called by: */
+void zx_FREE_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, int free_strs)
+{
+  struct zx_elem_s* e  MAYBE_UNUSED;
+  struct zx_elem_s* en MAYBE_UNUSED;
+
+  /* *** deal with xmlns specifications in exc c14n way */
+
+  zx_free_attr(c, x->lang, free_strs);
+
+
+
+  zx_free_elem_common(c, &x->gg, free_strs); 
+}
+
+/* FUNC(zx_NEW_xml_DummyToPullLang) */
+
+/* Trivial allocator/constructor for the datatype. */
+
+/* Called by: */
+struct zx_xml_DummyToPullLang_s* zx_NEW_xml_DummyToPullLang(struct zx_ctx* c)
+{
+  struct zx_xml_DummyToPullLang_s* x = ZX_ZALLOC(c, struct zx_xml_DummyToPullLang_s);
+  x->gg.g.tok = zx_xml_DummyToPullLang_ELEM;
+  return x;
+}
+
+#ifdef ZX_ENA_AUX
+
+/* FUNC(zx_DUP_STRS_xml_DummyToPullLang) */
+
+/* Depth first traversal of data structure to copy its simple strings
+ * to memory allocated from the memory allocator. The decoder will
+ * use the underlying wireprotocol PDU buffer for strings, i.e.
+ * strings are not copied - they point to the real data. If the
+ * datastructure needs to outlast the protocol data or needs a different
+ * memory allocation strategy, you need to call this function.  */
+
+/* Called by: */
+void zx_DUP_STRS_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x)
+{
+  struct zx_elem_s* se  MAYBE_UNUSED;
+  zx_dup_strs_common(c, &x->gg);
+  /* *** deal with xmlns specifications in exc c14n way */
+
+  zx_dup_attr(c, x->lang);
+
+
+}
+
+/* FUNC(zx_DEEP_CLONE_xml_DummyToPullLang) */
+
+/* Depth first traversal of data structure to clone it and its sublements.
+ * The simple strings are handled as a special case according to dup_strs flag. */
+
+/* Called by: */
+struct zx_xml_DummyToPullLang_s* zx_DEEP_CLONE_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, int dup_strs)
+{
+  struct zx_elem_s* e   MAYBE_UNUSED;
+  struct zx_elem_s* en  MAYBE_UNUSED;
+  struct zx_elem_s* enn MAYBE_UNUSED;
+
+  x = (struct zx_xml_DummyToPullLang_s*)zx_clone_elem_common(c, &x->gg, sizeof(struct zx_xml_DummyToPullLang_s), dup_strs);
+  /* *** deal with xmlns specifications in exc c14n way */
+
+  x->lang = zx_clone_attr(c, x->lang);
+
+
+  return x;
+}
+
+/* FUNC(zx_WALK_SO_xml_DummyToPullLang) */
+
+/* Depth first traversal of the tree in either schema order or the wire order. */
+ 
+int zx_WALK_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
+{
+  struct zx_elem_s* e   MAYBE_UNUSED;
+  int ret = callback(&x->gg.g, ctx);
+  if (ret)
+    return ret;
+  
+  /* *** deal with xmlns specifications in exc c14n way */
+
+
+  
+  ret = zx_walk_so_unknown_attributes(c, &x->gg, ctx, callback); 
+  if (ret)
+    return ret;
+
+
+  
+  return zx_walk_so_unknown_elems_and_content(c, &x->gg, ctx, callback);
+}
+
+/* FUNC(zx_WALK_WO_xml_DummyToPullLang) */
+
+int zx_WALK_WO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
+{
+  ERR("*** walk_wo not implemented %d", 0);
+  return 0;
+}
+
+#endif
+
+
 /* EOF -- c/zx-xml-aux.c */

@@ -1,6 +1,6 @@
 /* C code produced by gperf version 3.0.1 */
 /* Command-line: gperf -D -l c/zx-attrs.gperf  */
-/* Computed positions: -k'1-2,4-5,7' */
+/* Computed positions: -k'1-2,4-5,$' */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
       && ('%' == 37) && ('&' == 38) && ('\'' == 39) && ('(' == 40) \
@@ -37,12 +37,12 @@ error "gperf generated tables don't work with this execution character set. Plea
 #include "c/zx-ns.h"
 #include <string.h>
 
-#define TOTAL_KEYWORDS 353
+#define TOTAL_KEYWORDS 333
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 30
-#define MIN_HASH_VALUE 8
-#define MAX_HASH_VALUE 1079
-/* maximum key range = 1072, duplicates = 0 */
+#define MIN_HASH_VALUE 17
+#define MAX_HASH_VALUE 958
+/* maximum key range = 942, duplicates = 0 */
 
 #ifdef __GNUC__
 __inline
@@ -58,42 +58,38 @@ zx_attr_hash (str, len)
 {
   static unsigned short asso_values[] =
     {
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080,   95,   95,  280,  270,   95,
-       380, 1080,    0,  115,   60,    5,  375,  210,   10,  365,
-       210,   45,  160,  280,  145,  475,  280,   25, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080,  280, 1080,   55,   70,   15,
-         0,    0,   70,  190,  155,   50,  135,   25,   80,  165,
-        55,    5,    0,  220,   15,    0,   10,    5,  125,  355,
-       200,  360,  245,    0, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080, 1080,
-      1080, 1080, 1080, 1080, 1080, 1080, 1080
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 365,   5, 295,  95, 315,
+      335, 959, 959, 120, 959,   0, 375, 310,  95,  15,
+      310,   5, 180,  50, 270,  30, 400,   5, 959, 959,
+      959, 959, 959, 959, 959, 959, 959,  80, 380,   0,
+       10,   0, 185, 180,  60,   5,  10,   0, 120, 185,
+       70,  40,  50,   5,  15,   0,   5,  55, 250, 200,
+      190, 250,   0, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959, 959, 959, 959, 959,
+      959, 959, 959, 959, 959, 959
     };
   register int hval = len;
 
   switch (hval)
     {
       default:
-        hval += asso_values[(unsigned char)str[6]+1];
-      /*FALLTHROUGH*/
-      case 6:
-      case 5:
         hval += asso_values[(unsigned char)str[4]];
       /*FALLTHROUGH*/
       case 4:
@@ -107,846 +103,788 @@ zx_attr_hash (str, len)
         hval += asso_values[(unsigned char)str[0]];
         break;
     }
-  return hval;
+  return hval + asso_values[(unsigned char)str[len - 1]];
 }
 
 static unsigned char lengthtable[] =
   {
-     3,  4,  8,  3,  5,  3,  4, 10,  7,  5, 21,  7,  5,  6,
-     7,  8, 12, 13, 19, 15,  2, 15, 26, 17, 20,  6,  7,  2,
-     8,  4,  6,  4, 12,  8,  6, 14,  6,  7,  8,  5, 11, 12,
-    13, 11,  7,  8, 10, 13,  6, 12,  4,  2,  9, 15, 11,  6,
-     7,  8,  4,  6, 12,  3,  9,  5,  6,  9,  5, 16,  8,  9,
-    15, 13,  7,  8,  4, 10,  6,  3,  6,  8, 14,  6, 12, 15,
-    16, 22,  8,  9, 10,  6, 12,  8, 10,  6,  7, 18,  9,  5,
-    16, 12, 13,  9,  5,  7,  8,  5, 16, 12,  9, 16,  9, 15,
-    16, 12, 23, 20, 11,  3, 14,  5,  6,  3,  9,  6, 16,  9,
-     7, 13,  9, 16,  3,  4, 10, 11, 12, 14, 11,  7,  9, 15,
-    11, 12,  8, 14, 10, 11,  9, 10, 21, 17, 23, 10, 11, 27,
-    13, 29, 15, 20, 21,  7, 23, 14,  6,  9, 10, 16,  7,  9,
-     6, 18, 15, 11,  7, 13,  5,  7, 18,  9, 11,  9,  8, 14,
-    30,  6, 12,  8,  4,  6,  3, 14, 15,  6, 12, 13, 10, 11,
-     7, 18,  5,  6, 12,  8, 15, 11, 19,  5, 16,  7,  9, 20,
-    12, 13, 14, 15, 21, 12, 13,  5,  2,  4, 15,  6, 13, 16,
-     7,  3,  9, 10, 11,  2,  8,  5, 12,  6, 19, 11,  8,  9,
-     5, 12, 13, 19, 10, 11,  7, 13, 10, 26,  3,  9, 10, 16,
-     7,  8,  4, 12,  9, 15,  9, 11, 14, 15,  6,  7, 10, 12,
-     8,  8, 10, 12, 13, 15, 17, 13, 20,  6,  7, 13, 15, 10,
-    12, 10,  7, 15,  6, 12,  8, 14, 16, 10, 13, 11,  4, 10,
-    16, 15, 18,  9,  6, 17,  7, 10, 13,  5, 11,  9, 10,  8,
-     7, 10,  9, 20, 10, 16,  8,  9, 10,  6,  6, 10, 11, 12,
-     9, 10,  8,  3,  6,  7, 10, 11, 12,  8,  8, 15, 11, 10,
-     9,  8,  8, 12,  9,  8,  7,  8,  8, 11,  8,  6, 10, 10,
-    15, 10,  9
+     2,  2, 10,  6, 12, 10, 11, 17,  4,  8,  7,  5,  7,  3,
+    10,  7,  8, 10,  6,  9,  5, 12,  3,  4,  6, 12,  4, 20,
+    13, 19, 10,  6,  2,  8, 10, 17, 15, 12,  8, 14, 10, 11,
+     7, 10,  6, 12, 10,  7,  8,  9, 12, 14,  5, 11,  4, 10,
+    13,  5, 11, 18,  9,  5,  2,  9, 13,  9,  6, 12,  4,  5,
+    13,  9, 15, 12, 14, 14, 16, 14, 16,  8,  4, 26,  8,  9,
+    11,  6, 12, 13, 14,  6,  7,  3, 10, 11,  7,  3,  9, 15,
+    26, 12, 13,  9,  6,  7,  8,  9,  5, 21,  7,  8,  9, 16,
+    12, 13, 14,  8,  7,  6,  7,  3,  5, 12, 16, 12,  9, 11,
+     8, 12,  8,  4,  6,  7,  3,  7, 13, 15, 11, 23, 16, 23,
+    16,  8,  9, 20,  4, 10,  6,  7, 13, 14, 15,  6, 12,  7,
+    11,  2, 18,  9,  5, 22,  9, 12,  3, 12,  8,  9,  5, 11,
+     7,  3,  5,  9, 11,  8, 15,  7, 10,  7, 13,  5, 16, 15,
+    16, 15, 16,  3,  9,  5,  6,  7,  8, 10, 11, 13, 15,  9,
+    20,  6,  5,  6,  7, 13,  7, 13, 17, 13, 21, 18, 15, 11,
+     8, 10,  6,  3,  5, 11, 10,  6, 10, 16, 12, 14, 15,  6,
+     7,  8, 21,  8,  5, 11, 12,  4, 15,  6, 12,  8,  4, 10,
+    16,  3,  9,  5, 11,  7,  8, 15, 10, 15,  7, 20, 11, 23,
+    11, 13, 19,  6, 18, 10, 21,  3,  9, 20,  6,  8,  9, 16,
+     9, 16, 12,  8,  4, 10,  6, 12, 10,  6,  8, 13,  9,  5,
+     6, 13,  9, 10,  9, 11,  8, 14, 16, 18,  4, 15, 12,  9,
+    10,  8, 19, 10,  7, 10, 12,  8,  7, 29, 12, 15, 17,  8,
+    30,  6,  8,  9,  8,  6,  6, 15,  9, 11, 13,  8, 10, 10,
+    12,  9, 15, 11,  8,  7, 10, 27,  5,  7,  3
   };
 
 struct zx_at_tok zx_at_tab[] =
   {
-#line 253 "c/zx-attrs.gperf"
-    {"use"},
-#line 228 "c/zx-attrs.gperf"
-    {"used"},
-#line 266 "c/zx-attrs.gperf"
-    {"sequence"},
-#line 53 "c/zx-attrs.gperf"
-    {"ref"},
-#line 110 "c/zx-attrs.gperf"
-    {"scope"},
-#line 46 "c/zx-attrs.gperf"
-    {"uri"},
-#line 82 "c/zx-attrs.gperf"
-    {"code"},
-#line 219 "c/zx-attrs.gperf"
-    {"percentage"},
-#line 146 "c/zx-attrs.gperf"
-    {"consent"},
-#line 151 "c/zx-attrs.gperf"
-    {"Nonce"},
-#line 182 "c/zx-attrs.gperf"
-    {"studentInGoodStanding"},
-#line 86 "c/zx-attrs.gperf"
-    {"success"},
-#line 334 "c/zx-attrs.gperf"
-    {"ctlpt"},
-#line 85 "c/zx-attrs.gperf"
-    {"starts"},
-#line 166 "c/zx-attrs.gperf"
-    {"context"},
-#line 194 "c/zx-attrs.gperf"
-    {"currency"},
-#line 169 "c/zx-attrs.gperf"
-    {"currencyCode"},
-#line 210 "c/zx-attrs.gperf"
-    {"otherInterval"},
-#line 274 "c/zx-attrs.gperf"
-    {"responseConsumerURL"},
-#line 37 "c/zx-attrs.gperf"
-    {"credentialLevel"},
+#line 322 "c/zx-attrs.gperf"
+    {"OK"},
 #line 19 "c/zx-attrs.gperf"
     {"id"},
-#line 217 "c/zx-attrs.gperf"
-    {"currentEmployer"},
-#line 252 "c/zx-attrs.gperf"
-    {"protocolSupportEnumeration"},
-#line 180 "c/zx-attrs.gperf"
-    {"currentlyEnrolled"},
-#line 221 "c/zx-attrs.gperf"
-    {"relocationConsidered"},
-#line 282 "c/zx-attrs.gperf"
-    {"issuer"},
-#line 313 "c/zx-attrs.gperf"
-    {"issueTo"},
-#line 276 "c/zx-attrs.gperf"
-    {"at"},
-#line 213 "c/zx-attrs.gperf"
-    {"idSource"},
-#line 256 "c/zx-attrs.gperf"
-    {"Name"},
-#line 165 "c/zx-attrs.gperf"
-    {"script"},
-#line 27 "c/zx-attrs.gperf"
-    {"case"},
-#line 218 "c/zx-attrs.gperf"
-    {"positionType"},
-#line 25 "c/zx-attrs.gperf"
-    {"duration"},
-#line 79 "c/zx-attrs.gperf"
-    {"offset"},
-#line 191 "c/zx-attrs.gperf"
-    {"dunsNumberType"},
-#line 216 "c/zx-attrs.gperf"
-    {"leader"},
-#line 229 "c/zx-attrs.gperf"
-    {"purpose"},
+#line 243 "c/zx-attrs.gperf"
+    {"isRequired"},
+#line 85 "c/zx-attrs.gperf"
+    {"starts"},
+#line 262 "c/zx-attrs.gperf"
+    {"deactivateAt"},
+#line 167 "c/zx-attrs.gperf"
+    {"degreeType"},
+#line 209 "c/zx-attrs.gperf"
+    {"timeOffType"},
+#line 110 "c/zx-attrs.gperf"
+    {"descriptionIDRefs"},
+#line 82 "c/zx-attrs.gperf"
+    {"code"},
 #line 57 "c/zx-attrs.gperf"
     {"redirect"},
-#line 78 "c/zx-attrs.gperf"
-    {"count"},
-#line 49 "c/zx-attrs.gperf"
-    {"redirectURL"},
-#line 170 "c/zx-attrs.gperf"
-    {"relationship"},
-#line 267 "c/zx-attrs.gperf"
-    {"addressCoding"},
-#line 192 "c/zx-attrs.gperf"
-    {"contactType"},
-#line 226 "c/zx-attrs.gperf"
-    {"created"},
-#line 118 "c/zx-attrs.gperf"
-    {"storeRef"},
-#line 60 "c/zx-attrs.gperf"
-    {"cb_sortAlg"},
+#line 134 "c/zx-attrs.gperf"
+    {"consent"},
+#line 99 "c/zx-attrs.gperf"
+    {"scope"},
+#line 150 "c/zx-attrs.gperf"
+    {"context"},
+#line 236 "c/zx-attrs.gperf"
+    {"use"},
+#line 203 "c/zx-attrs.gperf"
+    {"percentage"},
+#line 86 "c/zx-attrs.gperf"
+    {"success"},
+#line 248 "c/zx-attrs.gperf"
+    {"sequence"},
 #line 61 "c/zx-attrs.gperf"
-    {"cb_sortWeight"},
-#line 241 "c/zx-attrs.gperf"
-    {"signed"},
-#line 211 "c/zx-attrs.gperf"
-    {"otherPayType"},
-#line 41 "c/zx-attrs.gperf"
-    {"name"},
-#line 125 "c/zx-attrs.gperf"
-    {"Id"},
-#line 302 "c/zx-attrs.gperf"
-    {"NotBefore"},
-#line 42 "c/zx-attrs.gperf"
-    {"advisoryAuthnID"},
-#line 119 "c/zx-attrs.gperf"
-    {"resultsType"},
-#line 138 "c/zx-attrs.gperf"
-    {"Issuer"},
-#line 305 "c/zx-attrs.gperf"
-    {"Address"},
-#line 54 "c/zx-attrs.gperf"
-    {"interact"},
-#line 284 "c/zx-attrs.gperf"
-    {"asof"},
-#line 26 "c/zx-attrs.gperf"
-    {"number"},
-#line 137 "c/zx-attrs.gperf"
-    {"IssueInstant"},
-#line 230 "c/zx-attrs.gperf"
-    {"all"},
+    {"sortWeight"},
+#line 93 "c/zx-attrs.gperf"
+    {"script"},
 #line 45 "c/zx-attrs.gperf"
     {"timestamp"},
-#line 89 "c/zx-attrs.gperf"
-    {"cb_id"},
-#line 196 "c/zx-attrs.gperf"
-    {"prefix"},
-#line 294 "c/zx-attrs.gperf"
-    {"Namespace"},
-#line 240 "c/zx-attrs.gperf"
-    {"title"},
-#line 206 "c/zx-attrs.gperf"
-    {"organizationType"},
-#line 173 "c/zx-attrs.gperf"
-    {"required"},
-#line 227 "c/zx-attrs.gperf"
-    {"firstUsed"},
-#line 44 "c/zx-attrs.gperf"
-    {"serverMechanism"},
+#line 314 "c/zx-attrs.gperf"
+    {"ctlpt"},
+#line 195 "c/zx-attrs.gperf"
+    {"otherPayType"},
+#line 46 "c/zx-attrs.gperf"
+    {"uri"},
+#line 212 "c/zx-attrs.gperf"
+    {"used"},
+#line 264 "c/zx-attrs.gperf"
+    {"issuer"},
+#line 153 "c/zx-attrs.gperf"
+    {"currencyCode"},
+#line 27 "c/zx-attrs.gperf"
+    {"case"},
+#line 205 "c/zx-attrs.gperf"
+    {"relocationConsidered"},
 #line 29 "c/zx-attrs.gperf"
     {"requiredChars"},
-#line 155 "c/zx-attrs.gperf"
-    {"srsName"},
-#line 117 "c/zx-attrs.gperf"
-    {"objectID"},
-#line 238 "c/zx-attrs.gperf"
-    {"link"},
+#line 279 "c/zx-attrs.gperf"
+    {"SessionNotOnOrAfter"},
+#line 206 "c/zx-attrs.gperf"
+    {"schoolType"},
+#line 225 "c/zx-attrs.gperf"
+    {"signed"},
+#line 258 "c/zx-attrs.gperf"
+    {"at"},
+#line 157 "c/zx-attrs.gperf"
+    {"required"},
 #line 72 "c/zx-attrs.gperf"
     {"predefined"},
-#line 223 "c/zx-attrs.gperf"
-    {"branch"},
-#line 293 "c/zx-attrs.gperf"
-    {"Ref"},
-#line 80 "c/zx-attrs.gperf"
-    {"setReq"},
-#line 126 "c/zx-attrs.gperf"
-    {"Encoding"},
-#line 77 "c/zx-attrs.gperf"
-    {"subscriptionID"},
-#line 327 "c/zx-attrs.gperf"
-    {"Reason"},
-#line 337 "c/zx-attrs.gperf"
-    {"EncodingType"},
-#line 74 "c/zx-attrs.gperf"
-    {"overrideAllowed"},
-#line 114 "c/zx-attrs.gperf"
-    {"adminNotifyToRef"},
-#line 190 "c/zx-attrs.gperf"
-    {"suppliedByOrganization"},
-#line 300 "c/zx-attrs.gperf"
-    {"Resource"},
-#line 145 "c/zx-attrs.gperf"
-    {"RequestID"},
-#line 367 "c/zx-attrs.gperf"
-    {"ResourceId"},
-#line 236 "c/zx-attrs.gperf"
-    {"reqRef"},
-#line 136 "c/zx-attrs.gperf"
-    {"InResponseTo"},
-#line 257 "c/zx-attrs.gperf"
-    {"entityID"},
-#line 148 "c/zx-attrs.gperf"
-    {"ResponseID"},
-#line 362 "c/zx-attrs.gperf"
-    {"Effect"},
-#line 48 "c/zx-attrs.gperf"
-    {"version"},
-#line 350 "c/zx-attrs.gperf"
-    {"RequestContextPath"},
-#line 247 "c/zx-attrs.gperf"
-    {"namespace"},
-#line 242 "c/zx-attrs.gperf"
-    {"value"},
-#line 233 "c/zx-attrs.gperf"
-    {"ResponseLocation"},
-#line 212 "c/zx-attrs.gperf"
-    {"documentType"},
-#line 150 "c/zx-attrs.gperf"
-    {"NameQualifier"},
-#line 111 "c/zx-attrs.gperf"
-    {"sizelimit"},
-#line 156 "c/zx-attrs.gperf"
-    {"event"},
-#line 83 "c/zx-attrs.gperf"
-    {"comment"},
-#line 203 "c/zx-attrs.gperf"
-    {"interval"},
-#line 312 "c/zx-attrs.gperf"
-    {"usage"},
-#line 368 "c/zx-attrs.gperf"
-    {"InputContextOnly"},
-#line 195 "c/zx-attrs.gperf"
-    {"intervalType"},
-#line 112 "c/zx-attrs.gperf"
-    {"timelimit"},
-#line 207 "c/zx-attrs.gperf"
-    {"attendanceStatus"},
-#line 124 "c/zx-attrs.gperf"
-    {"Algorithm"},
-#line 315 "c/zx-attrs.gperf"
-    {"confirmationURI"},
-#line 181 "c/zx-attrs.gperf"
-    {"enrollmentStatus"},
-#line 332 "c/zx-attrs.gperf"
-    {"lu_itemIDRef"},
-#line 258 "c/zx-attrs.gperf"
-    {"WantAuthnRequestsSigned"},
-#line 263 "c/zx-attrs.gperf"
-    {"WantAssertionsSigned"},
-#line 122 "c/zx-attrs.gperf"
-    {"newEntryIDs"},
-#line 36 "c/zx-attrs.gperf"
-    {"min"},
-#line 187 "c/zx-attrs.gperf"
-    {"academicHonors"},
-#line 237 "c/zx-attrs.gperf"
-    {"label"},
-#line 318 "c/zx-attrs.gperf"
-    {"regexp"},
-#line 35 "c/zx-attrs.gperf"
-    {"max"},
-#line 73 "c/zx-attrs.gperf"
-    {"cb_format"},
-#line 34 "c/zx-attrs.gperf"
-    {"medium"},
-#line 185 "c/zx-attrs.gperf"
-    {"graduatingDegree"},
-#line 75 "c/zx-attrs.gperf"
-    {"endReason"},
 #line 164 "c/zx-attrs.gperf"
-    {"validTo"},
-#line 188 "c/zx-attrs.gperf"
-    {"honorsProgram"},
-#line 163 "c/zx-attrs.gperf"
-    {"validFrom"},
-#line 24 "c/zx-attrs.gperf"
-    {"RelationshipType"},
-#line 154 "c/zx-attrs.gperf"
-    {"gid"},
-#line 264 "c/zx-attrs.gperf"
-    {"href"},
-#line 250 "c/zx-attrs.gperf"
-    {"validUntil"},
-#line 106 "c/zx-attrs.gperf"
-    {"contingency"},
-#line 109 "c/zx-attrs.gperf"
-    {"derefaliases"},
-#line 59 "c/zx-attrs.gperf"
-    {"refToMessageID"},
-#line 186 "c/zx-attrs.gperf"
-    {"measureType"},
-#line 275 "c/zx-attrs.gperf"
-    {"service"},
-#line 235 "c/zx-attrs.gperf"
-    {"isDefault"},
-#line 324 "c/zx-attrs.gperf"
-    {"ProtocolBinding"},
-#line 135 "c/zx-attrs.gperf"
-    {"AssertionID"},
-#line 168 "c/zx-attrs.gperf"
-    {"baseInterval"},
-#line 278 "c/zx-attrs.gperf"
-    {"activate"},
-#line 153 "c/zx-attrs.gperf"
-    {"returnLocation"},
-#line 279 "c/zx-attrs.gperf"
-    {"activateAt"},
-#line 161 "c/zx-attrs.gperf"
-    {"description"},
-#line 68 "c/zx-attrs.gperf"
-    {"remaining"},
-#line 108 "c/zx-attrs.gperf"
-    {"attributes"},
-#line 316 "c/zx-attrs.gperf"
-    {"AssertionIssueInstant"},
-#line 121 "c/zx-attrs.gperf"
-    {"descriptionIDRefs"},
-#line 143 "c/zx-attrs.gperf"
-    {"ReauthenticateOnOrAfter"},
-#line 51 "c/zx-attrs.gperf"
-    {"providerID"},
-#line 84 "c/zx-attrs.gperf"
-    {"includeData"},
-#line 133 "c/zx-attrs.gperf"
-    {"AssertionConsumerServiceURL"},
-#line 214 "c/zx-attrs.gperf"
-    {"issuingRegion"},
-#line 321 "c/zx-attrs.gperf"
-    {"AssertionConsumerServiceIndex"},
-#line 70 "c/zx-attrs.gperf"
-    {"cb_changeFormat"},
-#line 142 "c/zx-attrs.gperf"
-    {"AuthenticationMethod"},
-#line 141 "c/zx-attrs.gperf"
-    {"AuthenticationInstant"},
-#line 76 "c/zx-attrs.gperf"
-    {"expires"},
-#line 107 "c/zx-attrs.gperf"
-    {"includeCommonAttributes"},
-#line 175 "c/zx-attrs.gperf"
-    {"expirationDate"},
-#line 363 "c/zx-attrs.gperf"
-    {"RuleId"},
-#line 147 "c/zx-attrs.gperf"
-    {"Recipient"},
-#line 104 "c/zx-attrs.gperf"
-    {"dst_script"},
-#line 208 "c/zx-attrs.gperf"
-    {"hierarchicalRole"},
-#line 319 "c/zx-attrs.gperf"
-    {"Consent"},
-#line 58 "c/zx-attrs.gperf"
-    {"messageID"},
-#line 244 "c/zx-attrs.gperf"
-    {"format"},
-#line 198 "c/zx-attrs.gperf"
-    {"classificationName"},
-#line 357 "c/zx-attrs.gperf"
-    {"EarliestVersion"},
-#line 345 "c/zx-attrs.gperf"
-    {"AttributeId"},
-#line 343 "c/zx-attrs.gperf"
-    {"Context"},
-#line 307 "c/zx-attrs.gperf"
-    {"AttributeName"},
-#line 234 "c/zx-attrs.gperf"
-    {"index"},
-#line 21 "c/zx-attrs.gperf"
-    {"e_actor"},
-#line 308 "c/zx-attrs.gperf"
-    {"AttributeNamespace"},
-#line 131 "c/zx-attrs.gperf"
-    {"IsPassive"},
-#line 224 "c/zx-attrs.gperf"
-    {"shiftPeriod"},
-#line 285 "c/zx-attrs.gperf"
-    {"IsDefault"},
-#line 255 "c/zx-attrs.gperf"
-    {"errorURL"},
-#line 94 "c/zx-attrs.gperf"
-    {"dst_objectType"},
-#line 322 "c/zx-attrs.gperf"
-    {"AttributeConsumingServiceIndex"},
-#line 335 "c/zx-attrs.gperf"
-    {"Digest"},
-#line 297 "c/zx-attrs.gperf"
-    {"AuthnInstant"},
-#line 299 "c/zx-attrs.gperf"
-    {"Decision"},
-#line 254 "c/zx-attrs.gperf"
-    {"lang"},
-#line 281 "c/zx-attrs.gperf"
-    {"method"},
-#line 344 "c/zx-attrs.gperf"
-    {"Sig"},
-#line 172 "c/zx-attrs.gperf"
-    {"companyOffered"},
-#line 193 "c/zx-attrs.gperf"
-    {"employerOrgType"},
-#line 101 "c/zx-attrs.gperf"
-    {"dst_id"},
-#line 215 "c/zx-attrs.gperf"
-    {"jurisdiction"},
-#line 50 "c/zx-attrs.gperf"
-    {"affiliationID"},
-#line 202 "c/zx-attrs.gperf"
-    {"smsEnabled"},
-#line 200 "c/zx-attrs.gperf"
-    {"countryCode"},
-#line 295 "c/zx-attrs.gperf"
-    {"Version"},
-#line 248 "c/zx-attrs.gperf"
-    {"affiliationOwnerID"},
-#line 331 "c/zx-attrs.gperf"
-    {"Value"},
-#line 62 "c/zx-attrs.gperf"
-    {"itemID"},
-#line 144 "c/zx-attrs.gperf"
-    {"SessionIndex"},
-#line 354 "c/zx-attrs.gperf"
-    {"PolicyId"},
-#line 179 "c/zx-attrs.gperf"
-    {"dateDescription"},
-#line 356 "c/zx-attrs.gperf"
-    {"PolicyIdRef"},
-#line 298 "c/zx-attrs.gperf"
-    {"SessionNotOnOrAfter"},
-#line 287 "c/zx-attrs.gperf"
-    {"Count"},
-#line 171 "c/zx-attrs.gperf"
-    {"numberOfStudents"},
-#line 231 "c/zx-attrs.gperf"
-    {"Binding"},
-#line 67 "c/zx-attrs.gperf"
-    {"notSorted"},
-#line 220 "c/zx-attrs.gperf"
-    {"natureOfRelationship"},
-#line 140 "c/zx-attrs.gperf"
-    {"MinorVersion"},
-#line 249 "c/zx-attrs.gperf"
-    {"cacheDuration"},
-#line 97 "c/zx-attrs.gperf"
-    {"dst_predefined"},
-#line 271 "c/zx-attrs.gperf"
-    {"e_encodingStyle"},
-#line 31 "c/zx-attrs.gperf"
-    {"governingAgreementRef"},
-#line 139 "c/zx-attrs.gperf"
-    {"MajorVersion"},
-#line 28 "c/zx-attrs.gperf"
-    {"excludedChars"},
-#line 333 "c/zx-attrs.gperf"
-    {"xpath"},
-#line 342 "c/zx-attrs.gperf"
-    {"OK"},
-#line 159 "c/zx-attrs.gperf"
-    {"type"},
-#line 290 "c/zx-attrs.gperf"
-    {"CreatedDateTime"},
-#line 304 "c/zx-attrs.gperf"
-    {"Method"},
-#line 347 "c/zx-attrs.gperf"
-    {"MustBePresent"},
-#line 96 "c/zx-attrs.gperf"
-    {"dst_changeFormat"},
-#line 33 "c/zx-attrs.gperf"
-    {"sharing"},
-#line 325 "c/zx-attrs.gperf"
-    {"Loc"},
-#line 113 "c/zx-attrs.gperf"
-    {"typesonly"},
-#line 310 "c/zx-attrs.gperf"
-    {"DNSAddress"},
-#line 268 "c/zx-attrs.gperf"
-    {"displayOnly"},
-#line 18 "c/zx-attrs.gperf"
-    {"ID"},
-#line 292 "c/zx-attrs.gperf"
-    {"NodeType"},
-#line 69 "c/zx-attrs.gperf"
-    {"setID"},
-#line 280 "c/zx-attrs.gperf"
-    {"deactivateAt"},
-#line 130 "c/zx-attrs.gperf"
-    {"Target"},
-#line 262 "c/zx-attrs.gperf"
-    {"AuthnRequestsSigned"},
-#line 91 "c/zx-attrs.gperf"
-    {"cb_modifier"},
-#line 243 "c/zx-attrs.gperf"
-    {"multiple"},
-#line 311 "c/zx-attrs.gperf"
-    {"IPAddress"},
-#line 116 "c/zx-attrs.gperf"
-    {"reqID"},
-#line 38 "c/zx-attrs.gperf"
-    {"DeviceInHand"},
-#line 309 "c/zx-attrs.gperf"
-    {"AuthorityKind"},
-#line 90 "c/zx-attrs.gperf"
-    {"cb_modificationTime"},
-#line 93 "c/zx-attrs.gperf"
-    {"dst_itemID"},
-#line 320 "c/zx-attrs.gperf"
-    {"Destination"},
-#line 340 "c/zx-attrs.gperf"
-    {"Dialect"},
-#line 95 "c/zx-attrs.gperf"
-    {"dst_itemIDRef"},
-#line 261 "c/zx-attrs.gperf"
-    {"isRequired"},
-#line 251 "c/zx-attrs.gperf"
-    {"libertyPrincipalIdentifier"},
-#line 32 "c/zx-attrs.gperf"
-    {"nym"},
-#line 64 "c/zx-attrs.gperf"
-    {"timeStamp"},
-#line 349 "c/zx-attrs.gperf"
-    {"FunctionId"},
-#line 291 "c/zx-attrs.gperf"
-    {"ModifiedDateTime"},
-#line 306 "c/zx-attrs.gperf"
-    {"DNSName"},
-#line 92 "c/zx-attrs.gperf"
-    {"cb_group"},
-#line 277 "c/zx-attrs.gperf"
-    {"wait"},
-#line 105 "c/zx-attrs.gperf"
-    {"changedSince"},
-#line 158 "c/zx-attrs.gperf"
-    {"gl_script"},
-#line 336 "c/zx-attrs.gperf"
-    {"DigestAlgorithm"},
+    {"currentlyEnrolled"},
 #line 201 "c/zx-attrs.gperf"
-    {"ownership"},
-#line 360 "c/zx-attrs.gperf"
-    {"PolicySetId"},
-#line 361 "c/zx-attrs.gperf"
-    {"PolicySetIdRef"},
-#line 365 "c/zx-attrs.gperf"
-    {"SubjectCategory"},
-#line 288 "c/zx-attrs.gperf"
-    {"Offset"},
-#line 348 "c/zx-attrs.gperf"
-    {"MatchId"},
-#line 289 "c/zx-attrs.gperf"
-    {"Structured"},
-#line 152 "c/zx-attrs.gperf"
-    {"NotOnOrAfter"},
-#line 283 "c/zx-attrs.gperf"
-    {"nextPoll"},
-#line 232 "c/zx-attrs.gperf"
-    {"Location"},
-#line 260 "c/zx-attrs.gperf"
-    {"NameFormat"},
-#line 103 "c/zx-attrs.gperf"
-    {"dst_modifier"},
-#line 189 "c/zx-attrs.gperf"
-    {"unitOfMeasure"},
-#line 157 "c/zx-attrs.gperf"
-    {"gl_changeFormat"},
-#line 52 "c/zx-attrs.gperf"
-    {"maxProcessingTime"},
-#line 369 "c/zx-attrs.gperf"
-    {"ReturnContext"},
-#line 102 "c/zx-attrs.gperf"
-    {"dst_modificationTime"},
-#line 87 "c/zx-attrs.gperf"
-    {"cb_ACC"},
-#line 162 "c/zx-attrs.gperf"
-    {"idOwner"},
-#line 358 "c/zx-attrs.gperf"
-    {"LatestVersion"},
-#line 56 "c/zx-attrs.gperf"
-    {"maxInteractTime"},
-#line 326 "c/zx-attrs.gperf"
-    {"ProviderID"},
-#line 132 "c/zx-attrs.gperf"
-    {"ProviderName"},
-#line 329 "c/zx-attrs.gperf"
-    {"Comparison"},
-#line 197 "c/zx-attrs.gperf"
-    {"primary"},
-#line 370 "c/zx-attrs.gperf"
-    {"CombinePolicies"},
-#line 178 "c/zx-attrs.gperf"
-    {"typeId"},
-#line 23 "c/zx-attrs.gperf"
-    {"notOnOrAfter"},
-#line 55 "c/zx-attrs.gperf"
-    {"language"},
-#line 174 "c/zx-attrs.gperf"
-    {"dateOfIncident"},
-#line 199 "c/zx-attrs.gperf"
-    {"primaryIndicator"},
-#line 183 "c/zx-attrs.gperf"
-    {"degreeType"},
-#line 351 "c/zx-attrs.gperf"
-    {"ParameterName"},
-#line 317 "c/zx-attrs.gperf"
-    {"VerifyDepth"},
-#line 128 "c/zx-attrs.gperf"
-    {"Type"},
-#line 222 "c/zx-attrs.gperf"
-    {"schoolType"},
-#line 265 "c/zx-attrs.gperf"
-    {"allowAdaptations"},
-#line 71 "c/zx-attrs.gperf"
-    {"notChangedSince"},
-#line 355 "c/zx-attrs.gperf"
-    {"RuleCombiningAlgId"},
-#line 30 "c/zx-attrs.gperf"
-    {"mechanism"},
-#line 286 "c/zx-attrs.gperf"
-    {"Locale"},
-#line 269 "c/zx-attrs.gperf"
-    {"replyChargingSize"},
-#line 123 "c/zx-attrs.gperf"
-    {"entryID"},
-#line 323 "c/zx-attrs.gperf"
-    {"ForceAuthn"},
-#line 270 "c/zx-attrs.gperf"
-    {"replyDeadline"},
-#line 341 "c/zx-attrs.gperf"
-    {"Allow"},
-#line 328 "c/zx-attrs.gperf"
-    {"AllowCreate"},
-#line 272 "c/zx-attrs.gperf"
-    {"TimeStamp"},
-#line 47 "c/zx-attrs.gperf"
-    {"updateType"},
-#line 239 "c/zx-attrs.gperf"
-    {"moreLink"},
-#line 43 "c/zx-attrs.gperf"
-    {"authzID"},
-#line 134 "c/zx-attrs.gperf"
-    {"PrefixList"},
-#line 364 "c/zx-attrs.gperf"
-    {"RuleIdRef"},
-#line 359 "c/zx-attrs.gperf"
-    {"PolicyCombiningAlgId"},
-#line 63 "c/zx-attrs.gperf"
-    {"objectType"},
-#line 22 "c/zx-attrs.gperf"
-    {"e_mustUnderstand"},
-#line 167 "c/zx-attrs.gperf"
-    {"mimeType"},
-#line 338 "c/zx-attrs.gperf"
-    {"ValueType"},
-#line 184 "c/zx-attrs.gperf"
-    {"examPassed"},
-#line 273 "c/zx-attrs.gperf"
-    {"UAProf"},
-#line 149 "c/zx-attrs.gperf"
-    {"Format"},
-#line 366 "c/zx-attrs.gperf"
-    {"VariableId"},
-#line 225 "c/zx-attrs.gperf"
-    {"timeOffType"},
-#line 259 "c/zx-attrs.gperf"
-    {"FriendlyName"},
-#line 65 "c/zx-attrs.gperf"
-    {"itemIDRef"},
+    {"currentEmployer"},
+#line 179 "c/zx-attrs.gperf"
+    {"intervalType"},
+#line 54 "c/zx-attrs.gperf"
+    {"interact"},
+#line 171 "c/zx-attrs.gperf"
+    {"academicHonors"},
 #line 66 "c/zx-attrs.gperf"
     {"nextOffset"},
-#line 127 "c/zx-attrs.gperf"
-    {"MimeType"},
-#line 129 "c/zx-attrs.gperf"
-    {"URI"},
-#line 160 "c/zx-attrs.gperf"
-    {"gl_ACC"},
-#line 99 "c/zx-attrs.gperf"
-    {"dst_ACC"},
-#line 339 "c/zx-attrs.gperf"
-    {"wsse_Usage"},
-#line 100 "c/zx-attrs.gperf"
-    {"dst_ACCTime"},
-#line 303 "c/zx-attrs.gperf"
-    {"SPProvidedID"},
-#line 246 "c/zx-attrs.gperf"
-    {"minChars"},
-#line 245 "c/zx-attrs.gperf"
-    {"maxChars"},
-#line 177 "c/zx-attrs.gperf"
-    {"typeDescription"},
-#line 115 "c/zx-attrs.gperf"
-    {"notifyToRef"},
-#line 40 "c/zx-attrs.gperf"
-    {"SeedLength"},
-#line 352 "c/zx-attrs.gperf"
-    {"FulfillOn"},
-#line 205 "c/zx-attrs.gperf"
-    {"minValue"},
-#line 204 "c/zx-attrs.gperf"
-    {"maxValue"},
-#line 353 "c/zx-attrs.gperf"
-    {"ObligationId"},
-#line 81 "c/zx-attrs.gperf"
-    {"ItemIDRef"},
-#line 176 "c/zx-attrs.gperf"
-    {"lastUsed"},
-#line 120 "c/zx-attrs.gperf"
-    {"svcMDID"},
-#line 296 "c/zx-attrs.gperf"
-    {"xsi_type"},
-#line 98 "c/zx-attrs.gperf"
-    {"xml_lang"},
-#line 209 "c/zx-attrs.gperf"
-    {"typeOfGroup"},
-#line 346 "c/zx-attrs.gperf"
-    {"DataType"},
-#line 20 "c/zx-attrs.gperf"
-    {"wsu_Id"},
-#line 330 "c/zx-attrs.gperf"
-    {"ProxyCount"},
+#line 146 "c/zx-attrs.gperf"
+    {"description"},
+#line 294 "c/zx-attrs.gperf"
+    {"issueTo"},
 #line 39 "c/zx-attrs.gperf"
     {"DeviceType"},
+#line 315 "c/zx-attrs.gperf"
+    {"Digest"},
+#line 202 "c/zx-attrs.gperf"
+    {"positionType"},
+#line 97 "c/zx-attrs.gperf"
+    {"attributes"},
+#line 210 "c/zx-attrs.gperf"
+    {"created"},
+#line 197 "c/zx-attrs.gperf"
+    {"idSource"},
+#line 64 "c/zx-attrs.gperf"
+    {"timeStamp"},
+#line 38 "c/zx-attrs.gperf"
+    {"DeviceInHand"},
+#line 158 "c/zx-attrs.gperf"
+    {"dateOfIncident"},
+#line 78 "c/zx-attrs.gperf"
+    {"count"},
+#line 184 "c/zx-attrs.gperf"
+    {"countryCode"},
+#line 222 "c/zx-attrs.gperf"
+    {"link"},
+#line 271 "c/zx-attrs.gperf"
+    {"Structured"},
+#line 253 "c/zx-attrs.gperf"
+    {"encodingStyle"},
+#line 224 "c/zx-attrs.gperf"
+    {"title"},
+#line 176 "c/zx-attrs.gperf"
+    {"contactType"},
+#line 182 "c/zx-attrs.gperf"
+    {"classificationName"},
+#line 100 "c/zx-attrs.gperf"
+    {"sizelimit"},
+#line 139 "c/zx-attrs.gperf"
+    {"Nonce"},
+#line 20 "c/zx-attrs.gperf"
+    {"Id"},
+#line 101 "c/zx-attrs.gperf"
+    {"timelimit"},
+#line 198 "c/zx-attrs.gperf"
+    {"issuingRegion"},
+#line 283 "c/zx-attrs.gperf"
+    {"NotBefore"},
+#line 200 "c/zx-attrs.gperf"
+    {"leader"},
+#line 199 "c/zx-attrs.gperf"
+    {"jurisdiction"},
+#line 41 "c/zx-attrs.gperf"
+    {"name"},
+#line 21 "c/zx-attrs.gperf"
+    {"actor"},
+#line 173 "c/zx-attrs.gperf"
+    {"unitOfMeasure"},
+#line 230 "c/zx-attrs.gperf"
+    {"namespace"},
+#line 37 "c/zx-attrs.gperf"
+    {"credentialLevel"},
+#line 154 "c/zx-attrs.gperf"
+    {"relationship"},
+#line 77 "c/zx-attrs.gperf"
+    {"subscriptionID"},
+#line 141 "c/zx-attrs.gperf"
+    {"returnLocation"},
+#line 191 "c/zx-attrs.gperf"
+    {"attendanceStatus"},
+#line 175 "c/zx-attrs.gperf"
+    {"dunsNumberType"},
+#line 192 "c/zx-attrs.gperf"
+    {"hierarchicalRole"},
+#line 280 "c/zx-attrs.gperf"
+    {"Decision"},
+#line 238 "c/zx-attrs.gperf"
+    {"Name"},
+#line 234 "c/zx-attrs.gperf"
+    {"libertyPrincipalIdentifier"},
+#line 239 "c/zx-attrs.gperf"
+    {"entityID"},
+#line 276 "c/zx-attrs.gperf"
+    {"Namespace"},
 #line 301 "c/zx-attrs.gperf"
+    {"Destination"},
+#line 80 "c/zx-attrs.gperf"
+    {"setReq"},
+#line 125 "c/zx-attrs.gperf"
+    {"IssueInstant"},
+#line 194 "c/zx-attrs.gperf"
+    {"otherInterval"},
+#line 156 "c/zx-attrs.gperf"
+    {"companyOffered"},
+#line 126 "c/zx-attrs.gperf"
+    {"Issuer"},
+#line 143 "c/zx-attrs.gperf"
+    {"srsName"},
+#line 142 "c/zx-attrs.gperf"
+    {"gid"},
+#line 47 "c/zx-attrs.gperf"
+    {"updateType"},
+#line 108 "c/zx-attrs.gperf"
+    {"resultsType"},
+#line 213 "c/zx-attrs.gperf"
+    {"purpose"},
+#line 53 "c/zx-attrs.gperf"
+    {"ref"},
+#line 219 "c/zx-attrs.gperf"
+    {"isDefault"},
+#line 42 "c/zx-attrs.gperf"
+    {"advisoryAuthnID"},
+#line 235 "c/zx-attrs.gperf"
+    {"protocolSupportEnumeration"},
+#line 98 "c/zx-attrs.gperf"
+    {"derefaliases"},
+#line 138 "c/zx-attrs.gperf"
+    {"NameQualifier"},
+#line 119 "c/zx-attrs.gperf"
+    {"IsPassive"},
+#line 270 "c/zx-attrs.gperf"
+    {"Offset"},
+#line 215 "c/zx-attrs.gperf"
+    {"Binding"},
+#line 107 "c/zx-attrs.gperf"
+    {"storeRef"},
+#line 211 "c/zx-attrs.gperf"
+    {"firstUsed"},
+#line 319 "c/zx-attrs.gperf"
+    {"Usage"},
+#line 166 "c/zx-attrs.gperf"
+    {"studentInGoodStanding"},
+#line 76 "c/zx-attrs.gperf"
+    {"expires"},
+#line 187 "c/zx-attrs.gperf"
+    {"interval"},
+#line 67 "c/zx-attrs.gperf"
+    {"notSorted"},
+#line 190 "c/zx-attrs.gperf"
+    {"organizationType"},
+#line 23 "c/zx-attrs.gperf"
+    {"notOnOrAfter"},
+#line 232 "c/zx-attrs.gperf"
+    {"cacheDuration"},
+#line 159 "c/zx-attrs.gperf"
+    {"expirationDate"},
+#line 25 "c/zx-attrs.gperf"
+    {"duration"},
+#line 320 "c/zx-attrs.gperf"
+    {"Dialect"},
+#line 79 "c/zx-attrs.gperf"
+    {"offset"},
+#line 83 "c/zx-attrs.gperf"
+    {"comment"},
+#line 324 "c/zx-attrs.gperf"
+    {"Sig"},
+#line 293 "c/zx-attrs.gperf"
+    {"usage"},
+#line 124 "c/zx-attrs.gperf"
+    {"InResponseTo"},
+#line 165 "c/zx-attrs.gperf"
+    {"enrollmentStatus"},
+#line 140 "c/zx-attrs.gperf"
+    {"NotOnOrAfter"},
+#line 135 "c/zx-attrs.gperf"
+    {"Recipient"},
+#line 170 "c/zx-attrs.gperf"
+    {"measureType"},
+#line 160 "c/zx-attrs.gperf"
+    {"lastUsed"},
+#line 132 "c/zx-attrs.gperf"
+    {"SessionIndex"},
+#line 227 "c/zx-attrs.gperf"
+    {"multiple"},
+#line 145 "c/zx-attrs.gperf"
+    {"type"},
+#line 299 "c/zx-attrs.gperf"
+    {"regexp"},
+#line 257 "c/zx-attrs.gperf"
+    {"service"},
+#line 36 "c/zx-attrs.gperf"
+    {"min"},
+#line 33 "c/zx-attrs.gperf"
+    {"sharing"},
+#line 349 "c/zx-attrs.gperf"
+    {"ReturnContext"},
+#line 163 "c/zx-attrs.gperf"
+    {"dateDescription"},
+#line 208 "c/zx-attrs.gperf"
+    {"shiftPeriod"},
+#line 96 "c/zx-attrs.gperf"
+    {"includeCommonAttributes"},
+#line 169 "c/zx-attrs.gperf"
+    {"graduatingDegree"},
+#line 131 "c/zx-attrs.gperf"
+    {"ReauthenticateOnOrAfter"},
+#line 24 "c/zx-attrs.gperf"
+    {"RelationshipType"},
+#line 281 "c/zx-attrs.gperf"
+    {"Resource"},
+#line 68 "c/zx-attrs.gperf"
+    {"remaining"},
+#line 204 "c/zx-attrs.gperf"
+    {"natureOfRelationship"},
+#line 259 "c/zx-attrs.gperf"
+    {"wait"},
+#line 347 "c/zx-attrs.gperf"
+    {"ResourceId"},
+#line 308 "c/zx-attrs.gperf"
+    {"Reason"},
+#line 43 "c/zx-attrs.gperf"
+    {"authzID"},
+#line 249 "c/zx-attrs.gperf"
+    {"addressCoding"},
+#line 22 "c/zx-attrs.gperf"
+    {"mustUnderstand"},
+#line 316 "c/zx-attrs.gperf"
+    {"DigestAlgorithm"},
+#line 263 "c/zx-attrs.gperf"
+    {"method"},
+#line 196 "c/zx-attrs.gperf"
+    {"documentType"},
+#line 147 "c/zx-attrs.gperf"
+    {"idOwner"},
+#line 95 "c/zx-attrs.gperf"
+    {"contingency"},
+#line 18 "c/zx-attrs.gperf"
+    {"ID"},
+#line 330 "c/zx-attrs.gperf"
+    {"RequestContextPath"},
+#line 185 "c/zx-attrs.gperf"
+    {"ownership"},
+#line 69 "c/zx-attrs.gperf"
+    {"setID"},
+#line 174 "c/zx-attrs.gperf"
+    {"suppliedByOrganization"},
+#line 267 "c/zx-attrs.gperf"
+    {"IsDefault"},
+#line 94 "c/zx-attrs.gperf"
+    {"changedSince"},
+#line 214 "c/zx-attrs.gperf"
+    {"all"},
+#line 70 "c/zx-attrs.gperf"
+    {"changeFormat"},
+#line 178 "c/zx-attrs.gperf"
+    {"currency"},
+#line 75 "c/zx-attrs.gperf"
+    {"endReason"},
+#line 105 "c/zx-attrs.gperf"
+    {"reqID"},
+#line 193 "c/zx-attrs.gperf"
+    {"typeOfGroup"},
+#line 48 "c/zx-attrs.gperf"
+    {"version"},
+#line 117 "c/zx-attrs.gperf"
+    {"URI"},
+#line 144 "c/zx-attrs.gperf"
+    {"event"},
+#line 133 "c/zx-attrs.gperf"
+    {"RequestID"},
+#line 84 "c/zx-attrs.gperf"
+    {"includeData"},
+#line 260 "c/zx-attrs.gperf"
+    {"activate"},
+#line 74 "c/zx-attrs.gperf"
+    {"overrideAllowed"},
+#line 300 "c/zx-attrs.gperf"
+    {"Consent"},
+#line 261 "c/zx-attrs.gperf"
+    {"activateAt"},
+#line 323 "c/zx-attrs.gperf"
+    {"Context"},
+#line 172 "c/zx-attrs.gperf"
+    {"honorsProgram"},
+#line 91 "c/zx-attrs.gperf"
+    {"group"},
+#line 217 "c/zx-attrs.gperf"
+    {"ResponseLocation"},
+#line 177 "c/zx-attrs.gperf"
+    {"employerOrgType"},
+#line 183 "c/zx-attrs.gperf"
+    {"primaryIndicator"},
+#line 296 "c/zx-attrs.gperf"
+    {"confirmationURI"},
+#line 103 "c/zx-attrs.gperf"
+    {"adminNotifyToRef"},
+#line 275 "c/zx-attrs.gperf"
+    {"Ref"},
+#line 58 "c/zx-attrs.gperf"
+    {"messageID"},
+#line 313 "c/zx-attrs.gperf"
+    {"xpath"},
+#line 343 "c/zx-attrs.gperf"
+    {"RuleId"},
+#line 287 "c/zx-attrs.gperf"
+    {"DNSName"},
+#line 334 "c/zx-attrs.gperf"
+    {"PolicyId"},
+#line 136 "c/zx-attrs.gperf"
+    {"ResponseID"},
+#line 340 "c/zx-attrs.gperf"
+    {"PolicySetId"},
+#line 28 "c/zx-attrs.gperf"
+    {"excludedChars"},
+#line 345 "c/zx-attrs.gperf"
+    {"SubjectCategory"},
+#line 254 "c/zx-attrs.gperf"
+    {"TimeStamp"},
+#line 339 "c/zx-attrs.gperf"
+    {"PolicyCombiningAlgId"},
+#line 220 "c/zx-attrs.gperf"
+    {"reqRef"},
+#line 226 "c/zx-attrs.gperf"
+    {"value"},
+#line 162 "c/zx-attrs.gperf"
+    {"typeId"},
+#line 149 "c/zx-attrs.gperf"
+    {"validTo"},
+#line 327 "c/zx-attrs.gperf"
+    {"MustBePresent"},
+#line 286 "c/zx-attrs.gperf"
+    {"Address"},
+#line 252 "c/zx-attrs.gperf"
+    {"replyDeadline"},
+#line 251 "c/zx-attrs.gperf"
+    {"replyChargingSize"},
+#line 288 "c/zx-attrs.gperf"
+    {"AttributeName"},
+#line 297 "c/zx-attrs.gperf"
+    {"AssertionIssueInstant"},
+#line 289 "c/zx-attrs.gperf"
+    {"AttributeNamespace"},
+#line 272 "c/zx-attrs.gperf"
+    {"CreatedDateTime"},
+#line 325 "c/zx-attrs.gperf"
+    {"AttributeId"},
+#line 274 "c/zx-attrs.gperf"
+    {"NodeType"},
+#line 329 "c/zx-attrs.gperf"
+    {"FunctionId"},
+#line 62 "c/zx-attrs.gperf"
+    {"itemID"},
+#line 306 "c/zx-attrs.gperf"
+    {"Loc"},
+#line 269 "c/zx-attrs.gperf"
+    {"Count"},
+#line 49 "c/zx-attrs.gperf"
+    {"redirectURL"},
+#line 51 "c/zx-attrs.gperf"
+    {"providerID"},
+#line 285 "c/zx-attrs.gperf"
+    {"Method"},
+#line 63 "c/zx-attrs.gperf"
+    {"objectType"},
+#line 89 "c/zx-attrs.gperf"
+    {"modificationTime"},
+#line 241 "c/zx-attrs.gperf"
+    {"FriendlyName"},
+#line 59 "c/zx-attrs.gperf"
+    {"refToMessageID"},
+#line 161 "c/zx-attrs.gperf"
+    {"typeDescription"},
+#line 34 "c/zx-attrs.gperf"
+    {"medium"},
+#line 112 "c/zx-attrs.gperf"
+    {"entryID"},
+#line 90 "c/zx-attrs.gperf"
+    {"modifier"},
+#line 31 "c/zx-attrs.gperf"
+    {"governingAgreementRef"},
+#line 55 "c/zx-attrs.gperf"
+    {"language"},
+#line 221 "c/zx-attrs.gperf"
+    {"label"},
+#line 250 "c/zx-attrs.gperf"
+    {"displayOnly"},
+#line 317 "c/zx-attrs.gperf"
+    {"EncodingType"},
+#line 246 "c/zx-attrs.gperf"
+    {"href"},
+#line 44 "c/zx-attrs.gperf"
+    {"serverMechanism"},
+#line 180 "c/zx-attrs.gperf"
+    {"prefix"},
+#line 128 "c/zx-attrs.gperf"
+    {"MinorVersion"},
+#line 237 "c/zx-attrs.gperf"
+    {"errorURL"},
+#line 266 "c/zx-attrs.gperf"
+    {"asof"},
+#line 304 "c/zx-attrs.gperf"
+    {"ForceAuthn"},
+#line 247 "c/zx-attrs.gperf"
+    {"allowAdaptations"},
+#line 35 "c/zx-attrs.gperf"
+    {"max"},
+#line 292 "c/zx-attrs.gperf"
+    {"IPAddress"},
+#line 218 "c/zx-attrs.gperf"
+    {"index"},
+#line 111 "c/zx-attrs.gperf"
+    {"newEntryIDs"},
+#line 328 "c/zx-attrs.gperf"
+    {"MatchId"},
+#line 151 "c/zx-attrs.gperf"
+    {"mimeType"},
+#line 56 "c/zx-attrs.gperf"
+    {"maxInteractTime"},
+#line 233 "c/zx-attrs.gperf"
+    {"validUntil"},
+#line 71 "c/zx-attrs.gperf"
+    {"notChangedSince"},
+#line 277 "c/zx-attrs.gperf"
+    {"Version"},
+#line 245 "c/zx-attrs.gperf"
+    {"WantAssertionsSigned"},
+#line 123 "c/zx-attrs.gperf"
+    {"AssertionID"},
+#line 240 "c/zx-attrs.gperf"
+    {"WantAuthnRequestsSigned"},
+#line 104 "c/zx-attrs.gperf"
+    {"notifyToRef"},
+#line 50 "c/zx-attrs.gperf"
+    {"affiliationID"},
+#line 256 "c/zx-attrs.gperf"
+    {"responseConsumerURL"},
+#line 73 "c/zx-attrs.gperf"
+    {"format"},
+#line 231 "c/zx-attrs.gperf"
+    {"affiliationOwnerID"},
+#line 40 "c/zx-attrs.gperf"
+    {"SeedLength"},
+#line 129 "c/zx-attrs.gperf"
+    {"AuthenticationInstant"},
+#line 32 "c/zx-attrs.gperf"
+    {"nym"},
+#line 65 "c/zx-attrs.gperf"
+    {"itemIDRef"},
+#line 130 "c/zx-attrs.gperf"
+    {"AuthenticationMethod"},
+#line 342 "c/zx-attrs.gperf"
+    {"Effect"},
+#line 265 "c/zx-attrs.gperf"
+    {"nextPoll"},
+#line 102 "c/zx-attrs.gperf"
+    {"typesonly"},
+#line 348 "c/zx-attrs.gperf"
+    {"InputContextOnly"},
+#line 30 "c/zx-attrs.gperf"
+    {"mechanism"},
+#line 155 "c/zx-attrs.gperf"
+    {"numberOfStudents"},
+#line 284 "c/zx-attrs.gperf"
+    {"SPProvidedID"},
+#line 106 "c/zx-attrs.gperf"
+    {"objectID"},
+#line 116 "c/zx-attrs.gperf"
+    {"Type"},
+#line 242 "c/zx-attrs.gperf"
+    {"NameFormat"},
+#line 26 "c/zx-attrs.gperf"
+    {"number"},
+#line 127 "c/zx-attrs.gperf"
+    {"MajorVersion"},
+#line 122 "c/zx-attrs.gperf"
+    {"PrefixList"},
+#line 207 "c/zx-attrs.gperf"
+    {"branch"},
+#line 326 "c/zx-attrs.gperf"
+    {"DataType"},
+#line 338 "c/zx-attrs.gperf"
+    {"LatestVersion"},
+#line 148 "c/zx-attrs.gperf"
+    {"validFrom"},
+#line 312 "c/zx-attrs.gperf"
+    {"Value"},
+#line 118 "c/zx-attrs.gperf"
+    {"Target"},
+#line 290 "c/zx-attrs.gperf"
+    {"AuthorityKind"},
+#line 318 "c/zx-attrs.gperf"
+    {"ValueType"},
+#line 310 "c/zx-attrs.gperf"
+    {"Comparison"},
+#line 344 "c/zx-attrs.gperf"
+    {"RuleIdRef"},
+#line 336 "c/zx-attrs.gperf"
+    {"PolicyIdRef"},
+#line 229 "c/zx-attrs.gperf"
+    {"minChars"},
+#line 341 "c/zx-attrs.gperf"
+    {"PolicySetIdRef"},
+#line 273 "c/zx-attrs.gperf"
+    {"ModifiedDateTime"},
+#line 335 "c/zx-attrs.gperf"
+    {"RuleCombiningAlgId"},
+#line 92 "c/zx-attrs.gperf"
+    {"lang"},
+#line 305 "c/zx-attrs.gperf"
+    {"ProtocolBinding"},
+#line 278 "c/zx-attrs.gperf"
+    {"AuthnInstant"},
+#line 295 "c/zx-attrs.gperf"
+    {"wantDSEPR"},
+#line 291 "c/zx-attrs.gperf"
+    {"DNSAddress"},
+#line 216 "c/zx-attrs.gperf"
+    {"Location"},
+#line 244 "c/zx-attrs.gperf"
+    {"AuthnRequestsSigned"},
+#line 346 "c/zx-attrs.gperf"
+    {"VariableId"},
+#line 181 "c/zx-attrs.gperf"
+    {"primary"},
+#line 186 "c/zx-attrs.gperf"
+    {"smsEnabled"},
+#line 120 "c/zx-attrs.gperf"
+    {"ProviderName"},
+#line 115 "c/zx-attrs.gperf"
+    {"MimeType"},
+#line 60 "c/zx-attrs.gperf"
+    {"sortAlg"},
+#line 302 "c/zx-attrs.gperf"
+    {"AssertionConsumerServiceIndex"},
+#line 333 "c/zx-attrs.gperf"
+    {"ObligationId"},
+#line 337 "c/zx-attrs.gperf"
+    {"EarliestVersion"},
+#line 52 "c/zx-attrs.gperf"
+    {"maxProcessingTime"},
+#line 223 "c/zx-attrs.gperf"
+    {"moreLink"},
+#line 303 "c/zx-attrs.gperf"
+    {"AttributeConsumingServiceIndex"},
+#line 268 "c/zx-attrs.gperf"
+    {"Locale"},
+#line 114 "c/zx-attrs.gperf"
+    {"Encoding"},
+#line 81 "c/zx-attrs.gperf"
+    {"ItemIDRef"},
+#line 228 "c/zx-attrs.gperf"
+    {"maxChars"},
+#line 255 "c/zx-attrs.gperf"
+    {"UAProf"},
+#line 137 "c/zx-attrs.gperf"
+    {"Format"},
+#line 282 "c/zx-attrs.gperf"
     {"SPNameQualifier"},
+#line 332 "c/zx-attrs.gperf"
+    {"FulfillOn"},
+#line 298 "c/zx-attrs.gperf"
+    {"VerifyDepth"},
+#line 331 "c/zx-attrs.gperf"
+    {"ParameterName"},
+#line 189 "c/zx-attrs.gperf"
+    {"minValue"},
+#line 307 "c/zx-attrs.gperf"
+    {"ProviderID"},
+#line 168 "c/zx-attrs.gperf"
+    {"examPassed"},
+#line 152 "c/zx-attrs.gperf"
+    {"baseInterval"},
+#line 113 "c/zx-attrs.gperf"
+    {"Algorithm"},
+#line 350 "c/zx-attrs.gperf"
+    {"CombinePolicies"},
+#line 309 "c/zx-attrs.gperf"
+    {"AllowCreate"},
+#line 188 "c/zx-attrs.gperf"
+    {"maxValue"},
+#line 109 "c/zx-attrs.gperf"
+    {"svcMDID"},
+#line 311 "c/zx-attrs.gperf"
+    {"ProxyCount"},
+#line 121 "c/zx-attrs.gperf"
+    {"AssertionConsumerServiceURL"},
+#line 321 "c/zx-attrs.gperf"
+    {"Allow"},
 #line 88 "c/zx-attrs.gperf"
-    {"cb_ACCTime"},
-#line 314 "c/zx-attrs.gperf"
-    {"wantDSEPR"}
+    {"ACCTime"},
+#line 87 "c/zx-attrs.gperf"
+    {"ACC"}
   };
 
 static short lookup[] =
   {
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,   0,   1,
-     -1,  -1,  -1,   2,  -1,  -1,  -1,  -1,   3,  -1,
-      4,  -1,  -1,   5,   6,  -1,  -1,  -1,  -1,  -1,
-      7,  -1,   8,  -1,  -1,   9,  10,  11,  -1,  -1,
-     12,  13,  14,  15,  -1,  -1,  -1,  16,  17,  18,
-     19,  -1,  20,  -1,  -1,  21,  22,  23,  -1,  -1,
-     24,  25,  26,  -1,  -1,  -1,  -1,  27,  28,  29,
-     -1,  30,  -1,  -1,  31,  -1,  -1,  32,  33,  -1,
-     -1,  34,  -1,  -1,  35,  -1,  36,  37,  38,  -1,
-     39,  40,  41,  42,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  43,  44,  45,  -1,  46,  -1,  -1,  47,  -1,
-     -1,  48,  49,  -1,  50,  -1,  -1,  51,  -1,  52,
-     53,  54,  -1,  -1,  -1,  -1,  55,  56,  57,  58,
-     -1,  -1,  -1,  -1,  -1,  -1,  59,  60,  61,  62,
-     63,  64,  -1,  -1,  65,  66,  67,  -1,  68,  69,
-     70,  -1,  -1,  71,  -1,  -1,  -1,  72,  73,  74,
-     75,  76,  -1,  77,  -1,  -1,  78,  -1,  79,  80,
-     -1,  81,  82,  -1,  -1,  83,  84,  85,  86,  87,
-     88,  89,  90,  91,  -1,  92,  93,  94,  95,  96,
-     97,  98,  99, 100, 101, 102,  -1, 103, 104,  -1,
-    105, 106, 107,  -1, 108,  -1, 109,  -1,  -1, 110,
-    111, 112, 113, 114,  -1, 115, 116,  -1, 117, 118,
-    119, 120,  -1, 121, 122,  -1, 123,  -1,  -1,  -1,
-     -1, 124,  -1,  -1, 125,  -1,  -1, 126, 127, 128,
-     -1, 129,  -1, 130, 131, 132, 133, 134,  -1, 135,
-     -1, 136, 137,  -1, 138, 139, 140, 141, 142, 143,
-    144, 145,  -1,  -1, 146, 147, 148, 149, 150,  -1,
-    151, 152, 153, 154, 155, 156,  -1,  -1,  -1,  -1,
-    157, 158, 159, 160, 161,  -1, 162,  -1,  -1, 163,
-    164, 165,  -1,  -1,  -1,  -1,  -1, 166,  -1, 167,
-     -1, 168,  -1, 169,  -1, 170, 171, 172, 173,  -1,
-    174,  -1, 175, 176, 177,  -1, 178,  -1,  -1, 179,
-     -1,  -1,  -1, 180, 181, 182, 183, 184, 185, 186,
-     -1, 187,  -1, 188, 189, 190, 191, 192, 193,  -1,
-    194, 195, 196, 197,  -1, 198, 199, 200, 201,  -1,
-    202, 203,  -1,  -1, 204, 205, 206, 207,  -1, 208,
-    209,  -1, 210, 211, 212, 213, 214, 215, 216,  -1,
-    217,  -1, 218,  -1, 219, 220, 221,  -1, 222,  -1,
-     -1, 223, 224, 225, 226, 227, 228, 229, 230,  -1,
-    231,  -1, 232,  -1,  -1,  -1, 233,  -1,  -1, 234,
-     -1, 235,  -1, 236, 237, 238,  -1, 239, 240, 241,
-    242, 243, 244, 245,  -1, 246, 247,  -1, 248, 249,
-    250, 251, 252, 253, 254,  -1,  -1, 255,  -1, 256,
-    257,  -1,  -1,  -1, 258,  -1, 259,  -1,  -1, 260,
-    261, 262, 263,  -1,  -1, 264,  -1, 265, 266,  -1,
-     -1,  -1,  -1, 267,  -1, 268,  -1, 269, 270,  -1,
-    271,  -1, 272, 273,  -1, 274, 275, 276, 277,  -1,
-     -1,  -1,  -1,  -1,  -1, 278,  -1,  -1,  -1,  -1,
-    279,  -1, 280,  -1,  -1, 281,  -1, 282,  -1,  -1,
-    283, 284, 285, 286, 287,  -1, 288,  -1,  -1,  -1,
-    289,  -1,  -1, 290,  -1,  -1, 291,  -1,  -1, 292,
-    293, 294,  -1,  -1,  -1, 295,  -1,  -1, 296, 297,
-     -1, 298, 299,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1, 300,  -1,  -1, 301,  -1,  -1, 302,  -1,
-    303,  -1,  -1,  -1,  -1,  -1, 304,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1, 305, 306,  -1,  -1, 307,  -1,
-     -1,  -1, 308,  -1,  -1, 309,  -1,  -1,  -1, 310,
-    311,  -1,  -1,  -1,  -1, 312,  -1,  -1,  -1,  -1,
-     -1, 313,  -1,  -1,  -1,  -1,  -1,  -1, 314,  -1,
-     -1,  -1,  -1,  -1, 315, 316, 317,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1, 318,  -1,  -1,  -1, 319,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1, 320, 321,  -1, 322,
-    323,  -1,  -1, 324,  -1,  -1,  -1,  -1, 325,  -1,
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,   0,  -1,  -1,
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,   1,  -1,  -1,
+      2,   3,   4,  -1,  -1,   5,   6,  -1,  -1,  -1,
+     -1,  -1,   7,  -1,   8,  -1,  -1,  -1,   9,  -1,
+     -1,  -1,  10,  -1,  -1,  11,  -1,  12,  13,  -1,
+     14,  -1,  15,  16,  -1,  17,  18,  -1,  -1,  19,
+     20,  -1,  21,  -1,  -1,  -1,  -1,  -1,  22,  23,
+     -1,  24,  25,  -1,  26,  27,  -1,  -1,  28,  29,
+     30,  31,  32,  33,  -1,  34,  -1,  35,  -1,  -1,
+     36,  -1,  37,  38,  39,  40,  41,  42,  -1,  -1,
+     43,  44,  45,  -1,  -1,  46,  -1,  47,  48,  49,
+     -1,  -1,  50,  -1,  51,  52,  53,  -1,  -1,  54,
+     55,  -1,  -1,  56,  -1,  57,  58,  -1,  59,  60,
+     61,  -1,  62,  -1,  63,  -1,  -1,  -1,  64,  65,
+     -1,  66,  67,  -1,  68,  69,  -1,  -1,  70,  71,
+     72,  -1,  73,  -1,  74,  -1,  -1,  -1,  -1,  75,
+     -1,  76,  -1,  -1,  77,  -1,  78,  -1,  79,  80,
+     -1,  81,  -1,  82,  83,  -1,  84,  -1,  -1,  -1,
+     -1,  85,  86,  87,  88,  -1,  89,  90,  91,  -1,
+     92,  93,  94,  95,  96,  97,  98,  99, 100, 101,
+     -1, 102, 103, 104, 105, 106, 107, 108, 109, 110,
+     -1, 111, 112, 113, 114,  -1,  -1,  -1, 115,  -1,
+     -1,  -1, 116,  -1,  -1,  -1, 117, 118, 119,  -1,
+    120,  -1, 121,  -1,  -1,  -1, 122, 123,  -1, 124,
+     -1, 125,  -1, 126,  -1,  -1,  -1, 127, 128, 129,
+     -1, 130, 131, 132,  -1,  -1,  -1, 133, 134,  -1,
+    135, 136,  -1, 137,  -1,  -1, 138,  -1, 139,  -1,
+     -1, 140,  -1, 141,  -1,  -1,  -1,  -1,  -1, 142,
+    143,  -1,  -1,  -1, 144, 145, 146, 147, 148, 149,
+    150, 151, 152,  -1,  -1,  -1,  -1, 153,  -1,  -1,
+     -1, 154, 155, 156, 157, 158,  -1, 159,  -1, 160,
+     -1,  -1, 161, 162,  -1,  -1,  -1, 163, 164, 165,
+    166, 167, 168, 169,  -1, 170,  -1,  -1,  -1, 171,
+     -1, 172,  -1, 173,  -1, 174,  -1, 175,  -1,  -1,
+    176,  -1, 177, 178,  -1, 179, 180,  -1,  -1,  -1,
+    181, 182,  -1,  -1,  -1, 183, 184,  -1, 185, 186,
+    187, 188, 189, 190,  -1, 191, 192,  -1, 193,  -1,
+    194,  -1,  -1,  -1, 195, 196, 197,  -1,  -1,  -1,
+    198, 199, 200, 201,  -1,  -1,  -1, 202, 203,  -1,
+     -1,  -1, 204, 205,  -1,  -1, 206,  -1, 207,  -1,
+    208, 209,  -1, 210,  -1, 211, 212,  -1, 213,  -1,
+    214, 215,  -1,  -1,  -1, 216, 217,  -1,  -1,  -1,
+    218, 219, 220,  -1, 221, 222, 223, 224, 225,  -1,
+     -1, 226,  -1, 227,  -1, 228, 229, 230,  -1, 231,
+    232, 233, 234, 235, 236, 237, 238,  -1, 239, 240,
+    241,  -1,  -1,  -1,  -1,  -1, 242, 243, 244,  -1,
+    245,  -1,  -1,  -1,  -1, 246,  -1,  -1,  -1,  -1,
+    247,  -1, 248,  -1,  -1, 249, 250,  -1, 251,  -1,
+     -1,  -1,  -1,  -1,  -1,  -1, 252,  -1, 253, 254,
+     -1, 255,  -1, 256,  -1, 257, 258,  -1, 259, 260,
+    261, 262,  -1, 263, 264,  -1, 265,  -1,  -1, 266,
+     -1, 267, 268, 269, 270, 271, 272, 273,  -1,  -1,
+    274, 275,  -1, 276,  -1,  -1,  -1,  -1, 277, 278,
+    279, 280,  -1, 281, 282, 283,  -1,  -1,  -1, 284,
+     -1, 285,  -1, 286, 287,  -1, 288,  -1, 289,  -1,
+     -1,  -1,  -1,  -1, 290, 291,  -1, 292,  -1, 293,
+     -1,  -1,  -1,  -1,  -1, 294,  -1,  -1, 295, 296,
+     -1,  -1,  -1,  -1,  -1, 297,  -1, 298,  -1,  -1,
+    299,  -1, 300, 301,  -1,  -1,  -1, 302,  -1, 303,
+     -1,  -1, 304,  -1,  -1, 305,  -1, 306, 307,  -1,
+    308,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+     -1, 309,  -1, 310, 311,  -1,  -1,  -1, 312,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1, 326, 327,  -1,  -1, 328, 329, 330, 331,  -1,
-     -1,  -1,  -1, 332,  -1, 333, 334,  -1,  -1,  -1,
-    335,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, 336,
-     -1,  -1,  -1, 337,  -1,  -1,  -1,  -1, 338,  -1,
-     -1,  -1, 339,  -1, 340,  -1,  -1,  -1, 341,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1, 342,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, 343,  -1,
+     -1, 313,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+     -1, 314,  -1,  -1,  -1, 315,  -1,  -1,  -1, 316,
+     -1, 317,  -1,  -1,  -1,  -1,  -1,  -1, 318,  -1,
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, 319,  -1,
+     -1,  -1,  -1,  -1,  -1, 320,  -1,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, 344,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1, 345,  -1,  -1,  -1,
-     -1,  -1,  -1, 346,  -1,  -1, 347,  -1,  -1,  -1,
+     -1,  -1,  -1,  -1,  -1, 321,  -1,  -1,  -1,  -1,
+     -1,  -1, 322,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+     -1,  -1,  -1,  -1, 323, 324, 325,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1, 348,  -1,  -1,  -1,  -1,
+     -1,  -1,  -1, 326,  -1,  -1,  -1, 327,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-    349,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1, 350,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1, 351,  -1,  -1,  -1,  -1,
+    328,  -1, 329,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
@@ -959,7 +897,11 @@ static short lookup[] =
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, 352
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+    330,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+     -1,  -1, 331,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, 332
   };
 
 #ifdef __GNUC__
@@ -992,6 +934,6 @@ zx_attr2tok (str, len)
     }
   return 0;
 }
-#line 371 "c/zx-attrs.gperf"
+#line 351 "c/zx-attrs.gperf"
 
 /* EOF */

@@ -70,8 +70,8 @@ struct zx_paos_Request_s* zx_DEC_paos_Request(struct zx_ctx* c, struct zx_paos_R
     case zx_messageID_ATTR:  x->messageID = x->gg.attr; break;
     case zx_responseConsumerURL_ATTR:  x->responseConsumerURL = x->gg.attr; break;
     case zx_service_ATTR:  x->service = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -180,8 +180,8 @@ struct zx_paos_Response_s* zx_DEC_paos_Response(struct zx_ctx* c, struct zx_paos
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_refToMessageID_ATTR:  x->refToMessageID = x->gg.attr; break;
-    case zx_e_actor_ATTR:  x->actor = x->gg.attr; break;
-    case zx_e_mustUnderstand_ATTR:  x->mustUnderstand = x->gg.attr; break;
+    case zx_actor_ATTR|zx_e_NS:  x->actor = x->gg.attr; break;
+    case zx_mustUnderstand_ATTR|zx_e_NS:  x->mustUnderstand = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

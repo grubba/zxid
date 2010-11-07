@@ -423,6 +423,10 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
   switch (x->g.tok) {
   case ZX_TOK_DATA:
     return x->g.len;
+  case zx_ds_Signature_ELEM:
+    if (x == c->exclude_sig)
+      return 0;
+    /* fall thru */
   default:
     /*    <   elem       >   </  elem       >  */
     len = 1 + x->g.len + 1 + 2 + x->g.len + 1;
@@ -479,6 +483,17 @@ void zx_add_inc_ns(struct zx_ctx* c, struct zx_ns_s** pop_seenp)
   /*c->inc_ns = 0;  needs to be processed at every level */
 }
 
+/*() Check if a namespace is already in inclusive namespaces so we do not need to add it again. */
+
+int zx_in_inc_ns(struct zx_ctx* c, struct zx_ns_s* new_ns)
+{
+  struct zx_ns_s* ns;
+  for (ns = c->inc_ns; ns; ns = ns->inc_n)
+    if (new_ns == ns)
+      return 1;
+  return 0;
+}
+
 void zx_see_attr_ns(struct zx_ctx* c, struct zx_attr_s* aa, struct zx_ns_s** pop_seenp)
 {
   for (; aa; aa = (struct zx_attr_s*)aa->g.n) {
@@ -500,6 +515,10 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
   case ZX_TOK_DATA:
     ZX_OUT_STR(p, x);
     break;
+  case zx_ds_Signature_ELEM:
+    if (x == c->exclude_sig)
+      return p;
+    /* fall thru */
   default:
     ZX_OUT_CH(p, '<');
     ZX_OUT_MEM(p, x->g.s, x->g.len);

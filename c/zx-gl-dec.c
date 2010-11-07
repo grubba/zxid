@@ -1569,7 +1569,7 @@ struct zx_gl_Data_s* zx_DEC_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x )
     case zx_notSorted_ATTR:  x->notSorted = x->gg.attr; break;
     case zx_remaining_ATTR:  x->remaining = x->gg.attr; break;
     case zx_setID_ATTR:  x->setID = x->gg.attr; break;
-    case zx_gl_changeFormat_ATTR:  x->changeFormat = x->gg.attr; break;
+    case zx_changeFormat_ATTR|zx_gl_NS:  x->changeFormat = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2642,7 +2642,7 @@ struct zx_gl_ItemData_s* zx_DEC_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemD
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
     case zx_notSorted_ATTR:  x->notSorted = x->gg.attr; break;
-    case zx_gl_changeFormat_ATTR:  x->changeFormat = x->gg.attr; break;
+    case zx_changeFormat_ATTR|zx_gl_NS:  x->changeFormat = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2887,8 +2887,8 @@ struct zx_gl_LL_s* zx_DEC_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
-    case zx_gl_script_ATTR:  x->script = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
+    case zx_script_ATTR|zx_gl_NS:  x->script = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2996,8 +2996,8 @@ struct zx_gl_LPostalAddress_s* zx_DEC_gl_LPostalAddress(struct zx_ctx* c, struct
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
-    case zx_gl_script_ATTR:  x->script = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
+    case zx_script_ATTR|zx_gl_NS:  x->script = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3105,8 +3105,8 @@ struct zx_gl_LSt_s* zx_DEC_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_xml_lang_ATTR:  x->lang = x->gg.attr; break;
-    case zx_gl_script_ATTR:  x->script = x->gg.attr; break;
+    case zx_lang_ATTR|zx_xml_NS:  x->lang = x->gg.attr; break;
+    case zx_script_ATTR|zx_gl_NS:  x->script = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -7199,7 +7199,7 @@ struct zx_gl_pd_s* zx_DEC_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_gl_ACC_ATTR:  x->ACC = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_gl_NS:  x->ACC = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

@@ -67,7 +67,7 @@ struct zx_idhrxml_Create_s* zx_DEC_idhrxml_Create(struct zx_ctx* c, struct zx_id
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -196,8 +196,8 @@ struct zx_idhrxml_CreateItem_s* zx_DEC_idhrxml_CreateItem(struct zx_ctx* c, stru
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
-    case zx_dst_objectType_ATTR:  x->objectType = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
+    case zx_objectType_ATTR|zx_dst_NS:  x->objectType = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -311,7 +311,7 @@ struct zx_idhrxml_CreateResponse_s* zx_DEC_idhrxml_CreateResponse(struct zx_ctx*
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_timeStamp_ATTR:  x->timeStamp = x->gg.attr; break;
-    case zx_dst_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
+    case zx_itemIDRef_ATTR|zx_dst_NS:  x->itemIDRef = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -438,8 +438,8 @@ struct zx_idhrxml_Data_s* zx_DEC_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxm
     case zx_notSorted_ATTR:  x->notSorted = x->gg.attr; break;
     case zx_remaining_ATTR:  x->remaining = x->gg.attr; break;
     case zx_setID_ATTR:  x->setID = x->gg.attr; break;
-    case zx_dst_changeFormat_ATTR:  x->changeFormat = x->gg.attr; break;
-    case zx_dst_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
+    case zx_changeFormat_ATTR|zx_dst_NS:  x->changeFormat = x->gg.attr; break;
+    case zx_itemIDRef_ATTR|zx_dst_NS:  x->itemIDRef = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -557,7 +557,7 @@ struct zx_idhrxml_Delete_s* zx_DEC_idhrxml_Delete(struct zx_ctx* c, struct zx_id
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -677,9 +677,9 @@ struct zx_idhrxml_DeleteItem_s* zx_DEC_idhrxml_DeleteItem(struct zx_ctx* c, stru
     switch (tok) {
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_notChangedSince_ATTR:  x->notChangedSince = x->gg.attr; break;
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
-    case zx_dst_objectType_ATTR:  x->objectType = x->gg.attr; break;
-    case zx_dst_predefined_ATTR:  x->predefined = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
+    case zx_objectType_ATTR|zx_dst_NS:  x->objectType = x->gg.attr; break;
+    case zx_predefined_ATTR|zx_dst_NS:  x->predefined = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -911,8 +911,8 @@ struct zx_idhrxml_ItemData_s* zx_DEC_idhrxml_ItemData(struct zx_ctx* c, struct z
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_notSorted_ATTR:  x->notSorted = x->gg.attr; break;
-    case zx_dst_changeFormat_ATTR:  x->changeFormat = x->gg.attr; break;
-    case zx_dst_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
+    case zx_changeFormat_ATTR|zx_dst_NS:  x->changeFormat = x->gg.attr; break;
+    case zx_itemIDRef_ATTR|zx_dst_NS:  x->itemIDRef = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1030,7 +1030,7 @@ struct zx_idhrxml_Modify_s* zx_DEC_idhrxml_Modify(struct zx_ctx* c, struct zx_id
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1161,9 +1161,9 @@ struct zx_idhrxml_ModifyItem_s* zx_DEC_idhrxml_ModifyItem(struct zx_ctx* c, stru
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_notChangedSince_ATTR:  x->notChangedSince = x->gg.attr; break;
     case zx_overrideAllowed_ATTR:  x->overrideAllowed = x->gg.attr; break;
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
-    case zx_dst_objectType_ATTR:  x->objectType = x->gg.attr; break;
-    case zx_dst_predefined_ATTR:  x->predefined = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
+    case zx_objectType_ATTR|zx_dst_NS:  x->objectType = x->gg.attr; break;
+    case zx_predefined_ATTR|zx_dst_NS:  x->predefined = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1282,7 +1282,7 @@ struct zx_idhrxml_ModifyResponse_s* zx_DEC_idhrxml_ModifyResponse(struct zx_ctx*
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_timeStamp_ATTR:  x->timeStamp = x->gg.attr; break;
-    case zx_dst_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
+    case zx_itemIDRef_ATTR|zx_dst_NS:  x->itemIDRef = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1644,7 +1644,7 @@ struct zx_idhrxml_Notify_s* zx_DEC_idhrxml_Notify(struct zx_ctx* c, struct zx_id
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_timeStamp_ATTR:  x->timeStamp = x->gg.attr; break;
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1880,7 +1880,7 @@ struct zx_idhrxml_Query_s* zx_DEC_idhrxml_Query(struct zx_ctx* c, struct zx_idhr
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2015,10 +2015,10 @@ struct zx_idhrxml_QueryItem_s* zx_DEC_idhrxml_QueryItem(struct zx_ctx* c, struct
     case zx_offset_ATTR:  x->offset = x->gg.attr; break;
     case zx_setID_ATTR:  x->setID = x->gg.attr; break;
     case zx_setReq_ATTR:  x->setReq = x->gg.attr; break;
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
-    case zx_dst_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
-    case zx_dst_objectType_ATTR:  x->objectType = x->gg.attr; break;
-    case zx_dst_predefined_ATTR:  x->predefined = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
+    case zx_itemIDRef_ATTR|zx_dst_NS:  x->itemIDRef = x->gg.attr; break;
+    case zx_objectType_ATTR|zx_dst_NS:  x->objectType = x->gg.attr; break;
+    case zx_predefined_ATTR|zx_dst_NS:  x->predefined = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2142,7 +2142,7 @@ struct zx_idhrxml_QueryResponse_s* zx_DEC_idhrxml_QueryResponse(struct zx_ctx* c
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_timeStamp_ATTR:  x->timeStamp = x->gg.attr; break;
-    case zx_dst_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
+    case zx_itemIDRef_ATTR|zx_dst_NS:  x->itemIDRef = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2273,10 +2273,10 @@ struct zx_idhrxml_ResultQuery_s* zx_DEC_idhrxml_ResultQuery(struct zx_ctx* c, st
     case zx_changedSince_ATTR:  x->changedSince = x->gg.attr; break;
     case zx_contingency_ATTR:  x->contingency = x->gg.attr; break;
     case zx_includeCommonAttributes_ATTR:  x->includeCommonAttributes = x->gg.attr; break;
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
-    case zx_dst_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
-    case zx_dst_objectType_ATTR:  x->objectType = x->gg.attr; break;
-    case zx_dst_predefined_ATTR:  x->predefined = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
+    case zx_itemIDRef_ATTR|zx_dst_NS:  x->itemIDRef = x->gg.attr; break;
+    case zx_objectType_ATTR|zx_dst_NS:  x->objectType = x->gg.attr; break;
+    case zx_predefined_ATTR|zx_dst_NS:  x->predefined = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2539,9 +2539,9 @@ struct zx_idhrxml_TestItem_s* zx_DEC_idhrxml_TestItem(struct zx_ctx* c, struct z
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_dst_itemID_ATTR:  x->itemID = x->gg.attr; break;
-    case zx_dst_objectType_ATTR:  x->objectType = x->gg.attr; break;
-    case zx_dst_predefined_ATTR:  x->predefined = x->gg.attr; break;
+    case zx_itemID_ATTR|zx_dst_NS:  x->itemID = x->gg.attr; break;
+    case zx_objectType_ATTR|zx_dst_NS:  x->objectType = x->gg.attr; break;
+    case zx_predefined_ATTR|zx_dst_NS:  x->predefined = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

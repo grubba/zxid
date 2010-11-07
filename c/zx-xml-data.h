@@ -25,5 +25,45 @@
 extern struct zx_el_tok zx_xml_el_tab[zx_xml__ELEM_MAX];
 struct zx_el_tok* zx_xml_elem2tok(const char* name, unsigned int name_len);
 
+/* -------------------------- xml_DummyToPullLang -------------------------- */
+/* refby( ) */
+#ifndef zx_xml_DummyToPullLang_EXT
+#define zx_xml_DummyToPullLang_EXT
+#endif
+
+struct zx_xml_DummyToPullLang_s {
+  ZX_ELEM_EXT
+  zx_xml_DummyToPullLang_EXT
+  struct zx_attr_s* lang;	/* {0,1} attribute xs:string */
+};
+
+struct zx_xml_DummyToPullLang_s* zx_DEC_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
+struct zx_xml_DummyToPullLang_s* zx_NEW_xml_DummyToPullLang(struct zx_ctx* c);
+void zx_FREE_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, int free_strs);
+int zx_LEN_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
+char* zx_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, char* p);
+struct zx_str* zx_EASY_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
+
+#ifdef ZX_ENA_AUX
+struct zx_xml_DummyToPullLang_s* zx_DEEP_CLONE_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, int dup_strs);
+void zx_DUP_STRS_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
+int zx_WALK_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx));
+int zx_WALK_WO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx));
+#endif
+
+#ifdef ZX_ENA_GETPUT
+struct zx_attr_s* zx_xml_DummyToPullLang_GET_lang(struct zx_xml_DummyToPullLang_s* x);
+
+
+
+
+
+void zx_xml_DummyToPullLang_PUT_lang(struct zx_xml_DummyToPullLang_s* x, struct zx_attr_s* y);
+
+
+
+
+
+#endif
 
 #endif

@@ -26,6 +26,9 @@
 #include "c/zx-data.h"
 #include "c/zx-e-data.h"
 
+#define zx_e_actor_ATTR (zx_e_NS|zx_actor_ATTR)
+#define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
+
 /*() WSC response validation work horse. This check the ID-WSF [SOAPbind2] specified
  * criteria, as well as additional criteria and calls PDP, if configured.
  *

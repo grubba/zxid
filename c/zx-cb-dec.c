@@ -67,8 +67,8 @@ struct zx_cb_By_s* zx_DEC_cb_By(struct zx_ctx* c, struct zx_cb_By_s* x )
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_sortAlg_ATTR:  x->sortAlg = x->gg.attr; break;
-    case zx_cb_sortWeight_ATTR:  x->sortWeight = x->gg.attr; break;
+    case zx_sortAlg_ATTR|zx_cb_NS:  x->sortAlg = x->gg.attr; break;
+    case zx_sortWeight_ATTR|zx_cb_NS:  x->sortWeight = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -672,7 +672,7 @@ struct zx_cb_Data_s* zx_DEC_cb_Data(struct zx_ctx* c, struct zx_cb_Data_s* x )
     case zx_notSorted_ATTR:  x->notSorted = x->gg.attr; break;
     case zx_remaining_ATTR:  x->remaining = x->gg.attr; break;
     case zx_setID_ATTR:  x->setID = x->gg.attr; break;
-    case zx_cb_changeFormat_ATTR:  x->changeFormat = x->gg.attr; break;
+    case zx_changeFormat_ATTR|zx_cb_NS:  x->changeFormat = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1375,7 +1375,7 @@ struct zx_cb_ItemData_s* zx_DEC_cb_ItemData(struct zx_ctx* c, struct zx_cb_ItemD
     case zx_id_ATTR:  x->id = x->gg.attr; break;
     case zx_itemIDRef_ATTR:  x->itemIDRef = x->gg.attr; break;
     case zx_notSorted_ATTR:  x->notSorted = x->gg.attr; break;
-    case zx_cb_changeFormat_ATTR:  x->changeFormat = x->gg.attr; break;
+    case zx_changeFormat_ATTR|zx_cb_NS:  x->changeFormat = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -1488,7 +1488,7 @@ struct zx_cb_ItemSelection_s* zx_DEC_cb_ItemSelection(struct zx_ctx* c, struct z
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_cb_format_ATTR:  x->format = x->gg.attr; break;
+    case zx_format_ATTR|zx_cb_NS:  x->format = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -2828,7 +2828,7 @@ struct zx_cb_QueryItem_s* zx_DEC_cb_QueryItem(struct zx_ctx* c, struct zx_cb_Que
     case zx_offset_ATTR:  x->offset = x->gg.attr; break;
     case zx_setID_ATTR:  x->setID = x->gg.attr; break;
     case zx_setReq_ATTR:  x->setReq = x->gg.attr; break;
-    case zx_cb_format_ATTR:  x->format = x->gg.attr; break;
+    case zx_format_ATTR|zx_cb_NS:  x->format = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -3782,11 +3782,11 @@ struct zx_cb_UsageType_s* zx_DEC_cb_UsageType(struct zx_ctx* c, struct zx_cb_Usa
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_success_ATTR:  x->success = x->gg.attr; break;
-    case zx_cb_ACC_ATTR:  x->ACC = x->gg.attr; break;
-    case zx_cb_ACCTime_ATTR:  x->ACCTime = x->gg.attr; break;
-    case zx_cb_id_ATTR:  x->id = x->gg.attr; break;
-    case zx_cb_modificationTime_ATTR:  x->modificationTime = x->gg.attr; break;
-    case zx_cb_modifier_ATTR:  x->modifier = x->gg.attr; break;
+    case zx_ACC_ATTR|zx_cb_NS:  x->ACC = x->gg.attr; break;
+    case zx_ACCTime_ATTR|zx_cb_NS:  x->ACCTime = x->gg.attr; break;
+    case zx_id_ATTR|zx_cb_NS:  x->id = x->gg.attr; break;
+    case zx_modificationTime_ATTR|zx_cb_NS:  x->modificationTime = x->gg.attr; break;
+    case zx_modifier_ATTR|zx_cb_NS:  x->modifier = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;

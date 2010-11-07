@@ -68,7 +68,7 @@ struct zx_wsc_DerivedKeyToken_s* zx_DEC_wsc_DerivedKeyToken(struct zx_ctx* c, st
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
     case zx_Algorithm_ATTR:  x->Algorithm = x->gg.attr; break;
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
@@ -318,7 +318,7 @@ struct zx_wsc_SecurityContextToken_s* zx_DEC_wsc_SecurityContextToken(struct zx_
   for (; c->p; ++c->p) {
     tok = zx_attr_lookup(c, (struct zx_elem_s*)x, (const char*)__FUNCTION__);
     switch (tok) {
-    case zx_wsu_Id_ATTR:  x->Id = x->gg.attr; break;
+    case zx_Id_ATTR|zx_wsu_NS:  x->Id = x->gg.attr; break;
 
     case ZX_TOK_XMLNS: break;
     case ZX_TOK_ATTR_NOT_FOUND: break;
