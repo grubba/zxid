@@ -74,7 +74,7 @@ int zx_wsu_Timestamp_NUM_Created(struct zx_wsu_Timestamp_s* x)
   struct zx_wsu_Created_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Created; y; ++n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+  for (y = x->Created; y && y->gg.g.tok == zx_wsu_Created_ELEM; ++n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -84,7 +84,7 @@ struct zx_wsu_Created_s* zx_wsu_Timestamp_GET_Created(struct zx_wsu_Timestamp_s*
 {
   struct zx_wsu_Created_s* y;
   if (!x) return 0;
-  for (y = x->Created; n>=0 && y; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+  for (y = x->Created; n>=0 && y && y->gg.g.tok == zx_wsu_Created_ELEM; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -141,7 +141,7 @@ void zx_wsu_Timestamp_PUT_Created(struct zx_wsu_Timestamp_s* x, int n, struct zx
     x->Created = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Created_ELEM; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -163,10 +163,10 @@ void zx_wsu_Timestamp_ADD_Created(struct zx_wsu_Timestamp_s* x, int n, struct zx
   case -1:
     y = x->Created;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Created_ELEM; y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Created; n > 1 && y; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (y = x->Created; n > 1 && y && y->gg.g.tok == zx_wsu_Created_ELEM; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -186,10 +186,10 @@ void zx_wsu_Timestamp_DEL_Created(struct zx_wsu_Timestamp_s* x, int n)
   case -1:
     y = (struct zx_wsu_Created_s*)x->Created;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Created_ELEM; y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Created; n > 1 && y->gg.g.n; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (y = x->Created; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Created_ELEM; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -208,7 +208,7 @@ int zx_wsu_Timestamp_NUM_Expires(struct zx_wsu_Timestamp_s* x)
   struct zx_wsu_Expires_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Expires; y; ++n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+  for (y = x->Expires; y && y->gg.g.tok == zx_wsu_Expires_ELEM; ++n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -218,7 +218,7 @@ struct zx_wsu_Expires_s* zx_wsu_Timestamp_GET_Expires(struct zx_wsu_Timestamp_s*
 {
   struct zx_wsu_Expires_s* y;
   if (!x) return 0;
-  for (y = x->Expires; n>=0 && y; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+  for (y = x->Expires; n>=0 && y && y->gg.g.tok == zx_wsu_Expires_ELEM; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -275,7 +275,7 @@ void zx_wsu_Timestamp_PUT_Expires(struct zx_wsu_Timestamp_s* x, int n, struct zx
     x->Expires = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Expires_ELEM; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -297,10 +297,10 @@ void zx_wsu_Timestamp_ADD_Expires(struct zx_wsu_Timestamp_s* x, int n, struct zx
   case -1:
     y = x->Expires;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Expires_ELEM; y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Expires; n > 1 && y; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (y = x->Expires; n > 1 && y && y->gg.g.tok == zx_wsu_Expires_ELEM; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -320,10 +320,10 @@ void zx_wsu_Timestamp_DEL_Expires(struct zx_wsu_Timestamp_s* x, int n)
   case -1:
     y = (struct zx_wsu_Expires_s*)x->Expires;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Expires_ELEM; y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Expires; n > 1 && y->gg.g.n; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (y = x->Expires; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Expires_ELEM; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

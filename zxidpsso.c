@@ -877,7 +877,9 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
     D_INDENT("as_ok: ");
     name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR "%s/.bs/", cf->path, cgi.uid);
     at = zxid_gen_boots(cf, cgi.uid, path, 0, 1);
-    for (; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
+    for (;
+	 at && at->gg.g.tok == zx_sa_Attribute_ELEM;
+	 at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
       at->AttributeValue->EndpointReference->gg.g.n = (void*)res->EndpointReference;
       res->EndpointReference = at->AttributeValue->EndpointReference;
     }
@@ -885,7 +887,9 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
 
     name_from_path(path, sizeof(path), "%s" ZXID_UID_DIR ".all/.bs/", cf->path);
     at = zxid_gen_boots(cf, cgi.uid, path, 0, 1);
-    for (; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
+    for (;
+	 at && at->gg.g.tok == zx_sa_Attribute_ELEM;
+	 at = (struct zx_sa_Attribute_s*)at->gg.g.n) {
       at->AttributeValue->EndpointReference->gg.g.n = (void*)res->EndpointReference;
       res->EndpointReference = at->AttributeValue->EndpointReference;
     }

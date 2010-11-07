@@ -63,7 +63,9 @@ static void zxid_process_keys(zxid_conf* cf, zxid_entity* ent, struct zx_md_KeyD
   char* e;
   X509* x;
 
-  for (; kd && kd->gg.g.tok == zx_md_KeyDescriptor_ELEM; kd = (struct zx_md_KeyDescriptor_s*)kd->gg.g.n) {
+  for (;
+       kd && kd->gg.g.tok == zx_md_KeyDescriptor_ELEM;
+       kd = (struct zx_md_KeyDescriptor_s*)kd->gg.g.n) {
     if (!kd->KeyInfo || !kd->KeyInfo->X509Data || !kd->KeyInfo->X509Data->X509Certificate || !kd->KeyInfo->X509Data->X509Certificate->content) {
       ERR("KeyDescriptor for %s missing essential subelements KeyInfo=%p", logkey, kd->KeyInfo);
       return;
@@ -156,7 +158,9 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
   } else if (r->EntitiesDescriptor) {
     if (!r->EntitiesDescriptor->EntityDescriptor)
       goto bad_md;
-    for (ed = r->EntitiesDescriptor->EntityDescriptor; ed && ed->gg.g.tok == zx_md_EntityDescriptor_ELEM; ed = (struct zx_md_EntityDescriptor_s*)ZX_NEXT(ed)) {
+    for (ed = r->EntitiesDescriptor->EntityDescriptor;
+	 ed && ed->gg.g.tok == zx_md_EntityDescriptor_ELEM;
+	 ed = (struct zx_md_EntityDescriptor_s*)ZX_NEXT(ed)) {
       ent = zxid_mk_ent(cf, ed);
       ent->n = ee;
       ee = ent;

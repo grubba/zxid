@@ -45,14 +45,14 @@ int zxid_parse_cgi(zxid_cgi* cgi, char* qs)
   DD("qs(%s) len=%d", STRNULLCHK(qs), qs?strlen(qs):-1);
   if (!qs)
     return 0;
-  while (*qs) {
+  while (qs && *qs) {
     for (; *qs == '&'; ++qs) ;                  /* Skip over & or && */
     if (!*qs) break;
     
-    for (name = qs; *qs && *qs != '='; ++qs) ;  /* Scan name (until '=') */
-    if (!*qs) break;
+    qs = strchr(name = qs, '=');                /* Scan name (until '=') */
+    if (!qs) break;
     if (qs == name) {                           /* Key was an empty string: skip it */
-      for (; *qs && *qs != '&'; ++qs) ;         /* Scan value (until '&') *** or '?' */
+      qs = strchr(qs, '&');                     /* Scan value (until '&') *** or '?' */
       continue;
     }
     for (; name < qs && *name <= ' '; ++name) ; /* Skip over initial whitespace before name */

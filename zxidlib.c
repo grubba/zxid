@@ -884,8 +884,8 @@ nobody:
   if (!p)
     goto nobody;
   
-  for (p += 4; *p && *p != '>'; ++p) ;  /* Scan for close of opening <Body */
-  if (!*p)
+  p = strchr(p+4, '>');  /* Scan for close of opening <Body */
+  if (!p)
     goto nobody;
   
   for (q = ++p; q; q+=5) {

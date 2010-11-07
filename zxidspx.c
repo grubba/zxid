@@ -237,7 +237,9 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, z
   a7n = zxid_mk_a7n(cf, affil, 0, 0, 0, 0);
 
   if (azq->Request && azq->Request->Subject) {
-    for (xac_at = azq->Request->Subject->Attribute; xac_at; xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
+    for (xac_at = azq->Request->Subject->Attribute;
+	 xac_at && xac_at->gg.g.tok == zx_xac_Attribute_ELEM;
+	 xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
       if (xac_at->AttributeId->g.len == sizeof("role")-1
 	  && !memcmp(xac_at->AttributeId->g.s, "role", sizeof("role")-1)) {
 	if (xac_at->AttributeValue && xac_at->AttributeValue->content
@@ -282,7 +284,9 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
   a7n = zxid_mk_a7n(cf, affil, 0, 0, 0, 0);
 
   if (azq->Request && azq->Request->Subject) {
-    for (xac_at = azq->Request->Subject->Attribute; xac_at; xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
+    for (xac_at = azq->Request->Subject->Attribute;
+	 xac_at && xac_at->gg.g.tok == zx_xac_Attribute_ELEM;
+	 xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
       if (xac_at->AttributeId->g.len == sizeof("role")-1
 	  && !memcmp(xac_at->AttributeId->g.s, "role", sizeof("role")-1)) {
 	if (xac_at->AttributeValue && xac_at->AttributeValue->content

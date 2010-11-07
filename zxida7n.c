@@ -62,8 +62,12 @@ struct zx_sa_Attribute_s* zxid_find_attribute(zxid_a7n* a7n, int nfmt_len, char*
     ERR("No assertion supplied (null assertion pointer) when looking for attribute nfmt(%.*s) name(%.*s) friendly(%.*s) n=%d", nfmt_len, nfmt, name_len, name, friendly_len, friendly, n);
     return 0;
   }
-  for (as = a7n->AttributeStatement; as; as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n)
-    for (at = as->Attribute; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n)
+  for (as = a7n->AttributeStatement;
+       as && as->gg.g.tok == zx_sa_AttributeStatement_ELEM;
+       as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n)
+    for (at = as->Attribute;
+	 at && at->gg.g.tok == zx_sa_Attribute_ELEM;
+	 at = (struct zx_sa_Attribute_s*)at->gg.g.n)
       if ((nfmt_len ? (at->NameFormat
 		       && at->NameFormat->g.len == nfmt_len
 		       && !memcmp(at->NameFormat->g.s, nfmt, nfmt_len)) : 1)

@@ -187,7 +187,7 @@ void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
   struct zx_str* ss;
   struct zx_str* urlss;
   int wsf20 = 0;
-  for (; epr; epr = (zxid_epr*)epr->gg.g.n) {
+  for (; epr && epr->gg.g.tok == zx_a_EndpointReference_ELEM; epr = (zxid_epr*)epr->gg.g.n) {
     ss = epr->Metadata->ServiceType->content;
     urlss = epr->Address->gg.content;
     D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
@@ -220,9 +220,15 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
   D_INDENT("snarf_eprs: ");
   zxid_get_ses_sso_a7n(cf, ses);
   if (ses->a7n)
-    for (as = ses->a7n->AttributeStatement; as; as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n)
-      for (at = as->Attribute; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n)
-	for (av = at->AttributeValue; av; av = (struct zx_sa_AttributeValue_s*)av->gg.g.n) {
+    for (as = ses->a7n->AttributeStatement;
+	 as && as->gg.g.tok == zx_sa_AttributeStatement_ELEM;
+	 as = (struct zx_sa_AttributeStatement_s*)as->gg.g.n)
+      for (at = as->Attribute;
+	   at && at->gg.g.tok == zx_sa_Attribute_ELEM;
+	   at = (struct zx_sa_Attribute_s*)at->gg.g.n)
+	for (av = at->AttributeValue;
+	     av && av->gg.g.tok == zx_sa_AttributeValue_ELEM;
+	     av = (struct zx_sa_AttributeValue_s*)av->gg.g.n) {
 	  zxid_snarf_eprs(cf, ses, av->EndpointReference);
 	  if (av->ResourceOffering) {
 	    ++wsf11;
@@ -246,9 +252,15 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 	}
 #if 0
   if (ses->a7n12)
-    for (as = ses->a7n->AttributeStatement; as; as = (struct zx_sa11_AttributeStatement_s*)as->gg.g.n)
-      for (at = as->Attribute; at; at = (struct zx_sa_Attribute_s*)at->gg.g.n)
-	for (av = at->AttributeValue; av; av = (struct zx_sa_AttributeValue_s*)av->gg.g.n) {
+    for (as = ses->a7n->AttributeStatement;
+	 as && as->gg.g.tok == zx_sa11_AttributeStatement_ELEM;
+	 as = (struct zx_sa11_AttributeStatement_s*)as->gg.g.n)
+      for (at = as->Attribute;
+	   at && at->gg.g.tok == zx_sa11_Attribute_ELEM;
+	   at = (struct zx_sa11_Attribute_s*)at->gg.g.n)
+	for (av = at->AttributeValue;
+	     av && av->gg.g.tok == zx_sa11_AttributeValue_ELEM;
+	     av = (struct zx_sa11_AttributeValue_s*)av->gg.g.n) {
 	}
 #endif
   D_DEDENT("snarf_eprs: ");
@@ -427,7 +439,9 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
   env = zxid_wsc_call(cf, ses, epr, env, 0);
   if (env && env->Body) {
     if (env->Body->QueryResponse) {
-      for (epr = env->Body->QueryResponse->EndpointReference; epr; epr = (zxid_epr*)ZX_NEXT(epr)) {
+      for (epr = env->Body->QueryResponse->EndpointReference;
+	   epr && epr->gg.g.tok == zx_a_EndpointReference_ELEM;
+	   epr = (zxid_epr*)ZX_NEXT(epr)) {
 	ss = epr->Metadata->ServiceType->content;
 	urlss = epr->Address->gg.content;
 	D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");

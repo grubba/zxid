@@ -49,7 +49,7 @@ int zx_sa11_Advice_NUM_AssertionIDReference(struct zx_sa11_Advice_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AssertionIDReference; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AssertionIDReference; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -59,7 +59,7 @@ struct zx_elem_s* zx_sa11_Advice_GET_AssertionIDReference(struct zx_sa11_Advice_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->AssertionIDReference; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AssertionIDReference; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -116,7 +116,7 @@ void zx_sa11_Advice_PUT_AssertionIDReference(struct zx_sa11_Advice_s* x, int n, 
     x->AssertionIDReference = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -138,10 +138,10 @@ void zx_sa11_Advice_ADD_AssertionIDReference(struct zx_sa11_Advice_s* x, int n, 
   case -1:
     y = x->AssertionIDReference;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AssertionIDReference; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AssertionIDReference; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -161,10 +161,10 @@ void zx_sa11_Advice_DEL_AssertionIDReference(struct zx_sa11_Advice_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->AssertionIDReference;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AssertionIDReference; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AssertionIDReference; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -183,7 +183,7 @@ int zx_sa11_Advice_NUM_Assertion(struct zx_sa11_Advice_s* x)
   struct zx_sa11_Assertion_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Assertion; y; ++n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+  for (y = x->Assertion; y && y->gg.g.tok == zx_sa11_Assertion_ELEM; ++n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -193,7 +193,7 @@ struct zx_sa11_Assertion_s* zx_sa11_Advice_GET_Assertion(struct zx_sa11_Advice_s
 {
   struct zx_sa11_Assertion_s* y;
   if (!x) return 0;
-  for (y = x->Assertion; n>=0 && y; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+  for (y = x->Assertion; n>=0 && y && y->gg.g.tok == zx_sa11_Assertion_ELEM; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -250,7 +250,7 @@ void zx_sa11_Advice_PUT_Assertion(struct zx_sa11_Advice_s* x, int n, struct zx_s
     x->Assertion = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Assertion_ELEM; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -272,10 +272,10 @@ void zx_sa11_Advice_ADD_Assertion(struct zx_sa11_Advice_s* x, int n, struct zx_s
   case -1:
     y = x->Assertion;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Assertion_ELEM; y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Assertion; n > 1 && y; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (y = x->Assertion; n > 1 && y && y->gg.g.tok == zx_sa11_Assertion_ELEM; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -295,10 +295,10 @@ void zx_sa11_Advice_DEL_Assertion(struct zx_sa11_Advice_s* x, int n)
   case -1:
     y = (struct zx_sa11_Assertion_s*)x->Assertion;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Assertion_ELEM; y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Assertion; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (y = x->Assertion; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Assertion_ELEM; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -317,7 +317,7 @@ int zx_sa11_Advice_NUM_ff12_Assertion(struct zx_sa11_Advice_s* x)
   struct zx_ff12_Assertion_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ff12_Assertion; y; ++n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
+  for (y = x->ff12_Assertion; y && y->gg.g.tok == zx_ff12_Assertion_ELEM; ++n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -327,7 +327,7 @@ struct zx_ff12_Assertion_s* zx_sa11_Advice_GET_ff12_Assertion(struct zx_sa11_Adv
 {
   struct zx_ff12_Assertion_s* y;
   if (!x) return 0;
-  for (y = x->ff12_Assertion; n>=0 && y; --n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
+  for (y = x->ff12_Assertion; n>=0 && y && y->gg.g.tok == zx_ff12_Assertion_ELEM; --n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -384,7 +384,7 @@ void zx_sa11_Advice_PUT_ff12_Assertion(struct zx_sa11_Advice_s* x, int n, struct
     x->ff12_Assertion = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ff12_Assertion_ELEM; --n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -406,10 +406,10 @@ void zx_sa11_Advice_ADD_ff12_Assertion(struct zx_sa11_Advice_s* x, int n, struct
   case -1:
     y = x->ff12_Assertion;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ff12_Assertion_ELEM; y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ff12_Assertion; n > 1 && y; --n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
+    for (y = x->ff12_Assertion; n > 1 && y && y->gg.g.tok == zx_ff12_Assertion_ELEM; --n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -429,10 +429,10 @@ void zx_sa11_Advice_DEL_ff12_Assertion(struct zx_sa11_Advice_s* x, int n)
   case -1:
     y = (struct zx_ff12_Assertion_s*)x->ff12_Assertion;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ff12_Assertion_ELEM; y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ff12_Assertion; n > 1 && y->gg.g.n; --n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
+    for (y = x->ff12_Assertion; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ff12_Assertion_ELEM; --n, y = (struct zx_ff12_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -451,7 +451,7 @@ int zx_sa11_Advice_NUM_sa_Assertion(struct zx_sa11_Advice_s* x)
   struct zx_sa_Assertion_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->sa_Assertion; y; ++n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+  for (y = x->sa_Assertion; y && y->gg.g.tok == zx_sa_Assertion_ELEM; ++n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -461,7 +461,7 @@ struct zx_sa_Assertion_s* zx_sa11_Advice_GET_sa_Assertion(struct zx_sa11_Advice_
 {
   struct zx_sa_Assertion_s* y;
   if (!x) return 0;
-  for (y = x->sa_Assertion; n>=0 && y; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+  for (y = x->sa_Assertion; n>=0 && y && y->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -518,7 +518,7 @@ void zx_sa11_Advice_PUT_sa_Assertion(struct zx_sa11_Advice_s* x, int n, struct z
     x->sa_Assertion = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -540,10 +540,10 @@ void zx_sa11_Advice_ADD_sa_Assertion(struct zx_sa11_Advice_s* x, int n, struct z
   case -1:
     y = x->sa_Assertion;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->sa_Assertion; n > 1 && y; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (y = x->sa_Assertion; n > 1 && y && y->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -563,10 +563,10 @@ void zx_sa11_Advice_DEL_sa_Assertion(struct zx_sa11_Advice_s* x, int n)
   case -1:
     y = (struct zx_sa_Assertion_s*)x->sa_Assertion;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->sa_Assertion; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (y = x->sa_Assertion; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -590,7 +590,7 @@ int zx_sa11_Assertion_NUM_Conditions(struct zx_sa11_Assertion_s* x)
   struct zx_sa11_Conditions_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Conditions; y; ++n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
+  for (y = x->Conditions; y && y->gg.g.tok == zx_sa11_Conditions_ELEM; ++n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -600,7 +600,7 @@ struct zx_sa11_Conditions_s* zx_sa11_Assertion_GET_Conditions(struct zx_sa11_Ass
 {
   struct zx_sa11_Conditions_s* y;
   if (!x) return 0;
-  for (y = x->Conditions; n>=0 && y; --n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
+  for (y = x->Conditions; n>=0 && y && y->gg.g.tok == zx_sa11_Conditions_ELEM; --n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -657,7 +657,7 @@ void zx_sa11_Assertion_PUT_Conditions(struct zx_sa11_Assertion_s* x, int n, stru
     x->Conditions = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Conditions_ELEM; --n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -679,10 +679,10 @@ void zx_sa11_Assertion_ADD_Conditions(struct zx_sa11_Assertion_s* x, int n, stru
   case -1:
     y = x->Conditions;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Conditions_ELEM; y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Conditions; n > 1 && y; --n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
+    for (y = x->Conditions; n > 1 && y && y->gg.g.tok == zx_sa11_Conditions_ELEM; --n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -702,10 +702,10 @@ void zx_sa11_Assertion_DEL_Conditions(struct zx_sa11_Assertion_s* x, int n)
   case -1:
     y = (struct zx_sa11_Conditions_s*)x->Conditions;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Conditions_ELEM; y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Conditions; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
+    for (y = x->Conditions; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Conditions_ELEM; --n, y = (struct zx_sa11_Conditions_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -724,7 +724,7 @@ int zx_sa11_Assertion_NUM_Advice(struct zx_sa11_Assertion_s* x)
   struct zx_sa11_Advice_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Advice; y; ++n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
+  for (y = x->Advice; y && y->gg.g.tok == zx_sa11_Advice_ELEM; ++n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -734,7 +734,7 @@ struct zx_sa11_Advice_s* zx_sa11_Assertion_GET_Advice(struct zx_sa11_Assertion_s
 {
   struct zx_sa11_Advice_s* y;
   if (!x) return 0;
-  for (y = x->Advice; n>=0 && y; --n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
+  for (y = x->Advice; n>=0 && y && y->gg.g.tok == zx_sa11_Advice_ELEM; --n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -791,7 +791,7 @@ void zx_sa11_Assertion_PUT_Advice(struct zx_sa11_Assertion_s* x, int n, struct z
     x->Advice = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Advice_ELEM; --n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -813,10 +813,10 @@ void zx_sa11_Assertion_ADD_Advice(struct zx_sa11_Assertion_s* x, int n, struct z
   case -1:
     y = x->Advice;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Advice_ELEM; y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Advice; n > 1 && y; --n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
+    for (y = x->Advice; n > 1 && y && y->gg.g.tok == zx_sa11_Advice_ELEM; --n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -836,10 +836,10 @@ void zx_sa11_Assertion_DEL_Advice(struct zx_sa11_Assertion_s* x, int n)
   case -1:
     y = (struct zx_sa11_Advice_s*)x->Advice;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Advice_ELEM; y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Advice; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
+    for (y = x->Advice; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Advice_ELEM; --n, y = (struct zx_sa11_Advice_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -858,7 +858,7 @@ int zx_sa11_Assertion_NUM_Statement(struct zx_sa11_Assertion_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Statement; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Statement; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -868,7 +868,7 @@ struct zx_elem_s* zx_sa11_Assertion_GET_Statement(struct zx_sa11_Assertion_s* x,
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Statement; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Statement; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -925,7 +925,7 @@ void zx_sa11_Assertion_PUT_Statement(struct zx_sa11_Assertion_s* x, int n, struc
     x->Statement = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -947,10 +947,10 @@ void zx_sa11_Assertion_ADD_Statement(struct zx_sa11_Assertion_s* x, int n, struc
   case -1:
     y = x->Statement;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Statement; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Statement; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -970,10 +970,10 @@ void zx_sa11_Assertion_DEL_Statement(struct zx_sa11_Assertion_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Statement;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Statement; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Statement; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -992,7 +992,7 @@ int zx_sa11_Assertion_NUM_SubjectStatement(struct zx_sa11_Assertion_s* x)
   struct zx_sa11_SubjectStatement_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SubjectStatement; y; ++n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
+  for (y = x->SubjectStatement; y && y->gg.g.tok == zx_sa11_SubjectStatement_ELEM; ++n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1002,7 +1002,7 @@ struct zx_sa11_SubjectStatement_s* zx_sa11_Assertion_GET_SubjectStatement(struct
 {
   struct zx_sa11_SubjectStatement_s* y;
   if (!x) return 0;
-  for (y = x->SubjectStatement; n>=0 && y; --n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
+  for (y = x->SubjectStatement; n>=0 && y && y->gg.g.tok == zx_sa11_SubjectStatement_ELEM; --n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1059,7 +1059,7 @@ void zx_sa11_Assertion_PUT_SubjectStatement(struct zx_sa11_Assertion_s* x, int n
     x->SubjectStatement = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectStatement_ELEM; --n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1081,10 +1081,10 @@ void zx_sa11_Assertion_ADD_SubjectStatement(struct zx_sa11_Assertion_s* x, int n
   case -1:
     y = x->SubjectStatement;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectStatement_ELEM; y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SubjectStatement; n > 1 && y; --n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
+    for (y = x->SubjectStatement; n > 1 && y && y->gg.g.tok == zx_sa11_SubjectStatement_ELEM; --n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1104,10 +1104,10 @@ void zx_sa11_Assertion_DEL_SubjectStatement(struct zx_sa11_Assertion_s* x, int n
   case -1:
     y = (struct zx_sa11_SubjectStatement_s*)x->SubjectStatement;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectStatement_ELEM; y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SubjectStatement; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
+    for (y = x->SubjectStatement; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectStatement_ELEM; --n, y = (struct zx_sa11_SubjectStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1126,7 +1126,7 @@ int zx_sa11_Assertion_NUM_AuthenticationStatement(struct zx_sa11_Assertion_s* x)
   struct zx_sa11_AuthenticationStatement_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AuthenticationStatement; y; ++n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
+  for (y = x->AuthenticationStatement; y && y->gg.g.tok == zx_sa11_AuthenticationStatement_ELEM; ++n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1136,7 +1136,7 @@ struct zx_sa11_AuthenticationStatement_s* zx_sa11_Assertion_GET_AuthenticationSt
 {
   struct zx_sa11_AuthenticationStatement_s* y;
   if (!x) return 0;
-  for (y = x->AuthenticationStatement; n>=0 && y; --n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
+  for (y = x->AuthenticationStatement; n>=0 && y && y->gg.g.tok == zx_sa11_AuthenticationStatement_ELEM; --n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1193,7 +1193,7 @@ void zx_sa11_Assertion_PUT_AuthenticationStatement(struct zx_sa11_Assertion_s* x
     x->AuthenticationStatement = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthenticationStatement_ELEM; --n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1215,10 +1215,10 @@ void zx_sa11_Assertion_ADD_AuthenticationStatement(struct zx_sa11_Assertion_s* x
   case -1:
     y = x->AuthenticationStatement;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthenticationStatement_ELEM; y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthenticationStatement; n > 1 && y; --n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
+    for (y = x->AuthenticationStatement; n > 1 && y && y->gg.g.tok == zx_sa11_AuthenticationStatement_ELEM; --n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1238,10 +1238,10 @@ void zx_sa11_Assertion_DEL_AuthenticationStatement(struct zx_sa11_Assertion_s* x
   case -1:
     y = (struct zx_sa11_AuthenticationStatement_s*)x->AuthenticationStatement;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthenticationStatement_ELEM; y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthenticationStatement; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
+    for (y = x->AuthenticationStatement; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthenticationStatement_ELEM; --n, y = (struct zx_sa11_AuthenticationStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1260,7 +1260,7 @@ int zx_sa11_Assertion_NUM_AuthorizationDecisionStatement(struct zx_sa11_Assertio
   struct zx_sa11_AuthorizationDecisionStatement_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AuthorizationDecisionStatement; y; ++n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
+  for (y = x->AuthorizationDecisionStatement; y && y->gg.g.tok == zx_sa11_AuthorizationDecisionStatement_ELEM; ++n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1270,7 +1270,7 @@ struct zx_sa11_AuthorizationDecisionStatement_s* zx_sa11_Assertion_GET_Authoriza
 {
   struct zx_sa11_AuthorizationDecisionStatement_s* y;
   if (!x) return 0;
-  for (y = x->AuthorizationDecisionStatement; n>=0 && y; --n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
+  for (y = x->AuthorizationDecisionStatement; n>=0 && y && y->gg.g.tok == zx_sa11_AuthorizationDecisionStatement_ELEM; --n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1327,7 +1327,7 @@ void zx_sa11_Assertion_PUT_AuthorizationDecisionStatement(struct zx_sa11_Asserti
     x->AuthorizationDecisionStatement = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthorizationDecisionStatement_ELEM; --n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1349,10 +1349,10 @@ void zx_sa11_Assertion_ADD_AuthorizationDecisionStatement(struct zx_sa11_Asserti
   case -1:
     y = x->AuthorizationDecisionStatement;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthorizationDecisionStatement_ELEM; y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthorizationDecisionStatement; n > 1 && y; --n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
+    for (y = x->AuthorizationDecisionStatement; n > 1 && y && y->gg.g.tok == zx_sa11_AuthorizationDecisionStatement_ELEM; --n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1372,10 +1372,10 @@ void zx_sa11_Assertion_DEL_AuthorizationDecisionStatement(struct zx_sa11_Asserti
   case -1:
     y = (struct zx_sa11_AuthorizationDecisionStatement_s*)x->AuthorizationDecisionStatement;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthorizationDecisionStatement_ELEM; y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthorizationDecisionStatement; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
+    for (y = x->AuthorizationDecisionStatement; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthorizationDecisionStatement_ELEM; --n, y = (struct zx_sa11_AuthorizationDecisionStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1394,7 +1394,7 @@ int zx_sa11_Assertion_NUM_AttributeStatement(struct zx_sa11_Assertion_s* x)
   struct zx_sa11_AttributeStatement_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AttributeStatement; y; ++n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
+  for (y = x->AttributeStatement; y && y->gg.g.tok == zx_sa11_AttributeStatement_ELEM; ++n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1404,7 +1404,7 @@ struct zx_sa11_AttributeStatement_s* zx_sa11_Assertion_GET_AttributeStatement(st
 {
   struct zx_sa11_AttributeStatement_s* y;
   if (!x) return 0;
-  for (y = x->AttributeStatement; n>=0 && y; --n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
+  for (y = x->AttributeStatement; n>=0 && y && y->gg.g.tok == zx_sa11_AttributeStatement_ELEM; --n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1461,7 +1461,7 @@ void zx_sa11_Assertion_PUT_AttributeStatement(struct zx_sa11_Assertion_s* x, int
     x->AttributeStatement = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AttributeStatement_ELEM; --n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1483,10 +1483,10 @@ void zx_sa11_Assertion_ADD_AttributeStatement(struct zx_sa11_Assertion_s* x, int
   case -1:
     y = x->AttributeStatement;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AttributeStatement_ELEM; y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AttributeStatement; n > 1 && y; --n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
+    for (y = x->AttributeStatement; n > 1 && y && y->gg.g.tok == zx_sa11_AttributeStatement_ELEM; --n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1506,10 +1506,10 @@ void zx_sa11_Assertion_DEL_AttributeStatement(struct zx_sa11_Assertion_s* x, int
   case -1:
     y = (struct zx_sa11_AttributeStatement_s*)x->AttributeStatement;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AttributeStatement_ELEM; y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AttributeStatement; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
+    for (y = x->AttributeStatement; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AttributeStatement_ELEM; --n, y = (struct zx_sa11_AttributeStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1528,7 +1528,7 @@ int zx_sa11_Assertion_NUM_XACMLAuthzDecisionStatement(struct zx_sa11_Assertion_s
   struct zx_xasa_XACMLAuthzDecisionStatement_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->XACMLAuthzDecisionStatement; y; ++n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+  for (y = x->XACMLAuthzDecisionStatement; y && y->gg.g.tok == zx_xasa_XACMLAuthzDecisionStatement_ELEM; ++n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1538,7 +1538,7 @@ struct zx_xasa_XACMLAuthzDecisionStatement_s* zx_sa11_Assertion_GET_XACMLAuthzDe
 {
   struct zx_xasa_XACMLAuthzDecisionStatement_s* y;
   if (!x) return 0;
-  for (y = x->XACMLAuthzDecisionStatement; n>=0 && y; --n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+  for (y = x->XACMLAuthzDecisionStatement; n>=0 && y && y->gg.g.tok == zx_xasa_XACMLAuthzDecisionStatement_ELEM; --n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1595,7 +1595,7 @@ void zx_sa11_Assertion_PUT_XACMLAuthzDecisionStatement(struct zx_sa11_Assertion_
     x->XACMLAuthzDecisionStatement = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasa_XACMLAuthzDecisionStatement_ELEM; --n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1617,10 +1617,10 @@ void zx_sa11_Assertion_ADD_XACMLAuthzDecisionStatement(struct zx_sa11_Assertion_
   case -1:
     y = x->XACMLAuthzDecisionStatement;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasa_XACMLAuthzDecisionStatement_ELEM; y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->XACMLAuthzDecisionStatement; n > 1 && y; --n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (y = x->XACMLAuthzDecisionStatement; n > 1 && y && y->gg.g.tok == zx_xasa_XACMLAuthzDecisionStatement_ELEM; --n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1640,10 +1640,10 @@ void zx_sa11_Assertion_DEL_XACMLAuthzDecisionStatement(struct zx_sa11_Assertion_
   case -1:
     y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)x->XACMLAuthzDecisionStatement;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasa_XACMLAuthzDecisionStatement_ELEM; y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->XACMLAuthzDecisionStatement; n > 1 && y->gg.g.n; --n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (y = x->XACMLAuthzDecisionStatement; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasa_XACMLAuthzDecisionStatement_ELEM; --n, y = (struct zx_xasa_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1662,7 +1662,7 @@ int zx_sa11_Assertion_NUM_XACMLPolicyStatement(struct zx_sa11_Assertion_s* x)
   struct zx_xasa_XACMLPolicyStatement_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->XACMLPolicyStatement; y; ++n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
+  for (y = x->XACMLPolicyStatement; y && y->gg.g.tok == zx_xasa_XACMLPolicyStatement_ELEM; ++n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1672,7 +1672,7 @@ struct zx_xasa_XACMLPolicyStatement_s* zx_sa11_Assertion_GET_XACMLPolicyStatemen
 {
   struct zx_xasa_XACMLPolicyStatement_s* y;
   if (!x) return 0;
-  for (y = x->XACMLPolicyStatement; n>=0 && y; --n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
+  for (y = x->XACMLPolicyStatement; n>=0 && y && y->gg.g.tok == zx_xasa_XACMLPolicyStatement_ELEM; --n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1729,7 +1729,7 @@ void zx_sa11_Assertion_PUT_XACMLPolicyStatement(struct zx_sa11_Assertion_s* x, i
     x->XACMLPolicyStatement = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasa_XACMLPolicyStatement_ELEM; --n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1751,10 +1751,10 @@ void zx_sa11_Assertion_ADD_XACMLPolicyStatement(struct zx_sa11_Assertion_s* x, i
   case -1:
     y = x->XACMLPolicyStatement;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasa_XACMLPolicyStatement_ELEM; y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->XACMLPolicyStatement; n > 1 && y; --n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (y = x->XACMLPolicyStatement; n > 1 && y && y->gg.g.tok == zx_xasa_XACMLPolicyStatement_ELEM; --n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1774,10 +1774,10 @@ void zx_sa11_Assertion_DEL_XACMLPolicyStatement(struct zx_sa11_Assertion_s* x, i
   case -1:
     y = (struct zx_xasa_XACMLPolicyStatement_s*)x->XACMLPolicyStatement;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasa_XACMLPolicyStatement_ELEM; y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->XACMLPolicyStatement; n > 1 && y->gg.g.n; --n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (y = x->XACMLPolicyStatement; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasa_XACMLPolicyStatement_ELEM; --n, y = (struct zx_xasa_XACMLPolicyStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1796,7 +1796,7 @@ int zx_sa11_Assertion_NUM_xasacd1_XACMLAuthzDecisionStatement(struct zx_sa11_Ass
   struct zx_xasacd1_XACMLAuthzDecisionStatement_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->xasacd1_XACMLAuthzDecisionStatement; y; ++n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+  for (y = x->xasacd1_XACMLAuthzDecisionStatement; y && y->gg.g.tok == zx_xasacd1_XACMLAuthzDecisionStatement_ELEM; ++n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1806,7 +1806,7 @@ struct zx_xasacd1_XACMLAuthzDecisionStatement_s* zx_sa11_Assertion_GET_xasacd1_X
 {
   struct zx_xasacd1_XACMLAuthzDecisionStatement_s* y;
   if (!x) return 0;
-  for (y = x->xasacd1_XACMLAuthzDecisionStatement; n>=0 && y; --n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+  for (y = x->xasacd1_XACMLAuthzDecisionStatement; n>=0 && y && y->gg.g.tok == zx_xasacd1_XACMLAuthzDecisionStatement_ELEM; --n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1863,7 +1863,7 @@ void zx_sa11_Assertion_PUT_xasacd1_XACMLAuthzDecisionStatement(struct zx_sa11_As
     x->xasacd1_XACMLAuthzDecisionStatement = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasacd1_XACMLAuthzDecisionStatement_ELEM; --n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1885,10 +1885,10 @@ void zx_sa11_Assertion_ADD_xasacd1_XACMLAuthzDecisionStatement(struct zx_sa11_As
   case -1:
     y = x->xasacd1_XACMLAuthzDecisionStatement;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasacd1_XACMLAuthzDecisionStatement_ELEM; y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->xasacd1_XACMLAuthzDecisionStatement; n > 1 && y; --n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (y = x->xasacd1_XACMLAuthzDecisionStatement; n > 1 && y && y->gg.g.tok == zx_xasacd1_XACMLAuthzDecisionStatement_ELEM; --n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1908,10 +1908,10 @@ void zx_sa11_Assertion_DEL_xasacd1_XACMLAuthzDecisionStatement(struct zx_sa11_As
   case -1:
     y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)x->xasacd1_XACMLAuthzDecisionStatement;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasacd1_XACMLAuthzDecisionStatement_ELEM; y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->xasacd1_XACMLAuthzDecisionStatement; n > 1 && y->gg.g.n; --n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
+    for (y = x->xasacd1_XACMLAuthzDecisionStatement; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasacd1_XACMLAuthzDecisionStatement_ELEM; --n, y = (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1930,7 +1930,7 @@ int zx_sa11_Assertion_NUM_xasacd1_XACMLPolicyStatement(struct zx_sa11_Assertion_
   struct zx_xasacd1_XACMLPolicyStatement_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->xasacd1_XACMLPolicyStatement; y; ++n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
+  for (y = x->xasacd1_XACMLPolicyStatement; y && y->gg.g.tok == zx_xasacd1_XACMLPolicyStatement_ELEM; ++n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1940,7 +1940,7 @@ struct zx_xasacd1_XACMLPolicyStatement_s* zx_sa11_Assertion_GET_xasacd1_XACMLPol
 {
   struct zx_xasacd1_XACMLPolicyStatement_s* y;
   if (!x) return 0;
-  for (y = x->xasacd1_XACMLPolicyStatement; n>=0 && y; --n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
+  for (y = x->xasacd1_XACMLPolicyStatement; n>=0 && y && y->gg.g.tok == zx_xasacd1_XACMLPolicyStatement_ELEM; --n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1997,7 +1997,7 @@ void zx_sa11_Assertion_PUT_xasacd1_XACMLPolicyStatement(struct zx_sa11_Assertion
     x->xasacd1_XACMLPolicyStatement = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasacd1_XACMLPolicyStatement_ELEM; --n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2019,10 +2019,10 @@ void zx_sa11_Assertion_ADD_xasacd1_XACMLPolicyStatement(struct zx_sa11_Assertion
   case -1:
     y = x->xasacd1_XACMLPolicyStatement;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasacd1_XACMLPolicyStatement_ELEM; y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->xasacd1_XACMLPolicyStatement; n > 1 && y; --n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (y = x->xasacd1_XACMLPolicyStatement; n > 1 && y && y->gg.g.tok == zx_xasacd1_XACMLPolicyStatement_ELEM; --n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2042,10 +2042,10 @@ void zx_sa11_Assertion_DEL_xasacd1_XACMLPolicyStatement(struct zx_sa11_Assertion
   case -1:
     y = (struct zx_xasacd1_XACMLPolicyStatement_s*)x->xasacd1_XACMLPolicyStatement;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasacd1_XACMLPolicyStatement_ELEM; y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->xasacd1_XACMLPolicyStatement; n > 1 && y->gg.g.n; --n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
+    for (y = x->xasacd1_XACMLPolicyStatement; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xasacd1_XACMLPolicyStatement_ELEM; --n, y = (struct zx_xasacd1_XACMLPolicyStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2064,7 +2064,7 @@ int zx_sa11_Assertion_NUM_Signature(struct zx_sa11_Assertion_s* x)
   struct zx_ds_Signature_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Signature; y; ++n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
+  for (y = x->Signature; y && y->gg.g.tok == zx_ds_Signature_ELEM; ++n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2074,7 +2074,7 @@ struct zx_ds_Signature_s* zx_sa11_Assertion_GET_Signature(struct zx_sa11_Asserti
 {
   struct zx_ds_Signature_s* y;
   if (!x) return 0;
-  for (y = x->Signature; n>=0 && y; --n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
+  for (y = x->Signature; n>=0 && y && y->gg.g.tok == zx_ds_Signature_ELEM; --n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2131,7 +2131,7 @@ void zx_sa11_Assertion_PUT_Signature(struct zx_sa11_Assertion_s* x, int n, struc
     x->Signature = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_Signature_ELEM; --n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2153,10 +2153,10 @@ void zx_sa11_Assertion_ADD_Signature(struct zx_sa11_Assertion_s* x, int n, struc
   case -1:
     y = x->Signature;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_Signature_ELEM; y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Signature; n > 1 && y; --n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
+    for (y = x->Signature; n > 1 && y && y->gg.g.tok == zx_ds_Signature_ELEM; --n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2176,10 +2176,10 @@ void zx_sa11_Assertion_DEL_Signature(struct zx_sa11_Assertion_s* x, int n)
   case -1:
     y = (struct zx_ds_Signature_s*)x->Signature;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_Signature_ELEM; y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Signature; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
+    for (y = x->Signature; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_Signature_ELEM; --n, y = (struct zx_ds_Signature_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2223,7 +2223,7 @@ int zx_sa11_Attribute_NUM_AttributeValue(struct zx_sa11_Attribute_s* x)
   struct zx_sa11_AttributeValue_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AttributeValue; y; ++n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
+  for (y = x->AttributeValue; y && y->gg.g.tok == zx_sa11_AttributeValue_ELEM; ++n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2233,7 +2233,7 @@ struct zx_sa11_AttributeValue_s* zx_sa11_Attribute_GET_AttributeValue(struct zx_
 {
   struct zx_sa11_AttributeValue_s* y;
   if (!x) return 0;
-  for (y = x->AttributeValue; n>=0 && y; --n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
+  for (y = x->AttributeValue; n>=0 && y && y->gg.g.tok == zx_sa11_AttributeValue_ELEM; --n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2290,7 +2290,7 @@ void zx_sa11_Attribute_PUT_AttributeValue(struct zx_sa11_Attribute_s* x, int n, 
     x->AttributeValue = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AttributeValue_ELEM; --n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2312,10 +2312,10 @@ void zx_sa11_Attribute_ADD_AttributeValue(struct zx_sa11_Attribute_s* x, int n, 
   case -1:
     y = x->AttributeValue;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AttributeValue_ELEM; y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AttributeValue; n > 1 && y; --n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
+    for (y = x->AttributeValue; n > 1 && y && y->gg.g.tok == zx_sa11_AttributeValue_ELEM; --n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2335,10 +2335,10 @@ void zx_sa11_Attribute_DEL_AttributeValue(struct zx_sa11_Attribute_s* x, int n)
   case -1:
     y = (struct zx_sa11_AttributeValue_s*)x->AttributeValue;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AttributeValue_ELEM; y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AttributeValue; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
+    for (y = x->AttributeValue; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AttributeValue_ELEM; --n, y = (struct zx_sa11_AttributeValue_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2383,7 +2383,7 @@ int zx_sa11_AttributeStatement_NUM_Subject(struct zx_sa11_AttributeStatement_s* 
   struct zx_sa11_Subject_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subject; y; ++n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; y && y->gg.g.tok == zx_sa11_Subject_ELEM; ++n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2393,7 +2393,7 @@ struct zx_sa11_Subject_s* zx_sa11_AttributeStatement_GET_Subject(struct zx_sa11_
 {
   struct zx_sa11_Subject_s* y;
   if (!x) return 0;
-  for (y = x->Subject; n>=0 && y; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; n>=0 && y && y->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2450,7 +2450,7 @@ void zx_sa11_AttributeStatement_PUT_Subject(struct zx_sa11_AttributeStatement_s*
     x->Subject = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2472,10 +2472,10 @@ void zx_sa11_AttributeStatement_ADD_Subject(struct zx_sa11_AttributeStatement_s*
   case -1:
     y = x->Subject;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y && y->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2495,10 +2495,10 @@ void zx_sa11_AttributeStatement_DEL_Subject(struct zx_sa11_AttributeStatement_s*
   case -1:
     y = (struct zx_sa11_Subject_s*)x->Subject;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2517,7 +2517,7 @@ int zx_sa11_AttributeStatement_NUM_Attribute(struct zx_sa11_AttributeStatement_s
   struct zx_sa11_Attribute_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Attribute; y; ++n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
+  for (y = x->Attribute; y && y->gg.g.tok == zx_sa11_Attribute_ELEM; ++n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2527,7 +2527,7 @@ struct zx_sa11_Attribute_s* zx_sa11_AttributeStatement_GET_Attribute(struct zx_s
 {
   struct zx_sa11_Attribute_s* y;
   if (!x) return 0;
-  for (y = x->Attribute; n>=0 && y; --n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
+  for (y = x->Attribute; n>=0 && y && y->gg.g.tok == zx_sa11_Attribute_ELEM; --n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2584,7 +2584,7 @@ void zx_sa11_AttributeStatement_PUT_Attribute(struct zx_sa11_AttributeStatement_
     x->Attribute = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Attribute_ELEM; --n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2606,10 +2606,10 @@ void zx_sa11_AttributeStatement_ADD_Attribute(struct zx_sa11_AttributeStatement_
   case -1:
     y = x->Attribute;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Attribute_ELEM; y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Attribute; n > 1 && y; --n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
+    for (y = x->Attribute; n > 1 && y && y->gg.g.tok == zx_sa11_Attribute_ELEM; --n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2629,10 +2629,10 @@ void zx_sa11_AttributeStatement_DEL_Attribute(struct zx_sa11_AttributeStatement_
   case -1:
     y = (struct zx_sa11_Attribute_s*)x->Attribute;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Attribute_ELEM; y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Attribute; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
+    for (y = x->Attribute; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Attribute_ELEM; --n, y = (struct zx_sa11_Attribute_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2656,7 +2656,7 @@ int zx_sa11_AttributeValue_NUM_ResourceOffering(struct zx_sa11_AttributeValue_s*
   struct zx_di12_ResourceOffering_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ResourceOffering; y; ++n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
+  for (y = x->ResourceOffering; y && y->gg.g.tok == zx_di12_ResourceOffering_ELEM; ++n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2666,7 +2666,7 @@ struct zx_di12_ResourceOffering_s* zx_sa11_AttributeValue_GET_ResourceOffering(s
 {
   struct zx_di12_ResourceOffering_s* y;
   if (!x) return 0;
-  for (y = x->ResourceOffering; n>=0 && y; --n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
+  for (y = x->ResourceOffering; n>=0 && y && y->gg.g.tok == zx_di12_ResourceOffering_ELEM; --n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2723,7 +2723,7 @@ void zx_sa11_AttributeValue_PUT_ResourceOffering(struct zx_sa11_AttributeValue_s
     x->ResourceOffering = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_di12_ResourceOffering_ELEM; --n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2745,10 +2745,10 @@ void zx_sa11_AttributeValue_ADD_ResourceOffering(struct zx_sa11_AttributeValue_s
   case -1:
     y = x->ResourceOffering;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_di12_ResourceOffering_ELEM; y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceOffering; n > 1 && y; --n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
+    for (y = x->ResourceOffering; n > 1 && y && y->gg.g.tok == zx_di12_ResourceOffering_ELEM; --n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2768,10 +2768,10 @@ void zx_sa11_AttributeValue_DEL_ResourceOffering(struct zx_sa11_AttributeValue_s
   case -1:
     y = (struct zx_di12_ResourceOffering_s*)x->ResourceOffering;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_di12_ResourceOffering_ELEM; y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceOffering; n > 1 && y->gg.g.n; --n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
+    for (y = x->ResourceOffering; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_di12_ResourceOffering_ELEM; --n, y = (struct zx_di12_ResourceOffering_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2790,7 +2790,7 @@ int zx_sa11_AttributeValue_NUM_EndpointReference(struct zx_sa11_AttributeValue_s
   struct zx_a_EndpointReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EndpointReference; y; ++n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+  for (y = x->EndpointReference; y && y->gg.g.tok == zx_a_EndpointReference_ELEM; ++n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2800,7 +2800,7 @@ struct zx_a_EndpointReference_s* zx_sa11_AttributeValue_GET_EndpointReference(st
 {
   struct zx_a_EndpointReference_s* y;
   if (!x) return 0;
-  for (y = x->EndpointReference; n>=0 && y; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+  for (y = x->EndpointReference; n>=0 && y && y->gg.g.tok == zx_a_EndpointReference_ELEM; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2857,7 +2857,7 @@ void zx_sa11_AttributeValue_PUT_EndpointReference(struct zx_sa11_AttributeValue_
     x->EndpointReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_EndpointReference_ELEM; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2879,10 +2879,10 @@ void zx_sa11_AttributeValue_ADD_EndpointReference(struct zx_sa11_AttributeValue_
   case -1:
     y = x->EndpointReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_EndpointReference_ELEM; y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EndpointReference; n > 1 && y; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    for (y = x->EndpointReference; n > 1 && y && y->gg.g.tok == zx_a_EndpointReference_ELEM; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2902,10 +2902,10 @@ void zx_sa11_AttributeValue_DEL_EndpointReference(struct zx_sa11_AttributeValue_
   case -1:
     y = (struct zx_a_EndpointReference_s*)x->EndpointReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_EndpointReference_ELEM; y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EndpointReference; n > 1 && y->gg.g.n; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
+    for (y = x->EndpointReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_EndpointReference_ELEM; --n, y = (struct zx_a_EndpointReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2929,7 +2929,7 @@ int zx_sa11_AudienceRestrictionCondition_NUM_Audience(struct zx_sa11_AudienceRes
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Audience; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Audience; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2939,7 +2939,7 @@ struct zx_elem_s* zx_sa11_AudienceRestrictionCondition_GET_Audience(struct zx_sa
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Audience; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Audience; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2996,7 +2996,7 @@ void zx_sa11_AudienceRestrictionCondition_PUT_Audience(struct zx_sa11_AudienceRe
     x->Audience = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3018,10 +3018,10 @@ void zx_sa11_AudienceRestrictionCondition_ADD_Audience(struct zx_sa11_AudienceRe
   case -1:
     y = x->Audience;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Audience; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Audience; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3041,10 +3041,10 @@ void zx_sa11_AudienceRestrictionCondition_DEL_Audience(struct zx_sa11_AudienceRe
   case -1:
     y = (struct zx_elem_s*)x->Audience;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Audience; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Audience; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3068,7 +3068,7 @@ int zx_sa11_AuthenticationStatement_NUM_Subject(struct zx_sa11_AuthenticationSta
   struct zx_sa11_Subject_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subject; y; ++n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; y && y->gg.g.tok == zx_sa11_Subject_ELEM; ++n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3078,7 +3078,7 @@ struct zx_sa11_Subject_s* zx_sa11_AuthenticationStatement_GET_Subject(struct zx_
 {
   struct zx_sa11_Subject_s* y;
   if (!x) return 0;
-  for (y = x->Subject; n>=0 && y; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; n>=0 && y && y->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3135,7 +3135,7 @@ void zx_sa11_AuthenticationStatement_PUT_Subject(struct zx_sa11_AuthenticationSt
     x->Subject = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3157,10 +3157,10 @@ void zx_sa11_AuthenticationStatement_ADD_Subject(struct zx_sa11_AuthenticationSt
   case -1:
     y = x->Subject;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y && y->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3180,10 +3180,10 @@ void zx_sa11_AuthenticationStatement_DEL_Subject(struct zx_sa11_AuthenticationSt
   case -1:
     y = (struct zx_sa11_Subject_s*)x->Subject;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3202,7 +3202,7 @@ int zx_sa11_AuthenticationStatement_NUM_SubjectLocality(struct zx_sa11_Authentic
   struct zx_sa11_SubjectLocality_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SubjectLocality; y; ++n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
+  for (y = x->SubjectLocality; y && y->gg.g.tok == zx_sa11_SubjectLocality_ELEM; ++n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3212,7 +3212,7 @@ struct zx_sa11_SubjectLocality_s* zx_sa11_AuthenticationStatement_GET_SubjectLoc
 {
   struct zx_sa11_SubjectLocality_s* y;
   if (!x) return 0;
-  for (y = x->SubjectLocality; n>=0 && y; --n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
+  for (y = x->SubjectLocality; n>=0 && y && y->gg.g.tok == zx_sa11_SubjectLocality_ELEM; --n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3269,7 +3269,7 @@ void zx_sa11_AuthenticationStatement_PUT_SubjectLocality(struct zx_sa11_Authenti
     x->SubjectLocality = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectLocality_ELEM; --n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3291,10 +3291,10 @@ void zx_sa11_AuthenticationStatement_ADD_SubjectLocality(struct zx_sa11_Authenti
   case -1:
     y = x->SubjectLocality;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectLocality_ELEM; y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SubjectLocality; n > 1 && y; --n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
+    for (y = x->SubjectLocality; n > 1 && y && y->gg.g.tok == zx_sa11_SubjectLocality_ELEM; --n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3314,10 +3314,10 @@ void zx_sa11_AuthenticationStatement_DEL_SubjectLocality(struct zx_sa11_Authenti
   case -1:
     y = (struct zx_sa11_SubjectLocality_s*)x->SubjectLocality;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectLocality_ELEM; y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SubjectLocality; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
+    for (y = x->SubjectLocality; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectLocality_ELEM; --n, y = (struct zx_sa11_SubjectLocality_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3336,7 +3336,7 @@ int zx_sa11_AuthenticationStatement_NUM_AuthorityBinding(struct zx_sa11_Authenti
   struct zx_sa11_AuthorityBinding_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AuthorityBinding; y; ++n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
+  for (y = x->AuthorityBinding; y && y->gg.g.tok == zx_sa11_AuthorityBinding_ELEM; ++n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3346,7 +3346,7 @@ struct zx_sa11_AuthorityBinding_s* zx_sa11_AuthenticationStatement_GET_Authority
 {
   struct zx_sa11_AuthorityBinding_s* y;
   if (!x) return 0;
-  for (y = x->AuthorityBinding; n>=0 && y; --n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
+  for (y = x->AuthorityBinding; n>=0 && y && y->gg.g.tok == zx_sa11_AuthorityBinding_ELEM; --n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3403,7 +3403,7 @@ void zx_sa11_AuthenticationStatement_PUT_AuthorityBinding(struct zx_sa11_Authent
     x->AuthorityBinding = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthorityBinding_ELEM; --n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3425,10 +3425,10 @@ void zx_sa11_AuthenticationStatement_ADD_AuthorityBinding(struct zx_sa11_Authent
   case -1:
     y = x->AuthorityBinding;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthorityBinding_ELEM; y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthorityBinding; n > 1 && y; --n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
+    for (y = x->AuthorityBinding; n > 1 && y && y->gg.g.tok == zx_sa11_AuthorityBinding_ELEM; --n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3448,10 +3448,10 @@ void zx_sa11_AuthenticationStatement_DEL_AuthorityBinding(struct zx_sa11_Authent
   case -1:
     y = (struct zx_sa11_AuthorityBinding_s*)x->AuthorityBinding;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthorityBinding_ELEM; y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthorityBinding; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
+    for (y = x->AuthorityBinding; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AuthorityBinding_ELEM; --n, y = (struct zx_sa11_AuthorityBinding_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3500,7 +3500,7 @@ int zx_sa11_AuthorizationDecisionStatement_NUM_Subject(struct zx_sa11_Authorizat
   struct zx_sa11_Subject_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subject; y; ++n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; y && y->gg.g.tok == zx_sa11_Subject_ELEM; ++n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3510,7 +3510,7 @@ struct zx_sa11_Subject_s* zx_sa11_AuthorizationDecisionStatement_GET_Subject(str
 {
   struct zx_sa11_Subject_s* y;
   if (!x) return 0;
-  for (y = x->Subject; n>=0 && y; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; n>=0 && y && y->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3567,7 +3567,7 @@ void zx_sa11_AuthorizationDecisionStatement_PUT_Subject(struct zx_sa11_Authoriza
     x->Subject = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3589,10 +3589,10 @@ void zx_sa11_AuthorizationDecisionStatement_ADD_Subject(struct zx_sa11_Authoriza
   case -1:
     y = x->Subject;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y && y->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3612,10 +3612,10 @@ void zx_sa11_AuthorizationDecisionStatement_DEL_Subject(struct zx_sa11_Authoriza
   case -1:
     y = (struct zx_sa11_Subject_s*)x->Subject;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3634,7 +3634,7 @@ int zx_sa11_AuthorizationDecisionStatement_NUM_Action(struct zx_sa11_Authorizati
   struct zx_sa11_Action_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Action; y; ++n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
+  for (y = x->Action; y && y->gg.g.tok == zx_sa11_Action_ELEM; ++n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3644,7 +3644,7 @@ struct zx_sa11_Action_s* zx_sa11_AuthorizationDecisionStatement_GET_Action(struc
 {
   struct zx_sa11_Action_s* y;
   if (!x) return 0;
-  for (y = x->Action; n>=0 && y; --n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
+  for (y = x->Action; n>=0 && y && y->gg.g.tok == zx_sa11_Action_ELEM; --n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3701,7 +3701,7 @@ void zx_sa11_AuthorizationDecisionStatement_PUT_Action(struct zx_sa11_Authorizat
     x->Action = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Action_ELEM; --n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3723,10 +3723,10 @@ void zx_sa11_AuthorizationDecisionStatement_ADD_Action(struct zx_sa11_Authorizat
   case -1:
     y = x->Action;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Action_ELEM; y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Action; n > 1 && y; --n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
+    for (y = x->Action; n > 1 && y && y->gg.g.tok == zx_sa11_Action_ELEM; --n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3746,10 +3746,10 @@ void zx_sa11_AuthorizationDecisionStatement_DEL_Action(struct zx_sa11_Authorizat
   case -1:
     y = (struct zx_sa11_Action_s*)x->Action;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Action_ELEM; y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Action; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
+    for (y = x->Action; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Action_ELEM; --n, y = (struct zx_sa11_Action_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3768,7 +3768,7 @@ int zx_sa11_AuthorizationDecisionStatement_NUM_Evidence(struct zx_sa11_Authoriza
   struct zx_sa11_Evidence_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Evidence; y; ++n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
+  for (y = x->Evidence; y && y->gg.g.tok == zx_sa11_Evidence_ELEM; ++n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3778,7 +3778,7 @@ struct zx_sa11_Evidence_s* zx_sa11_AuthorizationDecisionStatement_GET_Evidence(s
 {
   struct zx_sa11_Evidence_s* y;
   if (!x) return 0;
-  for (y = x->Evidence; n>=0 && y; --n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
+  for (y = x->Evidence; n>=0 && y && y->gg.g.tok == zx_sa11_Evidence_ELEM; --n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3835,7 +3835,7 @@ void zx_sa11_AuthorizationDecisionStatement_PUT_Evidence(struct zx_sa11_Authoriz
     x->Evidence = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Evidence_ELEM; --n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3857,10 +3857,10 @@ void zx_sa11_AuthorizationDecisionStatement_ADD_Evidence(struct zx_sa11_Authoriz
   case -1:
     y = x->Evidence;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Evidence_ELEM; y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Evidence; n > 1 && y; --n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
+    for (y = x->Evidence; n > 1 && y && y->gg.g.tok == zx_sa11_Evidence_ELEM; --n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3880,10 +3880,10 @@ void zx_sa11_AuthorizationDecisionStatement_DEL_Evidence(struct zx_sa11_Authoriz
   case -1:
     y = (struct zx_sa11_Evidence_s*)x->Evidence;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Evidence_ELEM; y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Evidence; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
+    for (y = x->Evidence; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Evidence_ELEM; --n, y = (struct zx_sa11_Evidence_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3915,7 +3915,7 @@ int zx_sa11_Conditions_NUM_AudienceRestrictionCondition(struct zx_sa11_Condition
   struct zx_sa11_AudienceRestrictionCondition_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AudienceRestrictionCondition; y; ++n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
+  for (y = x->AudienceRestrictionCondition; y && y->gg.g.tok == zx_sa11_AudienceRestrictionCondition_ELEM; ++n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3925,7 +3925,7 @@ struct zx_sa11_AudienceRestrictionCondition_s* zx_sa11_Conditions_GET_AudienceRe
 {
   struct zx_sa11_AudienceRestrictionCondition_s* y;
   if (!x) return 0;
-  for (y = x->AudienceRestrictionCondition; n>=0 && y; --n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
+  for (y = x->AudienceRestrictionCondition; n>=0 && y && y->gg.g.tok == zx_sa11_AudienceRestrictionCondition_ELEM; --n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3982,7 +3982,7 @@ void zx_sa11_Conditions_PUT_AudienceRestrictionCondition(struct zx_sa11_Conditio
     x->AudienceRestrictionCondition = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AudienceRestrictionCondition_ELEM; --n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4004,10 +4004,10 @@ void zx_sa11_Conditions_ADD_AudienceRestrictionCondition(struct zx_sa11_Conditio
   case -1:
     y = x->AudienceRestrictionCondition;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AudienceRestrictionCondition_ELEM; y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AudienceRestrictionCondition; n > 1 && y; --n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
+    for (y = x->AudienceRestrictionCondition; n > 1 && y && y->gg.g.tok == zx_sa11_AudienceRestrictionCondition_ELEM; --n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4027,10 +4027,10 @@ void zx_sa11_Conditions_DEL_AudienceRestrictionCondition(struct zx_sa11_Conditio
   case -1:
     y = (struct zx_sa11_AudienceRestrictionCondition_s*)x->AudienceRestrictionCondition;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AudienceRestrictionCondition_ELEM; y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AudienceRestrictionCondition; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
+    for (y = x->AudienceRestrictionCondition; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_AudienceRestrictionCondition_ELEM; --n, y = (struct zx_sa11_AudienceRestrictionCondition_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4049,7 +4049,7 @@ int zx_sa11_Conditions_NUM_DoNotCacheCondition(struct zx_sa11_Conditions_s* x)
   struct zx_sa11_DoNotCacheCondition_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->DoNotCacheCondition; y; ++n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
+  for (y = x->DoNotCacheCondition; y && y->gg.g.tok == zx_sa11_DoNotCacheCondition_ELEM; ++n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4059,7 +4059,7 @@ struct zx_sa11_DoNotCacheCondition_s* zx_sa11_Conditions_GET_DoNotCacheCondition
 {
   struct zx_sa11_DoNotCacheCondition_s* y;
   if (!x) return 0;
-  for (y = x->DoNotCacheCondition; n>=0 && y; --n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
+  for (y = x->DoNotCacheCondition; n>=0 && y && y->gg.g.tok == zx_sa11_DoNotCacheCondition_ELEM; --n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4116,7 +4116,7 @@ void zx_sa11_Conditions_PUT_DoNotCacheCondition(struct zx_sa11_Conditions_s* x, 
     x->DoNotCacheCondition = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_DoNotCacheCondition_ELEM; --n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4138,10 +4138,10 @@ void zx_sa11_Conditions_ADD_DoNotCacheCondition(struct zx_sa11_Conditions_s* x, 
   case -1:
     y = x->DoNotCacheCondition;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_DoNotCacheCondition_ELEM; y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DoNotCacheCondition; n > 1 && y; --n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
+    for (y = x->DoNotCacheCondition; n > 1 && y && y->gg.g.tok == zx_sa11_DoNotCacheCondition_ELEM; --n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4161,10 +4161,10 @@ void zx_sa11_Conditions_DEL_DoNotCacheCondition(struct zx_sa11_Conditions_s* x, 
   case -1:
     y = (struct zx_sa11_DoNotCacheCondition_s*)x->DoNotCacheCondition;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_DoNotCacheCondition_ELEM; y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DoNotCacheCondition; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
+    for (y = x->DoNotCacheCondition; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_DoNotCacheCondition_ELEM; --n, y = (struct zx_sa11_DoNotCacheCondition_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4183,7 +4183,7 @@ int zx_sa11_Conditions_NUM_Condition(struct zx_sa11_Conditions_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Condition; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Condition; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -4193,7 +4193,7 @@ struct zx_elem_s* zx_sa11_Conditions_GET_Condition(struct zx_sa11_Conditions_s* 
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Condition; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Condition; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -4250,7 +4250,7 @@ void zx_sa11_Conditions_PUT_Condition(struct zx_sa11_Conditions_s* x, int n, str
     x->Condition = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -4272,10 +4272,10 @@ void zx_sa11_Conditions_ADD_Condition(struct zx_sa11_Conditions_s* x, int n, str
   case -1:
     y = x->Condition;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Condition; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Condition; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -4295,10 +4295,10 @@ void zx_sa11_Conditions_DEL_Condition(struct zx_sa11_Conditions_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Condition;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Condition; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Condition; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -4335,7 +4335,7 @@ int zx_sa11_Evidence_NUM_AssertionIDReference(struct zx_sa11_Evidence_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AssertionIDReference; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AssertionIDReference; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -4345,7 +4345,7 @@ struct zx_elem_s* zx_sa11_Evidence_GET_AssertionIDReference(struct zx_sa11_Evide
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->AssertionIDReference; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AssertionIDReference; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -4402,7 +4402,7 @@ void zx_sa11_Evidence_PUT_AssertionIDReference(struct zx_sa11_Evidence_s* x, int
     x->AssertionIDReference = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -4424,10 +4424,10 @@ void zx_sa11_Evidence_ADD_AssertionIDReference(struct zx_sa11_Evidence_s* x, int
   case -1:
     y = x->AssertionIDReference;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AssertionIDReference; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AssertionIDReference; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -4447,10 +4447,10 @@ void zx_sa11_Evidence_DEL_AssertionIDReference(struct zx_sa11_Evidence_s* x, int
   case -1:
     y = (struct zx_elem_s*)x->AssertionIDReference;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AssertionIDReference; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AssertionIDReference; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -4469,7 +4469,7 @@ int zx_sa11_Evidence_NUM_Assertion(struct zx_sa11_Evidence_s* x)
   struct zx_sa11_Assertion_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Assertion; y; ++n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+  for (y = x->Assertion; y && y->gg.g.tok == zx_sa11_Assertion_ELEM; ++n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4479,7 +4479,7 @@ struct zx_sa11_Assertion_s* zx_sa11_Evidence_GET_Assertion(struct zx_sa11_Eviden
 {
   struct zx_sa11_Assertion_s* y;
   if (!x) return 0;
-  for (y = x->Assertion; n>=0 && y; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+  for (y = x->Assertion; n>=0 && y && y->gg.g.tok == zx_sa11_Assertion_ELEM; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4536,7 +4536,7 @@ void zx_sa11_Evidence_PUT_Assertion(struct zx_sa11_Evidence_s* x, int n, struct 
     x->Assertion = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Assertion_ELEM; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4558,10 +4558,10 @@ void zx_sa11_Evidence_ADD_Assertion(struct zx_sa11_Evidence_s* x, int n, struct 
   case -1:
     y = x->Assertion;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Assertion_ELEM; y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Assertion; n > 1 && y; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (y = x->Assertion; n > 1 && y && y->gg.g.tok == zx_sa11_Assertion_ELEM; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4581,10 +4581,10 @@ void zx_sa11_Evidence_DEL_Assertion(struct zx_sa11_Evidence_s* x, int n)
   case -1:
     y = (struct zx_sa11_Assertion_s*)x->Assertion;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Assertion_ELEM; y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Assertion; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
+    for (y = x->Assertion; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Assertion_ELEM; --n, y = (struct zx_sa11_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4621,7 +4621,7 @@ int zx_sa11_Subject_NUM_NameIdentifier(struct zx_sa11_Subject_s* x)
   struct zx_sa11_NameIdentifier_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NameIdentifier; y; ++n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
+  for (y = x->NameIdentifier; y && y->gg.g.tok == zx_sa11_NameIdentifier_ELEM; ++n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4631,7 +4631,7 @@ struct zx_sa11_NameIdentifier_s* zx_sa11_Subject_GET_NameIdentifier(struct zx_sa
 {
   struct zx_sa11_NameIdentifier_s* y;
   if (!x) return 0;
-  for (y = x->NameIdentifier; n>=0 && y; --n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
+  for (y = x->NameIdentifier; n>=0 && y && y->gg.g.tok == zx_sa11_NameIdentifier_ELEM; --n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4688,7 +4688,7 @@ void zx_sa11_Subject_PUT_NameIdentifier(struct zx_sa11_Subject_s* x, int n, stru
     x->NameIdentifier = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_NameIdentifier_ELEM; --n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4710,10 +4710,10 @@ void zx_sa11_Subject_ADD_NameIdentifier(struct zx_sa11_Subject_s* x, int n, stru
   case -1:
     y = x->NameIdentifier;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_NameIdentifier_ELEM; y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NameIdentifier; n > 1 && y; --n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
+    for (y = x->NameIdentifier; n > 1 && y && y->gg.g.tok == zx_sa11_NameIdentifier_ELEM; --n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4733,10 +4733,10 @@ void zx_sa11_Subject_DEL_NameIdentifier(struct zx_sa11_Subject_s* x, int n)
   case -1:
     y = (struct zx_sa11_NameIdentifier_s*)x->NameIdentifier;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_NameIdentifier_ELEM; y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NameIdentifier; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
+    for (y = x->NameIdentifier; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_NameIdentifier_ELEM; --n, y = (struct zx_sa11_NameIdentifier_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4755,7 +4755,7 @@ int zx_sa11_Subject_NUM_SubjectConfirmation(struct zx_sa11_Subject_s* x)
   struct zx_sa11_SubjectConfirmation_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SubjectConfirmation; y; ++n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
+  for (y = x->SubjectConfirmation; y && y->gg.g.tok == zx_sa11_SubjectConfirmation_ELEM; ++n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4765,7 +4765,7 @@ struct zx_sa11_SubjectConfirmation_s* zx_sa11_Subject_GET_SubjectConfirmation(st
 {
   struct zx_sa11_SubjectConfirmation_s* y;
   if (!x) return 0;
-  for (y = x->SubjectConfirmation; n>=0 && y; --n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
+  for (y = x->SubjectConfirmation; n>=0 && y && y->gg.g.tok == zx_sa11_SubjectConfirmation_ELEM; --n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4822,7 +4822,7 @@ void zx_sa11_Subject_PUT_SubjectConfirmation(struct zx_sa11_Subject_s* x, int n,
     x->SubjectConfirmation = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectConfirmation_ELEM; --n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4844,10 +4844,10 @@ void zx_sa11_Subject_ADD_SubjectConfirmation(struct zx_sa11_Subject_s* x, int n,
   case -1:
     y = x->SubjectConfirmation;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectConfirmation_ELEM; y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SubjectConfirmation; n > 1 && y; --n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
+    for (y = x->SubjectConfirmation; n > 1 && y && y->gg.g.tok == zx_sa11_SubjectConfirmation_ELEM; --n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4867,10 +4867,10 @@ void zx_sa11_Subject_DEL_SubjectConfirmation(struct zx_sa11_Subject_s* x, int n)
   case -1:
     y = (struct zx_sa11_SubjectConfirmation_s*)x->SubjectConfirmation;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectConfirmation_ELEM; y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SubjectConfirmation; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
+    for (y = x->SubjectConfirmation; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_SubjectConfirmation_ELEM; --n, y = (struct zx_sa11_SubjectConfirmation_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4894,7 +4894,7 @@ int zx_sa11_SubjectConfirmation_NUM_ConfirmationMethod(struct zx_sa11_SubjectCon
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ConfirmationMethod; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ConfirmationMethod; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -4904,7 +4904,7 @@ struct zx_elem_s* zx_sa11_SubjectConfirmation_GET_ConfirmationMethod(struct zx_s
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->ConfirmationMethod; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ConfirmationMethod; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -4961,7 +4961,7 @@ void zx_sa11_SubjectConfirmation_PUT_ConfirmationMethod(struct zx_sa11_SubjectCo
     x->ConfirmationMethod = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -4983,10 +4983,10 @@ void zx_sa11_SubjectConfirmation_ADD_ConfirmationMethod(struct zx_sa11_SubjectCo
   case -1:
     y = x->ConfirmationMethod;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ConfirmationMethod; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ConfirmationMethod; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -5006,10 +5006,10 @@ void zx_sa11_SubjectConfirmation_DEL_ConfirmationMethod(struct zx_sa11_SubjectCo
   case -1:
     y = (struct zx_elem_s*)x->ConfirmationMethod;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ConfirmationMethod; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ConfirmationMethod; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -5028,7 +5028,7 @@ int zx_sa11_SubjectConfirmation_NUM_SubjectConfirmationData(struct zx_sa11_Subje
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SubjectConfirmationData; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SubjectConfirmationData; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -5038,7 +5038,7 @@ struct zx_elem_s* zx_sa11_SubjectConfirmation_GET_SubjectConfirmationData(struct
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->SubjectConfirmationData; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SubjectConfirmationData; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -5095,7 +5095,7 @@ void zx_sa11_SubjectConfirmation_PUT_SubjectConfirmationData(struct zx_sa11_Subj
     x->SubjectConfirmationData = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -5117,10 +5117,10 @@ void zx_sa11_SubjectConfirmation_ADD_SubjectConfirmationData(struct zx_sa11_Subj
   case -1:
     y = x->SubjectConfirmationData;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SubjectConfirmationData; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SubjectConfirmationData; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -5140,10 +5140,10 @@ void zx_sa11_SubjectConfirmation_DEL_SubjectConfirmationData(struct zx_sa11_Subj
   case -1:
     y = (struct zx_elem_s*)x->SubjectConfirmationData;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SubjectConfirmationData; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SubjectConfirmationData; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -5162,7 +5162,7 @@ int zx_sa11_SubjectConfirmation_NUM_KeyInfo(struct zx_sa11_SubjectConfirmation_s
   struct zx_ds_KeyInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyInfo; y; ++n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+  for (y = x->KeyInfo; y && y->gg.g.tok == zx_ds_KeyInfo_ELEM; ++n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5172,7 +5172,7 @@ struct zx_ds_KeyInfo_s* zx_sa11_SubjectConfirmation_GET_KeyInfo(struct zx_sa11_S
 {
   struct zx_ds_KeyInfo_s* y;
   if (!x) return 0;
-  for (y = x->KeyInfo; n>=0 && y; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+  for (y = x->KeyInfo; n>=0 && y && y->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5229,7 +5229,7 @@ void zx_sa11_SubjectConfirmation_PUT_KeyInfo(struct zx_sa11_SubjectConfirmation_
     x->KeyInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5251,10 +5251,10 @@ void zx_sa11_SubjectConfirmation_ADD_KeyInfo(struct zx_sa11_SubjectConfirmation_
   case -1:
     y = x->KeyInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyInfo; n > 1 && y; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (y = x->KeyInfo; n > 1 && y && y->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5274,10 +5274,10 @@ void zx_sa11_SubjectConfirmation_DEL_KeyInfo(struct zx_sa11_SubjectConfirmation_
   case -1:
     y = (struct zx_ds_KeyInfo_s*)x->KeyInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (y = x->KeyInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5314,7 +5314,7 @@ int zx_sa11_SubjectStatement_NUM_Subject(struct zx_sa11_SubjectStatement_s* x)
   struct zx_sa11_Subject_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subject; y; ++n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; y && y->gg.g.tok == zx_sa11_Subject_ELEM; ++n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5324,7 +5324,7 @@ struct zx_sa11_Subject_s* zx_sa11_SubjectStatement_GET_Subject(struct zx_sa11_Su
 {
   struct zx_sa11_Subject_s* y;
   if (!x) return 0;
-  for (y = x->Subject; n>=0 && y; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; n>=0 && y && y->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5381,7 +5381,7 @@ void zx_sa11_SubjectStatement_PUT_Subject(struct zx_sa11_SubjectStatement_s* x, 
     x->Subject = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5403,10 +5403,10 @@ void zx_sa11_SubjectStatement_ADD_Subject(struct zx_sa11_SubjectStatement_s* x, 
   case -1:
     y = x->Subject;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y && y->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5426,10 +5426,10 @@ void zx_sa11_SubjectStatement_DEL_Subject(struct zx_sa11_SubjectStatement_s* x, 
   case -1:
     y = (struct zx_sa11_Subject_s*)x->Subject;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y->gg.g.n; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa11_Subject_ELEM; --n, y = (struct zx_sa11_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

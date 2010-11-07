@@ -40,7 +40,7 @@ int zx_pmm_PMActivate_NUM_PMActivateItem(struct zx_pmm_PMActivate_s* x)
   struct zx_pmm_PMActivateItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMActivateItem; y; ++n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
+  for (y = x->PMActivateItem; y && y->gg.g.tok == zx_pmm_PMActivateItem_ELEM; ++n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_pmm_PMActivateItem_s* zx_pmm_PMActivate_GET_PMActivateItem(struct zx_p
 {
   struct zx_pmm_PMActivateItem_s* y;
   if (!x) return 0;
-  for (y = x->PMActivateItem; n>=0 && y; --n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
+  for (y = x->PMActivateItem; n>=0 && y && y->gg.g.tok == zx_pmm_PMActivateItem_ELEM; --n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_pmm_PMActivate_PUT_PMActivateItem(struct zx_pmm_PMActivate_s* x, int n, 
     x->PMActivateItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMActivateItem_ELEM; --n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -129,10 +129,10 @@ void zx_pmm_PMActivate_ADD_PMActivateItem(struct zx_pmm_PMActivate_s* x, int n, 
   case -1:
     y = x->PMActivateItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMActivateItem_ELEM; y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMActivateItem; n > 1 && y; --n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
+    for (y = x->PMActivateItem; n > 1 && y && y->gg.g.tok == zx_pmm_PMActivateItem_ELEM; --n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -152,10 +152,10 @@ void zx_pmm_PMActivate_DEL_PMActivateItem(struct zx_pmm_PMActivate_s* x, int n)
   case -1:
     y = (struct zx_pmm_PMActivateItem_s*)x->PMActivateItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMActivateItem_ELEM; y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMActivateItem; n > 1 && y->gg.g.n; --n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
+    for (y = x->PMActivateItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMActivateItem_ELEM; --n, y = (struct zx_pmm_PMActivateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -174,7 +174,7 @@ int zx_pmm_PMActivate_NUM_NotifyTo(struct zx_pmm_PMActivate_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NotifyTo; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->NotifyTo; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -184,7 +184,7 @@ struct zx_elem_s* zx_pmm_PMActivate_GET_NotifyTo(struct zx_pmm_PMActivate_s* x, 
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->NotifyTo; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->NotifyTo; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -241,7 +241,7 @@ void zx_pmm_PMActivate_PUT_NotifyTo(struct zx_pmm_PMActivate_s* x, int n, struct
     x->NotifyTo = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -263,10 +263,10 @@ void zx_pmm_PMActivate_ADD_NotifyTo(struct zx_pmm_PMActivate_s* x, int n, struct
   case -1:
     y = x->NotifyTo;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->NotifyTo; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -286,10 +286,10 @@ void zx_pmm_PMActivate_DEL_NotifyTo(struct zx_pmm_PMActivate_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->NotifyTo;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->NotifyTo; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -313,7 +313,7 @@ int zx_pmm_PMActivateItem_NUM_PMID(struct zx_pmm_PMActivateItem_s* x)
   struct zx_prov_PMID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMID; y; ++n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+  for (y = x->PMID; y && y->gg.g.tok == zx_prov_PMID_ELEM; ++n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -323,7 +323,7 @@ struct zx_prov_PMID_s* zx_pmm_PMActivateItem_GET_PMID(struct zx_pmm_PMActivateIt
 {
   struct zx_prov_PMID_s* y;
   if (!x) return 0;
-  for (y = x->PMID; n>=0 && y; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+  for (y = x->PMID; n>=0 && y && y->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -380,7 +380,7 @@ void zx_pmm_PMActivateItem_PUT_PMID(struct zx_pmm_PMActivateItem_s* x, int n, st
     x->PMID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -402,10 +402,10 @@ void zx_pmm_PMActivateItem_ADD_PMID(struct zx_pmm_PMActivateItem_s* x, int n, st
   case -1:
     y = x->PMID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMID; n > 1 && y; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (y = x->PMID; n > 1 && y && y->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -425,10 +425,10 @@ void zx_pmm_PMActivateItem_DEL_PMID(struct zx_pmm_PMActivateItem_s* x, int n)
   case -1:
     y = (struct zx_prov_PMID_s*)x->PMID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMID; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (y = x->PMID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -460,7 +460,7 @@ int zx_pmm_PMActivateResponse_NUM_Status(struct zx_pmm_PMActivateResponse_s* x)
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -470,7 +470,7 @@ struct zx_lu_Status_s* zx_pmm_PMActivateResponse_GET_Status(struct zx_pmm_PMActi
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -527,7 +527,7 @@ void zx_pmm_PMActivateResponse_PUT_Status(struct zx_pmm_PMActivateResponse_s* x,
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -549,10 +549,10 @@ void zx_pmm_PMActivateResponse_ADD_Status(struct zx_pmm_PMActivateResponse_s* x,
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -572,10 +572,10 @@ void zx_pmm_PMActivateResponse_DEL_Status(struct zx_pmm_PMActivateResponse_s* x,
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -599,7 +599,7 @@ int zx_pmm_PMDeactivate_NUM_PMDeactivateItem(struct zx_pmm_PMDeactivate_s* x)
   struct zx_pmm_PMDeactivateItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMDeactivateItem; y; ++n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
+  for (y = x->PMDeactivateItem; y && y->gg.g.tok == zx_pmm_PMDeactivateItem_ELEM; ++n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -609,7 +609,7 @@ struct zx_pmm_PMDeactivateItem_s* zx_pmm_PMDeactivate_GET_PMDeactivateItem(struc
 {
   struct zx_pmm_PMDeactivateItem_s* y;
   if (!x) return 0;
-  for (y = x->PMDeactivateItem; n>=0 && y; --n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
+  for (y = x->PMDeactivateItem; n>=0 && y && y->gg.g.tok == zx_pmm_PMDeactivateItem_ELEM; --n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -666,7 +666,7 @@ void zx_pmm_PMDeactivate_PUT_PMDeactivateItem(struct zx_pmm_PMDeactivate_s* x, i
     x->PMDeactivateItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMDeactivateItem_ELEM; --n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -688,10 +688,10 @@ void zx_pmm_PMDeactivate_ADD_PMDeactivateItem(struct zx_pmm_PMDeactivate_s* x, i
   case -1:
     y = x->PMDeactivateItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMDeactivateItem_ELEM; y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMDeactivateItem; n > 1 && y; --n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
+    for (y = x->PMDeactivateItem; n > 1 && y && y->gg.g.tok == zx_pmm_PMDeactivateItem_ELEM; --n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -711,10 +711,10 @@ void zx_pmm_PMDeactivate_DEL_PMDeactivateItem(struct zx_pmm_PMDeactivate_s* x, i
   case -1:
     y = (struct zx_pmm_PMDeactivateItem_s*)x->PMDeactivateItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMDeactivateItem_ELEM; y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMDeactivateItem; n > 1 && y->gg.g.n; --n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
+    for (y = x->PMDeactivateItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMDeactivateItem_ELEM; --n, y = (struct zx_pmm_PMDeactivateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -733,7 +733,7 @@ int zx_pmm_PMDeactivate_NUM_NotifyTo(struct zx_pmm_PMDeactivate_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NotifyTo; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->NotifyTo; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -743,7 +743,7 @@ struct zx_elem_s* zx_pmm_PMDeactivate_GET_NotifyTo(struct zx_pmm_PMDeactivate_s*
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->NotifyTo; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->NotifyTo; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -800,7 +800,7 @@ void zx_pmm_PMDeactivate_PUT_NotifyTo(struct zx_pmm_PMDeactivate_s* x, int n, st
     x->NotifyTo = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -822,10 +822,10 @@ void zx_pmm_PMDeactivate_ADD_NotifyTo(struct zx_pmm_PMDeactivate_s* x, int n, st
   case -1:
     y = x->NotifyTo;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->NotifyTo; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -845,10 +845,10 @@ void zx_pmm_PMDeactivate_DEL_NotifyTo(struct zx_pmm_PMDeactivate_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->NotifyTo;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->NotifyTo; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -872,7 +872,7 @@ int zx_pmm_PMDeactivateItem_NUM_PMID(struct zx_pmm_PMDeactivateItem_s* x)
   struct zx_prov_PMID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMID; y; ++n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+  for (y = x->PMID; y && y->gg.g.tok == zx_prov_PMID_ELEM; ++n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -882,7 +882,7 @@ struct zx_prov_PMID_s* zx_pmm_PMDeactivateItem_GET_PMID(struct zx_pmm_PMDeactiva
 {
   struct zx_prov_PMID_s* y;
   if (!x) return 0;
-  for (y = x->PMID; n>=0 && y; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+  for (y = x->PMID; n>=0 && y && y->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -939,7 +939,7 @@ void zx_pmm_PMDeactivateItem_PUT_PMID(struct zx_pmm_PMDeactivateItem_s* x, int n
     x->PMID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -961,10 +961,10 @@ void zx_pmm_PMDeactivateItem_ADD_PMID(struct zx_pmm_PMDeactivateItem_s* x, int n
   case -1:
     y = x->PMID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMID; n > 1 && y; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (y = x->PMID; n > 1 && y && y->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -984,10 +984,10 @@ void zx_pmm_PMDeactivateItem_DEL_PMID(struct zx_pmm_PMDeactivateItem_s* x, int n
   case -1:
     y = (struct zx_prov_PMID_s*)x->PMID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMID; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (y = x->PMID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1019,7 +1019,7 @@ int zx_pmm_PMDeactivateResponse_NUM_Status(struct zx_pmm_PMDeactivateResponse_s*
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1029,7 +1029,7 @@ struct zx_lu_Status_s* zx_pmm_PMDeactivateResponse_GET_Status(struct zx_pmm_PMDe
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1086,7 +1086,7 @@ void zx_pmm_PMDeactivateResponse_PUT_Status(struct zx_pmm_PMDeactivateResponse_s
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1108,10 +1108,10 @@ void zx_pmm_PMDeactivateResponse_ADD_Status(struct zx_pmm_PMDeactivateResponse_s
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1131,10 +1131,10 @@ void zx_pmm_PMDeactivateResponse_DEL_Status(struct zx_pmm_PMDeactivateResponse_s
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1158,7 +1158,7 @@ int zx_pmm_PMDelete_NUM_PMDeleteItem(struct zx_pmm_PMDelete_s* x)
   struct zx_pmm_PMDeleteItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMDeleteItem; y; ++n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
+  for (y = x->PMDeleteItem; y && y->gg.g.tok == zx_pmm_PMDeleteItem_ELEM; ++n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1168,7 +1168,7 @@ struct zx_pmm_PMDeleteItem_s* zx_pmm_PMDelete_GET_PMDeleteItem(struct zx_pmm_PMD
 {
   struct zx_pmm_PMDeleteItem_s* y;
   if (!x) return 0;
-  for (y = x->PMDeleteItem; n>=0 && y; --n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
+  for (y = x->PMDeleteItem; n>=0 && y && y->gg.g.tok == zx_pmm_PMDeleteItem_ELEM; --n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1225,7 +1225,7 @@ void zx_pmm_PMDelete_PUT_PMDeleteItem(struct zx_pmm_PMDelete_s* x, int n, struct
     x->PMDeleteItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMDeleteItem_ELEM; --n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1247,10 +1247,10 @@ void zx_pmm_PMDelete_ADD_PMDeleteItem(struct zx_pmm_PMDelete_s* x, int n, struct
   case -1:
     y = x->PMDeleteItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMDeleteItem_ELEM; y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMDeleteItem; n > 1 && y; --n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
+    for (y = x->PMDeleteItem; n > 1 && y && y->gg.g.tok == zx_pmm_PMDeleteItem_ELEM; --n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1270,10 +1270,10 @@ void zx_pmm_PMDelete_DEL_PMDeleteItem(struct zx_pmm_PMDelete_s* x, int n)
   case -1:
     y = (struct zx_pmm_PMDeleteItem_s*)x->PMDeleteItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMDeleteItem_ELEM; y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMDeleteItem; n > 1 && y->gg.g.n; --n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
+    for (y = x->PMDeleteItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMDeleteItem_ELEM; --n, y = (struct zx_pmm_PMDeleteItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1297,7 +1297,7 @@ int zx_pmm_PMDeleteItem_NUM_PMID(struct zx_pmm_PMDeleteItem_s* x)
   struct zx_prov_PMID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMID; y; ++n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+  for (y = x->PMID; y && y->gg.g.tok == zx_prov_PMID_ELEM; ++n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1307,7 +1307,7 @@ struct zx_prov_PMID_s* zx_pmm_PMDeleteItem_GET_PMID(struct zx_pmm_PMDeleteItem_s
 {
   struct zx_prov_PMID_s* y;
   if (!x) return 0;
-  for (y = x->PMID; n>=0 && y; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+  for (y = x->PMID; n>=0 && y && y->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1364,7 +1364,7 @@ void zx_pmm_PMDeleteItem_PUT_PMID(struct zx_pmm_PMDeleteItem_s* x, int n, struct
     x->PMID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1386,10 +1386,10 @@ void zx_pmm_PMDeleteItem_ADD_PMID(struct zx_pmm_PMDeleteItem_s* x, int n, struct
   case -1:
     y = x->PMID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMID; n > 1 && y; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (y = x->PMID; n > 1 && y && y->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1409,10 +1409,10 @@ void zx_pmm_PMDeleteItem_DEL_PMID(struct zx_pmm_PMDeleteItem_s* x, int n)
   case -1:
     y = (struct zx_prov_PMID_s*)x->PMID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMID; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (y = x->PMID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1440,7 +1440,7 @@ int zx_pmm_PMDeleteResponse_NUM_Status(struct zx_pmm_PMDeleteResponse_s* x)
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1450,7 +1450,7 @@ struct zx_lu_Status_s* zx_pmm_PMDeleteResponse_GET_Status(struct zx_pmm_PMDelete
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1507,7 +1507,7 @@ void zx_pmm_PMDeleteResponse_PUT_Status(struct zx_pmm_PMDeleteResponse_s* x, int
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1529,10 +1529,10 @@ void zx_pmm_PMDeleteResponse_ADD_Status(struct zx_pmm_PMDeleteResponse_s* x, int
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1552,10 +1552,10 @@ void zx_pmm_PMDeleteResponse_DEL_Status(struct zx_pmm_PMDeleteResponse_s* x, int
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1579,7 +1579,7 @@ int zx_pmm_PMGetStatus_NUM_PMID(struct zx_pmm_PMGetStatus_s* x)
   struct zx_prov_PMID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMID; y; ++n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+  for (y = x->PMID; y && y->gg.g.tok == zx_prov_PMID_ELEM; ++n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1589,7 +1589,7 @@ struct zx_prov_PMID_s* zx_pmm_PMGetStatus_GET_PMID(struct zx_pmm_PMGetStatus_s* 
 {
   struct zx_prov_PMID_s* y;
   if (!x) return 0;
-  for (y = x->PMID; n>=0 && y; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+  for (y = x->PMID; n>=0 && y && y->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1646,7 +1646,7 @@ void zx_pmm_PMGetStatus_PUT_PMID(struct zx_pmm_PMGetStatus_s* x, int n, struct z
     x->PMID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1668,10 +1668,10 @@ void zx_pmm_PMGetStatus_ADD_PMID(struct zx_pmm_PMGetStatus_s* x, int n, struct z
   case -1:
     y = x->PMID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMID; n > 1 && y; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (y = x->PMID; n > 1 && y && y->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1691,10 +1691,10 @@ void zx_pmm_PMGetStatus_DEL_PMID(struct zx_pmm_PMGetStatus_s* x, int n)
   case -1:
     y = (struct zx_prov_PMID_s*)x->PMID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMID; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
+    for (y = x->PMID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMID_ELEM; --n, y = (struct zx_prov_PMID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1718,7 +1718,7 @@ int zx_pmm_PMGetStatusResponse_NUM_Status(struct zx_pmm_PMGetStatusResponse_s* x
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1728,7 +1728,7 @@ struct zx_lu_Status_s* zx_pmm_PMGetStatusResponse_GET_Status(struct zx_pmm_PMGet
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1785,7 +1785,7 @@ void zx_pmm_PMGetStatusResponse_PUT_Status(struct zx_pmm_PMGetStatusResponse_s* 
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1807,10 +1807,10 @@ void zx_pmm_PMGetStatusResponse_ADD_Status(struct zx_pmm_PMGetStatusResponse_s* 
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1830,10 +1830,10 @@ void zx_pmm_PMGetStatusResponse_DEL_Status(struct zx_pmm_PMGetStatusResponse_s* 
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1852,7 +1852,7 @@ int zx_pmm_PMGetStatusResponse_NUM_PMStatus(struct zx_pmm_PMGetStatusResponse_s*
   struct zx_prov_PMStatus_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMStatus; y; ++n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+  for (y = x->PMStatus; y && y->gg.g.tok == zx_prov_PMStatus_ELEM; ++n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1862,7 +1862,7 @@ struct zx_prov_PMStatus_s* zx_pmm_PMGetStatusResponse_GET_PMStatus(struct zx_pmm
 {
   struct zx_prov_PMStatus_s* y;
   if (!x) return 0;
-  for (y = x->PMStatus; n>=0 && y; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+  for (y = x->PMStatus; n>=0 && y && y->gg.g.tok == zx_prov_PMStatus_ELEM; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1919,7 +1919,7 @@ void zx_pmm_PMGetStatusResponse_PUT_PMStatus(struct zx_pmm_PMGetStatusResponse_s
     x->PMStatus = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMStatus_ELEM; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1941,10 +1941,10 @@ void zx_pmm_PMGetStatusResponse_ADD_PMStatus(struct zx_pmm_PMGetStatusResponse_s
   case -1:
     y = x->PMStatus;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMStatus_ELEM; y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMStatus; n > 1 && y; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (y = x->PMStatus; n > 1 && y && y->gg.g.tok == zx_prov_PMStatus_ELEM; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1964,10 +1964,10 @@ void zx_pmm_PMGetStatusResponse_DEL_PMStatus(struct zx_pmm_PMGetStatusResponse_s
   case -1:
     y = (struct zx_prov_PMStatus_s*)x->PMStatus;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMStatus_ELEM; y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMStatus; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (y = x->PMStatus; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMStatus_ELEM; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1991,7 +1991,7 @@ int zx_pmm_PMSetStatus_NUM_PMStatus(struct zx_pmm_PMSetStatus_s* x)
   struct zx_prov_PMStatus_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMStatus; y; ++n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+  for (y = x->PMStatus; y && y->gg.g.tok == zx_prov_PMStatus_ELEM; ++n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2001,7 +2001,7 @@ struct zx_prov_PMStatus_s* zx_pmm_PMSetStatus_GET_PMStatus(struct zx_pmm_PMSetSt
 {
   struct zx_prov_PMStatus_s* y;
   if (!x) return 0;
-  for (y = x->PMStatus; n>=0 && y; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+  for (y = x->PMStatus; n>=0 && y && y->gg.g.tok == zx_prov_PMStatus_ELEM; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2058,7 +2058,7 @@ void zx_pmm_PMSetStatus_PUT_PMStatus(struct zx_pmm_PMSetStatus_s* x, int n, stru
     x->PMStatus = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMStatus_ELEM; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2080,10 +2080,10 @@ void zx_pmm_PMSetStatus_ADD_PMStatus(struct zx_pmm_PMSetStatus_s* x, int n, stru
   case -1:
     y = x->PMStatus;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMStatus_ELEM; y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMStatus; n > 1 && y; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (y = x->PMStatus; n > 1 && y && y->gg.g.tok == zx_prov_PMStatus_ELEM; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2103,10 +2103,10 @@ void zx_pmm_PMSetStatus_DEL_PMStatus(struct zx_pmm_PMSetStatus_s* x, int n)
   case -1:
     y = (struct zx_prov_PMStatus_s*)x->PMStatus;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMStatus_ELEM; y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMStatus; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
+    for (y = x->PMStatus; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMStatus_ELEM; --n, y = (struct zx_prov_PMStatus_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2130,7 +2130,7 @@ int zx_pmm_PMSetStatusResponse_NUM_Status(struct zx_pmm_PMSetStatusResponse_s* x
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2140,7 +2140,7 @@ struct zx_lu_Status_s* zx_pmm_PMSetStatusResponse_GET_Status(struct zx_pmm_PMSet
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2197,7 +2197,7 @@ void zx_pmm_PMSetStatusResponse_PUT_Status(struct zx_pmm_PMSetStatusResponse_s* 
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2219,10 +2219,10 @@ void zx_pmm_PMSetStatusResponse_ADD_Status(struct zx_pmm_PMSetStatusResponse_s* 
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2242,10 +2242,10 @@ void zx_pmm_PMSetStatusResponse_DEL_Status(struct zx_pmm_PMSetStatusResponse_s* 
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2269,7 +2269,7 @@ int zx_pmm_PMUpdate_NUM_PMUpdateItem(struct zx_pmm_PMUpdate_s* x)
   struct zx_pmm_PMUpdateItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMUpdateItem; y; ++n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
+  for (y = x->PMUpdateItem; y && y->gg.g.tok == zx_pmm_PMUpdateItem_ELEM; ++n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2279,7 +2279,7 @@ struct zx_pmm_PMUpdateItem_s* zx_pmm_PMUpdate_GET_PMUpdateItem(struct zx_pmm_PMU
 {
   struct zx_pmm_PMUpdateItem_s* y;
   if (!x) return 0;
-  for (y = x->PMUpdateItem; n>=0 && y; --n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
+  for (y = x->PMUpdateItem; n>=0 && y && y->gg.g.tok == zx_pmm_PMUpdateItem_ELEM; --n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2336,7 +2336,7 @@ void zx_pmm_PMUpdate_PUT_PMUpdateItem(struct zx_pmm_PMUpdate_s* x, int n, struct
     x->PMUpdateItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMUpdateItem_ELEM; --n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2358,10 +2358,10 @@ void zx_pmm_PMUpdate_ADD_PMUpdateItem(struct zx_pmm_PMUpdate_s* x, int n, struct
   case -1:
     y = x->PMUpdateItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMUpdateItem_ELEM; y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMUpdateItem; n > 1 && y; --n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
+    for (y = x->PMUpdateItem; n > 1 && y && y->gg.g.tok == zx_pmm_PMUpdateItem_ELEM; --n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2381,10 +2381,10 @@ void zx_pmm_PMUpdate_DEL_PMUpdateItem(struct zx_pmm_PMUpdate_s* x, int n)
   case -1:
     y = (struct zx_pmm_PMUpdateItem_s*)x->PMUpdateItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMUpdateItem_ELEM; y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMUpdateItem; n > 1 && y->gg.g.n; --n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
+    for (y = x->PMUpdateItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_pmm_PMUpdateItem_ELEM; --n, y = (struct zx_pmm_PMUpdateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2403,7 +2403,7 @@ int zx_pmm_PMUpdate_NUM_NotifyTo(struct zx_pmm_PMUpdate_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NotifyTo; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->NotifyTo; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2413,7 +2413,7 @@ struct zx_elem_s* zx_pmm_PMUpdate_GET_NotifyTo(struct zx_pmm_PMUpdate_s* x, int 
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->NotifyTo; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->NotifyTo; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2470,7 +2470,7 @@ void zx_pmm_PMUpdate_PUT_NotifyTo(struct zx_pmm_PMUpdate_s* x, int n, struct zx_
     x->NotifyTo = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2492,10 +2492,10 @@ void zx_pmm_PMUpdate_ADD_NotifyTo(struct zx_pmm_PMUpdate_s* x, int n, struct zx_
   case -1:
     y = x->NotifyTo;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->NotifyTo; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2515,10 +2515,10 @@ void zx_pmm_PMUpdate_DEL_NotifyTo(struct zx_pmm_PMUpdate_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->NotifyTo;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->NotifyTo; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2542,7 +2542,7 @@ int zx_pmm_PMUpdateItem_NUM_PMDescriptor(struct zx_pmm_PMUpdateItem_s* x)
   struct zx_prov_PMDescriptor_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMDescriptor; y; ++n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+  for (y = x->PMDescriptor; y && y->gg.g.tok == zx_prov_PMDescriptor_ELEM; ++n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2552,7 +2552,7 @@ struct zx_prov_PMDescriptor_s* zx_pmm_PMUpdateItem_GET_PMDescriptor(struct zx_pm
 {
   struct zx_prov_PMDescriptor_s* y;
   if (!x) return 0;
-  for (y = x->PMDescriptor; n>=0 && y; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+  for (y = x->PMDescriptor; n>=0 && y && y->gg.g.tok == zx_prov_PMDescriptor_ELEM; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2609,7 +2609,7 @@ void zx_pmm_PMUpdateItem_PUT_PMDescriptor(struct zx_pmm_PMUpdateItem_s* x, int n
     x->PMDescriptor = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMDescriptor_ELEM; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2631,10 +2631,10 @@ void zx_pmm_PMUpdateItem_ADD_PMDescriptor(struct zx_pmm_PMUpdateItem_s* x, int n
   case -1:
     y = x->PMDescriptor;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMDescriptor_ELEM; y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMDescriptor; n > 1 && y; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (y = x->PMDescriptor; n > 1 && y && y->gg.g.tok == zx_prov_PMDescriptor_ELEM; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2654,10 +2654,10 @@ void zx_pmm_PMUpdateItem_DEL_PMDescriptor(struct zx_pmm_PMUpdateItem_s* x, int n
   case -1:
     y = (struct zx_prov_PMDescriptor_s*)x->PMDescriptor;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMDescriptor_ELEM; y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMDescriptor; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (y = x->PMDescriptor; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMDescriptor_ELEM; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2693,7 +2693,7 @@ int zx_pmm_PMUpdateResponse_NUM_Status(struct zx_pmm_PMUpdateResponse_s* x)
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2703,7 +2703,7 @@ struct zx_lu_Status_s* zx_pmm_PMUpdateResponse_GET_Status(struct zx_pmm_PMUpdate
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2760,7 +2760,7 @@ void zx_pmm_PMUpdateResponse_PUT_Status(struct zx_pmm_PMUpdateResponse_s* x, int
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2782,10 +2782,10 @@ void zx_pmm_PMUpdateResponse_ADD_Status(struct zx_pmm_PMUpdateResponse_s* x, int
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2805,10 +2805,10 @@ void zx_pmm_PMUpdateResponse_DEL_Status(struct zx_pmm_PMUpdateResponse_s* x, int
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2832,7 +2832,7 @@ int zx_pmm_Provision_NUM_ProvisioningHandle(struct zx_pmm_Provision_s* x)
   struct zx_prov_ProvisioningHandle_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ProvisioningHandle; y; ++n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
+  for (y = x->ProvisioningHandle; y && y->gg.g.tok == zx_prov_ProvisioningHandle_ELEM; ++n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2842,7 +2842,7 @@ struct zx_prov_ProvisioningHandle_s* zx_pmm_Provision_GET_ProvisioningHandle(str
 {
   struct zx_prov_ProvisioningHandle_s* y;
   if (!x) return 0;
-  for (y = x->ProvisioningHandle; n>=0 && y; --n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
+  for (y = x->ProvisioningHandle; n>=0 && y && y->gg.g.tok == zx_prov_ProvisioningHandle_ELEM; --n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2899,7 +2899,7 @@ void zx_pmm_Provision_PUT_ProvisioningHandle(struct zx_pmm_Provision_s* x, int n
     x->ProvisioningHandle = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_ProvisioningHandle_ELEM; --n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2921,10 +2921,10 @@ void zx_pmm_Provision_ADD_ProvisioningHandle(struct zx_pmm_Provision_s* x, int n
   case -1:
     y = x->ProvisioningHandle;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_ProvisioningHandle_ELEM; y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ProvisioningHandle; n > 1 && y; --n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
+    for (y = x->ProvisioningHandle; n > 1 && y && y->gg.g.tok == zx_prov_ProvisioningHandle_ELEM; --n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2944,10 +2944,10 @@ void zx_pmm_Provision_DEL_ProvisioningHandle(struct zx_pmm_Provision_s* x, int n
   case -1:
     y = (struct zx_prov_ProvisioningHandle_s*)x->ProvisioningHandle;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_ProvisioningHandle_ELEM; y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ProvisioningHandle; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
+    for (y = x->ProvisioningHandle; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_ProvisioningHandle_ELEM; --n, y = (struct zx_prov_ProvisioningHandle_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2966,7 +2966,7 @@ int zx_pmm_Provision_NUM_PMDescriptor(struct zx_pmm_Provision_s* x)
   struct zx_prov_PMDescriptor_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PMDescriptor; y; ++n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+  for (y = x->PMDescriptor; y && y->gg.g.tok == zx_prov_PMDescriptor_ELEM; ++n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2976,7 +2976,7 @@ struct zx_prov_PMDescriptor_s* zx_pmm_Provision_GET_PMDescriptor(struct zx_pmm_P
 {
   struct zx_prov_PMDescriptor_s* y;
   if (!x) return 0;
-  for (y = x->PMDescriptor; n>=0 && y; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+  for (y = x->PMDescriptor; n>=0 && y && y->gg.g.tok == zx_prov_PMDescriptor_ELEM; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3033,7 +3033,7 @@ void zx_pmm_Provision_PUT_PMDescriptor(struct zx_pmm_Provision_s* x, int n, stru
     x->PMDescriptor = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMDescriptor_ELEM; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3055,10 +3055,10 @@ void zx_pmm_Provision_ADD_PMDescriptor(struct zx_pmm_Provision_s* x, int n, stru
   case -1:
     y = x->PMDescriptor;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMDescriptor_ELEM; y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMDescriptor; n > 1 && y; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (y = x->PMDescriptor; n > 1 && y && y->gg.g.tok == zx_prov_PMDescriptor_ELEM; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3078,10 +3078,10 @@ void zx_pmm_Provision_DEL_PMDescriptor(struct zx_pmm_Provision_s* x, int n)
   case -1:
     y = (struct zx_prov_PMDescriptor_s*)x->PMDescriptor;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMDescriptor_ELEM; y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PMDescriptor; n > 1 && y->gg.g.n; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
+    for (y = x->PMDescriptor; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_prov_PMDescriptor_ELEM; --n, y = (struct zx_prov_PMDescriptor_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3100,7 +3100,7 @@ int zx_pmm_Provision_NUM_NotifyTo(struct zx_pmm_Provision_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NotifyTo; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->NotifyTo; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3110,7 +3110,7 @@ struct zx_elem_s* zx_pmm_Provision_GET_NotifyTo(struct zx_pmm_Provision_s* x, in
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->NotifyTo; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->NotifyTo; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3167,7 +3167,7 @@ void zx_pmm_Provision_PUT_NotifyTo(struct zx_pmm_Provision_s* x, int n, struct z
     x->NotifyTo = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3189,10 +3189,10 @@ void zx_pmm_Provision_ADD_NotifyTo(struct zx_pmm_Provision_s* x, int n, struct z
   case -1:
     y = x->NotifyTo;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->NotifyTo; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3212,10 +3212,10 @@ void zx_pmm_Provision_DEL_NotifyTo(struct zx_pmm_Provision_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->NotifyTo;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->NotifyTo; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3243,7 +3243,7 @@ int zx_pmm_ProvisionResponse_NUM_Status(struct zx_pmm_ProvisionResponse_s* x)
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3253,7 +3253,7 @@ struct zx_lu_Status_s* zx_pmm_ProvisionResponse_GET_Status(struct zx_pmm_Provisi
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3310,7 +3310,7 @@ void zx_pmm_ProvisionResponse_PUT_Status(struct zx_pmm_ProvisionResponse_s* x, i
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3332,10 +3332,10 @@ void zx_pmm_ProvisionResponse_ADD_Status(struct zx_pmm_ProvisionResponse_s* x, i
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3355,10 +3355,10 @@ void zx_pmm_ProvisionResponse_DEL_Status(struct zx_pmm_ProvisionResponse_s* x, i
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

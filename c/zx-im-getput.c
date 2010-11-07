@@ -40,7 +40,7 @@ int zx_im_IdentityMappingRequest_NUM_MappingInput(struct zx_im_IdentityMappingRe
   struct zx_im_MappingInput_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->MappingInput; y; ++n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
+  for (y = x->MappingInput; y && y->gg.g.tok == zx_im_MappingInput_ELEM; ++n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_im_MappingInput_s* zx_im_IdentityMappingRequest_GET_MappingInput(struc
 {
   struct zx_im_MappingInput_s* y;
   if (!x) return 0;
-  for (y = x->MappingInput; n>=0 && y; --n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
+  for (y = x->MappingInput; n>=0 && y && y->gg.g.tok == zx_im_MappingInput_ELEM; --n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_im_IdentityMappingRequest_PUT_MappingInput(struct zx_im_IdentityMappingR
     x->MappingInput = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_im_MappingInput_ELEM; --n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -129,10 +129,10 @@ void zx_im_IdentityMappingRequest_ADD_MappingInput(struct zx_im_IdentityMappingR
   case -1:
     y = x->MappingInput;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_im_MappingInput_ELEM; y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MappingInput; n > 1 && y; --n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
+    for (y = x->MappingInput; n > 1 && y && y->gg.g.tok == zx_im_MappingInput_ELEM; --n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -152,10 +152,10 @@ void zx_im_IdentityMappingRequest_DEL_MappingInput(struct zx_im_IdentityMappingR
   case -1:
     y = (struct zx_im_MappingInput_s*)x->MappingInput;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_im_MappingInput_ELEM; y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MappingInput; n > 1 && y->gg.g.n; --n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
+    for (y = x->MappingInput; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_im_MappingInput_ELEM; --n, y = (struct zx_im_MappingInput_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -179,7 +179,7 @@ int zx_im_IdentityMappingResponse_NUM_Status(struct zx_im_IdentityMappingRespons
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -189,7 +189,7 @@ struct zx_lu_Status_s* zx_im_IdentityMappingResponse_GET_Status(struct zx_im_Ide
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -246,7 +246,7 @@ void zx_im_IdentityMappingResponse_PUT_Status(struct zx_im_IdentityMappingRespon
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -268,10 +268,10 @@ void zx_im_IdentityMappingResponse_ADD_Status(struct zx_im_IdentityMappingRespon
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -291,10 +291,10 @@ void zx_im_IdentityMappingResponse_DEL_Status(struct zx_im_IdentityMappingRespon
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -313,7 +313,7 @@ int zx_im_IdentityMappingResponse_NUM_MappingOutput(struct zx_im_IdentityMapping
   struct zx_im_MappingOutput_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->MappingOutput; y; ++n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
+  for (y = x->MappingOutput; y && y->gg.g.tok == zx_im_MappingOutput_ELEM; ++n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -323,7 +323,7 @@ struct zx_im_MappingOutput_s* zx_im_IdentityMappingResponse_GET_MappingOutput(st
 {
   struct zx_im_MappingOutput_s* y;
   if (!x) return 0;
-  for (y = x->MappingOutput; n>=0 && y; --n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
+  for (y = x->MappingOutput; n>=0 && y && y->gg.g.tok == zx_im_MappingOutput_ELEM; --n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -380,7 +380,7 @@ void zx_im_IdentityMappingResponse_PUT_MappingOutput(struct zx_im_IdentityMappin
     x->MappingOutput = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_im_MappingOutput_ELEM; --n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -402,10 +402,10 @@ void zx_im_IdentityMappingResponse_ADD_MappingOutput(struct zx_im_IdentityMappin
   case -1:
     y = x->MappingOutput;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_im_MappingOutput_ELEM; y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MappingOutput; n > 1 && y; --n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
+    for (y = x->MappingOutput; n > 1 && y && y->gg.g.tok == zx_im_MappingOutput_ELEM; --n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -425,10 +425,10 @@ void zx_im_IdentityMappingResponse_DEL_MappingOutput(struct zx_im_IdentityMappin
   case -1:
     y = (struct zx_im_MappingOutput_s*)x->MappingOutput;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_im_MappingOutput_ELEM; y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MappingOutput; n > 1 && y->gg.g.n; --n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
+    for (y = x->MappingOutput; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_im_MappingOutput_ELEM; --n, y = (struct zx_im_MappingOutput_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -452,7 +452,7 @@ int zx_im_MappingInput_NUM_TokenPolicy(struct zx_im_MappingInput_s* x)
   struct zx_sec_TokenPolicy_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->TokenPolicy; y; ++n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
+  for (y = x->TokenPolicy; y && y->gg.g.tok == zx_sec_TokenPolicy_ELEM; ++n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -462,7 +462,7 @@ struct zx_sec_TokenPolicy_s* zx_im_MappingInput_GET_TokenPolicy(struct zx_im_Map
 {
   struct zx_sec_TokenPolicy_s* y;
   if (!x) return 0;
-  for (y = x->TokenPolicy; n>=0 && y; --n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
+  for (y = x->TokenPolicy; n>=0 && y && y->gg.g.tok == zx_sec_TokenPolicy_ELEM; --n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -519,7 +519,7 @@ void zx_im_MappingInput_PUT_TokenPolicy(struct zx_im_MappingInput_s* x, int n, s
     x->TokenPolicy = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_TokenPolicy_ELEM; --n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -541,10 +541,10 @@ void zx_im_MappingInput_ADD_TokenPolicy(struct zx_im_MappingInput_s* x, int n, s
   case -1:
     y = x->TokenPolicy;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_TokenPolicy_ELEM; y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->TokenPolicy; n > 1 && y; --n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
+    for (y = x->TokenPolicy; n > 1 && y && y->gg.g.tok == zx_sec_TokenPolicy_ELEM; --n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -564,10 +564,10 @@ void zx_im_MappingInput_DEL_TokenPolicy(struct zx_im_MappingInput_s* x, int n)
   case -1:
     y = (struct zx_sec_TokenPolicy_s*)x->TokenPolicy;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_TokenPolicy_ELEM; y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->TokenPolicy; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
+    for (y = x->TokenPolicy; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_TokenPolicy_ELEM; --n, y = (struct zx_sec_TokenPolicy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -586,7 +586,7 @@ int zx_im_MappingInput_NUM_Token(struct zx_im_MappingInput_s* x)
   struct zx_sec_Token_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Token; y; ++n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+  for (y = x->Token; y && y->gg.g.tok == zx_sec_Token_ELEM; ++n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -596,7 +596,7 @@ struct zx_sec_Token_s* zx_im_MappingInput_GET_Token(struct zx_im_MappingInput_s*
 {
   struct zx_sec_Token_s* y;
   if (!x) return 0;
-  for (y = x->Token; n>=0 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+  for (y = x->Token; n>=0 && y && y->gg.g.tok == zx_sec_Token_ELEM; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -653,7 +653,7 @@ void zx_im_MappingInput_PUT_Token(struct zx_im_MappingInput_s* x, int n, struct 
     x->Token = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_Token_ELEM; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -675,10 +675,10 @@ void zx_im_MappingInput_ADD_Token(struct zx_im_MappingInput_s* x, int n, struct 
   case -1:
     y = x->Token;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_Token_ELEM; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Token; n > 1 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (y = x->Token; n > 1 && y && y->gg.g.tok == zx_sec_Token_ELEM; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -698,10 +698,10 @@ void zx_im_MappingInput_DEL_Token(struct zx_im_MappingInput_s* x, int n)
   case -1:
     y = (struct zx_sec_Token_s*)x->Token;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_Token_ELEM; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Token; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (y = x->Token; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_Token_ELEM; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -729,7 +729,7 @@ int zx_im_MappingOutput_NUM_Token(struct zx_im_MappingOutput_s* x)
   struct zx_sec_Token_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Token; y; ++n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+  for (y = x->Token; y && y->gg.g.tok == zx_sec_Token_ELEM; ++n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -739,7 +739,7 @@ struct zx_sec_Token_s* zx_im_MappingOutput_GET_Token(struct zx_im_MappingOutput_
 {
   struct zx_sec_Token_s* y;
   if (!x) return 0;
-  for (y = x->Token; n>=0 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+  for (y = x->Token; n>=0 && y && y->gg.g.tok == zx_sec_Token_ELEM; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -796,7 +796,7 @@ void zx_im_MappingOutput_PUT_Token(struct zx_im_MappingOutput_s* x, int n, struc
     x->Token = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_Token_ELEM; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -818,10 +818,10 @@ void zx_im_MappingOutput_ADD_Token(struct zx_im_MappingOutput_s* x, int n, struc
   case -1:
     y = x->Token;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_Token_ELEM; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Token; n > 1 && y; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (y = x->Token; n > 1 && y && y->gg.g.tok == zx_sec_Token_ELEM; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -841,10 +841,10 @@ void zx_im_MappingOutput_DEL_Token(struct zx_im_MappingOutput_s* x, int n)
   case -1:
     y = (struct zx_sec_Token_s*)x->Token;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_Token_ELEM; y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Token; n > 1 && y->gg.g.n; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
+    for (y = x->Token; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sec_Token_ELEM; --n, y = (struct zx_sec_Token_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

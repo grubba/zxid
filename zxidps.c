@@ -602,7 +602,9 @@ struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_
     return resp;
   }
 
-  for (inp = req->ResolveInput; inp; inp = (struct zx_ps_ResolveInput_s*)inp->gg.g.n) {
+  for (inp = req->ResolveInput;
+       inp && inp->gg.g.tok == zx_ps_ResolveInput_ELEM;
+       inp = (struct zx_ps_ResolveInput_s*)inp->gg.g.n) {
     // ***
   }
 

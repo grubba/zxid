@@ -40,7 +40,7 @@ int zx_demomed_DeleteObjectRequest_NUM_ObjectID(struct zx_demomed_DeleteObjectRe
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ObjectID; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ObjectID; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_elem_s* zx_demomed_DeleteObjectRequest_GET_ObjectID(struct zx_demomed_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->ObjectID; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ObjectID; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_demomed_DeleteObjectRequest_PUT_ObjectID(struct zx_demomed_DeleteObjectR
     x->ObjectID = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -129,10 +129,10 @@ void zx_demomed_DeleteObjectRequest_ADD_ObjectID(struct zx_demomed_DeleteObjectR
   case -1:
     y = x->ObjectID;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ObjectID; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ObjectID; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -152,10 +152,10 @@ void zx_demomed_DeleteObjectRequest_DEL_ObjectID(struct zx_demomed_DeleteObjectR
   case -1:
     y = (struct zx_elem_s*)x->ObjectID;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ObjectID; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ObjectID; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -179,7 +179,7 @@ int zx_demomed_DeleteObjectResponse_NUM_Status(struct zx_demomed_DeleteObjectRes
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -189,7 +189,7 @@ struct zx_lu_Status_s* zx_demomed_DeleteObjectResponse_GET_Status(struct zx_demo
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -246,7 +246,7 @@ void zx_demomed_DeleteObjectResponse_PUT_Status(struct zx_demomed_DeleteObjectRe
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -268,10 +268,10 @@ void zx_demomed_DeleteObjectResponse_ADD_Status(struct zx_demomed_DeleteObjectRe
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -291,10 +291,10 @@ void zx_demomed_DeleteObjectResponse_DEL_Status(struct zx_demomed_DeleteObjectRe
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -313,7 +313,7 @@ int zx_demomed_DeleteObjectResponse_NUM_Count(struct zx_demomed_DeleteObjectResp
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Count; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Count; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -323,7 +323,7 @@ struct zx_elem_s* zx_demomed_DeleteObjectResponse_GET_Count(struct zx_demomed_De
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Count; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Count; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -380,7 +380,7 @@ void zx_demomed_DeleteObjectResponse_PUT_Count(struct zx_demomed_DeleteObjectRes
     x->Count = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -402,10 +402,10 @@ void zx_demomed_DeleteObjectResponse_ADD_Count(struct zx_demomed_DeleteObjectRes
   case -1:
     y = x->Count;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Count; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Count; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -425,10 +425,10 @@ void zx_demomed_DeleteObjectResponse_DEL_Count(struct zx_demomed_DeleteObjectRes
   case -1:
     y = (struct zx_elem_s*)x->Count;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Count; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Count; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -452,7 +452,7 @@ int zx_demomed_GetObjectListRequest_NUM_ObjectSearchParm(struct zx_demomed_GetOb
   struct zx_demomed_ObjectSearchParm_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ObjectSearchParm; y; ++n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
+  for (y = x->ObjectSearchParm; y && y->gg.g.tok == zx_demomed_ObjectSearchParm_ELEM; ++n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -462,7 +462,7 @@ struct zx_demomed_ObjectSearchParm_s* zx_demomed_GetObjectListRequest_GET_Object
 {
   struct zx_demomed_ObjectSearchParm_s* y;
   if (!x) return 0;
-  for (y = x->ObjectSearchParm; n>=0 && y; --n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
+  for (y = x->ObjectSearchParm; n>=0 && y && y->gg.g.tok == zx_demomed_ObjectSearchParm_ELEM; --n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -519,7 +519,7 @@ void zx_demomed_GetObjectListRequest_PUT_ObjectSearchParm(struct zx_demomed_GetO
     x->ObjectSearchParm = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectSearchParm_ELEM; --n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -541,10 +541,10 @@ void zx_demomed_GetObjectListRequest_ADD_ObjectSearchParm(struct zx_demomed_GetO
   case -1:
     y = x->ObjectSearchParm;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectSearchParm_ELEM; y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectSearchParm; n > 1 && y; --n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
+    for (y = x->ObjectSearchParm; n > 1 && y && y->gg.g.tok == zx_demomed_ObjectSearchParm_ELEM; --n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -564,10 +564,10 @@ void zx_demomed_GetObjectListRequest_DEL_ObjectSearchParm(struct zx_demomed_GetO
   case -1:
     y = (struct zx_demomed_ObjectSearchParm_s*)x->ObjectSearchParm;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectSearchParm_ELEM; y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectSearchParm; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
+    for (y = x->ObjectSearchParm; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectSearchParm_ELEM; --n, y = (struct zx_demomed_ObjectSearchParm_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -591,7 +591,7 @@ int zx_demomed_GetObjectListResponse_NUM_Status(struct zx_demomed_GetObjectListR
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -601,7 +601,7 @@ struct zx_lu_Status_s* zx_demomed_GetObjectListResponse_GET_Status(struct zx_dem
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -658,7 +658,7 @@ void zx_demomed_GetObjectListResponse_PUT_Status(struct zx_demomed_GetObjectList
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -680,10 +680,10 @@ void zx_demomed_GetObjectListResponse_ADD_Status(struct zx_demomed_GetObjectList
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -703,10 +703,10 @@ void zx_demomed_GetObjectListResponse_DEL_Status(struct zx_demomed_GetObjectList
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -725,7 +725,7 @@ int zx_demomed_GetObjectListResponse_NUM_ObjectInfo(struct zx_demomed_GetObjectL
   struct zx_demomed_ObjectInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ObjectInfo; y; ++n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+  for (y = x->ObjectInfo; y && y->gg.g.tok == zx_demomed_ObjectInfo_ELEM; ++n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -735,7 +735,7 @@ struct zx_demomed_ObjectInfo_s* zx_demomed_GetObjectListResponse_GET_ObjectInfo(
 {
   struct zx_demomed_ObjectInfo_s* y;
   if (!x) return 0;
-  for (y = x->ObjectInfo; n>=0 && y; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+  for (y = x->ObjectInfo; n>=0 && y && y->gg.g.tok == zx_demomed_ObjectInfo_ELEM; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -792,7 +792,7 @@ void zx_demomed_GetObjectListResponse_PUT_ObjectInfo(struct zx_demomed_GetObject
     x->ObjectInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectInfo_ELEM; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -814,10 +814,10 @@ void zx_demomed_GetObjectListResponse_ADD_ObjectInfo(struct zx_demomed_GetObject
   case -1:
     y = x->ObjectInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectInfo_ELEM; y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectInfo; n > 1 && y; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (y = x->ObjectInfo; n > 1 && y && y->gg.g.tok == zx_demomed_ObjectInfo_ELEM; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -837,10 +837,10 @@ void zx_demomed_GetObjectListResponse_DEL_ObjectInfo(struct zx_demomed_GetObject
   case -1:
     y = (struct zx_demomed_ObjectInfo_s*)x->ObjectInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectInfo_ELEM; y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (y = x->ObjectInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectInfo_ELEM; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -864,7 +864,7 @@ int zx_demomed_GetObjectRequest_NUM_ObjectID(struct zx_demomed_GetObjectRequest_
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ObjectID; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ObjectID; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -874,7 +874,7 @@ struct zx_elem_s* zx_demomed_GetObjectRequest_GET_ObjectID(struct zx_demomed_Get
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->ObjectID; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ObjectID; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -931,7 +931,7 @@ void zx_demomed_GetObjectRequest_PUT_ObjectID(struct zx_demomed_GetObjectRequest
     x->ObjectID = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -953,10 +953,10 @@ void zx_demomed_GetObjectRequest_ADD_ObjectID(struct zx_demomed_GetObjectRequest
   case -1:
     y = x->ObjectID;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ObjectID; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ObjectID; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -976,10 +976,10 @@ void zx_demomed_GetObjectRequest_DEL_ObjectID(struct zx_demomed_GetObjectRequest
   case -1:
     y = (struct zx_elem_s*)x->ObjectID;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ObjectID; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ObjectID; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1003,7 +1003,7 @@ int zx_demomed_GetObjectResponse_NUM_Status(struct zx_demomed_GetObjectResponse_
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1013,7 +1013,7 @@ struct zx_lu_Status_s* zx_demomed_GetObjectResponse_GET_Status(struct zx_demomed
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1070,7 +1070,7 @@ void zx_demomed_GetObjectResponse_PUT_Status(struct zx_demomed_GetObjectResponse
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1092,10 +1092,10 @@ void zx_demomed_GetObjectResponse_ADD_Status(struct zx_demomed_GetObjectResponse
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1115,10 +1115,10 @@ void zx_demomed_GetObjectResponse_DEL_Status(struct zx_demomed_GetObjectResponse
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1137,7 +1137,7 @@ int zx_demomed_GetObjectResponse_NUM_ObjectData(struct zx_demomed_GetObjectRespo
   struct zx_demomed_ObjectData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ObjectData; y; ++n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+  for (y = x->ObjectData; y && y->gg.g.tok == zx_demomed_ObjectData_ELEM; ++n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1147,7 +1147,7 @@ struct zx_demomed_ObjectData_s* zx_demomed_GetObjectResponse_GET_ObjectData(stru
 {
   struct zx_demomed_ObjectData_s* y;
   if (!x) return 0;
-  for (y = x->ObjectData; n>=0 && y; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+  for (y = x->ObjectData; n>=0 && y && y->gg.g.tok == zx_demomed_ObjectData_ELEM; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1204,7 +1204,7 @@ void zx_demomed_GetObjectResponse_PUT_ObjectData(struct zx_demomed_GetObjectResp
     x->ObjectData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectData_ELEM; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1226,10 +1226,10 @@ void zx_demomed_GetObjectResponse_ADD_ObjectData(struct zx_demomed_GetObjectResp
   case -1:
     y = x->ObjectData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectData_ELEM; y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectData; n > 1 && y; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (y = x->ObjectData; n > 1 && y && y->gg.g.tok == zx_demomed_ObjectData_ELEM; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1249,10 +1249,10 @@ void zx_demomed_GetObjectResponse_DEL_ObjectData(struct zx_demomed_GetObjectResp
   case -1:
     y = (struct zx_demomed_ObjectData_s*)x->ObjectData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectData_ELEM; y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectData; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (y = x->ObjectData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectData_ELEM; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1276,7 +1276,7 @@ int zx_demomed_Object_NUM_ObjectInfo(struct zx_demomed_Object_s* x)
   struct zx_demomed_ObjectInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ObjectInfo; y; ++n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+  for (y = x->ObjectInfo; y && y->gg.g.tok == zx_demomed_ObjectInfo_ELEM; ++n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1286,7 +1286,7 @@ struct zx_demomed_ObjectInfo_s* zx_demomed_Object_GET_ObjectInfo(struct zx_demom
 {
   struct zx_demomed_ObjectInfo_s* y;
   if (!x) return 0;
-  for (y = x->ObjectInfo; n>=0 && y; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+  for (y = x->ObjectInfo; n>=0 && y && y->gg.g.tok == zx_demomed_ObjectInfo_ELEM; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1343,7 +1343,7 @@ void zx_demomed_Object_PUT_ObjectInfo(struct zx_demomed_Object_s* x, int n, stru
     x->ObjectInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectInfo_ELEM; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1365,10 +1365,10 @@ void zx_demomed_Object_ADD_ObjectInfo(struct zx_demomed_Object_s* x, int n, stru
   case -1:
     y = x->ObjectInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectInfo_ELEM; y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectInfo; n > 1 && y; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (y = x->ObjectInfo; n > 1 && y && y->gg.g.tok == zx_demomed_ObjectInfo_ELEM; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1388,10 +1388,10 @@ void zx_demomed_Object_DEL_ObjectInfo(struct zx_demomed_Object_s* x, int n)
   case -1:
     y = (struct zx_demomed_ObjectInfo_s*)x->ObjectInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectInfo_ELEM; y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
+    for (y = x->ObjectInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectInfo_ELEM; --n, y = (struct zx_demomed_ObjectInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1410,7 +1410,7 @@ int zx_demomed_Object_NUM_ObjectData(struct zx_demomed_Object_s* x)
   struct zx_demomed_ObjectData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ObjectData; y; ++n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+  for (y = x->ObjectData; y && y->gg.g.tok == zx_demomed_ObjectData_ELEM; ++n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1420,7 +1420,7 @@ struct zx_demomed_ObjectData_s* zx_demomed_Object_GET_ObjectData(struct zx_demom
 {
   struct zx_demomed_ObjectData_s* y;
   if (!x) return 0;
-  for (y = x->ObjectData; n>=0 && y; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+  for (y = x->ObjectData; n>=0 && y && y->gg.g.tok == zx_demomed_ObjectData_ELEM; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1477,7 +1477,7 @@ void zx_demomed_Object_PUT_ObjectData(struct zx_demomed_Object_s* x, int n, stru
     x->ObjectData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectData_ELEM; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1499,10 +1499,10 @@ void zx_demomed_Object_ADD_ObjectData(struct zx_demomed_Object_s* x, int n, stru
   case -1:
     y = x->ObjectData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectData_ELEM; y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectData; n > 1 && y; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (y = x->ObjectData; n > 1 && y && y->gg.g.tok == zx_demomed_ObjectData_ELEM; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1522,10 +1522,10 @@ void zx_demomed_Object_DEL_ObjectData(struct zx_demomed_Object_s* x, int n)
   case -1:
     y = (struct zx_demomed_ObjectData_s*)x->ObjectData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectData_ELEM; y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectData; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
+    for (y = x->ObjectData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectData_ELEM; --n, y = (struct zx_demomed_ObjectData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1562,7 +1562,7 @@ int zx_demomed_ObjectInfo_NUM_Dir(struct zx_demomed_ObjectInfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Dir; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Dir; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1572,7 +1572,7 @@ struct zx_elem_s* zx_demomed_ObjectInfo_GET_Dir(struct zx_demomed_ObjectInfo_s* 
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Dir; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Dir; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1629,7 +1629,7 @@ void zx_demomed_ObjectInfo_PUT_Dir(struct zx_demomed_ObjectInfo_s* x, int n, str
     x->Dir = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1651,10 +1651,10 @@ void zx_demomed_ObjectInfo_ADD_Dir(struct zx_demomed_ObjectInfo_s* x, int n, str
   case -1:
     y = x->Dir;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Dir; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Dir; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1674,10 +1674,10 @@ void zx_demomed_ObjectInfo_DEL_Dir(struct zx_demomed_ObjectInfo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Dir;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Dir; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Dir; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1696,7 +1696,7 @@ int zx_demomed_ObjectInfo_NUM_Name(struct zx_demomed_ObjectInfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Name; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Name; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1706,7 +1706,7 @@ struct zx_elem_s* zx_demomed_ObjectInfo_GET_Name(struct zx_demomed_ObjectInfo_s*
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Name; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Name; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1763,7 +1763,7 @@ void zx_demomed_ObjectInfo_PUT_Name(struct zx_demomed_ObjectInfo_s* x, int n, st
     x->Name = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1785,10 +1785,10 @@ void zx_demomed_ObjectInfo_ADD_Name(struct zx_demomed_ObjectInfo_s* x, int n, st
   case -1:
     y = x->Name;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Name; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Name; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1808,10 +1808,10 @@ void zx_demomed_ObjectInfo_DEL_Name(struct zx_demomed_ObjectInfo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Name;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Name; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Name; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1830,7 +1830,7 @@ int zx_demomed_ObjectInfo_NUM_Type(struct zx_demomed_ObjectInfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Type; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Type; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1840,7 +1840,7 @@ struct zx_elem_s* zx_demomed_ObjectInfo_GET_Type(struct zx_demomed_ObjectInfo_s*
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Type; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Type; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1897,7 +1897,7 @@ void zx_demomed_ObjectInfo_PUT_Type(struct zx_demomed_ObjectInfo_s* x, int n, st
     x->Type = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1919,10 +1919,10 @@ void zx_demomed_ObjectInfo_ADD_Type(struct zx_demomed_ObjectInfo_s* x, int n, st
   case -1:
     y = x->Type;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Type; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Type; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1942,10 +1942,10 @@ void zx_demomed_ObjectInfo_DEL_Type(struct zx_demomed_ObjectInfo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Type;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Type; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Type; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1964,7 +1964,7 @@ int zx_demomed_ObjectInfo_NUM_Created(struct zx_demomed_ObjectInfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Created; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Created; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1974,7 +1974,7 @@ struct zx_elem_s* zx_demomed_ObjectInfo_GET_Created(struct zx_demomed_ObjectInfo
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Created; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Created; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2031,7 +2031,7 @@ void zx_demomed_ObjectInfo_PUT_Created(struct zx_demomed_ObjectInfo_s* x, int n,
     x->Created = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2053,10 +2053,10 @@ void zx_demomed_ObjectInfo_ADD_Created(struct zx_demomed_ObjectInfo_s* x, int n,
   case -1:
     y = x->Created;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Created; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Created; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2076,10 +2076,10 @@ void zx_demomed_ObjectInfo_DEL_Created(struct zx_demomed_ObjectInfo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Created;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Created; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Created; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2098,7 +2098,7 @@ int zx_demomed_ObjectInfo_NUM_Comment(struct zx_demomed_ObjectInfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Comment; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Comment; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2108,7 +2108,7 @@ struct zx_elem_s* zx_demomed_ObjectInfo_GET_Comment(struct zx_demomed_ObjectInfo
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Comment; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Comment; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2165,7 +2165,7 @@ void zx_demomed_ObjectInfo_PUT_Comment(struct zx_demomed_ObjectInfo_s* x, int n,
     x->Comment = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2187,10 +2187,10 @@ void zx_demomed_ObjectInfo_ADD_Comment(struct zx_demomed_ObjectInfo_s* x, int n,
   case -1:
     y = x->Comment;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Comment; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Comment; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2210,10 +2210,10 @@ void zx_demomed_ObjectInfo_DEL_Comment(struct zx_demomed_ObjectInfo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Comment;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Comment; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Comment; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2241,7 +2241,7 @@ int zx_demomed_ObjectSearchParm_NUM_Dir(struct zx_demomed_ObjectSearchParm_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Dir; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Dir; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2251,7 +2251,7 @@ struct zx_elem_s* zx_demomed_ObjectSearchParm_GET_Dir(struct zx_demomed_ObjectSe
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Dir; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Dir; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2308,7 +2308,7 @@ void zx_demomed_ObjectSearchParm_PUT_Dir(struct zx_demomed_ObjectSearchParm_s* x
     x->Dir = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2330,10 +2330,10 @@ void zx_demomed_ObjectSearchParm_ADD_Dir(struct zx_demomed_ObjectSearchParm_s* x
   case -1:
     y = x->Dir;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Dir; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Dir; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2353,10 +2353,10 @@ void zx_demomed_ObjectSearchParm_DEL_Dir(struct zx_demomed_ObjectSearchParm_s* x
   case -1:
     y = (struct zx_elem_s*)x->Dir;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Dir; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Dir; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2375,7 +2375,7 @@ int zx_demomed_ObjectSearchParm_NUM_Name(struct zx_demomed_ObjectSearchParm_s* x
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Name; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Name; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2385,7 +2385,7 @@ struct zx_elem_s* zx_demomed_ObjectSearchParm_GET_Name(struct zx_demomed_ObjectS
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Name; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Name; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2442,7 +2442,7 @@ void zx_demomed_ObjectSearchParm_PUT_Name(struct zx_demomed_ObjectSearchParm_s* 
     x->Name = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2464,10 +2464,10 @@ void zx_demomed_ObjectSearchParm_ADD_Name(struct zx_demomed_ObjectSearchParm_s* 
   case -1:
     y = x->Name;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Name; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Name; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2487,10 +2487,10 @@ void zx_demomed_ObjectSearchParm_DEL_Name(struct zx_demomed_ObjectSearchParm_s* 
   case -1:
     y = (struct zx_elem_s*)x->Name;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Name; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Name; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2509,7 +2509,7 @@ int zx_demomed_ObjectSearchParm_NUM_Type(struct zx_demomed_ObjectSearchParm_s* x
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Type; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Type; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2519,7 +2519,7 @@ struct zx_elem_s* zx_demomed_ObjectSearchParm_GET_Type(struct zx_demomed_ObjectS
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Type; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Type; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2576,7 +2576,7 @@ void zx_demomed_ObjectSearchParm_PUT_Type(struct zx_demomed_ObjectSearchParm_s* 
     x->Type = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2598,10 +2598,10 @@ void zx_demomed_ObjectSearchParm_ADD_Type(struct zx_demomed_ObjectSearchParm_s* 
   case -1:
     y = x->Type;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Type; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Type; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2621,10 +2621,10 @@ void zx_demomed_ObjectSearchParm_DEL_Type(struct zx_demomed_ObjectSearchParm_s* 
   case -1:
     y = (struct zx_elem_s*)x->Type;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Type; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Type; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2643,7 +2643,7 @@ int zx_demomed_ObjectSearchParm_NUM_objectID(struct zx_demomed_ObjectSearchParm_
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->objectID; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->objectID; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2653,7 +2653,7 @@ struct zx_elem_s* zx_demomed_ObjectSearchParm_GET_objectID(struct zx_demomed_Obj
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->objectID; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->objectID; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2710,7 +2710,7 @@ void zx_demomed_ObjectSearchParm_PUT_objectID(struct zx_demomed_ObjectSearchParm
     x->objectID = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2732,10 +2732,10 @@ void zx_demomed_ObjectSearchParm_ADD_objectID(struct zx_demomed_ObjectSearchParm
   case -1:
     y = x->objectID;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->objectID; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->objectID; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2755,10 +2755,10 @@ void zx_demomed_ObjectSearchParm_DEL_objectID(struct zx_demomed_ObjectSearchParm
   case -1:
     y = (struct zx_elem_s*)x->objectID;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->objectID; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->objectID; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2795,7 +2795,7 @@ int zx_demomed_StoreObjectRequest_NUM_Object(struct zx_demomed_StoreObjectReques
   struct zx_demomed_Object_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Object; y; ++n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
+  for (y = x->Object; y && y->gg.g.tok == zx_demomed_Object_ELEM; ++n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2805,7 +2805,7 @@ struct zx_demomed_Object_s* zx_demomed_StoreObjectRequest_GET_Object(struct zx_d
 {
   struct zx_demomed_Object_s* y;
   if (!x) return 0;
-  for (y = x->Object; n>=0 && y; --n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
+  for (y = x->Object; n>=0 && y && y->gg.g.tok == zx_demomed_Object_ELEM; --n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2862,7 +2862,7 @@ void zx_demomed_StoreObjectRequest_PUT_Object(struct zx_demomed_StoreObjectReque
     x->Object = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_Object_ELEM; --n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2884,10 +2884,10 @@ void zx_demomed_StoreObjectRequest_ADD_Object(struct zx_demomed_StoreObjectReque
   case -1:
     y = x->Object;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_Object_ELEM; y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Object; n > 1 && y; --n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
+    for (y = x->Object; n > 1 && y && y->gg.g.tok == zx_demomed_Object_ELEM; --n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2907,10 +2907,10 @@ void zx_demomed_StoreObjectRequest_DEL_Object(struct zx_demomed_StoreObjectReque
   case -1:
     y = (struct zx_demomed_Object_s*)x->Object;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_Object_ELEM; y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Object; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
+    for (y = x->Object; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_Object_ELEM; --n, y = (struct zx_demomed_Object_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2934,7 +2934,7 @@ int zx_demomed_StoreObjectResponse_NUM_Status(struct zx_demomed_StoreObjectRespo
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2944,7 +2944,7 @@ struct zx_lu_Status_s* zx_demomed_StoreObjectResponse_GET_Status(struct zx_demom
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3001,7 +3001,7 @@ void zx_demomed_StoreObjectResponse_PUT_Status(struct zx_demomed_StoreObjectResp
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3023,10 +3023,10 @@ void zx_demomed_StoreObjectResponse_ADD_Status(struct zx_demomed_StoreObjectResp
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3046,10 +3046,10 @@ void zx_demomed_StoreObjectResponse_DEL_Status(struct zx_demomed_StoreObjectResp
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3068,7 +3068,7 @@ int zx_demomed_StoreObjectResponse_NUM_ObjectStoreInfo(struct zx_demomed_StoreOb
   struct zx_demomed_ObjectStoreInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ObjectStoreInfo; y; ++n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
+  for (y = x->ObjectStoreInfo; y && y->gg.g.tok == zx_demomed_ObjectStoreInfo_ELEM; ++n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3078,7 +3078,7 @@ struct zx_demomed_ObjectStoreInfo_s* zx_demomed_StoreObjectResponse_GET_ObjectSt
 {
   struct zx_demomed_ObjectStoreInfo_s* y;
   if (!x) return 0;
-  for (y = x->ObjectStoreInfo; n>=0 && y; --n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
+  for (y = x->ObjectStoreInfo; n>=0 && y && y->gg.g.tok == zx_demomed_ObjectStoreInfo_ELEM; --n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3135,7 +3135,7 @@ void zx_demomed_StoreObjectResponse_PUT_ObjectStoreInfo(struct zx_demomed_StoreO
     x->ObjectStoreInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectStoreInfo_ELEM; --n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3157,10 +3157,10 @@ void zx_demomed_StoreObjectResponse_ADD_ObjectStoreInfo(struct zx_demomed_StoreO
   case -1:
     y = x->ObjectStoreInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectStoreInfo_ELEM; y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectStoreInfo; n > 1 && y; --n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
+    for (y = x->ObjectStoreInfo; n > 1 && y && y->gg.g.tok == zx_demomed_ObjectStoreInfo_ELEM; --n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3180,10 +3180,10 @@ void zx_demomed_StoreObjectResponse_DEL_ObjectStoreInfo(struct zx_demomed_StoreO
   case -1:
     y = (struct zx_demomed_ObjectStoreInfo_s*)x->ObjectStoreInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectStoreInfo_ELEM; y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ObjectStoreInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
+    for (y = x->ObjectStoreInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_demomed_ObjectStoreInfo_ELEM; --n, y = (struct zx_demomed_ObjectStoreInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

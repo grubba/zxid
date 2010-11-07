@@ -40,7 +40,7 @@ int zx_gl_AreaComparison_NUM_CivilData(struct zx_gl_AreaComparison_s* x)
   struct zx_gl_CivilData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CivilData; y; ++n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+  for (y = x->CivilData; y && y->gg.g.tok == zx_gl_CivilData_ELEM; ++n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_gl_CivilData_s* zx_gl_AreaComparison_GET_CivilData(struct zx_gl_AreaCo
 {
   struct zx_gl_CivilData_s* y;
   if (!x) return 0;
-  for (y = x->CivilData; n>=0 && y; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+  for (y = x->CivilData; n>=0 && y && y->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_gl_AreaComparison_PUT_CivilData(struct zx_gl_AreaComparison_s* x, int n,
     x->CivilData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -129,10 +129,10 @@ void zx_gl_AreaComparison_ADD_CivilData(struct zx_gl_AreaComparison_s* x, int n,
   case -1:
     y = x->CivilData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CivilData; n > 1 && y; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (y = x->CivilData; n > 1 && y && y->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -152,10 +152,10 @@ void zx_gl_AreaComparison_DEL_CivilData(struct zx_gl_AreaComparison_s* x, int n)
   case -1:
     y = (struct zx_gl_CivilData_s*)x->CivilData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CivilData; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (y = x->CivilData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -174,7 +174,7 @@ int zx_gl_AreaComparison_NUM_shape(struct zx_gl_AreaComparison_s* x)
   struct zx_gl_shape_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->shape; y; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; y && y->gg.g.tok == zx_gl_shape_ELEM; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -184,7 +184,7 @@ struct zx_gl_shape_s* zx_gl_AreaComparison_GET_shape(struct zx_gl_AreaComparison
 {
   struct zx_gl_shape_s* y;
   if (!x) return 0;
-  for (y = x->shape; n>=0 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; n>=0 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -241,7 +241,7 @@ void zx_gl_AreaComparison_PUT_shape(struct zx_gl_AreaComparison_s* x, int n, str
     x->shape = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -263,10 +263,10 @@ void zx_gl_AreaComparison_ADD_shape(struct zx_gl_AreaComparison_s* x, int n, str
   case -1:
     y = x->shape;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -286,10 +286,10 @@ void zx_gl_AreaComparison_DEL_shape(struct zx_gl_AreaComparison_s* x, int n)
   case -1:
     y = (struct zx_gl_shape_s*)x->shape;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -308,7 +308,7 @@ int zx_gl_AreaComparison_NUM_Extension(struct zx_gl_AreaComparison_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -318,7 +318,7 @@ struct zx_gl_Extension_s* zx_gl_AreaComparison_GET_Extension(struct zx_gl_AreaCo
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -375,7 +375,7 @@ void zx_gl_AreaComparison_PUT_Extension(struct zx_gl_AreaComparison_s* x, int n,
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -397,10 +397,10 @@ void zx_gl_AreaComparison_ADD_Extension(struct zx_gl_AreaComparison_s* x, int n,
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -420,10 +420,10 @@ void zx_gl_AreaComparison_DEL_Extension(struct zx_gl_AreaComparison_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -455,7 +455,7 @@ int zx_gl_Box_NUM_coord(struct zx_gl_Box_s* x)
   struct zx_gl_coord_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->coord; y; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; y && y->gg.g.tok == zx_gl_coord_ELEM; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -465,7 +465,7 @@ struct zx_gl_coord_s* zx_gl_Box_GET_coord(struct zx_gl_Box_s* x, int n)
 {
   struct zx_gl_coord_s* y;
   if (!x) return 0;
-  for (y = x->coord; n>=0 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; n>=0 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -522,7 +522,7 @@ void zx_gl_Box_PUT_coord(struct zx_gl_Box_s* x, int n, struct zx_gl_coord_s* z)
     x->coord = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -544,10 +544,10 @@ void zx_gl_Box_ADD_coord(struct zx_gl_Box_s* x, int n, struct zx_gl_coord_s* z)
   case -1:
     y = x->coord;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -567,10 +567,10 @@ void zx_gl_Box_DEL_coord(struct zx_gl_Box_s* x, int n)
   case -1:
     y = (struct zx_gl_coord_s*)x->coord;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -602,7 +602,7 @@ int zx_gl_ChangeArea_NUM_CivilData(struct zx_gl_ChangeArea_s* x)
   struct zx_gl_CivilData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CivilData; y; ++n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+  for (y = x->CivilData; y && y->gg.g.tok == zx_gl_CivilData_ELEM; ++n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -612,7 +612,7 @@ struct zx_gl_CivilData_s* zx_gl_ChangeArea_GET_CivilData(struct zx_gl_ChangeArea
 {
   struct zx_gl_CivilData_s* y;
   if (!x) return 0;
-  for (y = x->CivilData; n>=0 && y; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+  for (y = x->CivilData; n>=0 && y && y->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -669,7 +669,7 @@ void zx_gl_ChangeArea_PUT_CivilData(struct zx_gl_ChangeArea_s* x, int n, struct 
     x->CivilData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -691,10 +691,10 @@ void zx_gl_ChangeArea_ADD_CivilData(struct zx_gl_ChangeArea_s* x, int n, struct 
   case -1:
     y = x->CivilData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CivilData; n > 1 && y; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (y = x->CivilData; n > 1 && y && y->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -714,10 +714,10 @@ void zx_gl_ChangeArea_DEL_CivilData(struct zx_gl_ChangeArea_s* x, int n)
   case -1:
     y = (struct zx_gl_CivilData_s*)x->CivilData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CivilData; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (y = x->CivilData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -736,7 +736,7 @@ int zx_gl_ChangeArea_NUM_shape(struct zx_gl_ChangeArea_s* x)
   struct zx_gl_shape_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->shape; y; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; y && y->gg.g.tok == zx_gl_shape_ELEM; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -746,7 +746,7 @@ struct zx_gl_shape_s* zx_gl_ChangeArea_GET_shape(struct zx_gl_ChangeArea_s* x, i
 {
   struct zx_gl_shape_s* y;
   if (!x) return 0;
-  for (y = x->shape; n>=0 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; n>=0 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -803,7 +803,7 @@ void zx_gl_ChangeArea_PUT_shape(struct zx_gl_ChangeArea_s* x, int n, struct zx_g
     x->shape = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -825,10 +825,10 @@ void zx_gl_ChangeArea_ADD_shape(struct zx_gl_ChangeArea_s* x, int n, struct zx_g
   case -1:
     y = x->shape;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -848,10 +848,10 @@ void zx_gl_ChangeArea_DEL_shape(struct zx_gl_ChangeArea_s* x, int n)
   case -1:
     y = (struct zx_gl_shape_s*)x->shape;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -870,7 +870,7 @@ int zx_gl_ChangeArea_NUM_Extension(struct zx_gl_ChangeArea_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -880,7 +880,7 @@ struct zx_gl_Extension_s* zx_gl_ChangeArea_GET_Extension(struct zx_gl_ChangeArea
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -937,7 +937,7 @@ void zx_gl_ChangeArea_PUT_Extension(struct zx_gl_ChangeArea_s* x, int n, struct 
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -959,10 +959,10 @@ void zx_gl_ChangeArea_ADD_Extension(struct zx_gl_ChangeArea_s* x, int n, struct 
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -982,10 +982,10 @@ void zx_gl_ChangeArea_DEL_Extension(struct zx_gl_ChangeArea_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1013,7 +1013,7 @@ int zx_gl_CircularArcArea_NUM_coord(struct zx_gl_CircularArcArea_s* x)
   struct zx_gl_coord_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->coord; y; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; y && y->gg.g.tok == zx_gl_coord_ELEM; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1023,7 +1023,7 @@ struct zx_gl_coord_s* zx_gl_CircularArcArea_GET_coord(struct zx_gl_CircularArcAr
 {
   struct zx_gl_coord_s* y;
   if (!x) return 0;
-  for (y = x->coord; n>=0 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; n>=0 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1080,7 +1080,7 @@ void zx_gl_CircularArcArea_PUT_coord(struct zx_gl_CircularArcArea_s* x, int n, s
     x->coord = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1102,10 +1102,10 @@ void zx_gl_CircularArcArea_ADD_coord(struct zx_gl_CircularArcArea_s* x, int n, s
   case -1:
     y = x->coord;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1125,10 +1125,10 @@ void zx_gl_CircularArcArea_DEL_coord(struct zx_gl_CircularArcArea_s* x, int n)
   case -1:
     y = (struct zx_gl_coord_s*)x->coord;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1147,7 +1147,7 @@ int zx_gl_CircularArcArea_NUM_inRadius(struct zx_gl_CircularArcArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->inRadius; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->inRadius; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1157,7 +1157,7 @@ struct zx_elem_s* zx_gl_CircularArcArea_GET_inRadius(struct zx_gl_CircularArcAre
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->inRadius; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->inRadius; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1214,7 +1214,7 @@ void zx_gl_CircularArcArea_PUT_inRadius(struct zx_gl_CircularArcArea_s* x, int n
     x->inRadius = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1236,10 +1236,10 @@ void zx_gl_CircularArcArea_ADD_inRadius(struct zx_gl_CircularArcArea_s* x, int n
   case -1:
     y = x->inRadius;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->inRadius; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->inRadius; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1259,10 +1259,10 @@ void zx_gl_CircularArcArea_DEL_inRadius(struct zx_gl_CircularArcArea_s* x, int n
   case -1:
     y = (struct zx_elem_s*)x->inRadius;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->inRadius; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->inRadius; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1281,7 +1281,7 @@ int zx_gl_CircularArcArea_NUM_outRadius(struct zx_gl_CircularArcArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->outRadius; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->outRadius; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1291,7 +1291,7 @@ struct zx_elem_s* zx_gl_CircularArcArea_GET_outRadius(struct zx_gl_CircularArcAr
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->outRadius; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->outRadius; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1348,7 +1348,7 @@ void zx_gl_CircularArcArea_PUT_outRadius(struct zx_gl_CircularArcArea_s* x, int 
     x->outRadius = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1370,10 +1370,10 @@ void zx_gl_CircularArcArea_ADD_outRadius(struct zx_gl_CircularArcArea_s* x, int 
   case -1:
     y = x->outRadius;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->outRadius; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->outRadius; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1393,10 +1393,10 @@ void zx_gl_CircularArcArea_DEL_outRadius(struct zx_gl_CircularArcArea_s* x, int 
   case -1:
     y = (struct zx_elem_s*)x->outRadius;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->outRadius; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->outRadius; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1415,7 +1415,7 @@ int zx_gl_CircularArcArea_NUM_startAngle(struct zx_gl_CircularArcArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->startAngle; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->startAngle; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1425,7 +1425,7 @@ struct zx_elem_s* zx_gl_CircularArcArea_GET_startAngle(struct zx_gl_CircularArcA
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->startAngle; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->startAngle; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1482,7 +1482,7 @@ void zx_gl_CircularArcArea_PUT_startAngle(struct zx_gl_CircularArcArea_s* x, int
     x->startAngle = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1504,10 +1504,10 @@ void zx_gl_CircularArcArea_ADD_startAngle(struct zx_gl_CircularArcArea_s* x, int
   case -1:
     y = x->startAngle;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->startAngle; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->startAngle; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1527,10 +1527,10 @@ void zx_gl_CircularArcArea_DEL_startAngle(struct zx_gl_CircularArcArea_s* x, int
   case -1:
     y = (struct zx_elem_s*)x->startAngle;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->startAngle; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->startAngle; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1549,7 +1549,7 @@ int zx_gl_CircularArcArea_NUM_stopAngle(struct zx_gl_CircularArcArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->stopAngle; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->stopAngle; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1559,7 +1559,7 @@ struct zx_elem_s* zx_gl_CircularArcArea_GET_stopAngle(struct zx_gl_CircularArcAr
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->stopAngle; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->stopAngle; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1616,7 +1616,7 @@ void zx_gl_CircularArcArea_PUT_stopAngle(struct zx_gl_CircularArcArea_s* x, int 
     x->stopAngle = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1638,10 +1638,10 @@ void zx_gl_CircularArcArea_ADD_stopAngle(struct zx_gl_CircularArcArea_s* x, int 
   case -1:
     y = x->stopAngle;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->stopAngle; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->stopAngle; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1661,10 +1661,10 @@ void zx_gl_CircularArcArea_DEL_stopAngle(struct zx_gl_CircularArcArea_s* x, int 
   case -1:
     y = (struct zx_elem_s*)x->stopAngle;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->stopAngle; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->stopAngle; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1683,7 +1683,7 @@ int zx_gl_CircularArcArea_NUM_angularUnit(struct zx_gl_CircularArcArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->angularUnit; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->angularUnit; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1693,7 +1693,7 @@ struct zx_elem_s* zx_gl_CircularArcArea_GET_angularUnit(struct zx_gl_CircularArc
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->angularUnit; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->angularUnit; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1750,7 +1750,7 @@ void zx_gl_CircularArcArea_PUT_angularUnit(struct zx_gl_CircularArcArea_s* x, in
     x->angularUnit = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1772,10 +1772,10 @@ void zx_gl_CircularArcArea_ADD_angularUnit(struct zx_gl_CircularArcArea_s* x, in
   case -1:
     y = x->angularUnit;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->angularUnit; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->angularUnit; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1795,10 +1795,10 @@ void zx_gl_CircularArcArea_DEL_angularUnit(struct zx_gl_CircularArcArea_s* x, in
   case -1:
     y = (struct zx_elem_s*)x->angularUnit;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->angularUnit; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->angularUnit; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1817,7 +1817,7 @@ int zx_gl_CircularArcArea_NUM_distanceUnit(struct zx_gl_CircularArcArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->distanceUnit; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->distanceUnit; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1827,7 +1827,7 @@ struct zx_elem_s* zx_gl_CircularArcArea_GET_distanceUnit(struct zx_gl_CircularAr
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->distanceUnit; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->distanceUnit; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1884,7 +1884,7 @@ void zx_gl_CircularArcArea_PUT_distanceUnit(struct zx_gl_CircularArcArea_s* x, i
     x->distanceUnit = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1906,10 +1906,10 @@ void zx_gl_CircularArcArea_ADD_distanceUnit(struct zx_gl_CircularArcArea_s* x, i
   case -1:
     y = x->distanceUnit;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->distanceUnit; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->distanceUnit; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1929,10 +1929,10 @@ void zx_gl_CircularArcArea_DEL_distanceUnit(struct zx_gl_CircularArcArea_s* x, i
   case -1:
     y = (struct zx_elem_s*)x->distanceUnit;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->distanceUnit; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->distanceUnit; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1964,7 +1964,7 @@ int zx_gl_CircularArea_NUM_coord(struct zx_gl_CircularArea_s* x)
   struct zx_gl_coord_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->coord; y; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; y && y->gg.g.tok == zx_gl_coord_ELEM; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1974,7 +1974,7 @@ struct zx_gl_coord_s* zx_gl_CircularArea_GET_coord(struct zx_gl_CircularArea_s* 
 {
   struct zx_gl_coord_s* y;
   if (!x) return 0;
-  for (y = x->coord; n>=0 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; n>=0 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2031,7 +2031,7 @@ void zx_gl_CircularArea_PUT_coord(struct zx_gl_CircularArea_s* x, int n, struct 
     x->coord = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2053,10 +2053,10 @@ void zx_gl_CircularArea_ADD_coord(struct zx_gl_CircularArea_s* x, int n, struct 
   case -1:
     y = x->coord;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2076,10 +2076,10 @@ void zx_gl_CircularArea_DEL_coord(struct zx_gl_CircularArea_s* x, int n)
   case -1:
     y = (struct zx_gl_coord_s*)x->coord;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2098,7 +2098,7 @@ int zx_gl_CircularArea_NUM_radius(struct zx_gl_CircularArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->radius; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->radius; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2108,7 +2108,7 @@ struct zx_elem_s* zx_gl_CircularArea_GET_radius(struct zx_gl_CircularArea_s* x, 
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->radius; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->radius; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2165,7 +2165,7 @@ void zx_gl_CircularArea_PUT_radius(struct zx_gl_CircularArea_s* x, int n, struct
     x->radius = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2187,10 +2187,10 @@ void zx_gl_CircularArea_ADD_radius(struct zx_gl_CircularArea_s* x, int n, struct
   case -1:
     y = x->radius;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->radius; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->radius; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2210,10 +2210,10 @@ void zx_gl_CircularArea_DEL_radius(struct zx_gl_CircularArea_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->radius;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->radius; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->radius; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2232,7 +2232,7 @@ int zx_gl_CircularArea_NUM_distanceUnit(struct zx_gl_CircularArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->distanceUnit; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->distanceUnit; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2242,7 +2242,7 @@ struct zx_elem_s* zx_gl_CircularArea_GET_distanceUnit(struct zx_gl_CircularArea_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->distanceUnit; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->distanceUnit; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2299,7 +2299,7 @@ void zx_gl_CircularArea_PUT_distanceUnit(struct zx_gl_CircularArea_s* x, int n, 
     x->distanceUnit = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2321,10 +2321,10 @@ void zx_gl_CircularArea_ADD_distanceUnit(struct zx_gl_CircularArea_s* x, int n, 
   case -1:
     y = x->distanceUnit;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->distanceUnit; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->distanceUnit; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2344,10 +2344,10 @@ void zx_gl_CircularArea_DEL_distanceUnit(struct zx_gl_CircularArea_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->distanceUnit;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->distanceUnit; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->distanceUnit; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2379,7 +2379,7 @@ int zx_gl_CivilData_NUM_PostalAddress(struct zx_gl_CivilData_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PostalAddress; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->PostalAddress; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2389,7 +2389,7 @@ struct zx_elem_s* zx_gl_CivilData_GET_PostalAddress(struct zx_gl_CivilData_s* x,
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->PostalAddress; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->PostalAddress; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2446,7 +2446,7 @@ void zx_gl_CivilData_PUT_PostalAddress(struct zx_gl_CivilData_s* x, int n, struc
     x->PostalAddress = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2468,10 +2468,10 @@ void zx_gl_CivilData_ADD_PostalAddress(struct zx_gl_CivilData_s* x, int n, struc
   case -1:
     y = x->PostalAddress;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->PostalAddress; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->PostalAddress; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2491,10 +2491,10 @@ void zx_gl_CivilData_DEL_PostalAddress(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->PostalAddress;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->PostalAddress; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->PostalAddress; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2513,7 +2513,7 @@ int zx_gl_CivilData_NUM_LPostalAddress(struct zx_gl_CivilData_s* x)
   struct zx_gl_LPostalAddress_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->LPostalAddress; y; ++n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
+  for (y = x->LPostalAddress; y && y->gg.g.tok == zx_gl_LPostalAddress_ELEM; ++n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2523,7 +2523,7 @@ struct zx_gl_LPostalAddress_s* zx_gl_CivilData_GET_LPostalAddress(struct zx_gl_C
 {
   struct zx_gl_LPostalAddress_s* y;
   if (!x) return 0;
-  for (y = x->LPostalAddress; n>=0 && y; --n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
+  for (y = x->LPostalAddress; n>=0 && y && y->gg.g.tok == zx_gl_LPostalAddress_ELEM; --n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2580,7 +2580,7 @@ void zx_gl_CivilData_PUT_LPostalAddress(struct zx_gl_CivilData_s* x, int n, stru
     x->LPostalAddress = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LPostalAddress_ELEM; --n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2602,10 +2602,10 @@ void zx_gl_CivilData_ADD_LPostalAddress(struct zx_gl_CivilData_s* x, int n, stru
   case -1:
     y = x->LPostalAddress;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LPostalAddress_ELEM; y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LPostalAddress; n > 1 && y; --n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
+    for (y = x->LPostalAddress; n > 1 && y && y->gg.g.tok == zx_gl_LPostalAddress_ELEM; --n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2625,10 +2625,10 @@ void zx_gl_CivilData_DEL_LPostalAddress(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_gl_LPostalAddress_s*)x->LPostalAddress;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LPostalAddress_ELEM; y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LPostalAddress; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
+    for (y = x->LPostalAddress; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LPostalAddress_ELEM; --n, y = (struct zx_gl_LPostalAddress_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2647,7 +2647,7 @@ int zx_gl_CivilData_NUM_PostalCode(struct zx_gl_CivilData_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PostalCode; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->PostalCode; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2657,7 +2657,7 @@ struct zx_elem_s* zx_gl_CivilData_GET_PostalCode(struct zx_gl_CivilData_s* x, in
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->PostalCode; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->PostalCode; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2714,7 +2714,7 @@ void zx_gl_CivilData_PUT_PostalCode(struct zx_gl_CivilData_s* x, int n, struct z
     x->PostalCode = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2736,10 +2736,10 @@ void zx_gl_CivilData_ADD_PostalCode(struct zx_gl_CivilData_s* x, int n, struct z
   case -1:
     y = x->PostalCode;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->PostalCode; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->PostalCode; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2759,10 +2759,10 @@ void zx_gl_CivilData_DEL_PostalCode(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->PostalCode;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->PostalCode; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->PostalCode; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2781,7 +2781,7 @@ int zx_gl_CivilData_NUM_L(struct zx_gl_CivilData_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->L; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->L; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2791,7 +2791,7 @@ struct zx_elem_s* zx_gl_CivilData_GET_L(struct zx_gl_CivilData_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->L; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->L; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2848,7 +2848,7 @@ void zx_gl_CivilData_PUT_L(struct zx_gl_CivilData_s* x, int n, struct zx_elem_s*
     x->L = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2870,10 +2870,10 @@ void zx_gl_CivilData_ADD_L(struct zx_gl_CivilData_s* x, int n, struct zx_elem_s*
   case -1:
     y = x->L;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->L; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->L; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2893,10 +2893,10 @@ void zx_gl_CivilData_DEL_L(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->L;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->L; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->L; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2915,7 +2915,7 @@ int zx_gl_CivilData_NUM_LL(struct zx_gl_CivilData_s* x)
   struct zx_gl_LL_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->LL; y; ++n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
+  for (y = x->LL; y && y->gg.g.tok == zx_gl_LL_ELEM; ++n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2925,7 +2925,7 @@ struct zx_gl_LL_s* zx_gl_CivilData_GET_LL(struct zx_gl_CivilData_s* x, int n)
 {
   struct zx_gl_LL_s* y;
   if (!x) return 0;
-  for (y = x->LL; n>=0 && y; --n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
+  for (y = x->LL; n>=0 && y && y->gg.g.tok == zx_gl_LL_ELEM; --n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2982,7 +2982,7 @@ void zx_gl_CivilData_PUT_LL(struct zx_gl_CivilData_s* x, int n, struct zx_gl_LL_
     x->LL = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LL_ELEM; --n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3004,10 +3004,10 @@ void zx_gl_CivilData_ADD_LL(struct zx_gl_CivilData_s* x, int n, struct zx_gl_LL_
   case -1:
     y = x->LL;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_LL_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LL_ELEM; y = (struct zx_gl_LL_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LL; n > 1 && y; --n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
+    for (y = x->LL; n > 1 && y && y->gg.g.tok == zx_gl_LL_ELEM; --n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3027,10 +3027,10 @@ void zx_gl_CivilData_DEL_LL(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_gl_LL_s*)x->LL;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_LL_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LL_ELEM; y = (struct zx_gl_LL_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LL; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
+    for (y = x->LL; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LL_ELEM; --n, y = (struct zx_gl_LL_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3049,7 +3049,7 @@ int zx_gl_CivilData_NUM_St(struct zx_gl_CivilData_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->St; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->St; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3059,7 +3059,7 @@ struct zx_elem_s* zx_gl_CivilData_GET_St(struct zx_gl_CivilData_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->St; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->St; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3116,7 +3116,7 @@ void zx_gl_CivilData_PUT_St(struct zx_gl_CivilData_s* x, int n, struct zx_elem_s
     x->St = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3138,10 +3138,10 @@ void zx_gl_CivilData_ADD_St(struct zx_gl_CivilData_s* x, int n, struct zx_elem_s
   case -1:
     y = x->St;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->St; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->St; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3161,10 +3161,10 @@ void zx_gl_CivilData_DEL_St(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->St;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->St; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->St; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3183,7 +3183,7 @@ int zx_gl_CivilData_NUM_LSt(struct zx_gl_CivilData_s* x)
   struct zx_gl_LSt_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->LSt; y; ++n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
+  for (y = x->LSt; y && y->gg.g.tok == zx_gl_LSt_ELEM; ++n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3193,7 +3193,7 @@ struct zx_gl_LSt_s* zx_gl_CivilData_GET_LSt(struct zx_gl_CivilData_s* x, int n)
 {
   struct zx_gl_LSt_s* y;
   if (!x) return 0;
-  for (y = x->LSt; n>=0 && y; --n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
+  for (y = x->LSt; n>=0 && y && y->gg.g.tok == zx_gl_LSt_ELEM; --n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3250,7 +3250,7 @@ void zx_gl_CivilData_PUT_LSt(struct zx_gl_CivilData_s* x, int n, struct zx_gl_LS
     x->LSt = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LSt_ELEM; --n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3272,10 +3272,10 @@ void zx_gl_CivilData_ADD_LSt(struct zx_gl_CivilData_s* x, int n, struct zx_gl_LS
   case -1:
     y = x->LSt;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LSt_ELEM; y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LSt; n > 1 && y; --n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
+    for (y = x->LSt; n > 1 && y && y->gg.g.tok == zx_gl_LSt_ELEM; --n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3295,10 +3295,10 @@ void zx_gl_CivilData_DEL_LSt(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_gl_LSt_s*)x->LSt;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LSt_ELEM; y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LSt; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
+    for (y = x->LSt; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LSt_ELEM; --n, y = (struct zx_gl_LSt_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3317,7 +3317,7 @@ int zx_gl_CivilData_NUM_C(struct zx_gl_CivilData_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->C; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->C; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3327,7 +3327,7 @@ struct zx_elem_s* zx_gl_CivilData_GET_C(struct zx_gl_CivilData_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->C; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->C; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3384,7 +3384,7 @@ void zx_gl_CivilData_PUT_C(struct zx_gl_CivilData_s* x, int n, struct zx_elem_s*
     x->C = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3406,10 +3406,10 @@ void zx_gl_CivilData_ADD_C(struct zx_gl_CivilData_s* x, int n, struct zx_elem_s*
   case -1:
     y = x->C;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->C; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->C; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3429,10 +3429,10 @@ void zx_gl_CivilData_DEL_C(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->C;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->C; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->C; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3451,7 +3451,7 @@ int zx_gl_CivilData_NUM_MNC(struct zx_gl_CivilData_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->MNC; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->MNC; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3461,7 +3461,7 @@ struct zx_elem_s* zx_gl_CivilData_GET_MNC(struct zx_gl_CivilData_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->MNC; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->MNC; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3518,7 +3518,7 @@ void zx_gl_CivilData_PUT_MNC(struct zx_gl_CivilData_s* x, int n, struct zx_elem_
     x->MNC = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3540,10 +3540,10 @@ void zx_gl_CivilData_ADD_MNC(struct zx_gl_CivilData_s* x, int n, struct zx_elem_
   case -1:
     y = x->MNC;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->MNC; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->MNC; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3563,10 +3563,10 @@ void zx_gl_CivilData_DEL_MNC(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->MNC;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->MNC; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->MNC; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3585,7 +3585,7 @@ int zx_gl_CivilData_NUM_Extension(struct zx_gl_CivilData_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3595,7 +3595,7 @@ struct zx_gl_Extension_s* zx_gl_CivilData_GET_Extension(struct zx_gl_CivilData_s
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3652,7 +3652,7 @@ void zx_gl_CivilData_PUT_Extension(struct zx_gl_CivilData_s* x, int n, struct zx
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3674,10 +3674,10 @@ void zx_gl_CivilData_ADD_Extension(struct zx_gl_CivilData_s* x, int n, struct zx
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3697,10 +3697,10 @@ void zx_gl_CivilData_DEL_Extension(struct zx_gl_CivilData_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3733,7 +3733,7 @@ int zx_gl_CoordinateReferenceSystem_NUM_Identifier(struct zx_gl_CoordinateRefere
   struct zx_gl_Identifier_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Identifier; y; ++n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
+  for (y = x->Identifier; y && y->gg.g.tok == zx_gl_Identifier_ELEM; ++n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3743,7 +3743,7 @@ struct zx_gl_Identifier_s* zx_gl_CoordinateReferenceSystem_GET_Identifier(struct
 {
   struct zx_gl_Identifier_s* y;
   if (!x) return 0;
-  for (y = x->Identifier; n>=0 && y; --n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
+  for (y = x->Identifier; n>=0 && y && y->gg.g.tok == zx_gl_Identifier_ELEM; --n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3800,7 +3800,7 @@ void zx_gl_CoordinateReferenceSystem_PUT_Identifier(struct zx_gl_CoordinateRefer
     x->Identifier = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Identifier_ELEM; --n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3822,10 +3822,10 @@ void zx_gl_CoordinateReferenceSystem_ADD_Identifier(struct zx_gl_CoordinateRefer
   case -1:
     y = x->Identifier;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Identifier_ELEM; y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Identifier; n > 1 && y; --n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
+    for (y = x->Identifier; n > 1 && y && y->gg.g.tok == zx_gl_Identifier_ELEM; --n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3845,10 +3845,10 @@ void zx_gl_CoordinateReferenceSystem_DEL_Identifier(struct zx_gl_CoordinateRefer
   case -1:
     y = (struct zx_gl_Identifier_s*)x->Identifier;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Identifier_ELEM; y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Identifier; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
+    for (y = x->Identifier; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Identifier_ELEM; --n, y = (struct zx_gl_Identifier_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3872,7 +3872,7 @@ int zx_gl_Create_NUM_ResourceID(struct zx_gl_Create_s* x)
   struct zx_gl_ResourceID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ResourceID; y; ++n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+  for (y = x->ResourceID; y && y->gg.g.tok == zx_gl_ResourceID_ELEM; ++n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3882,7 +3882,7 @@ struct zx_gl_ResourceID_s* zx_gl_Create_GET_ResourceID(struct zx_gl_Create_s* x,
 {
   struct zx_gl_ResourceID_s* y;
   if (!x) return 0;
-  for (y = x->ResourceID; n>=0 && y; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+  for (y = x->ResourceID; n>=0 && y && y->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3939,7 +3939,7 @@ void zx_gl_Create_PUT_ResourceID(struct zx_gl_Create_s* x, int n, struct zx_gl_R
     x->ResourceID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3961,10 +3961,10 @@ void zx_gl_Create_ADD_ResourceID(struct zx_gl_Create_s* x, int n, struct zx_gl_R
   case -1:
     y = x->ResourceID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceID; n > 1 && y; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (y = x->ResourceID; n > 1 && y && y->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3984,10 +3984,10 @@ void zx_gl_Create_DEL_ResourceID(struct zx_gl_Create_s* x, int n)
   case -1:
     y = (struct zx_gl_ResourceID_s*)x->ResourceID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceID; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (y = x->ResourceID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4006,7 +4006,7 @@ int zx_gl_Create_NUM_EncryptedResourceID(struct zx_gl_Create_s* x)
   struct zx_gl_EncryptedResourceID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptedResourceID; y; ++n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+  for (y = x->EncryptedResourceID; y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; ++n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4016,7 +4016,7 @@ struct zx_gl_EncryptedResourceID_s* zx_gl_Create_GET_EncryptedResourceID(struct 
 {
   struct zx_gl_EncryptedResourceID_s* y;
   if (!x) return 0;
-  for (y = x->EncryptedResourceID; n>=0 && y; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+  for (y = x->EncryptedResourceID; n>=0 && y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4073,7 +4073,7 @@ void zx_gl_Create_PUT_EncryptedResourceID(struct zx_gl_Create_s* x, int n, struc
     x->EncryptedResourceID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4095,10 +4095,10 @@ void zx_gl_Create_ADD_EncryptedResourceID(struct zx_gl_Create_s* x, int n, struc
   case -1:
     y = x->EncryptedResourceID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedResourceID; n > 1 && y; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (y = x->EncryptedResourceID; n > 1 && y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4118,10 +4118,10 @@ void zx_gl_Create_DEL_EncryptedResourceID(struct zx_gl_Create_s* x, int n)
   case -1:
     y = (struct zx_gl_EncryptedResourceID_s*)x->EncryptedResourceID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedResourceID; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (y = x->EncryptedResourceID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4140,7 +4140,7 @@ int zx_gl_Create_NUM_Subscription(struct zx_gl_Create_s* x)
   struct zx_gl_Subscription_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subscription; y; ++n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; y && y->gg.g.tok == zx_gl_Subscription_ELEM; ++n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4150,7 +4150,7 @@ struct zx_gl_Subscription_s* zx_gl_Create_GET_Subscription(struct zx_gl_Create_s
 {
   struct zx_gl_Subscription_s* y;
   if (!x) return 0;
-  for (y = x->Subscription; n>=0 && y; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; n>=0 && y && y->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4207,7 +4207,7 @@ void zx_gl_Create_PUT_Subscription(struct zx_gl_Create_s* x, int n, struct zx_gl
     x->Subscription = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4229,10 +4229,10 @@ void zx_gl_Create_ADD_Subscription(struct zx_gl_Create_s* x, int n, struct zx_gl
   case -1:
     y = x->Subscription;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y && y->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4252,10 +4252,10 @@ void zx_gl_Create_DEL_Subscription(struct zx_gl_Create_s* x, int n)
   case -1:
     y = (struct zx_gl_Subscription_s*)x->Subscription;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4274,7 +4274,7 @@ int zx_gl_Create_NUM_CreateItem(struct zx_gl_Create_s* x)
   struct zx_gl_CreateItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CreateItem; y; ++n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
+  for (y = x->CreateItem; y && y->gg.g.tok == zx_gl_CreateItem_ELEM; ++n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4284,7 +4284,7 @@ struct zx_gl_CreateItem_s* zx_gl_Create_GET_CreateItem(struct zx_gl_Create_s* x,
 {
   struct zx_gl_CreateItem_s* y;
   if (!x) return 0;
-  for (y = x->CreateItem; n>=0 && y; --n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
+  for (y = x->CreateItem; n>=0 && y && y->gg.g.tok == zx_gl_CreateItem_ELEM; --n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4341,7 +4341,7 @@ void zx_gl_Create_PUT_CreateItem(struct zx_gl_Create_s* x, int n, struct zx_gl_C
     x->CreateItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CreateItem_ELEM; --n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4363,10 +4363,10 @@ void zx_gl_Create_ADD_CreateItem(struct zx_gl_Create_s* x, int n, struct zx_gl_C
   case -1:
     y = x->CreateItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CreateItem_ELEM; y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CreateItem; n > 1 && y; --n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
+    for (y = x->CreateItem; n > 1 && y && y->gg.g.tok == zx_gl_CreateItem_ELEM; --n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4386,10 +4386,10 @@ void zx_gl_Create_DEL_CreateItem(struct zx_gl_Create_s* x, int n)
   case -1:
     y = (struct zx_gl_CreateItem_s*)x->CreateItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CreateItem_ELEM; y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CreateItem; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
+    for (y = x->CreateItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CreateItem_ELEM; --n, y = (struct zx_gl_CreateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4408,7 +4408,7 @@ int zx_gl_Create_NUM_ItemSelection(struct zx_gl_Create_s* x)
   struct zx_gl_ItemSelection_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ItemSelection; y; ++n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+  for (y = x->ItemSelection; y && y->gg.g.tok == zx_gl_ItemSelection_ELEM; ++n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4418,7 +4418,7 @@ struct zx_gl_ItemSelection_s* zx_gl_Create_GET_ItemSelection(struct zx_gl_Create
 {
   struct zx_gl_ItemSelection_s* y;
   if (!x) return 0;
-  for (y = x->ItemSelection; n>=0 && y; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+  for (y = x->ItemSelection; n>=0 && y && y->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4475,7 +4475,7 @@ void zx_gl_Create_PUT_ItemSelection(struct zx_gl_Create_s* x, int n, struct zx_g
     x->ItemSelection = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4497,10 +4497,10 @@ void zx_gl_Create_ADD_ItemSelection(struct zx_gl_Create_s* x, int n, struct zx_g
   case -1:
     y = x->ItemSelection;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemSelection; n > 1 && y; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (y = x->ItemSelection; n > 1 && y && y->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4520,10 +4520,10 @@ void zx_gl_Create_DEL_ItemSelection(struct zx_gl_Create_s* x, int n)
   case -1:
     y = (struct zx_gl_ItemSelection_s*)x->ItemSelection;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemSelection; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (y = x->ItemSelection; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4542,7 +4542,7 @@ int zx_gl_Create_NUM_Extension(struct zx_gl_Create_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4552,7 +4552,7 @@ struct zx_gl_Extension_s* zx_gl_Create_GET_Extension(struct zx_gl_Create_s* x, i
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4609,7 +4609,7 @@ void zx_gl_Create_PUT_Extension(struct zx_gl_Create_s* x, int n, struct zx_gl_Ex
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4631,10 +4631,10 @@ void zx_gl_Create_ADD_Extension(struct zx_gl_Create_s* x, int n, struct zx_gl_Ex
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4654,10 +4654,10 @@ void zx_gl_Create_DEL_Extension(struct zx_gl_Create_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4685,7 +4685,7 @@ int zx_gl_CreateItem_NUM_NewData(struct zx_gl_CreateItem_s* x)
   struct zx_gl_NewData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NewData; y; ++n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+  for (y = x->NewData; y && y->gg.g.tok == zx_gl_NewData_ELEM; ++n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4695,7 +4695,7 @@ struct zx_gl_NewData_s* zx_gl_CreateItem_GET_NewData(struct zx_gl_CreateItem_s* 
 {
   struct zx_gl_NewData_s* y;
   if (!x) return 0;
-  for (y = x->NewData; n>=0 && y; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+  for (y = x->NewData; n>=0 && y && y->gg.g.tok == zx_gl_NewData_ELEM; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4752,7 +4752,7 @@ void zx_gl_CreateItem_PUT_NewData(struct zx_gl_CreateItem_s* x, int n, struct zx
     x->NewData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NewData_ELEM; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4774,10 +4774,10 @@ void zx_gl_CreateItem_ADD_NewData(struct zx_gl_CreateItem_s* x, int n, struct zx
   case -1:
     y = x->NewData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NewData_ELEM; y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NewData; n > 1 && y; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (y = x->NewData; n > 1 && y && y->gg.g.tok == zx_gl_NewData_ELEM; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4797,10 +4797,10 @@ void zx_gl_CreateItem_DEL_NewData(struct zx_gl_CreateItem_s* x, int n)
   case -1:
     y = (struct zx_gl_NewData_s*)x->NewData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NewData_ELEM; y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NewData; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (y = x->NewData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NewData_ELEM; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4836,7 +4836,7 @@ int zx_gl_CreateResponse_NUM_Status(struct zx_gl_CreateResponse_s* x)
   struct zx_gl_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_gl_Status_ELEM; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4846,7 +4846,7 @@ struct zx_gl_Status_s* zx_gl_CreateResponse_GET_Status(struct zx_gl_CreateRespon
 {
   struct zx_gl_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4903,7 +4903,7 @@ void zx_gl_CreateResponse_PUT_Status(struct zx_gl_CreateResponse_s* x, int n, st
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4925,10 +4925,10 @@ void zx_gl_CreateResponse_ADD_Status(struct zx_gl_CreateResponse_s* x, int n, st
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4948,10 +4948,10 @@ void zx_gl_CreateResponse_DEL_Status(struct zx_gl_CreateResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4970,7 +4970,7 @@ int zx_gl_CreateResponse_NUM_ItemData(struct zx_gl_CreateResponse_s* x)
   struct zx_gl_ItemData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ItemData; y; ++n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; y && y->gg.g.tok == zx_gl_ItemData_ELEM; ++n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4980,7 +4980,7 @@ struct zx_gl_ItemData_s* zx_gl_CreateResponse_GET_ItemData(struct zx_gl_CreateRe
 {
   struct zx_gl_ItemData_s* y;
   if (!x) return 0;
-  for (y = x->ItemData; n>=0 && y; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; n>=0 && y && y->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5037,7 +5037,7 @@ void zx_gl_CreateResponse_PUT_ItemData(struct zx_gl_CreateResponse_s* x, int n, 
     x->ItemData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5059,10 +5059,10 @@ void zx_gl_CreateResponse_ADD_ItemData(struct zx_gl_CreateResponse_s* x, int n, 
   case -1:
     y = x->ItemData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y && y->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5082,10 +5082,10 @@ void zx_gl_CreateResponse_DEL_ItemData(struct zx_gl_CreateResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_ItemData_s*)x->ItemData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5104,7 +5104,7 @@ int zx_gl_CreateResponse_NUM_Extension(struct zx_gl_CreateResponse_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5114,7 +5114,7 @@ struct zx_gl_Extension_s* zx_gl_CreateResponse_GET_Extension(struct zx_gl_Create
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5171,7 +5171,7 @@ void zx_gl_CreateResponse_PUT_Extension(struct zx_gl_CreateResponse_s* x, int n,
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5193,10 +5193,10 @@ void zx_gl_CreateResponse_ADD_Extension(struct zx_gl_CreateResponse_s* x, int n,
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5216,10 +5216,10 @@ void zx_gl_CreateResponse_DEL_Extension(struct zx_gl_CreateResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5251,7 +5251,7 @@ int zx_gl_Credential_NUM_Assertion(struct zx_gl_Credential_s* x)
   struct zx_sa_Assertion_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Assertion; y; ++n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+  for (y = x->Assertion; y && y->gg.g.tok == zx_sa_Assertion_ELEM; ++n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5261,7 +5261,7 @@ struct zx_sa_Assertion_s* zx_gl_Credential_GET_Assertion(struct zx_gl_Credential
 {
   struct zx_sa_Assertion_s* y;
   if (!x) return 0;
-  for (y = x->Assertion; n>=0 && y; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+  for (y = x->Assertion; n>=0 && y && y->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5318,7 +5318,7 @@ void zx_gl_Credential_PUT_Assertion(struct zx_gl_Credential_s* x, int n, struct 
     x->Assertion = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5340,10 +5340,10 @@ void zx_gl_Credential_ADD_Assertion(struct zx_gl_Credential_s* x, int n, struct 
   case -1:
     y = x->Assertion;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Assertion; n > 1 && y; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (y = x->Assertion; n > 1 && y && y->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5363,10 +5363,10 @@ void zx_gl_Credential_DEL_Assertion(struct zx_gl_Credential_s* x, int n)
   case -1:
     y = (struct zx_sa_Assertion_s*)x->Assertion;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Assertion; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (y = x->Assertion; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5427,7 +5427,7 @@ int zx_gl_Delete_NUM_ResourceID(struct zx_gl_Delete_s* x)
   struct zx_gl_ResourceID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ResourceID; y; ++n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+  for (y = x->ResourceID; y && y->gg.g.tok == zx_gl_ResourceID_ELEM; ++n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5437,7 +5437,7 @@ struct zx_gl_ResourceID_s* zx_gl_Delete_GET_ResourceID(struct zx_gl_Delete_s* x,
 {
   struct zx_gl_ResourceID_s* y;
   if (!x) return 0;
-  for (y = x->ResourceID; n>=0 && y; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+  for (y = x->ResourceID; n>=0 && y && y->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5494,7 +5494,7 @@ void zx_gl_Delete_PUT_ResourceID(struct zx_gl_Delete_s* x, int n, struct zx_gl_R
     x->ResourceID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5516,10 +5516,10 @@ void zx_gl_Delete_ADD_ResourceID(struct zx_gl_Delete_s* x, int n, struct zx_gl_R
   case -1:
     y = x->ResourceID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceID; n > 1 && y; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (y = x->ResourceID; n > 1 && y && y->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5539,10 +5539,10 @@ void zx_gl_Delete_DEL_ResourceID(struct zx_gl_Delete_s* x, int n)
   case -1:
     y = (struct zx_gl_ResourceID_s*)x->ResourceID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceID; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (y = x->ResourceID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5561,7 +5561,7 @@ int zx_gl_Delete_NUM_EncryptedResourceID(struct zx_gl_Delete_s* x)
   struct zx_gl_EncryptedResourceID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptedResourceID; y; ++n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+  for (y = x->EncryptedResourceID; y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; ++n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5571,7 +5571,7 @@ struct zx_gl_EncryptedResourceID_s* zx_gl_Delete_GET_EncryptedResourceID(struct 
 {
   struct zx_gl_EncryptedResourceID_s* y;
   if (!x) return 0;
-  for (y = x->EncryptedResourceID; n>=0 && y; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+  for (y = x->EncryptedResourceID; n>=0 && y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5628,7 +5628,7 @@ void zx_gl_Delete_PUT_EncryptedResourceID(struct zx_gl_Delete_s* x, int n, struc
     x->EncryptedResourceID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5650,10 +5650,10 @@ void zx_gl_Delete_ADD_EncryptedResourceID(struct zx_gl_Delete_s* x, int n, struc
   case -1:
     y = x->EncryptedResourceID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedResourceID; n > 1 && y; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (y = x->EncryptedResourceID; n > 1 && y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5673,10 +5673,10 @@ void zx_gl_Delete_DEL_EncryptedResourceID(struct zx_gl_Delete_s* x, int n)
   case -1:
     y = (struct zx_gl_EncryptedResourceID_s*)x->EncryptedResourceID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedResourceID; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (y = x->EncryptedResourceID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5695,7 +5695,7 @@ int zx_gl_Delete_NUM_DeleteItem(struct zx_gl_Delete_s* x)
   struct zx_gl_DeleteItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->DeleteItem; y; ++n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
+  for (y = x->DeleteItem; y && y->gg.g.tok == zx_gl_DeleteItem_ELEM; ++n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5705,7 +5705,7 @@ struct zx_gl_DeleteItem_s* zx_gl_Delete_GET_DeleteItem(struct zx_gl_Delete_s* x,
 {
   struct zx_gl_DeleteItem_s* y;
   if (!x) return 0;
-  for (y = x->DeleteItem; n>=0 && y; --n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
+  for (y = x->DeleteItem; n>=0 && y && y->gg.g.tok == zx_gl_DeleteItem_ELEM; --n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5762,7 +5762,7 @@ void zx_gl_Delete_PUT_DeleteItem(struct zx_gl_Delete_s* x, int n, struct zx_gl_D
     x->DeleteItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_DeleteItem_ELEM; --n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5784,10 +5784,10 @@ void zx_gl_Delete_ADD_DeleteItem(struct zx_gl_Delete_s* x, int n, struct zx_gl_D
   case -1:
     y = x->DeleteItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_DeleteItem_ELEM; y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DeleteItem; n > 1 && y; --n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
+    for (y = x->DeleteItem; n > 1 && y && y->gg.g.tok == zx_gl_DeleteItem_ELEM; --n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5807,10 +5807,10 @@ void zx_gl_Delete_DEL_DeleteItem(struct zx_gl_Delete_s* x, int n)
   case -1:
     y = (struct zx_gl_DeleteItem_s*)x->DeleteItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_DeleteItem_ELEM; y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DeleteItem; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
+    for (y = x->DeleteItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_DeleteItem_ELEM; --n, y = (struct zx_gl_DeleteItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5829,7 +5829,7 @@ int zx_gl_Delete_NUM_Extension(struct zx_gl_Delete_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5839,7 +5839,7 @@ struct zx_gl_Extension_s* zx_gl_Delete_GET_Extension(struct zx_gl_Delete_s* x, i
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5896,7 +5896,7 @@ void zx_gl_Delete_PUT_Extension(struct zx_gl_Delete_s* x, int n, struct zx_gl_Ex
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5918,10 +5918,10 @@ void zx_gl_Delete_ADD_Extension(struct zx_gl_Delete_s* x, int n, struct zx_gl_Ex
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5941,10 +5941,10 @@ void zx_gl_Delete_DEL_Extension(struct zx_gl_Delete_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5972,7 +5972,7 @@ int zx_gl_DeleteItem_NUM_Select(struct zx_gl_DeleteItem_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Select; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -5982,7 +5982,7 @@ struct zx_elem_s* zx_gl_DeleteItem_GET_Select(struct zx_gl_DeleteItem_s* x, int 
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Select; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -6039,7 +6039,7 @@ void zx_gl_DeleteItem_PUT_Select(struct zx_gl_DeleteItem_s* x, int n, struct zx_
     x->Select = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -6061,10 +6061,10 @@ void zx_gl_DeleteItem_ADD_Select(struct zx_gl_DeleteItem_s* x, int n, struct zx_
   case -1:
     y = x->Select;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -6084,10 +6084,10 @@ void zx_gl_DeleteItem_DEL_Select(struct zx_gl_DeleteItem_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Select;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -6131,7 +6131,7 @@ int zx_gl_DeleteResponse_NUM_Status(struct zx_gl_DeleteResponse_s* x)
   struct zx_gl_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_gl_Status_ELEM; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6141,7 +6141,7 @@ struct zx_gl_Status_s* zx_gl_DeleteResponse_GET_Status(struct zx_gl_DeleteRespon
 {
   struct zx_gl_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6198,7 +6198,7 @@ void zx_gl_DeleteResponse_PUT_Status(struct zx_gl_DeleteResponse_s* x, int n, st
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6220,10 +6220,10 @@ void zx_gl_DeleteResponse_ADD_Status(struct zx_gl_DeleteResponse_s* x, int n, st
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6243,10 +6243,10 @@ void zx_gl_DeleteResponse_DEL_Status(struct zx_gl_DeleteResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6265,7 +6265,7 @@ int zx_gl_DeleteResponse_NUM_Extension(struct zx_gl_DeleteResponse_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6275,7 +6275,7 @@ struct zx_gl_Extension_s* zx_gl_DeleteResponse_GET_Extension(struct zx_gl_Delete
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6332,7 +6332,7 @@ void zx_gl_DeleteResponse_PUT_Extension(struct zx_gl_DeleteResponse_s* x, int n,
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6354,10 +6354,10 @@ void zx_gl_DeleteResponse_ADD_Extension(struct zx_gl_DeleteResponse_s* x, int n,
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6377,10 +6377,10 @@ void zx_gl_DeleteResponse_DEL_Extension(struct zx_gl_DeleteResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6408,7 +6408,7 @@ int zx_gl_EllipticalArea_NUM_coord(struct zx_gl_EllipticalArea_s* x)
   struct zx_gl_coord_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->coord; y; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; y && y->gg.g.tok == zx_gl_coord_ELEM; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6418,7 +6418,7 @@ struct zx_gl_coord_s* zx_gl_EllipticalArea_GET_coord(struct zx_gl_EllipticalArea
 {
   struct zx_gl_coord_s* y;
   if (!x) return 0;
-  for (y = x->coord; n>=0 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; n>=0 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6475,7 +6475,7 @@ void zx_gl_EllipticalArea_PUT_coord(struct zx_gl_EllipticalArea_s* x, int n, str
     x->coord = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6497,10 +6497,10 @@ void zx_gl_EllipticalArea_ADD_coord(struct zx_gl_EllipticalArea_s* x, int n, str
   case -1:
     y = x->coord;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6520,10 +6520,10 @@ void zx_gl_EllipticalArea_DEL_coord(struct zx_gl_EllipticalArea_s* x, int n)
   case -1:
     y = (struct zx_gl_coord_s*)x->coord;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6542,7 +6542,7 @@ int zx_gl_EllipticalArea_NUM_angle(struct zx_gl_EllipticalArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->angle; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->angle; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -6552,7 +6552,7 @@ struct zx_elem_s* zx_gl_EllipticalArea_GET_angle(struct zx_gl_EllipticalArea_s* 
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->angle; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->angle; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -6609,7 +6609,7 @@ void zx_gl_EllipticalArea_PUT_angle(struct zx_gl_EllipticalArea_s* x, int n, str
     x->angle = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -6631,10 +6631,10 @@ void zx_gl_EllipticalArea_ADD_angle(struct zx_gl_EllipticalArea_s* x, int n, str
   case -1:
     y = x->angle;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->angle; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->angle; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -6654,10 +6654,10 @@ void zx_gl_EllipticalArea_DEL_angle(struct zx_gl_EllipticalArea_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->angle;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->angle; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->angle; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -6676,7 +6676,7 @@ int zx_gl_EllipticalArea_NUM_semiMajor(struct zx_gl_EllipticalArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->semiMajor; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->semiMajor; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -6686,7 +6686,7 @@ struct zx_elem_s* zx_gl_EllipticalArea_GET_semiMajor(struct zx_gl_EllipticalArea
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->semiMajor; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->semiMajor; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -6743,7 +6743,7 @@ void zx_gl_EllipticalArea_PUT_semiMajor(struct zx_gl_EllipticalArea_s* x, int n,
     x->semiMajor = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -6765,10 +6765,10 @@ void zx_gl_EllipticalArea_ADD_semiMajor(struct zx_gl_EllipticalArea_s* x, int n,
   case -1:
     y = x->semiMajor;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->semiMajor; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->semiMajor; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -6788,10 +6788,10 @@ void zx_gl_EllipticalArea_DEL_semiMajor(struct zx_gl_EllipticalArea_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->semiMajor;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->semiMajor; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->semiMajor; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -6810,7 +6810,7 @@ int zx_gl_EllipticalArea_NUM_semiMinor(struct zx_gl_EllipticalArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->semiMinor; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->semiMinor; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -6820,7 +6820,7 @@ struct zx_elem_s* zx_gl_EllipticalArea_GET_semiMinor(struct zx_gl_EllipticalArea
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->semiMinor; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->semiMinor; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -6877,7 +6877,7 @@ void zx_gl_EllipticalArea_PUT_semiMinor(struct zx_gl_EllipticalArea_s* x, int n,
     x->semiMinor = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -6899,10 +6899,10 @@ void zx_gl_EllipticalArea_ADD_semiMinor(struct zx_gl_EllipticalArea_s* x, int n,
   case -1:
     y = x->semiMinor;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->semiMinor; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->semiMinor; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -6922,10 +6922,10 @@ void zx_gl_EllipticalArea_DEL_semiMinor(struct zx_gl_EllipticalArea_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->semiMinor;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->semiMinor; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->semiMinor; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -6944,7 +6944,7 @@ int zx_gl_EllipticalArea_NUM_angularUnit(struct zx_gl_EllipticalArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->angularUnit; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->angularUnit; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -6954,7 +6954,7 @@ struct zx_elem_s* zx_gl_EllipticalArea_GET_angularUnit(struct zx_gl_EllipticalAr
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->angularUnit; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->angularUnit; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7011,7 +7011,7 @@ void zx_gl_EllipticalArea_PUT_angularUnit(struct zx_gl_EllipticalArea_s* x, int 
     x->angularUnit = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7033,10 +7033,10 @@ void zx_gl_EllipticalArea_ADD_angularUnit(struct zx_gl_EllipticalArea_s* x, int 
   case -1:
     y = x->angularUnit;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->angularUnit; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->angularUnit; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7056,10 +7056,10 @@ void zx_gl_EllipticalArea_DEL_angularUnit(struct zx_gl_EllipticalArea_s* x, int 
   case -1:
     y = (struct zx_elem_s*)x->angularUnit;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->angularUnit; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->angularUnit; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7078,7 +7078,7 @@ int zx_gl_EllipticalArea_NUM_distanceUnit(struct zx_gl_EllipticalArea_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->distanceUnit; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->distanceUnit; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7088,7 +7088,7 @@ struct zx_elem_s* zx_gl_EllipticalArea_GET_distanceUnit(struct zx_gl_EllipticalA
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->distanceUnit; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->distanceUnit; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7145,7 +7145,7 @@ void zx_gl_EllipticalArea_PUT_distanceUnit(struct zx_gl_EllipticalArea_s* x, int
     x->distanceUnit = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7167,10 +7167,10 @@ void zx_gl_EllipticalArea_ADD_distanceUnit(struct zx_gl_EllipticalArea_s* x, int
   case -1:
     y = x->distanceUnit;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->distanceUnit; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->distanceUnit; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7190,10 +7190,10 @@ void zx_gl_EllipticalArea_DEL_distanceUnit(struct zx_gl_EllipticalArea_s* x, int
   case -1:
     y = (struct zx_elem_s*)x->distanceUnit;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->distanceUnit; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->distanceUnit; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7225,7 +7225,7 @@ int zx_gl_EncryptedResourceID_NUM_EncryptedData(struct zx_gl_EncryptedResourceID
   struct zx_xenc_EncryptedData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptedData; y; ++n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
+  for (y = x->EncryptedData; y && y->gg.g.tok == zx_xenc_EncryptedData_ELEM; ++n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -7235,7 +7235,7 @@ struct zx_xenc_EncryptedData_s* zx_gl_EncryptedResourceID_GET_EncryptedData(stru
 {
   struct zx_xenc_EncryptedData_s* y;
   if (!x) return 0;
-  for (y = x->EncryptedData; n>=0 && y; --n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
+  for (y = x->EncryptedData; n>=0 && y && y->gg.g.tok == zx_xenc_EncryptedData_ELEM; --n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -7292,7 +7292,7 @@ void zx_gl_EncryptedResourceID_PUT_EncryptedData(struct zx_gl_EncryptedResourceI
     x->EncryptedData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedData_ELEM; --n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -7314,10 +7314,10 @@ void zx_gl_EncryptedResourceID_ADD_EncryptedData(struct zx_gl_EncryptedResourceI
   case -1:
     y = x->EncryptedData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedData_ELEM; y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedData; n > 1 && y; --n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
+    for (y = x->EncryptedData; n > 1 && y && y->gg.g.tok == zx_xenc_EncryptedData_ELEM; --n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -7337,10 +7337,10 @@ void zx_gl_EncryptedResourceID_DEL_EncryptedData(struct zx_gl_EncryptedResourceI
   case -1:
     y = (struct zx_xenc_EncryptedData_s*)x->EncryptedData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedData_ELEM; y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedData; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
+    for (y = x->EncryptedData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedData_ELEM; --n, y = (struct zx_xenc_EncryptedData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -7359,7 +7359,7 @@ int zx_gl_EncryptedResourceID_NUM_EncryptedKey(struct zx_gl_EncryptedResourceID_
   struct zx_xenc_EncryptedKey_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptedKey; y; ++n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+  for (y = x->EncryptedKey; y && y->gg.g.tok == zx_xenc_EncryptedKey_ELEM; ++n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -7369,7 +7369,7 @@ struct zx_xenc_EncryptedKey_s* zx_gl_EncryptedResourceID_GET_EncryptedKey(struct
 {
   struct zx_xenc_EncryptedKey_s* y;
   if (!x) return 0;
-  for (y = x->EncryptedKey; n>=0 && y; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+  for (y = x->EncryptedKey; n>=0 && y && y->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -7426,7 +7426,7 @@ void zx_gl_EncryptedResourceID_PUT_EncryptedKey(struct zx_gl_EncryptedResourceID
     x->EncryptedKey = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -7448,10 +7448,10 @@ void zx_gl_EncryptedResourceID_ADD_EncryptedKey(struct zx_gl_EncryptedResourceID
   case -1:
     y = x->EncryptedKey;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedKey; n > 1 && y; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (y = x->EncryptedKey; n > 1 && y && y->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -7471,10 +7471,10 @@ void zx_gl_EncryptedResourceID_DEL_EncryptedKey(struct zx_gl_EncryptedResourceID
   case -1:
     y = (struct zx_xenc_EncryptedKey_s*)x->EncryptedKey;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedKey; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (y = x->EncryptedKey; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -7503,7 +7503,7 @@ int zx_gl_GeometryCollection_NUM_shape(struct zx_gl_GeometryCollection_s* x)
   struct zx_gl_shape_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->shape; y; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; y && y->gg.g.tok == zx_gl_shape_ELEM; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -7513,7 +7513,7 @@ struct zx_gl_shape_s* zx_gl_GeometryCollection_GET_shape(struct zx_gl_GeometryCo
 {
   struct zx_gl_shape_s* y;
   if (!x) return 0;
-  for (y = x->shape; n>=0 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; n>=0 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -7570,7 +7570,7 @@ void zx_gl_GeometryCollection_PUT_shape(struct zx_gl_GeometryCollection_s* x, in
     x->shape = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -7592,10 +7592,10 @@ void zx_gl_GeometryCollection_ADD_shape(struct zx_gl_GeometryCollection_s* x, in
   case -1:
     y = x->shape;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -7615,10 +7615,10 @@ void zx_gl_GeometryCollection_DEL_shape(struct zx_gl_GeometryCollection_s* x, in
   case -1:
     y = (struct zx_gl_shape_s*)x->shape;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -7650,7 +7650,7 @@ int zx_gl_Identifier_NUM_code(struct zx_gl_Identifier_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->code; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->code; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7660,7 +7660,7 @@ struct zx_elem_s* zx_gl_Identifier_GET_code(struct zx_gl_Identifier_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->code; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->code; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7717,7 +7717,7 @@ void zx_gl_Identifier_PUT_code(struct zx_gl_Identifier_s* x, int n, struct zx_el
     x->code = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7739,10 +7739,10 @@ void zx_gl_Identifier_ADD_code(struct zx_gl_Identifier_s* x, int n, struct zx_el
   case -1:
     y = x->code;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->code; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->code; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7762,10 +7762,10 @@ void zx_gl_Identifier_DEL_code(struct zx_gl_Identifier_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->code;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->code; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->code; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7784,7 +7784,7 @@ int zx_gl_Identifier_NUM_codeSpace(struct zx_gl_Identifier_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->codeSpace; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->codeSpace; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7794,7 +7794,7 @@ struct zx_elem_s* zx_gl_Identifier_GET_codeSpace(struct zx_gl_Identifier_s* x, i
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->codeSpace; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->codeSpace; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7851,7 +7851,7 @@ void zx_gl_Identifier_PUT_codeSpace(struct zx_gl_Identifier_s* x, int n, struct 
     x->codeSpace = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7873,10 +7873,10 @@ void zx_gl_Identifier_ADD_codeSpace(struct zx_gl_Identifier_s* x, int n, struct 
   case -1:
     y = x->codeSpace;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->codeSpace; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->codeSpace; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7896,10 +7896,10 @@ void zx_gl_Identifier_DEL_codeSpace(struct zx_gl_Identifier_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->codeSpace;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->codeSpace; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->codeSpace; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7918,7 +7918,7 @@ int zx_gl_Identifier_NUM_edition(struct zx_gl_Identifier_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->edition; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->edition; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7928,7 +7928,7 @@ struct zx_elem_s* zx_gl_Identifier_GET_edition(struct zx_gl_Identifier_s* x, int
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->edition; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->edition; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7985,7 +7985,7 @@ void zx_gl_Identifier_PUT_edition(struct zx_gl_Identifier_s* x, int n, struct zx
     x->edition = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -8007,10 +8007,10 @@ void zx_gl_Identifier_ADD_edition(struct zx_gl_Identifier_s* x, int n, struct zx
   case -1:
     y = x->edition;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->edition; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->edition; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -8030,10 +8030,10 @@ void zx_gl_Identifier_DEL_edition(struct zx_gl_Identifier_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->edition;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->edition; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->edition; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -8078,7 +8078,7 @@ int zx_gl_ItemSelection_NUM_AreaComparison(struct zx_gl_ItemSelection_s* x)
   struct zx_gl_AreaComparison_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AreaComparison; y; ++n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+  for (y = x->AreaComparison; y && y->gg.g.tok == zx_gl_AreaComparison_ELEM; ++n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8088,7 +8088,7 @@ struct zx_gl_AreaComparison_s* zx_gl_ItemSelection_GET_AreaComparison(struct zx_
 {
   struct zx_gl_AreaComparison_s* y;
   if (!x) return 0;
-  for (y = x->AreaComparison; n>=0 && y; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+  for (y = x->AreaComparison; n>=0 && y && y->gg.g.tok == zx_gl_AreaComparison_ELEM; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8145,7 +8145,7 @@ void zx_gl_ItemSelection_PUT_AreaComparison(struct zx_gl_ItemSelection_s* x, int
     x->AreaComparison = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_AreaComparison_ELEM; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8167,10 +8167,10 @@ void zx_gl_ItemSelection_ADD_AreaComparison(struct zx_gl_ItemSelection_s* x, int
   case -1:
     y = x->AreaComparison;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_AreaComparison_ELEM; y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AreaComparison; n > 1 && y; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (y = x->AreaComparison; n > 1 && y && y->gg.g.tok == zx_gl_AreaComparison_ELEM; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -8190,10 +8190,10 @@ void zx_gl_ItemSelection_DEL_AreaComparison(struct zx_gl_ItemSelection_s* x, int
   case -1:
     y = (struct zx_gl_AreaComparison_s*)x->AreaComparison;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_AreaComparison_ELEM; y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AreaComparison; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (y = x->AreaComparison; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_AreaComparison_ELEM; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -8212,7 +8212,7 @@ int zx_gl_ItemSelection_NUM_eqop(struct zx_gl_ItemSelection_s* x)
   struct zx_gl_eqop_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->eqop; y; ++n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+  for (y = x->eqop; y && y->gg.g.tok == zx_gl_eqop_ELEM; ++n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8222,7 +8222,7 @@ struct zx_gl_eqop_s* zx_gl_ItemSelection_GET_eqop(struct zx_gl_ItemSelection_s* 
 {
   struct zx_gl_eqop_s* y;
   if (!x) return 0;
-  for (y = x->eqop; n>=0 && y; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+  for (y = x->eqop; n>=0 && y && y->gg.g.tok == zx_gl_eqop_ELEM; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8279,7 +8279,7 @@ void zx_gl_ItemSelection_PUT_eqop(struct zx_gl_ItemSelection_s* x, int n, struct
     x->eqop = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_eqop_ELEM; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8301,10 +8301,10 @@ void zx_gl_ItemSelection_ADD_eqop(struct zx_gl_ItemSelection_s* x, int n, struct
   case -1:
     y = x->eqop;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_eqop_ELEM; y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->eqop; n > 1 && y; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (y = x->eqop; n > 1 && y && y->gg.g.tok == zx_gl_eqop_ELEM; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -8324,10 +8324,10 @@ void zx_gl_ItemSelection_DEL_eqop(struct zx_gl_ItemSelection_s* x, int n)
   case -1:
     y = (struct zx_gl_eqop_s*)x->eqop;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_eqop_ELEM; y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->eqop; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (y = x->eqop; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_eqop_ELEM; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -8346,7 +8346,7 @@ int zx_gl_ItemSelection_NUM_geoinfo(struct zx_gl_ItemSelection_s* x)
   struct zx_gl_geoinfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->geoinfo; y; ++n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+  for (y = x->geoinfo; y && y->gg.g.tok == zx_gl_geoinfo_ELEM; ++n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8356,7 +8356,7 @@ struct zx_gl_geoinfo_s* zx_gl_ItemSelection_GET_geoinfo(struct zx_gl_ItemSelecti
 {
   struct zx_gl_geoinfo_s* y;
   if (!x) return 0;
-  for (y = x->geoinfo; n>=0 && y; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+  for (y = x->geoinfo; n>=0 && y && y->gg.g.tok == zx_gl_geoinfo_ELEM; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8413,7 +8413,7 @@ void zx_gl_ItemSelection_PUT_geoinfo(struct zx_gl_ItemSelection_s* x, int n, str
     x->geoinfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_geoinfo_ELEM; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8435,10 +8435,10 @@ void zx_gl_ItemSelection_ADD_geoinfo(struct zx_gl_ItemSelection_s* x, int n, str
   case -1:
     y = x->geoinfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_geoinfo_ELEM; y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->geoinfo; n > 1 && y; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (y = x->geoinfo; n > 1 && y && y->gg.g.tok == zx_gl_geoinfo_ELEM; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -8458,10 +8458,10 @@ void zx_gl_ItemSelection_DEL_geoinfo(struct zx_gl_ItemSelection_s* x, int n)
   case -1:
     y = (struct zx_gl_geoinfo_s*)x->geoinfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_geoinfo_ELEM; y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->geoinfo; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (y = x->geoinfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_geoinfo_ELEM; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -8480,7 +8480,7 @@ int zx_gl_ItemSelection_NUM_loc_type(struct zx_gl_ItemSelection_s* x)
   struct zx_gl_loc_type_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->loc_type; y; ++n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+  for (y = x->loc_type; y && y->gg.g.tok == zx_gl_loc_type_ELEM; ++n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8490,7 +8490,7 @@ struct zx_gl_loc_type_s* zx_gl_ItemSelection_GET_loc_type(struct zx_gl_ItemSelec
 {
   struct zx_gl_loc_type_s* y;
   if (!x) return 0;
-  for (y = x->loc_type; n>=0 && y; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+  for (y = x->loc_type; n>=0 && y && y->gg.g.tok == zx_gl_loc_type_ELEM; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8547,7 +8547,7 @@ void zx_gl_ItemSelection_PUT_loc_type(struct zx_gl_ItemSelection_s* x, int n, st
     x->loc_type = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_loc_type_ELEM; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8569,10 +8569,10 @@ void zx_gl_ItemSelection_ADD_loc_type(struct zx_gl_ItemSelection_s* x, int n, st
   case -1:
     y = x->loc_type;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_loc_type_ELEM; y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->loc_type; n > 1 && y; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (y = x->loc_type; n > 1 && y && y->gg.g.tok == zx_gl_loc_type_ELEM; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -8592,10 +8592,10 @@ void zx_gl_ItemSelection_DEL_loc_type(struct zx_gl_ItemSelection_s* x, int n)
   case -1:
     y = (struct zx_gl_loc_type_s*)x->loc_type;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_loc_type_ELEM; y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->loc_type; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (y = x->loc_type; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_loc_type_ELEM; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -8614,7 +8614,7 @@ int zx_gl_ItemSelection_NUM_prio(struct zx_gl_ItemSelection_s* x)
   struct zx_gl_prio_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->prio; y; ++n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+  for (y = x->prio; y && y->gg.g.tok == zx_gl_prio_ELEM; ++n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8624,7 +8624,7 @@ struct zx_gl_prio_s* zx_gl_ItemSelection_GET_prio(struct zx_gl_ItemSelection_s* 
 {
   struct zx_gl_prio_s* y;
   if (!x) return 0;
-  for (y = x->prio; n>=0 && y; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+  for (y = x->prio; n>=0 && y && y->gg.g.tok == zx_gl_prio_ELEM; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8681,7 +8681,7 @@ void zx_gl_ItemSelection_PUT_prio(struct zx_gl_ItemSelection_s* x, int n, struct
     x->prio = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_prio_ELEM; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8703,10 +8703,10 @@ void zx_gl_ItemSelection_ADD_prio(struct zx_gl_ItemSelection_s* x, int n, struct
   case -1:
     y = x->prio;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_prio_ELEM; y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->prio; n > 1 && y; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (y = x->prio; n > 1 && y && y->gg.g.tok == zx_gl_prio_ELEM; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -8726,10 +8726,10 @@ void zx_gl_ItemSelection_DEL_prio(struct zx_gl_ItemSelection_s* x, int n)
   case -1:
     y = (struct zx_gl_prio_s*)x->prio;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_prio_ELEM; y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->prio; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (y = x->prio; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_prio_ELEM; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -8748,7 +8748,7 @@ int zx_gl_ItemSelection_NUM_Extension(struct zx_gl_ItemSelection_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8758,7 +8758,7 @@ struct zx_gl_Extension_s* zx_gl_ItemSelection_GET_Extension(struct zx_gl_ItemSel
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8815,7 +8815,7 @@ void zx_gl_ItemSelection_PUT_Extension(struct zx_gl_ItemSelection_s* x, int n, s
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8837,10 +8837,10 @@ void zx_gl_ItemSelection_ADD_Extension(struct zx_gl_ItemSelection_s* x, int n, s
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -8860,10 +8860,10 @@ void zx_gl_ItemSelection_DEL_Extension(struct zx_gl_ItemSelection_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -8926,7 +8926,7 @@ int zx_gl_LineString_NUM_coord(struct zx_gl_LineString_s* x)
   struct zx_gl_coord_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->coord; y; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; y && y->gg.g.tok == zx_gl_coord_ELEM; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8936,7 +8936,7 @@ struct zx_gl_coord_s* zx_gl_LineString_GET_coord(struct zx_gl_LineString_s* x, i
 {
   struct zx_gl_coord_s* y;
   if (!x) return 0;
-  for (y = x->coord; n>=0 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; n>=0 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8993,7 +8993,7 @@ void zx_gl_LineString_PUT_coord(struct zx_gl_LineString_s* x, int n, struct zx_g
     x->coord = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9015,10 +9015,10 @@ void zx_gl_LineString_ADD_coord(struct zx_gl_LineString_s* x, int n, struct zx_g
   case -1:
     y = x->coord;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9038,10 +9038,10 @@ void zx_gl_LineString_DEL_coord(struct zx_gl_LineString_s* x, int n)
   case -1:
     y = (struct zx_gl_coord_s*)x->coord;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9073,7 +9073,7 @@ int zx_gl_LinearRing_NUM_coord(struct zx_gl_LinearRing_s* x)
   struct zx_gl_coord_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->coord; y; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; y && y->gg.g.tok == zx_gl_coord_ELEM; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9083,7 +9083,7 @@ struct zx_gl_coord_s* zx_gl_LinearRing_GET_coord(struct zx_gl_LinearRing_s* x, i
 {
   struct zx_gl_coord_s* y;
   if (!x) return 0;
-  for (y = x->coord; n>=0 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; n>=0 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9140,7 +9140,7 @@ void zx_gl_LinearRing_PUT_coord(struct zx_gl_LinearRing_s* x, int n, struct zx_g
     x->coord = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9162,10 +9162,10 @@ void zx_gl_LinearRing_ADD_coord(struct zx_gl_LinearRing_s* x, int n, struct zx_g
   case -1:
     y = x->coord;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9185,10 +9185,10 @@ void zx_gl_LinearRing_DEL_coord(struct zx_gl_LinearRing_s* x, int n)
   case -1:
     y = (struct zx_gl_coord_s*)x->coord;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9220,7 +9220,7 @@ int zx_gl_Modification_NUM_Select(struct zx_gl_Modification_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Select; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -9230,7 +9230,7 @@ struct zx_elem_s* zx_gl_Modification_GET_Select(struct zx_gl_Modification_s* x, 
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Select; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -9287,7 +9287,7 @@ void zx_gl_Modification_PUT_Select(struct zx_gl_Modification_s* x, int n, struct
     x->Select = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -9309,10 +9309,10 @@ void zx_gl_Modification_ADD_Select(struct zx_gl_Modification_s* x, int n, struct
   case -1:
     y = x->Select;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -9332,10 +9332,10 @@ void zx_gl_Modification_DEL_Select(struct zx_gl_Modification_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Select;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -9354,7 +9354,7 @@ int zx_gl_Modification_NUM_NewData(struct zx_gl_Modification_s* x)
   struct zx_gl_NewData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NewData; y; ++n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+  for (y = x->NewData; y && y->gg.g.tok == zx_gl_NewData_ELEM; ++n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9364,7 +9364,7 @@ struct zx_gl_NewData_s* zx_gl_Modification_GET_NewData(struct zx_gl_Modification
 {
   struct zx_gl_NewData_s* y;
   if (!x) return 0;
-  for (y = x->NewData; n>=0 && y; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+  for (y = x->NewData; n>=0 && y && y->gg.g.tok == zx_gl_NewData_ELEM; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9421,7 +9421,7 @@ void zx_gl_Modification_PUT_NewData(struct zx_gl_Modification_s* x, int n, struc
     x->NewData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NewData_ELEM; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9443,10 +9443,10 @@ void zx_gl_Modification_ADD_NewData(struct zx_gl_Modification_s* x, int n, struc
   case -1:
     y = x->NewData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NewData_ELEM; y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NewData; n > 1 && y; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (y = x->NewData; n > 1 && y && y->gg.g.tok == zx_gl_NewData_ELEM; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9466,10 +9466,10 @@ void zx_gl_Modification_DEL_NewData(struct zx_gl_Modification_s* x, int n)
   case -1:
     y = (struct zx_gl_NewData_s*)x->NewData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NewData_ELEM; y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NewData; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
+    for (y = x->NewData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NewData_ELEM; --n, y = (struct zx_gl_NewData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9513,7 +9513,7 @@ int zx_gl_Modify_NUM_ResourceID(struct zx_gl_Modify_s* x)
   struct zx_gl_ResourceID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ResourceID; y; ++n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+  for (y = x->ResourceID; y && y->gg.g.tok == zx_gl_ResourceID_ELEM; ++n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9523,7 +9523,7 @@ struct zx_gl_ResourceID_s* zx_gl_Modify_GET_ResourceID(struct zx_gl_Modify_s* x,
 {
   struct zx_gl_ResourceID_s* y;
   if (!x) return 0;
-  for (y = x->ResourceID; n>=0 && y; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+  for (y = x->ResourceID; n>=0 && y && y->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9580,7 +9580,7 @@ void zx_gl_Modify_PUT_ResourceID(struct zx_gl_Modify_s* x, int n, struct zx_gl_R
     x->ResourceID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9602,10 +9602,10 @@ void zx_gl_Modify_ADD_ResourceID(struct zx_gl_Modify_s* x, int n, struct zx_gl_R
   case -1:
     y = x->ResourceID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceID; n > 1 && y; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (y = x->ResourceID; n > 1 && y && y->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9625,10 +9625,10 @@ void zx_gl_Modify_DEL_ResourceID(struct zx_gl_Modify_s* x, int n)
   case -1:
     y = (struct zx_gl_ResourceID_s*)x->ResourceID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceID; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (y = x->ResourceID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9647,7 +9647,7 @@ int zx_gl_Modify_NUM_EncryptedResourceID(struct zx_gl_Modify_s* x)
   struct zx_gl_EncryptedResourceID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptedResourceID; y; ++n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+  for (y = x->EncryptedResourceID; y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; ++n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9657,7 +9657,7 @@ struct zx_gl_EncryptedResourceID_s* zx_gl_Modify_GET_EncryptedResourceID(struct 
 {
   struct zx_gl_EncryptedResourceID_s* y;
   if (!x) return 0;
-  for (y = x->EncryptedResourceID; n>=0 && y; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+  for (y = x->EncryptedResourceID; n>=0 && y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9714,7 +9714,7 @@ void zx_gl_Modify_PUT_EncryptedResourceID(struct zx_gl_Modify_s* x, int n, struc
     x->EncryptedResourceID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9736,10 +9736,10 @@ void zx_gl_Modify_ADD_EncryptedResourceID(struct zx_gl_Modify_s* x, int n, struc
   case -1:
     y = x->EncryptedResourceID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedResourceID; n > 1 && y; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (y = x->EncryptedResourceID; n > 1 && y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9759,10 +9759,10 @@ void zx_gl_Modify_DEL_EncryptedResourceID(struct zx_gl_Modify_s* x, int n)
   case -1:
     y = (struct zx_gl_EncryptedResourceID_s*)x->EncryptedResourceID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedResourceID; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (y = x->EncryptedResourceID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9781,7 +9781,7 @@ int zx_gl_Modify_NUM_Subscription(struct zx_gl_Modify_s* x)
   struct zx_gl_Subscription_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subscription; y; ++n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; y && y->gg.g.tok == zx_gl_Subscription_ELEM; ++n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9791,7 +9791,7 @@ struct zx_gl_Subscription_s* zx_gl_Modify_GET_Subscription(struct zx_gl_Modify_s
 {
   struct zx_gl_Subscription_s* y;
   if (!x) return 0;
-  for (y = x->Subscription; n>=0 && y; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; n>=0 && y && y->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9848,7 +9848,7 @@ void zx_gl_Modify_PUT_Subscription(struct zx_gl_Modify_s* x, int n, struct zx_gl
     x->Subscription = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9870,10 +9870,10 @@ void zx_gl_Modify_ADD_Subscription(struct zx_gl_Modify_s* x, int n, struct zx_gl
   case -1:
     y = x->Subscription;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y && y->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9893,10 +9893,10 @@ void zx_gl_Modify_DEL_Subscription(struct zx_gl_Modify_s* x, int n)
   case -1:
     y = (struct zx_gl_Subscription_s*)x->Subscription;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9915,7 +9915,7 @@ int zx_gl_Modify_NUM_Modification(struct zx_gl_Modify_s* x)
   struct zx_gl_Modification_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Modification; y; ++n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
+  for (y = x->Modification; y && y->gg.g.tok == zx_gl_Modification_ELEM; ++n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9925,7 +9925,7 @@ struct zx_gl_Modification_s* zx_gl_Modify_GET_Modification(struct zx_gl_Modify_s
 {
   struct zx_gl_Modification_s* y;
   if (!x) return 0;
-  for (y = x->Modification; n>=0 && y; --n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
+  for (y = x->Modification; n>=0 && y && y->gg.g.tok == zx_gl_Modification_ELEM; --n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9982,7 +9982,7 @@ void zx_gl_Modify_PUT_Modification(struct zx_gl_Modify_s* x, int n, struct zx_gl
     x->Modification = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Modification_ELEM; --n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -10004,10 +10004,10 @@ void zx_gl_Modify_ADD_Modification(struct zx_gl_Modify_s* x, int n, struct zx_gl
   case -1:
     y = x->Modification;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Modification_ELEM; y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Modification; n > 1 && y; --n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
+    for (y = x->Modification; n > 1 && y && y->gg.g.tok == zx_gl_Modification_ELEM; --n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -10027,10 +10027,10 @@ void zx_gl_Modify_DEL_Modification(struct zx_gl_Modify_s* x, int n)
   case -1:
     y = (struct zx_gl_Modification_s*)x->Modification;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Modification_ELEM; y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Modification; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
+    for (y = x->Modification; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Modification_ELEM; --n, y = (struct zx_gl_Modification_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -10049,7 +10049,7 @@ int zx_gl_Modify_NUM_ItemSelection(struct zx_gl_Modify_s* x)
   struct zx_gl_ItemSelection_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ItemSelection; y; ++n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+  for (y = x->ItemSelection; y && y->gg.g.tok == zx_gl_ItemSelection_ELEM; ++n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -10059,7 +10059,7 @@ struct zx_gl_ItemSelection_s* zx_gl_Modify_GET_ItemSelection(struct zx_gl_Modify
 {
   struct zx_gl_ItemSelection_s* y;
   if (!x) return 0;
-  for (y = x->ItemSelection; n>=0 && y; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+  for (y = x->ItemSelection; n>=0 && y && y->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -10116,7 +10116,7 @@ void zx_gl_Modify_PUT_ItemSelection(struct zx_gl_Modify_s* x, int n, struct zx_g
     x->ItemSelection = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -10138,10 +10138,10 @@ void zx_gl_Modify_ADD_ItemSelection(struct zx_gl_Modify_s* x, int n, struct zx_g
   case -1:
     y = x->ItemSelection;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemSelection; n > 1 && y; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (y = x->ItemSelection; n > 1 && y && y->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -10161,10 +10161,10 @@ void zx_gl_Modify_DEL_ItemSelection(struct zx_gl_Modify_s* x, int n)
   case -1:
     y = (struct zx_gl_ItemSelection_s*)x->ItemSelection;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemSelection; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (y = x->ItemSelection; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -10183,7 +10183,7 @@ int zx_gl_Modify_NUM_Extension(struct zx_gl_Modify_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -10193,7 +10193,7 @@ struct zx_gl_Extension_s* zx_gl_Modify_GET_Extension(struct zx_gl_Modify_s* x, i
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -10250,7 +10250,7 @@ void zx_gl_Modify_PUT_Extension(struct zx_gl_Modify_s* x, int n, struct zx_gl_Ex
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -10272,10 +10272,10 @@ void zx_gl_Modify_ADD_Extension(struct zx_gl_Modify_s* x, int n, struct zx_gl_Ex
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -10295,10 +10295,10 @@ void zx_gl_Modify_DEL_Extension(struct zx_gl_Modify_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -10326,7 +10326,7 @@ int zx_gl_ModifyResponse_NUM_Status(struct zx_gl_ModifyResponse_s* x)
   struct zx_gl_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_gl_Status_ELEM; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -10336,7 +10336,7 @@ struct zx_gl_Status_s* zx_gl_ModifyResponse_GET_Status(struct zx_gl_ModifyRespon
 {
   struct zx_gl_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -10393,7 +10393,7 @@ void zx_gl_ModifyResponse_PUT_Status(struct zx_gl_ModifyResponse_s* x, int n, st
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -10415,10 +10415,10 @@ void zx_gl_ModifyResponse_ADD_Status(struct zx_gl_ModifyResponse_s* x, int n, st
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -10438,10 +10438,10 @@ void zx_gl_ModifyResponse_DEL_Status(struct zx_gl_ModifyResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -10460,7 +10460,7 @@ int zx_gl_ModifyResponse_NUM_ItemData(struct zx_gl_ModifyResponse_s* x)
   struct zx_gl_ItemData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ItemData; y; ++n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; y && y->gg.g.tok == zx_gl_ItemData_ELEM; ++n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -10470,7 +10470,7 @@ struct zx_gl_ItemData_s* zx_gl_ModifyResponse_GET_ItemData(struct zx_gl_ModifyRe
 {
   struct zx_gl_ItemData_s* y;
   if (!x) return 0;
-  for (y = x->ItemData; n>=0 && y; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; n>=0 && y && y->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -10527,7 +10527,7 @@ void zx_gl_ModifyResponse_PUT_ItemData(struct zx_gl_ModifyResponse_s* x, int n, 
     x->ItemData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -10549,10 +10549,10 @@ void zx_gl_ModifyResponse_ADD_ItemData(struct zx_gl_ModifyResponse_s* x, int n, 
   case -1:
     y = x->ItemData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y && y->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -10572,10 +10572,10 @@ void zx_gl_ModifyResponse_DEL_ItemData(struct zx_gl_ModifyResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_ItemData_s*)x->ItemData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -10594,7 +10594,7 @@ int zx_gl_ModifyResponse_NUM_Extension(struct zx_gl_ModifyResponse_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -10604,7 +10604,7 @@ struct zx_gl_Extension_s* zx_gl_ModifyResponse_GET_Extension(struct zx_gl_Modify
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -10661,7 +10661,7 @@ void zx_gl_ModifyResponse_PUT_Extension(struct zx_gl_ModifyResponse_s* x, int n,
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -10683,10 +10683,10 @@ void zx_gl_ModifyResponse_ADD_Extension(struct zx_gl_ModifyResponse_s* x, int n,
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -10706,10 +10706,10 @@ void zx_gl_ModifyResponse_DEL_Extension(struct zx_gl_ModifyResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -10741,7 +10741,7 @@ int zx_gl_MultiLineString_NUM_LineString(struct zx_gl_MultiLineString_s* x)
   struct zx_gl_LineString_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->LineString; y; ++n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+  for (y = x->LineString; y && y->gg.g.tok == zx_gl_LineString_ELEM; ++n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -10751,7 +10751,7 @@ struct zx_gl_LineString_s* zx_gl_MultiLineString_GET_LineString(struct zx_gl_Mul
 {
   struct zx_gl_LineString_s* y;
   if (!x) return 0;
-  for (y = x->LineString; n>=0 && y; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+  for (y = x->LineString; n>=0 && y && y->gg.g.tok == zx_gl_LineString_ELEM; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -10808,7 +10808,7 @@ void zx_gl_MultiLineString_PUT_LineString(struct zx_gl_MultiLineString_s* x, int
     x->LineString = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LineString_ELEM; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -10830,10 +10830,10 @@ void zx_gl_MultiLineString_ADD_LineString(struct zx_gl_MultiLineString_s* x, int
   case -1:
     y = x->LineString;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LineString_ELEM; y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LineString; n > 1 && y; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (y = x->LineString; n > 1 && y && y->gg.g.tok == zx_gl_LineString_ELEM; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -10853,10 +10853,10 @@ void zx_gl_MultiLineString_DEL_LineString(struct zx_gl_MultiLineString_s* x, int
   case -1:
     y = (struct zx_gl_LineString_s*)x->LineString;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LineString_ELEM; y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LineString; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (y = x->LineString; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LineString_ELEM; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -10888,7 +10888,7 @@ int zx_gl_MultiPoint_NUM_Point(struct zx_gl_MultiPoint_s* x)
   struct zx_gl_Point_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Point; y; ++n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+  for (y = x->Point; y && y->gg.g.tok == zx_gl_Point_ELEM; ++n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -10898,7 +10898,7 @@ struct zx_gl_Point_s* zx_gl_MultiPoint_GET_Point(struct zx_gl_MultiPoint_s* x, i
 {
   struct zx_gl_Point_s* y;
   if (!x) return 0;
-  for (y = x->Point; n>=0 && y; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+  for (y = x->Point; n>=0 && y && y->gg.g.tok == zx_gl_Point_ELEM; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -10955,7 +10955,7 @@ void zx_gl_MultiPoint_PUT_Point(struct zx_gl_MultiPoint_s* x, int n, struct zx_g
     x->Point = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Point_ELEM; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -10977,10 +10977,10 @@ void zx_gl_MultiPoint_ADD_Point(struct zx_gl_MultiPoint_s* x, int n, struct zx_g
   case -1:
     y = x->Point;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Point_ELEM; y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Point; n > 1 && y; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (y = x->Point; n > 1 && y && y->gg.g.tok == zx_gl_Point_ELEM; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -11000,10 +11000,10 @@ void zx_gl_MultiPoint_DEL_Point(struct zx_gl_MultiPoint_s* x, int n)
   case -1:
     y = (struct zx_gl_Point_s*)x->Point;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Point_ELEM; y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Point; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (y = x->Point; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Point_ELEM; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -11035,7 +11035,7 @@ int zx_gl_MultiPolygon_NUM_Polygon(struct zx_gl_MultiPolygon_s* x)
   struct zx_gl_Polygon_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Polygon; y; ++n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+  for (y = x->Polygon; y && y->gg.g.tok == zx_gl_Polygon_ELEM; ++n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -11045,7 +11045,7 @@ struct zx_gl_Polygon_s* zx_gl_MultiPolygon_GET_Polygon(struct zx_gl_MultiPolygon
 {
   struct zx_gl_Polygon_s* y;
   if (!x) return 0;
-  for (y = x->Polygon; n>=0 && y; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+  for (y = x->Polygon; n>=0 && y && y->gg.g.tok == zx_gl_Polygon_ELEM; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -11102,7 +11102,7 @@ void zx_gl_MultiPolygon_PUT_Polygon(struct zx_gl_MultiPolygon_s* x, int n, struc
     x->Polygon = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Polygon_ELEM; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -11124,10 +11124,10 @@ void zx_gl_MultiPolygon_ADD_Polygon(struct zx_gl_MultiPolygon_s* x, int n, struc
   case -1:
     y = x->Polygon;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Polygon_ELEM; y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Polygon; n > 1 && y; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (y = x->Polygon; n > 1 && y && y->gg.g.tok == zx_gl_Polygon_ELEM; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -11147,10 +11147,10 @@ void zx_gl_MultiPolygon_DEL_Polygon(struct zx_gl_MultiPolygon_s* x, int n)
   case -1:
     y = (struct zx_gl_Polygon_s*)x->Polygon;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Polygon_ELEM; y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Polygon; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (y = x->Polygon; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Polygon_ELEM; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -11169,7 +11169,7 @@ int zx_gl_MultiPolygon_NUM_Box(struct zx_gl_MultiPolygon_s* x)
   struct zx_gl_Box_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Box; y; ++n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+  for (y = x->Box; y && y->gg.g.tok == zx_gl_Box_ELEM; ++n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -11179,7 +11179,7 @@ struct zx_gl_Box_s* zx_gl_MultiPolygon_GET_Box(struct zx_gl_MultiPolygon_s* x, i
 {
   struct zx_gl_Box_s* y;
   if (!x) return 0;
-  for (y = x->Box; n>=0 && y; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+  for (y = x->Box; n>=0 && y && y->gg.g.tok == zx_gl_Box_ELEM; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -11236,7 +11236,7 @@ void zx_gl_MultiPolygon_PUT_Box(struct zx_gl_MultiPolygon_s* x, int n, struct zx
     x->Box = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Box_ELEM; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -11258,10 +11258,10 @@ void zx_gl_MultiPolygon_ADD_Box(struct zx_gl_MultiPolygon_s* x, int n, struct zx
   case -1:
     y = x->Box;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Box_ELEM; y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Box; n > 1 && y; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (y = x->Box; n > 1 && y && y->gg.g.tok == zx_gl_Box_ELEM; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -11281,10 +11281,10 @@ void zx_gl_MultiPolygon_DEL_Box(struct zx_gl_MultiPolygon_s* x, int n)
   case -1:
     y = (struct zx_gl_Box_s*)x->Box;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Box_ELEM; y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Box; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (y = x->Box; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Box_ELEM; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -11303,7 +11303,7 @@ int zx_gl_MultiPolygon_NUM_CircularArea(struct zx_gl_MultiPolygon_s* x)
   struct zx_gl_CircularArea_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CircularArea; y; ++n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+  for (y = x->CircularArea; y && y->gg.g.tok == zx_gl_CircularArea_ELEM; ++n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -11313,7 +11313,7 @@ struct zx_gl_CircularArea_s* zx_gl_MultiPolygon_GET_CircularArea(struct zx_gl_Mu
 {
   struct zx_gl_CircularArea_s* y;
   if (!x) return 0;
-  for (y = x->CircularArea; n>=0 && y; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+  for (y = x->CircularArea; n>=0 && y && y->gg.g.tok == zx_gl_CircularArea_ELEM; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -11370,7 +11370,7 @@ void zx_gl_MultiPolygon_PUT_CircularArea(struct zx_gl_MultiPolygon_s* x, int n, 
     x->CircularArea = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArea_ELEM; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -11392,10 +11392,10 @@ void zx_gl_MultiPolygon_ADD_CircularArea(struct zx_gl_MultiPolygon_s* x, int n, 
   case -1:
     y = x->CircularArea;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArea_ELEM; y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CircularArea; n > 1 && y; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (y = x->CircularArea; n > 1 && y && y->gg.g.tok == zx_gl_CircularArea_ELEM; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -11415,10 +11415,10 @@ void zx_gl_MultiPolygon_DEL_CircularArea(struct zx_gl_MultiPolygon_s* x, int n)
   case -1:
     y = (struct zx_gl_CircularArea_s*)x->CircularArea;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArea_ELEM; y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CircularArea; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (y = x->CircularArea; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArea_ELEM; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -11437,7 +11437,7 @@ int zx_gl_MultiPolygon_NUM_CircularArcArea(struct zx_gl_MultiPolygon_s* x)
   struct zx_gl_CircularArcArea_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CircularArcArea; y; ++n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+  for (y = x->CircularArcArea; y && y->gg.g.tok == zx_gl_CircularArcArea_ELEM; ++n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -11447,7 +11447,7 @@ struct zx_gl_CircularArcArea_s* zx_gl_MultiPolygon_GET_CircularArcArea(struct zx
 {
   struct zx_gl_CircularArcArea_s* y;
   if (!x) return 0;
-  for (y = x->CircularArcArea; n>=0 && y; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+  for (y = x->CircularArcArea; n>=0 && y && y->gg.g.tok == zx_gl_CircularArcArea_ELEM; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -11504,7 +11504,7 @@ void zx_gl_MultiPolygon_PUT_CircularArcArea(struct zx_gl_MultiPolygon_s* x, int 
     x->CircularArcArea = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArcArea_ELEM; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -11526,10 +11526,10 @@ void zx_gl_MultiPolygon_ADD_CircularArcArea(struct zx_gl_MultiPolygon_s* x, int 
   case -1:
     y = x->CircularArcArea;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArcArea_ELEM; y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CircularArcArea; n > 1 && y; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (y = x->CircularArcArea; n > 1 && y && y->gg.g.tok == zx_gl_CircularArcArea_ELEM; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -11549,10 +11549,10 @@ void zx_gl_MultiPolygon_DEL_CircularArcArea(struct zx_gl_MultiPolygon_s* x, int 
   case -1:
     y = (struct zx_gl_CircularArcArea_s*)x->CircularArcArea;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArcArea_ELEM; y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CircularArcArea; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (y = x->CircularArcArea; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArcArea_ELEM; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -11571,7 +11571,7 @@ int zx_gl_MultiPolygon_NUM_EllipticalArea(struct zx_gl_MultiPolygon_s* x)
   struct zx_gl_EllipticalArea_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EllipticalArea; y; ++n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+  for (y = x->EllipticalArea; y && y->gg.g.tok == zx_gl_EllipticalArea_ELEM; ++n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -11581,7 +11581,7 @@ struct zx_gl_EllipticalArea_s* zx_gl_MultiPolygon_GET_EllipticalArea(struct zx_g
 {
   struct zx_gl_EllipticalArea_s* y;
   if (!x) return 0;
-  for (y = x->EllipticalArea; n>=0 && y; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+  for (y = x->EllipticalArea; n>=0 && y && y->gg.g.tok == zx_gl_EllipticalArea_ELEM; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -11638,7 +11638,7 @@ void zx_gl_MultiPolygon_PUT_EllipticalArea(struct zx_gl_MultiPolygon_s* x, int n
     x->EllipticalArea = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EllipticalArea_ELEM; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -11660,10 +11660,10 @@ void zx_gl_MultiPolygon_ADD_EllipticalArea(struct zx_gl_MultiPolygon_s* x, int n
   case -1:
     y = x->EllipticalArea;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EllipticalArea_ELEM; y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EllipticalArea; n > 1 && y; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (y = x->EllipticalArea; n > 1 && y && y->gg.g.tok == zx_gl_EllipticalArea_ELEM; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -11683,10 +11683,10 @@ void zx_gl_MultiPolygon_DEL_EllipticalArea(struct zx_gl_MultiPolygon_s* x, int n
   case -1:
     y = (struct zx_gl_EllipticalArea_s*)x->EllipticalArea;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EllipticalArea_ELEM; y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EllipticalArea; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (y = x->EllipticalArea; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EllipticalArea_ELEM; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -11723,7 +11723,7 @@ int zx_gl_Notification_NUM_ItemData(struct zx_gl_Notification_s* x)
   struct zx_gl_ItemData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ItemData; y; ++n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; y && y->gg.g.tok == zx_gl_ItemData_ELEM; ++n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -11733,7 +11733,7 @@ struct zx_gl_ItemData_s* zx_gl_Notification_GET_ItemData(struct zx_gl_Notificati
 {
   struct zx_gl_ItemData_s* y;
   if (!x) return 0;
-  for (y = x->ItemData; n>=0 && y; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; n>=0 && y && y->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -11790,7 +11790,7 @@ void zx_gl_Notification_PUT_ItemData(struct zx_gl_Notification_s* x, int n, stru
     x->ItemData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -11812,10 +11812,10 @@ void zx_gl_Notification_ADD_ItemData(struct zx_gl_Notification_s* x, int n, stru
   case -1:
     y = x->ItemData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y && y->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -11835,10 +11835,10 @@ void zx_gl_Notification_DEL_ItemData(struct zx_gl_Notification_s* x, int n)
   case -1:
     y = (struct zx_gl_ItemData_s*)x->ItemData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemData_ELEM; --n, y = (struct zx_gl_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -11878,7 +11878,7 @@ int zx_gl_Notify_NUM_Notification(struct zx_gl_Notify_s* x)
   struct zx_gl_Notification_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Notification; y; ++n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
+  for (y = x->Notification; y && y->gg.g.tok == zx_gl_Notification_ELEM; ++n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -11888,7 +11888,7 @@ struct zx_gl_Notification_s* zx_gl_Notify_GET_Notification(struct zx_gl_Notify_s
 {
   struct zx_gl_Notification_s* y;
   if (!x) return 0;
-  for (y = x->Notification; n>=0 && y; --n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
+  for (y = x->Notification; n>=0 && y && y->gg.g.tok == zx_gl_Notification_ELEM; --n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -11945,7 +11945,7 @@ void zx_gl_Notify_PUT_Notification(struct zx_gl_Notify_s* x, int n, struct zx_gl
     x->Notification = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Notification_ELEM; --n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -11967,10 +11967,10 @@ void zx_gl_Notify_ADD_Notification(struct zx_gl_Notify_s* x, int n, struct zx_gl
   case -1:
     y = x->Notification;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Notification_ELEM; y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Notification; n > 1 && y; --n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
+    for (y = x->Notification; n > 1 && y && y->gg.g.tok == zx_gl_Notification_ELEM; --n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -11990,10 +11990,10 @@ void zx_gl_Notify_DEL_Notification(struct zx_gl_Notify_s* x, int n)
   case -1:
     y = (struct zx_gl_Notification_s*)x->Notification;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Notification_ELEM; y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Notification; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
+    for (y = x->Notification; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Notification_ELEM; --n, y = (struct zx_gl_Notification_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -12012,7 +12012,7 @@ int zx_gl_Notify_NUM_Extension(struct zx_gl_Notify_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -12022,7 +12022,7 @@ struct zx_gl_Extension_s* zx_gl_Notify_GET_Extension(struct zx_gl_Notify_s* x, i
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -12079,7 +12079,7 @@ void zx_gl_Notify_PUT_Extension(struct zx_gl_Notify_s* x, int n, struct zx_gl_Ex
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -12101,10 +12101,10 @@ void zx_gl_Notify_ADD_Extension(struct zx_gl_Notify_s* x, int n, struct zx_gl_Ex
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -12124,10 +12124,10 @@ void zx_gl_Notify_DEL_Extension(struct zx_gl_Notify_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -12159,7 +12159,7 @@ int zx_gl_NotifyAdminTo_NUM_SecurityMechID(struct zx_gl_NotifyAdminTo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SecurityMechID; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SecurityMechID; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -12169,7 +12169,7 @@ struct zx_elem_s* zx_gl_NotifyAdminTo_GET_SecurityMechID(struct zx_gl_NotifyAdmi
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->SecurityMechID; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SecurityMechID; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -12226,7 +12226,7 @@ void zx_gl_NotifyAdminTo_PUT_SecurityMechID(struct zx_gl_NotifyAdminTo_s* x, int
     x->SecurityMechID = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -12248,10 +12248,10 @@ void zx_gl_NotifyAdminTo_ADD_SecurityMechID(struct zx_gl_NotifyAdminTo_s* x, int
   case -1:
     y = x->SecurityMechID;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SecurityMechID; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SecurityMechID; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -12271,10 +12271,10 @@ void zx_gl_NotifyAdminTo_DEL_SecurityMechID(struct zx_gl_NotifyAdminTo_s* x, int
   case -1:
     y = (struct zx_elem_s*)x->SecurityMechID;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SecurityMechID; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SecurityMechID; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -12293,7 +12293,7 @@ int zx_gl_NotifyAdminTo_NUM_Credential(struct zx_gl_NotifyAdminTo_s* x)
   struct zx_gl_Credential_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Credential; y; ++n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+  for (y = x->Credential; y && y->gg.g.tok == zx_gl_Credential_ELEM; ++n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -12303,7 +12303,7 @@ struct zx_gl_Credential_s* zx_gl_NotifyAdminTo_GET_Credential(struct zx_gl_Notif
 {
   struct zx_gl_Credential_s* y;
   if (!x) return 0;
-  for (y = x->Credential; n>=0 && y; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+  for (y = x->Credential; n>=0 && y && y->gg.g.tok == zx_gl_Credential_ELEM; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -12360,7 +12360,7 @@ void zx_gl_NotifyAdminTo_PUT_Credential(struct zx_gl_NotifyAdminTo_s* x, int n, 
     x->Credential = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Credential_ELEM; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -12382,10 +12382,10 @@ void zx_gl_NotifyAdminTo_ADD_Credential(struct zx_gl_NotifyAdminTo_s* x, int n, 
   case -1:
     y = x->Credential;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Credential_ELEM; y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Credential; n > 1 && y; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (y = x->Credential; n > 1 && y && y->gg.g.tok == zx_gl_Credential_ELEM; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -12405,10 +12405,10 @@ void zx_gl_NotifyAdminTo_DEL_Credential(struct zx_gl_NotifyAdminTo_s* x, int n)
   case -1:
     y = (struct zx_gl_Credential_s*)x->Credential;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Credential_ELEM; y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Credential; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (y = x->Credential; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Credential_ELEM; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -12427,7 +12427,7 @@ int zx_gl_NotifyAdminTo_NUM_Endpoint(struct zx_gl_NotifyAdminTo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Endpoint; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Endpoint; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -12437,7 +12437,7 @@ struct zx_elem_s* zx_gl_NotifyAdminTo_GET_Endpoint(struct zx_gl_NotifyAdminTo_s*
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Endpoint; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Endpoint; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -12494,7 +12494,7 @@ void zx_gl_NotifyAdminTo_PUT_Endpoint(struct zx_gl_NotifyAdminTo_s* x, int n, st
     x->Endpoint = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -12516,10 +12516,10 @@ void zx_gl_NotifyAdminTo_ADD_Endpoint(struct zx_gl_NotifyAdminTo_s* x, int n, st
   case -1:
     y = x->Endpoint;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Endpoint; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Endpoint; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -12539,10 +12539,10 @@ void zx_gl_NotifyAdminTo_DEL_Endpoint(struct zx_gl_NotifyAdminTo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Endpoint;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Endpoint; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Endpoint; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -12570,7 +12570,7 @@ int zx_gl_NotifyResponse_NUM_Status(struct zx_gl_NotifyResponse_s* x)
   struct zx_gl_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_gl_Status_ELEM; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -12580,7 +12580,7 @@ struct zx_gl_Status_s* zx_gl_NotifyResponse_GET_Status(struct zx_gl_NotifyRespon
 {
   struct zx_gl_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -12637,7 +12637,7 @@ void zx_gl_NotifyResponse_PUT_Status(struct zx_gl_NotifyResponse_s* x, int n, st
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -12659,10 +12659,10 @@ void zx_gl_NotifyResponse_ADD_Status(struct zx_gl_NotifyResponse_s* x, int n, st
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -12682,10 +12682,10 @@ void zx_gl_NotifyResponse_DEL_Status(struct zx_gl_NotifyResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -12704,7 +12704,7 @@ int zx_gl_NotifyResponse_NUM_Extension(struct zx_gl_NotifyResponse_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -12714,7 +12714,7 @@ struct zx_gl_Extension_s* zx_gl_NotifyResponse_GET_Extension(struct zx_gl_Notify
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -12771,7 +12771,7 @@ void zx_gl_NotifyResponse_PUT_Extension(struct zx_gl_NotifyResponse_s* x, int n,
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -12793,10 +12793,10 @@ void zx_gl_NotifyResponse_ADD_Extension(struct zx_gl_NotifyResponse_s* x, int n,
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -12816,10 +12816,10 @@ void zx_gl_NotifyResponse_DEL_Extension(struct zx_gl_NotifyResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -12847,7 +12847,7 @@ int zx_gl_NotifyTo_NUM_SecurityMechID(struct zx_gl_NotifyTo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SecurityMechID; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SecurityMechID; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -12857,7 +12857,7 @@ struct zx_elem_s* zx_gl_NotifyTo_GET_SecurityMechID(struct zx_gl_NotifyTo_s* x, 
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->SecurityMechID; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SecurityMechID; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -12914,7 +12914,7 @@ void zx_gl_NotifyTo_PUT_SecurityMechID(struct zx_gl_NotifyTo_s* x, int n, struct
     x->SecurityMechID = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -12936,10 +12936,10 @@ void zx_gl_NotifyTo_ADD_SecurityMechID(struct zx_gl_NotifyTo_s* x, int n, struct
   case -1:
     y = x->SecurityMechID;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SecurityMechID; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SecurityMechID; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -12959,10 +12959,10 @@ void zx_gl_NotifyTo_DEL_SecurityMechID(struct zx_gl_NotifyTo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->SecurityMechID;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SecurityMechID; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SecurityMechID; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -12981,7 +12981,7 @@ int zx_gl_NotifyTo_NUM_Credential(struct zx_gl_NotifyTo_s* x)
   struct zx_gl_Credential_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Credential; y; ++n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+  for (y = x->Credential; y && y->gg.g.tok == zx_gl_Credential_ELEM; ++n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -12991,7 +12991,7 @@ struct zx_gl_Credential_s* zx_gl_NotifyTo_GET_Credential(struct zx_gl_NotifyTo_s
 {
   struct zx_gl_Credential_s* y;
   if (!x) return 0;
-  for (y = x->Credential; n>=0 && y; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+  for (y = x->Credential; n>=0 && y && y->gg.g.tok == zx_gl_Credential_ELEM; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -13048,7 +13048,7 @@ void zx_gl_NotifyTo_PUT_Credential(struct zx_gl_NotifyTo_s* x, int n, struct zx_
     x->Credential = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Credential_ELEM; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -13070,10 +13070,10 @@ void zx_gl_NotifyTo_ADD_Credential(struct zx_gl_NotifyTo_s* x, int n, struct zx_
   case -1:
     y = x->Credential;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Credential_ELEM; y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Credential; n > 1 && y; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (y = x->Credential; n > 1 && y && y->gg.g.tok == zx_gl_Credential_ELEM; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -13093,10 +13093,10 @@ void zx_gl_NotifyTo_DEL_Credential(struct zx_gl_NotifyTo_s* x, int n)
   case -1:
     y = (struct zx_gl_Credential_s*)x->Credential;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Credential_ELEM; y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Credential; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
+    for (y = x->Credential; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Credential_ELEM; --n, y = (struct zx_gl_Credential_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -13115,7 +13115,7 @@ int zx_gl_NotifyTo_NUM_Endpoint(struct zx_gl_NotifyTo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Endpoint; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Endpoint; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -13125,7 +13125,7 @@ struct zx_elem_s* zx_gl_NotifyTo_GET_Endpoint(struct zx_gl_NotifyTo_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Endpoint; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Endpoint; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -13182,7 +13182,7 @@ void zx_gl_NotifyTo_PUT_Endpoint(struct zx_gl_NotifyTo_s* x, int n, struct zx_el
     x->Endpoint = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -13204,10 +13204,10 @@ void zx_gl_NotifyTo_ADD_Endpoint(struct zx_gl_NotifyTo_s* x, int n, struct zx_el
   case -1:
     y = x->Endpoint;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Endpoint; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Endpoint; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -13227,10 +13227,10 @@ void zx_gl_NotifyTo_DEL_Endpoint(struct zx_gl_NotifyTo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Endpoint;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Endpoint; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Endpoint; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -13258,7 +13258,7 @@ int zx_gl_Point_NUM_coord(struct zx_gl_Point_s* x)
   struct zx_gl_coord_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->coord; y; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; y && y->gg.g.tok == zx_gl_coord_ELEM; ++n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -13268,7 +13268,7 @@ struct zx_gl_coord_s* zx_gl_Point_GET_coord(struct zx_gl_Point_s* x, int n)
 {
   struct zx_gl_coord_s* y;
   if (!x) return 0;
-  for (y = x->coord; n>=0 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+  for (y = x->coord; n>=0 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -13325,7 +13325,7 @@ void zx_gl_Point_PUT_coord(struct zx_gl_Point_s* x, int n, struct zx_gl_coord_s*
     x->coord = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -13347,10 +13347,10 @@ void zx_gl_Point_ADD_coord(struct zx_gl_Point_s* x, int n, struct zx_gl_coord_s*
   case -1:
     y = x->coord;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y && y->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -13370,10 +13370,10 @@ void zx_gl_Point_DEL_coord(struct zx_gl_Point_s* x, int n)
   case -1:
     y = (struct zx_gl_coord_s*)x->coord;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->coord; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
+    for (y = x->coord; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_coord_ELEM; --n, y = (struct zx_gl_coord_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -13405,7 +13405,7 @@ int zx_gl_Polygon_NUM_outerBoundaryIs(struct zx_gl_Polygon_s* x)
   struct zx_gl_outerBoundaryIs_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->outerBoundaryIs; y; ++n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
+  for (y = x->outerBoundaryIs; y && y->gg.g.tok == zx_gl_outerBoundaryIs_ELEM; ++n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -13415,7 +13415,7 @@ struct zx_gl_outerBoundaryIs_s* zx_gl_Polygon_GET_outerBoundaryIs(struct zx_gl_P
 {
   struct zx_gl_outerBoundaryIs_s* y;
   if (!x) return 0;
-  for (y = x->outerBoundaryIs; n>=0 && y; --n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
+  for (y = x->outerBoundaryIs; n>=0 && y && y->gg.g.tok == zx_gl_outerBoundaryIs_ELEM; --n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -13472,7 +13472,7 @@ void zx_gl_Polygon_PUT_outerBoundaryIs(struct zx_gl_Polygon_s* x, int n, struct 
     x->outerBoundaryIs = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_outerBoundaryIs_ELEM; --n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -13494,10 +13494,10 @@ void zx_gl_Polygon_ADD_outerBoundaryIs(struct zx_gl_Polygon_s* x, int n, struct 
   case -1:
     y = x->outerBoundaryIs;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_outerBoundaryIs_ELEM; y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->outerBoundaryIs; n > 1 && y; --n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
+    for (y = x->outerBoundaryIs; n > 1 && y && y->gg.g.tok == zx_gl_outerBoundaryIs_ELEM; --n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -13517,10 +13517,10 @@ void zx_gl_Polygon_DEL_outerBoundaryIs(struct zx_gl_Polygon_s* x, int n)
   case -1:
     y = (struct zx_gl_outerBoundaryIs_s*)x->outerBoundaryIs;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_outerBoundaryIs_ELEM; y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->outerBoundaryIs; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
+    for (y = x->outerBoundaryIs; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_outerBoundaryIs_ELEM; --n, y = (struct zx_gl_outerBoundaryIs_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -13539,7 +13539,7 @@ int zx_gl_Polygon_NUM_innerBoundaryIs(struct zx_gl_Polygon_s* x)
   struct zx_gl_innerBoundaryIs_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->innerBoundaryIs; y; ++n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
+  for (y = x->innerBoundaryIs; y && y->gg.g.tok == zx_gl_innerBoundaryIs_ELEM; ++n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -13549,7 +13549,7 @@ struct zx_gl_innerBoundaryIs_s* zx_gl_Polygon_GET_innerBoundaryIs(struct zx_gl_P
 {
   struct zx_gl_innerBoundaryIs_s* y;
   if (!x) return 0;
-  for (y = x->innerBoundaryIs; n>=0 && y; --n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
+  for (y = x->innerBoundaryIs; n>=0 && y && y->gg.g.tok == zx_gl_innerBoundaryIs_ELEM; --n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -13606,7 +13606,7 @@ void zx_gl_Polygon_PUT_innerBoundaryIs(struct zx_gl_Polygon_s* x, int n, struct 
     x->innerBoundaryIs = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_innerBoundaryIs_ELEM; --n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -13628,10 +13628,10 @@ void zx_gl_Polygon_ADD_innerBoundaryIs(struct zx_gl_Polygon_s* x, int n, struct 
   case -1:
     y = x->innerBoundaryIs;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_innerBoundaryIs_ELEM; y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->innerBoundaryIs; n > 1 && y; --n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
+    for (y = x->innerBoundaryIs; n > 1 && y && y->gg.g.tok == zx_gl_innerBoundaryIs_ELEM; --n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -13651,10 +13651,10 @@ void zx_gl_Polygon_DEL_innerBoundaryIs(struct zx_gl_Polygon_s* x, int n)
   case -1:
     y = (struct zx_gl_innerBoundaryIs_s*)x->innerBoundaryIs;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_innerBoundaryIs_ELEM; y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->innerBoundaryIs; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
+    for (y = x->innerBoundaryIs; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_innerBoundaryIs_ELEM; --n, y = (struct zx_gl_innerBoundaryIs_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -13686,7 +13686,7 @@ int zx_gl_Query_NUM_ResourceID(struct zx_gl_Query_s* x)
   struct zx_gl_ResourceID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ResourceID; y; ++n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+  for (y = x->ResourceID; y && y->gg.g.tok == zx_gl_ResourceID_ELEM; ++n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -13696,7 +13696,7 @@ struct zx_gl_ResourceID_s* zx_gl_Query_GET_ResourceID(struct zx_gl_Query_s* x, i
 {
   struct zx_gl_ResourceID_s* y;
   if (!x) return 0;
-  for (y = x->ResourceID; n>=0 && y; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+  for (y = x->ResourceID; n>=0 && y && y->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -13753,7 +13753,7 @@ void zx_gl_Query_PUT_ResourceID(struct zx_gl_Query_s* x, int n, struct zx_gl_Res
     x->ResourceID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -13775,10 +13775,10 @@ void zx_gl_Query_ADD_ResourceID(struct zx_gl_Query_s* x, int n, struct zx_gl_Res
   case -1:
     y = x->ResourceID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceID; n > 1 && y; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (y = x->ResourceID; n > 1 && y && y->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -13798,10 +13798,10 @@ void zx_gl_Query_DEL_ResourceID(struct zx_gl_Query_s* x, int n)
   case -1:
     y = (struct zx_gl_ResourceID_s*)x->ResourceID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResourceID; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
+    for (y = x->ResourceID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ResourceID_ELEM; --n, y = (struct zx_gl_ResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -13820,7 +13820,7 @@ int zx_gl_Query_NUM_EncryptedResourceID(struct zx_gl_Query_s* x)
   struct zx_gl_EncryptedResourceID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptedResourceID; y; ++n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+  for (y = x->EncryptedResourceID; y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; ++n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -13830,7 +13830,7 @@ struct zx_gl_EncryptedResourceID_s* zx_gl_Query_GET_EncryptedResourceID(struct z
 {
   struct zx_gl_EncryptedResourceID_s* y;
   if (!x) return 0;
-  for (y = x->EncryptedResourceID; n>=0 && y; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+  for (y = x->EncryptedResourceID; n>=0 && y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -13887,7 +13887,7 @@ void zx_gl_Query_PUT_EncryptedResourceID(struct zx_gl_Query_s* x, int n, struct 
     x->EncryptedResourceID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -13909,10 +13909,10 @@ void zx_gl_Query_ADD_EncryptedResourceID(struct zx_gl_Query_s* x, int n, struct 
   case -1:
     y = x->EncryptedResourceID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedResourceID; n > 1 && y; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (y = x->EncryptedResourceID; n > 1 && y && y->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -13932,10 +13932,10 @@ void zx_gl_Query_DEL_EncryptedResourceID(struct zx_gl_Query_s* x, int n)
   case -1:
     y = (struct zx_gl_EncryptedResourceID_s*)x->EncryptedResourceID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedResourceID; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
+    for (y = x->EncryptedResourceID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EncryptedResourceID_ELEM; --n, y = (struct zx_gl_EncryptedResourceID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -13954,7 +13954,7 @@ int zx_gl_Query_NUM_Subscription(struct zx_gl_Query_s* x)
   struct zx_gl_Subscription_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subscription; y; ++n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; y && y->gg.g.tok == zx_gl_Subscription_ELEM; ++n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -13964,7 +13964,7 @@ struct zx_gl_Subscription_s* zx_gl_Query_GET_Subscription(struct zx_gl_Query_s* 
 {
   struct zx_gl_Subscription_s* y;
   if (!x) return 0;
-  for (y = x->Subscription; n>=0 && y; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; n>=0 && y && y->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -14021,7 +14021,7 @@ void zx_gl_Query_PUT_Subscription(struct zx_gl_Query_s* x, int n, struct zx_gl_S
     x->Subscription = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -14043,10 +14043,10 @@ void zx_gl_Query_ADD_Subscription(struct zx_gl_Query_s* x, int n, struct zx_gl_S
   case -1:
     y = x->Subscription;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y && y->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -14066,10 +14066,10 @@ void zx_gl_Query_DEL_Subscription(struct zx_gl_Query_s* x, int n)
   case -1:
     y = (struct zx_gl_Subscription_s*)x->Subscription;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Subscription_ELEM; --n, y = (struct zx_gl_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -14088,7 +14088,7 @@ int zx_gl_Query_NUM_QueryItem(struct zx_gl_Query_s* x)
   struct zx_gl_QueryItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->QueryItem; y; ++n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
+  for (y = x->QueryItem; y && y->gg.g.tok == zx_gl_QueryItem_ELEM; ++n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -14098,7 +14098,7 @@ struct zx_gl_QueryItem_s* zx_gl_Query_GET_QueryItem(struct zx_gl_Query_s* x, int
 {
   struct zx_gl_QueryItem_s* y;
   if (!x) return 0;
-  for (y = x->QueryItem; n>=0 && y; --n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
+  for (y = x->QueryItem; n>=0 && y && y->gg.g.tok == zx_gl_QueryItem_ELEM; --n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -14155,7 +14155,7 @@ void zx_gl_Query_PUT_QueryItem(struct zx_gl_Query_s* x, int n, struct zx_gl_Quer
     x->QueryItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_QueryItem_ELEM; --n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -14177,10 +14177,10 @@ void zx_gl_Query_ADD_QueryItem(struct zx_gl_Query_s* x, int n, struct zx_gl_Quer
   case -1:
     y = x->QueryItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_QueryItem_ELEM; y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->QueryItem; n > 1 && y; --n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
+    for (y = x->QueryItem; n > 1 && y && y->gg.g.tok == zx_gl_QueryItem_ELEM; --n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -14200,10 +14200,10 @@ void zx_gl_Query_DEL_QueryItem(struct zx_gl_Query_s* x, int n)
   case -1:
     y = (struct zx_gl_QueryItem_s*)x->QueryItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_QueryItem_ELEM; y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->QueryItem; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
+    for (y = x->QueryItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_QueryItem_ELEM; --n, y = (struct zx_gl_QueryItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -14222,7 +14222,7 @@ int zx_gl_Query_NUM_Extension(struct zx_gl_Query_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -14232,7 +14232,7 @@ struct zx_gl_Extension_s* zx_gl_Query_GET_Extension(struct zx_gl_Query_s* x, int
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -14289,7 +14289,7 @@ void zx_gl_Query_PUT_Extension(struct zx_gl_Query_s* x, int n, struct zx_gl_Exte
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -14311,10 +14311,10 @@ void zx_gl_Query_ADD_Extension(struct zx_gl_Query_s* x, int n, struct zx_gl_Exte
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -14334,10 +14334,10 @@ void zx_gl_Query_DEL_Extension(struct zx_gl_Query_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -14365,7 +14365,7 @@ int zx_gl_QueryItem_NUM_AreaComparison(struct zx_gl_QueryItem_s* x)
   struct zx_gl_AreaComparison_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AreaComparison; y; ++n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+  for (y = x->AreaComparison; y && y->gg.g.tok == zx_gl_AreaComparison_ELEM; ++n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -14375,7 +14375,7 @@ struct zx_gl_AreaComparison_s* zx_gl_QueryItem_GET_AreaComparison(struct zx_gl_Q
 {
   struct zx_gl_AreaComparison_s* y;
   if (!x) return 0;
-  for (y = x->AreaComparison; n>=0 && y; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+  for (y = x->AreaComparison; n>=0 && y && y->gg.g.tok == zx_gl_AreaComparison_ELEM; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -14432,7 +14432,7 @@ void zx_gl_QueryItem_PUT_AreaComparison(struct zx_gl_QueryItem_s* x, int n, stru
     x->AreaComparison = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_AreaComparison_ELEM; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -14454,10 +14454,10 @@ void zx_gl_QueryItem_ADD_AreaComparison(struct zx_gl_QueryItem_s* x, int n, stru
   case -1:
     y = x->AreaComparison;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_AreaComparison_ELEM; y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AreaComparison; n > 1 && y; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (y = x->AreaComparison; n > 1 && y && y->gg.g.tok == zx_gl_AreaComparison_ELEM; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -14477,10 +14477,10 @@ void zx_gl_QueryItem_DEL_AreaComparison(struct zx_gl_QueryItem_s* x, int n)
   case -1:
     y = (struct zx_gl_AreaComparison_s*)x->AreaComparison;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_AreaComparison_ELEM; y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AreaComparison; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
+    for (y = x->AreaComparison; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_AreaComparison_ELEM; --n, y = (struct zx_gl_AreaComparison_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -14499,7 +14499,7 @@ int zx_gl_QueryItem_NUM_eqop(struct zx_gl_QueryItem_s* x)
   struct zx_gl_eqop_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->eqop; y; ++n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+  for (y = x->eqop; y && y->gg.g.tok == zx_gl_eqop_ELEM; ++n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -14509,7 +14509,7 @@ struct zx_gl_eqop_s* zx_gl_QueryItem_GET_eqop(struct zx_gl_QueryItem_s* x, int n
 {
   struct zx_gl_eqop_s* y;
   if (!x) return 0;
-  for (y = x->eqop; n>=0 && y; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+  for (y = x->eqop; n>=0 && y && y->gg.g.tok == zx_gl_eqop_ELEM; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -14566,7 +14566,7 @@ void zx_gl_QueryItem_PUT_eqop(struct zx_gl_QueryItem_s* x, int n, struct zx_gl_e
     x->eqop = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_eqop_ELEM; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -14588,10 +14588,10 @@ void zx_gl_QueryItem_ADD_eqop(struct zx_gl_QueryItem_s* x, int n, struct zx_gl_e
   case -1:
     y = x->eqop;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_eqop_ELEM; y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->eqop; n > 1 && y; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (y = x->eqop; n > 1 && y && y->gg.g.tok == zx_gl_eqop_ELEM; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -14611,10 +14611,10 @@ void zx_gl_QueryItem_DEL_eqop(struct zx_gl_QueryItem_s* x, int n)
   case -1:
     y = (struct zx_gl_eqop_s*)x->eqop;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_eqop_ELEM; y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->eqop; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
+    for (y = x->eqop; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_eqop_ELEM; --n, y = (struct zx_gl_eqop_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -14633,7 +14633,7 @@ int zx_gl_QueryItem_NUM_geoinfo(struct zx_gl_QueryItem_s* x)
   struct zx_gl_geoinfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->geoinfo; y; ++n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+  for (y = x->geoinfo; y && y->gg.g.tok == zx_gl_geoinfo_ELEM; ++n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -14643,7 +14643,7 @@ struct zx_gl_geoinfo_s* zx_gl_QueryItem_GET_geoinfo(struct zx_gl_QueryItem_s* x,
 {
   struct zx_gl_geoinfo_s* y;
   if (!x) return 0;
-  for (y = x->geoinfo; n>=0 && y; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+  for (y = x->geoinfo; n>=0 && y && y->gg.g.tok == zx_gl_geoinfo_ELEM; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -14700,7 +14700,7 @@ void zx_gl_QueryItem_PUT_geoinfo(struct zx_gl_QueryItem_s* x, int n, struct zx_g
     x->geoinfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_geoinfo_ELEM; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -14722,10 +14722,10 @@ void zx_gl_QueryItem_ADD_geoinfo(struct zx_gl_QueryItem_s* x, int n, struct zx_g
   case -1:
     y = x->geoinfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_geoinfo_ELEM; y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->geoinfo; n > 1 && y; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (y = x->geoinfo; n > 1 && y && y->gg.g.tok == zx_gl_geoinfo_ELEM; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -14745,10 +14745,10 @@ void zx_gl_QueryItem_DEL_geoinfo(struct zx_gl_QueryItem_s* x, int n)
   case -1:
     y = (struct zx_gl_geoinfo_s*)x->geoinfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_geoinfo_ELEM; y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->geoinfo; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
+    for (y = x->geoinfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_geoinfo_ELEM; --n, y = (struct zx_gl_geoinfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -14767,7 +14767,7 @@ int zx_gl_QueryItem_NUM_loc_type(struct zx_gl_QueryItem_s* x)
   struct zx_gl_loc_type_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->loc_type; y; ++n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+  for (y = x->loc_type; y && y->gg.g.tok == zx_gl_loc_type_ELEM; ++n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -14777,7 +14777,7 @@ struct zx_gl_loc_type_s* zx_gl_QueryItem_GET_loc_type(struct zx_gl_QueryItem_s* 
 {
   struct zx_gl_loc_type_s* y;
   if (!x) return 0;
-  for (y = x->loc_type; n>=0 && y; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+  for (y = x->loc_type; n>=0 && y && y->gg.g.tok == zx_gl_loc_type_ELEM; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -14834,7 +14834,7 @@ void zx_gl_QueryItem_PUT_loc_type(struct zx_gl_QueryItem_s* x, int n, struct zx_
     x->loc_type = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_loc_type_ELEM; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -14856,10 +14856,10 @@ void zx_gl_QueryItem_ADD_loc_type(struct zx_gl_QueryItem_s* x, int n, struct zx_
   case -1:
     y = x->loc_type;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_loc_type_ELEM; y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->loc_type; n > 1 && y; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (y = x->loc_type; n > 1 && y && y->gg.g.tok == zx_gl_loc_type_ELEM; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -14879,10 +14879,10 @@ void zx_gl_QueryItem_DEL_loc_type(struct zx_gl_QueryItem_s* x, int n)
   case -1:
     y = (struct zx_gl_loc_type_s*)x->loc_type;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_loc_type_ELEM; y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->loc_type; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
+    for (y = x->loc_type; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_loc_type_ELEM; --n, y = (struct zx_gl_loc_type_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -14901,7 +14901,7 @@ int zx_gl_QueryItem_NUM_prio(struct zx_gl_QueryItem_s* x)
   struct zx_gl_prio_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->prio; y; ++n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+  for (y = x->prio; y && y->gg.g.tok == zx_gl_prio_ELEM; ++n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -14911,7 +14911,7 @@ struct zx_gl_prio_s* zx_gl_QueryItem_GET_prio(struct zx_gl_QueryItem_s* x, int n
 {
   struct zx_gl_prio_s* y;
   if (!x) return 0;
-  for (y = x->prio; n>=0 && y; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+  for (y = x->prio; n>=0 && y && y->gg.g.tok == zx_gl_prio_ELEM; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -14968,7 +14968,7 @@ void zx_gl_QueryItem_PUT_prio(struct zx_gl_QueryItem_s* x, int n, struct zx_gl_p
     x->prio = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_prio_ELEM; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -14990,10 +14990,10 @@ void zx_gl_QueryItem_ADD_prio(struct zx_gl_QueryItem_s* x, int n, struct zx_gl_p
   case -1:
     y = x->prio;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_prio_ELEM; y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->prio; n > 1 && y; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (y = x->prio; n > 1 && y && y->gg.g.tok == zx_gl_prio_ELEM; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -15013,10 +15013,10 @@ void zx_gl_QueryItem_DEL_prio(struct zx_gl_QueryItem_s* x, int n)
   case -1:
     y = (struct zx_gl_prio_s*)x->prio;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_prio_ELEM; y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->prio; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
+    for (y = x->prio; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_prio_ELEM; --n, y = (struct zx_gl_prio_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -15035,7 +15035,7 @@ int zx_gl_QueryItem_NUM_Extension(struct zx_gl_QueryItem_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -15045,7 +15045,7 @@ struct zx_gl_Extension_s* zx_gl_QueryItem_GET_Extension(struct zx_gl_QueryItem_s
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -15102,7 +15102,7 @@ void zx_gl_QueryItem_PUT_Extension(struct zx_gl_QueryItem_s* x, int n, struct zx
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -15124,10 +15124,10 @@ void zx_gl_QueryItem_ADD_Extension(struct zx_gl_QueryItem_s* x, int n, struct zx
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -15147,10 +15147,10 @@ void zx_gl_QueryItem_DEL_Extension(struct zx_gl_QueryItem_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -15190,7 +15190,7 @@ int zx_gl_QueryResponse_NUM_Status(struct zx_gl_QueryResponse_s* x)
   struct zx_gl_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_gl_Status_ELEM; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -15200,7 +15200,7 @@ struct zx_gl_Status_s* zx_gl_QueryResponse_GET_Status(struct zx_gl_QueryResponse
 {
   struct zx_gl_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -15257,7 +15257,7 @@ void zx_gl_QueryResponse_PUT_Status(struct zx_gl_QueryResponse_s* x, int n, stru
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -15279,10 +15279,10 @@ void zx_gl_QueryResponse_ADD_Status(struct zx_gl_QueryResponse_s* x, int n, stru
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -15302,10 +15302,10 @@ void zx_gl_QueryResponse_DEL_Status(struct zx_gl_QueryResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -15324,7 +15324,7 @@ int zx_gl_QueryResponse_NUM_Data(struct zx_gl_QueryResponse_s* x)
   struct zx_gl_Data_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Data; y; ++n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
+  for (y = x->Data; y && y->gg.g.tok == zx_gl_Data_ELEM; ++n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -15334,7 +15334,7 @@ struct zx_gl_Data_s* zx_gl_QueryResponse_GET_Data(struct zx_gl_QueryResponse_s* 
 {
   struct zx_gl_Data_s* y;
   if (!x) return 0;
-  for (y = x->Data; n>=0 && y; --n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
+  for (y = x->Data; n>=0 && y && y->gg.g.tok == zx_gl_Data_ELEM; --n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -15391,7 +15391,7 @@ void zx_gl_QueryResponse_PUT_Data(struct zx_gl_QueryResponse_s* x, int n, struct
     x->Data = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Data_ELEM; --n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -15413,10 +15413,10 @@ void zx_gl_QueryResponse_ADD_Data(struct zx_gl_QueryResponse_s* x, int n, struct
   case -1:
     y = x->Data;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Data_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Data_ELEM; y = (struct zx_gl_Data_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Data; n > 1 && y; --n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
+    for (y = x->Data; n > 1 && y && y->gg.g.tok == zx_gl_Data_ELEM; --n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -15436,10 +15436,10 @@ void zx_gl_QueryResponse_DEL_Data(struct zx_gl_QueryResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Data_s*)x->Data;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Data_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Data_ELEM; y = (struct zx_gl_Data_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Data; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
+    for (y = x->Data; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Data_ELEM; --n, y = (struct zx_gl_Data_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -15458,7 +15458,7 @@ int zx_gl_QueryResponse_NUM_Extension(struct zx_gl_QueryResponse_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -15468,7 +15468,7 @@ struct zx_gl_Extension_s* zx_gl_QueryResponse_GET_Extension(struct zx_gl_QueryRe
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -15525,7 +15525,7 @@ void zx_gl_QueryResponse_PUT_Extension(struct zx_gl_QueryResponse_s* x, int n, s
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -15547,10 +15547,10 @@ void zx_gl_QueryResponse_ADD_Extension(struct zx_gl_QueryResponse_s* x, int n, s
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -15570,10 +15570,10 @@ void zx_gl_QueryResponse_DEL_Extension(struct zx_gl_QueryResponse_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -15631,7 +15631,7 @@ int zx_gl_Status_NUM_Status(struct zx_gl_Status_s* x)
   struct zx_gl_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_gl_Status_ELEM; ++n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -15641,7 +15641,7 @@ struct zx_gl_Status_s* zx_gl_Status_GET_Status(struct zx_gl_Status_s* x, int n)
 {
   struct zx_gl_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -15698,7 +15698,7 @@ void zx_gl_Status_PUT_Status(struct zx_gl_Status_s* x, int n, struct zx_gl_Statu
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -15720,10 +15720,10 @@ void zx_gl_Status_ADD_Status(struct zx_gl_Status_s* x, int n, struct zx_gl_Statu
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -15743,10 +15743,10 @@ void zx_gl_Status_DEL_Status(struct zx_gl_Status_s* x, int n)
   case -1:
     y = (struct zx_gl_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Status_ELEM; --n, y = (struct zx_gl_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -15782,7 +15782,7 @@ int zx_gl_Subscription_NUM_ItemSelection(struct zx_gl_Subscription_s* x)
   struct zx_gl_ItemSelection_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ItemSelection; y; ++n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+  for (y = x->ItemSelection; y && y->gg.g.tok == zx_gl_ItemSelection_ELEM; ++n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -15792,7 +15792,7 @@ struct zx_gl_ItemSelection_s* zx_gl_Subscription_GET_ItemSelection(struct zx_gl_
 {
   struct zx_gl_ItemSelection_s* y;
   if (!x) return 0;
-  for (y = x->ItemSelection; n>=0 && y; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+  for (y = x->ItemSelection; n>=0 && y && y->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -15849,7 +15849,7 @@ void zx_gl_Subscription_PUT_ItemSelection(struct zx_gl_Subscription_s* x, int n,
     x->ItemSelection = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -15871,10 +15871,10 @@ void zx_gl_Subscription_ADD_ItemSelection(struct zx_gl_Subscription_s* x, int n,
   case -1:
     y = x->ItemSelection;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemSelection; n > 1 && y; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (y = x->ItemSelection; n > 1 && y && y->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -15894,10 +15894,10 @@ void zx_gl_Subscription_DEL_ItemSelection(struct zx_gl_Subscription_s* x, int n)
   case -1:
     y = (struct zx_gl_ItemSelection_s*)x->ItemSelection;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemSelection; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
+    for (y = x->ItemSelection; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ItemSelection_ELEM; --n, y = (struct zx_gl_ItemSelection_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -15916,7 +15916,7 @@ int zx_gl_Subscription_NUM_RefItem(struct zx_gl_Subscription_s* x)
   struct zx_gl_RefItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RefItem; y; ++n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
+  for (y = x->RefItem; y && y->gg.g.tok == zx_gl_RefItem_ELEM; ++n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -15926,7 +15926,7 @@ struct zx_gl_RefItem_s* zx_gl_Subscription_GET_RefItem(struct zx_gl_Subscription
 {
   struct zx_gl_RefItem_s* y;
   if (!x) return 0;
-  for (y = x->RefItem; n>=0 && y; --n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
+  for (y = x->RefItem; n>=0 && y && y->gg.g.tok == zx_gl_RefItem_ELEM; --n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -15983,7 +15983,7 @@ void zx_gl_Subscription_PUT_RefItem(struct zx_gl_Subscription_s* x, int n, struc
     x->RefItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_RefItem_ELEM; --n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -16005,10 +16005,10 @@ void zx_gl_Subscription_ADD_RefItem(struct zx_gl_Subscription_s* x, int n, struc
   case -1:
     y = x->RefItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_RefItem_ELEM; y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RefItem; n > 1 && y; --n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
+    for (y = x->RefItem; n > 1 && y && y->gg.g.tok == zx_gl_RefItem_ELEM; --n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -16028,10 +16028,10 @@ void zx_gl_Subscription_DEL_RefItem(struct zx_gl_Subscription_s* x, int n)
   case -1:
     y = (struct zx_gl_RefItem_s*)x->RefItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_RefItem_ELEM; y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RefItem; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
+    for (y = x->RefItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_RefItem_ELEM; --n, y = (struct zx_gl_RefItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -16050,7 +16050,7 @@ int zx_gl_Subscription_NUM_NotifyTo(struct zx_gl_Subscription_s* x)
   struct zx_gl_NotifyTo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NotifyTo; y; ++n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
+  for (y = x->NotifyTo; y && y->gg.g.tok == zx_gl_NotifyTo_ELEM; ++n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -16060,7 +16060,7 @@ struct zx_gl_NotifyTo_s* zx_gl_Subscription_GET_NotifyTo(struct zx_gl_Subscripti
 {
   struct zx_gl_NotifyTo_s* y;
   if (!x) return 0;
-  for (y = x->NotifyTo; n>=0 && y; --n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
+  for (y = x->NotifyTo; n>=0 && y && y->gg.g.tok == zx_gl_NotifyTo_ELEM; --n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -16117,7 +16117,7 @@ void zx_gl_Subscription_PUT_NotifyTo(struct zx_gl_Subscription_s* x, int n, stru
     x->NotifyTo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NotifyTo_ELEM; --n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -16139,10 +16139,10 @@ void zx_gl_Subscription_ADD_NotifyTo(struct zx_gl_Subscription_s* x, int n, stru
   case -1:
     y = x->NotifyTo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NotifyTo_ELEM; y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y; --n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
+    for (y = x->NotifyTo; n > 1 && y && y->gg.g.tok == zx_gl_NotifyTo_ELEM; --n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -16162,10 +16162,10 @@ void zx_gl_Subscription_DEL_NotifyTo(struct zx_gl_Subscription_s* x, int n)
   case -1:
     y = (struct zx_gl_NotifyTo_s*)x->NotifyTo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NotifyTo_ELEM; y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NotifyTo; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
+    for (y = x->NotifyTo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NotifyTo_ELEM; --n, y = (struct zx_gl_NotifyTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -16184,7 +16184,7 @@ int zx_gl_Subscription_NUM_NotifyAdminTo(struct zx_gl_Subscription_s* x)
   struct zx_gl_NotifyAdminTo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NotifyAdminTo; y; ++n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
+  for (y = x->NotifyAdminTo; y && y->gg.g.tok == zx_gl_NotifyAdminTo_ELEM; ++n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -16194,7 +16194,7 @@ struct zx_gl_NotifyAdminTo_s* zx_gl_Subscription_GET_NotifyAdminTo(struct zx_gl_
 {
   struct zx_gl_NotifyAdminTo_s* y;
   if (!x) return 0;
-  for (y = x->NotifyAdminTo; n>=0 && y; --n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
+  for (y = x->NotifyAdminTo; n>=0 && y && y->gg.g.tok == zx_gl_NotifyAdminTo_ELEM; --n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -16251,7 +16251,7 @@ void zx_gl_Subscription_PUT_NotifyAdminTo(struct zx_gl_Subscription_s* x, int n,
     x->NotifyAdminTo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NotifyAdminTo_ELEM; --n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -16273,10 +16273,10 @@ void zx_gl_Subscription_ADD_NotifyAdminTo(struct zx_gl_Subscription_s* x, int n,
   case -1:
     y = x->NotifyAdminTo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NotifyAdminTo_ELEM; y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NotifyAdminTo; n > 1 && y; --n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
+    for (y = x->NotifyAdminTo; n > 1 && y && y->gg.g.tok == zx_gl_NotifyAdminTo_ELEM; --n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -16296,10 +16296,10 @@ void zx_gl_Subscription_DEL_NotifyAdminTo(struct zx_gl_Subscription_s* x, int n)
   case -1:
     y = (struct zx_gl_NotifyAdminTo_s*)x->NotifyAdminTo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NotifyAdminTo_ELEM; y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NotifyAdminTo; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
+    for (y = x->NotifyAdminTo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_NotifyAdminTo_ELEM; --n, y = (struct zx_gl_NotifyAdminTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -16318,7 +16318,7 @@ int zx_gl_Subscription_NUM_Aggregation(struct zx_gl_Subscription_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Aggregation; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Aggregation; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -16328,7 +16328,7 @@ struct zx_elem_s* zx_gl_Subscription_GET_Aggregation(struct zx_gl_Subscription_s
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Aggregation; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Aggregation; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -16385,7 +16385,7 @@ void zx_gl_Subscription_PUT_Aggregation(struct zx_gl_Subscription_s* x, int n, s
     x->Aggregation = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -16407,10 +16407,10 @@ void zx_gl_Subscription_ADD_Aggregation(struct zx_gl_Subscription_s* x, int n, s
   case -1:
     y = x->Aggregation;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Aggregation; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Aggregation; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -16430,10 +16430,10 @@ void zx_gl_Subscription_DEL_Aggregation(struct zx_gl_Subscription_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Aggregation;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Aggregation; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Aggregation; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -16452,7 +16452,7 @@ int zx_gl_Subscription_NUM_Trigger(struct zx_gl_Subscription_s* x)
   struct zx_gl_Trigger_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Trigger; y; ++n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
+  for (y = x->Trigger; y && y->gg.g.tok == zx_gl_Trigger_ELEM; ++n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -16462,7 +16462,7 @@ struct zx_gl_Trigger_s* zx_gl_Subscription_GET_Trigger(struct zx_gl_Subscription
 {
   struct zx_gl_Trigger_s* y;
   if (!x) return 0;
-  for (y = x->Trigger; n>=0 && y; --n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
+  for (y = x->Trigger; n>=0 && y && y->gg.g.tok == zx_gl_Trigger_ELEM; --n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -16519,7 +16519,7 @@ void zx_gl_Subscription_PUT_Trigger(struct zx_gl_Subscription_s* x, int n, struc
     x->Trigger = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Trigger_ELEM; --n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -16541,10 +16541,10 @@ void zx_gl_Subscription_ADD_Trigger(struct zx_gl_Subscription_s* x, int n, struc
   case -1:
     y = x->Trigger;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Trigger_ELEM; y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Trigger; n > 1 && y; --n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
+    for (y = x->Trigger; n > 1 && y && y->gg.g.tok == zx_gl_Trigger_ELEM; --n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -16564,10 +16564,10 @@ void zx_gl_Subscription_DEL_Trigger(struct zx_gl_Subscription_s* x, int n)
   case -1:
     y = (struct zx_gl_Trigger_s*)x->Trigger;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Trigger_ELEM; y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Trigger; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
+    for (y = x->Trigger; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Trigger_ELEM; --n, y = (struct zx_gl_Trigger_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -16586,7 +16586,7 @@ int zx_gl_Subscription_NUM_Extension(struct zx_gl_Subscription_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -16596,7 +16596,7 @@ struct zx_gl_Extension_s* zx_gl_Subscription_GET_Extension(struct zx_gl_Subscrip
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -16653,7 +16653,7 @@ void zx_gl_Subscription_PUT_Extension(struct zx_gl_Subscription_s* x, int n, str
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -16675,10 +16675,10 @@ void zx_gl_Subscription_ADD_Extension(struct zx_gl_Subscription_s* x, int n, str
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -16698,10 +16698,10 @@ void zx_gl_Subscription_DEL_Extension(struct zx_gl_Subscription_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -16745,7 +16745,7 @@ int zx_gl_Trigger_NUM_Granularity(struct zx_gl_Trigger_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Granularity; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Granularity; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -16755,7 +16755,7 @@ struct zx_elem_s* zx_gl_Trigger_GET_Granularity(struct zx_gl_Trigger_s* x, int n
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Granularity; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Granularity; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -16812,7 +16812,7 @@ void zx_gl_Trigger_PUT_Granularity(struct zx_gl_Trigger_s* x, int n, struct zx_e
     x->Granularity = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -16834,10 +16834,10 @@ void zx_gl_Trigger_ADD_Granularity(struct zx_gl_Trigger_s* x, int n, struct zx_e
   case -1:
     y = x->Granularity;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Granularity; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Granularity; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -16857,10 +16857,10 @@ void zx_gl_Trigger_DEL_Granularity(struct zx_gl_Trigger_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Granularity;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Granularity; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Granularity; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -16879,7 +16879,7 @@ int zx_gl_Trigger_NUM_Interval(struct zx_gl_Trigger_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Interval; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Interval; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -16889,7 +16889,7 @@ struct zx_elem_s* zx_gl_Trigger_GET_Interval(struct zx_gl_Trigger_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Interval; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Interval; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -16946,7 +16946,7 @@ void zx_gl_Trigger_PUT_Interval(struct zx_gl_Trigger_s* x, int n, struct zx_elem
     x->Interval = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -16968,10 +16968,10 @@ void zx_gl_Trigger_ADD_Interval(struct zx_gl_Trigger_s* x, int n, struct zx_elem
   case -1:
     y = x->Interval;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Interval; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Interval; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -16991,10 +16991,10 @@ void zx_gl_Trigger_DEL_Interval(struct zx_gl_Trigger_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Interval;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Interval; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Interval; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -17013,7 +17013,7 @@ int zx_gl_Trigger_NUM_ms_action(struct zx_gl_Trigger_s* x)
   struct zx_gl_ms_action_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ms_action; y; ++n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
+  for (y = x->ms_action; y && y->gg.g.tok == zx_gl_ms_action_ELEM; ++n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -17023,7 +17023,7 @@ struct zx_gl_ms_action_s* zx_gl_Trigger_GET_ms_action(struct zx_gl_Trigger_s* x,
 {
   struct zx_gl_ms_action_s* y;
   if (!x) return 0;
-  for (y = x->ms_action; n>=0 && y; --n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
+  for (y = x->ms_action; n>=0 && y && y->gg.g.tok == zx_gl_ms_action_ELEM; --n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -17080,7 +17080,7 @@ void zx_gl_Trigger_PUT_ms_action(struct zx_gl_Trigger_s* x, int n, struct zx_gl_
     x->ms_action = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ms_action_ELEM; --n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -17102,10 +17102,10 @@ void zx_gl_Trigger_ADD_ms_action(struct zx_gl_Trigger_s* x, int n, struct zx_gl_
   case -1:
     y = x->ms_action;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ms_action_ELEM; y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ms_action; n > 1 && y; --n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
+    for (y = x->ms_action; n > 1 && y && y->gg.g.tok == zx_gl_ms_action_ELEM; --n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -17125,10 +17125,10 @@ void zx_gl_Trigger_DEL_ms_action(struct zx_gl_Trigger_s* x, int n)
   case -1:
     y = (struct zx_gl_ms_action_s*)x->ms_action;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ms_action_ELEM; y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ms_action; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
+    for (y = x->ms_action; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ms_action_ELEM; --n, y = (struct zx_gl_ms_action_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -17147,7 +17147,7 @@ int zx_gl_Trigger_NUM_ChangeArea(struct zx_gl_Trigger_s* x)
   struct zx_gl_ChangeArea_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ChangeArea; y; ++n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
+  for (y = x->ChangeArea; y && y->gg.g.tok == zx_gl_ChangeArea_ELEM; ++n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -17157,7 +17157,7 @@ struct zx_gl_ChangeArea_s* zx_gl_Trigger_GET_ChangeArea(struct zx_gl_Trigger_s* 
 {
   struct zx_gl_ChangeArea_s* y;
   if (!x) return 0;
-  for (y = x->ChangeArea; n>=0 && y; --n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
+  for (y = x->ChangeArea; n>=0 && y && y->gg.g.tok == zx_gl_ChangeArea_ELEM; --n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -17214,7 +17214,7 @@ void zx_gl_Trigger_PUT_ChangeArea(struct zx_gl_Trigger_s* x, int n, struct zx_gl
     x->ChangeArea = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ChangeArea_ELEM; --n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -17236,10 +17236,10 @@ void zx_gl_Trigger_ADD_ChangeArea(struct zx_gl_Trigger_s* x, int n, struct zx_gl
   case -1:
     y = x->ChangeArea;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ChangeArea_ELEM; y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ChangeArea; n > 1 && y; --n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
+    for (y = x->ChangeArea; n > 1 && y && y->gg.g.tok == zx_gl_ChangeArea_ELEM; --n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -17259,10 +17259,10 @@ void zx_gl_Trigger_DEL_ChangeArea(struct zx_gl_Trigger_s* x, int n)
   case -1:
     y = (struct zx_gl_ChangeArea_s*)x->ChangeArea;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ChangeArea_ELEM; y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ChangeArea; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
+    for (y = x->ChangeArea; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_ChangeArea_ELEM; --n, y = (struct zx_gl_ChangeArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -17281,7 +17281,7 @@ int zx_gl_Trigger_NUM_Extension(struct zx_gl_Trigger_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -17291,7 +17291,7 @@ struct zx_gl_Extension_s* zx_gl_Trigger_GET_Extension(struct zx_gl_Trigger_s* x,
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -17348,7 +17348,7 @@ void zx_gl_Trigger_PUT_Extension(struct zx_gl_Trigger_s* x, int n, struct zx_gl_
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -17370,10 +17370,10 @@ void zx_gl_Trigger_ADD_Extension(struct zx_gl_Trigger_s* x, int n, struct zx_gl_
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -17393,10 +17393,10 @@ void zx_gl_Trigger_DEL_Extension(struct zx_gl_Trigger_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -17420,7 +17420,7 @@ int zx_gl_coord_NUM_X(struct zx_gl_coord_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->X; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->X; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -17430,7 +17430,7 @@ struct zx_elem_s* zx_gl_coord_GET_X(struct zx_gl_coord_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->X; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->X; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -17487,7 +17487,7 @@ void zx_gl_coord_PUT_X(struct zx_gl_coord_s* x, int n, struct zx_elem_s* z)
     x->X = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -17509,10 +17509,10 @@ void zx_gl_coord_ADD_X(struct zx_gl_coord_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->X;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->X; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->X; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -17532,10 +17532,10 @@ void zx_gl_coord_DEL_X(struct zx_gl_coord_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->X;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->X; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->X; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -17554,7 +17554,7 @@ int zx_gl_coord_NUM_Y(struct zx_gl_coord_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Y; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Y; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -17564,7 +17564,7 @@ struct zx_elem_s* zx_gl_coord_GET_Y(struct zx_gl_coord_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Y; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Y; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -17621,7 +17621,7 @@ void zx_gl_coord_PUT_Y(struct zx_gl_coord_s* x, int n, struct zx_elem_s* z)
     x->Y = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -17643,10 +17643,10 @@ void zx_gl_coord_ADD_Y(struct zx_gl_coord_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->Y;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Y; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Y; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -17666,10 +17666,10 @@ void zx_gl_coord_DEL_Y(struct zx_gl_coord_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Y;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Y; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Y; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -17688,7 +17688,7 @@ int zx_gl_coord_NUM_Z(struct zx_gl_coord_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Z; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Z; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -17698,7 +17698,7 @@ struct zx_elem_s* zx_gl_coord_GET_Z(struct zx_gl_coord_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Z; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Z; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -17755,7 +17755,7 @@ void zx_gl_coord_PUT_Z(struct zx_gl_coord_s* x, int n, struct zx_elem_s* z)
     x->Z = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -17777,10 +17777,10 @@ void zx_gl_coord_ADD_Z(struct zx_gl_coord_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->Z;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Z; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Z; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -17800,10 +17800,10 @@ void zx_gl_coord_DEL_Z(struct zx_gl_coord_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Z;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Z; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Z; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -17827,7 +17827,7 @@ int zx_gl_eqop_NUM_resp_req(struct zx_gl_eqop_s* x)
   struct zx_gl_resp_req_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->resp_req; y; ++n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
+  for (y = x->resp_req; y && y->gg.g.tok == zx_gl_resp_req_ELEM; ++n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -17837,7 +17837,7 @@ struct zx_gl_resp_req_s* zx_gl_eqop_GET_resp_req(struct zx_gl_eqop_s* x, int n)
 {
   struct zx_gl_resp_req_s* y;
   if (!x) return 0;
-  for (y = x->resp_req; n>=0 && y; --n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
+  for (y = x->resp_req; n>=0 && y && y->gg.g.tok == zx_gl_resp_req_ELEM; --n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -17894,7 +17894,7 @@ void zx_gl_eqop_PUT_resp_req(struct zx_gl_eqop_s* x, int n, struct zx_gl_resp_re
     x->resp_req = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_resp_req_ELEM; --n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -17916,10 +17916,10 @@ void zx_gl_eqop_ADD_resp_req(struct zx_gl_eqop_s* x, int n, struct zx_gl_resp_re
   case -1:
     y = x->resp_req;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_resp_req_ELEM; y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->resp_req; n > 1 && y; --n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
+    for (y = x->resp_req; n > 1 && y && y->gg.g.tok == zx_gl_resp_req_ELEM; --n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -17939,10 +17939,10 @@ void zx_gl_eqop_DEL_resp_req(struct zx_gl_eqop_s* x, int n)
   case -1:
     y = (struct zx_gl_resp_req_s*)x->resp_req;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_resp_req_ELEM; y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->resp_req; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
+    for (y = x->resp_req; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_resp_req_ELEM; --n, y = (struct zx_gl_resp_req_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -17961,7 +17961,7 @@ int zx_gl_eqop_NUM_ll_acc(struct zx_gl_eqop_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ll_acc; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ll_acc; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -17971,7 +17971,7 @@ struct zx_elem_s* zx_gl_eqop_GET_ll_acc(struct zx_gl_eqop_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->ll_acc; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ll_acc; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -18028,7 +18028,7 @@ void zx_gl_eqop_PUT_ll_acc(struct zx_gl_eqop_s* x, int n, struct zx_elem_s* z)
     x->ll_acc = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -18050,10 +18050,10 @@ void zx_gl_eqop_ADD_ll_acc(struct zx_gl_eqop_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->ll_acc;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ll_acc; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ll_acc; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -18073,10 +18073,10 @@ void zx_gl_eqop_DEL_ll_acc(struct zx_gl_eqop_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->ll_acc;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ll_acc; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ll_acc; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -18095,7 +18095,7 @@ int zx_gl_eqop_NUM_hor_acc(struct zx_gl_eqop_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->hor_acc; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->hor_acc; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -18105,7 +18105,7 @@ struct zx_elem_s* zx_gl_eqop_GET_hor_acc(struct zx_gl_eqop_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->hor_acc; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->hor_acc; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -18162,7 +18162,7 @@ void zx_gl_eqop_PUT_hor_acc(struct zx_gl_eqop_s* x, int n, struct zx_elem_s* z)
     x->hor_acc = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -18184,10 +18184,10 @@ void zx_gl_eqop_ADD_hor_acc(struct zx_gl_eqop_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->hor_acc;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->hor_acc; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->hor_acc; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -18207,10 +18207,10 @@ void zx_gl_eqop_DEL_hor_acc(struct zx_gl_eqop_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->hor_acc;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->hor_acc; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->hor_acc; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -18229,7 +18229,7 @@ int zx_gl_eqop_NUM_alt_acc(struct zx_gl_eqop_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->alt_acc; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->alt_acc; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -18239,7 +18239,7 @@ struct zx_elem_s* zx_gl_eqop_GET_alt_acc(struct zx_gl_eqop_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->alt_acc; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->alt_acc; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -18296,7 +18296,7 @@ void zx_gl_eqop_PUT_alt_acc(struct zx_gl_eqop_s* x, int n, struct zx_elem_s* z)
     x->alt_acc = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -18318,10 +18318,10 @@ void zx_gl_eqop_ADD_alt_acc(struct zx_gl_eqop_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->alt_acc;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->alt_acc; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->alt_acc; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -18341,10 +18341,10 @@ void zx_gl_eqop_DEL_alt_acc(struct zx_gl_eqop_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->alt_acc;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->alt_acc; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->alt_acc; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -18363,7 +18363,7 @@ int zx_gl_eqop_NUM_max_loc_age(struct zx_gl_eqop_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->max_loc_age; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->max_loc_age; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -18373,7 +18373,7 @@ struct zx_elem_s* zx_gl_eqop_GET_max_loc_age(struct zx_gl_eqop_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->max_loc_age; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->max_loc_age; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -18430,7 +18430,7 @@ void zx_gl_eqop_PUT_max_loc_age(struct zx_gl_eqop_s* x, int n, struct zx_elem_s*
     x->max_loc_age = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -18452,10 +18452,10 @@ void zx_gl_eqop_ADD_max_loc_age(struct zx_gl_eqop_s* x, int n, struct zx_elem_s*
   case -1:
     y = x->max_loc_age;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->max_loc_age; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->max_loc_age; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -18475,10 +18475,10 @@ void zx_gl_eqop_DEL_max_loc_age(struct zx_gl_eqop_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->max_loc_age;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->max_loc_age; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->max_loc_age; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -18497,7 +18497,7 @@ int zx_gl_eqop_NUM_Extension(struct zx_gl_eqop_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -18507,7 +18507,7 @@ struct zx_gl_Extension_s* zx_gl_eqop_GET_Extension(struct zx_gl_eqop_s* x, int n
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -18564,7 +18564,7 @@ void zx_gl_eqop_PUT_Extension(struct zx_gl_eqop_s* x, int n, struct zx_gl_Extens
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -18586,10 +18586,10 @@ void zx_gl_eqop_ADD_Extension(struct zx_gl_eqop_s* x, int n, struct zx_gl_Extens
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -18609,10 +18609,10 @@ void zx_gl_eqop_DEL_Extension(struct zx_gl_eqop_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -18654,7 +18654,7 @@ int zx_gl_geoinfo_NUM_CoordinateReferenceSystem(struct zx_gl_geoinfo_s* x)
   struct zx_gl_CoordinateReferenceSystem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CoordinateReferenceSystem; y; ++n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
+  for (y = x->CoordinateReferenceSystem; y && y->gg.g.tok == zx_gl_CoordinateReferenceSystem_ELEM; ++n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -18664,7 +18664,7 @@ struct zx_gl_CoordinateReferenceSystem_s* zx_gl_geoinfo_GET_CoordinateReferenceS
 {
   struct zx_gl_CoordinateReferenceSystem_s* y;
   if (!x) return 0;
-  for (y = x->CoordinateReferenceSystem; n>=0 && y; --n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
+  for (y = x->CoordinateReferenceSystem; n>=0 && y && y->gg.g.tok == zx_gl_CoordinateReferenceSystem_ELEM; --n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -18721,7 +18721,7 @@ void zx_gl_geoinfo_PUT_CoordinateReferenceSystem(struct zx_gl_geoinfo_s* x, int 
     x->CoordinateReferenceSystem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CoordinateReferenceSystem_ELEM; --n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -18743,10 +18743,10 @@ void zx_gl_geoinfo_ADD_CoordinateReferenceSystem(struct zx_gl_geoinfo_s* x, int 
   case -1:
     y = x->CoordinateReferenceSystem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CoordinateReferenceSystem_ELEM; y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CoordinateReferenceSystem; n > 1 && y; --n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
+    for (y = x->CoordinateReferenceSystem; n > 1 && y && y->gg.g.tok == zx_gl_CoordinateReferenceSystem_ELEM; --n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -18766,10 +18766,10 @@ void zx_gl_geoinfo_DEL_CoordinateReferenceSystem(struct zx_gl_geoinfo_s* x, int 
   case -1:
     y = (struct zx_gl_CoordinateReferenceSystem_s*)x->CoordinateReferenceSystem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CoordinateReferenceSystem_ELEM; y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CoordinateReferenceSystem; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
+    for (y = x->CoordinateReferenceSystem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CoordinateReferenceSystem_ELEM; --n, y = (struct zx_gl_CoordinateReferenceSystem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -18788,7 +18788,7 @@ int zx_gl_geoinfo_NUM_CivilData(struct zx_gl_geoinfo_s* x)
   struct zx_gl_CivilData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CivilData; y; ++n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+  for (y = x->CivilData; y && y->gg.g.tok == zx_gl_CivilData_ELEM; ++n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -18798,7 +18798,7 @@ struct zx_gl_CivilData_s* zx_gl_geoinfo_GET_CivilData(struct zx_gl_geoinfo_s* x,
 {
   struct zx_gl_CivilData_s* y;
   if (!x) return 0;
-  for (y = x->CivilData; n>=0 && y; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+  for (y = x->CivilData; n>=0 && y && y->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -18855,7 +18855,7 @@ void zx_gl_geoinfo_PUT_CivilData(struct zx_gl_geoinfo_s* x, int n, struct zx_gl_
     x->CivilData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -18877,10 +18877,10 @@ void zx_gl_geoinfo_ADD_CivilData(struct zx_gl_geoinfo_s* x, int n, struct zx_gl_
   case -1:
     y = x->CivilData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CivilData; n > 1 && y; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (y = x->CivilData; n > 1 && y && y->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -18900,10 +18900,10 @@ void zx_gl_geoinfo_DEL_CivilData(struct zx_gl_geoinfo_s* x, int n)
   case -1:
     y = (struct zx_gl_CivilData_s*)x->CivilData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CivilData; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (y = x->CivilData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -18922,7 +18922,7 @@ int zx_gl_geoinfo_NUM_shape(struct zx_gl_geoinfo_s* x)
   struct zx_gl_shape_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->shape; y; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; y && y->gg.g.tok == zx_gl_shape_ELEM; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -18932,7 +18932,7 @@ struct zx_gl_shape_s* zx_gl_geoinfo_GET_shape(struct zx_gl_geoinfo_s* x, int n)
 {
   struct zx_gl_shape_s* y;
   if (!x) return 0;
-  for (y = x->shape; n>=0 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; n>=0 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -18989,7 +18989,7 @@ void zx_gl_geoinfo_PUT_shape(struct zx_gl_geoinfo_s* x, int n, struct zx_gl_shap
     x->shape = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -19011,10 +19011,10 @@ void zx_gl_geoinfo_ADD_shape(struct zx_gl_geoinfo_s* x, int n, struct zx_gl_shap
   case -1:
     y = x->shape;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -19034,10 +19034,10 @@ void zx_gl_geoinfo_DEL_shape(struct zx_gl_geoinfo_s* x, int n)
   case -1:
     y = (struct zx_gl_shape_s*)x->shape;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -19056,7 +19056,7 @@ int zx_gl_geoinfo_NUM_speed(struct zx_gl_geoinfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->speed; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->speed; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -19066,7 +19066,7 @@ struct zx_elem_s* zx_gl_geoinfo_GET_speed(struct zx_gl_geoinfo_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->speed; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->speed; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -19123,7 +19123,7 @@ void zx_gl_geoinfo_PUT_speed(struct zx_gl_geoinfo_s* x, int n, struct zx_elem_s*
     x->speed = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -19145,10 +19145,10 @@ void zx_gl_geoinfo_ADD_speed(struct zx_gl_geoinfo_s* x, int n, struct zx_elem_s*
   case -1:
     y = x->speed;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->speed; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->speed; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -19168,10 +19168,10 @@ void zx_gl_geoinfo_DEL_speed(struct zx_gl_geoinfo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->speed;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->speed; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->speed; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -19190,7 +19190,7 @@ int zx_gl_geoinfo_NUM_alt(struct zx_gl_geoinfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->alt; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->alt; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -19200,7 +19200,7 @@ struct zx_elem_s* zx_gl_geoinfo_GET_alt(struct zx_gl_geoinfo_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->alt; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->alt; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -19257,7 +19257,7 @@ void zx_gl_geoinfo_PUT_alt(struct zx_gl_geoinfo_s* x, int n, struct zx_elem_s* z
     x->alt = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -19279,10 +19279,10 @@ void zx_gl_geoinfo_ADD_alt(struct zx_gl_geoinfo_s* x, int n, struct zx_elem_s* z
   case -1:
     y = x->alt;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->alt; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->alt; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -19302,10 +19302,10 @@ void zx_gl_geoinfo_DEL_alt(struct zx_gl_geoinfo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->alt;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->alt; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->alt; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -19324,7 +19324,7 @@ int zx_gl_geoinfo_NUM_direction(struct zx_gl_geoinfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->direction; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->direction; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -19334,7 +19334,7 @@ struct zx_elem_s* zx_gl_geoinfo_GET_direction(struct zx_gl_geoinfo_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->direction; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->direction; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -19391,7 +19391,7 @@ void zx_gl_geoinfo_PUT_direction(struct zx_gl_geoinfo_s* x, int n, struct zx_ele
     x->direction = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -19413,10 +19413,10 @@ void zx_gl_geoinfo_ADD_direction(struct zx_gl_geoinfo_s* x, int n, struct zx_ele
   case -1:
     y = x->direction;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->direction; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->direction; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -19436,10 +19436,10 @@ void zx_gl_geoinfo_DEL_direction(struct zx_gl_geoinfo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->direction;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->direction; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->direction; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -19458,7 +19458,7 @@ int zx_gl_geoinfo_NUM_Heading(struct zx_gl_geoinfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Heading; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Heading; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -19468,7 +19468,7 @@ struct zx_elem_s* zx_gl_geoinfo_GET_Heading(struct zx_gl_geoinfo_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Heading; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Heading; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -19525,7 +19525,7 @@ void zx_gl_geoinfo_PUT_Heading(struct zx_gl_geoinfo_s* x, int n, struct zx_elem_
     x->Heading = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -19547,10 +19547,10 @@ void zx_gl_geoinfo_ADD_Heading(struct zx_gl_geoinfo_s* x, int n, struct zx_elem_
   case -1:
     y = x->Heading;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Heading; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Heading; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -19570,10 +19570,10 @@ void zx_gl_geoinfo_DEL_Heading(struct zx_gl_geoinfo_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Heading;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Heading; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Heading; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -19592,7 +19592,7 @@ int zx_gl_geoinfo_NUM_Extension(struct zx_gl_geoinfo_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -19602,7 +19602,7 @@ struct zx_gl_Extension_s* zx_gl_geoinfo_GET_Extension(struct zx_gl_geoinfo_s* x,
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -19659,7 +19659,7 @@ void zx_gl_geoinfo_PUT_Extension(struct zx_gl_geoinfo_s* x, int n, struct zx_gl_
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -19681,10 +19681,10 @@ void zx_gl_geoinfo_ADD_Extension(struct zx_gl_geoinfo_s* x, int n, struct zx_gl_
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -19704,10 +19704,10 @@ void zx_gl_geoinfo_DEL_Extension(struct zx_gl_geoinfo_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -19731,7 +19731,7 @@ int zx_gl_innerBoundaryIs_NUM_LinearRing(struct zx_gl_innerBoundaryIs_s* x)
   struct zx_gl_LinearRing_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->LinearRing; y; ++n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+  for (y = x->LinearRing; y && y->gg.g.tok == zx_gl_LinearRing_ELEM; ++n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -19741,7 +19741,7 @@ struct zx_gl_LinearRing_s* zx_gl_innerBoundaryIs_GET_LinearRing(struct zx_gl_inn
 {
   struct zx_gl_LinearRing_s* y;
   if (!x) return 0;
-  for (y = x->LinearRing; n>=0 && y; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+  for (y = x->LinearRing; n>=0 && y && y->gg.g.tok == zx_gl_LinearRing_ELEM; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -19798,7 +19798,7 @@ void zx_gl_innerBoundaryIs_PUT_LinearRing(struct zx_gl_innerBoundaryIs_s* x, int
     x->LinearRing = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LinearRing_ELEM; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -19820,10 +19820,10 @@ void zx_gl_innerBoundaryIs_ADD_LinearRing(struct zx_gl_innerBoundaryIs_s* x, int
   case -1:
     y = x->LinearRing;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LinearRing_ELEM; y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LinearRing; n > 1 && y; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (y = x->LinearRing; n > 1 && y && y->gg.g.tok == zx_gl_LinearRing_ELEM; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -19843,10 +19843,10 @@ void zx_gl_innerBoundaryIs_DEL_LinearRing(struct zx_gl_innerBoundaryIs_s* x, int
   case -1:
     y = (struct zx_gl_LinearRing_s*)x->LinearRing;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LinearRing_ELEM; y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LinearRing; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (y = x->LinearRing; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LinearRing_ELEM; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -19888,7 +19888,7 @@ int zx_gl_outerBoundaryIs_NUM_LinearRing(struct zx_gl_outerBoundaryIs_s* x)
   struct zx_gl_LinearRing_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->LinearRing; y; ++n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+  for (y = x->LinearRing; y && y->gg.g.tok == zx_gl_LinearRing_ELEM; ++n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -19898,7 +19898,7 @@ struct zx_gl_LinearRing_s* zx_gl_outerBoundaryIs_GET_LinearRing(struct zx_gl_out
 {
   struct zx_gl_LinearRing_s* y;
   if (!x) return 0;
-  for (y = x->LinearRing; n>=0 && y; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+  for (y = x->LinearRing; n>=0 && y && y->gg.g.tok == zx_gl_LinearRing_ELEM; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -19955,7 +19955,7 @@ void zx_gl_outerBoundaryIs_PUT_LinearRing(struct zx_gl_outerBoundaryIs_s* x, int
     x->LinearRing = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LinearRing_ELEM; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -19977,10 +19977,10 @@ void zx_gl_outerBoundaryIs_ADD_LinearRing(struct zx_gl_outerBoundaryIs_s* x, int
   case -1:
     y = x->LinearRing;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LinearRing_ELEM; y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LinearRing; n > 1 && y; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (y = x->LinearRing; n > 1 && y && y->gg.g.tok == zx_gl_LinearRing_ELEM; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -20000,10 +20000,10 @@ void zx_gl_outerBoundaryIs_DEL_LinearRing(struct zx_gl_outerBoundaryIs_s* x, int
   case -1:
     y = (struct zx_gl_LinearRing_s*)x->LinearRing;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LinearRing_ELEM; y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LinearRing; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
+    for (y = x->LinearRing; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LinearRing_ELEM; --n, y = (struct zx_gl_LinearRing_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -20027,7 +20027,7 @@ int zx_gl_pd_NUM_time(struct zx_gl_pd_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->time; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->time; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -20037,7 +20037,7 @@ struct zx_elem_s* zx_gl_pd_GET_time(struct zx_gl_pd_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->time; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->time; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -20094,7 +20094,7 @@ void zx_gl_pd_PUT_time(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
     x->time = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -20116,10 +20116,10 @@ void zx_gl_pd_ADD_time(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->time;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->time; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->time; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -20139,10 +20139,10 @@ void zx_gl_pd_DEL_time(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->time;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->time; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->time; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -20161,7 +20161,7 @@ int zx_gl_pd_NUM_CivilData(struct zx_gl_pd_s* x)
   struct zx_gl_CivilData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CivilData; y; ++n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+  for (y = x->CivilData; y && y->gg.g.tok == zx_gl_CivilData_ELEM; ++n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -20171,7 +20171,7 @@ struct zx_gl_CivilData_s* zx_gl_pd_GET_CivilData(struct zx_gl_pd_s* x, int n)
 {
   struct zx_gl_CivilData_s* y;
   if (!x) return 0;
-  for (y = x->CivilData; n>=0 && y; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+  for (y = x->CivilData; n>=0 && y && y->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -20228,7 +20228,7 @@ void zx_gl_pd_PUT_CivilData(struct zx_gl_pd_s* x, int n, struct zx_gl_CivilData_
     x->CivilData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -20250,10 +20250,10 @@ void zx_gl_pd_ADD_CivilData(struct zx_gl_pd_s* x, int n, struct zx_gl_CivilData_
   case -1:
     y = x->CivilData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CivilData; n > 1 && y; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (y = x->CivilData; n > 1 && y && y->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -20273,10 +20273,10 @@ void zx_gl_pd_DEL_CivilData(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_gl_CivilData_s*)x->CivilData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CivilData; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
+    for (y = x->CivilData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CivilData_ELEM; --n, y = (struct zx_gl_CivilData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -20295,7 +20295,7 @@ int zx_gl_pd_NUM_shape(struct zx_gl_pd_s* x)
   struct zx_gl_shape_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->shape; y; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; y && y->gg.g.tok == zx_gl_shape_ELEM; ++n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -20305,7 +20305,7 @@ struct zx_gl_shape_s* zx_gl_pd_GET_shape(struct zx_gl_pd_s* x, int n)
 {
   struct zx_gl_shape_s* y;
   if (!x) return 0;
-  for (y = x->shape; n>=0 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+  for (y = x->shape; n>=0 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -20362,7 +20362,7 @@ void zx_gl_pd_PUT_shape(struct zx_gl_pd_s* x, int n, struct zx_gl_shape_s* z)
     x->shape = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -20384,10 +20384,10 @@ void zx_gl_pd_ADD_shape(struct zx_gl_pd_s* x, int n, struct zx_gl_shape_s* z)
   case -1:
     y = x->shape;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y && y->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -20407,10 +20407,10 @@ void zx_gl_pd_DEL_shape(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_gl_shape_s*)x->shape;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->shape; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
+    for (y = x->shape; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_shape_ELEM; --n, y = (struct zx_gl_shape_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -20429,7 +20429,7 @@ int zx_gl_pd_NUM_alt(struct zx_gl_pd_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->alt; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->alt; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -20439,7 +20439,7 @@ struct zx_elem_s* zx_gl_pd_GET_alt(struct zx_gl_pd_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->alt; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->alt; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -20496,7 +20496,7 @@ void zx_gl_pd_PUT_alt(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
     x->alt = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -20518,10 +20518,10 @@ void zx_gl_pd_ADD_alt(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->alt;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->alt; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->alt; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -20541,10 +20541,10 @@ void zx_gl_pd_DEL_alt(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->alt;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->alt; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->alt; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -20563,7 +20563,7 @@ int zx_gl_pd_NUM_alt_acc(struct zx_gl_pd_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->alt_acc; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->alt_acc; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -20573,7 +20573,7 @@ struct zx_elem_s* zx_gl_pd_GET_alt_acc(struct zx_gl_pd_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->alt_acc; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->alt_acc; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -20630,7 +20630,7 @@ void zx_gl_pd_PUT_alt_acc(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
     x->alt_acc = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -20652,10 +20652,10 @@ void zx_gl_pd_ADD_alt_acc(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->alt_acc;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->alt_acc; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->alt_acc; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -20675,10 +20675,10 @@ void zx_gl_pd_DEL_alt_acc(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->alt_acc;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->alt_acc; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->alt_acc; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -20697,7 +20697,7 @@ int zx_gl_pd_NUM_speed(struct zx_gl_pd_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->speed; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->speed; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -20707,7 +20707,7 @@ struct zx_elem_s* zx_gl_pd_GET_speed(struct zx_gl_pd_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->speed; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->speed; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -20764,7 +20764,7 @@ void zx_gl_pd_PUT_speed(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
     x->speed = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -20786,10 +20786,10 @@ void zx_gl_pd_ADD_speed(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->speed;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->speed; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->speed; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -20809,10 +20809,10 @@ void zx_gl_pd_DEL_speed(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->speed;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->speed; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->speed; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -20831,7 +20831,7 @@ int zx_gl_pd_NUM_direction(struct zx_gl_pd_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->direction; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->direction; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -20841,7 +20841,7 @@ struct zx_elem_s* zx_gl_pd_GET_direction(struct zx_gl_pd_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->direction; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->direction; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -20898,7 +20898,7 @@ void zx_gl_pd_PUT_direction(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
     x->direction = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -20920,10 +20920,10 @@ void zx_gl_pd_ADD_direction(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->direction;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->direction; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->direction; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -20943,10 +20943,10 @@ void zx_gl_pd_DEL_direction(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->direction;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->direction; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->direction; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -20965,7 +20965,7 @@ int zx_gl_pd_NUM_Heading(struct zx_gl_pd_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Heading; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Heading; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -20975,7 +20975,7 @@ struct zx_elem_s* zx_gl_pd_GET_Heading(struct zx_gl_pd_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Heading; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Heading; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -21032,7 +21032,7 @@ void zx_gl_pd_PUT_Heading(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
     x->Heading = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -21054,10 +21054,10 @@ void zx_gl_pd_ADD_Heading(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->Heading;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Heading; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Heading; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -21077,10 +21077,10 @@ void zx_gl_pd_DEL_Heading(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Heading;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Heading; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Heading; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -21099,7 +21099,7 @@ int zx_gl_pd_NUM_lev_conf(struct zx_gl_pd_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->lev_conf; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->lev_conf; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -21109,7 +21109,7 @@ struct zx_elem_s* zx_gl_pd_GET_lev_conf(struct zx_gl_pd_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->lev_conf; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->lev_conf; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -21166,7 +21166,7 @@ void zx_gl_pd_PUT_lev_conf(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
     x->lev_conf = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -21188,10 +21188,10 @@ void zx_gl_pd_ADD_lev_conf(struct zx_gl_pd_s* x, int n, struct zx_elem_s* z)
   case -1:
     y = x->lev_conf;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->lev_conf; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->lev_conf; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -21211,10 +21211,10 @@ void zx_gl_pd_DEL_lev_conf(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->lev_conf;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->lev_conf; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->lev_conf; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -21233,7 +21233,7 @@ int zx_gl_pd_NUM_Extension(struct zx_gl_pd_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -21243,7 +21243,7 @@ struct zx_gl_Extension_s* zx_gl_pd_GET_Extension(struct zx_gl_pd_s* x, int n)
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -21300,7 +21300,7 @@ void zx_gl_pd_PUT_Extension(struct zx_gl_pd_s* x, int n, struct zx_gl_Extension_
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -21322,10 +21322,10 @@ void zx_gl_pd_ADD_Extension(struct zx_gl_pd_s* x, int n, struct zx_gl_Extension_
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -21345,10 +21345,10 @@ void zx_gl_pd_DEL_Extension(struct zx_gl_pd_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -21394,7 +21394,7 @@ int zx_gl_shape_NUM_Point(struct zx_gl_shape_s* x)
   struct zx_gl_Point_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Point; y; ++n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+  for (y = x->Point; y && y->gg.g.tok == zx_gl_Point_ELEM; ++n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -21404,7 +21404,7 @@ struct zx_gl_Point_s* zx_gl_shape_GET_Point(struct zx_gl_shape_s* x, int n)
 {
   struct zx_gl_Point_s* y;
   if (!x) return 0;
-  for (y = x->Point; n>=0 && y; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+  for (y = x->Point; n>=0 && y && y->gg.g.tok == zx_gl_Point_ELEM; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -21461,7 +21461,7 @@ void zx_gl_shape_PUT_Point(struct zx_gl_shape_s* x, int n, struct zx_gl_Point_s*
     x->Point = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Point_ELEM; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -21483,10 +21483,10 @@ void zx_gl_shape_ADD_Point(struct zx_gl_shape_s* x, int n, struct zx_gl_Point_s*
   case -1:
     y = x->Point;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Point_ELEM; y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Point; n > 1 && y; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (y = x->Point; n > 1 && y && y->gg.g.tok == zx_gl_Point_ELEM; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -21506,10 +21506,10 @@ void zx_gl_shape_DEL_Point(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_Point_s*)x->Point;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Point_ELEM; y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Point; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
+    for (y = x->Point; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Point_ELEM; --n, y = (struct zx_gl_Point_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -21528,7 +21528,7 @@ int zx_gl_shape_NUM_LineString(struct zx_gl_shape_s* x)
   struct zx_gl_LineString_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->LineString; y; ++n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+  for (y = x->LineString; y && y->gg.g.tok == zx_gl_LineString_ELEM; ++n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -21538,7 +21538,7 @@ struct zx_gl_LineString_s* zx_gl_shape_GET_LineString(struct zx_gl_shape_s* x, i
 {
   struct zx_gl_LineString_s* y;
   if (!x) return 0;
-  for (y = x->LineString; n>=0 && y; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+  for (y = x->LineString; n>=0 && y && y->gg.g.tok == zx_gl_LineString_ELEM; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -21595,7 +21595,7 @@ void zx_gl_shape_PUT_LineString(struct zx_gl_shape_s* x, int n, struct zx_gl_Lin
     x->LineString = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LineString_ELEM; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -21617,10 +21617,10 @@ void zx_gl_shape_ADD_LineString(struct zx_gl_shape_s* x, int n, struct zx_gl_Lin
   case -1:
     y = x->LineString;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LineString_ELEM; y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LineString; n > 1 && y; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (y = x->LineString; n > 1 && y && y->gg.g.tok == zx_gl_LineString_ELEM; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -21640,10 +21640,10 @@ void zx_gl_shape_DEL_LineString(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_LineString_s*)x->LineString;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LineString_ELEM; y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->LineString; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
+    for (y = x->LineString; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_LineString_ELEM; --n, y = (struct zx_gl_LineString_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -21662,7 +21662,7 @@ int zx_gl_shape_NUM_Polygon(struct zx_gl_shape_s* x)
   struct zx_gl_Polygon_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Polygon; y; ++n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+  for (y = x->Polygon; y && y->gg.g.tok == zx_gl_Polygon_ELEM; ++n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -21672,7 +21672,7 @@ struct zx_gl_Polygon_s* zx_gl_shape_GET_Polygon(struct zx_gl_shape_s* x, int n)
 {
   struct zx_gl_Polygon_s* y;
   if (!x) return 0;
-  for (y = x->Polygon; n>=0 && y; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+  for (y = x->Polygon; n>=0 && y && y->gg.g.tok == zx_gl_Polygon_ELEM; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -21729,7 +21729,7 @@ void zx_gl_shape_PUT_Polygon(struct zx_gl_shape_s* x, int n, struct zx_gl_Polygo
     x->Polygon = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Polygon_ELEM; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -21751,10 +21751,10 @@ void zx_gl_shape_ADD_Polygon(struct zx_gl_shape_s* x, int n, struct zx_gl_Polygo
   case -1:
     y = x->Polygon;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Polygon_ELEM; y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Polygon; n > 1 && y; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (y = x->Polygon; n > 1 && y && y->gg.g.tok == zx_gl_Polygon_ELEM; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -21774,10 +21774,10 @@ void zx_gl_shape_DEL_Polygon(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_Polygon_s*)x->Polygon;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Polygon_ELEM; y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Polygon; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
+    for (y = x->Polygon; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Polygon_ELEM; --n, y = (struct zx_gl_Polygon_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -21796,7 +21796,7 @@ int zx_gl_shape_NUM_Box(struct zx_gl_shape_s* x)
   struct zx_gl_Box_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Box; y; ++n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+  for (y = x->Box; y && y->gg.g.tok == zx_gl_Box_ELEM; ++n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -21806,7 +21806,7 @@ struct zx_gl_Box_s* zx_gl_shape_GET_Box(struct zx_gl_shape_s* x, int n)
 {
   struct zx_gl_Box_s* y;
   if (!x) return 0;
-  for (y = x->Box; n>=0 && y; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+  for (y = x->Box; n>=0 && y && y->gg.g.tok == zx_gl_Box_ELEM; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -21863,7 +21863,7 @@ void zx_gl_shape_PUT_Box(struct zx_gl_shape_s* x, int n, struct zx_gl_Box_s* z)
     x->Box = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Box_ELEM; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -21885,10 +21885,10 @@ void zx_gl_shape_ADD_Box(struct zx_gl_shape_s* x, int n, struct zx_gl_Box_s* z)
   case -1:
     y = x->Box;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Box_ELEM; y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Box; n > 1 && y; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (y = x->Box; n > 1 && y && y->gg.g.tok == zx_gl_Box_ELEM; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -21908,10 +21908,10 @@ void zx_gl_shape_DEL_Box(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_Box_s*)x->Box;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Box_ELEM; y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Box; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
+    for (y = x->Box; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Box_ELEM; --n, y = (struct zx_gl_Box_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -21930,7 +21930,7 @@ int zx_gl_shape_NUM_CircularArea(struct zx_gl_shape_s* x)
   struct zx_gl_CircularArea_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CircularArea; y; ++n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+  for (y = x->CircularArea; y && y->gg.g.tok == zx_gl_CircularArea_ELEM; ++n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -21940,7 +21940,7 @@ struct zx_gl_CircularArea_s* zx_gl_shape_GET_CircularArea(struct zx_gl_shape_s* 
 {
   struct zx_gl_CircularArea_s* y;
   if (!x) return 0;
-  for (y = x->CircularArea; n>=0 && y; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+  for (y = x->CircularArea; n>=0 && y && y->gg.g.tok == zx_gl_CircularArea_ELEM; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -21997,7 +21997,7 @@ void zx_gl_shape_PUT_CircularArea(struct zx_gl_shape_s* x, int n, struct zx_gl_C
     x->CircularArea = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArea_ELEM; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -22019,10 +22019,10 @@ void zx_gl_shape_ADD_CircularArea(struct zx_gl_shape_s* x, int n, struct zx_gl_C
   case -1:
     y = x->CircularArea;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArea_ELEM; y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CircularArea; n > 1 && y; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (y = x->CircularArea; n > 1 && y && y->gg.g.tok == zx_gl_CircularArea_ELEM; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -22042,10 +22042,10 @@ void zx_gl_shape_DEL_CircularArea(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_CircularArea_s*)x->CircularArea;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArea_ELEM; y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CircularArea; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
+    for (y = x->CircularArea; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArea_ELEM; --n, y = (struct zx_gl_CircularArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -22064,7 +22064,7 @@ int zx_gl_shape_NUM_CircularArcArea(struct zx_gl_shape_s* x)
   struct zx_gl_CircularArcArea_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CircularArcArea; y; ++n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+  for (y = x->CircularArcArea; y && y->gg.g.tok == zx_gl_CircularArcArea_ELEM; ++n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -22074,7 +22074,7 @@ struct zx_gl_CircularArcArea_s* zx_gl_shape_GET_CircularArcArea(struct zx_gl_sha
 {
   struct zx_gl_CircularArcArea_s* y;
   if (!x) return 0;
-  for (y = x->CircularArcArea; n>=0 && y; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+  for (y = x->CircularArcArea; n>=0 && y && y->gg.g.tok == zx_gl_CircularArcArea_ELEM; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -22131,7 +22131,7 @@ void zx_gl_shape_PUT_CircularArcArea(struct zx_gl_shape_s* x, int n, struct zx_g
     x->CircularArcArea = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArcArea_ELEM; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -22153,10 +22153,10 @@ void zx_gl_shape_ADD_CircularArcArea(struct zx_gl_shape_s* x, int n, struct zx_g
   case -1:
     y = x->CircularArcArea;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArcArea_ELEM; y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CircularArcArea; n > 1 && y; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (y = x->CircularArcArea; n > 1 && y && y->gg.g.tok == zx_gl_CircularArcArea_ELEM; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -22176,10 +22176,10 @@ void zx_gl_shape_DEL_CircularArcArea(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_CircularArcArea_s*)x->CircularArcArea;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArcArea_ELEM; y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CircularArcArea; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
+    for (y = x->CircularArcArea; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_CircularArcArea_ELEM; --n, y = (struct zx_gl_CircularArcArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -22198,7 +22198,7 @@ int zx_gl_shape_NUM_EllipticalArea(struct zx_gl_shape_s* x)
   struct zx_gl_EllipticalArea_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EllipticalArea; y; ++n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+  for (y = x->EllipticalArea; y && y->gg.g.tok == zx_gl_EllipticalArea_ELEM; ++n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -22208,7 +22208,7 @@ struct zx_gl_EllipticalArea_s* zx_gl_shape_GET_EllipticalArea(struct zx_gl_shape
 {
   struct zx_gl_EllipticalArea_s* y;
   if (!x) return 0;
-  for (y = x->EllipticalArea; n>=0 && y; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+  for (y = x->EllipticalArea; n>=0 && y && y->gg.g.tok == zx_gl_EllipticalArea_ELEM; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -22265,7 +22265,7 @@ void zx_gl_shape_PUT_EllipticalArea(struct zx_gl_shape_s* x, int n, struct zx_gl
     x->EllipticalArea = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EllipticalArea_ELEM; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -22287,10 +22287,10 @@ void zx_gl_shape_ADD_EllipticalArea(struct zx_gl_shape_s* x, int n, struct zx_gl
   case -1:
     y = x->EllipticalArea;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EllipticalArea_ELEM; y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EllipticalArea; n > 1 && y; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (y = x->EllipticalArea; n > 1 && y && y->gg.g.tok == zx_gl_EllipticalArea_ELEM; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -22310,10 +22310,10 @@ void zx_gl_shape_DEL_EllipticalArea(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_EllipticalArea_s*)x->EllipticalArea;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EllipticalArea_ELEM; y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EllipticalArea; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
+    for (y = x->EllipticalArea; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_EllipticalArea_ELEM; --n, y = (struct zx_gl_EllipticalArea_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -22332,7 +22332,7 @@ int zx_gl_shape_NUM_GeometryCollection(struct zx_gl_shape_s* x)
   struct zx_gl_GeometryCollection_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->GeometryCollection; y; ++n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
+  for (y = x->GeometryCollection; y && y->gg.g.tok == zx_gl_GeometryCollection_ELEM; ++n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -22342,7 +22342,7 @@ struct zx_gl_GeometryCollection_s* zx_gl_shape_GET_GeometryCollection(struct zx_
 {
   struct zx_gl_GeometryCollection_s* y;
   if (!x) return 0;
-  for (y = x->GeometryCollection; n>=0 && y; --n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
+  for (y = x->GeometryCollection; n>=0 && y && y->gg.g.tok == zx_gl_GeometryCollection_ELEM; --n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -22399,7 +22399,7 @@ void zx_gl_shape_PUT_GeometryCollection(struct zx_gl_shape_s* x, int n, struct z
     x->GeometryCollection = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_GeometryCollection_ELEM; --n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -22421,10 +22421,10 @@ void zx_gl_shape_ADD_GeometryCollection(struct zx_gl_shape_s* x, int n, struct z
   case -1:
     y = x->GeometryCollection;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_GeometryCollection_ELEM; y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->GeometryCollection; n > 1 && y; --n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
+    for (y = x->GeometryCollection; n > 1 && y && y->gg.g.tok == zx_gl_GeometryCollection_ELEM; --n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -22444,10 +22444,10 @@ void zx_gl_shape_DEL_GeometryCollection(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_GeometryCollection_s*)x->GeometryCollection;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_GeometryCollection_ELEM; y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->GeometryCollection; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
+    for (y = x->GeometryCollection; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_GeometryCollection_ELEM; --n, y = (struct zx_gl_GeometryCollection_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -22466,7 +22466,7 @@ int zx_gl_shape_NUM_MultiLineString(struct zx_gl_shape_s* x)
   struct zx_gl_MultiLineString_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->MultiLineString; y; ++n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
+  for (y = x->MultiLineString; y && y->gg.g.tok == zx_gl_MultiLineString_ELEM; ++n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -22476,7 +22476,7 @@ struct zx_gl_MultiLineString_s* zx_gl_shape_GET_MultiLineString(struct zx_gl_sha
 {
   struct zx_gl_MultiLineString_s* y;
   if (!x) return 0;
-  for (y = x->MultiLineString; n>=0 && y; --n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
+  for (y = x->MultiLineString; n>=0 && y && y->gg.g.tok == zx_gl_MultiLineString_ELEM; --n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -22533,7 +22533,7 @@ void zx_gl_shape_PUT_MultiLineString(struct zx_gl_shape_s* x, int n, struct zx_g
     x->MultiLineString = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiLineString_ELEM; --n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -22555,10 +22555,10 @@ void zx_gl_shape_ADD_MultiLineString(struct zx_gl_shape_s* x, int n, struct zx_g
   case -1:
     y = x->MultiLineString;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiLineString_ELEM; y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MultiLineString; n > 1 && y; --n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
+    for (y = x->MultiLineString; n > 1 && y && y->gg.g.tok == zx_gl_MultiLineString_ELEM; --n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -22578,10 +22578,10 @@ void zx_gl_shape_DEL_MultiLineString(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_MultiLineString_s*)x->MultiLineString;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiLineString_ELEM; y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MultiLineString; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
+    for (y = x->MultiLineString; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiLineString_ELEM; --n, y = (struct zx_gl_MultiLineString_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -22600,7 +22600,7 @@ int zx_gl_shape_NUM_MultiPoint(struct zx_gl_shape_s* x)
   struct zx_gl_MultiPoint_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->MultiPoint; y; ++n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
+  for (y = x->MultiPoint; y && y->gg.g.tok == zx_gl_MultiPoint_ELEM; ++n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -22610,7 +22610,7 @@ struct zx_gl_MultiPoint_s* zx_gl_shape_GET_MultiPoint(struct zx_gl_shape_s* x, i
 {
   struct zx_gl_MultiPoint_s* y;
   if (!x) return 0;
-  for (y = x->MultiPoint; n>=0 && y; --n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
+  for (y = x->MultiPoint; n>=0 && y && y->gg.g.tok == zx_gl_MultiPoint_ELEM; --n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -22667,7 +22667,7 @@ void zx_gl_shape_PUT_MultiPoint(struct zx_gl_shape_s* x, int n, struct zx_gl_Mul
     x->MultiPoint = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiPoint_ELEM; --n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -22689,10 +22689,10 @@ void zx_gl_shape_ADD_MultiPoint(struct zx_gl_shape_s* x, int n, struct zx_gl_Mul
   case -1:
     y = x->MultiPoint;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiPoint_ELEM; y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MultiPoint; n > 1 && y; --n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
+    for (y = x->MultiPoint; n > 1 && y && y->gg.g.tok == zx_gl_MultiPoint_ELEM; --n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -22712,10 +22712,10 @@ void zx_gl_shape_DEL_MultiPoint(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_MultiPoint_s*)x->MultiPoint;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiPoint_ELEM; y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MultiPoint; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
+    for (y = x->MultiPoint; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiPoint_ELEM; --n, y = (struct zx_gl_MultiPoint_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -22734,7 +22734,7 @@ int zx_gl_shape_NUM_MultiPolygon(struct zx_gl_shape_s* x)
   struct zx_gl_MultiPolygon_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->MultiPolygon; y; ++n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
+  for (y = x->MultiPolygon; y && y->gg.g.tok == zx_gl_MultiPolygon_ELEM; ++n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -22744,7 +22744,7 @@ struct zx_gl_MultiPolygon_s* zx_gl_shape_GET_MultiPolygon(struct zx_gl_shape_s* 
 {
   struct zx_gl_MultiPolygon_s* y;
   if (!x) return 0;
-  for (y = x->MultiPolygon; n>=0 && y; --n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
+  for (y = x->MultiPolygon; n>=0 && y && y->gg.g.tok == zx_gl_MultiPolygon_ELEM; --n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -22801,7 +22801,7 @@ void zx_gl_shape_PUT_MultiPolygon(struct zx_gl_shape_s* x, int n, struct zx_gl_M
     x->MultiPolygon = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiPolygon_ELEM; --n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -22823,10 +22823,10 @@ void zx_gl_shape_ADD_MultiPolygon(struct zx_gl_shape_s* x, int n, struct zx_gl_M
   case -1:
     y = x->MultiPolygon;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiPolygon_ELEM; y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MultiPolygon; n > 1 && y; --n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
+    for (y = x->MultiPolygon; n > 1 && y && y->gg.g.tok == zx_gl_MultiPolygon_ELEM; --n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -22846,10 +22846,10 @@ void zx_gl_shape_DEL_MultiPolygon(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_MultiPolygon_s*)x->MultiPolygon;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiPolygon_ELEM; y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MultiPolygon; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
+    for (y = x->MultiPolygon; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_MultiPolygon_ELEM; --n, y = (struct zx_gl_MultiPolygon_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -22868,7 +22868,7 @@ int zx_gl_shape_NUM_Extension(struct zx_gl_shape_s* x)
   struct zx_gl_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_gl_Extension_ELEM; ++n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -22878,7 +22878,7 @@ struct zx_gl_Extension_s* zx_gl_shape_GET_Extension(struct zx_gl_shape_s* x, int
 {
   struct zx_gl_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -22935,7 +22935,7 @@ void zx_gl_shape_PUT_Extension(struct zx_gl_shape_s* x, int n, struct zx_gl_Exte
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -22957,10 +22957,10 @@ void zx_gl_shape_ADD_Extension(struct zx_gl_shape_s* x, int n, struct zx_gl_Exte
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -22980,10 +22980,10 @@ void zx_gl_shape_DEL_Extension(struct zx_gl_shape_s* x, int n)
   case -1:
     y = (struct zx_gl_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_gl_Extension_ELEM; --n, y = (struct zx_gl_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

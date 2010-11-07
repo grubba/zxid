@@ -166,7 +166,7 @@ struct zx_str* zxid_start_sso_url(zxid_conf* cf, zxid_cgi* cgi)
       return 0;
     }
     for (sso_svc = idp_meta->ed->IDPSSODescriptor->SingleSignOnService;
-	 sso_svc;
+	 sso_svc && sso_svc->gg.g.tok == zx_md_SingleSignOnService_ELEM;
 	 sso_svc = (struct zx_md_SingleSignOnService_s*)sso_svc->gg.g.n)
       if (sso_svc->Binding && !memcmp(SAML2_REDIR, sso_svc->Binding->g.s, sso_svc->Binding->g.len))
 	break;
@@ -289,7 +289,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       return 0;
     }
     for (ar_svc = idp_meta->ed->IDPSSODescriptor->ArtifactResolutionService;
-	 ar_svc;
+	 ar_svc && ar_svc->gg.g.tok == zx_md_ArtifactResolutionService_ELEM;
 	 ar_svc = (struct zx_md_ArtifactResolutionService_s*)ar_svc->gg.g.n)
       if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->g.s, ar_svc->Binding->g.len)
 	  && ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->g.s, ar_svc->index->g.len)
@@ -417,8 +417,12 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
   }
 
   if (a7n->Conditions->AudienceRestriction) {
-    for (audr = a7n->Conditions->AudienceRestriction; audr; audr = (struct zx_sa_AudienceRestriction_s*)audr->gg.g.n)
-      for (aud = audr->Audience; aud; aud = (struct zx_elem_s*)aud->g.n)
+    for (audr = a7n->Conditions->AudienceRestriction;
+	 audr && audr->gg.g.tok == zx_sa_AudienceRestriction_ELEM;
+	 audr = (struct zx_sa_AudienceRestriction_s*)audr->gg.g.n)
+      for (aud = audr->Audience;
+	   aud && aud->g.tok == zx_sa_Audience_ELEM;
+	   aud = (struct zx_elem_s*)aud->g.n)
 	if (aud->content->len == myentid->len
 	    && !memcmp(aud->content->s, myentid->s, aud->content->len)) {
 	  D("Found audience. %d", 0);
@@ -738,7 +742,7 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
 
 #if 0
   for (ar_svc = idp_meta->ed->IDPSSODescriptor->ArtifactResolutionService;
-       ar_svc;
+       ar_svc && ar_svc->gg.g.tok == zx_md_ArtifactResolutionService_ELEM;
        ar_svc = (struct zx_md_ArtifactResolutionService_s*)ar_svc->gg.g.n)
     if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->s, ar_svc->Binding->len)
 	/*&& ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->s, ar_svc->index->len)*/
@@ -746,7 +750,7 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
       break;
 #else
   for (ar_svc = idp_meta->ed->IDPSSODescriptor->SingleLogoutService;
-       ar_svc;
+       ar_svc && ar_svc->gg.g.tok == zx_md_ArtifactResolutionService_ELEM;
        ar_svc = (struct zx_md_SingleLogoutService_s*)ar_svc->gg.g.n)
     if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->g.s, ar_svc->Binding->g.len)
 	/*&& ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->s, ar_svc->index->len)*/

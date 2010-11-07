@@ -468,7 +468,9 @@ static int zxid_add_at_values(zxid_conf* cf, zxid_ses* ses, struct zx_sa_Attribu
   ses->at->orig = at;
   ses->at->issuer = issuer;
   
-  for (av = at->AttributeValue; av; av = (struct zx_sa_AttributeValue_s*)ZX_NEXT(av)) {
+  for (av = at->AttributeValue;
+       av && av->gg.g.tok == zx_sa_AttributeValue_ELEM;
+       av = (struct zx_sa_AttributeValue_s*)ZX_NEXT(av)) {
     D("Adding value: %p", av->gg.content);
     if (av->EndpointReference || av->ResourceOffering)
       continue;  /* Skip bootstraps. They are handled elsewhere, see zxid_snarf_eprs_from_ses(). */
@@ -497,8 +499,12 @@ static void zxid_add_a7n_at_to_pool(zxid_conf* cf, zxid_ses* ses, zxid_a7n* a7n)
   if (!a7n)
     return;
   
-  for (as = a7n->AttributeStatement; as; as = (struct zx_sa_AttributeStatement_s*)ZX_NEXT(as)) {
-    for (at = as->Attribute; at; at = (struct zx_sa_Attribute_s*)ZX_NEXT(at)) {      
+  for (as = a7n->AttributeStatement;
+       as && as->gg.g.tok == zx_sa_AttributeStatement_ELEM;
+       as = (struct zx_sa_AttributeStatement_s*)ZX_NEXT(as)) {
+    for (at = as->Attribute;
+	 at && at->gg.g.tok == zx_sa_Attribute_ELEM;
+	 at = (struct zx_sa_Attribute_s*)ZX_NEXT(at)) {      
       if (at->Name)
 	zxid_add_at_values(cf, ses, at, zx_str_to_c(cf->ctx, &at->Name->g), a7n->Issuer ? a7n->Issuer->gg.content : 0);
       if (at->FriendlyName)
@@ -751,15 +757,14 @@ int zxid_add_qs_to_ses(zxid_conf* cf, zxid_ses* ses, char* qs, int apply_map)
     return 0;
 
   D("qs(%s) len=%d", qs, strlen(qs));
-  while (*qs) {
-    for (; *qs == '&'; ++qs) ;                  /* Skip over & or && */
+  while (qs && *qs) {
+    for (; *qs == '&'; ++qs) ;    /* Skip over & or && */
     if (!*qs) break;
     
-    for (name = qs; *qs && *qs != '='; ++qs) ;  /* Scan name (until '=') */
-    DD("HERE %d", *qs);
-    if (!*qs) break;
-    if (qs == name) {                           /* Key was an empty string: skip it */
-      for (; *qs && *qs != '&'; ++qs) ;         /* Scan value (until '&') *** or '?' */
+    qs = strchr(name = qs, '=');  /* Scan name (until '=') */
+    if (!qs) break;
+    if (qs == name) {             /* Key was an empty string: skip it */
+      qs = strchr(qs, '&');       /* Scan value (until '&') *** or '?' */
       continue;
     }
     for (; name < qs && *name <= ' '; ++name) ; /* Skip over initial whitespace before name */

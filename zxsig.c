@@ -209,7 +209,9 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
     for (ssref = sref, nn = n; nn; --nn, ++ssref) {
       if (!ssref->sref->Transforms)
 	continue;
-      for (xform = ssref->sref->Transforms->Transform; xform; xform = (void*)xform->gg.g.n) {
+      for (xform = ssref->sref->Transforms->Transform;
+	   xform && xform->gg.g.tok == zx_ds_Transform_ELEM;
+	   xform = (void*)xform->gg.g.n) {
 	ss = xform->InclusiveNamespaces ? &xform->InclusiveNamespaces->PrefixList->g : 0;
 	if (!ss || !ss->len)
 	  continue;

@@ -964,23 +964,23 @@ int zxid_parse_conf_raw(zxid_conf* cf, int qs_len, char* qs)
     return -1;
   }
   while (*qs) {
-    for (; ONE_OF_5(*qs, '&', ' ', '\t', '\r', '\n'); ++qs) ; /* Skip over & or &&, or line end */
+    qs += strspn(qs, "& \n\t\r"); /* Skip over & or &&, or line end */
     if (!*qs) break;
     if (*qs == '#')
       goto scan_end;
     
-    for (name = qs; *qs && *qs != '='; ++qs) ;  /* Scan name (until '=') */
-    if (!*qs) break;                            /* No = ever found and at EOF. No value avail. */
-    if (qs == name) {                           /* Key was an empty string: skip it */
+    qs = strchr(name = qs, '=');  /* Scan name (until '=') */
+    if (!qs) break;               /* No = ever found and at EOF. No value avail. */
+    if (qs == name) {             /* Key was an empty string: skip it */
 scan_end:
-      for (; *qs && !ONE_OF_3(*qs, '&', '\r', '\n'); ++qs) ;  /* Scan value (until '&') */
+      qs += strcspn(qs, "&\n\r"); /* Scan value (until '&') */
       continue;
     }
     n = p = name;
     URL_DECODE(p, name, qs);
     *p = 0;
     
-    for (val = ++qs; *qs && !ONE_OF_3(*qs, '&', '\r', '\n'); ++qs) ; /* Skip over = and scan val */
+    qs += strcspn(val = ++qs, "&\n\r"); /* Skip over = and scan val */
     v = p = val;
     URL_DECODE(p, val, qs);
     if (*qs)
@@ -1153,8 +1153,8 @@ scan_end:
 	/* Populate array with strings, stomping the separator char $ to nul termination. */
         for (i=0, p=v; *p; ++i) {
 	  cf->required_authnctx[i] = p;
-	  for (; *p && *p != '$'; ++p);
-	  if (!*p)
+	  p = strchr(p, '$');
+	  if (!p)
 	    break;
 	  *p++ = 0;
 	}

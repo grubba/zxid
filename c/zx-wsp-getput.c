@@ -40,7 +40,7 @@ int zx_wsp_All_NUM_Policy(struct zx_wsp_All_s* x)
   struct zx_wsp_Policy_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Policy; y; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; y && y->gg.g.tok == zx_wsp_Policy_ELEM; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_wsp_Policy_s* zx_wsp_All_GET_Policy(struct zx_wsp_All_s* x, int n)
 {
   struct zx_wsp_Policy_s* y;
   if (!x) return 0;
-  for (y = x->Policy; n>=0 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; n>=0 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_wsp_All_PUT_Policy(struct zx_wsp_All_s* x, int n, struct zx_wsp_Policy_s
     x->Policy = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -129,10 +129,10 @@ void zx_wsp_All_ADD_Policy(struct zx_wsp_All_s* x, int n, struct zx_wsp_Policy_s
   case -1:
     y = x->Policy;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -152,10 +152,10 @@ void zx_wsp_All_DEL_Policy(struct zx_wsp_All_s* x, int n)
   case -1:
     y = (struct zx_wsp_Policy_s*)x->Policy;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -174,7 +174,7 @@ int zx_wsp_All_NUM_All(struct zx_wsp_All_s* x)
   struct zx_wsp_All_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->All; y; ++n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+  for (y = x->All; y && y->gg.g.tok == zx_wsp_All_ELEM; ++n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -184,7 +184,7 @@ struct zx_wsp_All_s* zx_wsp_All_GET_All(struct zx_wsp_All_s* x, int n)
 {
   struct zx_wsp_All_s* y;
   if (!x) return 0;
-  for (y = x->All; n>=0 && y; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+  for (y = x->All; n>=0 && y && y->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -241,7 +241,7 @@ void zx_wsp_All_PUT_All(struct zx_wsp_All_s* x, int n, struct zx_wsp_All_s* z)
     x->All = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -263,10 +263,10 @@ void zx_wsp_All_ADD_All(struct zx_wsp_All_s* x, int n, struct zx_wsp_All_s* z)
   case -1:
     y = x->All;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->All; n > 1 && y; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (y = x->All; n > 1 && y && y->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -286,10 +286,10 @@ void zx_wsp_All_DEL_All(struct zx_wsp_All_s* x, int n)
   case -1:
     y = (struct zx_wsp_All_s*)x->All;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->All; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (y = x->All; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -308,7 +308,7 @@ int zx_wsp_All_NUM_ExactlyOne(struct zx_wsp_All_s* x)
   struct zx_wsp_ExactlyOne_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ExactlyOne; y; ++n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+  for (y = x->ExactlyOne; y && y->gg.g.tok == zx_wsp_ExactlyOne_ELEM; ++n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -318,7 +318,7 @@ struct zx_wsp_ExactlyOne_s* zx_wsp_All_GET_ExactlyOne(struct zx_wsp_All_s* x, in
 {
   struct zx_wsp_ExactlyOne_s* y;
   if (!x) return 0;
-  for (y = x->ExactlyOne; n>=0 && y; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+  for (y = x->ExactlyOne; n>=0 && y && y->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -375,7 +375,7 @@ void zx_wsp_All_PUT_ExactlyOne(struct zx_wsp_All_s* x, int n, struct zx_wsp_Exac
     x->ExactlyOne = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -397,10 +397,10 @@ void zx_wsp_All_ADD_ExactlyOne(struct zx_wsp_All_s* x, int n, struct zx_wsp_Exac
   case -1:
     y = x->ExactlyOne;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ExactlyOne; n > 1 && y; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (y = x->ExactlyOne; n > 1 && y && y->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -420,10 +420,10 @@ void zx_wsp_All_DEL_ExactlyOne(struct zx_wsp_All_s* x, int n)
   case -1:
     y = (struct zx_wsp_ExactlyOne_s*)x->ExactlyOne;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ExactlyOne; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (y = x->ExactlyOne; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -442,7 +442,7 @@ int zx_wsp_All_NUM_PolicyReference(struct zx_wsp_All_s* x)
   struct zx_wsp_PolicyReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PolicyReference; y; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -452,7 +452,7 @@ struct zx_wsp_PolicyReference_s* zx_wsp_All_GET_PolicyReference(struct zx_wsp_Al
 {
   struct zx_wsp_PolicyReference_s* y;
   if (!x) return 0;
-  for (y = x->PolicyReference; n>=0 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; n>=0 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -509,7 +509,7 @@ void zx_wsp_All_PUT_PolicyReference(struct zx_wsp_All_s* x, int n, struct zx_wsp
     x->PolicyReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -531,10 +531,10 @@ void zx_wsp_All_ADD_PolicyReference(struct zx_wsp_All_s* x, int n, struct zx_wsp
   case -1:
     y = x->PolicyReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -554,10 +554,10 @@ void zx_wsp_All_DEL_PolicyReference(struct zx_wsp_All_s* x, int n)
   case -1:
     y = (struct zx_wsp_PolicyReference_s*)x->PolicyReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -586,7 +586,7 @@ int zx_wsp_ExactlyOne_NUM_Policy(struct zx_wsp_ExactlyOne_s* x)
   struct zx_wsp_Policy_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Policy; y; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; y && y->gg.g.tok == zx_wsp_Policy_ELEM; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -596,7 +596,7 @@ struct zx_wsp_Policy_s* zx_wsp_ExactlyOne_GET_Policy(struct zx_wsp_ExactlyOne_s*
 {
   struct zx_wsp_Policy_s* y;
   if (!x) return 0;
-  for (y = x->Policy; n>=0 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; n>=0 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -653,7 +653,7 @@ void zx_wsp_ExactlyOne_PUT_Policy(struct zx_wsp_ExactlyOne_s* x, int n, struct z
     x->Policy = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -675,10 +675,10 @@ void zx_wsp_ExactlyOne_ADD_Policy(struct zx_wsp_ExactlyOne_s* x, int n, struct z
   case -1:
     y = x->Policy;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -698,10 +698,10 @@ void zx_wsp_ExactlyOne_DEL_Policy(struct zx_wsp_ExactlyOne_s* x, int n)
   case -1:
     y = (struct zx_wsp_Policy_s*)x->Policy;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -720,7 +720,7 @@ int zx_wsp_ExactlyOne_NUM_All(struct zx_wsp_ExactlyOne_s* x)
   struct zx_wsp_All_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->All; y; ++n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+  for (y = x->All; y && y->gg.g.tok == zx_wsp_All_ELEM; ++n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -730,7 +730,7 @@ struct zx_wsp_All_s* zx_wsp_ExactlyOne_GET_All(struct zx_wsp_ExactlyOne_s* x, in
 {
   struct zx_wsp_All_s* y;
   if (!x) return 0;
-  for (y = x->All; n>=0 && y; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+  for (y = x->All; n>=0 && y && y->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -787,7 +787,7 @@ void zx_wsp_ExactlyOne_PUT_All(struct zx_wsp_ExactlyOne_s* x, int n, struct zx_w
     x->All = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -809,10 +809,10 @@ void zx_wsp_ExactlyOne_ADD_All(struct zx_wsp_ExactlyOne_s* x, int n, struct zx_w
   case -1:
     y = x->All;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->All; n > 1 && y; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (y = x->All; n > 1 && y && y->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -832,10 +832,10 @@ void zx_wsp_ExactlyOne_DEL_All(struct zx_wsp_ExactlyOne_s* x, int n)
   case -1:
     y = (struct zx_wsp_All_s*)x->All;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->All; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (y = x->All; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -854,7 +854,7 @@ int zx_wsp_ExactlyOne_NUM_ExactlyOne(struct zx_wsp_ExactlyOne_s* x)
   struct zx_wsp_ExactlyOne_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ExactlyOne; y; ++n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+  for (y = x->ExactlyOne; y && y->gg.g.tok == zx_wsp_ExactlyOne_ELEM; ++n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -864,7 +864,7 @@ struct zx_wsp_ExactlyOne_s* zx_wsp_ExactlyOne_GET_ExactlyOne(struct zx_wsp_Exact
 {
   struct zx_wsp_ExactlyOne_s* y;
   if (!x) return 0;
-  for (y = x->ExactlyOne; n>=0 && y; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+  for (y = x->ExactlyOne; n>=0 && y && y->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -921,7 +921,7 @@ void zx_wsp_ExactlyOne_PUT_ExactlyOne(struct zx_wsp_ExactlyOne_s* x, int n, stru
     x->ExactlyOne = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -943,10 +943,10 @@ void zx_wsp_ExactlyOne_ADD_ExactlyOne(struct zx_wsp_ExactlyOne_s* x, int n, stru
   case -1:
     y = x->ExactlyOne;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ExactlyOne; n > 1 && y; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (y = x->ExactlyOne; n > 1 && y && y->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -966,10 +966,10 @@ void zx_wsp_ExactlyOne_DEL_ExactlyOne(struct zx_wsp_ExactlyOne_s* x, int n)
   case -1:
     y = (struct zx_wsp_ExactlyOne_s*)x->ExactlyOne;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ExactlyOne; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (y = x->ExactlyOne; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -988,7 +988,7 @@ int zx_wsp_ExactlyOne_NUM_PolicyReference(struct zx_wsp_ExactlyOne_s* x)
   struct zx_wsp_PolicyReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PolicyReference; y; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -998,7 +998,7 @@ struct zx_wsp_PolicyReference_s* zx_wsp_ExactlyOne_GET_PolicyReference(struct zx
 {
   struct zx_wsp_PolicyReference_s* y;
   if (!x) return 0;
-  for (y = x->PolicyReference; n>=0 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; n>=0 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1055,7 +1055,7 @@ void zx_wsp_ExactlyOne_PUT_PolicyReference(struct zx_wsp_ExactlyOne_s* x, int n,
     x->PolicyReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1077,10 +1077,10 @@ void zx_wsp_ExactlyOne_ADD_PolicyReference(struct zx_wsp_ExactlyOne_s* x, int n,
   case -1:
     y = x->PolicyReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1100,10 +1100,10 @@ void zx_wsp_ExactlyOne_DEL_PolicyReference(struct zx_wsp_ExactlyOne_s* x, int n)
   case -1:
     y = (struct zx_wsp_PolicyReference_s*)x->PolicyReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1127,7 +1127,7 @@ int zx_wsp_Policy_NUM_Policy(struct zx_wsp_Policy_s* x)
   struct zx_wsp_Policy_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Policy; y; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; y && y->gg.g.tok == zx_wsp_Policy_ELEM; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1137,7 +1137,7 @@ struct zx_wsp_Policy_s* zx_wsp_Policy_GET_Policy(struct zx_wsp_Policy_s* x, int 
 {
   struct zx_wsp_Policy_s* y;
   if (!x) return 0;
-  for (y = x->Policy; n>=0 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; n>=0 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1194,7 +1194,7 @@ void zx_wsp_Policy_PUT_Policy(struct zx_wsp_Policy_s* x, int n, struct zx_wsp_Po
     x->Policy = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1216,10 +1216,10 @@ void zx_wsp_Policy_ADD_Policy(struct zx_wsp_Policy_s* x, int n, struct zx_wsp_Po
   case -1:
     y = x->Policy;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1239,10 +1239,10 @@ void zx_wsp_Policy_DEL_Policy(struct zx_wsp_Policy_s* x, int n)
   case -1:
     y = (struct zx_wsp_Policy_s*)x->Policy;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1261,7 +1261,7 @@ int zx_wsp_Policy_NUM_All(struct zx_wsp_Policy_s* x)
   struct zx_wsp_All_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->All; y; ++n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+  for (y = x->All; y && y->gg.g.tok == zx_wsp_All_ELEM; ++n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1271,7 +1271,7 @@ struct zx_wsp_All_s* zx_wsp_Policy_GET_All(struct zx_wsp_Policy_s* x, int n)
 {
   struct zx_wsp_All_s* y;
   if (!x) return 0;
-  for (y = x->All; n>=0 && y; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+  for (y = x->All; n>=0 && y && y->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1328,7 +1328,7 @@ void zx_wsp_Policy_PUT_All(struct zx_wsp_Policy_s* x, int n, struct zx_wsp_All_s
     x->All = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1350,10 +1350,10 @@ void zx_wsp_Policy_ADD_All(struct zx_wsp_Policy_s* x, int n, struct zx_wsp_All_s
   case -1:
     y = x->All;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->All; n > 1 && y; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (y = x->All; n > 1 && y && y->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1373,10 +1373,10 @@ void zx_wsp_Policy_DEL_All(struct zx_wsp_Policy_s* x, int n)
   case -1:
     y = (struct zx_wsp_All_s*)x->All;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->All; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
+    for (y = x->All; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_All_ELEM; --n, y = (struct zx_wsp_All_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1395,7 +1395,7 @@ int zx_wsp_Policy_NUM_ExactlyOne(struct zx_wsp_Policy_s* x)
   struct zx_wsp_ExactlyOne_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ExactlyOne; y; ++n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+  for (y = x->ExactlyOne; y && y->gg.g.tok == zx_wsp_ExactlyOne_ELEM; ++n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1405,7 +1405,7 @@ struct zx_wsp_ExactlyOne_s* zx_wsp_Policy_GET_ExactlyOne(struct zx_wsp_Policy_s*
 {
   struct zx_wsp_ExactlyOne_s* y;
   if (!x) return 0;
-  for (y = x->ExactlyOne; n>=0 && y; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+  for (y = x->ExactlyOne; n>=0 && y && y->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1462,7 +1462,7 @@ void zx_wsp_Policy_PUT_ExactlyOne(struct zx_wsp_Policy_s* x, int n, struct zx_ws
     x->ExactlyOne = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1484,10 +1484,10 @@ void zx_wsp_Policy_ADD_ExactlyOne(struct zx_wsp_Policy_s* x, int n, struct zx_ws
   case -1:
     y = x->ExactlyOne;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ExactlyOne; n > 1 && y; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (y = x->ExactlyOne; n > 1 && y && y->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1507,10 +1507,10 @@ void zx_wsp_Policy_DEL_ExactlyOne(struct zx_wsp_Policy_s* x, int n)
   case -1:
     y = (struct zx_wsp_ExactlyOne_s*)x->ExactlyOne;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ExactlyOne; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
+    for (y = x->ExactlyOne; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_ExactlyOne_ELEM; --n, y = (struct zx_wsp_ExactlyOne_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1529,7 +1529,7 @@ int zx_wsp_Policy_NUM_PolicyReference(struct zx_wsp_Policy_s* x)
   struct zx_wsp_PolicyReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PolicyReference; y; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1539,7 +1539,7 @@ struct zx_wsp_PolicyReference_s* zx_wsp_Policy_GET_PolicyReference(struct zx_wsp
 {
   struct zx_wsp_PolicyReference_s* y;
   if (!x) return 0;
-  for (y = x->PolicyReference; n>=0 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; n>=0 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1596,7 +1596,7 @@ void zx_wsp_Policy_PUT_PolicyReference(struct zx_wsp_Policy_s* x, int n, struct 
     x->PolicyReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1618,10 +1618,10 @@ void zx_wsp_Policy_ADD_PolicyReference(struct zx_wsp_Policy_s* x, int n, struct 
   case -1:
     y = x->PolicyReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1641,10 +1641,10 @@ void zx_wsp_Policy_DEL_PolicyReference(struct zx_wsp_Policy_s* x, int n)
   case -1:
     y = (struct zx_wsp_PolicyReference_s*)x->PolicyReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1676,7 +1676,7 @@ int zx_wsp_PolicyAttachment_NUM_AppliesTo(struct zx_wsp_PolicyAttachment_s* x)
   struct zx_wsp_AppliesTo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AppliesTo; y; ++n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+  for (y = x->AppliesTo; y && y->gg.g.tok == zx_wsp_AppliesTo_ELEM; ++n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1686,7 +1686,7 @@ struct zx_wsp_AppliesTo_s* zx_wsp_PolicyAttachment_GET_AppliesTo(struct zx_wsp_P
 {
   struct zx_wsp_AppliesTo_s* y;
   if (!x) return 0;
-  for (y = x->AppliesTo; n>=0 && y; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+  for (y = x->AppliesTo; n>=0 && y && y->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1743,7 +1743,7 @@ void zx_wsp_PolicyAttachment_PUT_AppliesTo(struct zx_wsp_PolicyAttachment_s* x, 
     x->AppliesTo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1765,10 +1765,10 @@ void zx_wsp_PolicyAttachment_ADD_AppliesTo(struct zx_wsp_PolicyAttachment_s* x, 
   case -1:
     y = x->AppliesTo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AppliesTo; n > 1 && y; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (y = x->AppliesTo; n > 1 && y && y->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1788,10 +1788,10 @@ void zx_wsp_PolicyAttachment_DEL_AppliesTo(struct zx_wsp_PolicyAttachment_s* x, 
   case -1:
     y = (struct zx_wsp_AppliesTo_s*)x->AppliesTo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AppliesTo; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (y = x->AppliesTo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1810,7 +1810,7 @@ int zx_wsp_PolicyAttachment_NUM_Policy(struct zx_wsp_PolicyAttachment_s* x)
   struct zx_wsp_Policy_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Policy; y; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; y && y->gg.g.tok == zx_wsp_Policy_ELEM; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1820,7 +1820,7 @@ struct zx_wsp_Policy_s* zx_wsp_PolicyAttachment_GET_Policy(struct zx_wsp_PolicyA
 {
   struct zx_wsp_Policy_s* y;
   if (!x) return 0;
-  for (y = x->Policy; n>=0 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; n>=0 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1877,7 +1877,7 @@ void zx_wsp_PolicyAttachment_PUT_Policy(struct zx_wsp_PolicyAttachment_s* x, int
     x->Policy = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1899,10 +1899,10 @@ void zx_wsp_PolicyAttachment_ADD_Policy(struct zx_wsp_PolicyAttachment_s* x, int
   case -1:
     y = x->Policy;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1922,10 +1922,10 @@ void zx_wsp_PolicyAttachment_DEL_Policy(struct zx_wsp_PolicyAttachment_s* x, int
   case -1:
     y = (struct zx_wsp_Policy_s*)x->Policy;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1944,7 +1944,7 @@ int zx_wsp_PolicyAttachment_NUM_PolicyReference(struct zx_wsp_PolicyAttachment_s
   struct zx_wsp_PolicyReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PolicyReference; y; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1954,7 +1954,7 @@ struct zx_wsp_PolicyReference_s* zx_wsp_PolicyAttachment_GET_PolicyReference(str
 {
   struct zx_wsp_PolicyReference_s* y;
   if (!x) return 0;
-  for (y = x->PolicyReference; n>=0 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; n>=0 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2011,7 +2011,7 @@ void zx_wsp_PolicyAttachment_PUT_PolicyReference(struct zx_wsp_PolicyAttachment_
     x->PolicyReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2033,10 +2033,10 @@ void zx_wsp_PolicyAttachment_ADD_PolicyReference(struct zx_wsp_PolicyAttachment_
   case -1:
     y = x->PolicyReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2056,10 +2056,10 @@ void zx_wsp_PolicyAttachment_DEL_PolicyReference(struct zx_wsp_PolicyAttachment_
   case -1:
     y = (struct zx_wsp_PolicyReference_s*)x->PolicyReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

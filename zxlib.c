@@ -711,19 +711,19 @@ struct zx_str* zx_clone_attr(struct zx_ctx* c, struct zx_str* attr)
 struct zx_elem_s* zx_clone_elem_common(struct zx_ctx* c, struct zx_elem_s* x, int size, int dup_strs)
 {
   struct zx_str* ss;
-  struct zx_any_attr_s* aa;
-  struct zx_any_elem_s* ae;
+  struct zx_attr_s* aa;
+  struct zx_elem_s* ae;
   struct zx_str* ssn;
-  struct zx_any_attr_s* aan;
-  struct zx_any_elem_s* aen;
+  struct zx_attr_s* aan;
+  struct zx_elem_s* aen;
   struct zx_str* ssnn;
-  struct zx_any_attr_s* aann;
-  struct zx_any_elem_s* aenn;
+  struct zx_attr_s* aann;
+  struct zx_elem_s* aenn;
   char* p;
 
   if (x->g.tok == ZX_TOK_NOT_FOUND) {
-    ae = (struct zx_any_elem_s*)x;
-    ZX_DUPALLOC(c, struct zx_any_elem_s, aen, ae);
+    ae = (struct zx_elem_s*)x;
+    ZX_DUPALLOC(c, struct zx_elem_s, aen, ae);
     if (dup_strs) {
       aen->name = ZX_ALLOC(c, ae->name_len);
       memcpy(aen->name, ae->name, ae->name_len);
@@ -737,8 +737,8 @@ struct zx_elem_s* zx_clone_elem_common(struct zx_ctx* c, struct zx_elem_s* x, in
   
   /* *** deal with xmlns specifications in exc c14n way */
   
-  for (aann = 0, aa = x->any_attr; aa; aa = (struct zx_any_attr_s*)aa->ss.g.n) {  /* unknown attributes */
-    ZX_DUPALLOC(c, struct zx_any_attr_s, aan, aa);
+  for (aann = 0, aa = x->any_attr; aa; aa = (struct zx_attr_s*)aa->ss.g.n) {  /* unknown attributes */
+    ZX_DUPALLOC(c, struct zx_attr_s, aan, aa);
     if (!aann)
       x->any_attr = aan;
     else
@@ -757,8 +757,8 @@ struct zx_elem_s* zx_clone_elem_common(struct zx_ctx* c, struct zx_elem_s* x, in
     }
   }
   
-  for (aenn = 0, ae = x->any_elem; ae; ae = (struct zx_any_elem_s*)ae->gg.g.n) {  /* unknown elements */
-    aen = (struct zx_any_elem_s*)zx_DEEP_CLONE_simple_elem(c, &ae->gg, dup_strs);
+  for (aenn = 0, ae = x->any_elem; ae; ae = (struct zx_elem_s*)ae->gg.g.n) {  /* unknown elements */
+    aen = (struct zx_elem_s*)zx_DEEP_CLONE_simple_elem(c, &ae->gg, dup_strs);
     if (!aenn)
       x->any_elem = aen;
     else
@@ -787,12 +787,12 @@ struct zx_elem_s* zx_clone_elem_common(struct zx_ctx* c, struct zx_elem_s* x, in
 void zx_dup_strs_common(struct zx_ctx* c, struct zx_elem_s* x)
 {
   struct zx_str* ss;
-  struct zx_any_attr_s* aa;
-  struct zx_any_elem_s* ae;
+  struct zx_attr_s* aa;
+  struct zx_elem_s* ae;
   char* p;
   
   if (x->g.tok == ZX_TOK_NOT_FOUND) {
-    ae = (struct zx_any_elem_s*)x;
+    ae = (struct zx_elem_s*)x;
     p = ZX_ALLOC(c, ae->name_len);
     memcpy(p, ae->name, ae->name_len);
     ae->name = p;
@@ -800,7 +800,7 @@ void zx_dup_strs_common(struct zx_ctx* c, struct zx_elem_s* x)
   
   /* *** deal with xmlns specifications in exc c14n way */
 
-  for (aa = x->any_attr; aa; aa = (struct zx_any_attr_s*)aa->ss.g.n) {  /* unknown attributes */
+  for (aa = x->any_attr; aa; aa = (struct zx_attr_s*)aa->ss.g.n) {  /* unknown attributes */
     if (aa->name) {
       p = ZX_ALLOC(c, aa->name_len);
       memcpy(p, aa->name, aa->name_len);
@@ -813,7 +813,7 @@ void zx_dup_strs_common(struct zx_ctx* c, struct zx_elem_s* x)
     }
   }
 
-  for (ae = x->any_elem; ae; ae = (struct zx_any_elem_s*)ae->gg.g.n)   /* unknown elements */
+  for (ae = x->any_elem; ae; ae = (struct zx_elem_s*)ae->gg.g.n)   /* unknown elements */
     zx_DUP_STRS_simple_elem(c, &ae->gg);
 
   for (ss = x->content; ss; ss = (struct zx_str*)ss->g.n)    /* content */
@@ -826,10 +826,10 @@ void zx_dup_strs_common(struct zx_ctx* c, struct zx_elem_s* x)
 
 int zx_walk_so_unknown_attributes(struct zx_ctx* c, struct zx_elem_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
 {
-  struct zx_any_attr_s* aa;
+  struct zx_attr_s* aa;
   int ret;
   
-  for (aa = x->any_attr; aa; aa = (struct zx_any_attr_s*)aa->ss.g.n) {  /* unknown attributes */
+  for (aa = x->any_attr; aa; aa = (struct zx_attr_s*)aa->ss.g.n) {  /* unknown attributes */
     ret = callback(&aa->ss.g, ctx);
     if (ret)
       return ret;
@@ -840,10 +840,10 @@ int zx_walk_so_unknown_attributes(struct zx_ctx* c, struct zx_elem_s* x, void* c
 int zx_walk_so_unknown_elems_and_content(struct zx_ctx* c, struct zx_elem_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
 {
   struct zx_str* ss;
-  struct zx_any_elem_s* ae;
+  struct zx_elem_s* ae;
   int ret;
   
-  for (ae = x->any_elem; ae; ae = (struct zx_any_elem_s*)ae->gg.g.n) {  /* unknown elements */
+  for (ae = x->any_elem; ae; ae = (struct zx_elem_s*)ae->gg.g.n) {  /* unknown elements */
     ret = zx_WALK_SO_simple_elem(c, &ae->gg, ctx, callback);
     if (ret)
       return ret;

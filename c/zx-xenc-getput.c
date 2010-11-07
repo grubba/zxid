@@ -40,7 +40,7 @@ int zx_xenc_AgreementMethod_NUM_KA_Nonce(struct zx_xenc_AgreementMethod_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KA_Nonce; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KA_Nonce; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_elem_s* zx_xenc_AgreementMethod_GET_KA_Nonce(struct zx_xenc_AgreementM
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->KA_Nonce; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KA_Nonce; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_xenc_AgreementMethod_PUT_KA_Nonce(struct zx_xenc_AgreementMethod_s* x, i
     x->KA_Nonce = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -129,10 +129,10 @@ void zx_xenc_AgreementMethod_ADD_KA_Nonce(struct zx_xenc_AgreementMethod_s* x, i
   case -1:
     y = x->KA_Nonce;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KA_Nonce; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KA_Nonce; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -152,10 +152,10 @@ void zx_xenc_AgreementMethod_DEL_KA_Nonce(struct zx_xenc_AgreementMethod_s* x, i
   case -1:
     y = (struct zx_elem_s*)x->KA_Nonce;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KA_Nonce; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KA_Nonce; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -174,7 +174,7 @@ int zx_xenc_AgreementMethod_NUM_OriginatorKeyInfo(struct zx_xenc_AgreementMethod
   struct zx_xenc_OriginatorKeyInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->OriginatorKeyInfo; y; ++n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
+  for (y = x->OriginatorKeyInfo; y && y->gg.g.tok == zx_xenc_OriginatorKeyInfo_ELEM; ++n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -184,7 +184,7 @@ struct zx_xenc_OriginatorKeyInfo_s* zx_xenc_AgreementMethod_GET_OriginatorKeyInf
 {
   struct zx_xenc_OriginatorKeyInfo_s* y;
   if (!x) return 0;
-  for (y = x->OriginatorKeyInfo; n>=0 && y; --n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
+  for (y = x->OriginatorKeyInfo; n>=0 && y && y->gg.g.tok == zx_xenc_OriginatorKeyInfo_ELEM; --n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -241,7 +241,7 @@ void zx_xenc_AgreementMethod_PUT_OriginatorKeyInfo(struct zx_xenc_AgreementMetho
     x->OriginatorKeyInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_OriginatorKeyInfo_ELEM; --n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -263,10 +263,10 @@ void zx_xenc_AgreementMethod_ADD_OriginatorKeyInfo(struct zx_xenc_AgreementMetho
   case -1:
     y = x->OriginatorKeyInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_OriginatorKeyInfo_ELEM; y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->OriginatorKeyInfo; n > 1 && y; --n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
+    for (y = x->OriginatorKeyInfo; n > 1 && y && y->gg.g.tok == zx_xenc_OriginatorKeyInfo_ELEM; --n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -286,10 +286,10 @@ void zx_xenc_AgreementMethod_DEL_OriginatorKeyInfo(struct zx_xenc_AgreementMetho
   case -1:
     y = (struct zx_xenc_OriginatorKeyInfo_s*)x->OriginatorKeyInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_OriginatorKeyInfo_ELEM; y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->OriginatorKeyInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
+    for (y = x->OriginatorKeyInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_OriginatorKeyInfo_ELEM; --n, y = (struct zx_xenc_OriginatorKeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -308,7 +308,7 @@ int zx_xenc_AgreementMethod_NUM_RecipientKeyInfo(struct zx_xenc_AgreementMethod_
   struct zx_xenc_RecipientKeyInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RecipientKeyInfo; y; ++n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
+  for (y = x->RecipientKeyInfo; y && y->gg.g.tok == zx_xenc_RecipientKeyInfo_ELEM; ++n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -318,7 +318,7 @@ struct zx_xenc_RecipientKeyInfo_s* zx_xenc_AgreementMethod_GET_RecipientKeyInfo(
 {
   struct zx_xenc_RecipientKeyInfo_s* y;
   if (!x) return 0;
-  for (y = x->RecipientKeyInfo; n>=0 && y; --n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
+  for (y = x->RecipientKeyInfo; n>=0 && y && y->gg.g.tok == zx_xenc_RecipientKeyInfo_ELEM; --n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -375,7 +375,7 @@ void zx_xenc_AgreementMethod_PUT_RecipientKeyInfo(struct zx_xenc_AgreementMethod
     x->RecipientKeyInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_RecipientKeyInfo_ELEM; --n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -397,10 +397,10 @@ void zx_xenc_AgreementMethod_ADD_RecipientKeyInfo(struct zx_xenc_AgreementMethod
   case -1:
     y = x->RecipientKeyInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_RecipientKeyInfo_ELEM; y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RecipientKeyInfo; n > 1 && y; --n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
+    for (y = x->RecipientKeyInfo; n > 1 && y && y->gg.g.tok == zx_xenc_RecipientKeyInfo_ELEM; --n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -420,10 +420,10 @@ void zx_xenc_AgreementMethod_DEL_RecipientKeyInfo(struct zx_xenc_AgreementMethod
   case -1:
     y = (struct zx_xenc_RecipientKeyInfo_s*)x->RecipientKeyInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_RecipientKeyInfo_ELEM; y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RecipientKeyInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
+    for (y = x->RecipientKeyInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_RecipientKeyInfo_ELEM; --n, y = (struct zx_xenc_RecipientKeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -451,7 +451,7 @@ int zx_xenc_CipherData_NUM_CipherValue(struct zx_xenc_CipherData_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CipherValue; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CipherValue; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -461,7 +461,7 @@ struct zx_elem_s* zx_xenc_CipherData_GET_CipherValue(struct zx_xenc_CipherData_s
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->CipherValue; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CipherValue; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -518,7 +518,7 @@ void zx_xenc_CipherData_PUT_CipherValue(struct zx_xenc_CipherData_s* x, int n, s
     x->CipherValue = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -540,10 +540,10 @@ void zx_xenc_CipherData_ADD_CipherValue(struct zx_xenc_CipherData_s* x, int n, s
   case -1:
     y = x->CipherValue;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CipherValue; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CipherValue; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -563,10 +563,10 @@ void zx_xenc_CipherData_DEL_CipherValue(struct zx_xenc_CipherData_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->CipherValue;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CipherValue; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CipherValue; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -585,7 +585,7 @@ int zx_xenc_CipherData_NUM_CipherReference(struct zx_xenc_CipherData_s* x)
   struct zx_xenc_CipherReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CipherReference; y; ++n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
+  for (y = x->CipherReference; y && y->gg.g.tok == zx_xenc_CipherReference_ELEM; ++n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -595,7 +595,7 @@ struct zx_xenc_CipherReference_s* zx_xenc_CipherData_GET_CipherReference(struct 
 {
   struct zx_xenc_CipherReference_s* y;
   if (!x) return 0;
-  for (y = x->CipherReference; n>=0 && y; --n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
+  for (y = x->CipherReference; n>=0 && y && y->gg.g.tok == zx_xenc_CipherReference_ELEM; --n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -652,7 +652,7 @@ void zx_xenc_CipherData_PUT_CipherReference(struct zx_xenc_CipherData_s* x, int 
     x->CipherReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherReference_ELEM; --n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -674,10 +674,10 @@ void zx_xenc_CipherData_ADD_CipherReference(struct zx_xenc_CipherData_s* x, int 
   case -1:
     y = x->CipherReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherReference_ELEM; y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CipherReference; n > 1 && y; --n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
+    for (y = x->CipherReference; n > 1 && y && y->gg.g.tok == zx_xenc_CipherReference_ELEM; --n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -697,10 +697,10 @@ void zx_xenc_CipherData_DEL_CipherReference(struct zx_xenc_CipherData_s* x, int 
   case -1:
     y = (struct zx_xenc_CipherReference_s*)x->CipherReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherReference_ELEM; y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CipherReference; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
+    for (y = x->CipherReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherReference_ELEM; --n, y = (struct zx_xenc_CipherReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -724,7 +724,7 @@ int zx_xenc_CipherReference_NUM_Transforms(struct zx_xenc_CipherReference_s* x)
   struct zx_xenc_Transforms_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Transforms; y; ++n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
+  for (y = x->Transforms; y && y->gg.g.tok == zx_xenc_Transforms_ELEM; ++n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -734,7 +734,7 @@ struct zx_xenc_Transforms_s* zx_xenc_CipherReference_GET_Transforms(struct zx_xe
 {
   struct zx_xenc_Transforms_s* y;
   if (!x) return 0;
-  for (y = x->Transforms; n>=0 && y; --n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
+  for (y = x->Transforms; n>=0 && y && y->gg.g.tok == zx_xenc_Transforms_ELEM; --n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -791,7 +791,7 @@ void zx_xenc_CipherReference_PUT_Transforms(struct zx_xenc_CipherReference_s* x,
     x->Transforms = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_Transforms_ELEM; --n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -813,10 +813,10 @@ void zx_xenc_CipherReference_ADD_Transforms(struct zx_xenc_CipherReference_s* x,
   case -1:
     y = x->Transforms;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_Transforms_ELEM; y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Transforms; n > 1 && y; --n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
+    for (y = x->Transforms; n > 1 && y && y->gg.g.tok == zx_xenc_Transforms_ELEM; --n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -836,10 +836,10 @@ void zx_xenc_CipherReference_DEL_Transforms(struct zx_xenc_CipherReference_s* x,
   case -1:
     y = (struct zx_xenc_Transforms_s*)x->Transforms;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_Transforms_ELEM; y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Transforms; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
+    for (y = x->Transforms; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_Transforms_ELEM; --n, y = (struct zx_xenc_Transforms_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -876,7 +876,7 @@ int zx_xenc_EncryptedData_NUM_EncryptionMethod(struct zx_xenc_EncryptedData_s* x
   struct zx_xenc_EncryptionMethod_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptionMethod; y; ++n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+  for (y = x->EncryptionMethod; y && y->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; ++n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -886,7 +886,7 @@ struct zx_xenc_EncryptionMethod_s* zx_xenc_EncryptedData_GET_EncryptionMethod(st
 {
   struct zx_xenc_EncryptionMethod_s* y;
   if (!x) return 0;
-  for (y = x->EncryptionMethod; n>=0 && y; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+  for (y = x->EncryptionMethod; n>=0 && y && y->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -943,7 +943,7 @@ void zx_xenc_EncryptedData_PUT_EncryptionMethod(struct zx_xenc_EncryptedData_s* 
     x->EncryptionMethod = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -965,10 +965,10 @@ void zx_xenc_EncryptedData_ADD_EncryptionMethod(struct zx_xenc_EncryptedData_s* 
   case -1:
     y = x->EncryptionMethod;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionMethod; n > 1 && y; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (y = x->EncryptionMethod; n > 1 && y && y->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -988,10 +988,10 @@ void zx_xenc_EncryptedData_DEL_EncryptionMethod(struct zx_xenc_EncryptedData_s* 
   case -1:
     y = (struct zx_xenc_EncryptionMethod_s*)x->EncryptionMethod;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionMethod; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (y = x->EncryptionMethod; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1010,7 +1010,7 @@ int zx_xenc_EncryptedData_NUM_KeyInfo(struct zx_xenc_EncryptedData_s* x)
   struct zx_ds_KeyInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyInfo; y; ++n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+  for (y = x->KeyInfo; y && y->gg.g.tok == zx_ds_KeyInfo_ELEM; ++n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1020,7 +1020,7 @@ struct zx_ds_KeyInfo_s* zx_xenc_EncryptedData_GET_KeyInfo(struct zx_xenc_Encrypt
 {
   struct zx_ds_KeyInfo_s* y;
   if (!x) return 0;
-  for (y = x->KeyInfo; n>=0 && y; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+  for (y = x->KeyInfo; n>=0 && y && y->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1077,7 +1077,7 @@ void zx_xenc_EncryptedData_PUT_KeyInfo(struct zx_xenc_EncryptedData_s* x, int n,
     x->KeyInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1099,10 +1099,10 @@ void zx_xenc_EncryptedData_ADD_KeyInfo(struct zx_xenc_EncryptedData_s* x, int n,
   case -1:
     y = x->KeyInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyInfo; n > 1 && y; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (y = x->KeyInfo; n > 1 && y && y->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1122,10 +1122,10 @@ void zx_xenc_EncryptedData_DEL_KeyInfo(struct zx_xenc_EncryptedData_s* x, int n)
   case -1:
     y = (struct zx_ds_KeyInfo_s*)x->KeyInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (y = x->KeyInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1144,7 +1144,7 @@ int zx_xenc_EncryptedData_NUM_CipherData(struct zx_xenc_EncryptedData_s* x)
   struct zx_xenc_CipherData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CipherData; y; ++n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+  for (y = x->CipherData; y && y->gg.g.tok == zx_xenc_CipherData_ELEM; ++n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1154,7 +1154,7 @@ struct zx_xenc_CipherData_s* zx_xenc_EncryptedData_GET_CipherData(struct zx_xenc
 {
   struct zx_xenc_CipherData_s* y;
   if (!x) return 0;
-  for (y = x->CipherData; n>=0 && y; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+  for (y = x->CipherData; n>=0 && y && y->gg.g.tok == zx_xenc_CipherData_ELEM; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1211,7 +1211,7 @@ void zx_xenc_EncryptedData_PUT_CipherData(struct zx_xenc_EncryptedData_s* x, int
     x->CipherData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherData_ELEM; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1233,10 +1233,10 @@ void zx_xenc_EncryptedData_ADD_CipherData(struct zx_xenc_EncryptedData_s* x, int
   case -1:
     y = x->CipherData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherData_ELEM; y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CipherData; n > 1 && y; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (y = x->CipherData; n > 1 && y && y->gg.g.tok == zx_xenc_CipherData_ELEM; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1256,10 +1256,10 @@ void zx_xenc_EncryptedData_DEL_CipherData(struct zx_xenc_EncryptedData_s* x, int
   case -1:
     y = (struct zx_xenc_CipherData_s*)x->CipherData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherData_ELEM; y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CipherData; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (y = x->CipherData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherData_ELEM; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1278,7 +1278,7 @@ int zx_xenc_EncryptedData_NUM_EncryptionProperties(struct zx_xenc_EncryptedData_
   struct zx_xenc_EncryptionProperties_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptionProperties; y; ++n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+  for (y = x->EncryptionProperties; y && y->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; ++n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1288,7 +1288,7 @@ struct zx_xenc_EncryptionProperties_s* zx_xenc_EncryptedData_GET_EncryptionPrope
 {
   struct zx_xenc_EncryptionProperties_s* y;
   if (!x) return 0;
-  for (y = x->EncryptionProperties; n>=0 && y; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+  for (y = x->EncryptionProperties; n>=0 && y && y->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1345,7 +1345,7 @@ void zx_xenc_EncryptedData_PUT_EncryptionProperties(struct zx_xenc_EncryptedData
     x->EncryptionProperties = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1367,10 +1367,10 @@ void zx_xenc_EncryptedData_ADD_EncryptionProperties(struct zx_xenc_EncryptedData
   case -1:
     y = x->EncryptionProperties;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionProperties; n > 1 && y; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (y = x->EncryptionProperties; n > 1 && y && y->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1390,10 +1390,10 @@ void zx_xenc_EncryptedData_DEL_EncryptionProperties(struct zx_xenc_EncryptedData
   case -1:
     y = (struct zx_xenc_EncryptionProperties_s*)x->EncryptionProperties;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionProperties; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (y = x->EncryptionProperties; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1433,7 +1433,7 @@ int zx_xenc_EncryptedKey_NUM_EncryptionMethod(struct zx_xenc_EncryptedKey_s* x)
   struct zx_xenc_EncryptionMethod_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptionMethod; y; ++n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+  for (y = x->EncryptionMethod; y && y->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; ++n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1443,7 +1443,7 @@ struct zx_xenc_EncryptionMethod_s* zx_xenc_EncryptedKey_GET_EncryptionMethod(str
 {
   struct zx_xenc_EncryptionMethod_s* y;
   if (!x) return 0;
-  for (y = x->EncryptionMethod; n>=0 && y; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+  for (y = x->EncryptionMethod; n>=0 && y && y->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1500,7 +1500,7 @@ void zx_xenc_EncryptedKey_PUT_EncryptionMethod(struct zx_xenc_EncryptedKey_s* x,
     x->EncryptionMethod = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1522,10 +1522,10 @@ void zx_xenc_EncryptedKey_ADD_EncryptionMethod(struct zx_xenc_EncryptedKey_s* x,
   case -1:
     y = x->EncryptionMethod;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionMethod; n > 1 && y; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (y = x->EncryptionMethod; n > 1 && y && y->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1545,10 +1545,10 @@ void zx_xenc_EncryptedKey_DEL_EncryptionMethod(struct zx_xenc_EncryptedKey_s* x,
   case -1:
     y = (struct zx_xenc_EncryptionMethod_s*)x->EncryptionMethod;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionMethod; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
+    for (y = x->EncryptionMethod; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionMethod_ELEM; --n, y = (struct zx_xenc_EncryptionMethod_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1567,7 +1567,7 @@ int zx_xenc_EncryptedKey_NUM_KeyInfo(struct zx_xenc_EncryptedKey_s* x)
   struct zx_ds_KeyInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyInfo; y; ++n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+  for (y = x->KeyInfo; y && y->gg.g.tok == zx_ds_KeyInfo_ELEM; ++n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1577,7 +1577,7 @@ struct zx_ds_KeyInfo_s* zx_xenc_EncryptedKey_GET_KeyInfo(struct zx_xenc_Encrypte
 {
   struct zx_ds_KeyInfo_s* y;
   if (!x) return 0;
-  for (y = x->KeyInfo; n>=0 && y; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+  for (y = x->KeyInfo; n>=0 && y && y->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1634,7 +1634,7 @@ void zx_xenc_EncryptedKey_PUT_KeyInfo(struct zx_xenc_EncryptedKey_s* x, int n, s
     x->KeyInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1656,10 +1656,10 @@ void zx_xenc_EncryptedKey_ADD_KeyInfo(struct zx_xenc_EncryptedKey_s* x, int n, s
   case -1:
     y = x->KeyInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyInfo; n > 1 && y; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (y = x->KeyInfo; n > 1 && y && y->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1679,10 +1679,10 @@ void zx_xenc_EncryptedKey_DEL_KeyInfo(struct zx_xenc_EncryptedKey_s* x, int n)
   case -1:
     y = (struct zx_ds_KeyInfo_s*)x->KeyInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
+    for (y = x->KeyInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyInfo_ELEM; --n, y = (struct zx_ds_KeyInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1701,7 +1701,7 @@ int zx_xenc_EncryptedKey_NUM_CipherData(struct zx_xenc_EncryptedKey_s* x)
   struct zx_xenc_CipherData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CipherData; y; ++n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+  for (y = x->CipherData; y && y->gg.g.tok == zx_xenc_CipherData_ELEM; ++n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1711,7 +1711,7 @@ struct zx_xenc_CipherData_s* zx_xenc_EncryptedKey_GET_CipherData(struct zx_xenc_
 {
   struct zx_xenc_CipherData_s* y;
   if (!x) return 0;
-  for (y = x->CipherData; n>=0 && y; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+  for (y = x->CipherData; n>=0 && y && y->gg.g.tok == zx_xenc_CipherData_ELEM; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1768,7 +1768,7 @@ void zx_xenc_EncryptedKey_PUT_CipherData(struct zx_xenc_EncryptedKey_s* x, int n
     x->CipherData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherData_ELEM; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1790,10 +1790,10 @@ void zx_xenc_EncryptedKey_ADD_CipherData(struct zx_xenc_EncryptedKey_s* x, int n
   case -1:
     y = x->CipherData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherData_ELEM; y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CipherData; n > 1 && y; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (y = x->CipherData; n > 1 && y && y->gg.g.tok == zx_xenc_CipherData_ELEM; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1813,10 +1813,10 @@ void zx_xenc_EncryptedKey_DEL_CipherData(struct zx_xenc_EncryptedKey_s* x, int n
   case -1:
     y = (struct zx_xenc_CipherData_s*)x->CipherData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherData_ELEM; y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CipherData; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
+    for (y = x->CipherData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_CipherData_ELEM; --n, y = (struct zx_xenc_CipherData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1835,7 +1835,7 @@ int zx_xenc_EncryptedKey_NUM_EncryptionProperties(struct zx_xenc_EncryptedKey_s*
   struct zx_xenc_EncryptionProperties_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptionProperties; y; ++n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+  for (y = x->EncryptionProperties; y && y->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; ++n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1845,7 +1845,7 @@ struct zx_xenc_EncryptionProperties_s* zx_xenc_EncryptedKey_GET_EncryptionProper
 {
   struct zx_xenc_EncryptionProperties_s* y;
   if (!x) return 0;
-  for (y = x->EncryptionProperties; n>=0 && y; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+  for (y = x->EncryptionProperties; n>=0 && y && y->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1902,7 +1902,7 @@ void zx_xenc_EncryptedKey_PUT_EncryptionProperties(struct zx_xenc_EncryptedKey_s
     x->EncryptionProperties = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1924,10 +1924,10 @@ void zx_xenc_EncryptedKey_ADD_EncryptionProperties(struct zx_xenc_EncryptedKey_s
   case -1:
     y = x->EncryptionProperties;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionProperties; n > 1 && y; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (y = x->EncryptionProperties; n > 1 && y && y->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1947,10 +1947,10 @@ void zx_xenc_EncryptedKey_DEL_EncryptionProperties(struct zx_xenc_EncryptedKey_s
   case -1:
     y = (struct zx_xenc_EncryptionProperties_s*)x->EncryptionProperties;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionProperties; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
+    for (y = x->EncryptionProperties; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperties_ELEM; --n, y = (struct zx_xenc_EncryptionProperties_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1969,7 +1969,7 @@ int zx_xenc_EncryptedKey_NUM_ReferenceList(struct zx_xenc_EncryptedKey_s* x)
   struct zx_xenc_ReferenceList_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ReferenceList; y; ++n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
+  for (y = x->ReferenceList; y && y->gg.g.tok == zx_xenc_ReferenceList_ELEM; ++n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1979,7 +1979,7 @@ struct zx_xenc_ReferenceList_s* zx_xenc_EncryptedKey_GET_ReferenceList(struct zx
 {
   struct zx_xenc_ReferenceList_s* y;
   if (!x) return 0;
-  for (y = x->ReferenceList; n>=0 && y; --n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
+  for (y = x->ReferenceList; n>=0 && y && y->gg.g.tok == zx_xenc_ReferenceList_ELEM; --n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2036,7 +2036,7 @@ void zx_xenc_EncryptedKey_PUT_ReferenceList(struct zx_xenc_EncryptedKey_s* x, in
     x->ReferenceList = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_ReferenceList_ELEM; --n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2058,10 +2058,10 @@ void zx_xenc_EncryptedKey_ADD_ReferenceList(struct zx_xenc_EncryptedKey_s* x, in
   case -1:
     y = x->ReferenceList;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_ReferenceList_ELEM; y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ReferenceList; n > 1 && y; --n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
+    for (y = x->ReferenceList; n > 1 && y && y->gg.g.tok == zx_xenc_ReferenceList_ELEM; --n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2081,10 +2081,10 @@ void zx_xenc_EncryptedKey_DEL_ReferenceList(struct zx_xenc_EncryptedKey_s* x, in
   case -1:
     y = (struct zx_xenc_ReferenceList_s*)x->ReferenceList;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_ReferenceList_ELEM; y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ReferenceList; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
+    for (y = x->ReferenceList; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_ReferenceList_ELEM; --n, y = (struct zx_xenc_ReferenceList_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2103,7 +2103,7 @@ int zx_xenc_EncryptedKey_NUM_CarriedKeyName(struct zx_xenc_EncryptedKey_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CarriedKeyName; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CarriedKeyName; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2113,7 +2113,7 @@ struct zx_elem_s* zx_xenc_EncryptedKey_GET_CarriedKeyName(struct zx_xenc_Encrypt
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->CarriedKeyName; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CarriedKeyName; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2170,7 +2170,7 @@ void zx_xenc_EncryptedKey_PUT_CarriedKeyName(struct zx_xenc_EncryptedKey_s* x, i
     x->CarriedKeyName = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2192,10 +2192,10 @@ void zx_xenc_EncryptedKey_ADD_CarriedKeyName(struct zx_xenc_EncryptedKey_s* x, i
   case -1:
     y = x->CarriedKeyName;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CarriedKeyName; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CarriedKeyName; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2215,10 +2215,10 @@ void zx_xenc_EncryptedKey_DEL_CarriedKeyName(struct zx_xenc_EncryptedKey_s* x, i
   case -1:
     y = (struct zx_elem_s*)x->CarriedKeyName;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CarriedKeyName; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CarriedKeyName; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2262,7 +2262,7 @@ int zx_xenc_EncryptionMethod_NUM_KeySize(struct zx_xenc_EncryptionMethod_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeySize; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeySize; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2272,7 +2272,7 @@ struct zx_elem_s* zx_xenc_EncryptionMethod_GET_KeySize(struct zx_xenc_Encryption
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->KeySize; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeySize; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2329,7 +2329,7 @@ void zx_xenc_EncryptionMethod_PUT_KeySize(struct zx_xenc_EncryptionMethod_s* x, 
     x->KeySize = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2351,10 +2351,10 @@ void zx_xenc_EncryptionMethod_ADD_KeySize(struct zx_xenc_EncryptionMethod_s* x, 
   case -1:
     y = x->KeySize;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeySize; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeySize; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2374,10 +2374,10 @@ void zx_xenc_EncryptionMethod_DEL_KeySize(struct zx_xenc_EncryptionMethod_s* x, 
   case -1:
     y = (struct zx_elem_s*)x->KeySize;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeySize; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeySize; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2396,7 +2396,7 @@ int zx_xenc_EncryptionMethod_NUM_OAEPparams(struct zx_xenc_EncryptionMethod_s* x
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->OAEPparams; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->OAEPparams; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2406,7 +2406,7 @@ struct zx_elem_s* zx_xenc_EncryptionMethod_GET_OAEPparams(struct zx_xenc_Encrypt
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->OAEPparams; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->OAEPparams; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2463,7 +2463,7 @@ void zx_xenc_EncryptionMethod_PUT_OAEPparams(struct zx_xenc_EncryptionMethod_s* 
     x->OAEPparams = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2485,10 +2485,10 @@ void zx_xenc_EncryptionMethod_ADD_OAEPparams(struct zx_xenc_EncryptionMethod_s* 
   case -1:
     y = x->OAEPparams;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->OAEPparams; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->OAEPparams; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2508,10 +2508,10 @@ void zx_xenc_EncryptionMethod_DEL_OAEPparams(struct zx_xenc_EncryptionMethod_s* 
   case -1:
     y = (struct zx_elem_s*)x->OAEPparams;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->OAEPparams; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->OAEPparams; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2539,7 +2539,7 @@ int zx_xenc_EncryptionProperties_NUM_EncryptionProperty(struct zx_xenc_Encryptio
   struct zx_xenc_EncryptionProperty_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptionProperty; y; ++n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
+  for (y = x->EncryptionProperty; y && y->gg.g.tok == zx_xenc_EncryptionProperty_ELEM; ++n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2549,7 +2549,7 @@ struct zx_xenc_EncryptionProperty_s* zx_xenc_EncryptionProperties_GET_Encryption
 {
   struct zx_xenc_EncryptionProperty_s* y;
   if (!x) return 0;
-  for (y = x->EncryptionProperty; n>=0 && y; --n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
+  for (y = x->EncryptionProperty; n>=0 && y && y->gg.g.tok == zx_xenc_EncryptionProperty_ELEM; --n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2606,7 +2606,7 @@ void zx_xenc_EncryptionProperties_PUT_EncryptionProperty(struct zx_xenc_Encrypti
     x->EncryptionProperty = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperty_ELEM; --n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2628,10 +2628,10 @@ void zx_xenc_EncryptionProperties_ADD_EncryptionProperty(struct zx_xenc_Encrypti
   case -1:
     y = x->EncryptionProperty;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperty_ELEM; y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionProperty; n > 1 && y; --n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
+    for (y = x->EncryptionProperty; n > 1 && y && y->gg.g.tok == zx_xenc_EncryptionProperty_ELEM; --n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2651,10 +2651,10 @@ void zx_xenc_EncryptionProperties_DEL_EncryptionProperty(struct zx_xenc_Encrypti
   case -1:
     y = (struct zx_xenc_EncryptionProperty_s*)x->EncryptionProperty;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperty_ELEM; y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptionProperty; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
+    for (y = x->EncryptionProperty; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptionProperty_ELEM; --n, y = (struct zx_xenc_EncryptionProperty_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2704,7 +2704,7 @@ int zx_xenc_OriginatorKeyInfo_NUM_KeyName(struct zx_xenc_OriginatorKeyInfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyName; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeyName; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2714,7 +2714,7 @@ struct zx_elem_s* zx_xenc_OriginatorKeyInfo_GET_KeyName(struct zx_xenc_Originato
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->KeyName; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeyName; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2771,7 +2771,7 @@ void zx_xenc_OriginatorKeyInfo_PUT_KeyName(struct zx_xenc_OriginatorKeyInfo_s* x
     x->KeyName = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2793,10 +2793,10 @@ void zx_xenc_OriginatorKeyInfo_ADD_KeyName(struct zx_xenc_OriginatorKeyInfo_s* x
   case -1:
     y = x->KeyName;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeyName; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeyName; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2816,10 +2816,10 @@ void zx_xenc_OriginatorKeyInfo_DEL_KeyName(struct zx_xenc_OriginatorKeyInfo_s* x
   case -1:
     y = (struct zx_elem_s*)x->KeyName;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeyName; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeyName; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2838,7 +2838,7 @@ int zx_xenc_OriginatorKeyInfo_NUM_KeyValue(struct zx_xenc_OriginatorKeyInfo_s* x
   struct zx_ds_KeyValue_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyValue; y; ++n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+  for (y = x->KeyValue; y && y->gg.g.tok == zx_ds_KeyValue_ELEM; ++n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2848,7 +2848,7 @@ struct zx_ds_KeyValue_s* zx_xenc_OriginatorKeyInfo_GET_KeyValue(struct zx_xenc_O
 {
   struct zx_ds_KeyValue_s* y;
   if (!x) return 0;
-  for (y = x->KeyValue; n>=0 && y; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+  for (y = x->KeyValue; n>=0 && y && y->gg.g.tok == zx_ds_KeyValue_ELEM; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2905,7 +2905,7 @@ void zx_xenc_OriginatorKeyInfo_PUT_KeyValue(struct zx_xenc_OriginatorKeyInfo_s* 
     x->KeyValue = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyValue_ELEM; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2927,10 +2927,10 @@ void zx_xenc_OriginatorKeyInfo_ADD_KeyValue(struct zx_xenc_OriginatorKeyInfo_s* 
   case -1:
     y = x->KeyValue;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyValue_ELEM; y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyValue; n > 1 && y; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (y = x->KeyValue; n > 1 && y && y->gg.g.tok == zx_ds_KeyValue_ELEM; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2950,10 +2950,10 @@ void zx_xenc_OriginatorKeyInfo_DEL_KeyValue(struct zx_xenc_OriginatorKeyInfo_s* 
   case -1:
     y = (struct zx_ds_KeyValue_s*)x->KeyValue;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyValue_ELEM; y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyValue; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (y = x->KeyValue; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyValue_ELEM; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2972,7 +2972,7 @@ int zx_xenc_OriginatorKeyInfo_NUM_RetrievalMethod(struct zx_xenc_OriginatorKeyIn
   struct zx_ds_RetrievalMethod_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RetrievalMethod; y; ++n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+  for (y = x->RetrievalMethod; y && y->gg.g.tok == zx_ds_RetrievalMethod_ELEM; ++n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2982,7 +2982,7 @@ struct zx_ds_RetrievalMethod_s* zx_xenc_OriginatorKeyInfo_GET_RetrievalMethod(st
 {
   struct zx_ds_RetrievalMethod_s* y;
   if (!x) return 0;
-  for (y = x->RetrievalMethod; n>=0 && y; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+  for (y = x->RetrievalMethod; n>=0 && y && y->gg.g.tok == zx_ds_RetrievalMethod_ELEM; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3039,7 +3039,7 @@ void zx_xenc_OriginatorKeyInfo_PUT_RetrievalMethod(struct zx_xenc_OriginatorKeyI
     x->RetrievalMethod = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_RetrievalMethod_ELEM; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3061,10 +3061,10 @@ void zx_xenc_OriginatorKeyInfo_ADD_RetrievalMethod(struct zx_xenc_OriginatorKeyI
   case -1:
     y = x->RetrievalMethod;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_RetrievalMethod_ELEM; y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RetrievalMethod; n > 1 && y; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (y = x->RetrievalMethod; n > 1 && y && y->gg.g.tok == zx_ds_RetrievalMethod_ELEM; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3084,10 +3084,10 @@ void zx_xenc_OriginatorKeyInfo_DEL_RetrievalMethod(struct zx_xenc_OriginatorKeyI
   case -1:
     y = (struct zx_ds_RetrievalMethod_s*)x->RetrievalMethod;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_RetrievalMethod_ELEM; y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RetrievalMethod; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (y = x->RetrievalMethod; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_RetrievalMethod_ELEM; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3106,7 +3106,7 @@ int zx_xenc_OriginatorKeyInfo_NUM_X509Data(struct zx_xenc_OriginatorKeyInfo_s* x
   struct zx_ds_X509Data_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->X509Data; y; ++n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+  for (y = x->X509Data; y && y->gg.g.tok == zx_ds_X509Data_ELEM; ++n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3116,7 +3116,7 @@ struct zx_ds_X509Data_s* zx_xenc_OriginatorKeyInfo_GET_X509Data(struct zx_xenc_O
 {
   struct zx_ds_X509Data_s* y;
   if (!x) return 0;
-  for (y = x->X509Data; n>=0 && y; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+  for (y = x->X509Data; n>=0 && y && y->gg.g.tok == zx_ds_X509Data_ELEM; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3173,7 +3173,7 @@ void zx_xenc_OriginatorKeyInfo_PUT_X509Data(struct zx_xenc_OriginatorKeyInfo_s* 
     x->X509Data = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_X509Data_ELEM; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3195,10 +3195,10 @@ void zx_xenc_OriginatorKeyInfo_ADD_X509Data(struct zx_xenc_OriginatorKeyInfo_s* 
   case -1:
     y = x->X509Data;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_X509Data_ELEM; y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->X509Data; n > 1 && y; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (y = x->X509Data; n > 1 && y && y->gg.g.tok == zx_ds_X509Data_ELEM; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3218,10 +3218,10 @@ void zx_xenc_OriginatorKeyInfo_DEL_X509Data(struct zx_xenc_OriginatorKeyInfo_s* 
   case -1:
     y = (struct zx_ds_X509Data_s*)x->X509Data;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_X509Data_ELEM; y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->X509Data; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (y = x->X509Data; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_X509Data_ELEM; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3240,7 +3240,7 @@ int zx_xenc_OriginatorKeyInfo_NUM_PGPData(struct zx_xenc_OriginatorKeyInfo_s* x)
   struct zx_ds_PGPData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PGPData; y; ++n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+  for (y = x->PGPData; y && y->gg.g.tok == zx_ds_PGPData_ELEM; ++n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3250,7 +3250,7 @@ struct zx_ds_PGPData_s* zx_xenc_OriginatorKeyInfo_GET_PGPData(struct zx_xenc_Ori
 {
   struct zx_ds_PGPData_s* y;
   if (!x) return 0;
-  for (y = x->PGPData; n>=0 && y; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+  for (y = x->PGPData; n>=0 && y && y->gg.g.tok == zx_ds_PGPData_ELEM; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3307,7 +3307,7 @@ void zx_xenc_OriginatorKeyInfo_PUT_PGPData(struct zx_xenc_OriginatorKeyInfo_s* x
     x->PGPData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_PGPData_ELEM; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3329,10 +3329,10 @@ void zx_xenc_OriginatorKeyInfo_ADD_PGPData(struct zx_xenc_OriginatorKeyInfo_s* x
   case -1:
     y = x->PGPData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_PGPData_ELEM; y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PGPData; n > 1 && y; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (y = x->PGPData; n > 1 && y && y->gg.g.tok == zx_ds_PGPData_ELEM; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3352,10 +3352,10 @@ void zx_xenc_OriginatorKeyInfo_DEL_PGPData(struct zx_xenc_OriginatorKeyInfo_s* x
   case -1:
     y = (struct zx_ds_PGPData_s*)x->PGPData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_PGPData_ELEM; y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PGPData; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (y = x->PGPData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_PGPData_ELEM; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3374,7 +3374,7 @@ int zx_xenc_OriginatorKeyInfo_NUM_SPKIData(struct zx_xenc_OriginatorKeyInfo_s* x
   struct zx_ds_SPKIData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SPKIData; y; ++n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+  for (y = x->SPKIData; y && y->gg.g.tok == zx_ds_SPKIData_ELEM; ++n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3384,7 +3384,7 @@ struct zx_ds_SPKIData_s* zx_xenc_OriginatorKeyInfo_GET_SPKIData(struct zx_xenc_O
 {
   struct zx_ds_SPKIData_s* y;
   if (!x) return 0;
-  for (y = x->SPKIData; n>=0 && y; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+  for (y = x->SPKIData; n>=0 && y && y->gg.g.tok == zx_ds_SPKIData_ELEM; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3441,7 +3441,7 @@ void zx_xenc_OriginatorKeyInfo_PUT_SPKIData(struct zx_xenc_OriginatorKeyInfo_s* 
     x->SPKIData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_SPKIData_ELEM; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3463,10 +3463,10 @@ void zx_xenc_OriginatorKeyInfo_ADD_SPKIData(struct zx_xenc_OriginatorKeyInfo_s* 
   case -1:
     y = x->SPKIData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_SPKIData_ELEM; y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SPKIData; n > 1 && y; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (y = x->SPKIData; n > 1 && y && y->gg.g.tok == zx_ds_SPKIData_ELEM; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3486,10 +3486,10 @@ void zx_xenc_OriginatorKeyInfo_DEL_SPKIData(struct zx_xenc_OriginatorKeyInfo_s* 
   case -1:
     y = (struct zx_ds_SPKIData_s*)x->SPKIData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_SPKIData_ELEM; y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SPKIData; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (y = x->SPKIData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_SPKIData_ELEM; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3508,7 +3508,7 @@ int zx_xenc_OriginatorKeyInfo_NUM_MgmtData(struct zx_xenc_OriginatorKeyInfo_s* x
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->MgmtData; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->MgmtData; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3518,7 +3518,7 @@ struct zx_elem_s* zx_xenc_OriginatorKeyInfo_GET_MgmtData(struct zx_xenc_Originat
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->MgmtData; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->MgmtData; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3575,7 +3575,7 @@ void zx_xenc_OriginatorKeyInfo_PUT_MgmtData(struct zx_xenc_OriginatorKeyInfo_s* 
     x->MgmtData = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3597,10 +3597,10 @@ void zx_xenc_OriginatorKeyInfo_ADD_MgmtData(struct zx_xenc_OriginatorKeyInfo_s* 
   case -1:
     y = x->MgmtData;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->MgmtData; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->MgmtData; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3620,10 +3620,10 @@ void zx_xenc_OriginatorKeyInfo_DEL_MgmtData(struct zx_xenc_OriginatorKeyInfo_s* 
   case -1:
     y = (struct zx_elem_s*)x->MgmtData;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->MgmtData; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->MgmtData; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3642,7 +3642,7 @@ int zx_xenc_OriginatorKeyInfo_NUM_EncryptedKey(struct zx_xenc_OriginatorKeyInfo_
   struct zx_xenc_EncryptedKey_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptedKey; y; ++n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+  for (y = x->EncryptedKey; y && y->gg.g.tok == zx_xenc_EncryptedKey_ELEM; ++n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3652,7 +3652,7 @@ struct zx_xenc_EncryptedKey_s* zx_xenc_OriginatorKeyInfo_GET_EncryptedKey(struct
 {
   struct zx_xenc_EncryptedKey_s* y;
   if (!x) return 0;
-  for (y = x->EncryptedKey; n>=0 && y; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+  for (y = x->EncryptedKey; n>=0 && y && y->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3709,7 +3709,7 @@ void zx_xenc_OriginatorKeyInfo_PUT_EncryptedKey(struct zx_xenc_OriginatorKeyInfo
     x->EncryptedKey = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3731,10 +3731,10 @@ void zx_xenc_OriginatorKeyInfo_ADD_EncryptedKey(struct zx_xenc_OriginatorKeyInfo
   case -1:
     y = x->EncryptedKey;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedKey; n > 1 && y; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (y = x->EncryptedKey; n > 1 && y && y->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3754,10 +3754,10 @@ void zx_xenc_OriginatorKeyInfo_DEL_EncryptedKey(struct zx_xenc_OriginatorKeyInfo
   case -1:
     y = (struct zx_xenc_EncryptedKey_s*)x->EncryptedKey;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedKey; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (y = x->EncryptedKey; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3785,7 +3785,7 @@ int zx_xenc_RecipientKeyInfo_NUM_KeyName(struct zx_xenc_RecipientKeyInfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyName; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeyName; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3795,7 +3795,7 @@ struct zx_elem_s* zx_xenc_RecipientKeyInfo_GET_KeyName(struct zx_xenc_RecipientK
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->KeyName; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeyName; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3852,7 +3852,7 @@ void zx_xenc_RecipientKeyInfo_PUT_KeyName(struct zx_xenc_RecipientKeyInfo_s* x, 
     x->KeyName = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3874,10 +3874,10 @@ void zx_xenc_RecipientKeyInfo_ADD_KeyName(struct zx_xenc_RecipientKeyInfo_s* x, 
   case -1:
     y = x->KeyName;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeyName; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeyName; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3897,10 +3897,10 @@ void zx_xenc_RecipientKeyInfo_DEL_KeyName(struct zx_xenc_RecipientKeyInfo_s* x, 
   case -1:
     y = (struct zx_elem_s*)x->KeyName;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeyName; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeyName; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3919,7 +3919,7 @@ int zx_xenc_RecipientKeyInfo_NUM_KeyValue(struct zx_xenc_RecipientKeyInfo_s* x)
   struct zx_ds_KeyValue_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyValue; y; ++n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+  for (y = x->KeyValue; y && y->gg.g.tok == zx_ds_KeyValue_ELEM; ++n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3929,7 +3929,7 @@ struct zx_ds_KeyValue_s* zx_xenc_RecipientKeyInfo_GET_KeyValue(struct zx_xenc_Re
 {
   struct zx_ds_KeyValue_s* y;
   if (!x) return 0;
-  for (y = x->KeyValue; n>=0 && y; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+  for (y = x->KeyValue; n>=0 && y && y->gg.g.tok == zx_ds_KeyValue_ELEM; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3986,7 +3986,7 @@ void zx_xenc_RecipientKeyInfo_PUT_KeyValue(struct zx_xenc_RecipientKeyInfo_s* x,
     x->KeyValue = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyValue_ELEM; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4008,10 +4008,10 @@ void zx_xenc_RecipientKeyInfo_ADD_KeyValue(struct zx_xenc_RecipientKeyInfo_s* x,
   case -1:
     y = x->KeyValue;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyValue_ELEM; y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyValue; n > 1 && y; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (y = x->KeyValue; n > 1 && y && y->gg.g.tok == zx_ds_KeyValue_ELEM; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4031,10 +4031,10 @@ void zx_xenc_RecipientKeyInfo_DEL_KeyValue(struct zx_xenc_RecipientKeyInfo_s* x,
   case -1:
     y = (struct zx_ds_KeyValue_s*)x->KeyValue;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyValue_ELEM; y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyValue; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
+    for (y = x->KeyValue; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_KeyValue_ELEM; --n, y = (struct zx_ds_KeyValue_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4053,7 +4053,7 @@ int zx_xenc_RecipientKeyInfo_NUM_RetrievalMethod(struct zx_xenc_RecipientKeyInfo
   struct zx_ds_RetrievalMethod_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RetrievalMethod; y; ++n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+  for (y = x->RetrievalMethod; y && y->gg.g.tok == zx_ds_RetrievalMethod_ELEM; ++n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4063,7 +4063,7 @@ struct zx_ds_RetrievalMethod_s* zx_xenc_RecipientKeyInfo_GET_RetrievalMethod(str
 {
   struct zx_ds_RetrievalMethod_s* y;
   if (!x) return 0;
-  for (y = x->RetrievalMethod; n>=0 && y; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+  for (y = x->RetrievalMethod; n>=0 && y && y->gg.g.tok == zx_ds_RetrievalMethod_ELEM; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4120,7 +4120,7 @@ void zx_xenc_RecipientKeyInfo_PUT_RetrievalMethod(struct zx_xenc_RecipientKeyInf
     x->RetrievalMethod = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_RetrievalMethod_ELEM; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4142,10 +4142,10 @@ void zx_xenc_RecipientKeyInfo_ADD_RetrievalMethod(struct zx_xenc_RecipientKeyInf
   case -1:
     y = x->RetrievalMethod;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_RetrievalMethod_ELEM; y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RetrievalMethod; n > 1 && y; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (y = x->RetrievalMethod; n > 1 && y && y->gg.g.tok == zx_ds_RetrievalMethod_ELEM; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4165,10 +4165,10 @@ void zx_xenc_RecipientKeyInfo_DEL_RetrievalMethod(struct zx_xenc_RecipientKeyInf
   case -1:
     y = (struct zx_ds_RetrievalMethod_s*)x->RetrievalMethod;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_RetrievalMethod_ELEM; y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RetrievalMethod; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
+    for (y = x->RetrievalMethod; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_RetrievalMethod_ELEM; --n, y = (struct zx_ds_RetrievalMethod_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4187,7 +4187,7 @@ int zx_xenc_RecipientKeyInfo_NUM_X509Data(struct zx_xenc_RecipientKeyInfo_s* x)
   struct zx_ds_X509Data_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->X509Data; y; ++n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+  for (y = x->X509Data; y && y->gg.g.tok == zx_ds_X509Data_ELEM; ++n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4197,7 +4197,7 @@ struct zx_ds_X509Data_s* zx_xenc_RecipientKeyInfo_GET_X509Data(struct zx_xenc_Re
 {
   struct zx_ds_X509Data_s* y;
   if (!x) return 0;
-  for (y = x->X509Data; n>=0 && y; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+  for (y = x->X509Data; n>=0 && y && y->gg.g.tok == zx_ds_X509Data_ELEM; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4254,7 +4254,7 @@ void zx_xenc_RecipientKeyInfo_PUT_X509Data(struct zx_xenc_RecipientKeyInfo_s* x,
     x->X509Data = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_X509Data_ELEM; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4276,10 +4276,10 @@ void zx_xenc_RecipientKeyInfo_ADD_X509Data(struct zx_xenc_RecipientKeyInfo_s* x,
   case -1:
     y = x->X509Data;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_X509Data_ELEM; y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->X509Data; n > 1 && y; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (y = x->X509Data; n > 1 && y && y->gg.g.tok == zx_ds_X509Data_ELEM; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4299,10 +4299,10 @@ void zx_xenc_RecipientKeyInfo_DEL_X509Data(struct zx_xenc_RecipientKeyInfo_s* x,
   case -1:
     y = (struct zx_ds_X509Data_s*)x->X509Data;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_X509Data_ELEM; y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->X509Data; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
+    for (y = x->X509Data; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_X509Data_ELEM; --n, y = (struct zx_ds_X509Data_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4321,7 +4321,7 @@ int zx_xenc_RecipientKeyInfo_NUM_PGPData(struct zx_xenc_RecipientKeyInfo_s* x)
   struct zx_ds_PGPData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PGPData; y; ++n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+  for (y = x->PGPData; y && y->gg.g.tok == zx_ds_PGPData_ELEM; ++n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4331,7 +4331,7 @@ struct zx_ds_PGPData_s* zx_xenc_RecipientKeyInfo_GET_PGPData(struct zx_xenc_Reci
 {
   struct zx_ds_PGPData_s* y;
   if (!x) return 0;
-  for (y = x->PGPData; n>=0 && y; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+  for (y = x->PGPData; n>=0 && y && y->gg.g.tok == zx_ds_PGPData_ELEM; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4388,7 +4388,7 @@ void zx_xenc_RecipientKeyInfo_PUT_PGPData(struct zx_xenc_RecipientKeyInfo_s* x, 
     x->PGPData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_PGPData_ELEM; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4410,10 +4410,10 @@ void zx_xenc_RecipientKeyInfo_ADD_PGPData(struct zx_xenc_RecipientKeyInfo_s* x, 
   case -1:
     y = x->PGPData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_PGPData_ELEM; y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PGPData; n > 1 && y; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (y = x->PGPData; n > 1 && y && y->gg.g.tok == zx_ds_PGPData_ELEM; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4433,10 +4433,10 @@ void zx_xenc_RecipientKeyInfo_DEL_PGPData(struct zx_xenc_RecipientKeyInfo_s* x, 
   case -1:
     y = (struct zx_ds_PGPData_s*)x->PGPData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_PGPData_ELEM; y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PGPData; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
+    for (y = x->PGPData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_PGPData_ELEM; --n, y = (struct zx_ds_PGPData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4455,7 +4455,7 @@ int zx_xenc_RecipientKeyInfo_NUM_SPKIData(struct zx_xenc_RecipientKeyInfo_s* x)
   struct zx_ds_SPKIData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SPKIData; y; ++n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+  for (y = x->SPKIData; y && y->gg.g.tok == zx_ds_SPKIData_ELEM; ++n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4465,7 +4465,7 @@ struct zx_ds_SPKIData_s* zx_xenc_RecipientKeyInfo_GET_SPKIData(struct zx_xenc_Re
 {
   struct zx_ds_SPKIData_s* y;
   if (!x) return 0;
-  for (y = x->SPKIData; n>=0 && y; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+  for (y = x->SPKIData; n>=0 && y && y->gg.g.tok == zx_ds_SPKIData_ELEM; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4522,7 +4522,7 @@ void zx_xenc_RecipientKeyInfo_PUT_SPKIData(struct zx_xenc_RecipientKeyInfo_s* x,
     x->SPKIData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_SPKIData_ELEM; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4544,10 +4544,10 @@ void zx_xenc_RecipientKeyInfo_ADD_SPKIData(struct zx_xenc_RecipientKeyInfo_s* x,
   case -1:
     y = x->SPKIData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_SPKIData_ELEM; y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SPKIData; n > 1 && y; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (y = x->SPKIData; n > 1 && y && y->gg.g.tok == zx_ds_SPKIData_ELEM; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4567,10 +4567,10 @@ void zx_xenc_RecipientKeyInfo_DEL_SPKIData(struct zx_xenc_RecipientKeyInfo_s* x,
   case -1:
     y = (struct zx_ds_SPKIData_s*)x->SPKIData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_SPKIData_ELEM; y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SPKIData; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
+    for (y = x->SPKIData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_SPKIData_ELEM; --n, y = (struct zx_ds_SPKIData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4589,7 +4589,7 @@ int zx_xenc_RecipientKeyInfo_NUM_MgmtData(struct zx_xenc_RecipientKeyInfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->MgmtData; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->MgmtData; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -4599,7 +4599,7 @@ struct zx_elem_s* zx_xenc_RecipientKeyInfo_GET_MgmtData(struct zx_xenc_Recipient
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->MgmtData; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->MgmtData; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -4656,7 +4656,7 @@ void zx_xenc_RecipientKeyInfo_PUT_MgmtData(struct zx_xenc_RecipientKeyInfo_s* x,
     x->MgmtData = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -4678,10 +4678,10 @@ void zx_xenc_RecipientKeyInfo_ADD_MgmtData(struct zx_xenc_RecipientKeyInfo_s* x,
   case -1:
     y = x->MgmtData;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->MgmtData; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->MgmtData; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -4701,10 +4701,10 @@ void zx_xenc_RecipientKeyInfo_DEL_MgmtData(struct zx_xenc_RecipientKeyInfo_s* x,
   case -1:
     y = (struct zx_elem_s*)x->MgmtData;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->MgmtData; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->MgmtData; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -4723,7 +4723,7 @@ int zx_xenc_RecipientKeyInfo_NUM_EncryptedKey(struct zx_xenc_RecipientKeyInfo_s*
   struct zx_xenc_EncryptedKey_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptedKey; y; ++n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+  for (y = x->EncryptedKey; y && y->gg.g.tok == zx_xenc_EncryptedKey_ELEM; ++n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4733,7 +4733,7 @@ struct zx_xenc_EncryptedKey_s* zx_xenc_RecipientKeyInfo_GET_EncryptedKey(struct 
 {
   struct zx_xenc_EncryptedKey_s* y;
   if (!x) return 0;
-  for (y = x->EncryptedKey; n>=0 && y; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+  for (y = x->EncryptedKey; n>=0 && y && y->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4790,7 +4790,7 @@ void zx_xenc_RecipientKeyInfo_PUT_EncryptedKey(struct zx_xenc_RecipientKeyInfo_s
     x->EncryptedKey = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4812,10 +4812,10 @@ void zx_xenc_RecipientKeyInfo_ADD_EncryptedKey(struct zx_xenc_RecipientKeyInfo_s
   case -1:
     y = x->EncryptedKey;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedKey; n > 1 && y; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (y = x->EncryptedKey; n > 1 && y && y->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4835,10 +4835,10 @@ void zx_xenc_RecipientKeyInfo_DEL_EncryptedKey(struct zx_xenc_RecipientKeyInfo_s
   case -1:
     y = (struct zx_xenc_EncryptedKey_s*)x->EncryptedKey;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->EncryptedKey; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
+    for (y = x->EncryptedKey; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_EncryptedKey_ELEM; --n, y = (struct zx_xenc_EncryptedKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4866,7 +4866,7 @@ int zx_xenc_ReferenceList_NUM_DataReference(struct zx_xenc_ReferenceList_s* x)
   struct zx_xenc_DataReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->DataReference; y; ++n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
+  for (y = x->DataReference; y && y->gg.g.tok == zx_xenc_DataReference_ELEM; ++n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4876,7 +4876,7 @@ struct zx_xenc_DataReference_s* zx_xenc_ReferenceList_GET_DataReference(struct z
 {
   struct zx_xenc_DataReference_s* y;
   if (!x) return 0;
-  for (y = x->DataReference; n>=0 && y; --n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
+  for (y = x->DataReference; n>=0 && y && y->gg.g.tok == zx_xenc_DataReference_ELEM; --n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4933,7 +4933,7 @@ void zx_xenc_ReferenceList_PUT_DataReference(struct zx_xenc_ReferenceList_s* x, 
     x->DataReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_DataReference_ELEM; --n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4955,10 +4955,10 @@ void zx_xenc_ReferenceList_ADD_DataReference(struct zx_xenc_ReferenceList_s* x, 
   case -1:
     y = x->DataReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_DataReference_ELEM; y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DataReference; n > 1 && y; --n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
+    for (y = x->DataReference; n > 1 && y && y->gg.g.tok == zx_xenc_DataReference_ELEM; --n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4978,10 +4978,10 @@ void zx_xenc_ReferenceList_DEL_DataReference(struct zx_xenc_ReferenceList_s* x, 
   case -1:
     y = (struct zx_xenc_DataReference_s*)x->DataReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_DataReference_ELEM; y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DataReference; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
+    for (y = x->DataReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_DataReference_ELEM; --n, y = (struct zx_xenc_DataReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5000,7 +5000,7 @@ int zx_xenc_ReferenceList_NUM_KeyReference(struct zx_xenc_ReferenceList_s* x)
   struct zx_xenc_KeyReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyReference; y; ++n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
+  for (y = x->KeyReference; y && y->gg.g.tok == zx_xenc_KeyReference_ELEM; ++n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5010,7 +5010,7 @@ struct zx_xenc_KeyReference_s* zx_xenc_ReferenceList_GET_KeyReference(struct zx_
 {
   struct zx_xenc_KeyReference_s* y;
   if (!x) return 0;
-  for (y = x->KeyReference; n>=0 && y; --n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
+  for (y = x->KeyReference; n>=0 && y && y->gg.g.tok == zx_xenc_KeyReference_ELEM; --n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5067,7 +5067,7 @@ void zx_xenc_ReferenceList_PUT_KeyReference(struct zx_xenc_ReferenceList_s* x, i
     x->KeyReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_KeyReference_ELEM; --n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5089,10 +5089,10 @@ void zx_xenc_ReferenceList_ADD_KeyReference(struct zx_xenc_ReferenceList_s* x, i
   case -1:
     y = x->KeyReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_KeyReference_ELEM; y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyReference; n > 1 && y; --n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
+    for (y = x->KeyReference; n > 1 && y && y->gg.g.tok == zx_xenc_KeyReference_ELEM; --n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5112,10 +5112,10 @@ void zx_xenc_ReferenceList_DEL_KeyReference(struct zx_xenc_ReferenceList_s* x, i
   case -1:
     y = (struct zx_xenc_KeyReference_s*)x->KeyReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_KeyReference_ELEM; y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->KeyReference; n > 1 && y->gg.g.n; --n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
+    for (y = x->KeyReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_xenc_KeyReference_ELEM; --n, y = (struct zx_xenc_KeyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5139,7 +5139,7 @@ int zx_xenc_Transforms_NUM_Transform(struct zx_xenc_Transforms_s* x)
   struct zx_ds_Transform_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Transform; y; ++n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
+  for (y = x->Transform; y && y->gg.g.tok == zx_ds_Transform_ELEM; ++n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5149,7 +5149,7 @@ struct zx_ds_Transform_s* zx_xenc_Transforms_GET_Transform(struct zx_xenc_Transf
 {
   struct zx_ds_Transform_s* y;
   if (!x) return 0;
-  for (y = x->Transform; n>=0 && y; --n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
+  for (y = x->Transform; n>=0 && y && y->gg.g.tok == zx_ds_Transform_ELEM; --n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5206,7 +5206,7 @@ void zx_xenc_Transforms_PUT_Transform(struct zx_xenc_Transforms_s* x, int n, str
     x->Transform = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_Transform_ELEM; --n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5228,10 +5228,10 @@ void zx_xenc_Transforms_ADD_Transform(struct zx_xenc_Transforms_s* x, int n, str
   case -1:
     y = x->Transform;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_Transform_ELEM; y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Transform; n > 1 && y; --n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
+    for (y = x->Transform; n > 1 && y && y->gg.g.tok == zx_ds_Transform_ELEM; --n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5251,10 +5251,10 @@ void zx_xenc_Transforms_DEL_Transform(struct zx_xenc_Transforms_s* x, int n)
   case -1:
     y = (struct zx_ds_Transform_s*)x->Transform;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_Transform_ELEM; y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Transform; n > 1 && y->gg.g.n; --n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
+    for (y = x->Transform; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_ds_Transform_ELEM; --n, y = (struct zx_ds_Transform_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

@@ -40,7 +40,7 @@ int zx_idp_AssertionItem_NUM_MEDInfo(struct zx_idp_AssertionItem_s* x)
   struct zx_idp_MEDInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->MEDInfo; y; ++n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
+  for (y = x->MEDInfo; y && y->gg.g.tok == zx_idp_MEDInfo_ELEM; ++n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_idp_MEDInfo_s* zx_idp_AssertionItem_GET_MEDInfo(struct zx_idp_Assertio
 {
   struct zx_idp_MEDInfo_s* y;
   if (!x) return 0;
-  for (y = x->MEDInfo; n>=0 && y; --n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
+  for (y = x->MEDInfo; n>=0 && y && y->gg.g.tok == zx_idp_MEDInfo_ELEM; --n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_idp_AssertionItem_PUT_MEDInfo(struct zx_idp_AssertionItem_s* x, int n, s
     x->MEDInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_MEDInfo_ELEM; --n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -129,10 +129,10 @@ void zx_idp_AssertionItem_ADD_MEDInfo(struct zx_idp_AssertionItem_s* x, int n, s
   case -1:
     y = x->MEDInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_MEDInfo_ELEM; y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MEDInfo; n > 1 && y; --n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
+    for (y = x->MEDInfo; n > 1 && y && y->gg.g.tok == zx_idp_MEDInfo_ELEM; --n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -152,10 +152,10 @@ void zx_idp_AssertionItem_DEL_MEDInfo(struct zx_idp_AssertionItem_s* x, int n)
   case -1:
     y = (struct zx_idp_MEDInfo_s*)x->MEDInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_MEDInfo_ELEM; y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->MEDInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
+    for (y = x->MEDInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_MEDInfo_ELEM; --n, y = (struct zx_idp_MEDInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -174,7 +174,7 @@ int zx_idp_AssertionItem_NUM_Assertion(struct zx_idp_AssertionItem_s* x)
   struct zx_sa_Assertion_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Assertion; y; ++n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+  for (y = x->Assertion; y && y->gg.g.tok == zx_sa_Assertion_ELEM; ++n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -184,7 +184,7 @@ struct zx_sa_Assertion_s* zx_idp_AssertionItem_GET_Assertion(struct zx_idp_Asser
 {
   struct zx_sa_Assertion_s* y;
   if (!x) return 0;
-  for (y = x->Assertion; n>=0 && y; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+  for (y = x->Assertion; n>=0 && y && y->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -241,7 +241,7 @@ void zx_idp_AssertionItem_PUT_Assertion(struct zx_idp_AssertionItem_s* x, int n,
     x->Assertion = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -263,10 +263,10 @@ void zx_idp_AssertionItem_ADD_Assertion(struct zx_idp_AssertionItem_s* x, int n,
   case -1:
     y = x->Assertion;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Assertion; n > 1 && y; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (y = x->Assertion; n > 1 && y && y->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -286,10 +286,10 @@ void zx_idp_AssertionItem_DEL_Assertion(struct zx_idp_AssertionItem_s* x, int n)
   case -1:
     y = (struct zx_sa_Assertion_s*)x->Assertion;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Assertion; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
+    for (y = x->Assertion; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Assertion_ELEM; --n, y = (struct zx_sa_Assertion_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -321,7 +321,7 @@ int zx_idp_AuthnContextRestriction_NUM_AuthnContext(struct zx_idp_AuthnContextRe
   struct zx_sa_AuthnContext_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AuthnContext; y; ++n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
+  for (y = x->AuthnContext; y && y->gg.g.tok == zx_sa_AuthnContext_ELEM; ++n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -331,7 +331,7 @@ struct zx_sa_AuthnContext_s* zx_idp_AuthnContextRestriction_GET_AuthnContext(str
 {
   struct zx_sa_AuthnContext_s* y;
   if (!x) return 0;
-  for (y = x->AuthnContext; n>=0 && y; --n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
+  for (y = x->AuthnContext; n>=0 && y && y->gg.g.tok == zx_sa_AuthnContext_ELEM; --n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -388,7 +388,7 @@ void zx_idp_AuthnContextRestriction_PUT_AuthnContext(struct zx_idp_AuthnContextR
     x->AuthnContext = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_AuthnContext_ELEM; --n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -410,10 +410,10 @@ void zx_idp_AuthnContextRestriction_ADD_AuthnContext(struct zx_idp_AuthnContextR
   case -1:
     y = x->AuthnContext;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_AuthnContext_ELEM; y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthnContext; n > 1 && y; --n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
+    for (y = x->AuthnContext; n > 1 && y && y->gg.g.tok == zx_sa_AuthnContext_ELEM; --n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -433,10 +433,10 @@ void zx_idp_AuthnContextRestriction_DEL_AuthnContext(struct zx_idp_AuthnContextR
   case -1:
     y = (struct zx_sa_AuthnContext_s*)x->AuthnContext;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_AuthnContext_ELEM; y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthnContext; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
+    for (y = x->AuthnContext; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_AuthnContext_ELEM; --n, y = (struct zx_sa_AuthnContext_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -460,7 +460,7 @@ int zx_idp_CreatedStatus_NUM_CreatedStatusItem(struct zx_idp_CreatedStatus_s* x)
   struct zx_idp_CreatedStatusItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CreatedStatusItem; y; ++n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
+  for (y = x->CreatedStatusItem; y && y->gg.g.tok == zx_idp_CreatedStatusItem_ELEM; ++n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -470,7 +470,7 @@ struct zx_idp_CreatedStatusItem_s* zx_idp_CreatedStatus_GET_CreatedStatusItem(st
 {
   struct zx_idp_CreatedStatusItem_s* y;
   if (!x) return 0;
-  for (y = x->CreatedStatusItem; n>=0 && y; --n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
+  for (y = x->CreatedStatusItem; n>=0 && y && y->gg.g.tok == zx_idp_CreatedStatusItem_ELEM; --n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -527,7 +527,7 @@ void zx_idp_CreatedStatus_PUT_CreatedStatusItem(struct zx_idp_CreatedStatus_s* x
     x->CreatedStatusItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_CreatedStatusItem_ELEM; --n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -549,10 +549,10 @@ void zx_idp_CreatedStatus_ADD_CreatedStatusItem(struct zx_idp_CreatedStatus_s* x
   case -1:
     y = x->CreatedStatusItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_CreatedStatusItem_ELEM; y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CreatedStatusItem; n > 1 && y; --n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
+    for (y = x->CreatedStatusItem; n > 1 && y && y->gg.g.tok == zx_idp_CreatedStatusItem_ELEM; --n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -572,10 +572,10 @@ void zx_idp_CreatedStatus_DEL_CreatedStatusItem(struct zx_idp_CreatedStatus_s* x
   case -1:
     y = (struct zx_idp_CreatedStatusItem_s*)x->CreatedStatusItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_CreatedStatusItem_ELEM; y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CreatedStatusItem; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
+    for (y = x->CreatedStatusItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_CreatedStatusItem_ELEM; --n, y = (struct zx_idp_CreatedStatusItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -616,7 +616,7 @@ int zx_idp_CreatedStatusResponse_NUM_Status(struct zx_idp_CreatedStatusResponse_
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -626,7 +626,7 @@ struct zx_lu_Status_s* zx_idp_CreatedStatusResponse_GET_Status(struct zx_idp_Cre
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -683,7 +683,7 @@ void zx_idp_CreatedStatusResponse_PUT_Status(struct zx_idp_CreatedStatusResponse
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -705,10 +705,10 @@ void zx_idp_CreatedStatusResponse_ADD_Status(struct zx_idp_CreatedStatusResponse
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -728,10 +728,10 @@ void zx_idp_CreatedStatusResponse_DEL_Status(struct zx_idp_CreatedStatusResponse
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -755,7 +755,7 @@ int zx_idp_GetAssertion_NUM_AuthnRequest(struct zx_idp_GetAssertion_s* x)
   struct zx_sp_AuthnRequest_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AuthnRequest; y; ++n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
+  for (y = x->AuthnRequest; y && y->gg.g.tok == zx_sp_AuthnRequest_ELEM; ++n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -765,7 +765,7 @@ struct zx_sp_AuthnRequest_s* zx_idp_GetAssertion_GET_AuthnRequest(struct zx_idp_
 {
   struct zx_sp_AuthnRequest_s* y;
   if (!x) return 0;
-  for (y = x->AuthnRequest; n>=0 && y; --n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
+  for (y = x->AuthnRequest; n>=0 && y && y->gg.g.tok == zx_sp_AuthnRequest_ELEM; --n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -822,7 +822,7 @@ void zx_idp_GetAssertion_PUT_AuthnRequest(struct zx_idp_GetAssertion_s* x, int n
     x->AuthnRequest = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sp_AuthnRequest_ELEM; --n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -844,10 +844,10 @@ void zx_idp_GetAssertion_ADD_AuthnRequest(struct zx_idp_GetAssertion_s* x, int n
   case -1:
     y = x->AuthnRequest;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sp_AuthnRequest_ELEM; y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthnRequest; n > 1 && y; --n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
+    for (y = x->AuthnRequest; n > 1 && y && y->gg.g.tok == zx_sp_AuthnRequest_ELEM; --n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -867,10 +867,10 @@ void zx_idp_GetAssertion_DEL_AuthnRequest(struct zx_idp_GetAssertion_s* x, int n
   case -1:
     y = (struct zx_sp_AuthnRequest_s*)x->AuthnRequest;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sp_AuthnRequest_ELEM; y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AuthnRequest; n > 1 && y->gg.g.n; --n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
+    for (y = x->AuthnRequest; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sp_AuthnRequest_ELEM; --n, y = (struct zx_sp_AuthnRequest_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -898,7 +898,7 @@ int zx_idp_GetAssertionResponse_NUM_Status(struct zx_idp_GetAssertionResponse_s*
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -908,7 +908,7 @@ struct zx_lu_Status_s* zx_idp_GetAssertionResponse_GET_Status(struct zx_idp_GetA
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -965,7 +965,7 @@ void zx_idp_GetAssertionResponse_PUT_Status(struct zx_idp_GetAssertionResponse_s
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -987,10 +987,10 @@ void zx_idp_GetAssertionResponse_ADD_Status(struct zx_idp_GetAssertionResponse_s
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1010,10 +1010,10 @@ void zx_idp_GetAssertionResponse_DEL_Status(struct zx_idp_GetAssertionResponse_s
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1032,7 +1032,7 @@ int zx_idp_GetAssertionResponse_NUM_GetAssertionResponseItem(struct zx_idp_GetAs
   struct zx_idp_GetAssertionResponseItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->GetAssertionResponseItem; y; ++n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
+  for (y = x->GetAssertionResponseItem; y && y->gg.g.tok == zx_idp_GetAssertionResponseItem_ELEM; ++n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1042,7 +1042,7 @@ struct zx_idp_GetAssertionResponseItem_s* zx_idp_GetAssertionResponse_GET_GetAss
 {
   struct zx_idp_GetAssertionResponseItem_s* y;
   if (!x) return 0;
-  for (y = x->GetAssertionResponseItem; n>=0 && y; --n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
+  for (y = x->GetAssertionResponseItem; n>=0 && y && y->gg.g.tok == zx_idp_GetAssertionResponseItem_ELEM; --n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1099,7 +1099,7 @@ void zx_idp_GetAssertionResponse_PUT_GetAssertionResponseItem(struct zx_idp_GetA
     x->GetAssertionResponseItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_GetAssertionResponseItem_ELEM; --n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1121,10 +1121,10 @@ void zx_idp_GetAssertionResponse_ADD_GetAssertionResponseItem(struct zx_idp_GetA
   case -1:
     y = x->GetAssertionResponseItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_GetAssertionResponseItem_ELEM; y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->GetAssertionResponseItem; n > 1 && y; --n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
+    for (y = x->GetAssertionResponseItem; n > 1 && y && y->gg.g.tok == zx_idp_GetAssertionResponseItem_ELEM; --n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1144,10 +1144,10 @@ void zx_idp_GetAssertionResponse_DEL_GetAssertionResponseItem(struct zx_idp_GetA
   case -1:
     y = (struct zx_idp_GetAssertionResponseItem_s*)x->GetAssertionResponseItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_GetAssertionResponseItem_ELEM; y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->GetAssertionResponseItem; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
+    for (y = x->GetAssertionResponseItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_GetAssertionResponseItem_ELEM; --n, y = (struct zx_idp_GetAssertionResponseItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1171,7 +1171,7 @@ int zx_idp_GetAssertionResponseItem_NUM_AssertionItem(struct zx_idp_GetAssertion
   struct zx_idp_AssertionItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AssertionItem; y; ++n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
+  for (y = x->AssertionItem; y && y->gg.g.tok == zx_idp_AssertionItem_ELEM; ++n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1181,7 +1181,7 @@ struct zx_idp_AssertionItem_s* zx_idp_GetAssertionResponseItem_GET_AssertionItem
 {
   struct zx_idp_AssertionItem_s* y;
   if (!x) return 0;
-  for (y = x->AssertionItem; n>=0 && y; --n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
+  for (y = x->AssertionItem; n>=0 && y && y->gg.g.tok == zx_idp_AssertionItem_ELEM; --n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1238,7 +1238,7 @@ void zx_idp_GetAssertionResponseItem_PUT_AssertionItem(struct zx_idp_GetAssertio
     x->AssertionItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_AssertionItem_ELEM; --n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1260,10 +1260,10 @@ void zx_idp_GetAssertionResponseItem_ADD_AssertionItem(struct zx_idp_GetAssertio
   case -1:
     y = x->AssertionItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_AssertionItem_ELEM; y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AssertionItem; n > 1 && y; --n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
+    for (y = x->AssertionItem; n > 1 && y && y->gg.g.tok == zx_idp_AssertionItem_ELEM; --n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1283,10 +1283,10 @@ void zx_idp_GetAssertionResponseItem_DEL_AssertionItem(struct zx_idp_GetAssertio
   case -1:
     y = (struct zx_idp_AssertionItem_s*)x->AssertionItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_AssertionItem_ELEM; y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AssertionItem; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
+    for (y = x->AssertionItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_AssertionItem_ELEM; --n, y = (struct zx_idp_AssertionItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1318,7 +1318,7 @@ int zx_idp_GetProviderInfo_NUM_ProviderID(struct zx_idp_GetProviderInfo_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ProviderID; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ProviderID; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1328,7 +1328,7 @@ struct zx_elem_s* zx_idp_GetProviderInfo_GET_ProviderID(struct zx_idp_GetProvide
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->ProviderID; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ProviderID; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1385,7 +1385,7 @@ void zx_idp_GetProviderInfo_PUT_ProviderID(struct zx_idp_GetProviderInfo_s* x, i
     x->ProviderID = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1407,10 +1407,10 @@ void zx_idp_GetProviderInfo_ADD_ProviderID(struct zx_idp_GetProviderInfo_s* x, i
   case -1:
     y = x->ProviderID;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ProviderID; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ProviderID; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1430,10 +1430,10 @@ void zx_idp_GetProviderInfo_DEL_ProviderID(struct zx_idp_GetProviderInfo_s* x, i
   case -1:
     y = (struct zx_elem_s*)x->ProviderID;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ProviderID; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ProviderID; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1461,7 +1461,7 @@ int zx_idp_GetProviderInfoResponse_NUM_Status(struct zx_idp_GetProviderInfoRespo
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1471,7 +1471,7 @@ struct zx_lu_Status_s* zx_idp_GetProviderInfoResponse_GET_Status(struct zx_idp_G
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1528,7 +1528,7 @@ void zx_idp_GetProviderInfoResponse_PUT_Status(struct zx_idp_GetProviderInfoResp
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1550,10 +1550,10 @@ void zx_idp_GetProviderInfoResponse_ADD_Status(struct zx_idp_GetProviderInfoResp
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1573,10 +1573,10 @@ void zx_idp_GetProviderInfoResponse_DEL_Status(struct zx_idp_GetProviderInfoResp
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1595,7 +1595,7 @@ int zx_idp_GetProviderInfoResponse_NUM_ProviderInfo(struct zx_idp_GetProviderInf
   struct zx_idp_ProviderInfo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ProviderInfo; y; ++n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
+  for (y = x->ProviderInfo; y && y->gg.g.tok == zx_idp_ProviderInfo_ELEM; ++n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1605,7 +1605,7 @@ struct zx_idp_ProviderInfo_s* zx_idp_GetProviderInfoResponse_GET_ProviderInfo(st
 {
   struct zx_idp_ProviderInfo_s* y;
   if (!x) return 0;
-  for (y = x->ProviderInfo; n>=0 && y; --n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
+  for (y = x->ProviderInfo; n>=0 && y && y->gg.g.tok == zx_idp_ProviderInfo_ELEM; --n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1662,7 +1662,7 @@ void zx_idp_GetProviderInfoResponse_PUT_ProviderInfo(struct zx_idp_GetProviderIn
     x->ProviderInfo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_ProviderInfo_ELEM; --n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1684,10 +1684,10 @@ void zx_idp_GetProviderInfoResponse_ADD_ProviderInfo(struct zx_idp_GetProviderIn
   case -1:
     y = x->ProviderInfo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_ProviderInfo_ELEM; y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ProviderInfo; n > 1 && y; --n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
+    for (y = x->ProviderInfo; n > 1 && y && y->gg.g.tok == zx_idp_ProviderInfo_ELEM; --n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1707,10 +1707,10 @@ void zx_idp_GetProviderInfoResponse_DEL_ProviderInfo(struct zx_idp_GetProviderIn
   case -1:
     y = (struct zx_idp_ProviderInfo_s*)x->ProviderInfo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_ProviderInfo_ELEM; y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ProviderInfo; n > 1 && y->gg.g.n; --n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
+    for (y = x->ProviderInfo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idp_ProviderInfo_ELEM; --n, y = (struct zx_idp_ProviderInfo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1734,7 +1734,7 @@ int zx_idp_MEDInfo_NUM_NameID(struct zx_idp_MEDInfo_s* x)
   struct zx_sa_NameID_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NameID; y; ++n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
+  for (y = x->NameID; y && y->gg.g.tok == zx_sa_NameID_ELEM; ++n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1744,7 +1744,7 @@ struct zx_sa_NameID_s* zx_idp_MEDInfo_GET_NameID(struct zx_idp_MEDInfo_s* x, int
 {
   struct zx_sa_NameID_s* y;
   if (!x) return 0;
-  for (y = x->NameID; n>=0 && y; --n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
+  for (y = x->NameID; n>=0 && y && y->gg.g.tok == zx_sa_NameID_ELEM; --n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1801,7 +1801,7 @@ void zx_idp_MEDInfo_PUT_NameID(struct zx_idp_MEDInfo_s* x, int n, struct zx_sa_N
     x->NameID = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_NameID_ELEM; --n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1823,10 +1823,10 @@ void zx_idp_MEDInfo_ADD_NameID(struct zx_idp_MEDInfo_s* x, int n, struct zx_sa_N
   case -1:
     y = x->NameID;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_NameID_ELEM; y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NameID; n > 1 && y; --n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
+    for (y = x->NameID; n > 1 && y && y->gg.g.tok == zx_sa_NameID_ELEM; --n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1846,10 +1846,10 @@ void zx_idp_MEDInfo_DEL_NameID(struct zx_idp_MEDInfo_s* x, int n)
   case -1:
     y = (struct zx_sa_NameID_s*)x->NameID;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_NameID_ELEM; y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NameID; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
+    for (y = x->NameID; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_NameID_ELEM; --n, y = (struct zx_sa_NameID_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1868,7 +1868,7 @@ int zx_idp_MEDInfo_NUM_AttributeStatement(struct zx_idp_MEDInfo_s* x)
   struct zx_sa_AttributeStatement_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AttributeStatement; y; ++n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
+  for (y = x->AttributeStatement; y && y->gg.g.tok == zx_sa_AttributeStatement_ELEM; ++n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1878,7 +1878,7 @@ struct zx_sa_AttributeStatement_s* zx_idp_MEDInfo_GET_AttributeStatement(struct 
 {
   struct zx_sa_AttributeStatement_s* y;
   if (!x) return 0;
-  for (y = x->AttributeStatement; n>=0 && y; --n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
+  for (y = x->AttributeStatement; n>=0 && y && y->gg.g.tok == zx_sa_AttributeStatement_ELEM; --n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1935,7 +1935,7 @@ void zx_idp_MEDInfo_PUT_AttributeStatement(struct zx_idp_MEDInfo_s* x, int n, st
     x->AttributeStatement = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_AttributeStatement_ELEM; --n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1957,10 +1957,10 @@ void zx_idp_MEDInfo_ADD_AttributeStatement(struct zx_idp_MEDInfo_s* x, int n, st
   case -1:
     y = x->AttributeStatement;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_AttributeStatement_ELEM; y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AttributeStatement; n > 1 && y; --n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
+    for (y = x->AttributeStatement; n > 1 && y && y->gg.g.tok == zx_sa_AttributeStatement_ELEM; --n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1980,10 +1980,10 @@ void zx_idp_MEDInfo_DEL_AttributeStatement(struct zx_idp_MEDInfo_s* x, int n)
   case -1:
     y = (struct zx_sa_AttributeStatement_s*)x->AttributeStatement;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_AttributeStatement_ELEM; y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AttributeStatement; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
+    for (y = x->AttributeStatement; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_AttributeStatement_ELEM; --n, y = (struct zx_sa_AttributeStatement_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2020,7 +2020,7 @@ int zx_idp_SubjectRestriction_NUM_Subject(struct zx_idp_SubjectRestriction_s* x)
   struct zx_sa_Subject_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subject; y; ++n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; y && y->gg.g.tok == zx_sa_Subject_ELEM; ++n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2030,7 +2030,7 @@ struct zx_sa_Subject_s* zx_idp_SubjectRestriction_GET_Subject(struct zx_idp_Subj
 {
   struct zx_sa_Subject_s* y;
   if (!x) return 0;
-  for (y = x->Subject; n>=0 && y; --n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
+  for (y = x->Subject; n>=0 && y && y->gg.g.tok == zx_sa_Subject_ELEM; --n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2087,7 +2087,7 @@ void zx_idp_SubjectRestriction_PUT_Subject(struct zx_idp_SubjectRestriction_s* x
     x->Subject = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Subject_ELEM; --n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2109,10 +2109,10 @@ void zx_idp_SubjectRestriction_ADD_Subject(struct zx_idp_SubjectRestriction_s* x
   case -1:
     y = x->Subject;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Subject_ELEM; y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y; --n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y && y->gg.g.tok == zx_sa_Subject_ELEM; --n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2132,10 +2132,10 @@ void zx_idp_SubjectRestriction_DEL_Subject(struct zx_idp_SubjectRestriction_s* x
   case -1:
     y = (struct zx_sa_Subject_s*)x->Subject;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Subject_ELEM; y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subject; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
+    for (y = x->Subject; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Subject_ELEM; --n, y = (struct zx_sa_Subject_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

@@ -25,7 +25,7 @@ int ELTYPE_NUM_FNAME(struct ELTYPE_s* x)
   struct FTYPE_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->FNAME; y; ++n, y = (struct FTYPE_s*)y->gg.g.n) ;
+  for (y = x->FNAME; y && y->gg.g.tok == FTYPE_ELEM; ++n, y = (struct FTYPE_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -35,7 +35,7 @@ struct FTYPE_s* ELTYPE_GET_FNAME(struct ELTYPE_s* x, int n)
 {
   struct FTYPE_s* y;
   if (!x) return 0;
-  for (y = x->FNAME; n>=0 && y; --n, y = (struct FTYPE_s*)y->gg.g.n) ;
+  for (y = x->FNAME; n>=0 && y && y->gg.g.tok == FTYPE_ELEM; --n, y = (struct FTYPE_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -92,7 +92,7 @@ void ELTYPE_PUT_FNAME(struct ELTYPE_s* x, int n, struct FTYPE_s* z)
     x->FNAME = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct FTYPE_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == FTYPE_ELEM; --n, y = (struct FTYPE_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -114,10 +114,10 @@ void ELTYPE_ADD_FNAME(struct ELTYPE_s* x, int n, struct FTYPE_s* z)
   case -1:
     y = x->FNAME;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct FTYPE_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == FTYPE_ELEM; y = (struct FTYPE_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->FNAME; n > 1 && y; --n, y = (struct FTYPE_s*)y->gg.g.n) ;
+    for (y = x->FNAME; n > 1 && y && y->gg.g.tok == FTYPE_ELEM; --n, y = (struct FTYPE_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -137,10 +137,10 @@ void ELTYPE_DEL_FNAME(struct ELTYPE_s* x, int n)
   case -1:
     y = (struct FTYPE_s*)x->FNAME;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct FTYPE_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == FTYPE_ELEM; y = (struct FTYPE_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->FNAME; n > 1 && y->gg.g.n; --n, y = (struct FTYPE_s*)y->gg.g.n) ;
+    for (y = x->FNAME; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == FTYPE_ELEM; --n, y = (struct FTYPE_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

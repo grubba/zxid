@@ -40,7 +40,7 @@ int zx_wsc_DerivedKeyToken_NUM_SecurityTokenReference(struct zx_wsc_DerivedKeyTo
   struct zx_wsse_SecurityTokenReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SecurityTokenReference; y; ++n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+  for (y = x->SecurityTokenReference; y && y->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; ++n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_wsse_SecurityTokenReference_s* zx_wsc_DerivedKeyToken_GET_SecurityToke
 {
   struct zx_wsse_SecurityTokenReference_s* y;
   if (!x) return 0;
-  for (y = x->SecurityTokenReference; n>=0 && y; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+  for (y = x->SecurityTokenReference; n>=0 && y && y->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_wsc_DerivedKeyToken_PUT_SecurityTokenReference(struct zx_wsc_DerivedKeyT
     x->SecurityTokenReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -129,10 +129,10 @@ void zx_wsc_DerivedKeyToken_ADD_SecurityTokenReference(struct zx_wsc_DerivedKeyT
   case -1:
     y = x->SecurityTokenReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SecurityTokenReference; n > 1 && y; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (y = x->SecurityTokenReference; n > 1 && y && y->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -152,10 +152,10 @@ void zx_wsc_DerivedKeyToken_DEL_SecurityTokenReference(struct zx_wsc_DerivedKeyT
   case -1:
     y = (struct zx_wsse_SecurityTokenReference_s*)x->SecurityTokenReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SecurityTokenReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (y = x->SecurityTokenReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -174,7 +174,7 @@ int zx_wsc_DerivedKeyToken_NUM_Properties(struct zx_wsc_DerivedKeyToken_s* x)
   struct zx_wsc_Properties_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Properties; y; ++n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
+  for (y = x->Properties; y && y->gg.g.tok == zx_wsc_Properties_ELEM; ++n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -184,7 +184,7 @@ struct zx_wsc_Properties_s* zx_wsc_DerivedKeyToken_GET_Properties(struct zx_wsc_
 {
   struct zx_wsc_Properties_s* y;
   if (!x) return 0;
-  for (y = x->Properties; n>=0 && y; --n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
+  for (y = x->Properties; n>=0 && y && y->gg.g.tok == zx_wsc_Properties_ELEM; --n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -241,7 +241,7 @@ void zx_wsc_DerivedKeyToken_PUT_Properties(struct zx_wsc_DerivedKeyToken_s* x, i
     x->Properties = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsc_Properties_ELEM; --n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -263,10 +263,10 @@ void zx_wsc_DerivedKeyToken_ADD_Properties(struct zx_wsc_DerivedKeyToken_s* x, i
   case -1:
     y = x->Properties;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsc_Properties_ELEM; y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Properties; n > 1 && y; --n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
+    for (y = x->Properties; n > 1 && y && y->gg.g.tok == zx_wsc_Properties_ELEM; --n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -286,10 +286,10 @@ void zx_wsc_DerivedKeyToken_DEL_Properties(struct zx_wsc_DerivedKeyToken_s* x, i
   case -1:
     y = (struct zx_wsc_Properties_s*)x->Properties;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsc_Properties_ELEM; y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Properties; n > 1 && y->gg.g.n; --n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
+    for (y = x->Properties; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsc_Properties_ELEM; --n, y = (struct zx_wsc_Properties_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -308,7 +308,7 @@ int zx_wsc_DerivedKeyToken_NUM_Generation(struct zx_wsc_DerivedKeyToken_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Generation; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Generation; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -318,7 +318,7 @@ struct zx_elem_s* zx_wsc_DerivedKeyToken_GET_Generation(struct zx_wsc_DerivedKey
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Generation; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Generation; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -375,7 +375,7 @@ void zx_wsc_DerivedKeyToken_PUT_Generation(struct zx_wsc_DerivedKeyToken_s* x, i
     x->Generation = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -397,10 +397,10 @@ void zx_wsc_DerivedKeyToken_ADD_Generation(struct zx_wsc_DerivedKeyToken_s* x, i
   case -1:
     y = x->Generation;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Generation; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Generation; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -420,10 +420,10 @@ void zx_wsc_DerivedKeyToken_DEL_Generation(struct zx_wsc_DerivedKeyToken_s* x, i
   case -1:
     y = (struct zx_elem_s*)x->Generation;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Generation; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Generation; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -442,7 +442,7 @@ int zx_wsc_DerivedKeyToken_NUM_Offset(struct zx_wsc_DerivedKeyToken_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Offset; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Offset; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -452,7 +452,7 @@ struct zx_elem_s* zx_wsc_DerivedKeyToken_GET_Offset(struct zx_wsc_DerivedKeyToke
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Offset; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Offset; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -509,7 +509,7 @@ void zx_wsc_DerivedKeyToken_PUT_Offset(struct zx_wsc_DerivedKeyToken_s* x, int n
     x->Offset = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -531,10 +531,10 @@ void zx_wsc_DerivedKeyToken_ADD_Offset(struct zx_wsc_DerivedKeyToken_s* x, int n
   case -1:
     y = x->Offset;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Offset; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Offset; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -554,10 +554,10 @@ void zx_wsc_DerivedKeyToken_DEL_Offset(struct zx_wsc_DerivedKeyToken_s* x, int n
   case -1:
     y = (struct zx_elem_s*)x->Offset;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Offset; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Offset; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -576,7 +576,7 @@ int zx_wsc_DerivedKeyToken_NUM_Length(struct zx_wsc_DerivedKeyToken_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Length; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Length; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -586,7 +586,7 @@ struct zx_elem_s* zx_wsc_DerivedKeyToken_GET_Length(struct zx_wsc_DerivedKeyToke
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Length; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Length; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -643,7 +643,7 @@ void zx_wsc_DerivedKeyToken_PUT_Length(struct zx_wsc_DerivedKeyToken_s* x, int n
     x->Length = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -665,10 +665,10 @@ void zx_wsc_DerivedKeyToken_ADD_Length(struct zx_wsc_DerivedKeyToken_s* x, int n
   case -1:
     y = x->Length;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Length; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Length; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -688,10 +688,10 @@ void zx_wsc_DerivedKeyToken_DEL_Length(struct zx_wsc_DerivedKeyToken_s* x, int n
   case -1:
     y = (struct zx_elem_s*)x->Length;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Length; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Length; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -710,7 +710,7 @@ int zx_wsc_DerivedKeyToken_NUM_Label(struct zx_wsc_DerivedKeyToken_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Label; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Label; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -720,7 +720,7 @@ struct zx_elem_s* zx_wsc_DerivedKeyToken_GET_Label(struct zx_wsc_DerivedKeyToken
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Label; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Label; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -777,7 +777,7 @@ void zx_wsc_DerivedKeyToken_PUT_Label(struct zx_wsc_DerivedKeyToken_s* x, int n,
     x->Label = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -799,10 +799,10 @@ void zx_wsc_DerivedKeyToken_ADD_Label(struct zx_wsc_DerivedKeyToken_s* x, int n,
   case -1:
     y = x->Label;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Label; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Label; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -822,10 +822,10 @@ void zx_wsc_DerivedKeyToken_DEL_Label(struct zx_wsc_DerivedKeyToken_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Label;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Label; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Label; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -844,7 +844,7 @@ int zx_wsc_DerivedKeyToken_NUM_Nonce(struct zx_wsc_DerivedKeyToken_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Nonce; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Nonce; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -854,7 +854,7 @@ struct zx_elem_s* zx_wsc_DerivedKeyToken_GET_Nonce(struct zx_wsc_DerivedKeyToken
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Nonce; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Nonce; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -911,7 +911,7 @@ void zx_wsc_DerivedKeyToken_PUT_Nonce(struct zx_wsc_DerivedKeyToken_s* x, int n,
     x->Nonce = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -933,10 +933,10 @@ void zx_wsc_DerivedKeyToken_ADD_Nonce(struct zx_wsc_DerivedKeyToken_s* x, int n,
   case -1:
     y = x->Nonce;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Nonce; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Nonce; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -956,10 +956,10 @@ void zx_wsc_DerivedKeyToken_DEL_Nonce(struct zx_wsc_DerivedKeyToken_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Nonce;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Nonce; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Nonce; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;

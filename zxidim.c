@@ -185,7 +185,9 @@ zxid_tok* zxid_map_identity_token(zxid_conf* cf, zxid_ses* ses, const char* at_e
       return 0;
   }
 
-  for (out = env->Body->IdentityMappingResponse->MappingOutput; out; out = (void*)ZX_NEXT(out)) {
+  for (out = env->Body->IdentityMappingResponse->MappingOutput;
+       out && out->gg.g.tok == zx_im_MappingOutput_ELEM;
+       out = (void*)ZX_NEXT(out)) {
     switch (how) {
     case 0:
       D("Invocation token set %p", out->Token);
@@ -230,7 +232,9 @@ struct zx_im_IdentityMappingResponse_s* zxid_imreq(zxid_conf* cf, zxid_a7n* a7n,
     return resp;
   }
   
-  for (mapinp = req->MappingInput; mapinp; mapinp = (struct zx_im_MappingInput_s*)mapinp->gg.g.n) {
+  for (mapinp = req->MappingInput;
+       mapinp && mapinp->gg.g.tok == zx_im_MappingInput_ELEM;
+       mapinp = (struct zx_im_MappingInput_s*)mapinp->gg.g.n) {
   
     if (tok = mapinp->Token) {
       if (tok->Assertion || tok->EncryptedAssertion) {

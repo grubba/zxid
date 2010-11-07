@@ -91,7 +91,9 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 
   /* Work through all requests */
 
-  for (rs = req->RequestedService; rs; rs = (struct zx_di_RequestedService_s*)ZX_NEXT(rs)) {
+  for (rs = req->RequestedService;
+       rs && rs->gg.g.tok == zx_di_RequestedService_ELEM;
+       rs = (struct zx_di_RequestedService_s*)ZX_NEXT(rs)) {
 
     /* Look for all entities providing service */
 
@@ -123,7 +125,9 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       
       /* Filter file name by service type */
       
-      for (el = rs->ServiceType; el; el = (struct zx_elem_s*)el->g.n) {
+      for (el = rs->ServiceType;
+	   el && el->g.tok == zx_di_ServiceType_ELEM;
+	   el = (struct zx_elem_s*)el->g.n) {
 	if (!el->content || !el->content->len)
 	  continue;
 	len = MIN(el->content->len, sizeof(path)-1);
@@ -167,7 +171,9 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       /* Filter by service type */
       
       match = 1;
-      for (el = rs->ServiceType; el; el = (struct zx_elem_s*)el->g.n) {
+      for (el = rs->ServiceType;
+	   el && el->g.tok == zx_di_ServiceType_ELEM;
+	   el = (struct zx_elem_s*)el->g.n) {
 	if (!el->content || !el->content->len)
 	  continue;
 	match = 0;
@@ -193,7 +199,9 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 
       /* Filter by provider id */
       
-      for (el = rs->ProviderID; el; el = (struct zx_elem_s*)el->g.n) {
+      for (el = rs->ProviderID;
+	   el && el->g.tok == zx_di_ProviderID_ELEM;
+	   el = (struct zx_elem_s*)el->g.n) {
 	if (!el->content || !el->content->len)
 	  continue;
 	match = 0;
@@ -213,7 +221,9 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 #if 1
       /* TAS3 extension: allow matching by the Address (URL) as well */
       if (!match) {
-	for (el = rs->ProviderID; el; el = (struct zx_elem_s*)el->g.n) {
+	for (el = rs->ProviderID;
+	     el && el->g.tok == zx_di_ProviderID_ELEM;
+	     el = (struct zx_elem_s*)el->g.n) {
 	  if (!el->content || !el->content->len)
 	    continue;
 	  match = 0;

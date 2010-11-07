@@ -40,7 +40,7 @@ int zx_idhrxml_Create_NUM_Extension(struct zx_idhrxml_Create_s* x)
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_lu_Extension_s* zx_idhrxml_Create_GET_Extension(struct zx_idhrxml_Crea
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_idhrxml_Create_PUT_Extension(struct zx_idhrxml_Create_s* x, int n, struc
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -129,10 +129,10 @@ void zx_idhrxml_Create_ADD_Extension(struct zx_idhrxml_Create_s* x, int n, struc
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -152,10 +152,10 @@ void zx_idhrxml_Create_DEL_Extension(struct zx_idhrxml_Create_s* x, int n)
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -174,7 +174,7 @@ int zx_idhrxml_Create_NUM_Subscription(struct zx_idhrxml_Create_s* x)
   struct zx_idhrxml_Subscription_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subscription; y; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -184,7 +184,7 @@ struct zx_idhrxml_Subscription_s* zx_idhrxml_Create_GET_Subscription(struct zx_i
 {
   struct zx_idhrxml_Subscription_s* y;
   if (!x) return 0;
-  for (y = x->Subscription; n>=0 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; n>=0 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -241,7 +241,7 @@ void zx_idhrxml_Create_PUT_Subscription(struct zx_idhrxml_Create_s* x, int n, st
     x->Subscription = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -263,10 +263,10 @@ void zx_idhrxml_Create_ADD_Subscription(struct zx_idhrxml_Create_s* x, int n, st
   case -1:
     y = x->Subscription;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -286,10 +286,10 @@ void zx_idhrxml_Create_DEL_Subscription(struct zx_idhrxml_Create_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_Subscription_s*)x->Subscription;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -308,7 +308,7 @@ int zx_idhrxml_Create_NUM_CreateItem(struct zx_idhrxml_Create_s* x)
   struct zx_idhrxml_CreateItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CreateItem; y; ++n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
+  for (y = x->CreateItem; y && y->gg.g.tok == zx_idhrxml_CreateItem_ELEM; ++n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -318,7 +318,7 @@ struct zx_idhrxml_CreateItem_s* zx_idhrxml_Create_GET_CreateItem(struct zx_idhrx
 {
   struct zx_idhrxml_CreateItem_s* y;
   if (!x) return 0;
-  for (y = x->CreateItem; n>=0 && y; --n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
+  for (y = x->CreateItem; n>=0 && y && y->gg.g.tok == zx_idhrxml_CreateItem_ELEM; --n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -375,7 +375,7 @@ void zx_idhrxml_Create_PUT_CreateItem(struct zx_idhrxml_Create_s* x, int n, stru
     x->CreateItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_CreateItem_ELEM; --n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -397,10 +397,10 @@ void zx_idhrxml_Create_ADD_CreateItem(struct zx_idhrxml_Create_s* x, int n, stru
   case -1:
     y = x->CreateItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_CreateItem_ELEM; y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CreateItem; n > 1 && y; --n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
+    for (y = x->CreateItem; n > 1 && y && y->gg.g.tok == zx_idhrxml_CreateItem_ELEM; --n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -420,10 +420,10 @@ void zx_idhrxml_Create_DEL_CreateItem(struct zx_idhrxml_Create_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_CreateItem_s*)x->CreateItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_CreateItem_ELEM; y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->CreateItem; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
+    for (y = x->CreateItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_CreateItem_ELEM; --n, y = (struct zx_idhrxml_CreateItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -442,7 +442,7 @@ int zx_idhrxml_Create_NUM_ResultQuery(struct zx_idhrxml_Create_s* x)
   struct zx_idhrxml_ResultQuery_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ResultQuery; y; ++n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+  for (y = x->ResultQuery; y && y->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; ++n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -452,7 +452,7 @@ struct zx_idhrxml_ResultQuery_s* zx_idhrxml_Create_GET_ResultQuery(struct zx_idh
 {
   struct zx_idhrxml_ResultQuery_s* y;
   if (!x) return 0;
-  for (y = x->ResultQuery; n>=0 && y; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+  for (y = x->ResultQuery; n>=0 && y && y->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -509,7 +509,7 @@ void zx_idhrxml_Create_PUT_ResultQuery(struct zx_idhrxml_Create_s* x, int n, str
     x->ResultQuery = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -531,10 +531,10 @@ void zx_idhrxml_Create_ADD_ResultQuery(struct zx_idhrxml_Create_s* x, int n, str
   case -1:
     y = x->ResultQuery;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResultQuery; n > 1 && y; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (y = x->ResultQuery; n > 1 && y && y->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -554,10 +554,10 @@ void zx_idhrxml_Create_DEL_ResultQuery(struct zx_idhrxml_Create_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_ResultQuery_s*)x->ResultQuery;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResultQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (y = x->ResultQuery; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -585,7 +585,7 @@ int zx_idhrxml_CreateItem_NUM_NewData(struct zx_idhrxml_CreateItem_s* x)
   struct zx_idhrxml_NewData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NewData; y; ++n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+  for (y = x->NewData; y && y->gg.g.tok == zx_idhrxml_NewData_ELEM; ++n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -595,7 +595,7 @@ struct zx_idhrxml_NewData_s* zx_idhrxml_CreateItem_GET_NewData(struct zx_idhrxml
 {
   struct zx_idhrxml_NewData_s* y;
   if (!x) return 0;
-  for (y = x->NewData; n>=0 && y; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+  for (y = x->NewData; n>=0 && y && y->gg.g.tok == zx_idhrxml_NewData_ELEM; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -652,7 +652,7 @@ void zx_idhrxml_CreateItem_PUT_NewData(struct zx_idhrxml_CreateItem_s* x, int n,
     x->NewData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_NewData_ELEM; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -674,10 +674,10 @@ void zx_idhrxml_CreateItem_ADD_NewData(struct zx_idhrxml_CreateItem_s* x, int n,
   case -1:
     y = x->NewData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_NewData_ELEM; y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NewData; n > 1 && y; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (y = x->NewData; n > 1 && y && y->gg.g.tok == zx_idhrxml_NewData_ELEM; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -697,10 +697,10 @@ void zx_idhrxml_CreateItem_DEL_NewData(struct zx_idhrxml_CreateItem_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_NewData_s*)x->NewData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_NewData_ELEM; y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NewData; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (y = x->NewData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_NewData_ELEM; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -736,7 +736,7 @@ int zx_idhrxml_CreateResponse_NUM_Status(struct zx_idhrxml_CreateResponse_s* x)
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -746,7 +746,7 @@ struct zx_lu_Status_s* zx_idhrxml_CreateResponse_GET_Status(struct zx_idhrxml_Cr
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -803,7 +803,7 @@ void zx_idhrxml_CreateResponse_PUT_Status(struct zx_idhrxml_CreateResponse_s* x,
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -825,10 +825,10 @@ void zx_idhrxml_CreateResponse_ADD_Status(struct zx_idhrxml_CreateResponse_s* x,
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -848,10 +848,10 @@ void zx_idhrxml_CreateResponse_DEL_Status(struct zx_idhrxml_CreateResponse_s* x,
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -870,7 +870,7 @@ int zx_idhrxml_CreateResponse_NUM_Extension(struct zx_idhrxml_CreateResponse_s* 
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -880,7 +880,7 @@ struct zx_lu_Extension_s* zx_idhrxml_CreateResponse_GET_Extension(struct zx_idhr
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -937,7 +937,7 @@ void zx_idhrxml_CreateResponse_PUT_Extension(struct zx_idhrxml_CreateResponse_s*
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -959,10 +959,10 @@ void zx_idhrxml_CreateResponse_ADD_Extension(struct zx_idhrxml_CreateResponse_s*
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -982,10 +982,10 @@ void zx_idhrxml_CreateResponse_DEL_Extension(struct zx_idhrxml_CreateResponse_s*
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1004,7 +1004,7 @@ int zx_idhrxml_CreateResponse_NUM_ItemData(struct zx_idhrxml_CreateResponse_s* x
   struct zx_idhrxml_ItemData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ItemData; y; ++n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; y && y->gg.g.tok == zx_idhrxml_ItemData_ELEM; ++n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1014,7 +1014,7 @@ struct zx_idhrxml_ItemData_s* zx_idhrxml_CreateResponse_GET_ItemData(struct zx_i
 {
   struct zx_idhrxml_ItemData_s* y;
   if (!x) return 0;
-  for (y = x->ItemData; n>=0 && y; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; n>=0 && y && y->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1071,7 +1071,7 @@ void zx_idhrxml_CreateResponse_PUT_ItemData(struct zx_idhrxml_CreateResponse_s* 
     x->ItemData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1093,10 +1093,10 @@ void zx_idhrxml_CreateResponse_ADD_ItemData(struct zx_idhrxml_CreateResponse_s* 
   case -1:
     y = x->ItemData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y && y->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1116,10 +1116,10 @@ void zx_idhrxml_CreateResponse_DEL_ItemData(struct zx_idhrxml_CreateResponse_s* 
   case -1:
     y = (struct zx_idhrxml_ItemData_s*)x->ItemData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1151,7 +1151,7 @@ int zx_idhrxml_Data_NUM_Candidate(struct zx_idhrxml_Data_s* x)
   struct zx_hrxml_Candidate_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Candidate; y; ++n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+  for (y = x->Candidate; y && y->gg.g.tok == zx_hrxml_Candidate_ELEM; ++n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1161,7 +1161,7 @@ struct zx_hrxml_Candidate_s* zx_idhrxml_Data_GET_Candidate(struct zx_idhrxml_Dat
 {
   struct zx_hrxml_Candidate_s* y;
   if (!x) return 0;
-  for (y = x->Candidate; n>=0 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+  for (y = x->Candidate; n>=0 && y && y->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1218,7 +1218,7 @@ void zx_idhrxml_Data_PUT_Candidate(struct zx_idhrxml_Data_s* x, int n, struct zx
     x->Candidate = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1240,10 +1240,10 @@ void zx_idhrxml_Data_ADD_Candidate(struct zx_idhrxml_Data_s* x, int n, struct zx
   case -1:
     y = x->Candidate;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Candidate; n > 1 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (y = x->Candidate; n > 1 && y && y->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1263,10 +1263,10 @@ void zx_idhrxml_Data_DEL_Candidate(struct zx_idhrxml_Data_s* x, int n)
   case -1:
     y = (struct zx_hrxml_Candidate_s*)x->Candidate;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Candidate; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (y = x->Candidate; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1285,7 +1285,7 @@ int zx_idhrxml_Data_NUM_Subscription(struct zx_idhrxml_Data_s* x)
   struct zx_idhrxml_Subscription_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subscription; y; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1295,7 +1295,7 @@ struct zx_idhrxml_Subscription_s* zx_idhrxml_Data_GET_Subscription(struct zx_idh
 {
   struct zx_idhrxml_Subscription_s* y;
   if (!x) return 0;
-  for (y = x->Subscription; n>=0 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; n>=0 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1352,7 +1352,7 @@ void zx_idhrxml_Data_PUT_Subscription(struct zx_idhrxml_Data_s* x, int n, struct
     x->Subscription = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1374,10 +1374,10 @@ void zx_idhrxml_Data_ADD_Subscription(struct zx_idhrxml_Data_s* x, int n, struct
   case -1:
     y = x->Subscription;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1397,10 +1397,10 @@ void zx_idhrxml_Data_DEL_Subscription(struct zx_idhrxml_Data_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_Subscription_s*)x->Subscription;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1448,7 +1448,7 @@ int zx_idhrxml_Delete_NUM_Extension(struct zx_idhrxml_Delete_s* x)
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1458,7 +1458,7 @@ struct zx_lu_Extension_s* zx_idhrxml_Delete_GET_Extension(struct zx_idhrxml_Dele
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1515,7 +1515,7 @@ void zx_idhrxml_Delete_PUT_Extension(struct zx_idhrxml_Delete_s* x, int n, struc
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1537,10 +1537,10 @@ void zx_idhrxml_Delete_ADD_Extension(struct zx_idhrxml_Delete_s* x, int n, struc
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1560,10 +1560,10 @@ void zx_idhrxml_Delete_DEL_Extension(struct zx_idhrxml_Delete_s* x, int n)
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1582,7 +1582,7 @@ int zx_idhrxml_Delete_NUM_DeleteItem(struct zx_idhrxml_Delete_s* x)
   struct zx_idhrxml_DeleteItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->DeleteItem; y; ++n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
+  for (y = x->DeleteItem; y && y->gg.g.tok == zx_idhrxml_DeleteItem_ELEM; ++n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1592,7 +1592,7 @@ struct zx_idhrxml_DeleteItem_s* zx_idhrxml_Delete_GET_DeleteItem(struct zx_idhrx
 {
   struct zx_idhrxml_DeleteItem_s* y;
   if (!x) return 0;
-  for (y = x->DeleteItem; n>=0 && y; --n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
+  for (y = x->DeleteItem; n>=0 && y && y->gg.g.tok == zx_idhrxml_DeleteItem_ELEM; --n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1649,7 +1649,7 @@ void zx_idhrxml_Delete_PUT_DeleteItem(struct zx_idhrxml_Delete_s* x, int n, stru
     x->DeleteItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_DeleteItem_ELEM; --n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1671,10 +1671,10 @@ void zx_idhrxml_Delete_ADD_DeleteItem(struct zx_idhrxml_Delete_s* x, int n, stru
   case -1:
     y = x->DeleteItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_DeleteItem_ELEM; y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DeleteItem; n > 1 && y; --n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
+    for (y = x->DeleteItem; n > 1 && y && y->gg.g.tok == zx_idhrxml_DeleteItem_ELEM; --n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1694,10 +1694,10 @@ void zx_idhrxml_Delete_DEL_DeleteItem(struct zx_idhrxml_Delete_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_DeleteItem_s*)x->DeleteItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_DeleteItem_ELEM; y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DeleteItem; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
+    for (y = x->DeleteItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_DeleteItem_ELEM; --n, y = (struct zx_idhrxml_DeleteItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1725,7 +1725,7 @@ int zx_idhrxml_DeleteItem_NUM_Select(struct zx_idhrxml_DeleteItem_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Select; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1735,7 +1735,7 @@ struct zx_elem_s* zx_idhrxml_DeleteItem_GET_Select(struct zx_idhrxml_DeleteItem_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Select; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1792,7 +1792,7 @@ void zx_idhrxml_DeleteItem_PUT_Select(struct zx_idhrxml_DeleteItem_s* x, int n, 
     x->Select = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1814,10 +1814,10 @@ void zx_idhrxml_DeleteItem_ADD_Select(struct zx_idhrxml_DeleteItem_s* x, int n, 
   case -1:
     y = x->Select;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1837,10 +1837,10 @@ void zx_idhrxml_DeleteItem_DEL_Select(struct zx_idhrxml_DeleteItem_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Select;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1884,7 +1884,7 @@ int zx_idhrxml_DeleteResponse_NUM_Status(struct zx_idhrxml_DeleteResponse_s* x)
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1894,7 +1894,7 @@ struct zx_lu_Status_s* zx_idhrxml_DeleteResponse_GET_Status(struct zx_idhrxml_De
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1951,7 +1951,7 @@ void zx_idhrxml_DeleteResponse_PUT_Status(struct zx_idhrxml_DeleteResponse_s* x,
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1973,10 +1973,10 @@ void zx_idhrxml_DeleteResponse_ADD_Status(struct zx_idhrxml_DeleteResponse_s* x,
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1996,10 +1996,10 @@ void zx_idhrxml_DeleteResponse_DEL_Status(struct zx_idhrxml_DeleteResponse_s* x,
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2018,7 +2018,7 @@ int zx_idhrxml_DeleteResponse_NUM_Extension(struct zx_idhrxml_DeleteResponse_s* 
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2028,7 +2028,7 @@ struct zx_lu_Extension_s* zx_idhrxml_DeleteResponse_GET_Extension(struct zx_idhr
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2085,7 +2085,7 @@ void zx_idhrxml_DeleteResponse_PUT_Extension(struct zx_idhrxml_DeleteResponse_s*
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2107,10 +2107,10 @@ void zx_idhrxml_DeleteResponse_ADD_Extension(struct zx_idhrxml_DeleteResponse_s*
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2130,10 +2130,10 @@ void zx_idhrxml_DeleteResponse_DEL_Extension(struct zx_idhrxml_DeleteResponse_s*
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2161,7 +2161,7 @@ int zx_idhrxml_ItemData_NUM_Candidate(struct zx_idhrxml_ItemData_s* x)
   struct zx_hrxml_Candidate_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Candidate; y; ++n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+  for (y = x->Candidate; y && y->gg.g.tok == zx_hrxml_Candidate_ELEM; ++n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2171,7 +2171,7 @@ struct zx_hrxml_Candidate_s* zx_idhrxml_ItemData_GET_Candidate(struct zx_idhrxml
 {
   struct zx_hrxml_Candidate_s* y;
   if (!x) return 0;
-  for (y = x->Candidate; n>=0 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+  for (y = x->Candidate; n>=0 && y && y->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2228,7 +2228,7 @@ void zx_idhrxml_ItemData_PUT_Candidate(struct zx_idhrxml_ItemData_s* x, int n, s
     x->Candidate = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2250,10 +2250,10 @@ void zx_idhrxml_ItemData_ADD_Candidate(struct zx_idhrxml_ItemData_s* x, int n, s
   case -1:
     y = x->Candidate;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Candidate; n > 1 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (y = x->Candidate; n > 1 && y && y->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2273,10 +2273,10 @@ void zx_idhrxml_ItemData_DEL_Candidate(struct zx_idhrxml_ItemData_s* x, int n)
   case -1:
     y = (struct zx_hrxml_Candidate_s*)x->Candidate;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Candidate; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (y = x->Candidate; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2295,7 +2295,7 @@ int zx_idhrxml_ItemData_NUM_Subscription(struct zx_idhrxml_ItemData_s* x)
   struct zx_idhrxml_Subscription_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subscription; y; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2305,7 +2305,7 @@ struct zx_idhrxml_Subscription_s* zx_idhrxml_ItemData_GET_Subscription(struct zx
 {
   struct zx_idhrxml_Subscription_s* y;
   if (!x) return 0;
-  for (y = x->Subscription; n>=0 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; n>=0 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2362,7 +2362,7 @@ void zx_idhrxml_ItemData_PUT_Subscription(struct zx_idhrxml_ItemData_s* x, int n
     x->Subscription = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2384,10 +2384,10 @@ void zx_idhrxml_ItemData_ADD_Subscription(struct zx_idhrxml_ItemData_s* x, int n
   case -1:
     y = x->Subscription;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2407,10 +2407,10 @@ void zx_idhrxml_ItemData_DEL_Subscription(struct zx_idhrxml_ItemData_s* x, int n
   case -1:
     y = (struct zx_idhrxml_Subscription_s*)x->Subscription;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2446,7 +2446,7 @@ int zx_idhrxml_Modify_NUM_Extension(struct zx_idhrxml_Modify_s* x)
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2456,7 +2456,7 @@ struct zx_lu_Extension_s* zx_idhrxml_Modify_GET_Extension(struct zx_idhrxml_Modi
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2513,7 +2513,7 @@ void zx_idhrxml_Modify_PUT_Extension(struct zx_idhrxml_Modify_s* x, int n, struc
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2535,10 +2535,10 @@ void zx_idhrxml_Modify_ADD_Extension(struct zx_idhrxml_Modify_s* x, int n, struc
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2558,10 +2558,10 @@ void zx_idhrxml_Modify_DEL_Extension(struct zx_idhrxml_Modify_s* x, int n)
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2580,7 +2580,7 @@ int zx_idhrxml_Modify_NUM_Subscription(struct zx_idhrxml_Modify_s* x)
   struct zx_idhrxml_Subscription_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subscription; y; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2590,7 +2590,7 @@ struct zx_idhrxml_Subscription_s* zx_idhrxml_Modify_GET_Subscription(struct zx_i
 {
   struct zx_idhrxml_Subscription_s* y;
   if (!x) return 0;
-  for (y = x->Subscription; n>=0 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; n>=0 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2647,7 +2647,7 @@ void zx_idhrxml_Modify_PUT_Subscription(struct zx_idhrxml_Modify_s* x, int n, st
     x->Subscription = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2669,10 +2669,10 @@ void zx_idhrxml_Modify_ADD_Subscription(struct zx_idhrxml_Modify_s* x, int n, st
   case -1:
     y = x->Subscription;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2692,10 +2692,10 @@ void zx_idhrxml_Modify_DEL_Subscription(struct zx_idhrxml_Modify_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_Subscription_s*)x->Subscription;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2714,7 +2714,7 @@ int zx_idhrxml_Modify_NUM_ModifyItem(struct zx_idhrxml_Modify_s* x)
   struct zx_idhrxml_ModifyItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ModifyItem; y; ++n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
+  for (y = x->ModifyItem; y && y->gg.g.tok == zx_idhrxml_ModifyItem_ELEM; ++n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2724,7 +2724,7 @@ struct zx_idhrxml_ModifyItem_s* zx_idhrxml_Modify_GET_ModifyItem(struct zx_idhrx
 {
   struct zx_idhrxml_ModifyItem_s* y;
   if (!x) return 0;
-  for (y = x->ModifyItem; n>=0 && y; --n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
+  for (y = x->ModifyItem; n>=0 && y && y->gg.g.tok == zx_idhrxml_ModifyItem_ELEM; --n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2781,7 +2781,7 @@ void zx_idhrxml_Modify_PUT_ModifyItem(struct zx_idhrxml_Modify_s* x, int n, stru
     x->ModifyItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ModifyItem_ELEM; --n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2803,10 +2803,10 @@ void zx_idhrxml_Modify_ADD_ModifyItem(struct zx_idhrxml_Modify_s* x, int n, stru
   case -1:
     y = x->ModifyItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ModifyItem_ELEM; y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ModifyItem; n > 1 && y; --n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
+    for (y = x->ModifyItem; n > 1 && y && y->gg.g.tok == zx_idhrxml_ModifyItem_ELEM; --n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2826,10 +2826,10 @@ void zx_idhrxml_Modify_DEL_ModifyItem(struct zx_idhrxml_Modify_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_ModifyItem_s*)x->ModifyItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ModifyItem_ELEM; y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ModifyItem; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
+    for (y = x->ModifyItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ModifyItem_ELEM; --n, y = (struct zx_idhrxml_ModifyItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2848,7 +2848,7 @@ int zx_idhrxml_Modify_NUM_ResultQuery(struct zx_idhrxml_Modify_s* x)
   struct zx_idhrxml_ResultQuery_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ResultQuery; y; ++n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+  for (y = x->ResultQuery; y && y->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; ++n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2858,7 +2858,7 @@ struct zx_idhrxml_ResultQuery_s* zx_idhrxml_Modify_GET_ResultQuery(struct zx_idh
 {
   struct zx_idhrxml_ResultQuery_s* y;
   if (!x) return 0;
-  for (y = x->ResultQuery; n>=0 && y; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+  for (y = x->ResultQuery; n>=0 && y && y->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2915,7 +2915,7 @@ void zx_idhrxml_Modify_PUT_ResultQuery(struct zx_idhrxml_Modify_s* x, int n, str
     x->ResultQuery = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2937,10 +2937,10 @@ void zx_idhrxml_Modify_ADD_ResultQuery(struct zx_idhrxml_Modify_s* x, int n, str
   case -1:
     y = x->ResultQuery;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResultQuery; n > 1 && y; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (y = x->ResultQuery; n > 1 && y && y->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2960,10 +2960,10 @@ void zx_idhrxml_Modify_DEL_ResultQuery(struct zx_idhrxml_Modify_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_ResultQuery_s*)x->ResultQuery;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResultQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (y = x->ResultQuery; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2991,7 +2991,7 @@ int zx_idhrxml_ModifyItem_NUM_Select(struct zx_idhrxml_ModifyItem_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Select; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3001,7 +3001,7 @@ struct zx_elem_s* zx_idhrxml_ModifyItem_GET_Select(struct zx_idhrxml_ModifyItem_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Select; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3058,7 +3058,7 @@ void zx_idhrxml_ModifyItem_PUT_Select(struct zx_idhrxml_ModifyItem_s* x, int n, 
     x->Select = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3080,10 +3080,10 @@ void zx_idhrxml_ModifyItem_ADD_Select(struct zx_idhrxml_ModifyItem_s* x, int n, 
   case -1:
     y = x->Select;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3103,10 +3103,10 @@ void zx_idhrxml_ModifyItem_DEL_Select(struct zx_idhrxml_ModifyItem_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Select;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3125,7 +3125,7 @@ int zx_idhrxml_ModifyItem_NUM_NewData(struct zx_idhrxml_ModifyItem_s* x)
   struct zx_idhrxml_NewData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->NewData; y; ++n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+  for (y = x->NewData; y && y->gg.g.tok == zx_idhrxml_NewData_ELEM; ++n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3135,7 +3135,7 @@ struct zx_idhrxml_NewData_s* zx_idhrxml_ModifyItem_GET_NewData(struct zx_idhrxml
 {
   struct zx_idhrxml_NewData_s* y;
   if (!x) return 0;
-  for (y = x->NewData; n>=0 && y; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+  for (y = x->NewData; n>=0 && y && y->gg.g.tok == zx_idhrxml_NewData_ELEM; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3192,7 +3192,7 @@ void zx_idhrxml_ModifyItem_PUT_NewData(struct zx_idhrxml_ModifyItem_s* x, int n,
     x->NewData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_NewData_ELEM; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3214,10 +3214,10 @@ void zx_idhrxml_ModifyItem_ADD_NewData(struct zx_idhrxml_ModifyItem_s* x, int n,
   case -1:
     y = x->NewData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_NewData_ELEM; y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NewData; n > 1 && y; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (y = x->NewData; n > 1 && y && y->gg.g.tok == zx_idhrxml_NewData_ELEM; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3237,10 +3237,10 @@ void zx_idhrxml_ModifyItem_DEL_NewData(struct zx_idhrxml_ModifyItem_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_NewData_s*)x->NewData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_NewData_ELEM; y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->NewData; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
+    for (y = x->NewData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_NewData_ELEM; --n, y = (struct zx_idhrxml_NewData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3288,7 +3288,7 @@ int zx_idhrxml_ModifyResponse_NUM_Status(struct zx_idhrxml_ModifyResponse_s* x)
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3298,7 +3298,7 @@ struct zx_lu_Status_s* zx_idhrxml_ModifyResponse_GET_Status(struct zx_idhrxml_Mo
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3355,7 +3355,7 @@ void zx_idhrxml_ModifyResponse_PUT_Status(struct zx_idhrxml_ModifyResponse_s* x,
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3377,10 +3377,10 @@ void zx_idhrxml_ModifyResponse_ADD_Status(struct zx_idhrxml_ModifyResponse_s* x,
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3400,10 +3400,10 @@ void zx_idhrxml_ModifyResponse_DEL_Status(struct zx_idhrxml_ModifyResponse_s* x,
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3422,7 +3422,7 @@ int zx_idhrxml_ModifyResponse_NUM_Extension(struct zx_idhrxml_ModifyResponse_s* 
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3432,7 +3432,7 @@ struct zx_lu_Extension_s* zx_idhrxml_ModifyResponse_GET_Extension(struct zx_idhr
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3489,7 +3489,7 @@ void zx_idhrxml_ModifyResponse_PUT_Extension(struct zx_idhrxml_ModifyResponse_s*
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3511,10 +3511,10 @@ void zx_idhrxml_ModifyResponse_ADD_Extension(struct zx_idhrxml_ModifyResponse_s*
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3534,10 +3534,10 @@ void zx_idhrxml_ModifyResponse_DEL_Extension(struct zx_idhrxml_ModifyResponse_s*
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3556,7 +3556,7 @@ int zx_idhrxml_ModifyResponse_NUM_ItemData(struct zx_idhrxml_ModifyResponse_s* x
   struct zx_idhrxml_ItemData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ItemData; y; ++n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; y && y->gg.g.tok == zx_idhrxml_ItemData_ELEM; ++n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3566,7 +3566,7 @@ struct zx_idhrxml_ItemData_s* zx_idhrxml_ModifyResponse_GET_ItemData(struct zx_i
 {
   struct zx_idhrxml_ItemData_s* y;
   if (!x) return 0;
-  for (y = x->ItemData; n>=0 && y; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; n>=0 && y && y->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3623,7 +3623,7 @@ void zx_idhrxml_ModifyResponse_PUT_ItemData(struct zx_idhrxml_ModifyResponse_s* 
     x->ItemData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3645,10 +3645,10 @@ void zx_idhrxml_ModifyResponse_ADD_ItemData(struct zx_idhrxml_ModifyResponse_s* 
   case -1:
     y = x->ItemData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y && y->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3668,10 +3668,10 @@ void zx_idhrxml_ModifyResponse_DEL_ItemData(struct zx_idhrxml_ModifyResponse_s* 
   case -1:
     y = (struct zx_idhrxml_ItemData_s*)x->ItemData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3703,7 +3703,7 @@ int zx_idhrxml_NewData_NUM_Candidate(struct zx_idhrxml_NewData_s* x)
   struct zx_hrxml_Candidate_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Candidate; y; ++n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+  for (y = x->Candidate; y && y->gg.g.tok == zx_hrxml_Candidate_ELEM; ++n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3713,7 +3713,7 @@ struct zx_hrxml_Candidate_s* zx_idhrxml_NewData_GET_Candidate(struct zx_idhrxml_
 {
   struct zx_hrxml_Candidate_s* y;
   if (!x) return 0;
-  for (y = x->Candidate; n>=0 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+  for (y = x->Candidate; n>=0 && y && y->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3770,7 +3770,7 @@ void zx_idhrxml_NewData_PUT_Candidate(struct zx_idhrxml_NewData_s* x, int n, str
     x->Candidate = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3792,10 +3792,10 @@ void zx_idhrxml_NewData_ADD_Candidate(struct zx_idhrxml_NewData_s* x, int n, str
   case -1:
     y = x->Candidate;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Candidate; n > 1 && y; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (y = x->Candidate; n > 1 && y && y->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3815,10 +3815,10 @@ void zx_idhrxml_NewData_DEL_Candidate(struct zx_idhrxml_NewData_s* x, int n)
   case -1:
     y = (struct zx_hrxml_Candidate_s*)x->Candidate;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Candidate; n > 1 && y->gg.g.n; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
+    for (y = x->Candidate; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_hrxml_Candidate_ELEM; --n, y = (struct zx_hrxml_Candidate_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3837,7 +3837,7 @@ int zx_idhrxml_NewData_NUM_Subscription(struct zx_idhrxml_NewData_s* x)
   struct zx_idhrxml_Subscription_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subscription; y; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3847,7 +3847,7 @@ struct zx_idhrxml_Subscription_s* zx_idhrxml_NewData_GET_Subscription(struct zx_
 {
   struct zx_idhrxml_Subscription_s* y;
   if (!x) return 0;
-  for (y = x->Subscription; n>=0 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; n>=0 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3904,7 +3904,7 @@ void zx_idhrxml_NewData_PUT_Subscription(struct zx_idhrxml_NewData_s* x, int n, 
     x->Subscription = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3926,10 +3926,10 @@ void zx_idhrxml_NewData_ADD_Subscription(struct zx_idhrxml_NewData_s* x, int n, 
   case -1:
     y = x->Subscription;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3949,10 +3949,10 @@ void zx_idhrxml_NewData_DEL_Subscription(struct zx_idhrxml_NewData_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_Subscription_s*)x->Subscription;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3976,7 +3976,7 @@ int zx_idhrxml_Notification_NUM_TestResult(struct zx_idhrxml_Notification_s* x)
   struct zx_lu_TestResult_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->TestResult; y; ++n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
+  for (y = x->TestResult; y && y->gg.g.tok == zx_lu_TestResult_ELEM; ++n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3986,7 +3986,7 @@ struct zx_lu_TestResult_s* zx_idhrxml_Notification_GET_TestResult(struct zx_idhr
 {
   struct zx_lu_TestResult_s* y;
   if (!x) return 0;
-  for (y = x->TestResult; n>=0 && y; --n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
+  for (y = x->TestResult; n>=0 && y && y->gg.g.tok == zx_lu_TestResult_ELEM; --n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4043,7 +4043,7 @@ void zx_idhrxml_Notification_PUT_TestResult(struct zx_idhrxml_Notification_s* x,
     x->TestResult = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_TestResult_ELEM; --n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4065,10 +4065,10 @@ void zx_idhrxml_Notification_ADD_TestResult(struct zx_idhrxml_Notification_s* x,
   case -1:
     y = x->TestResult;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_TestResult_ELEM; y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->TestResult; n > 1 && y; --n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
+    for (y = x->TestResult; n > 1 && y && y->gg.g.tok == zx_lu_TestResult_ELEM; --n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4088,10 +4088,10 @@ void zx_idhrxml_Notification_DEL_TestResult(struct zx_idhrxml_Notification_s* x,
   case -1:
     y = (struct zx_lu_TestResult_s*)x->TestResult;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_TestResult_ELEM; y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->TestResult; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
+    for (y = x->TestResult; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_TestResult_ELEM; --n, y = (struct zx_lu_TestResult_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4110,7 +4110,7 @@ int zx_idhrxml_Notification_NUM_ItemData(struct zx_idhrxml_Notification_s* x)
   struct zx_idhrxml_ItemData_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ItemData; y; ++n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; y && y->gg.g.tok == zx_idhrxml_ItemData_ELEM; ++n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4120,7 +4120,7 @@ struct zx_idhrxml_ItemData_s* zx_idhrxml_Notification_GET_ItemData(struct zx_idh
 {
   struct zx_idhrxml_ItemData_s* y;
   if (!x) return 0;
-  for (y = x->ItemData; n>=0 && y; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+  for (y = x->ItemData; n>=0 && y && y->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4177,7 +4177,7 @@ void zx_idhrxml_Notification_PUT_ItemData(struct zx_idhrxml_Notification_s* x, i
     x->ItemData = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4199,10 +4199,10 @@ void zx_idhrxml_Notification_ADD_ItemData(struct zx_idhrxml_Notification_s* x, i
   case -1:
     y = x->ItemData;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y && y->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4222,10 +4222,10 @@ void zx_idhrxml_Notification_DEL_ItemData(struct zx_idhrxml_Notification_s* x, i
   case -1:
     y = (struct zx_idhrxml_ItemData_s*)x->ItemData;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ItemData; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
+    for (y = x->ItemData; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ItemData_ELEM; --n, y = (struct zx_idhrxml_ItemData_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4265,7 +4265,7 @@ int zx_idhrxml_Notify_NUM_Extension(struct zx_idhrxml_Notify_s* x)
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4275,7 +4275,7 @@ struct zx_lu_Extension_s* zx_idhrxml_Notify_GET_Extension(struct zx_idhrxml_Noti
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4332,7 +4332,7 @@ void zx_idhrxml_Notify_PUT_Extension(struct zx_idhrxml_Notify_s* x, int n, struc
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4354,10 +4354,10 @@ void zx_idhrxml_Notify_ADD_Extension(struct zx_idhrxml_Notify_s* x, int n, struc
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4377,10 +4377,10 @@ void zx_idhrxml_Notify_DEL_Extension(struct zx_idhrxml_Notify_s* x, int n)
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4399,7 +4399,7 @@ int zx_idhrxml_Notify_NUM_Notification(struct zx_idhrxml_Notify_s* x)
   struct zx_idhrxml_Notification_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Notification; y; ++n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
+  for (y = x->Notification; y && y->gg.g.tok == zx_idhrxml_Notification_ELEM; ++n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4409,7 +4409,7 @@ struct zx_idhrxml_Notification_s* zx_idhrxml_Notify_GET_Notification(struct zx_i
 {
   struct zx_idhrxml_Notification_s* y;
   if (!x) return 0;
-  for (y = x->Notification; n>=0 && y; --n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
+  for (y = x->Notification; n>=0 && y && y->gg.g.tok == zx_idhrxml_Notification_ELEM; --n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4466,7 +4466,7 @@ void zx_idhrxml_Notify_PUT_Notification(struct zx_idhrxml_Notify_s* x, int n, st
     x->Notification = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Notification_ELEM; --n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4488,10 +4488,10 @@ void zx_idhrxml_Notify_ADD_Notification(struct zx_idhrxml_Notify_s* x, int n, st
   case -1:
     y = x->Notification;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Notification_ELEM; y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Notification; n > 1 && y; --n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
+    for (y = x->Notification; n > 1 && y && y->gg.g.tok == zx_idhrxml_Notification_ELEM; --n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4511,10 +4511,10 @@ void zx_idhrxml_Notify_DEL_Notification(struct zx_idhrxml_Notify_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_Notification_s*)x->Notification;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Notification_ELEM; y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Notification; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
+    for (y = x->Notification; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Notification_ELEM; --n, y = (struct zx_idhrxml_Notification_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4546,7 +4546,7 @@ int zx_idhrxml_NotifyResponse_NUM_Status(struct zx_idhrxml_NotifyResponse_s* x)
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4556,7 +4556,7 @@ struct zx_lu_Status_s* zx_idhrxml_NotifyResponse_GET_Status(struct zx_idhrxml_No
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4613,7 +4613,7 @@ void zx_idhrxml_NotifyResponse_PUT_Status(struct zx_idhrxml_NotifyResponse_s* x,
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4635,10 +4635,10 @@ void zx_idhrxml_NotifyResponse_ADD_Status(struct zx_idhrxml_NotifyResponse_s* x,
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4658,10 +4658,10 @@ void zx_idhrxml_NotifyResponse_DEL_Status(struct zx_idhrxml_NotifyResponse_s* x,
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4680,7 +4680,7 @@ int zx_idhrxml_NotifyResponse_NUM_Extension(struct zx_idhrxml_NotifyResponse_s* 
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4690,7 +4690,7 @@ struct zx_lu_Extension_s* zx_idhrxml_NotifyResponse_GET_Extension(struct zx_idhr
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4747,7 +4747,7 @@ void zx_idhrxml_NotifyResponse_PUT_Extension(struct zx_idhrxml_NotifyResponse_s*
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4769,10 +4769,10 @@ void zx_idhrxml_NotifyResponse_ADD_Extension(struct zx_idhrxml_NotifyResponse_s*
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4792,10 +4792,10 @@ void zx_idhrxml_NotifyResponse_DEL_Extension(struct zx_idhrxml_NotifyResponse_s*
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4823,7 +4823,7 @@ int zx_idhrxml_Query_NUM_Extension(struct zx_idhrxml_Query_s* x)
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4833,7 +4833,7 @@ struct zx_lu_Extension_s* zx_idhrxml_Query_GET_Extension(struct zx_idhrxml_Query
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4890,7 +4890,7 @@ void zx_idhrxml_Query_PUT_Extension(struct zx_idhrxml_Query_s* x, int n, struct 
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4912,10 +4912,10 @@ void zx_idhrxml_Query_ADD_Extension(struct zx_idhrxml_Query_s* x, int n, struct 
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4935,10 +4935,10 @@ void zx_idhrxml_Query_DEL_Extension(struct zx_idhrxml_Query_s* x, int n)
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4957,7 +4957,7 @@ int zx_idhrxml_Query_NUM_TestItem(struct zx_idhrxml_Query_s* x)
   struct zx_idhrxml_TestItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->TestItem; y; ++n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
+  for (y = x->TestItem; y && y->gg.g.tok == zx_idhrxml_TestItem_ELEM; ++n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4967,7 +4967,7 @@ struct zx_idhrxml_TestItem_s* zx_idhrxml_Query_GET_TestItem(struct zx_idhrxml_Qu
 {
   struct zx_idhrxml_TestItem_s* y;
   if (!x) return 0;
-  for (y = x->TestItem; n>=0 && y; --n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
+  for (y = x->TestItem; n>=0 && y && y->gg.g.tok == zx_idhrxml_TestItem_ELEM; --n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5024,7 +5024,7 @@ void zx_idhrxml_Query_PUT_TestItem(struct zx_idhrxml_Query_s* x, int n, struct z
     x->TestItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_TestItem_ELEM; --n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5046,10 +5046,10 @@ void zx_idhrxml_Query_ADD_TestItem(struct zx_idhrxml_Query_s* x, int n, struct z
   case -1:
     y = x->TestItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_TestItem_ELEM; y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->TestItem; n > 1 && y; --n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
+    for (y = x->TestItem; n > 1 && y && y->gg.g.tok == zx_idhrxml_TestItem_ELEM; --n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5069,10 +5069,10 @@ void zx_idhrxml_Query_DEL_TestItem(struct zx_idhrxml_Query_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_TestItem_s*)x->TestItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_TestItem_ELEM; y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->TestItem; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
+    for (y = x->TestItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_TestItem_ELEM; --n, y = (struct zx_idhrxml_TestItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5091,7 +5091,7 @@ int zx_idhrxml_Query_NUM_QueryItem(struct zx_idhrxml_Query_s* x)
   struct zx_idhrxml_QueryItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->QueryItem; y; ++n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
+  for (y = x->QueryItem; y && y->gg.g.tok == zx_idhrxml_QueryItem_ELEM; ++n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5101,7 +5101,7 @@ struct zx_idhrxml_QueryItem_s* zx_idhrxml_Query_GET_QueryItem(struct zx_idhrxml_
 {
   struct zx_idhrxml_QueryItem_s* y;
   if (!x) return 0;
-  for (y = x->QueryItem; n>=0 && y; --n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
+  for (y = x->QueryItem; n>=0 && y && y->gg.g.tok == zx_idhrxml_QueryItem_ELEM; --n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5158,7 +5158,7 @@ void zx_idhrxml_Query_PUT_QueryItem(struct zx_idhrxml_Query_s* x, int n, struct 
     x->QueryItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_QueryItem_ELEM; --n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5180,10 +5180,10 @@ void zx_idhrxml_Query_ADD_QueryItem(struct zx_idhrxml_Query_s* x, int n, struct 
   case -1:
     y = x->QueryItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_QueryItem_ELEM; y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->QueryItem; n > 1 && y; --n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
+    for (y = x->QueryItem; n > 1 && y && y->gg.g.tok == zx_idhrxml_QueryItem_ELEM; --n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5203,10 +5203,10 @@ void zx_idhrxml_Query_DEL_QueryItem(struct zx_idhrxml_Query_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_QueryItem_s*)x->QueryItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_QueryItem_ELEM; y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->QueryItem; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
+    for (y = x->QueryItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_QueryItem_ELEM; --n, y = (struct zx_idhrxml_QueryItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5225,7 +5225,7 @@ int zx_idhrxml_Query_NUM_Subscription(struct zx_idhrxml_Query_s* x)
   struct zx_idhrxml_Subscription_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Subscription; y; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; ++n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5235,7 +5235,7 @@ struct zx_idhrxml_Subscription_s* zx_idhrxml_Query_GET_Subscription(struct zx_id
 {
   struct zx_idhrxml_Subscription_s* y;
   if (!x) return 0;
-  for (y = x->Subscription; n>=0 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+  for (y = x->Subscription; n>=0 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5292,7 +5292,7 @@ void zx_idhrxml_Query_PUT_Subscription(struct zx_idhrxml_Query_s* x, int n, stru
     x->Subscription = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5314,10 +5314,10 @@ void zx_idhrxml_Query_ADD_Subscription(struct zx_idhrxml_Query_s* x, int n, stru
   case -1:
     y = x->Subscription;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y && y->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5337,10 +5337,10 @@ void zx_idhrxml_Query_DEL_Subscription(struct zx_idhrxml_Query_s* x, int n)
   case -1:
     y = (struct zx_idhrxml_Subscription_s*)x->Subscription;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Subscription; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
+    for (y = x->Subscription; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Subscription_ELEM; --n, y = (struct zx_idhrxml_Subscription_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5368,7 +5368,7 @@ int zx_idhrxml_QueryItem_NUM_ChangeFormat(struct zx_idhrxml_QueryItem_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ChangeFormat; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ChangeFormat; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -5378,7 +5378,7 @@ struct zx_elem_s* zx_idhrxml_QueryItem_GET_ChangeFormat(struct zx_idhrxml_QueryI
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->ChangeFormat; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ChangeFormat; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -5435,7 +5435,7 @@ void zx_idhrxml_QueryItem_PUT_ChangeFormat(struct zx_idhrxml_QueryItem_s* x, int
     x->ChangeFormat = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -5457,10 +5457,10 @@ void zx_idhrxml_QueryItem_ADD_ChangeFormat(struct zx_idhrxml_QueryItem_s* x, int
   case -1:
     y = x->ChangeFormat;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ChangeFormat; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ChangeFormat; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -5480,10 +5480,10 @@ void zx_idhrxml_QueryItem_DEL_ChangeFormat(struct zx_idhrxml_QueryItem_s* x, int
   case -1:
     y = (struct zx_elem_s*)x->ChangeFormat;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ChangeFormat; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ChangeFormat; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -5502,7 +5502,7 @@ int zx_idhrxml_QueryItem_NUM_Select(struct zx_idhrxml_QueryItem_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Select; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -5512,7 +5512,7 @@ struct zx_elem_s* zx_idhrxml_QueryItem_GET_Select(struct zx_idhrxml_QueryItem_s*
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Select; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -5569,7 +5569,7 @@ void zx_idhrxml_QueryItem_PUT_Select(struct zx_idhrxml_QueryItem_s* x, int n, st
     x->Select = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -5591,10 +5591,10 @@ void zx_idhrxml_QueryItem_ADD_Select(struct zx_idhrxml_QueryItem_s* x, int n, st
   case -1:
     y = x->Select;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -5614,10 +5614,10 @@ void zx_idhrxml_QueryItem_DEL_Select(struct zx_idhrxml_QueryItem_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Select;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -5636,7 +5636,7 @@ int zx_idhrxml_QueryItem_NUM_Sort(struct zx_idhrxml_QueryItem_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Sort; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Sort; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -5646,7 +5646,7 @@ struct zx_elem_s* zx_idhrxml_QueryItem_GET_Sort(struct zx_idhrxml_QueryItem_s* x
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Sort; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Sort; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -5703,7 +5703,7 @@ void zx_idhrxml_QueryItem_PUT_Sort(struct zx_idhrxml_QueryItem_s* x, int n, stru
     x->Sort = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -5725,10 +5725,10 @@ void zx_idhrxml_QueryItem_ADD_Sort(struct zx_idhrxml_QueryItem_s* x, int n, stru
   case -1:
     y = x->Sort;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Sort; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Sort; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -5748,10 +5748,10 @@ void zx_idhrxml_QueryItem_DEL_Sort(struct zx_idhrxml_QueryItem_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Sort;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Sort; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Sort; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -5819,7 +5819,7 @@ int zx_idhrxml_QueryResponse_NUM_Status(struct zx_idhrxml_QueryResponse_s* x)
   struct zx_lu_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_lu_Status_ELEM; ++n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5829,7 +5829,7 @@ struct zx_lu_Status_s* zx_idhrxml_QueryResponse_GET_Status(struct zx_idhrxml_Que
 {
   struct zx_lu_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5886,7 +5886,7 @@ void zx_idhrxml_QueryResponse_PUT_Status(struct zx_idhrxml_QueryResponse_s* x, i
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5908,10 +5908,10 @@ void zx_idhrxml_QueryResponse_ADD_Status(struct zx_idhrxml_QueryResponse_s* x, i
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5931,10 +5931,10 @@ void zx_idhrxml_QueryResponse_DEL_Status(struct zx_idhrxml_QueryResponse_s* x, i
   case -1:
     y = (struct zx_lu_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Status_ELEM; --n, y = (struct zx_lu_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5953,7 +5953,7 @@ int zx_idhrxml_QueryResponse_NUM_Extension(struct zx_idhrxml_QueryResponse_s* x)
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5963,7 +5963,7 @@ struct zx_lu_Extension_s* zx_idhrxml_QueryResponse_GET_Extension(struct zx_idhrx
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6020,7 +6020,7 @@ void zx_idhrxml_QueryResponse_PUT_Extension(struct zx_idhrxml_QueryResponse_s* x
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6042,10 +6042,10 @@ void zx_idhrxml_QueryResponse_ADD_Extension(struct zx_idhrxml_QueryResponse_s* x
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6065,10 +6065,10 @@ void zx_idhrxml_QueryResponse_DEL_Extension(struct zx_idhrxml_QueryResponse_s* x
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6087,7 +6087,7 @@ int zx_idhrxml_QueryResponse_NUM_TestResult(struct zx_idhrxml_QueryResponse_s* x
   struct zx_dst_TestResult_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->TestResult; y; ++n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
+  for (y = x->TestResult; y && y->gg.g.tok == zx_dst_TestResult_ELEM; ++n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6097,7 +6097,7 @@ struct zx_dst_TestResult_s* zx_idhrxml_QueryResponse_GET_TestResult(struct zx_id
 {
   struct zx_dst_TestResult_s* y;
   if (!x) return 0;
-  for (y = x->TestResult; n>=0 && y; --n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
+  for (y = x->TestResult; n>=0 && y && y->gg.g.tok == zx_dst_TestResult_ELEM; --n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6154,7 +6154,7 @@ void zx_idhrxml_QueryResponse_PUT_TestResult(struct zx_idhrxml_QueryResponse_s* 
     x->TestResult = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_dst_TestResult_ELEM; --n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6176,10 +6176,10 @@ void zx_idhrxml_QueryResponse_ADD_TestResult(struct zx_idhrxml_QueryResponse_s* 
   case -1:
     y = x->TestResult;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_dst_TestResult_ELEM; y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->TestResult; n > 1 && y; --n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
+    for (y = x->TestResult; n > 1 && y && y->gg.g.tok == zx_dst_TestResult_ELEM; --n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6199,10 +6199,10 @@ void zx_idhrxml_QueryResponse_DEL_TestResult(struct zx_idhrxml_QueryResponse_s* 
   case -1:
     y = (struct zx_dst_TestResult_s*)x->TestResult;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_dst_TestResult_ELEM; y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->TestResult; n > 1 && y->gg.g.n; --n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
+    for (y = x->TestResult; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_dst_TestResult_ELEM; --n, y = (struct zx_dst_TestResult_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6221,7 +6221,7 @@ int zx_idhrxml_QueryResponse_NUM_Data(struct zx_idhrxml_QueryResponse_s* x)
   struct zx_idhrxml_Data_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Data; y; ++n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
+  for (y = x->Data; y && y->gg.g.tok == zx_idhrxml_Data_ELEM; ++n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6231,7 +6231,7 @@ struct zx_idhrxml_Data_s* zx_idhrxml_QueryResponse_GET_Data(struct zx_idhrxml_Qu
 {
   struct zx_idhrxml_Data_s* y;
   if (!x) return 0;
-  for (y = x->Data; n>=0 && y; --n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
+  for (y = x->Data; n>=0 && y && y->gg.g.tok == zx_idhrxml_Data_ELEM; --n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6288,7 +6288,7 @@ void zx_idhrxml_QueryResponse_PUT_Data(struct zx_idhrxml_QueryResponse_s* x, int
     x->Data = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Data_ELEM; --n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6310,10 +6310,10 @@ void zx_idhrxml_QueryResponse_ADD_Data(struct zx_idhrxml_QueryResponse_s* x, int
   case -1:
     y = x->Data;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Data_ELEM; y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Data; n > 1 && y; --n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
+    for (y = x->Data; n > 1 && y && y->gg.g.tok == zx_idhrxml_Data_ELEM; --n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6333,10 +6333,10 @@ void zx_idhrxml_QueryResponse_DEL_Data(struct zx_idhrxml_QueryResponse_s* x, int
   case -1:
     y = (struct zx_idhrxml_Data_s*)x->Data;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Data_ELEM; y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Data; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
+    for (y = x->Data; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_Data_ELEM; --n, y = (struct zx_idhrxml_Data_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6368,7 +6368,7 @@ int zx_idhrxml_ResultQuery_NUM_ChangeFormat(struct zx_idhrxml_ResultQuery_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ChangeFormat; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ChangeFormat; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -6378,7 +6378,7 @@ struct zx_elem_s* zx_idhrxml_ResultQuery_GET_ChangeFormat(struct zx_idhrxml_Resu
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->ChangeFormat; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->ChangeFormat; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -6435,7 +6435,7 @@ void zx_idhrxml_ResultQuery_PUT_ChangeFormat(struct zx_idhrxml_ResultQuery_s* x,
     x->ChangeFormat = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -6457,10 +6457,10 @@ void zx_idhrxml_ResultQuery_ADD_ChangeFormat(struct zx_idhrxml_ResultQuery_s* x,
   case -1:
     y = x->ChangeFormat;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ChangeFormat; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ChangeFormat; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -6480,10 +6480,10 @@ void zx_idhrxml_ResultQuery_DEL_ChangeFormat(struct zx_idhrxml_ResultQuery_s* x,
   case -1:
     y = (struct zx_elem_s*)x->ChangeFormat;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->ChangeFormat; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->ChangeFormat; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -6502,7 +6502,7 @@ int zx_idhrxml_ResultQuery_NUM_Select(struct zx_idhrxml_ResultQuery_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Select; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -6512,7 +6512,7 @@ struct zx_elem_s* zx_idhrxml_ResultQuery_GET_Select(struct zx_idhrxml_ResultQuer
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Select; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Select; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -6569,7 +6569,7 @@ void zx_idhrxml_ResultQuery_PUT_Select(struct zx_idhrxml_ResultQuery_s* x, int n
     x->Select = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -6591,10 +6591,10 @@ void zx_idhrxml_ResultQuery_ADD_Select(struct zx_idhrxml_ResultQuery_s* x, int n
   case -1:
     y = x->Select;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -6614,10 +6614,10 @@ void zx_idhrxml_ResultQuery_DEL_Select(struct zx_idhrxml_ResultQuery_s* x, int n
   case -1:
     y = (struct zx_elem_s*)x->Select;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Select; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Select; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -6636,7 +6636,7 @@ int zx_idhrxml_ResultQuery_NUM_Sort(struct zx_idhrxml_ResultQuery_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Sort; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Sort; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -6646,7 +6646,7 @@ struct zx_elem_s* zx_idhrxml_ResultQuery_GET_Sort(struct zx_idhrxml_ResultQuery_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Sort; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Sort; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -6703,7 +6703,7 @@ void zx_idhrxml_ResultQuery_PUT_Sort(struct zx_idhrxml_ResultQuery_s* x, int n, 
     x->Sort = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -6725,10 +6725,10 @@ void zx_idhrxml_ResultQuery_ADD_Sort(struct zx_idhrxml_ResultQuery_s* x, int n, 
   case -1:
     y = x->Sort;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Sort; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Sort; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -6748,10 +6748,10 @@ void zx_idhrxml_ResultQuery_DEL_Sort(struct zx_idhrxml_ResultQuery_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Sort;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Sort; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Sort; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -6803,7 +6803,7 @@ int zx_idhrxml_Subscription_NUM_RefItem(struct zx_idhrxml_Subscription_s* x)
   struct zx_subs_RefItem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RefItem; y; ++n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
+  for (y = x->RefItem; y && y->gg.g.tok == zx_subs_RefItem_ELEM; ++n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6813,7 +6813,7 @@ struct zx_subs_RefItem_s* zx_idhrxml_Subscription_GET_RefItem(struct zx_idhrxml_
 {
   struct zx_subs_RefItem_s* y;
   if (!x) return 0;
-  for (y = x->RefItem; n>=0 && y; --n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
+  for (y = x->RefItem; n>=0 && y && y->gg.g.tok == zx_subs_RefItem_ELEM; --n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6870,7 +6870,7 @@ void zx_idhrxml_Subscription_PUT_RefItem(struct zx_idhrxml_Subscription_s* x, in
     x->RefItem = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_subs_RefItem_ELEM; --n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6892,10 +6892,10 @@ void zx_idhrxml_Subscription_ADD_RefItem(struct zx_idhrxml_Subscription_s* x, in
   case -1:
     y = x->RefItem;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_subs_RefItem_ELEM; y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RefItem; n > 1 && y; --n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
+    for (y = x->RefItem; n > 1 && y && y->gg.g.tok == zx_subs_RefItem_ELEM; --n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6915,10 +6915,10 @@ void zx_idhrxml_Subscription_DEL_RefItem(struct zx_idhrxml_Subscription_s* x, in
   case -1:
     y = (struct zx_subs_RefItem_s*)x->RefItem;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_subs_RefItem_ELEM; y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RefItem; n > 1 && y->gg.g.n; --n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
+    for (y = x->RefItem; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_subs_RefItem_ELEM; --n, y = (struct zx_subs_RefItem_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6937,7 +6937,7 @@ int zx_idhrxml_Subscription_NUM_Extension(struct zx_idhrxml_Subscription_s* x)
   struct zx_lu_Extension_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Extension; y; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; y && y->gg.g.tok == zx_lu_Extension_ELEM; ++n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6947,7 +6947,7 @@ struct zx_lu_Extension_s* zx_idhrxml_Subscription_GET_Extension(struct zx_idhrxm
 {
   struct zx_lu_Extension_s* y;
   if (!x) return 0;
-  for (y = x->Extension; n>=0 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+  for (y = x->Extension; n>=0 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -7004,7 +7004,7 @@ void zx_idhrxml_Subscription_PUT_Extension(struct zx_idhrxml_Subscription_s* x, 
     x->Extension = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -7026,10 +7026,10 @@ void zx_idhrxml_Subscription_ADD_Extension(struct zx_idhrxml_Subscription_s* x, 
   case -1:
     y = x->Extension;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y && y->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -7049,10 +7049,10 @@ void zx_idhrxml_Subscription_DEL_Extension(struct zx_idhrxml_Subscription_s* x, 
   case -1:
     y = (struct zx_lu_Extension_s*)x->Extension;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Extension; n > 1 && y->gg.g.n; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
+    for (y = x->Extension; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_lu_Extension_ELEM; --n, y = (struct zx_lu_Extension_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -7071,7 +7071,7 @@ int zx_idhrxml_Subscription_NUM_ResultQuery(struct zx_idhrxml_Subscription_s* x)
   struct zx_idhrxml_ResultQuery_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ResultQuery; y; ++n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+  for (y = x->ResultQuery; y && y->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; ++n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -7081,7 +7081,7 @@ struct zx_idhrxml_ResultQuery_s* zx_idhrxml_Subscription_GET_ResultQuery(struct 
 {
   struct zx_idhrxml_ResultQuery_s* y;
   if (!x) return 0;
-  for (y = x->ResultQuery; n>=0 && y; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+  for (y = x->ResultQuery; n>=0 && y && y->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -7138,7 +7138,7 @@ void zx_idhrxml_Subscription_PUT_ResultQuery(struct zx_idhrxml_Subscription_s* x
     x->ResultQuery = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -7160,10 +7160,10 @@ void zx_idhrxml_Subscription_ADD_ResultQuery(struct zx_idhrxml_Subscription_s* x
   case -1:
     y = x->ResultQuery;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResultQuery; n > 1 && y; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (y = x->ResultQuery; n > 1 && y && y->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -7183,10 +7183,10 @@ void zx_idhrxml_Subscription_DEL_ResultQuery(struct zx_idhrxml_Subscription_s* x
   case -1:
     y = (struct zx_idhrxml_ResultQuery_s*)x->ResultQuery;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ResultQuery; n > 1 && y->gg.g.n; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
+    for (y = x->ResultQuery; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_idhrxml_ResultQuery_ELEM; --n, y = (struct zx_idhrxml_ResultQuery_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -7205,7 +7205,7 @@ int zx_idhrxml_Subscription_NUM_Aggregation(struct zx_idhrxml_Subscription_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Aggregation; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Aggregation; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7215,7 +7215,7 @@ struct zx_elem_s* zx_idhrxml_Subscription_GET_Aggregation(struct zx_idhrxml_Subs
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Aggregation; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Aggregation; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7272,7 +7272,7 @@ void zx_idhrxml_Subscription_PUT_Aggregation(struct zx_idhrxml_Subscription_s* x
     x->Aggregation = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7294,10 +7294,10 @@ void zx_idhrxml_Subscription_ADD_Aggregation(struct zx_idhrxml_Subscription_s* x
   case -1:
     y = x->Aggregation;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Aggregation; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Aggregation; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7317,10 +7317,10 @@ void zx_idhrxml_Subscription_DEL_Aggregation(struct zx_idhrxml_Subscription_s* x
   case -1:
     y = (struct zx_elem_s*)x->Aggregation;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Aggregation; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Aggregation; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7339,7 +7339,7 @@ int zx_idhrxml_Subscription_NUM_Trigger(struct zx_idhrxml_Subscription_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Trigger; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Trigger; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7349,7 +7349,7 @@ struct zx_elem_s* zx_idhrxml_Subscription_GET_Trigger(struct zx_idhrxml_Subscrip
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Trigger; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Trigger; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7406,7 +7406,7 @@ void zx_idhrxml_Subscription_PUT_Trigger(struct zx_idhrxml_Subscription_s* x, in
     x->Trigger = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7428,10 +7428,10 @@ void zx_idhrxml_Subscription_ADD_Trigger(struct zx_idhrxml_Subscription_s* x, in
   case -1:
     y = x->Trigger;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Trigger; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Trigger; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7451,10 +7451,10 @@ void zx_idhrxml_Subscription_DEL_Trigger(struct zx_idhrxml_Subscription_s* x, in
   case -1:
     y = (struct zx_elem_s*)x->Trigger;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Trigger; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Trigger; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7506,7 +7506,7 @@ int zx_idhrxml_TestItem_NUM_TestOp(struct zx_idhrxml_TestItem_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->TestOp; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->TestOp; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7516,7 +7516,7 @@ struct zx_elem_s* zx_idhrxml_TestItem_GET_TestOp(struct zx_idhrxml_TestItem_s* x
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->TestOp; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->TestOp; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7573,7 +7573,7 @@ void zx_idhrxml_TestItem_PUT_TestOp(struct zx_idhrxml_TestItem_s* x, int n, stru
     x->TestOp = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7595,10 +7595,10 @@ void zx_idhrxml_TestItem_ADD_TestOp(struct zx_idhrxml_TestItem_s* x, int n, stru
   case -1:
     y = x->TestOp;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->TestOp; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->TestOp; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7618,10 +7618,10 @@ void zx_idhrxml_TestItem_DEL_TestOp(struct zx_idhrxml_TestItem_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->TestOp;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->TestOp; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->TestOp; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;

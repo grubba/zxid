@@ -53,7 +53,7 @@ int zx_ecp_Request_NUM_Issuer(struct zx_ecp_Request_s* x)
   struct zx_sa_Issuer_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Issuer; y; ++n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
+  for (y = x->Issuer; y && y->gg.g.tok == zx_sa_Issuer_ELEM; ++n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -63,7 +63,7 @@ struct zx_sa_Issuer_s* zx_ecp_Request_GET_Issuer(struct zx_ecp_Request_s* x, int
 {
   struct zx_sa_Issuer_s* y;
   if (!x) return 0;
-  for (y = x->Issuer; n>=0 && y; --n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
+  for (y = x->Issuer; n>=0 && y && y->gg.g.tok == zx_sa_Issuer_ELEM; --n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -120,7 +120,7 @@ void zx_ecp_Request_PUT_Issuer(struct zx_ecp_Request_s* x, int n, struct zx_sa_I
     x->Issuer = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Issuer_ELEM; --n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -142,10 +142,10 @@ void zx_ecp_Request_ADD_Issuer(struct zx_ecp_Request_s* x, int n, struct zx_sa_I
   case -1:
     y = x->Issuer;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Issuer_ELEM; y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Issuer; n > 1 && y; --n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
+    for (y = x->Issuer; n > 1 && y && y->gg.g.tok == zx_sa_Issuer_ELEM; --n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -165,10 +165,10 @@ void zx_ecp_Request_DEL_Issuer(struct zx_ecp_Request_s* x, int n)
   case -1:
     y = (struct zx_sa_Issuer_s*)x->Issuer;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Issuer_ELEM; y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Issuer; n > 1 && y->gg.g.n; --n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
+    for (y = x->Issuer; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sa_Issuer_ELEM; --n, y = (struct zx_sa_Issuer_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -187,7 +187,7 @@ int zx_ecp_Request_NUM_IDPList(struct zx_ecp_Request_s* x)
   struct zx_sp_IDPList_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->IDPList; y; ++n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
+  for (y = x->IDPList; y && y->gg.g.tok == zx_sp_IDPList_ELEM; ++n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -197,7 +197,7 @@ struct zx_sp_IDPList_s* zx_ecp_Request_GET_IDPList(struct zx_ecp_Request_s* x, i
 {
   struct zx_sp_IDPList_s* y;
   if (!x) return 0;
-  for (y = x->IDPList; n>=0 && y; --n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
+  for (y = x->IDPList; n>=0 && y && y->gg.g.tok == zx_sp_IDPList_ELEM; --n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -254,7 +254,7 @@ void zx_ecp_Request_PUT_IDPList(struct zx_ecp_Request_s* x, int n, struct zx_sp_
     x->IDPList = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sp_IDPList_ELEM; --n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -276,10 +276,10 @@ void zx_ecp_Request_ADD_IDPList(struct zx_ecp_Request_s* x, int n, struct zx_sp_
   case -1:
     y = x->IDPList;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sp_IDPList_ELEM; y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->IDPList; n > 1 && y; --n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
+    for (y = x->IDPList; n > 1 && y && y->gg.g.tok == zx_sp_IDPList_ELEM; --n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -299,10 +299,10 @@ void zx_ecp_Request_DEL_IDPList(struct zx_ecp_Request_s* x, int n)
   case -1:
     y = (struct zx_sp_IDPList_s*)x->IDPList;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sp_IDPList_ELEM; y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->IDPList; n > 1 && y->gg.g.n; --n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
+    for (y = x->IDPList; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_sp_IDPList_ELEM; --n, y = (struct zx_sp_IDPList_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;

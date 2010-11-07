@@ -40,7 +40,7 @@ int zx_wst_Authenticator_NUM_CombinedHash(struct zx_wst_Authenticator_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CombinedHash; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CombinedHash; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -50,7 +50,7 @@ struct zx_elem_s* zx_wst_Authenticator_GET_CombinedHash(struct zx_wst_Authentica
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->CombinedHash; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CombinedHash; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -107,7 +107,7 @@ void zx_wst_Authenticator_PUT_CombinedHash(struct zx_wst_Authenticator_s* x, int
     x->CombinedHash = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -129,10 +129,10 @@ void zx_wst_Authenticator_ADD_CombinedHash(struct zx_wst_Authenticator_s* x, int
   case -1:
     y = x->CombinedHash;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CombinedHash; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CombinedHash; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -152,10 +152,10 @@ void zx_wst_Authenticator_DEL_CombinedHash(struct zx_wst_Authenticator_s* x, int
   case -1:
     y = (struct zx_elem_s*)x->CombinedHash;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CombinedHash; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CombinedHash; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -230,7 +230,7 @@ int zx_wst_IssuedTokens_NUM_RequestSecurityTokenResponse(struct zx_wst_IssuedTok
   struct zx_wst_RequestSecurityTokenResponse_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RequestSecurityTokenResponse; y; ++n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+  for (y = x->RequestSecurityTokenResponse; y && y->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; ++n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -240,7 +240,7 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_wst_IssuedTokens_GET_RequestSec
 {
   struct zx_wst_RequestSecurityTokenResponse_s* y;
   if (!x) return 0;
-  for (y = x->RequestSecurityTokenResponse; n>=0 && y; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+  for (y = x->RequestSecurityTokenResponse; n>=0 && y && y->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -297,7 +297,7 @@ void zx_wst_IssuedTokens_PUT_RequestSecurityTokenResponse(struct zx_wst_IssuedTo
     x->RequestSecurityTokenResponse = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -319,10 +319,10 @@ void zx_wst_IssuedTokens_ADD_RequestSecurityTokenResponse(struct zx_wst_IssuedTo
   case -1:
     y = x->RequestSecurityTokenResponse;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestSecurityTokenResponse; n > 1 && y; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (y = x->RequestSecurityTokenResponse; n > 1 && y && y->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -342,10 +342,10 @@ void zx_wst_IssuedTokens_DEL_RequestSecurityTokenResponse(struct zx_wst_IssuedTo
   case -1:
     y = (struct zx_wst_RequestSecurityTokenResponse_s*)x->RequestSecurityTokenResponse;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestSecurityTokenResponse; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (y = x->RequestSecurityTokenResponse; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -369,7 +369,7 @@ int zx_wst_Issuer_NUM_Address(struct zx_wst_Issuer_s* x)
   struct zx_a_Address_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Address; y; ++n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
+  for (y = x->Address; y && y->gg.g.tok == zx_a_Address_ELEM; ++n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -379,7 +379,7 @@ struct zx_a_Address_s* zx_wst_Issuer_GET_Address(struct zx_wst_Issuer_s* x, int 
 {
   struct zx_a_Address_s* y;
   if (!x) return 0;
-  for (y = x->Address; n>=0 && y; --n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
+  for (y = x->Address; n>=0 && y && y->gg.g.tok == zx_a_Address_ELEM; --n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -436,7 +436,7 @@ void zx_wst_Issuer_PUT_Address(struct zx_wst_Issuer_s* x, int n, struct zx_a_Add
     x->Address = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_Address_ELEM; --n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -458,10 +458,10 @@ void zx_wst_Issuer_ADD_Address(struct zx_wst_Issuer_s* x, int n, struct zx_a_Add
   case -1:
     y = x->Address;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_a_Address_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_Address_ELEM; y = (struct zx_a_Address_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Address; n > 1 && y; --n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
+    for (y = x->Address; n > 1 && y && y->gg.g.tok == zx_a_Address_ELEM; --n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -481,10 +481,10 @@ void zx_wst_Issuer_DEL_Address(struct zx_wst_Issuer_s* x, int n)
   case -1:
     y = (struct zx_a_Address_s*)x->Address;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_a_Address_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_Address_ELEM; y = (struct zx_a_Address_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Address; n > 1 && y->gg.g.n; --n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
+    for (y = x->Address; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_Address_ELEM; --n, y = (struct zx_a_Address_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -503,7 +503,7 @@ int zx_wst_Issuer_NUM_ReferenceParameters(struct zx_wst_Issuer_s* x)
   struct zx_a_ReferenceParameters_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ReferenceParameters; y; ++n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
+  for (y = x->ReferenceParameters; y && y->gg.g.tok == zx_a_ReferenceParameters_ELEM; ++n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -513,7 +513,7 @@ struct zx_a_ReferenceParameters_s* zx_wst_Issuer_GET_ReferenceParameters(struct 
 {
   struct zx_a_ReferenceParameters_s* y;
   if (!x) return 0;
-  for (y = x->ReferenceParameters; n>=0 && y; --n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
+  for (y = x->ReferenceParameters; n>=0 && y && y->gg.g.tok == zx_a_ReferenceParameters_ELEM; --n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -570,7 +570,7 @@ void zx_wst_Issuer_PUT_ReferenceParameters(struct zx_wst_Issuer_s* x, int n, str
     x->ReferenceParameters = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_ReferenceParameters_ELEM; --n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -592,10 +592,10 @@ void zx_wst_Issuer_ADD_ReferenceParameters(struct zx_wst_Issuer_s* x, int n, str
   case -1:
     y = x->ReferenceParameters;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_ReferenceParameters_ELEM; y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ReferenceParameters; n > 1 && y; --n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
+    for (y = x->ReferenceParameters; n > 1 && y && y->gg.g.tok == zx_a_ReferenceParameters_ELEM; --n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -615,10 +615,10 @@ void zx_wst_Issuer_DEL_ReferenceParameters(struct zx_wst_Issuer_s* x, int n)
   case -1:
     y = (struct zx_a_ReferenceParameters_s*)x->ReferenceParameters;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_ReferenceParameters_ELEM; y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ReferenceParameters; n > 1 && y->gg.g.n; --n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
+    for (y = x->ReferenceParameters; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_ReferenceParameters_ELEM; --n, y = (struct zx_a_ReferenceParameters_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -637,7 +637,7 @@ int zx_wst_Issuer_NUM_Metadata(struct zx_wst_Issuer_s* x)
   struct zx_a_Metadata_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Metadata; y; ++n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
+  for (y = x->Metadata; y && y->gg.g.tok == zx_a_Metadata_ELEM; ++n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -647,7 +647,7 @@ struct zx_a_Metadata_s* zx_wst_Issuer_GET_Metadata(struct zx_wst_Issuer_s* x, in
 {
   struct zx_a_Metadata_s* y;
   if (!x) return 0;
-  for (y = x->Metadata; n>=0 && y; --n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
+  for (y = x->Metadata; n>=0 && y && y->gg.g.tok == zx_a_Metadata_ELEM; --n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -704,7 +704,7 @@ void zx_wst_Issuer_PUT_Metadata(struct zx_wst_Issuer_s* x, int n, struct zx_a_Me
     x->Metadata = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_Metadata_ELEM; --n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -726,10 +726,10 @@ void zx_wst_Issuer_ADD_Metadata(struct zx_wst_Issuer_s* x, int n, struct zx_a_Me
   case -1:
     y = x->Metadata;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_Metadata_ELEM; y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Metadata; n > 1 && y; --n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
+    for (y = x->Metadata; n > 1 && y && y->gg.g.tok == zx_a_Metadata_ELEM; --n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -749,10 +749,10 @@ void zx_wst_Issuer_DEL_Metadata(struct zx_wst_Issuer_s* x, int n)
   case -1:
     y = (struct zx_a_Metadata_s*)x->Metadata;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_Metadata_ELEM; y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Metadata; n > 1 && y->gg.g.n; --n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
+    for (y = x->Metadata; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_a_Metadata_ELEM; --n, y = (struct zx_a_Metadata_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -805,7 +805,7 @@ int zx_wst_Lifetime_NUM_Created(struct zx_wst_Lifetime_s* x)
   struct zx_wsu_Created_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Created; y; ++n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+  for (y = x->Created; y && y->gg.g.tok == zx_wsu_Created_ELEM; ++n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -815,7 +815,7 @@ struct zx_wsu_Created_s* zx_wst_Lifetime_GET_Created(struct zx_wst_Lifetime_s* x
 {
   struct zx_wsu_Created_s* y;
   if (!x) return 0;
-  for (y = x->Created; n>=0 && y; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+  for (y = x->Created; n>=0 && y && y->gg.g.tok == zx_wsu_Created_ELEM; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -872,7 +872,7 @@ void zx_wst_Lifetime_PUT_Created(struct zx_wst_Lifetime_s* x, int n, struct zx_w
     x->Created = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Created_ELEM; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -894,10 +894,10 @@ void zx_wst_Lifetime_ADD_Created(struct zx_wst_Lifetime_s* x, int n, struct zx_w
   case -1:
     y = x->Created;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Created_ELEM; y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Created; n > 1 && y; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (y = x->Created; n > 1 && y && y->gg.g.tok == zx_wsu_Created_ELEM; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -917,10 +917,10 @@ void zx_wst_Lifetime_DEL_Created(struct zx_wst_Lifetime_s* x, int n)
   case -1:
     y = (struct zx_wsu_Created_s*)x->Created;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Created_ELEM; y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Created; n > 1 && y->gg.g.n; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
+    for (y = x->Created; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Created_ELEM; --n, y = (struct zx_wsu_Created_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -939,7 +939,7 @@ int zx_wst_Lifetime_NUM_Expires(struct zx_wst_Lifetime_s* x)
   struct zx_wsu_Expires_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Expires; y; ++n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+  for (y = x->Expires; y && y->gg.g.tok == zx_wsu_Expires_ELEM; ++n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -949,7 +949,7 @@ struct zx_wsu_Expires_s* zx_wst_Lifetime_GET_Expires(struct zx_wst_Lifetime_s* x
 {
   struct zx_wsu_Expires_s* y;
   if (!x) return 0;
-  for (y = x->Expires; n>=0 && y; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+  for (y = x->Expires; n>=0 && y && y->gg.g.tok == zx_wsu_Expires_ELEM; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1006,7 +1006,7 @@ void zx_wst_Lifetime_PUT_Expires(struct zx_wst_Lifetime_s* x, int n, struct zx_w
     x->Expires = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Expires_ELEM; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1028,10 +1028,10 @@ void zx_wst_Lifetime_ADD_Expires(struct zx_wst_Lifetime_s* x, int n, struct zx_w
   case -1:
     y = x->Expires;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Expires_ELEM; y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Expires; n > 1 && y; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (y = x->Expires; n > 1 && y && y->gg.g.tok == zx_wsu_Expires_ELEM; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1051,10 +1051,10 @@ void zx_wst_Lifetime_DEL_Expires(struct zx_wst_Lifetime_s* x, int n)
   case -1:
     y = (struct zx_wsu_Expires_s*)x->Expires;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Expires_ELEM; y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Expires; n > 1 && y->gg.g.n; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
+    for (y = x->Expires; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsu_Expires_ELEM; --n, y = (struct zx_wsu_Expires_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1088,7 +1088,7 @@ int zx_wst_Participants_NUM_Primary(struct zx_wst_Participants_s* x)
   struct zx_wst_Primary_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Primary; y; ++n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
+  for (y = x->Primary; y && y->gg.g.tok == zx_wst_Primary_ELEM; ++n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1098,7 +1098,7 @@ struct zx_wst_Primary_s* zx_wst_Participants_GET_Primary(struct zx_wst_Participa
 {
   struct zx_wst_Primary_s* y;
   if (!x) return 0;
-  for (y = x->Primary; n>=0 && y; --n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
+  for (y = x->Primary; n>=0 && y && y->gg.g.tok == zx_wst_Primary_ELEM; --n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1155,7 +1155,7 @@ void zx_wst_Participants_PUT_Primary(struct zx_wst_Participants_s* x, int n, str
     x->Primary = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Primary_ELEM; --n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1177,10 +1177,10 @@ void zx_wst_Participants_ADD_Primary(struct zx_wst_Participants_s* x, int n, str
   case -1:
     y = x->Primary;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Primary_ELEM; y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Primary; n > 1 && y; --n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
+    for (y = x->Primary; n > 1 && y && y->gg.g.tok == zx_wst_Primary_ELEM; --n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1200,10 +1200,10 @@ void zx_wst_Participants_DEL_Primary(struct zx_wst_Participants_s* x, int n)
   case -1:
     y = (struct zx_wst_Primary_s*)x->Primary;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Primary_ELEM; y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Primary; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
+    for (y = x->Primary; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Primary_ELEM; --n, y = (struct zx_wst_Primary_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1222,7 +1222,7 @@ int zx_wst_Participants_NUM_Participant(struct zx_wst_Participants_s* x)
   struct zx_wst_Participant_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Participant; y; ++n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
+  for (y = x->Participant; y && y->gg.g.tok == zx_wst_Participant_ELEM; ++n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1232,7 +1232,7 @@ struct zx_wst_Participant_s* zx_wst_Participants_GET_Participant(struct zx_wst_P
 {
   struct zx_wst_Participant_s* y;
   if (!x) return 0;
-  for (y = x->Participant; n>=0 && y; --n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
+  for (y = x->Participant; n>=0 && y && y->gg.g.tok == zx_wst_Participant_ELEM; --n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1289,7 +1289,7 @@ void zx_wst_Participants_PUT_Participant(struct zx_wst_Participants_s* x, int n,
     x->Participant = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Participant_ELEM; --n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1311,10 +1311,10 @@ void zx_wst_Participants_ADD_Participant(struct zx_wst_Participants_s* x, int n,
   case -1:
     y = x->Participant;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Participant_ELEM; y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Participant; n > 1 && y; --n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
+    for (y = x->Participant; n > 1 && y && y->gg.g.tok == zx_wst_Participant_ELEM; --n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1334,10 +1334,10 @@ void zx_wst_Participants_DEL_Participant(struct zx_wst_Participants_s* x, int n)
   case -1:
     y = (struct zx_wst_Participant_s*)x->Participant;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Participant_ELEM; y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Participant; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
+    for (y = x->Participant; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Participant_ELEM; --n, y = (struct zx_wst_Participant_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1389,7 +1389,7 @@ int zx_wst_RequestSecurityToken_NUM_TokenType(struct zx_wst_RequestSecurityToken
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->TokenType; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->TokenType; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1399,7 +1399,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_TokenType(struct zx_wst_Reques
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->TokenType; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->TokenType; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1456,7 +1456,7 @@ void zx_wst_RequestSecurityToken_PUT_TokenType(struct zx_wst_RequestSecurityToke
     x->TokenType = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1478,10 +1478,10 @@ void zx_wst_RequestSecurityToken_ADD_TokenType(struct zx_wst_RequestSecurityToke
   case -1:
     y = x->TokenType;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->TokenType; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->TokenType; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1501,10 +1501,10 @@ void zx_wst_RequestSecurityToken_DEL_TokenType(struct zx_wst_RequestSecurityToke
   case -1:
     y = (struct zx_elem_s*)x->TokenType;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->TokenType; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->TokenType; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1523,7 +1523,7 @@ int zx_wst_RequestSecurityToken_NUM_RequestType(struct zx_wst_RequestSecurityTok
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RequestType; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->RequestType; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -1533,7 +1533,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_RequestType(struct zx_wst_Requ
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->RequestType; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->RequestType; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -1590,7 +1590,7 @@ void zx_wst_RequestSecurityToken_PUT_RequestType(struct zx_wst_RequestSecurityTo
     x->RequestType = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -1612,10 +1612,10 @@ void zx_wst_RequestSecurityToken_ADD_RequestType(struct zx_wst_RequestSecurityTo
   case -1:
     y = x->RequestType;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->RequestType; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->RequestType; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -1635,10 +1635,10 @@ void zx_wst_RequestSecurityToken_DEL_RequestType(struct zx_wst_RequestSecurityTo
   case -1:
     y = (struct zx_elem_s*)x->RequestType;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->RequestType; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->RequestType; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -1657,7 +1657,7 @@ int zx_wst_RequestSecurityToken_NUM_AppliesTo(struct zx_wst_RequestSecurityToken
   struct zx_wsp_AppliesTo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AppliesTo; y; ++n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+  for (y = x->AppliesTo; y && y->gg.g.tok == zx_wsp_AppliesTo_ELEM; ++n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1667,7 +1667,7 @@ struct zx_wsp_AppliesTo_s* zx_wst_RequestSecurityToken_GET_AppliesTo(struct zx_w
 {
   struct zx_wsp_AppliesTo_s* y;
   if (!x) return 0;
-  for (y = x->AppliesTo; n>=0 && y; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+  for (y = x->AppliesTo; n>=0 && y && y->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1724,7 +1724,7 @@ void zx_wst_RequestSecurityToken_PUT_AppliesTo(struct zx_wst_RequestSecurityToke
     x->AppliesTo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1746,10 +1746,10 @@ void zx_wst_RequestSecurityToken_ADD_AppliesTo(struct zx_wst_RequestSecurityToke
   case -1:
     y = x->AppliesTo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AppliesTo; n > 1 && y; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (y = x->AppliesTo; n > 1 && y && y->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1769,10 +1769,10 @@ void zx_wst_RequestSecurityToken_DEL_AppliesTo(struct zx_wst_RequestSecurityToke
   case -1:
     y = (struct zx_wsp_AppliesTo_s*)x->AppliesTo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AppliesTo; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (y = x->AppliesTo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1791,7 +1791,7 @@ int zx_wst_RequestSecurityToken_NUM_Claims(struct zx_wst_RequestSecurityToken_s*
   struct zx_wst_Claims_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Claims; y; ++n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
+  for (y = x->Claims; y && y->gg.g.tok == zx_wst_Claims_ELEM; ++n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1801,7 +1801,7 @@ struct zx_wst_Claims_s* zx_wst_RequestSecurityToken_GET_Claims(struct zx_wst_Req
 {
   struct zx_wst_Claims_s* y;
   if (!x) return 0;
-  for (y = x->Claims; n>=0 && y; --n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
+  for (y = x->Claims; n>=0 && y && y->gg.g.tok == zx_wst_Claims_ELEM; --n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1858,7 +1858,7 @@ void zx_wst_RequestSecurityToken_PUT_Claims(struct zx_wst_RequestSecurityToken_s
     x->Claims = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Claims_ELEM; --n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -1880,10 +1880,10 @@ void zx_wst_RequestSecurityToken_ADD_Claims(struct zx_wst_RequestSecurityToken_s
   case -1:
     y = x->Claims;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Claims_ELEM; y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Claims; n > 1 && y; --n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
+    for (y = x->Claims; n > 1 && y && y->gg.g.tok == zx_wst_Claims_ELEM; --n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -1903,10 +1903,10 @@ void zx_wst_RequestSecurityToken_DEL_Claims(struct zx_wst_RequestSecurityToken_s
   case -1:
     y = (struct zx_wst_Claims_s*)x->Claims;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Claims_ELEM; y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Claims; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
+    for (y = x->Claims; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Claims_ELEM; --n, y = (struct zx_wst_Claims_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -1925,7 +1925,7 @@ int zx_wst_RequestSecurityToken_NUM_Entropy(struct zx_wst_RequestSecurityToken_s
   struct zx_wst_Entropy_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Entropy; y; ++n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+  for (y = x->Entropy; y && y->gg.g.tok == zx_wst_Entropy_ELEM; ++n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -1935,7 +1935,7 @@ struct zx_wst_Entropy_s* zx_wst_RequestSecurityToken_GET_Entropy(struct zx_wst_R
 {
   struct zx_wst_Entropy_s* y;
   if (!x) return 0;
-  for (y = x->Entropy; n>=0 && y; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+  for (y = x->Entropy; n>=0 && y && y->gg.g.tok == zx_wst_Entropy_ELEM; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -1992,7 +1992,7 @@ void zx_wst_RequestSecurityToken_PUT_Entropy(struct zx_wst_RequestSecurityToken_
     x->Entropy = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Entropy_ELEM; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2014,10 +2014,10 @@ void zx_wst_RequestSecurityToken_ADD_Entropy(struct zx_wst_RequestSecurityToken_
   case -1:
     y = x->Entropy;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Entropy_ELEM; y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Entropy; n > 1 && y; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (y = x->Entropy; n > 1 && y && y->gg.g.tok == zx_wst_Entropy_ELEM; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2037,10 +2037,10 @@ void zx_wst_RequestSecurityToken_DEL_Entropy(struct zx_wst_RequestSecurityToken_
   case -1:
     y = (struct zx_wst_Entropy_s*)x->Entropy;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Entropy_ELEM; y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Entropy; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (y = x->Entropy; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Entropy_ELEM; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2059,7 +2059,7 @@ int zx_wst_RequestSecurityToken_NUM_Lifetime(struct zx_wst_RequestSecurityToken_
   struct zx_wst_Lifetime_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Lifetime; y; ++n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+  for (y = x->Lifetime; y && y->gg.g.tok == zx_wst_Lifetime_ELEM; ++n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2069,7 +2069,7 @@ struct zx_wst_Lifetime_s* zx_wst_RequestSecurityToken_GET_Lifetime(struct zx_wst
 {
   struct zx_wst_Lifetime_s* y;
   if (!x) return 0;
-  for (y = x->Lifetime; n>=0 && y; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+  for (y = x->Lifetime; n>=0 && y && y->gg.g.tok == zx_wst_Lifetime_ELEM; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2126,7 +2126,7 @@ void zx_wst_RequestSecurityToken_PUT_Lifetime(struct zx_wst_RequestSecurityToken
     x->Lifetime = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Lifetime_ELEM; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2148,10 +2148,10 @@ void zx_wst_RequestSecurityToken_ADD_Lifetime(struct zx_wst_RequestSecurityToken
   case -1:
     y = x->Lifetime;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Lifetime_ELEM; y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Lifetime; n > 1 && y; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (y = x->Lifetime; n > 1 && y && y->gg.g.tok == zx_wst_Lifetime_ELEM; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2171,10 +2171,10 @@ void zx_wst_RequestSecurityToken_DEL_Lifetime(struct zx_wst_RequestSecurityToken
   case -1:
     y = (struct zx_wst_Lifetime_s*)x->Lifetime;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Lifetime_ELEM; y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Lifetime; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (y = x->Lifetime; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Lifetime_ELEM; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2193,7 +2193,7 @@ int zx_wst_RequestSecurityToken_NUM_AllowPostdating(struct zx_wst_RequestSecurit
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AllowPostdating; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AllowPostdating; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2203,7 +2203,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_AllowPostdating(struct zx_wst_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->AllowPostdating; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AllowPostdating; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2260,7 +2260,7 @@ void zx_wst_RequestSecurityToken_PUT_AllowPostdating(struct zx_wst_RequestSecuri
     x->AllowPostdating = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2282,10 +2282,10 @@ void zx_wst_RequestSecurityToken_ADD_AllowPostdating(struct zx_wst_RequestSecuri
   case -1:
     y = x->AllowPostdating;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AllowPostdating; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AllowPostdating; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2305,10 +2305,10 @@ void zx_wst_RequestSecurityToken_DEL_AllowPostdating(struct zx_wst_RequestSecuri
   case -1:
     y = (struct zx_elem_s*)x->AllowPostdating;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AllowPostdating; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AllowPostdating; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2327,7 +2327,7 @@ int zx_wst_RequestSecurityToken_NUM_Renewing(struct zx_wst_RequestSecurityToken_
   struct zx_wst_Renewing_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Renewing; y; ++n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+  for (y = x->Renewing; y && y->gg.g.tok == zx_wst_Renewing_ELEM; ++n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2337,7 +2337,7 @@ struct zx_wst_Renewing_s* zx_wst_RequestSecurityToken_GET_Renewing(struct zx_wst
 {
   struct zx_wst_Renewing_s* y;
   if (!x) return 0;
-  for (y = x->Renewing; n>=0 && y; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+  for (y = x->Renewing; n>=0 && y && y->gg.g.tok == zx_wst_Renewing_ELEM; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2394,7 +2394,7 @@ void zx_wst_RequestSecurityToken_PUT_Renewing(struct zx_wst_RequestSecurityToken
     x->Renewing = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Renewing_ELEM; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2416,10 +2416,10 @@ void zx_wst_RequestSecurityToken_ADD_Renewing(struct zx_wst_RequestSecurityToken
   case -1:
     y = x->Renewing;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Renewing_ELEM; y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Renewing; n > 1 && y; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (y = x->Renewing; n > 1 && y && y->gg.g.tok == zx_wst_Renewing_ELEM; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2439,10 +2439,10 @@ void zx_wst_RequestSecurityToken_DEL_Renewing(struct zx_wst_RequestSecurityToken
   case -1:
     y = (struct zx_wst_Renewing_s*)x->Renewing;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Renewing_ELEM; y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Renewing; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (y = x->Renewing; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Renewing_ELEM; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2461,7 +2461,7 @@ int zx_wst_RequestSecurityToken_NUM_OnBehalfOf(struct zx_wst_RequestSecurityToke
   struct zx_wst_OnBehalfOf_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->OnBehalfOf; y; ++n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+  for (y = x->OnBehalfOf; y && y->gg.g.tok == zx_wst_OnBehalfOf_ELEM; ++n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2471,7 +2471,7 @@ struct zx_wst_OnBehalfOf_s* zx_wst_RequestSecurityToken_GET_OnBehalfOf(struct zx
 {
   struct zx_wst_OnBehalfOf_s* y;
   if (!x) return 0;
-  for (y = x->OnBehalfOf; n>=0 && y; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+  for (y = x->OnBehalfOf; n>=0 && y && y->gg.g.tok == zx_wst_OnBehalfOf_ELEM; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2528,7 +2528,7 @@ void zx_wst_RequestSecurityToken_PUT_OnBehalfOf(struct zx_wst_RequestSecurityTok
     x->OnBehalfOf = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_OnBehalfOf_ELEM; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2550,10 +2550,10 @@ void zx_wst_RequestSecurityToken_ADD_OnBehalfOf(struct zx_wst_RequestSecurityTok
   case -1:
     y = x->OnBehalfOf;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_OnBehalfOf_ELEM; y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->OnBehalfOf; n > 1 && y; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (y = x->OnBehalfOf; n > 1 && y && y->gg.g.tok == zx_wst_OnBehalfOf_ELEM; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2573,10 +2573,10 @@ void zx_wst_RequestSecurityToken_DEL_OnBehalfOf(struct zx_wst_RequestSecurityTok
   case -1:
     y = (struct zx_wst_OnBehalfOf_s*)x->OnBehalfOf;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_OnBehalfOf_ELEM; y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->OnBehalfOf; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (y = x->OnBehalfOf; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_OnBehalfOf_ELEM; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2595,7 +2595,7 @@ int zx_wst_RequestSecurityToken_NUM_Issuer(struct zx_wst_RequestSecurityToken_s*
   struct zx_wst_Issuer_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Issuer; y; ++n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+  for (y = x->Issuer; y && y->gg.g.tok == zx_wst_Issuer_ELEM; ++n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -2605,7 +2605,7 @@ struct zx_wst_Issuer_s* zx_wst_RequestSecurityToken_GET_Issuer(struct zx_wst_Req
 {
   struct zx_wst_Issuer_s* y;
   if (!x) return 0;
-  for (y = x->Issuer; n>=0 && y; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+  for (y = x->Issuer; n>=0 && y && y->gg.g.tok == zx_wst_Issuer_ELEM; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -2662,7 +2662,7 @@ void zx_wst_RequestSecurityToken_PUT_Issuer(struct zx_wst_RequestSecurityToken_s
     x->Issuer = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Issuer_ELEM; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -2684,10 +2684,10 @@ void zx_wst_RequestSecurityToken_ADD_Issuer(struct zx_wst_RequestSecurityToken_s
   case -1:
     y = x->Issuer;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Issuer_ELEM; y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Issuer; n > 1 && y; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (y = x->Issuer; n > 1 && y && y->gg.g.tok == zx_wst_Issuer_ELEM; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -2707,10 +2707,10 @@ void zx_wst_RequestSecurityToken_DEL_Issuer(struct zx_wst_RequestSecurityToken_s
   case -1:
     y = (struct zx_wst_Issuer_s*)x->Issuer;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Issuer_ELEM; y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Issuer; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (y = x->Issuer; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Issuer_ELEM; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -2729,7 +2729,7 @@ int zx_wst_RequestSecurityToken_NUM_AuthenticationType(struct zx_wst_RequestSecu
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AuthenticationType; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AuthenticationType; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2739,7 +2739,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_AuthenticationType(struct zx_w
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->AuthenticationType; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AuthenticationType; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2796,7 +2796,7 @@ void zx_wst_RequestSecurityToken_PUT_AuthenticationType(struct zx_wst_RequestSec
     x->AuthenticationType = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2818,10 +2818,10 @@ void zx_wst_RequestSecurityToken_ADD_AuthenticationType(struct zx_wst_RequestSec
   case -1:
     y = x->AuthenticationType;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AuthenticationType; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AuthenticationType; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2841,10 +2841,10 @@ void zx_wst_RequestSecurityToken_DEL_AuthenticationType(struct zx_wst_RequestSec
   case -1:
     y = (struct zx_elem_s*)x->AuthenticationType;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AuthenticationType; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AuthenticationType; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2863,7 +2863,7 @@ int zx_wst_RequestSecurityToken_NUM_KeyType(struct zx_wst_RequestSecurityToken_s
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyType; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeyType; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -2873,7 +2873,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_KeyType(struct zx_wst_RequestS
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->KeyType; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeyType; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -2930,7 +2930,7 @@ void zx_wst_RequestSecurityToken_PUT_KeyType(struct zx_wst_RequestSecurityToken_
     x->KeyType = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -2952,10 +2952,10 @@ void zx_wst_RequestSecurityToken_ADD_KeyType(struct zx_wst_RequestSecurityToken_
   case -1:
     y = x->KeyType;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeyType; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeyType; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -2975,10 +2975,10 @@ void zx_wst_RequestSecurityToken_DEL_KeyType(struct zx_wst_RequestSecurityToken_
   case -1:
     y = (struct zx_elem_s*)x->KeyType;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeyType; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeyType; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -2997,7 +2997,7 @@ int zx_wst_RequestSecurityToken_NUM_KeySize(struct zx_wst_RequestSecurityToken_s
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeySize; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeySize; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3007,7 +3007,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_KeySize(struct zx_wst_RequestS
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->KeySize; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeySize; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3064,7 +3064,7 @@ void zx_wst_RequestSecurityToken_PUT_KeySize(struct zx_wst_RequestSecurityToken_
     x->KeySize = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3086,10 +3086,10 @@ void zx_wst_RequestSecurityToken_ADD_KeySize(struct zx_wst_RequestSecurityToken_
   case -1:
     y = x->KeySize;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeySize; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeySize; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3109,10 +3109,10 @@ void zx_wst_RequestSecurityToken_DEL_KeySize(struct zx_wst_RequestSecurityToken_
   case -1:
     y = (struct zx_elem_s*)x->KeySize;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeySize; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeySize; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3131,7 +3131,7 @@ int zx_wst_RequestSecurityToken_NUM_SignatureAlgorithm(struct zx_wst_RequestSecu
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SignatureAlgorithm; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SignatureAlgorithm; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3141,7 +3141,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_SignatureAlgorithm(struct zx_w
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->SignatureAlgorithm; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SignatureAlgorithm; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3198,7 +3198,7 @@ void zx_wst_RequestSecurityToken_PUT_SignatureAlgorithm(struct zx_wst_RequestSec
     x->SignatureAlgorithm = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3220,10 +3220,10 @@ void zx_wst_RequestSecurityToken_ADD_SignatureAlgorithm(struct zx_wst_RequestSec
   case -1:
     y = x->SignatureAlgorithm;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SignatureAlgorithm; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SignatureAlgorithm; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3243,10 +3243,10 @@ void zx_wst_RequestSecurityToken_DEL_SignatureAlgorithm(struct zx_wst_RequestSec
   case -1:
     y = (struct zx_elem_s*)x->SignatureAlgorithm;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SignatureAlgorithm; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SignatureAlgorithm; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3265,7 +3265,7 @@ int zx_wst_RequestSecurityToken_NUM_Encryption(struct zx_wst_RequestSecurityToke
   struct zx_wst_Encryption_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Encryption; y; ++n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+  for (y = x->Encryption; y && y->gg.g.tok == zx_wst_Encryption_ELEM; ++n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3275,7 +3275,7 @@ struct zx_wst_Encryption_s* zx_wst_RequestSecurityToken_GET_Encryption(struct zx
 {
   struct zx_wst_Encryption_s* y;
   if (!x) return 0;
-  for (y = x->Encryption; n>=0 && y; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+  for (y = x->Encryption; n>=0 && y && y->gg.g.tok == zx_wst_Encryption_ELEM; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3332,7 +3332,7 @@ void zx_wst_RequestSecurityToken_PUT_Encryption(struct zx_wst_RequestSecurityTok
     x->Encryption = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Encryption_ELEM; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3354,10 +3354,10 @@ void zx_wst_RequestSecurityToken_ADD_Encryption(struct zx_wst_RequestSecurityTok
   case -1:
     y = x->Encryption;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Encryption_ELEM; y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Encryption; n > 1 && y; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (y = x->Encryption; n > 1 && y && y->gg.g.tok == zx_wst_Encryption_ELEM; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3377,10 +3377,10 @@ void zx_wst_RequestSecurityToken_DEL_Encryption(struct zx_wst_RequestSecurityTok
   case -1:
     y = (struct zx_wst_Encryption_s*)x->Encryption;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Encryption_ELEM; y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Encryption; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (y = x->Encryption; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Encryption_ELEM; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3399,7 +3399,7 @@ int zx_wst_RequestSecurityToken_NUM_EncryptionAlgorithm(struct zx_wst_RequestSec
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptionAlgorithm; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->EncryptionAlgorithm; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3409,7 +3409,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_EncryptionAlgorithm(struct zx_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->EncryptionAlgorithm; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->EncryptionAlgorithm; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3466,7 +3466,7 @@ void zx_wst_RequestSecurityToken_PUT_EncryptionAlgorithm(struct zx_wst_RequestSe
     x->EncryptionAlgorithm = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3488,10 +3488,10 @@ void zx_wst_RequestSecurityToken_ADD_EncryptionAlgorithm(struct zx_wst_RequestSe
   case -1:
     y = x->EncryptionAlgorithm;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->EncryptionAlgorithm; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->EncryptionAlgorithm; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3511,10 +3511,10 @@ void zx_wst_RequestSecurityToken_DEL_EncryptionAlgorithm(struct zx_wst_RequestSe
   case -1:
     y = (struct zx_elem_s*)x->EncryptionAlgorithm;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->EncryptionAlgorithm; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->EncryptionAlgorithm; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3533,7 +3533,7 @@ int zx_wst_RequestSecurityToken_NUM_CanonicalizationAlgorithm(struct zx_wst_Requ
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CanonicalizationAlgorithm; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CanonicalizationAlgorithm; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3543,7 +3543,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_CanonicalizationAlgorithm(stru
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->CanonicalizationAlgorithm; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CanonicalizationAlgorithm; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -3600,7 +3600,7 @@ void zx_wst_RequestSecurityToken_PUT_CanonicalizationAlgorithm(struct zx_wst_Req
     x->CanonicalizationAlgorithm = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -3622,10 +3622,10 @@ void zx_wst_RequestSecurityToken_ADD_CanonicalizationAlgorithm(struct zx_wst_Req
   case -1:
     y = x->CanonicalizationAlgorithm;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CanonicalizationAlgorithm; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CanonicalizationAlgorithm; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -3645,10 +3645,10 @@ void zx_wst_RequestSecurityToken_DEL_CanonicalizationAlgorithm(struct zx_wst_Req
   case -1:
     y = (struct zx_elem_s*)x->CanonicalizationAlgorithm;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CanonicalizationAlgorithm; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CanonicalizationAlgorithm; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -3667,7 +3667,7 @@ int zx_wst_RequestSecurityToken_NUM_ProofEncryption(struct zx_wst_RequestSecurit
   struct zx_wst_ProofEncryption_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ProofEncryption; y; ++n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+  for (y = x->ProofEncryption; y && y->gg.g.tok == zx_wst_ProofEncryption_ELEM; ++n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3677,7 +3677,7 @@ struct zx_wst_ProofEncryption_s* zx_wst_RequestSecurityToken_GET_ProofEncryption
 {
   struct zx_wst_ProofEncryption_s* y;
   if (!x) return 0;
-  for (y = x->ProofEncryption; n>=0 && y; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+  for (y = x->ProofEncryption; n>=0 && y && y->gg.g.tok == zx_wst_ProofEncryption_ELEM; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3734,7 +3734,7 @@ void zx_wst_RequestSecurityToken_PUT_ProofEncryption(struct zx_wst_RequestSecuri
     x->ProofEncryption = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_ProofEncryption_ELEM; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3756,10 +3756,10 @@ void zx_wst_RequestSecurityToken_ADD_ProofEncryption(struct zx_wst_RequestSecuri
   case -1:
     y = x->ProofEncryption;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_ProofEncryption_ELEM; y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ProofEncryption; n > 1 && y; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (y = x->ProofEncryption; n > 1 && y && y->gg.g.tok == zx_wst_ProofEncryption_ELEM; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3779,10 +3779,10 @@ void zx_wst_RequestSecurityToken_DEL_ProofEncryption(struct zx_wst_RequestSecuri
   case -1:
     y = (struct zx_wst_ProofEncryption_s*)x->ProofEncryption;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_ProofEncryption_ELEM; y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ProofEncryption; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (y = x->ProofEncryption; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_ProofEncryption_ELEM; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3801,7 +3801,7 @@ int zx_wst_RequestSecurityToken_NUM_UseKey(struct zx_wst_RequestSecurityToken_s*
   struct zx_wst_UseKey_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->UseKey; y; ++n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+  for (y = x->UseKey; y && y->gg.g.tok == zx_wst_UseKey_ELEM; ++n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -3811,7 +3811,7 @@ struct zx_wst_UseKey_s* zx_wst_RequestSecurityToken_GET_UseKey(struct zx_wst_Req
 {
   struct zx_wst_UseKey_s* y;
   if (!x) return 0;
-  for (y = x->UseKey; n>=0 && y; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+  for (y = x->UseKey; n>=0 && y && y->gg.g.tok == zx_wst_UseKey_ELEM; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -3868,7 +3868,7 @@ void zx_wst_RequestSecurityToken_PUT_UseKey(struct zx_wst_RequestSecurityToken_s
     x->UseKey = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_UseKey_ELEM; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -3890,10 +3890,10 @@ void zx_wst_RequestSecurityToken_ADD_UseKey(struct zx_wst_RequestSecurityToken_s
   case -1:
     y = x->UseKey;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_UseKey_ELEM; y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->UseKey; n > 1 && y; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (y = x->UseKey; n > 1 && y && y->gg.g.tok == zx_wst_UseKey_ELEM; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -3913,10 +3913,10 @@ void zx_wst_RequestSecurityToken_DEL_UseKey(struct zx_wst_RequestSecurityToken_s
   case -1:
     y = (struct zx_wst_UseKey_s*)x->UseKey;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_UseKey_ELEM; y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->UseKey; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (y = x->UseKey; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_UseKey_ELEM; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -3935,7 +3935,7 @@ int zx_wst_RequestSecurityToken_NUM_SignWith(struct zx_wst_RequestSecurityToken_
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SignWith; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SignWith; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -3945,7 +3945,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_SignWith(struct zx_wst_Request
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->SignWith; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SignWith; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -4002,7 +4002,7 @@ void zx_wst_RequestSecurityToken_PUT_SignWith(struct zx_wst_RequestSecurityToken
     x->SignWith = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -4024,10 +4024,10 @@ void zx_wst_RequestSecurityToken_ADD_SignWith(struct zx_wst_RequestSecurityToken
   case -1:
     y = x->SignWith;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SignWith; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SignWith; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -4047,10 +4047,10 @@ void zx_wst_RequestSecurityToken_DEL_SignWith(struct zx_wst_RequestSecurityToken
   case -1:
     y = (struct zx_elem_s*)x->SignWith;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SignWith; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SignWith; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -4069,7 +4069,7 @@ int zx_wst_RequestSecurityToken_NUM_EncryptWith(struct zx_wst_RequestSecurityTok
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptWith; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->EncryptWith; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -4079,7 +4079,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_EncryptWith(struct zx_wst_Requ
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->EncryptWith; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->EncryptWith; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -4136,7 +4136,7 @@ void zx_wst_RequestSecurityToken_PUT_EncryptWith(struct zx_wst_RequestSecurityTo
     x->EncryptWith = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -4158,10 +4158,10 @@ void zx_wst_RequestSecurityToken_ADD_EncryptWith(struct zx_wst_RequestSecurityTo
   case -1:
     y = x->EncryptWith;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->EncryptWith; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->EncryptWith; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -4181,10 +4181,10 @@ void zx_wst_RequestSecurityToken_DEL_EncryptWith(struct zx_wst_RequestSecurityTo
   case -1:
     y = (struct zx_elem_s*)x->EncryptWith;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->EncryptWith; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->EncryptWith; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -4203,7 +4203,7 @@ int zx_wst_RequestSecurityToken_NUM_DelegateTo(struct zx_wst_RequestSecurityToke
   struct zx_wst_DelegateTo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->DelegateTo; y; ++n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+  for (y = x->DelegateTo; y && y->gg.g.tok == zx_wst_DelegateTo_ELEM; ++n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4213,7 +4213,7 @@ struct zx_wst_DelegateTo_s* zx_wst_RequestSecurityToken_GET_DelegateTo(struct zx
 {
   struct zx_wst_DelegateTo_s* y;
   if (!x) return 0;
-  for (y = x->DelegateTo; n>=0 && y; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+  for (y = x->DelegateTo; n>=0 && y && y->gg.g.tok == zx_wst_DelegateTo_ELEM; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4270,7 +4270,7 @@ void zx_wst_RequestSecurityToken_PUT_DelegateTo(struct zx_wst_RequestSecurityTok
     x->DelegateTo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_DelegateTo_ELEM; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4292,10 +4292,10 @@ void zx_wst_RequestSecurityToken_ADD_DelegateTo(struct zx_wst_RequestSecurityTok
   case -1:
     y = x->DelegateTo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_DelegateTo_ELEM; y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DelegateTo; n > 1 && y; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (y = x->DelegateTo; n > 1 && y && y->gg.g.tok == zx_wst_DelegateTo_ELEM; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4315,10 +4315,10 @@ void zx_wst_RequestSecurityToken_DEL_DelegateTo(struct zx_wst_RequestSecurityTok
   case -1:
     y = (struct zx_wst_DelegateTo_s*)x->DelegateTo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_DelegateTo_ELEM; y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DelegateTo; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (y = x->DelegateTo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_DelegateTo_ELEM; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4337,7 +4337,7 @@ int zx_wst_RequestSecurityToken_NUM_Forwardable(struct zx_wst_RequestSecurityTok
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Forwardable; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Forwardable; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -4347,7 +4347,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_Forwardable(struct zx_wst_Requ
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Forwardable; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Forwardable; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -4404,7 +4404,7 @@ void zx_wst_RequestSecurityToken_PUT_Forwardable(struct zx_wst_RequestSecurityTo
     x->Forwardable = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -4426,10 +4426,10 @@ void zx_wst_RequestSecurityToken_ADD_Forwardable(struct zx_wst_RequestSecurityTo
   case -1:
     y = x->Forwardable;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Forwardable; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Forwardable; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -4449,10 +4449,10 @@ void zx_wst_RequestSecurityToken_DEL_Forwardable(struct zx_wst_RequestSecurityTo
   case -1:
     y = (struct zx_elem_s*)x->Forwardable;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Forwardable; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Forwardable; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -4471,7 +4471,7 @@ int zx_wst_RequestSecurityToken_NUM_Delegatable(struct zx_wst_RequestSecurityTok
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Delegatable; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Delegatable; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -4481,7 +4481,7 @@ struct zx_elem_s* zx_wst_RequestSecurityToken_GET_Delegatable(struct zx_wst_Requ
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Delegatable; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Delegatable; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -4538,7 +4538,7 @@ void zx_wst_RequestSecurityToken_PUT_Delegatable(struct zx_wst_RequestSecurityTo
     x->Delegatable = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -4560,10 +4560,10 @@ void zx_wst_RequestSecurityToken_ADD_Delegatable(struct zx_wst_RequestSecurityTo
   case -1:
     y = x->Delegatable;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Delegatable; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Delegatable; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -4583,10 +4583,10 @@ void zx_wst_RequestSecurityToken_DEL_Delegatable(struct zx_wst_RequestSecurityTo
   case -1:
     y = (struct zx_elem_s*)x->Delegatable;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Delegatable; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Delegatable; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -4605,7 +4605,7 @@ int zx_wst_RequestSecurityToken_NUM_Policy(struct zx_wst_RequestSecurityToken_s*
   struct zx_wsp_Policy_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Policy; y; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; y && y->gg.g.tok == zx_wsp_Policy_ELEM; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4615,7 +4615,7 @@ struct zx_wsp_Policy_s* zx_wst_RequestSecurityToken_GET_Policy(struct zx_wst_Req
 {
   struct zx_wsp_Policy_s* y;
   if (!x) return 0;
-  for (y = x->Policy; n>=0 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; n>=0 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4672,7 +4672,7 @@ void zx_wst_RequestSecurityToken_PUT_Policy(struct zx_wst_RequestSecurityToken_s
     x->Policy = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4694,10 +4694,10 @@ void zx_wst_RequestSecurityToken_ADD_Policy(struct zx_wst_RequestSecurityToken_s
   case -1:
     y = x->Policy;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4717,10 +4717,10 @@ void zx_wst_RequestSecurityToken_DEL_Policy(struct zx_wst_RequestSecurityToken_s
   case -1:
     y = (struct zx_wsp_Policy_s*)x->Policy;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4739,7 +4739,7 @@ int zx_wst_RequestSecurityToken_NUM_PolicyReference(struct zx_wst_RequestSecurit
   struct zx_wsp_PolicyReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PolicyReference; y; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4749,7 +4749,7 @@ struct zx_wsp_PolicyReference_s* zx_wst_RequestSecurityToken_GET_PolicyReference
 {
   struct zx_wsp_PolicyReference_s* y;
   if (!x) return 0;
-  for (y = x->PolicyReference; n>=0 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; n>=0 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4806,7 +4806,7 @@ void zx_wst_RequestSecurityToken_PUT_PolicyReference(struct zx_wst_RequestSecuri
     x->PolicyReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4828,10 +4828,10 @@ void zx_wst_RequestSecurityToken_ADD_PolicyReference(struct zx_wst_RequestSecuri
   case -1:
     y = x->PolicyReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4851,10 +4851,10 @@ void zx_wst_RequestSecurityToken_DEL_PolicyReference(struct zx_wst_RequestSecuri
   case -1:
     y = (struct zx_wsp_PolicyReference_s*)x->PolicyReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -4882,7 +4882,7 @@ int zx_wst_RequestSecurityTokenCollection_NUM_RequestSecurityToken(struct zx_wst
   struct zx_wst_RequestSecurityToken_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RequestSecurityToken; y; ++n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
+  for (y = x->RequestSecurityToken; y && y->gg.g.tok == zx_wst_RequestSecurityToken_ELEM; ++n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -4892,7 +4892,7 @@ struct zx_wst_RequestSecurityToken_s* zx_wst_RequestSecurityTokenCollection_GET_
 {
   struct zx_wst_RequestSecurityToken_s* y;
   if (!x) return 0;
-  for (y = x->RequestSecurityToken; n>=0 && y; --n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
+  for (y = x->RequestSecurityToken; n>=0 && y && y->gg.g.tok == zx_wst_RequestSecurityToken_ELEM; --n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -4949,7 +4949,7 @@ void zx_wst_RequestSecurityTokenCollection_PUT_RequestSecurityToken(struct zx_ws
     x->RequestSecurityToken = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityToken_ELEM; --n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -4971,10 +4971,10 @@ void zx_wst_RequestSecurityTokenCollection_ADD_RequestSecurityToken(struct zx_ws
   case -1:
     y = x->RequestSecurityToken;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityToken_ELEM; y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestSecurityToken; n > 1 && y; --n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
+    for (y = x->RequestSecurityToken; n > 1 && y && y->gg.g.tok == zx_wst_RequestSecurityToken_ELEM; --n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -4994,10 +4994,10 @@ void zx_wst_RequestSecurityTokenCollection_DEL_RequestSecurityToken(struct zx_ws
   case -1:
     y = (struct zx_wst_RequestSecurityToken_s*)x->RequestSecurityToken;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityToken_ELEM; y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestSecurityToken; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
+    for (y = x->RequestSecurityToken; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityToken_ELEM; --n, y = (struct zx_wst_RequestSecurityToken_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5021,7 +5021,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_TokenType(struct zx_wst_RequestSecur
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->TokenType; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->TokenType; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -5031,7 +5031,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_TokenType(struct zx_ws
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->TokenType; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->TokenType; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -5088,7 +5088,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_TokenType(struct zx_wst_RequestSecu
     x->TokenType = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -5110,10 +5110,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_TokenType(struct zx_wst_RequestSecu
   case -1:
     y = x->TokenType;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->TokenType; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->TokenType; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -5133,10 +5133,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_TokenType(struct zx_wst_RequestSecu
   case -1:
     y = (struct zx_elem_s*)x->TokenType;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->TokenType; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->TokenType; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -5155,7 +5155,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_RequestType(struct zx_wst_RequestSec
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RequestType; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->RequestType; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -5165,7 +5165,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_RequestType(struct zx_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->RequestType; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->RequestType; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -5222,7 +5222,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_RequestType(struct zx_wst_RequestSe
     x->RequestType = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -5244,10 +5244,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_RequestType(struct zx_wst_RequestSe
   case -1:
     y = x->RequestType;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->RequestType; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->RequestType; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -5267,10 +5267,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_RequestType(struct zx_wst_RequestSe
   case -1:
     y = (struct zx_elem_s*)x->RequestType;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->RequestType; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->RequestType; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -5289,7 +5289,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_RequestedSecurityToken(struct zx_wst
   struct zx_wst_RequestedSecurityToken_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RequestedSecurityToken; y; ++n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
+  for (y = x->RequestedSecurityToken; y && y->gg.g.tok == zx_wst_RequestedSecurityToken_ELEM; ++n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5299,7 +5299,7 @@ struct zx_wst_RequestedSecurityToken_s* zx_wst_RequestSecurityTokenResponse_GET_
 {
   struct zx_wst_RequestedSecurityToken_s* y;
   if (!x) return 0;
-  for (y = x->RequestedSecurityToken; n>=0 && y; --n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
+  for (y = x->RequestedSecurityToken; n>=0 && y && y->gg.g.tok == zx_wst_RequestedSecurityToken_ELEM; --n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5356,7 +5356,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_RequestedSecurityToken(struct zx_ws
     x->RequestedSecurityToken = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedSecurityToken_ELEM; --n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5378,10 +5378,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_RequestedSecurityToken(struct zx_ws
   case -1:
     y = x->RequestedSecurityToken;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedSecurityToken_ELEM; y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestedSecurityToken; n > 1 && y; --n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
+    for (y = x->RequestedSecurityToken; n > 1 && y && y->gg.g.tok == zx_wst_RequestedSecurityToken_ELEM; --n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5401,10 +5401,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_RequestedSecurityToken(struct zx_ws
   case -1:
     y = (struct zx_wst_RequestedSecurityToken_s*)x->RequestedSecurityToken;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedSecurityToken_ELEM; y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestedSecurityToken; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
+    for (y = x->RequestedSecurityToken; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedSecurityToken_ELEM; --n, y = (struct zx_wst_RequestedSecurityToken_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5423,7 +5423,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_AppliesTo(struct zx_wst_RequestSecur
   struct zx_wsp_AppliesTo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AppliesTo; y; ++n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+  for (y = x->AppliesTo; y && y->gg.g.tok == zx_wsp_AppliesTo_ELEM; ++n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5433,7 +5433,7 @@ struct zx_wsp_AppliesTo_s* zx_wst_RequestSecurityTokenResponse_GET_AppliesTo(str
 {
   struct zx_wsp_AppliesTo_s* y;
   if (!x) return 0;
-  for (y = x->AppliesTo; n>=0 && y; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+  for (y = x->AppliesTo; n>=0 && y && y->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5490,7 +5490,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_AppliesTo(struct zx_wst_RequestSecu
     x->AppliesTo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5512,10 +5512,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_AppliesTo(struct zx_wst_RequestSecu
   case -1:
     y = x->AppliesTo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AppliesTo; n > 1 && y; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (y = x->AppliesTo; n > 1 && y && y->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5535,10 +5535,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_AppliesTo(struct zx_wst_RequestSecu
   case -1:
     y = (struct zx_wsp_AppliesTo_s*)x->AppliesTo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->AppliesTo; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
+    for (y = x->AppliesTo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_AppliesTo_ELEM; --n, y = (struct zx_wsp_AppliesTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5557,7 +5557,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_RequestedAttachedReference(struct zx
   struct zx_wst_RequestedAttachedReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RequestedAttachedReference; y; ++n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
+  for (y = x->RequestedAttachedReference; y && y->gg.g.tok == zx_wst_RequestedAttachedReference_ELEM; ++n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5567,7 +5567,7 @@ struct zx_wst_RequestedAttachedReference_s* zx_wst_RequestSecurityTokenResponse_
 {
   struct zx_wst_RequestedAttachedReference_s* y;
   if (!x) return 0;
-  for (y = x->RequestedAttachedReference; n>=0 && y; --n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
+  for (y = x->RequestedAttachedReference; n>=0 && y && y->gg.g.tok == zx_wst_RequestedAttachedReference_ELEM; --n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5624,7 +5624,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_RequestedAttachedReference(struct z
     x->RequestedAttachedReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedAttachedReference_ELEM; --n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5646,10 +5646,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_RequestedAttachedReference(struct z
   case -1:
     y = x->RequestedAttachedReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedAttachedReference_ELEM; y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestedAttachedReference; n > 1 && y; --n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
+    for (y = x->RequestedAttachedReference; n > 1 && y && y->gg.g.tok == zx_wst_RequestedAttachedReference_ELEM; --n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5669,10 +5669,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_RequestedAttachedReference(struct z
   case -1:
     y = (struct zx_wst_RequestedAttachedReference_s*)x->RequestedAttachedReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedAttachedReference_ELEM; y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestedAttachedReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
+    for (y = x->RequestedAttachedReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedAttachedReference_ELEM; --n, y = (struct zx_wst_RequestedAttachedReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5691,7 +5691,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_RequestedUnattachedReference(struct 
   struct zx_wst_RequestedUnattachedReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RequestedUnattachedReference; y; ++n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
+  for (y = x->RequestedUnattachedReference; y && y->gg.g.tok == zx_wst_RequestedUnattachedReference_ELEM; ++n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5701,7 +5701,7 @@ struct zx_wst_RequestedUnattachedReference_s* zx_wst_RequestSecurityTokenRespons
 {
   struct zx_wst_RequestedUnattachedReference_s* y;
   if (!x) return 0;
-  for (y = x->RequestedUnattachedReference; n>=0 && y; --n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
+  for (y = x->RequestedUnattachedReference; n>=0 && y && y->gg.g.tok == zx_wst_RequestedUnattachedReference_ELEM; --n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5758,7 +5758,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_RequestedUnattachedReference(struct
     x->RequestedUnattachedReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedUnattachedReference_ELEM; --n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5780,10 +5780,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_RequestedUnattachedReference(struct
   case -1:
     y = x->RequestedUnattachedReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedUnattachedReference_ELEM; y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestedUnattachedReference; n > 1 && y; --n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
+    for (y = x->RequestedUnattachedReference; n > 1 && y && y->gg.g.tok == zx_wst_RequestedUnattachedReference_ELEM; --n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5803,10 +5803,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_RequestedUnattachedReference(struct
   case -1:
     y = (struct zx_wst_RequestedUnattachedReference_s*)x->RequestedUnattachedReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedUnattachedReference_ELEM; y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestedUnattachedReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
+    for (y = x->RequestedUnattachedReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedUnattachedReference_ELEM; --n, y = (struct zx_wst_RequestedUnattachedReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5825,7 +5825,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_RequestedProofToken(struct zx_wst_Re
   struct zx_wst_RequestedProofToken_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RequestedProofToken; y; ++n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
+  for (y = x->RequestedProofToken; y && y->gg.g.tok == zx_wst_RequestedProofToken_ELEM; ++n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5835,7 +5835,7 @@ struct zx_wst_RequestedProofToken_s* zx_wst_RequestSecurityTokenResponse_GET_Req
 {
   struct zx_wst_RequestedProofToken_s* y;
   if (!x) return 0;
-  for (y = x->RequestedProofToken; n>=0 && y; --n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
+  for (y = x->RequestedProofToken; n>=0 && y && y->gg.g.tok == zx_wst_RequestedProofToken_ELEM; --n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -5892,7 +5892,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_RequestedProofToken(struct zx_wst_R
     x->RequestedProofToken = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedProofToken_ELEM; --n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -5914,10 +5914,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_RequestedProofToken(struct zx_wst_R
   case -1:
     y = x->RequestedProofToken;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedProofToken_ELEM; y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestedProofToken; n > 1 && y; --n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
+    for (y = x->RequestedProofToken; n > 1 && y && y->gg.g.tok == zx_wst_RequestedProofToken_ELEM; --n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -5937,10 +5937,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_RequestedProofToken(struct zx_wst_R
   case -1:
     y = (struct zx_wst_RequestedProofToken_s*)x->RequestedProofToken;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedProofToken_ELEM; y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestedProofToken; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
+    for (y = x->RequestedProofToken; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestedProofToken_ELEM; --n, y = (struct zx_wst_RequestedProofToken_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -5959,7 +5959,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Entropy(struct zx_wst_RequestSecurit
   struct zx_wst_Entropy_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Entropy; y; ++n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+  for (y = x->Entropy; y && y->gg.g.tok == zx_wst_Entropy_ELEM; ++n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -5969,7 +5969,7 @@ struct zx_wst_Entropy_s* zx_wst_RequestSecurityTokenResponse_GET_Entropy(struct 
 {
   struct zx_wst_Entropy_s* y;
   if (!x) return 0;
-  for (y = x->Entropy; n>=0 && y; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+  for (y = x->Entropy; n>=0 && y && y->gg.g.tok == zx_wst_Entropy_ELEM; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6026,7 +6026,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Entropy(struct zx_wst_RequestSecuri
     x->Entropy = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Entropy_ELEM; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6048,10 +6048,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Entropy(struct zx_wst_RequestSecuri
   case -1:
     y = x->Entropy;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Entropy_ELEM; y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Entropy; n > 1 && y; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (y = x->Entropy; n > 1 && y && y->gg.g.tok == zx_wst_Entropy_ELEM; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6071,10 +6071,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Entropy(struct zx_wst_RequestSecuri
   case -1:
     y = (struct zx_wst_Entropy_s*)x->Entropy;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Entropy_ELEM; y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Entropy; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
+    for (y = x->Entropy; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Entropy_ELEM; --n, y = (struct zx_wst_Entropy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6093,7 +6093,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Lifetime(struct zx_wst_RequestSecuri
   struct zx_wst_Lifetime_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Lifetime; y; ++n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+  for (y = x->Lifetime; y && y->gg.g.tok == zx_wst_Lifetime_ELEM; ++n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6103,7 +6103,7 @@ struct zx_wst_Lifetime_s* zx_wst_RequestSecurityTokenResponse_GET_Lifetime(struc
 {
   struct zx_wst_Lifetime_s* y;
   if (!x) return 0;
-  for (y = x->Lifetime; n>=0 && y; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+  for (y = x->Lifetime; n>=0 && y && y->gg.g.tok == zx_wst_Lifetime_ELEM; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6160,7 +6160,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Lifetime(struct zx_wst_RequestSecur
     x->Lifetime = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Lifetime_ELEM; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6182,10 +6182,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Lifetime(struct zx_wst_RequestSecur
   case -1:
     y = x->Lifetime;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Lifetime_ELEM; y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Lifetime; n > 1 && y; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (y = x->Lifetime; n > 1 && y && y->gg.g.tok == zx_wst_Lifetime_ELEM; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6205,10 +6205,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Lifetime(struct zx_wst_RequestSecur
   case -1:
     y = (struct zx_wst_Lifetime_s*)x->Lifetime;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Lifetime_ELEM; y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Lifetime; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
+    for (y = x->Lifetime; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Lifetime_ELEM; --n, y = (struct zx_wst_Lifetime_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6227,7 +6227,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Status(struct zx_wst_RequestSecurity
   struct zx_wst_Status_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Status; y; ++n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; y && y->gg.g.tok == zx_wst_Status_ELEM; ++n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6237,7 +6237,7 @@ struct zx_wst_Status_s* zx_wst_RequestSecurityTokenResponse_GET_Status(struct zx
 {
   struct zx_wst_Status_s* y;
   if (!x) return 0;
-  for (y = x->Status; n>=0 && y; --n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
+  for (y = x->Status; n>=0 && y && y->gg.g.tok == zx_wst_Status_ELEM; --n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6294,7 +6294,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Status(struct zx_wst_RequestSecurit
     x->Status = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Status_ELEM; --n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6316,10 +6316,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Status(struct zx_wst_RequestSecurit
   case -1:
     y = x->Status;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Status_ELEM; y = (struct zx_wst_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y; --n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y && y->gg.g.tok == zx_wst_Status_ELEM; --n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6339,10 +6339,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Status(struct zx_wst_RequestSecurit
   case -1:
     y = (struct zx_wst_Status_s*)x->Status;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Status_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Status_ELEM; y = (struct zx_wst_Status_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Status; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
+    for (y = x->Status; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Status_ELEM; --n, y = (struct zx_wst_Status_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6361,7 +6361,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_AllowPostdating(struct zx_wst_Reques
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AllowPostdating; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AllowPostdating; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -6371,7 +6371,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_AllowPostdating(struct
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->AllowPostdating; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AllowPostdating; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -6428,7 +6428,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_AllowPostdating(struct zx_wst_Reque
     x->AllowPostdating = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -6450,10 +6450,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_AllowPostdating(struct zx_wst_Reque
   case -1:
     y = x->AllowPostdating;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AllowPostdating; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AllowPostdating; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -6473,10 +6473,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_AllowPostdating(struct zx_wst_Reque
   case -1:
     y = (struct zx_elem_s*)x->AllowPostdating;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AllowPostdating; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AllowPostdating; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -6495,7 +6495,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Renewing(struct zx_wst_RequestSecuri
   struct zx_wst_Renewing_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Renewing; y; ++n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+  for (y = x->Renewing; y && y->gg.g.tok == zx_wst_Renewing_ELEM; ++n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6505,7 +6505,7 @@ struct zx_wst_Renewing_s* zx_wst_RequestSecurityTokenResponse_GET_Renewing(struc
 {
   struct zx_wst_Renewing_s* y;
   if (!x) return 0;
-  for (y = x->Renewing; n>=0 && y; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+  for (y = x->Renewing; n>=0 && y && y->gg.g.tok == zx_wst_Renewing_ELEM; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6562,7 +6562,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Renewing(struct zx_wst_RequestSecur
     x->Renewing = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Renewing_ELEM; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6584,10 +6584,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Renewing(struct zx_wst_RequestSecur
   case -1:
     y = x->Renewing;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Renewing_ELEM; y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Renewing; n > 1 && y; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (y = x->Renewing; n > 1 && y && y->gg.g.tok == zx_wst_Renewing_ELEM; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6607,10 +6607,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Renewing(struct zx_wst_RequestSecur
   case -1:
     y = (struct zx_wst_Renewing_s*)x->Renewing;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Renewing_ELEM; y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Renewing; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
+    for (y = x->Renewing; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Renewing_ELEM; --n, y = (struct zx_wst_Renewing_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6629,7 +6629,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_OnBehalfOf(struct zx_wst_RequestSecu
   struct zx_wst_OnBehalfOf_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->OnBehalfOf; y; ++n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+  for (y = x->OnBehalfOf; y && y->gg.g.tok == zx_wst_OnBehalfOf_ELEM; ++n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6639,7 +6639,7 @@ struct zx_wst_OnBehalfOf_s* zx_wst_RequestSecurityTokenResponse_GET_OnBehalfOf(s
 {
   struct zx_wst_OnBehalfOf_s* y;
   if (!x) return 0;
-  for (y = x->OnBehalfOf; n>=0 && y; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+  for (y = x->OnBehalfOf; n>=0 && y && y->gg.g.tok == zx_wst_OnBehalfOf_ELEM; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6696,7 +6696,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_OnBehalfOf(struct zx_wst_RequestSec
     x->OnBehalfOf = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_OnBehalfOf_ELEM; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6718,10 +6718,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_OnBehalfOf(struct zx_wst_RequestSec
   case -1:
     y = x->OnBehalfOf;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_OnBehalfOf_ELEM; y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->OnBehalfOf; n > 1 && y; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (y = x->OnBehalfOf; n > 1 && y && y->gg.g.tok == zx_wst_OnBehalfOf_ELEM; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6741,10 +6741,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_OnBehalfOf(struct zx_wst_RequestSec
   case -1:
     y = (struct zx_wst_OnBehalfOf_s*)x->OnBehalfOf;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_OnBehalfOf_ELEM; y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->OnBehalfOf; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
+    for (y = x->OnBehalfOf; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_OnBehalfOf_ELEM; --n, y = (struct zx_wst_OnBehalfOf_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6763,7 +6763,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Issuer(struct zx_wst_RequestSecurity
   struct zx_wst_Issuer_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Issuer; y; ++n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+  for (y = x->Issuer; y && y->gg.g.tok == zx_wst_Issuer_ELEM; ++n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -6773,7 +6773,7 @@ struct zx_wst_Issuer_s* zx_wst_RequestSecurityTokenResponse_GET_Issuer(struct zx
 {
   struct zx_wst_Issuer_s* y;
   if (!x) return 0;
-  for (y = x->Issuer; n>=0 && y; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+  for (y = x->Issuer; n>=0 && y && y->gg.g.tok == zx_wst_Issuer_ELEM; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -6830,7 +6830,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Issuer(struct zx_wst_RequestSecurit
     x->Issuer = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Issuer_ELEM; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -6852,10 +6852,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Issuer(struct zx_wst_RequestSecurit
   case -1:
     y = x->Issuer;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Issuer_ELEM; y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Issuer; n > 1 && y; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (y = x->Issuer; n > 1 && y && y->gg.g.tok == zx_wst_Issuer_ELEM; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -6875,10 +6875,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Issuer(struct zx_wst_RequestSecurit
   case -1:
     y = (struct zx_wst_Issuer_s*)x->Issuer;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Issuer_ELEM; y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Issuer; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
+    for (y = x->Issuer; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Issuer_ELEM; --n, y = (struct zx_wst_Issuer_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -6897,7 +6897,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_AuthenticationType(struct zx_wst_Req
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->AuthenticationType; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AuthenticationType; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -6907,7 +6907,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_AuthenticationType(str
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->AuthenticationType; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->AuthenticationType; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -6964,7 +6964,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_AuthenticationType(struct zx_wst_Re
     x->AuthenticationType = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -6986,10 +6986,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_AuthenticationType(struct zx_wst_Re
   case -1:
     y = x->AuthenticationType;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AuthenticationType; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AuthenticationType; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7009,10 +7009,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_AuthenticationType(struct zx_wst_Re
   case -1:
     y = (struct zx_elem_s*)x->AuthenticationType;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->AuthenticationType; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->AuthenticationType; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7031,7 +7031,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Authenticator(struct zx_wst_RequestS
   struct zx_wst_Authenticator_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Authenticator; y; ++n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
+  for (y = x->Authenticator; y && y->gg.g.tok == zx_wst_Authenticator_ELEM; ++n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -7041,7 +7041,7 @@ struct zx_wst_Authenticator_s* zx_wst_RequestSecurityTokenResponse_GET_Authentic
 {
   struct zx_wst_Authenticator_s* y;
   if (!x) return 0;
-  for (y = x->Authenticator; n>=0 && y; --n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
+  for (y = x->Authenticator; n>=0 && y && y->gg.g.tok == zx_wst_Authenticator_ELEM; --n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -7098,7 +7098,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Authenticator(struct zx_wst_Request
     x->Authenticator = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Authenticator_ELEM; --n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -7120,10 +7120,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Authenticator(struct zx_wst_Request
   case -1:
     y = x->Authenticator;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Authenticator_ELEM; y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Authenticator; n > 1 && y; --n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
+    for (y = x->Authenticator; n > 1 && y && y->gg.g.tok == zx_wst_Authenticator_ELEM; --n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -7143,10 +7143,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Authenticator(struct zx_wst_Request
   case -1:
     y = (struct zx_wst_Authenticator_s*)x->Authenticator;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Authenticator_ELEM; y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Authenticator; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
+    for (y = x->Authenticator; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Authenticator_ELEM; --n, y = (struct zx_wst_Authenticator_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -7165,7 +7165,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_KeyType(struct zx_wst_RequestSecurit
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeyType; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeyType; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7175,7 +7175,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_KeyType(struct zx_wst_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->KeyType; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeyType; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7232,7 +7232,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_KeyType(struct zx_wst_RequestSecuri
     x->KeyType = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7254,10 +7254,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_KeyType(struct zx_wst_RequestSecuri
   case -1:
     y = x->KeyType;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeyType; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeyType; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7277,10 +7277,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_KeyType(struct zx_wst_RequestSecuri
   case -1:
     y = (struct zx_elem_s*)x->KeyType;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeyType; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeyType; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7299,7 +7299,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_KeySize(struct zx_wst_RequestSecurit
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->KeySize; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeySize; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7309,7 +7309,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_KeySize(struct zx_wst_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->KeySize; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->KeySize; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7366,7 +7366,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_KeySize(struct zx_wst_RequestSecuri
     x->KeySize = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7388,10 +7388,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_KeySize(struct zx_wst_RequestSecuri
   case -1:
     y = x->KeySize;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeySize; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeySize; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7411,10 +7411,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_KeySize(struct zx_wst_RequestSecuri
   case -1:
     y = (struct zx_elem_s*)x->KeySize;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->KeySize; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->KeySize; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7433,7 +7433,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_SignatureAlgorithm(struct zx_wst_Req
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SignatureAlgorithm; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SignatureAlgorithm; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7443,7 +7443,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_SignatureAlgorithm(str
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->SignatureAlgorithm; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SignatureAlgorithm; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7500,7 +7500,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_SignatureAlgorithm(struct zx_wst_Re
     x->SignatureAlgorithm = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7522,10 +7522,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_SignatureAlgorithm(struct zx_wst_Re
   case -1:
     y = x->SignatureAlgorithm;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SignatureAlgorithm; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SignatureAlgorithm; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7545,10 +7545,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_SignatureAlgorithm(struct zx_wst_Re
   case -1:
     y = (struct zx_elem_s*)x->SignatureAlgorithm;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SignatureAlgorithm; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SignatureAlgorithm; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7567,7 +7567,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Encryption(struct zx_wst_RequestSecu
   struct zx_wst_Encryption_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Encryption; y; ++n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+  for (y = x->Encryption; y && y->gg.g.tok == zx_wst_Encryption_ELEM; ++n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -7577,7 +7577,7 @@ struct zx_wst_Encryption_s* zx_wst_RequestSecurityTokenResponse_GET_Encryption(s
 {
   struct zx_wst_Encryption_s* y;
   if (!x) return 0;
-  for (y = x->Encryption; n>=0 && y; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+  for (y = x->Encryption; n>=0 && y && y->gg.g.tok == zx_wst_Encryption_ELEM; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -7634,7 +7634,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Encryption(struct zx_wst_RequestSec
     x->Encryption = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Encryption_ELEM; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -7656,10 +7656,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Encryption(struct zx_wst_RequestSec
   case -1:
     y = x->Encryption;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Encryption_ELEM; y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Encryption; n > 1 && y; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (y = x->Encryption; n > 1 && y && y->gg.g.tok == zx_wst_Encryption_ELEM; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -7679,10 +7679,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Encryption(struct zx_wst_RequestSec
   case -1:
     y = (struct zx_wst_Encryption_s*)x->Encryption;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Encryption_ELEM; y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Encryption; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
+    for (y = x->Encryption; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_Encryption_ELEM; --n, y = (struct zx_wst_Encryption_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -7701,7 +7701,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_EncryptionAlgorithm(struct zx_wst_Re
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptionAlgorithm; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->EncryptionAlgorithm; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7711,7 +7711,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_EncryptionAlgorithm(st
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->EncryptionAlgorithm; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->EncryptionAlgorithm; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7768,7 +7768,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_EncryptionAlgorithm(struct zx_wst_R
     x->EncryptionAlgorithm = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7790,10 +7790,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_EncryptionAlgorithm(struct zx_wst_R
   case -1:
     y = x->EncryptionAlgorithm;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->EncryptionAlgorithm; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->EncryptionAlgorithm; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7813,10 +7813,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_EncryptionAlgorithm(struct zx_wst_R
   case -1:
     y = (struct zx_elem_s*)x->EncryptionAlgorithm;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->EncryptionAlgorithm; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->EncryptionAlgorithm; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7835,7 +7835,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_CanonicalizationAlgorithm(struct zx_
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->CanonicalizationAlgorithm; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CanonicalizationAlgorithm; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -7845,7 +7845,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_CanonicalizationAlgori
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->CanonicalizationAlgorithm; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->CanonicalizationAlgorithm; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -7902,7 +7902,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_CanonicalizationAlgorithm(struct zx
     x->CanonicalizationAlgorithm = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -7924,10 +7924,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_CanonicalizationAlgorithm(struct zx
   case -1:
     y = x->CanonicalizationAlgorithm;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CanonicalizationAlgorithm; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CanonicalizationAlgorithm; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -7947,10 +7947,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_CanonicalizationAlgorithm(struct zx
   case -1:
     y = (struct zx_elem_s*)x->CanonicalizationAlgorithm;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->CanonicalizationAlgorithm; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->CanonicalizationAlgorithm; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -7969,7 +7969,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_ProofEncryption(struct zx_wst_Reques
   struct zx_wst_ProofEncryption_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->ProofEncryption; y; ++n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+  for (y = x->ProofEncryption; y && y->gg.g.tok == zx_wst_ProofEncryption_ELEM; ++n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -7979,7 +7979,7 @@ struct zx_wst_ProofEncryption_s* zx_wst_RequestSecurityTokenResponse_GET_ProofEn
 {
   struct zx_wst_ProofEncryption_s* y;
   if (!x) return 0;
-  for (y = x->ProofEncryption; n>=0 && y; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+  for (y = x->ProofEncryption; n>=0 && y && y->gg.g.tok == zx_wst_ProofEncryption_ELEM; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8036,7 +8036,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_ProofEncryption(struct zx_wst_Reque
     x->ProofEncryption = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_ProofEncryption_ELEM; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8058,10 +8058,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_ProofEncryption(struct zx_wst_Reque
   case -1:
     y = x->ProofEncryption;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_ProofEncryption_ELEM; y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ProofEncryption; n > 1 && y; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (y = x->ProofEncryption; n > 1 && y && y->gg.g.tok == zx_wst_ProofEncryption_ELEM; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -8081,10 +8081,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_ProofEncryption(struct zx_wst_Reque
   case -1:
     y = (struct zx_wst_ProofEncryption_s*)x->ProofEncryption;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_ProofEncryption_ELEM; y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->ProofEncryption; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
+    for (y = x->ProofEncryption; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_ProofEncryption_ELEM; --n, y = (struct zx_wst_ProofEncryption_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -8103,7 +8103,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_UseKey(struct zx_wst_RequestSecurity
   struct zx_wst_UseKey_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->UseKey; y; ++n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+  for (y = x->UseKey; y && y->gg.g.tok == zx_wst_UseKey_ELEM; ++n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8113,7 +8113,7 @@ struct zx_wst_UseKey_s* zx_wst_RequestSecurityTokenResponse_GET_UseKey(struct zx
 {
   struct zx_wst_UseKey_s* y;
   if (!x) return 0;
-  for (y = x->UseKey; n>=0 && y; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+  for (y = x->UseKey; n>=0 && y && y->gg.g.tok == zx_wst_UseKey_ELEM; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8170,7 +8170,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_UseKey(struct zx_wst_RequestSecurit
     x->UseKey = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_UseKey_ELEM; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8192,10 +8192,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_UseKey(struct zx_wst_RequestSecurit
   case -1:
     y = x->UseKey;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_UseKey_ELEM; y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->UseKey; n > 1 && y; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (y = x->UseKey; n > 1 && y && y->gg.g.tok == zx_wst_UseKey_ELEM; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -8215,10 +8215,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_UseKey(struct zx_wst_RequestSecurit
   case -1:
     y = (struct zx_wst_UseKey_s*)x->UseKey;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_UseKey_ELEM; y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->UseKey; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
+    for (y = x->UseKey; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_UseKey_ELEM; --n, y = (struct zx_wst_UseKey_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -8237,7 +8237,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_SignWith(struct zx_wst_RequestSecuri
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SignWith; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SignWith; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -8247,7 +8247,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_SignWith(struct zx_wst
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->SignWith; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->SignWith; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -8304,7 +8304,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_SignWith(struct zx_wst_RequestSecur
     x->SignWith = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -8326,10 +8326,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_SignWith(struct zx_wst_RequestSecur
   case -1:
     y = x->SignWith;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SignWith; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SignWith; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -8349,10 +8349,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_SignWith(struct zx_wst_RequestSecur
   case -1:
     y = (struct zx_elem_s*)x->SignWith;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->SignWith; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->SignWith; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -8371,7 +8371,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_EncryptWith(struct zx_wst_RequestSec
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->EncryptWith; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->EncryptWith; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -8381,7 +8381,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_EncryptWith(struct zx_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->EncryptWith; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->EncryptWith; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -8438,7 +8438,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_EncryptWith(struct zx_wst_RequestSe
     x->EncryptWith = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -8460,10 +8460,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_EncryptWith(struct zx_wst_RequestSe
   case -1:
     y = x->EncryptWith;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->EncryptWith; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->EncryptWith; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -8483,10 +8483,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_EncryptWith(struct zx_wst_RequestSe
   case -1:
     y = (struct zx_elem_s*)x->EncryptWith;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->EncryptWith; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->EncryptWith; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -8505,7 +8505,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_DelegateTo(struct zx_wst_RequestSecu
   struct zx_wst_DelegateTo_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->DelegateTo; y; ++n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+  for (y = x->DelegateTo; y && y->gg.g.tok == zx_wst_DelegateTo_ELEM; ++n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8515,7 +8515,7 @@ struct zx_wst_DelegateTo_s* zx_wst_RequestSecurityTokenResponse_GET_DelegateTo(s
 {
   struct zx_wst_DelegateTo_s* y;
   if (!x) return 0;
-  for (y = x->DelegateTo; n>=0 && y; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+  for (y = x->DelegateTo; n>=0 && y && y->gg.g.tok == zx_wst_DelegateTo_ELEM; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8572,7 +8572,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_DelegateTo(struct zx_wst_RequestSec
     x->DelegateTo = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_DelegateTo_ELEM; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8594,10 +8594,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_DelegateTo(struct zx_wst_RequestSec
   case -1:
     y = x->DelegateTo;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_DelegateTo_ELEM; y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DelegateTo; n > 1 && y; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (y = x->DelegateTo; n > 1 && y && y->gg.g.tok == zx_wst_DelegateTo_ELEM; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -8617,10 +8617,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_DelegateTo(struct zx_wst_RequestSec
   case -1:
     y = (struct zx_wst_DelegateTo_s*)x->DelegateTo;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_DelegateTo_ELEM; y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->DelegateTo; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
+    for (y = x->DelegateTo; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_DelegateTo_ELEM; --n, y = (struct zx_wst_DelegateTo_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -8639,7 +8639,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Forwardable(struct zx_wst_RequestSec
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Forwardable; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Forwardable; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -8649,7 +8649,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_Forwardable(struct zx_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Forwardable; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Forwardable; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -8706,7 +8706,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Forwardable(struct zx_wst_RequestSe
     x->Forwardable = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -8728,10 +8728,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Forwardable(struct zx_wst_RequestSe
   case -1:
     y = x->Forwardable;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Forwardable; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Forwardable; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -8751,10 +8751,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Forwardable(struct zx_wst_RequestSe
   case -1:
     y = (struct zx_elem_s*)x->Forwardable;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Forwardable; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Forwardable; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -8773,7 +8773,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Delegatable(struct zx_wst_RequestSec
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Delegatable; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Delegatable; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -8783,7 +8783,7 @@ struct zx_elem_s* zx_wst_RequestSecurityTokenResponse_GET_Delegatable(struct zx_
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Delegatable; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Delegatable; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -8840,7 +8840,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Delegatable(struct zx_wst_RequestSe
     x->Delegatable = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -8862,10 +8862,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Delegatable(struct zx_wst_RequestSe
   case -1:
     y = x->Delegatable;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Delegatable; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Delegatable; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -8885,10 +8885,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Delegatable(struct zx_wst_RequestSe
   case -1:
     y = (struct zx_elem_s*)x->Delegatable;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Delegatable; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Delegatable; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -8907,7 +8907,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_Policy(struct zx_wst_RequestSecurity
   struct zx_wsp_Policy_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Policy; y; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; y && y->gg.g.tok == zx_wsp_Policy_ELEM; ++n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -8917,7 +8917,7 @@ struct zx_wsp_Policy_s* zx_wst_RequestSecurityTokenResponse_GET_Policy(struct zx
 {
   struct zx_wsp_Policy_s* y;
   if (!x) return 0;
-  for (y = x->Policy; n>=0 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+  for (y = x->Policy; n>=0 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -8974,7 +8974,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_Policy(struct zx_wst_RequestSecurit
     x->Policy = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -8996,10 +8996,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_Policy(struct zx_wst_RequestSecurit
   case -1:
     y = x->Policy;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y && y->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9019,10 +9019,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_Policy(struct zx_wst_RequestSecurit
   case -1:
     y = (struct zx_wsp_Policy_s*)x->Policy;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->Policy; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
+    for (y = x->Policy; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_Policy_ELEM; --n, y = (struct zx_wsp_Policy_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9041,7 +9041,7 @@ int zx_wst_RequestSecurityTokenResponse_NUM_PolicyReference(struct zx_wst_Reques
   struct zx_wsp_PolicyReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->PolicyReference; y; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; ++n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9051,7 +9051,7 @@ struct zx_wsp_PolicyReference_s* zx_wst_RequestSecurityTokenResponse_GET_PolicyR
 {
   struct zx_wsp_PolicyReference_s* y;
   if (!x) return 0;
-  for (y = x->PolicyReference; n>=0 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+  for (y = x->PolicyReference; n>=0 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9108,7 +9108,7 @@ void zx_wst_RequestSecurityTokenResponse_PUT_PolicyReference(struct zx_wst_Reque
     x->PolicyReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9130,10 +9130,10 @@ void zx_wst_RequestSecurityTokenResponse_ADD_PolicyReference(struct zx_wst_Reque
   case -1:
     y = x->PolicyReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y && y->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9153,10 +9153,10 @@ void zx_wst_RequestSecurityTokenResponse_DEL_PolicyReference(struct zx_wst_Reque
   case -1:
     y = (struct zx_wsp_PolicyReference_s*)x->PolicyReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->PolicyReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
+    for (y = x->PolicyReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsp_PolicyReference_ELEM; --n, y = (struct zx_wsp_PolicyReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9184,7 +9184,7 @@ int zx_wst_RequestSecurityTokenResponseCollection_NUM_RequestSecurityTokenRespon
   struct zx_wst_RequestSecurityTokenResponse_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->RequestSecurityTokenResponse; y; ++n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+  for (y = x->RequestSecurityTokenResponse; y && y->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; ++n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9194,7 +9194,7 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_wst_RequestSecurityTokenRespons
 {
   struct zx_wst_RequestSecurityTokenResponse_s* y;
   if (!x) return 0;
-  for (y = x->RequestSecurityTokenResponse; n>=0 && y; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+  for (y = x->RequestSecurityTokenResponse; n>=0 && y && y->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9251,7 +9251,7 @@ void zx_wst_RequestSecurityTokenResponseCollection_PUT_RequestSecurityTokenRespo
     x->RequestSecurityTokenResponse = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9273,10 +9273,10 @@ void zx_wst_RequestSecurityTokenResponseCollection_ADD_RequestSecurityTokenRespo
   case -1:
     y = x->RequestSecurityTokenResponse;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestSecurityTokenResponse; n > 1 && y; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (y = x->RequestSecurityTokenResponse; n > 1 && y && y->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9296,10 +9296,10 @@ void zx_wst_RequestSecurityTokenResponseCollection_DEL_RequestSecurityTokenRespo
   case -1:
     y = (struct zx_wst_RequestSecurityTokenResponse_s*)x->RequestSecurityTokenResponse;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->RequestSecurityTokenResponse; n > 1 && y->gg.g.n; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
+    for (y = x->RequestSecurityTokenResponse; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wst_RequestSecurityTokenResponse_ELEM; --n, y = (struct zx_wst_RequestSecurityTokenResponse_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9323,7 +9323,7 @@ int zx_wst_RequestedAttachedReference_NUM_SecurityTokenReference(struct zx_wst_R
   struct zx_wsse_SecurityTokenReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SecurityTokenReference; y; ++n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+  for (y = x->SecurityTokenReference; y && y->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; ++n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9333,7 +9333,7 @@ struct zx_wsse_SecurityTokenReference_s* zx_wst_RequestedAttachedReference_GET_S
 {
   struct zx_wsse_SecurityTokenReference_s* y;
   if (!x) return 0;
-  for (y = x->SecurityTokenReference; n>=0 && y; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+  for (y = x->SecurityTokenReference; n>=0 && y && y->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9390,7 +9390,7 @@ void zx_wst_RequestedAttachedReference_PUT_SecurityTokenReference(struct zx_wst_
     x->SecurityTokenReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9412,10 +9412,10 @@ void zx_wst_RequestedAttachedReference_ADD_SecurityTokenReference(struct zx_wst_
   case -1:
     y = x->SecurityTokenReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SecurityTokenReference; n > 1 && y; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (y = x->SecurityTokenReference; n > 1 && y && y->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9435,10 +9435,10 @@ void zx_wst_RequestedAttachedReference_DEL_SecurityTokenReference(struct zx_wst_
   case -1:
     y = (struct zx_wsse_SecurityTokenReference_s*)x->SecurityTokenReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SecurityTokenReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (y = x->SecurityTokenReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9472,7 +9472,7 @@ int zx_wst_RequestedUnattachedReference_NUM_SecurityTokenReference(struct zx_wst
   struct zx_wsse_SecurityTokenReference_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->SecurityTokenReference; y; ++n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+  for (y = x->SecurityTokenReference; y && y->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; ++n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
   return n;
 }
 
@@ -9482,7 +9482,7 @@ struct zx_wsse_SecurityTokenReference_s* zx_wst_RequestedUnattachedReference_GET
 {
   struct zx_wsse_SecurityTokenReference_s* y;
   if (!x) return 0;
-  for (y = x->SecurityTokenReference; n>=0 && y; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+  for (y = x->SecurityTokenReference; n>=0 && y && y->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
   return y;
 }
 
@@ -9539,7 +9539,7 @@ void zx_wst_RequestedUnattachedReference_PUT_SecurityTokenReference(struct zx_ws
     x->SecurityTokenReference = z;
     return;
   default:
-    for (; n > 1 && y->gg.g.n; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
     z->gg.g.n = y->gg.g.n->n;
     y->gg.g.n = &z->gg.g;
@@ -9561,10 +9561,10 @@ void zx_wst_RequestedUnattachedReference_ADD_SecurityTokenReference(struct zx_ws
   case -1:
     y = x->SecurityTokenReference;
     if (!y) goto add_to_start;
-    for (; y->gg.g.n; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SecurityTokenReference; n > 1 && y; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (y = x->SecurityTokenReference; n > 1 && y && y->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     if (!y) return;
   }
   z->gg.g.n = y->gg.g.n;
@@ -9584,10 +9584,10 @@ void zx_wst_RequestedUnattachedReference_DEL_SecurityTokenReference(struct zx_ws
   case -1:
     y = (struct zx_wsse_SecurityTokenReference_s*)x->SecurityTokenReference;
     if (!y) return;
-    for (; y->gg.g.n; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (; y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     break;
   default:
-    for (y = x->SecurityTokenReference; n > 1 && y->gg.g.n; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
+    for (y = x->SecurityTokenReference; n > 1 && y->gg.g.n && y->gg.g.n->gg.g.tok == zx_wsse_SecurityTokenReference_ELEM; --n, y = (struct zx_wsse_SecurityTokenReference_s*)y->gg.g.n) ;
     if (!y->gg.g.n) return;
   }
   y->gg.g.n = y->gg.g.n->n;
@@ -9611,7 +9611,7 @@ int zx_wst_SignChallenge_NUM_Challenge(struct zx_wst_SignChallenge_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Challenge; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Challenge; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -9621,7 +9621,7 @@ struct zx_elem_s* zx_wst_SignChallenge_GET_Challenge(struct zx_wst_SignChallenge
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Challenge; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Challenge; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -9678,7 +9678,7 @@ void zx_wst_SignChallenge_PUT_Challenge(struct zx_wst_SignChallenge_s* x, int n,
     x->Challenge = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -9700,10 +9700,10 @@ void zx_wst_SignChallenge_ADD_Challenge(struct zx_wst_SignChallenge_s* x, int n,
   case -1:
     y = x->Challenge;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Challenge; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Challenge; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -9723,10 +9723,10 @@ void zx_wst_SignChallenge_DEL_Challenge(struct zx_wst_SignChallenge_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Challenge;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Challenge; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Challenge; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -9750,7 +9750,7 @@ int zx_wst_SignChallengeResponse_NUM_Challenge(struct zx_wst_SignChallengeRespon
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Challenge; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Challenge; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -9760,7 +9760,7 @@ struct zx_elem_s* zx_wst_SignChallengeResponse_GET_Challenge(struct zx_wst_SignC
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Challenge; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Challenge; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -9817,7 +9817,7 @@ void zx_wst_SignChallengeResponse_PUT_Challenge(struct zx_wst_SignChallengeRespo
     x->Challenge = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -9839,10 +9839,10 @@ void zx_wst_SignChallengeResponse_ADD_Challenge(struct zx_wst_SignChallengeRespo
   case -1:
     y = x->Challenge;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Challenge; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Challenge; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -9862,10 +9862,10 @@ void zx_wst_SignChallengeResponse_DEL_Challenge(struct zx_wst_SignChallengeRespo
   case -1:
     y = (struct zx_elem_s*)x->Challenge;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Challenge; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Challenge; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -9889,7 +9889,7 @@ int zx_wst_Status_NUM_Code(struct zx_wst_Status_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Code; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Code; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -9899,7 +9899,7 @@ struct zx_elem_s* zx_wst_Status_GET_Code(struct zx_wst_Status_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Code; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Code; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -9956,7 +9956,7 @@ void zx_wst_Status_PUT_Code(struct zx_wst_Status_s* x, int n, struct zx_elem_s* 
     x->Code = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -9978,10 +9978,10 @@ void zx_wst_Status_ADD_Code(struct zx_wst_Status_s* x, int n, struct zx_elem_s* 
   case -1:
     y = x->Code;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Code; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Code; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -10001,10 +10001,10 @@ void zx_wst_Status_DEL_Code(struct zx_wst_Status_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Code;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Code; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Code; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
@@ -10023,7 +10023,7 @@ int zx_wst_Status_NUM_Reason(struct zx_wst_Status_s* x)
   struct zx_elem_s* y;
   int n = 0;
   if (!x) return 0;
-  for (y = x->Reason; y; ++n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Reason; y && y->g.tok == zx_elem_ELEM; ++n, y = (struct zx_elem_s*)y->g.n) ;
   return n;
 }
 
@@ -10033,7 +10033,7 @@ struct zx_elem_s* zx_wst_Status_GET_Reason(struct zx_wst_Status_s* x, int n)
 {
   struct zx_elem_s* y;
   if (!x) return 0;
-  for (y = x->Reason; n>=0 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+  for (y = x->Reason; n>=0 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
   return y;
 }
 
@@ -10090,7 +10090,7 @@ void zx_wst_Status_PUT_Reason(struct zx_wst_Status_s* x, int n, struct zx_elem_s
     x->Reason = z;
     return;
   default:
-    for (; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
     z->g.n = y->g.n->n;
     y->g.n = &z->g;
@@ -10112,10 +10112,10 @@ void zx_wst_Status_ADD_Reason(struct zx_wst_Status_s* x, int n, struct zx_elem_s
   case -1:
     y = x->Reason;
     if (!y) goto add_to_start;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Reason; n > 1 && y; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Reason; n > 1 && y && y->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y) return;
   }
   z->g.n = y->g.n;
@@ -10135,10 +10135,10 @@ void zx_wst_Status_DEL_Reason(struct zx_wst_Status_s* x, int n)
   case -1:
     y = (struct zx_elem_s*)x->Reason;
     if (!y) return;
-    for (; y->g.n; y = (struct zx_elem_s*)y->g.n) ;
+    for (; y->g.n && y->g.n->g.tok == zx_elem_ELEM; y = (struct zx_elem_s*)y->g.n) ;
     break;
   default:
-    for (y = x->Reason; n > 1 && y->g.n; --n, y = (struct zx_elem_s*)y->g.n) ;
+    for (y = x->Reason; n > 1 && y->g.n && y->g.n->g.tok == zx_elem_ELEM; --n, y = (struct zx_elem_s*)y->g.n) ;
     if (!y->g.n) return;
   }
   y->g.n = y->g.n->n;
