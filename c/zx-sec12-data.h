@@ -42,8 +42,7 @@ struct zx_sec12_ProxyInfoConfirmationData_s {
 };
 
 struct zx_sec12_ProxyInfoConfirmationData_s* zx_DEC_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x);
-struct zx_sec12_ProxyInfoConfirmationData_s* zx_NEW_sec12_ProxyInfoConfirmationData(struct zx_ctx* c);
-void zx_FREE_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x, int free_strs);
+struct zx_sec12_ProxyInfoConfirmationData_s* zx_NEW_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x);
 char* zx_ENC_SO_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sec12_ProxyInfoConfirmationData(struct zx_ctx* c, struct zx_sec12_ProxyInfoConfirmationData_s* x);
@@ -115,8 +114,7 @@ struct zx_sec12_ProxySubject_s {
 };
 
 struct zx_sec12_ProxySubject_s* zx_DEC_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x);
-struct zx_sec12_ProxySubject_s* zx_NEW_sec12_ProxySubject(struct zx_ctx* c);
-void zx_FREE_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x, int free_strs);
+struct zx_sec12_ProxySubject_s* zx_NEW_sec12_ProxySubject(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x);
 char* zx_ENC_SO_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sec12_ProxySubject(struct zx_ctx* c, struct zx_sec12_ProxySubject_s* x);
@@ -169,8 +167,7 @@ struct zx_sec12_ProxyTransitedStatement_s {
 };
 
 struct zx_sec12_ProxyTransitedStatement_s* zx_DEC_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x);
-struct zx_sec12_ProxyTransitedStatement_s* zx_NEW_sec12_ProxyTransitedStatement(struct zx_ctx* c);
-void zx_FREE_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x, int free_strs);
+struct zx_sec12_ProxyTransitedStatement_s* zx_NEW_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x);
 char* zx_ENC_SO_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sec12_ProxyTransitedStatement(struct zx_ctx* c, struct zx_sec12_ProxyTransitedStatement_s* x);
@@ -219,8 +216,7 @@ struct zx_sec12_ResourceAccessStatement_s {
 };
 
 struct zx_sec12_ResourceAccessStatement_s* zx_DEC_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x);
-struct zx_sec12_ResourceAccessStatement_s* zx_NEW_sec12_ResourceAccessStatement(struct zx_ctx* c);
-void zx_FREE_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x, int free_strs);
+struct zx_sec12_ResourceAccessStatement_s* zx_NEW_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x);
 char* zx_ENC_SO_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sec12_ResourceAccessStatement(struct zx_ctx* c, struct zx_sec12_ResourceAccessStatement_s* x);
@@ -302,8 +298,7 @@ struct zx_sec12_SessionContext_s {
 };
 
 struct zx_sec12_SessionContext_s* zx_DEC_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x);
-struct zx_sec12_SessionContext_s* zx_NEW_sec12_SessionContext(struct zx_ctx* c);
-void zx_FREE_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x, int free_strs);
+struct zx_sec12_SessionContext_s* zx_NEW_sec12_SessionContext(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x);
 char* zx_ENC_SO_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sec12_SessionContext(struct zx_ctx* c, struct zx_sec12_SessionContext_s* x);
@@ -372,8 +367,7 @@ struct zx_sec12_SessionContextStatement_s {
 };
 
 struct zx_sec12_SessionContextStatement_s* zx_DEC_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x);
-struct zx_sec12_SessionContextStatement_s* zx_NEW_sec12_SessionContextStatement(struct zx_ctx* c);
-void zx_FREE_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x, int free_strs);
+struct zx_sec12_SessionContextStatement_s* zx_NEW_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x);
 char* zx_ENC_SO_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sec12_SessionContextStatement(struct zx_ctx* c, struct zx_sec12_SessionContextStatement_s* x);
@@ -436,8 +430,7 @@ struct zx_sec12_SessionSubject_s {
 };
 
 struct zx_sec12_SessionSubject_s* zx_DEC_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x);
-struct zx_sec12_SessionSubject_s* zx_NEW_sec12_SessionSubject(struct zx_ctx* c);
-void zx_FREE_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x, int free_strs);
+struct zx_sec12_SessionSubject_s* zx_NEW_sec12_SessionSubject(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x);
 char* zx_ENC_SO_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sec12_SessionSubject(struct zx_ctx* c, struct zx_sec12_SessionSubject_s* x);
@@ -498,8 +491,7 @@ struct zx_sec12_ValidityRestrictionCondition_s {
 };
 
 struct zx_sec12_ValidityRestrictionCondition_s* zx_DEC_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x);
-struct zx_sec12_ValidityRestrictionCondition_s* zx_NEW_sec12_ValidityRestrictionCondition(struct zx_ctx* c);
-void zx_FREE_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x, int free_strs);
+struct zx_sec12_ValidityRestrictionCondition_s* zx_NEW_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x);
 char* zx_ENC_SO_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sec12_ValidityRestrictionCondition(struct zx_ctx* c, struct zx_sec12_ValidityRestrictionCondition_s* x);

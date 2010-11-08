@@ -41,8 +41,7 @@ struct zx_sbf_Framework_s {
 };
 
 struct zx_sbf_Framework_s* zx_DEC_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x);
-struct zx_sbf_Framework_s* zx_NEW_sbf_Framework(struct zx_ctx* c);
-void zx_FREE_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x, int free_strs);
+struct zx_sbf_Framework_s* zx_NEW_sbf_Framework(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x);
 char* zx_ENC_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x);

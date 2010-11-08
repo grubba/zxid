@@ -227,7 +227,7 @@ struct zx_sp_ManageNameIDRequest_s* zxid_mk_mni(zxid_conf* cf, zxid_nid* nid, st
 	r->NewEncryptedID->EncryptedKey = ek;
       }
       zx_str_free(cf->ctx, ss);
-      zx_FREE_simple_elem(cf->ctx, newid, 0);
+      zx_free_elem(cf->ctx, newid, 0);
     } else
       r->Terminate = zx_new_simple_elem(cf->ctx, &r->gg, zx_sp_Terminate_ELEM, 0);
   } else {
@@ -297,7 +297,7 @@ struct zx_sa_Subject_s* zxid_mk_subj(zxid_conf* cf, zxid_entity* sp_meta, zxid_n
   nid->NameQualifier = zxid_my_entity_id(cf);
   nid->SPNameQualifier = affil;
   if (!strcmp(fmt, SAML2_TRANSIENT_NID_FMT)) {
-    zx_add_content(c, nid, zxid_mk_id(cf, "T", ZXID_ID_BITS));
+    zx_add_content(cf->ctx, nid, zxid_mk_id(cf, "T", ZXID_ID_BITS));
   } else {
     /* *** see also zxid_get_user_nameid() */
   }
@@ -323,6 +323,7 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, con
 {
   struct zx_str sesix;
   struct zx_str eid_ss;
+  struct zx_str* ss;
   struct zx_sa_AuthnStatement_s* an_stmt = zx_NEW_sa_AuthnStatement(cf->ctx,0);
   if (ses->sesix) {
 #if 0
@@ -333,7 +334,8 @@ struct zx_sa_AuthnStatement_s* zxid_mk_an_stmt(zxid_conf* cf, zxid_ses* ses, con
     eid_ss.s = (char*)eid;
     sesix.len = strlen(ses->sesix);
     sesix.s = ses->sesix;
-    an_stmt->SessionIndex = zxid_psobj_enc(cf, &eid_ss, "ZS", &sesix);
+    ss = zxid_psobj_enc(cf, &eid_ss, "ZS", &sesix);
+    an_stmt->SessionIndex = zx_ref_len_attr(cf->ctx, zx_SessionIndex_ATTR, ss->len, ss->s);
 #endif
   }
   an_stmt->AuthnInstant = zxid_date_time_attr(cf, zx_AuthnInstant_ATTR, ses->an_instant);
@@ -356,7 +358,7 @@ struct zx_sa_Attribute_s* zxid_mk_attribute(zxid_conf* cf, char* name, char* val
   r->Name = zx_dup_attr(cf->ctx, zx_Name_ATTR, name);
   r->AttributeValue = zx_NEW_sa_AttributeValue(cf->ctx, &r->gg);
   if (val)
-    zx_add_content(c, &r->AttributeValue->gg, zx_dup_str(cf->ctx, val));
+    zx_add_content(cf->ctx, &r->AttributeValue->gg, zx_dup_str(cf->ctx, val));
   return r;
 }
 

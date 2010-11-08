@@ -48,43 +48,19 @@
 #define EL_NS     shibmd
 #define EL_TAG    KeyAuthority
 
-/* FUNC(zx_FREE_shibmd_KeyAuthority) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->VerifyDepth, free_strs);
-
-  for (e = &x->KeyInfo->gg;
-       e && e->g.tok == zx_ds_KeyInfo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_shibmd_KeyAuthority) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_shibmd_KeyAuthority_s* zx_NEW_shibmd_KeyAuthority(struct zx_ctx* c)
+struct zx_shibmd_KeyAuthority_s* zx_NEW_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_shibmd_KeyAuthority_s* x = ZX_ZALLOC(c, struct zx_shibmd_KeyAuthority_s);
   x->gg.g.tok = zx_shibmd_KeyAuthority_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -208,37 +184,19 @@ int zx_WALK_WO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthori
 #define EL_NS     shibmd
 #define EL_TAG    Scope
 
-/* FUNC(zx_FREE_shibmd_Scope) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->regexp, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_shibmd_Scope) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_shibmd_Scope_s* zx_NEW_shibmd_Scope(struct zx_ctx* c)
+struct zx_shibmd_Scope_s* zx_NEW_shibmd_Scope(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_shibmd_Scope_s* x = ZX_ZALLOC(c, struct zx_shibmd_Scope_s);
   x->gg.g.tok = zx_shibmd_Scope_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

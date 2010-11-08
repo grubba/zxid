@@ -283,6 +283,7 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
   struct zx_root_s* r;
   zxid_epr* epr;
   struct zx_str* ss;
+  struct zx_str* tt;
   
   read_all_fd(0, buf, sizeof(buf)-1, &got);  /* Read EPR */
   buf[got] = 0;
@@ -319,12 +320,12 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
   
 #if 0
   // *** wrong
-  got = MIN(ZX_GET_CONTENT_LEN(epr->Metadata->ProviderID), sizeof(path)-1);
-  memcpy(path, ZX_GET_CONTENT_S(epr->Metadata->ProviderID), got);
+  tt = ZX_GET_CONTENT(epr->Metadata->ProviderID);
 #else
-  got = MIN(ZX_GET_CONTENT_LEN(epr->Metadata->ServiceType), sizeof(path)-1);
-  memcpy(path, ZX_GET_CONTENT_S(epr->Metadata->ServiceType), got);
+  tt = ZX_GET_CONTENT(epr->Metadata->ServiceType);
 #endif
+  got = MIN(tt->len, sizeof(path)-1);
+  memcpy(path, tt?tt->s:"", got);
   path[got] = 0;
   zxid_fold_svc(path, got);
 

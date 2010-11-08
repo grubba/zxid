@@ -48,56 +48,19 @@
 #define EL_NS     gl
 #define EL_TAG    AreaComparison
 
-/* FUNC(zx_FREE_gl_AreaComparison) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->itemID, free_strs);
-  zx_free_attr(c, x->returnLocation, free_strs);
-
-  for (e = &x->CivilData->gg;
-       e && e->g.tok == zx_gl_CivilData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, free_strs);
-  }
-  for (e = &x->shape->gg;
-       e && e->g.tok == zx_gl_shape_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_AreaComparison) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_AreaComparison_s* zx_NEW_gl_AreaComparison(struct zx_ctx* c)
+struct zx_gl_AreaComparison_s* zx_NEW_gl_AreaComparison(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_AreaComparison_s* x = ZX_ZALLOC(c, struct zx_gl_AreaComparison_s);
   x->gg.g.tok = zx_gl_AreaComparison_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -265,44 +228,19 @@ int zx_WALK_WO_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s
 #define EL_NS     gl
 #define EL_TAG    Box
 
-/* FUNC(zx_FREE_gl_Box) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->coord->gg;
-       e && e->g.tok == zx_gl_coord_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Box) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Box_s* zx_NEW_gl_Box(struct zx_ctx* c)
+struct zx_gl_Box_s* zx_NEW_gl_Box(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Box_s* x = ZX_ZALLOC(c, struct zx_gl_Box_s);
   x->gg.g.tok = zx_gl_Box_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -428,55 +366,19 @@ int zx_WALK_WO_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x, void* ctx, int (*
 #define EL_NS     gl
 #define EL_TAG    ChangeArea
 
-/* FUNC(zx_FREE_gl_ChangeArea) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->event, free_strs);
-
-  for (e = &x->CivilData->gg;
-       e && e->g.tok == zx_gl_CivilData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, free_strs);
-  }
-  for (e = &x->shape->gg;
-       e && e->g.tok == zx_gl_shape_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_ChangeArea) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_ChangeArea_s* zx_NEW_gl_ChangeArea(struct zx_ctx* c)
+struct zx_gl_ChangeArea_s* zx_NEW_gl_ChangeArea(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_ChangeArea_s* x = ZX_ZALLOC(c, struct zx_gl_ChangeArea_s);
   x->gg.g.tok = zx_gl_ChangeArea_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -642,50 +544,19 @@ int zx_WALK_WO_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    CircularArcArea
 
-/* FUNC(zx_FREE_gl_CircularArcArea) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->coord->gg;
-       e && e->g.tok == zx_gl_coord_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->inRadius, free_strs);
-  zx_free_simple_elems(c, x->outRadius, free_strs);
-  zx_free_simple_elems(c, x->startAngle, free_strs);
-  zx_free_simple_elems(c, x->stopAngle, free_strs);
-  zx_free_simple_elems(c, x->angularUnit, free_strs);
-  zx_free_simple_elems(c, x->distanceUnit, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_CircularArcArea) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_CircularArcArea_s* zx_NEW_gl_CircularArcArea(struct zx_ctx* c)
+struct zx_gl_CircularArcArea_s* zx_NEW_gl_CircularArcArea(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_CircularArcArea_s* x = ZX_ZALLOC(c, struct zx_gl_CircularArcArea_s);
   x->gg.g.tok = zx_gl_CircularArcArea_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -841,46 +712,19 @@ int zx_WALK_WO_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea
 #define EL_NS     gl
 #define EL_TAG    CircularArea
 
-/* FUNC(zx_FREE_gl_CircularArea) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->coord->gg;
-       e && e->g.tok == zx_gl_coord_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->radius, free_strs);
-  zx_free_simple_elems(c, x->distanceUnit, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_CircularArea) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_CircularArea_s* zx_NEW_gl_CircularArea(struct zx_ctx* c)
+struct zx_gl_CircularArea_s* zx_NEW_gl_CircularArea(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_CircularArea_s* x = ZX_ZALLOC(c, struct zx_gl_CircularArea_s);
   x->gg.g.tok = zx_gl_CircularArea_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1016,66 +860,19 @@ int zx_WALK_WO_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x,
 #define EL_NS     gl
 #define EL_TAG    CivilData
 
-/* FUNC(zx_FREE_gl_CivilData) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->PostalAddress, free_strs);
-  for (e = &x->LPostalAddress->gg;
-       e && e->g.tok == zx_gl_LPostalAddress_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_LPostalAddress(c, (struct zx_gl_LPostalAddress_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->PostalCode, free_strs);
-  zx_free_simple_elems(c, x->L, free_strs);
-  for (e = &x->LL->gg;
-       e && e->g.tok == zx_gl_LL_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_LL(c, (struct zx_gl_LL_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->St, free_strs);
-  for (e = &x->LSt->gg;
-       e && e->g.tok == zx_gl_LSt_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_LSt(c, (struct zx_gl_LSt_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->C, free_strs);
-  zx_free_simple_elems(c, x->MNC, free_strs);
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_CivilData) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_CivilData_s* zx_NEW_gl_CivilData(struct zx_ctx* c)
+struct zx_gl_CivilData_s* zx_NEW_gl_CivilData(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_CivilData_s* x = ZX_ZALLOC(c, struct zx_gl_CivilData_s);
   x->gg.g.tok = zx_gl_CivilData_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1290,37 +1087,19 @@ int zx_WALK_WO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, void*
 #define EL_NS     gl
 #define EL_TAG    ComparisonResult
 
-/* FUNC(zx_FREE_gl_ComparisonResult) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonResult_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->ItemIDRef, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_ComparisonResult) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_ComparisonResult_s* zx_NEW_gl_ComparisonResult(struct zx_ctx* c)
+struct zx_gl_ComparisonResult_s* zx_NEW_gl_ComparisonResult(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_ComparisonResult_s* x = ZX_ZALLOC(c, struct zx_gl_ComparisonResult_s);
   x->gg.g.tok = zx_gl_ComparisonResult_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1423,42 +1202,19 @@ int zx_WALK_WO_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonResu
 #define EL_NS     gl
 #define EL_TAG    CoordinateReferenceSystem
 
-/* FUNC(zx_FREE_gl_CoordinateReferenceSystem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_CoordinateReferenceSystem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Identifier->gg;
-       e && e->g.tok == zx_gl_Identifier_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Identifier(c, (struct zx_gl_Identifier_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_CoordinateReferenceSystem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_CoordinateReferenceSystem_s* zx_NEW_gl_CoordinateReferenceSystem(struct zx_ctx* c)
+struct zx_gl_CoordinateReferenceSystem_s* zx_NEW_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_CoordinateReferenceSystem_s* x = ZX_ZALLOC(c, struct zx_gl_CoordinateReferenceSystem_s);
   x->gg.g.tok = zx_gl_CoordinateReferenceSystem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1580,73 +1336,19 @@ int zx_WALK_WO_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_Coord
 #define EL_NS     gl
 #define EL_TAG    Create
 
-/* FUNC(zx_FREE_gl_Create) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->ResourceID->gg;
-       e && e->g.tok == zx_gl_ResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedResourceID->gg;
-       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, free_strs);
-  }
-  for (e = &x->Subscription->gg;
-       e && e->g.tok == zx_gl_Subscription_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Subscription(c, (struct zx_gl_Subscription_s*)e, free_strs);
-  }
-  for (e = &x->CreateItem->gg;
-       e && e->g.tok == zx_gl_CreateItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CreateItem(c, (struct zx_gl_CreateItem_s*)e, free_strs);
-  }
-  for (e = &x->ItemSelection->gg;
-       e && e->g.tok == zx_gl_ItemSelection_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Create) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Create_s* zx_NEW_gl_Create(struct zx_ctx* c)
+struct zx_gl_Create_s* zx_NEW_gl_Create(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Create_s* x = ZX_ZALLOC(c, struct zx_gl_Create_s);
   x->gg.g.tok = zx_gl_Create_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1875,45 +1577,19 @@ int zx_WALK_WO_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x, void* ctx, 
 #define EL_NS     gl
 #define EL_TAG    CreateItem
 
-/* FUNC(zx_FREE_gl_CreateItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemID, free_strs);
-  zx_free_attr(c, x->objectType, free_strs);
-
-  for (e = &x->NewData->gg;
-       e && e->g.tok == zx_gl_NewData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_NewData(c, (struct zx_gl_NewData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_CreateItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_CreateItem_s* zx_NEW_gl_CreateItem(struct zx_ctx* c)
+struct zx_gl_CreateItem_s* zx_NEW_gl_CreateItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_CreateItem_s* x = ZX_ZALLOC(c, struct zx_gl_CreateItem_s);
   x->gg.g.tok = zx_gl_CreateItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2041,56 +1717,19 @@ int zx_WALK_WO_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    CreateResponse
 
-/* FUNC(zx_FREE_gl_CreateResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->timeStamp, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_gl_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
-  }
-  for (e = &x->ItemData->gg;
-       e && e->g.tok == zx_gl_ItemData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ItemData(c, (struct zx_gl_ItemData_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_CreateResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_CreateResponse_s* zx_NEW_gl_CreateResponse(struct zx_ctx* c)
+struct zx_gl_CreateResponse_s* zx_NEW_gl_CreateResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_CreateResponse_s* x = ZX_ZALLOC(c, struct zx_gl_CreateResponse_s);
   x->gg.g.tok = zx_gl_CreateResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2258,43 +1897,19 @@ int zx_WALK_WO_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s
 #define EL_NS     gl
 #define EL_TAG    Credential
 
-/* FUNC(zx_FREE_gl_Credential) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->notOnOrAfter, free_strs);
-
-  for (e = &x->Assertion->gg;
-       e && e->g.tok == zx_sa_Assertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_Assertion(c, (struct zx_sa_Assertion_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Credential) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Credential_s* zx_NEW_gl_Credential(struct zx_ctx* c)
+struct zx_gl_Credential_s* zx_NEW_gl_Credential(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Credential_s* x = ZX_ZALLOC(c, struct zx_gl_Credential_s);
   x->gg.g.tok = zx_gl_Credential_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2418,43 +2033,19 @@ int zx_WALK_WO_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    Data
 
-/* FUNC(zx_FREE_gl_Data) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemIDRef, free_strs);
-  zx_free_attr(c, x->nextOffset, free_strs);
-  zx_free_attr(c, x->notSorted, free_strs);
-  zx_free_attr(c, x->remaining, free_strs);
-  zx_free_attr(c, x->setID, free_strs);
-  zx_free_attr(c, x->changeFormat, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Data) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Data_s* zx_NEW_gl_Data(struct zx_ctx* c)
+struct zx_gl_Data_s* zx_NEW_gl_Data(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Data_s* x = ZX_ZALLOC(c, struct zx_gl_Data_s);
   x->gg.g.tok = zx_gl_Data_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2569,61 +2160,19 @@ int zx_WALK_WO_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x, void* ctx, int 
 #define EL_NS     gl
 #define EL_TAG    Delete
 
-/* FUNC(zx_FREE_gl_Delete) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->ResourceID->gg;
-       e && e->g.tok == zx_gl_ResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedResourceID->gg;
-       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, free_strs);
-  }
-  for (e = &x->DeleteItem->gg;
-       e && e->g.tok == zx_gl_DeleteItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_DeleteItem(c, (struct zx_gl_DeleteItem_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Delete) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Delete_s* zx_NEW_gl_Delete(struct zx_ctx* c)
+struct zx_gl_Delete_s* zx_NEW_gl_Delete(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Delete_s* x = ZX_ZALLOC(c, struct zx_gl_Delete_s);
   x->gg.g.tok = zx_gl_Delete_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2810,42 +2359,19 @@ int zx_WALK_WO_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x, void* ctx, 
 #define EL_NS     gl
 #define EL_TAG    DeleteItem
 
-/* FUNC(zx_FREE_gl_DeleteItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemID, free_strs);
-  zx_free_attr(c, x->notChangedSince, free_strs);
-  zx_free_attr(c, x->objectType, free_strs);
-  zx_free_attr(c, x->predefined, free_strs);
-
-  zx_free_simple_elems(c, x->Select, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_DeleteItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_DeleteItem_s* zx_NEW_gl_DeleteItem(struct zx_ctx* c)
+struct zx_gl_DeleteItem_s* zx_NEW_gl_DeleteItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_DeleteItem_s* x = ZX_ZALLOC(c, struct zx_gl_DeleteItem_s);
   x->gg.g.tok = zx_gl_DeleteItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2961,49 +2487,19 @@ int zx_WALK_WO_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    DeleteResponse
 
-/* FUNC(zx_FREE_gl_DeleteResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_gl_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_DeleteResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_DeleteResponse_s* zx_NEW_gl_DeleteResponse(struct zx_ctx* c)
+struct zx_gl_DeleteResponse_s* zx_NEW_gl_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_DeleteResponse_s* x = ZX_ZALLOC(c, struct zx_gl_DeleteResponse_s);
   x->gg.g.tok = zx_gl_DeleteResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3148,49 +2644,19 @@ int zx_WALK_WO_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s
 #define EL_NS     gl
 #define EL_TAG    EllipticalArea
 
-/* FUNC(zx_FREE_gl_EllipticalArea) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->coord->gg;
-       e && e->g.tok == zx_gl_coord_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->angle, free_strs);
-  zx_free_simple_elems(c, x->semiMajor, free_strs);
-  zx_free_simple_elems(c, x->semiMinor, free_strs);
-  zx_free_simple_elems(c, x->angularUnit, free_strs);
-  zx_free_simple_elems(c, x->distanceUnit, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_EllipticalArea) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_EllipticalArea_s* zx_NEW_gl_EllipticalArea(struct zx_ctx* c)
+struct zx_gl_EllipticalArea_s* zx_NEW_gl_EllipticalArea(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_EllipticalArea_s* x = ZX_ZALLOC(c, struct zx_gl_EllipticalArea_s);
   x->gg.g.tok = zx_gl_EllipticalArea_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3341,48 +2807,19 @@ int zx_WALK_WO_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s
 #define EL_NS     gl
 #define EL_TAG    EncryptedResourceID
 
-/* FUNC(zx_FREE_gl_EncryptedResourceID) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedResourceID_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->EncryptedData->gg;
-       e && e->g.tok == zx_xenc_EncryptedData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedKey->gg;
-       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_EncryptedResourceID) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_EncryptedResourceID_s* zx_NEW_gl_EncryptedResourceID(struct zx_ctx* c)
+struct zx_gl_EncryptedResourceID_s* zx_NEW_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_EncryptedResourceID_s* x = ZX_ZALLOC(c, struct zx_gl_EncryptedResourceID_s);
   x->gg.g.tok = zx_gl_EncryptedResourceID_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3525,36 +2962,19 @@ int zx_WALK_WO_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedRe
 #define EL_NS     gl
 #define EL_TAG    Extension
 
-/* FUNC(zx_FREE_gl_Extension) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Extension) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Extension_s* zx_NEW_gl_Extension(struct zx_ctx* c)
+struct zx_gl_Extension_s* zx_NEW_gl_Extension(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Extension_s* x = ZX_ZALLOC(c, struct zx_gl_Extension_s);
   x->gg.g.tok = zx_gl_Extension_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3655,44 +3075,19 @@ int zx_WALK_WO_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x, void*
 #define EL_NS     gl
 #define EL_TAG    GeometryCollection
 
-/* FUNC(zx_FREE_gl_GeometryCollection) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCollection_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->shape->gg;
-       e && e->g.tok == zx_gl_shape_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_GeometryCollection) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_GeometryCollection_s* zx_NEW_gl_GeometryCollection(struct zx_ctx* c)
+struct zx_gl_GeometryCollection_s* zx_NEW_gl_GeometryCollection(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_GeometryCollection_s* x = ZX_ZALLOC(c, struct zx_gl_GeometryCollection_s);
   x->gg.g.tok = zx_gl_GeometryCollection_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3818,39 +3213,19 @@ int zx_WALK_WO_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryColl
 #define EL_NS     gl
 #define EL_TAG    Identifier
 
-/* FUNC(zx_FREE_gl_Identifier) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->code, free_strs);
-  zx_free_simple_elems(c, x->codeSpace, free_strs);
-  zx_free_simple_elems(c, x->edition, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Identifier) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Identifier_s* zx_NEW_gl_Identifier(struct zx_ctx* c)
+struct zx_gl_Identifier_s* zx_NEW_gl_Identifier(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Identifier_s* x = ZX_ZALLOC(c, struct zx_gl_Identifier_s);
   x->gg.g.tok = zx_gl_Identifier_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3966,40 +3341,19 @@ int zx_WALK_WO_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    ItemData
 
-/* FUNC(zx_FREE_gl_ItemData) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemIDRef, free_strs);
-  zx_free_attr(c, x->notSorted, free_strs);
-  zx_free_attr(c, x->changeFormat, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_ItemData) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_ItemData_s* zx_NEW_gl_ItemData(struct zx_ctx* c)
+struct zx_gl_ItemData_s* zx_NEW_gl_ItemData(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_ItemData_s* x = ZX_ZALLOC(c, struct zx_gl_ItemData_s);
   x->gg.g.tok = zx_gl_ItemData_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4108,72 +3462,19 @@ int zx_WALK_WO_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x, void* c
 #define EL_NS     gl
 #define EL_TAG    ItemSelection
 
-/* FUNC(zx_FREE_gl_ItemSelection) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->AreaComparison->gg;
-       e && e->g.tok == zx_gl_AreaComparison_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)e, free_strs);
-  }
-  for (e = &x->eqop->gg;
-       e && e->g.tok == zx_gl_eqop_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_eqop(c, (struct zx_gl_eqop_s*)e, free_strs);
-  }
-  for (e = &x->geoinfo->gg;
-       e && e->g.tok == zx_gl_geoinfo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)e, free_strs);
-  }
-  for (e = &x->loc_type->gg;
-       e && e->g.tok == zx_gl_loc_type_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_loc_type(c, (struct zx_gl_loc_type_s*)e, free_strs);
-  }
-  for (e = &x->prio->gg;
-       e && e->g.tok == zx_gl_prio_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_prio(c, (struct zx_gl_prio_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_ItemSelection) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_ItemSelection_s* zx_NEW_gl_ItemSelection(struct zx_ctx* c)
+struct zx_gl_ItemSelection_s* zx_NEW_gl_ItemSelection(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_ItemSelection_s* x = ZX_ZALLOC(c, struct zx_gl_ItemSelection_s);
   x->gg.g.tok = zx_gl_ItemSelection_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4400,38 +3701,19 @@ int zx_WALK_WO_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* 
 #define EL_NS     gl
 #define EL_TAG    LL
 
-/* FUNC(zx_FREE_gl_LL) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->lang, free_strs);
-  zx_free_attr(c, x->script, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_LL) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_LL_s* zx_NEW_gl_LL(struct zx_ctx* c)
+struct zx_gl_LL_s* zx_NEW_gl_LL(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_LL_s* x = ZX_ZALLOC(c, struct zx_gl_LL_s);
   x->gg.g.tok = zx_gl_LL_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4536,38 +3818,19 @@ int zx_WALK_WO_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x, void* ctx, int (*ca
 #define EL_NS     gl
 #define EL_TAG    LPostalAddress
 
-/* FUNC(zx_FREE_gl_LPostalAddress) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->lang, free_strs);
-  zx_free_attr(c, x->script, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_LPostalAddress) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_LPostalAddress_s* zx_NEW_gl_LPostalAddress(struct zx_ctx* c)
+struct zx_gl_LPostalAddress_s* zx_NEW_gl_LPostalAddress(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_LPostalAddress_s* x = ZX_ZALLOC(c, struct zx_gl_LPostalAddress_s);
   x->gg.g.tok = zx_gl_LPostalAddress_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4672,38 +3935,19 @@ int zx_WALK_WO_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_s
 #define EL_NS     gl
 #define EL_TAG    LSt
 
-/* FUNC(zx_FREE_gl_LSt) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->lang, free_strs);
-  zx_free_attr(c, x->script, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_LSt) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_LSt_s* zx_NEW_gl_LSt(struct zx_ctx* c)
+struct zx_gl_LSt_s* zx_NEW_gl_LSt(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_LSt_s* x = ZX_ZALLOC(c, struct zx_gl_LSt_s);
   x->gg.g.tok = zx_gl_LSt_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4808,44 +4052,19 @@ int zx_WALK_WO_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x, void* ctx, int (*
 #define EL_NS     gl
 #define EL_TAG    LineString
 
-/* FUNC(zx_FREE_gl_LineString) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->coord->gg;
-       e && e->g.tok == zx_gl_coord_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_LineString) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_LineString_s* zx_NEW_gl_LineString(struct zx_ctx* c)
+struct zx_gl_LineString_s* zx_NEW_gl_LineString(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_LineString_s* x = ZX_ZALLOC(c, struct zx_gl_LineString_s);
   x->gg.g.tok = zx_gl_LineString_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4971,44 +4190,19 @@ int zx_WALK_WO_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    LinearRing
 
-/* FUNC(zx_FREE_gl_LinearRing) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->coord->gg;
-       e && e->g.tok == zx_gl_coord_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_LinearRing) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_LinearRing_s* zx_NEW_gl_LinearRing(struct zx_ctx* c)
+struct zx_gl_LinearRing_s* zx_NEW_gl_LinearRing(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_LinearRing_s* x = ZX_ZALLOC(c, struct zx_gl_LinearRing_s);
   x->gg.g.tok = zx_gl_LinearRing_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5134,48 +4328,19 @@ int zx_WALK_WO_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    Modification
 
-/* FUNC(zx_FREE_gl_Modification) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemID, free_strs);
-  zx_free_attr(c, x->notChangedSince, free_strs);
-  zx_free_attr(c, x->objectType, free_strs);
-  zx_free_attr(c, x->overrideAllowed, free_strs);
-
-  zx_free_simple_elems(c, x->Select, free_strs);
-  for (e = &x->NewData->gg;
-       e && e->g.tok == zx_gl_NewData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_NewData(c, (struct zx_gl_NewData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Modification) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Modification_s* zx_NEW_gl_Modification(struct zx_ctx* c)
+struct zx_gl_Modification_s* zx_NEW_gl_Modification(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Modification_s* x = ZX_ZALLOC(c, struct zx_gl_Modification_s);
   x->gg.g.tok = zx_gl_Modification_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5312,73 +4477,19 @@ int zx_WALK_WO_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x,
 #define EL_NS     gl
 #define EL_TAG    Modify
 
-/* FUNC(zx_FREE_gl_Modify) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->ResourceID->gg;
-       e && e->g.tok == zx_gl_ResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedResourceID->gg;
-       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, free_strs);
-  }
-  for (e = &x->Subscription->gg;
-       e && e->g.tok == zx_gl_Subscription_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Subscription(c, (struct zx_gl_Subscription_s*)e, free_strs);
-  }
-  for (e = &x->Modification->gg;
-       e && e->g.tok == zx_gl_Modification_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Modification(c, (struct zx_gl_Modification_s*)e, free_strs);
-  }
-  for (e = &x->ItemSelection->gg;
-       e && e->g.tok == zx_gl_ItemSelection_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Modify) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Modify_s* zx_NEW_gl_Modify(struct zx_ctx* c)
+struct zx_gl_Modify_s* zx_NEW_gl_Modify(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Modify_s* x = ZX_ZALLOC(c, struct zx_gl_Modify_s);
   x->gg.g.tok = zx_gl_Modify_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5607,56 +4718,19 @@ int zx_WALK_WO_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x, void* ctx, 
 #define EL_NS     gl
 #define EL_TAG    ModifyResponse
 
-/* FUNC(zx_FREE_gl_ModifyResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->timeStamp, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_gl_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
-  }
-  for (e = &x->ItemData->gg;
-       e && e->g.tok == zx_gl_ItemData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ItemData(c, (struct zx_gl_ItemData_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_ModifyResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_ModifyResponse_s* zx_NEW_gl_ModifyResponse(struct zx_ctx* c)
+struct zx_gl_ModifyResponse_s* zx_NEW_gl_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_ModifyResponse_s* x = ZX_ZALLOC(c, struct zx_gl_ModifyResponse_s);
   x->gg.g.tok = zx_gl_ModifyResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5824,44 +4898,19 @@ int zx_WALK_WO_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s
 #define EL_NS     gl
 #define EL_TAG    MultiLineString
 
-/* FUNC(zx_FREE_gl_MultiLineString) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->LineString->gg;
-       e && e->g.tok == zx_gl_LineString_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_LineString(c, (struct zx_gl_LineString_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_MultiLineString) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_MultiLineString_s* zx_NEW_gl_MultiLineString(struct zx_ctx* c)
+struct zx_gl_MultiLineString_s* zx_NEW_gl_MultiLineString(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_MultiLineString_s* x = ZX_ZALLOC(c, struct zx_gl_MultiLineString_s);
   x->gg.g.tok = zx_gl_MultiLineString_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5987,44 +5036,19 @@ int zx_WALK_WO_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString
 #define EL_NS     gl
 #define EL_TAG    MultiPoint
 
-/* FUNC(zx_FREE_gl_MultiPoint) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->Point->gg;
-       e && e->g.tok == zx_gl_Point_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Point(c, (struct zx_gl_Point_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_MultiPoint) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_MultiPoint_s* zx_NEW_gl_MultiPoint(struct zx_ctx* c)
+struct zx_gl_MultiPoint_s* zx_NEW_gl_MultiPoint(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_MultiPoint_s* x = ZX_ZALLOC(c, struct zx_gl_MultiPoint_s);
   x->gg.g.tok = zx_gl_MultiPoint_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6150,68 +5174,19 @@ int zx_WALK_WO_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    MultiPolygon
 
-/* FUNC(zx_FREE_gl_MultiPolygon) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->Polygon->gg;
-       e && e->g.tok == zx_gl_Polygon_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Polygon(c, (struct zx_gl_Polygon_s*)e, free_strs);
-  }
-  for (e = &x->Box->gg;
-       e && e->g.tok == zx_gl_Box_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Box(c, (struct zx_gl_Box_s*)e, free_strs);
-  }
-  for (e = &x->CircularArea->gg;
-       e && e->g.tok == zx_gl_CircularArea_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)e, free_strs);
-  }
-  for (e = &x->CircularArcArea->gg;
-       e && e->g.tok == zx_gl_CircularArcArea_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)e, free_strs);
-  }
-  for (e = &x->EllipticalArea->gg;
-       e && e->g.tok == zx_gl_EllipticalArea_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_MultiPolygon) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_MultiPolygon_s* zx_NEW_gl_MultiPolygon(struct zx_ctx* c)
+struct zx_gl_MultiPolygon_s* zx_NEW_gl_MultiPolygon(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_MultiPolygon_s* x = ZX_ZALLOC(c, struct zx_gl_MultiPolygon_s);
   x->gg.g.tok = zx_gl_MultiPolygon_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6421,36 +5396,19 @@ int zx_WALK_WO_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x,
 #define EL_NS     gl
 #define EL_TAG    NewData
 
-/* FUNC(zx_FREE_gl_NewData) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_NewData) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_NewData_s* zx_NEW_gl_NewData(struct zx_ctx* c)
+struct zx_gl_NewData_s* zx_NEW_gl_NewData(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_NewData_s* x = ZX_ZALLOC(c, struct zx_gl_NewData_s);
   x->gg.g.tok = zx_gl_NewData_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6551,46 +5509,19 @@ int zx_WALK_WO_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x, void* ctx
 #define EL_NS     gl
 #define EL_TAG    Notification
 
-/* FUNC(zx_FREE_gl_Notification) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->endReason, free_strs);
-  zx_free_attr(c, x->expires, free_strs);
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->subscriptionID, free_strs);
-
-  for (e = &x->ItemData->gg;
-       e && e->g.tok == zx_gl_ItemData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ItemData(c, (struct zx_gl_ItemData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Notification) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Notification_s* zx_NEW_gl_Notification(struct zx_ctx* c)
+struct zx_gl_Notification_s* zx_NEW_gl_Notification(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Notification_s* x = ZX_ZALLOC(c, struct zx_gl_Notification_s);
   x->gg.g.tok = zx_gl_Notification_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6720,50 +5651,19 @@ int zx_WALK_WO_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x,
 #define EL_NS     gl
 #define EL_TAG    Notify
 
-/* FUNC(zx_FREE_gl_Notify) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->timeStamp, free_strs);
-
-  for (e = &x->Notification->gg;
-       e && e->g.tok == zx_gl_Notification_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Notification(c, (struct zx_gl_Notification_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Notify) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Notify_s* zx_NEW_gl_Notify(struct zx_ctx* c)
+struct zx_gl_Notify_s* zx_NEW_gl_Notify(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Notify_s* x = ZX_ZALLOC(c, struct zx_gl_Notify_s);
   x->gg.g.tok = zx_gl_Notify_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6910,45 +5810,19 @@ int zx_WALK_WO_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x, void* ctx, 
 #define EL_NS     gl
 #define EL_TAG    NotifyAdminTo
 
-/* FUNC(zx_FREE_gl_NotifyAdminTo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  zx_free_simple_elems(c, x->SecurityMechID, free_strs);
-  for (e = &x->Credential->gg;
-       e && e->g.tok == zx_gl_Credential_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Credential(c, (struct zx_gl_Credential_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->Endpoint, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_NotifyAdminTo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_NotifyAdminTo_s* zx_NEW_gl_NotifyAdminTo(struct zx_ctx* c)
+struct zx_gl_NotifyAdminTo_s* zx_NEW_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_NotifyAdminTo_s* x = ZX_ZALLOC(c, struct zx_gl_NotifyAdminTo_s);
   x->gg.g.tok = zx_gl_NotifyAdminTo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -7082,49 +5956,19 @@ int zx_WALK_WO_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* 
 #define EL_NS     gl
 #define EL_TAG    NotifyResponse
 
-/* FUNC(zx_FREE_gl_NotifyResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_gl_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_NotifyResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_NotifyResponse_s* zx_NEW_gl_NotifyResponse(struct zx_ctx* c)
+struct zx_gl_NotifyResponse_s* zx_NEW_gl_NotifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_NotifyResponse_s* x = ZX_ZALLOC(c, struct zx_gl_NotifyResponse_s);
   x->gg.g.tok = zx_gl_NotifyResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -7269,45 +6113,19 @@ int zx_WALK_WO_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s
 #define EL_NS     gl
 #define EL_TAG    NotifyTo
 
-/* FUNC(zx_FREE_gl_NotifyTo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  zx_free_simple_elems(c, x->SecurityMechID, free_strs);
-  for (e = &x->Credential->gg;
-       e && e->g.tok == zx_gl_Credential_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Credential(c, (struct zx_gl_Credential_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->Endpoint, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_NotifyTo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_NotifyTo_s* zx_NEW_gl_NotifyTo(struct zx_ctx* c)
+struct zx_gl_NotifyTo_s* zx_NEW_gl_NotifyTo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_NotifyTo_s* x = ZX_ZALLOC(c, struct zx_gl_NotifyTo_s);
   x->gg.g.tok = zx_gl_NotifyTo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -7441,44 +6259,19 @@ int zx_WALK_WO_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x, void* c
 #define EL_NS     gl
 #define EL_TAG    Point
 
-/* FUNC(zx_FREE_gl_Point) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->coord->gg;
-       e && e->g.tok == zx_gl_coord_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Point) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Point_s* zx_NEW_gl_Point(struct zx_ctx* c)
+struct zx_gl_Point_s* zx_NEW_gl_Point(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Point_s* x = ZX_ZALLOC(c, struct zx_gl_Point_s);
   x->gg.g.tok = zx_gl_Point_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -7604,50 +6397,19 @@ int zx_WALK_WO_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x, void* ctx, in
 #define EL_NS     gl
 #define EL_TAG    Polygon
 
-/* FUNC(zx_FREE_gl_Polygon) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->gid, free_strs);
-  zx_free_attr(c, x->srsName, free_strs);
-
-  for (e = &x->outerBoundaryIs->gg;
-       e && e->g.tok == zx_gl_outerBoundaryIs_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_outerBoundaryIs(c, (struct zx_gl_outerBoundaryIs_s*)e, free_strs);
-  }
-  for (e = &x->innerBoundaryIs->gg;
-       e && e->g.tok == zx_gl_innerBoundaryIs_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_innerBoundaryIs(c, (struct zx_gl_innerBoundaryIs_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Polygon) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Polygon_s* zx_NEW_gl_Polygon(struct zx_ctx* c)
+struct zx_gl_Polygon_s* zx_NEW_gl_Polygon(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Polygon_s* x = ZX_ZALLOC(c, struct zx_gl_Polygon_s);
   x->gg.g.tok = zx_gl_Polygon_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -7794,67 +6556,19 @@ int zx_WALK_WO_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x, void* ctx
 #define EL_NS     gl
 #define EL_TAG    Query
 
-/* FUNC(zx_FREE_gl_Query) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->ResourceID->gg;
-       e && e->g.tok == zx_gl_ResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedResourceID->gg;
-       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, free_strs);
-  }
-  for (e = &x->Subscription->gg;
-       e && e->g.tok == zx_gl_Subscription_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Subscription(c, (struct zx_gl_Subscription_s*)e, free_strs);
-  }
-  for (e = &x->QueryItem->gg;
-       e && e->g.tok == zx_gl_QueryItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_QueryItem(c, (struct zx_gl_QueryItem_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Query) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Query_s* zx_NEW_gl_Query(struct zx_ctx* c)
+struct zx_gl_Query_s* zx_NEW_gl_Query(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Query_s* x = ZX_ZALLOC(c, struct zx_gl_Query_s);
   x->gg.g.tok = zx_gl_Query_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8062,76 +6776,19 @@ int zx_WALK_WO_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x, void* ctx, in
 #define EL_NS     gl
 #define EL_TAG    QueryItem
 
-/* FUNC(zx_FREE_gl_QueryItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->count, free_strs);
-  zx_free_attr(c, x->offset, free_strs);
-  zx_free_attr(c, x->setID, free_strs);
-  zx_free_attr(c, x->setReq, free_strs);
-
-  for (e = &x->AreaComparison->gg;
-       e && e->g.tok == zx_gl_AreaComparison_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)e, free_strs);
-  }
-  for (e = &x->eqop->gg;
-       e && e->g.tok == zx_gl_eqop_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_eqop(c, (struct zx_gl_eqop_s*)e, free_strs);
-  }
-  for (e = &x->geoinfo->gg;
-       e && e->g.tok == zx_gl_geoinfo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)e, free_strs);
-  }
-  for (e = &x->loc_type->gg;
-       e && e->g.tok == zx_gl_loc_type_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_loc_type(c, (struct zx_gl_loc_type_s*)e, free_strs);
-  }
-  for (e = &x->prio->gg;
-       e && e->g.tok == zx_gl_prio_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_prio(c, (struct zx_gl_prio_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_QueryItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_QueryItem_s* zx_NEW_gl_QueryItem(struct zx_ctx* c)
+struct zx_gl_QueryItem_s* zx_NEW_gl_QueryItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_QueryItem_s* x = ZX_ZALLOC(c, struct zx_gl_QueryItem_s);
   x->gg.g.tok = zx_gl_QueryItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8366,57 +7023,19 @@ int zx_WALK_WO_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x, void*
 #define EL_NS     gl
 #define EL_TAG    QueryResponse
 
-/* FUNC(zx_FREE_gl_QueryResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemIDRef, free_strs);
-  zx_free_attr(c, x->timeStamp, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_gl_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
-  }
-  for (e = &x->Data->gg;
-       e && e->g.tok == zx_gl_Data_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Data(c, (struct zx_gl_Data_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_QueryResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_QueryResponse_s* zx_NEW_gl_QueryResponse(struct zx_ctx* c)
+struct zx_gl_QueryResponse_s* zx_NEW_gl_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_QueryResponse_s* x = ZX_ZALLOC(c, struct zx_gl_QueryResponse_s);
   x->gg.g.tok = zx_gl_QueryResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8586,38 +7205,19 @@ int zx_WALK_WO_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* 
 #define EL_NS     gl
 #define EL_TAG    RefItem
 
-/* FUNC(zx_FREE_gl_RefItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->ItemIDRef, free_strs);
-  zx_free_attr(c, x->subscriptionID, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_RefItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_RefItem_s* zx_NEW_gl_RefItem(struct zx_ctx* c)
+struct zx_gl_RefItem_s* zx_NEW_gl_RefItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_RefItem_s* x = ZX_ZALLOC(c, struct zx_gl_RefItem_s);
   x->gg.g.tok = zx_gl_RefItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8722,37 +7322,19 @@ int zx_WALK_WO_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x, void* ctx
 #define EL_NS     gl
 #define EL_TAG    ResourceID
 
-/* FUNC(zx_FREE_gl_ResourceID) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_ResourceID) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_ResourceID_s* zx_NEW_gl_ResourceID(struct zx_ctx* c)
+struct zx_gl_ResourceID_s* zx_NEW_gl_ResourceID(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_ResourceID_s* x = ZX_ZALLOC(c, struct zx_gl_ResourceID_s);
   x->gg.g.tok = zx_gl_ResourceID_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8855,45 +7437,19 @@ int zx_WALK_WO_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x, voi
 #define EL_NS     gl
 #define EL_TAG    Status
 
-/* FUNC(zx_FREE_gl_Status) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->code, free_strs);
-  zx_free_attr(c, x->comment, free_strs);
-  zx_free_attr(c, x->ref, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_gl_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Status) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Status_s* zx_NEW_gl_Status(struct zx_ctx* c)
+struct zx_gl_Status_s* zx_NEW_gl_Status(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Status_s* x = ZX_ZALLOC(c, struct zx_gl_Status_s);
   x->gg.g.tok = zx_gl_Status_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9021,78 +7577,19 @@ int zx_WALK_WO_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x, void* ctx, 
 #define EL_NS     gl
 #define EL_TAG    Subscription
 
-/* FUNC(zx_FREE_gl_Subscription) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->expires, free_strs);
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->includeData, free_strs);
-  zx_free_attr(c, x->starts, free_strs);
-  zx_free_attr(c, x->subscriptionID, free_strs);
-
-  for (e = &x->ItemSelection->gg;
-       e && e->g.tok == zx_gl_ItemSelection_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)e, free_strs);
-  }
-  for (e = &x->RefItem->gg;
-       e && e->g.tok == zx_gl_RefItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_RefItem(c, (struct zx_gl_RefItem_s*)e, free_strs);
-  }
-  for (e = &x->NotifyTo->gg;
-       e && e->g.tok == zx_gl_NotifyTo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_NotifyTo(c, (struct zx_gl_NotifyTo_s*)e, free_strs);
-  }
-  for (e = &x->NotifyAdminTo->gg;
-       e && e->g.tok == zx_gl_NotifyAdminTo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_NotifyAdminTo(c, (struct zx_gl_NotifyAdminTo_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->Aggregation, free_strs);
-  for (e = &x->Trigger->gg;
-       e && e->g.tok == zx_gl_Trigger_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Trigger(c, (struct zx_gl_Trigger_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Subscription) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Subscription_s* zx_NEW_gl_Subscription(struct zx_ctx* c)
+struct zx_gl_Subscription_s* zx_NEW_gl_Subscription(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Subscription_s* x = ZX_ZALLOC(c, struct zx_gl_Subscription_s);
   x->gg.g.tok = zx_gl_Subscription_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9334,56 +7831,19 @@ int zx_WALK_WO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x,
 #define EL_NS     gl
 #define EL_TAG    Trigger
 
-/* FUNC(zx_FREE_gl_Trigger) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->Granularity, free_strs);
-  zx_free_simple_elems(c, x->Interval, free_strs);
-  for (e = &x->ms_action->gg;
-       e && e->g.tok == zx_gl_ms_action_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ms_action(c, (struct zx_gl_ms_action_s*)e, free_strs);
-  }
-  for (e = &x->ChangeArea->gg;
-       e && e->g.tok == zx_gl_ChangeArea_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_ChangeArea(c, (struct zx_gl_ChangeArea_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_Trigger) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_Trigger_s* zx_NEW_gl_Trigger(struct zx_ctx* c)
+struct zx_gl_Trigger_s* zx_NEW_gl_Trigger(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_Trigger_s* x = ZX_ZALLOC(c, struct zx_gl_Trigger_s);
   x->gg.g.tok = zx_gl_Trigger_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9557,39 +8017,19 @@ int zx_WALK_WO_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x, void* ctx
 #define EL_NS     gl
 #define EL_TAG    coord
 
-/* FUNC(zx_FREE_gl_coord) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->X, free_strs);
-  zx_free_simple_elems(c, x->Y, free_strs);
-  zx_free_simple_elems(c, x->Z, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_coord) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_coord_s* zx_NEW_gl_coord(struct zx_ctx* c)
+struct zx_gl_coord_s* zx_NEW_gl_coord(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_coord_s* x = ZX_ZALLOC(c, struct zx_gl_coord_s);
   x->gg.g.tok = zx_gl_coord_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9705,52 +8145,19 @@ int zx_WALK_WO_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x, void* ctx, in
 #define EL_NS     gl
 #define EL_TAG    eqop
 
-/* FUNC(zx_FREE_gl_eqop) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->resp_req->gg;
-       e && e->g.tok == zx_gl_resp_req_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_resp_req(c, (struct zx_gl_resp_req_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->ll_acc, free_strs);
-  zx_free_simple_elems(c, x->hor_acc, free_strs);
-  zx_free_simple_elems(c, x->alt_acc, free_strs);
-  zx_free_simple_elems(c, x->max_loc_age, free_strs);
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_eqop) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_eqop_s* zx_NEW_gl_eqop(struct zx_ctx* c)
+struct zx_gl_eqop_s* zx_NEW_gl_eqop(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_eqop_s* x = ZX_ZALLOC(c, struct zx_gl_eqop_s);
   x->gg.g.tok = zx_gl_eqop_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9913,37 +8320,19 @@ int zx_WALK_WO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, void* ctx, int 
 #define EL_NS     gl
 #define EL_TAG    esrd
 
-/* FUNC(zx_FREE_gl_esrd) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->type, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_esrd) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_esrd_s* zx_NEW_gl_esrd(struct zx_ctx* c)
+struct zx_gl_esrd_s* zx_NEW_gl_esrd(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_esrd_s* x = ZX_ZALLOC(c, struct zx_gl_esrd_s);
   x->gg.g.tok = zx_gl_esrd_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -10046,37 +8435,19 @@ int zx_WALK_WO_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x, void* ctx, int 
 #define EL_NS     gl
 #define EL_TAG    esrk
 
-/* FUNC(zx_FREE_gl_esrk) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->type, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_esrk) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_esrk_s* zx_NEW_gl_esrk(struct zx_ctx* c)
+struct zx_gl_esrk_s* zx_NEW_gl_esrk(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_esrk_s* x = ZX_ZALLOC(c, struct zx_gl_esrk_s);
   x->gg.g.tok = zx_gl_esrk_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -10179,64 +8550,19 @@ int zx_WALK_WO_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x, void* ctx, int 
 #define EL_NS     gl
 #define EL_TAG    geoinfo
 
-/* FUNC(zx_FREE_gl_geoinfo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->CoordinateReferenceSystem->gg;
-       e && e->g.tok == zx_gl_CoordinateReferenceSystem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CoordinateReferenceSystem(c, (struct zx_gl_CoordinateReferenceSystem_s*)e, free_strs);
-  }
-  for (e = &x->CivilData->gg;
-       e && e->g.tok == zx_gl_CivilData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, free_strs);
-  }
-  for (e = &x->shape->gg;
-       e && e->g.tok == zx_gl_shape_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->speed, free_strs);
-  zx_free_simple_elems(c, x->alt, free_strs);
-  zx_free_simple_elems(c, x->direction, free_strs);
-  zx_free_simple_elems(c, x->Heading, free_strs);
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_geoinfo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_geoinfo_s* zx_NEW_gl_geoinfo(struct zx_ctx* c)
+struct zx_gl_geoinfo_s* zx_NEW_gl_geoinfo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_geoinfo_s* x = ZX_ZALLOC(c, struct zx_gl_geoinfo_s);
   x->gg.g.tok = zx_gl_geoinfo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -10441,42 +8767,19 @@ int zx_WALK_WO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, void* ctx
 #define EL_NS     gl
 #define EL_TAG    innerBoundaryIs
 
-/* FUNC(zx_FREE_gl_innerBoundaryIs) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->LinearRing->gg;
-       e && e->g.tok == zx_gl_LinearRing_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_innerBoundaryIs) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_innerBoundaryIs_s* zx_NEW_gl_innerBoundaryIs(struct zx_ctx* c)
+struct zx_gl_innerBoundaryIs_s* zx_NEW_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_innerBoundaryIs_s* x = ZX_ZALLOC(c, struct zx_gl_innerBoundaryIs_s);
   x->gg.g.tok = zx_gl_innerBoundaryIs_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -10598,37 +8901,19 @@ int zx_WALK_WO_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs
 #define EL_NS     gl
 #define EL_TAG    loc_type
 
-/* FUNC(zx_FREE_gl_loc_type) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->type, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_loc_type) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_loc_type_s* zx_NEW_gl_loc_type(struct zx_ctx* c)
+struct zx_gl_loc_type_s* zx_NEW_gl_loc_type(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_loc_type_s* x = ZX_ZALLOC(c, struct zx_gl_loc_type_s);
   x->gg.g.tok = zx_gl_loc_type_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -10731,37 +9016,19 @@ int zx_WALK_WO_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x, void* c
 #define EL_NS     gl
 #define EL_TAG    ms_action
 
-/* FUNC(zx_FREE_gl_ms_action) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->type, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_ms_action) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_ms_action_s* zx_NEW_gl_ms_action(struct zx_ctx* c)
+struct zx_gl_ms_action_s* zx_NEW_gl_ms_action(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_ms_action_s* x = ZX_ZALLOC(c, struct zx_gl_ms_action_s);
   x->gg.g.tok = zx_gl_ms_action_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -10864,42 +9131,19 @@ int zx_WALK_WO_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x, void*
 #define EL_NS     gl
 #define EL_TAG    outerBoundaryIs
 
-/* FUNC(zx_FREE_gl_outerBoundaryIs) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->LinearRing->gg;
-       e && e->g.tok == zx_gl_LinearRing_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_outerBoundaryIs) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_outerBoundaryIs_s* zx_NEW_gl_outerBoundaryIs(struct zx_ctx* c)
+struct zx_gl_outerBoundaryIs_s* zx_NEW_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_outerBoundaryIs_s* x = ZX_ZALLOC(c, struct zx_gl_outerBoundaryIs_s);
   x->gg.g.tok = zx_gl_outerBoundaryIs_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -11021,62 +9265,19 @@ int zx_WALK_WO_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs
 #define EL_NS     gl
 #define EL_TAG    pd
 
-/* FUNC(zx_FREE_gl_pd) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->ACC, free_strs);
-
-  zx_free_simple_elems(c, x->time, free_strs);
-  for (e = &x->CivilData->gg;
-       e && e->g.tok == zx_gl_CivilData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, free_strs);
-  }
-  for (e = &x->shape->gg;
-       e && e->g.tok == zx_gl_shape_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->alt, free_strs);
-  zx_free_simple_elems(c, x->alt_acc, free_strs);
-  zx_free_simple_elems(c, x->speed, free_strs);
-  zx_free_simple_elems(c, x->direction, free_strs);
-  zx_free_simple_elems(c, x->Heading, free_strs);
-  zx_free_simple_elems(c, x->lev_conf, free_strs);
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_pd) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_pd_s* zx_NEW_gl_pd(struct zx_ctx* c)
+struct zx_gl_pd_s* zx_NEW_gl_pd(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_pd_s* x = ZX_ZALLOC(c, struct zx_gl_pd_s);
   x->gg.g.tok = zx_gl_pd_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -11277,37 +9478,19 @@ int zx_WALK_WO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, void* ctx, int (*ca
 #define EL_NS     gl
 #define EL_TAG    prio
 
-/* FUNC(zx_FREE_gl_prio) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->type, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_prio) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_prio_s* zx_NEW_gl_prio(struct zx_ctx* c)
+struct zx_gl_prio_s* zx_NEW_gl_prio(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_prio_s* x = ZX_ZALLOC(c, struct zx_gl_prio_s);
   x->gg.g.tok = zx_gl_prio_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -11410,37 +9593,19 @@ int zx_WALK_WO_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x, void* ctx, int 
 #define EL_NS     gl
 #define EL_TAG    resp_req
 
-/* FUNC(zx_FREE_gl_resp_req) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->type, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_resp_req) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_resp_req_s* zx_NEW_gl_resp_req(struct zx_ctx* c)
+struct zx_gl_resp_req_s* zx_NEW_gl_resp_req(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_resp_req_s* x = ZX_ZALLOC(c, struct zx_gl_resp_req_s);
   x->gg.g.tok = zx_gl_resp_req_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -11543,108 +9708,19 @@ int zx_WALK_WO_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x, void* c
 #define EL_NS     gl
 #define EL_TAG    shape
 
-/* FUNC(zx_FREE_gl_shape) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Point->gg;
-       e && e->g.tok == zx_gl_Point_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Point(c, (struct zx_gl_Point_s*)e, free_strs);
-  }
-  for (e = &x->LineString->gg;
-       e && e->g.tok == zx_gl_LineString_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_LineString(c, (struct zx_gl_LineString_s*)e, free_strs);
-  }
-  for (e = &x->Polygon->gg;
-       e && e->g.tok == zx_gl_Polygon_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Polygon(c, (struct zx_gl_Polygon_s*)e, free_strs);
-  }
-  for (e = &x->Box->gg;
-       e && e->g.tok == zx_gl_Box_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Box(c, (struct zx_gl_Box_s*)e, free_strs);
-  }
-  for (e = &x->CircularArea->gg;
-       e && e->g.tok == zx_gl_CircularArea_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)e, free_strs);
-  }
-  for (e = &x->CircularArcArea->gg;
-       e && e->g.tok == zx_gl_CircularArcArea_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)e, free_strs);
-  }
-  for (e = &x->EllipticalArea->gg;
-       e && e->g.tok == zx_gl_EllipticalArea_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)e, free_strs);
-  }
-  for (e = &x->GeometryCollection->gg;
-       e && e->g.tok == zx_gl_GeometryCollection_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_GeometryCollection(c, (struct zx_gl_GeometryCollection_s*)e, free_strs);
-  }
-  for (e = &x->MultiLineString->gg;
-       e && e->g.tok == zx_gl_MultiLineString_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_MultiLineString(c, (struct zx_gl_MultiLineString_s*)e, free_strs);
-  }
-  for (e = &x->MultiPoint->gg;
-       e && e->g.tok == zx_gl_MultiPoint_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_MultiPoint(c, (struct zx_gl_MultiPoint_s*)e, free_strs);
-  }
-  for (e = &x->MultiPolygon->gg;
-       e && e->g.tok == zx_gl_MultiPolygon_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_MultiPolygon(c, (struct zx_gl_MultiPolygon_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_gl_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_gl_shape) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_gl_shape_s* zx_NEW_gl_shape(struct zx_ctx* c)
+struct zx_gl_shape_s* zx_NEW_gl_shape(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_gl_shape_s* x = ZX_ZALLOC(c, struct zx_gl_shape_s);
   x->gg.g.tok = zx_gl_shape_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

@@ -38,8 +38,7 @@ struct zx_im_IdentityMappingRequest_s {
 };
 
 struct zx_im_IdentityMappingRequest_s* zx_DEC_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x);
-struct zx_im_IdentityMappingRequest_s* zx_NEW_im_IdentityMappingRequest(struct zx_ctx* c);
-void zx_FREE_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x, int free_strs);
+struct zx_im_IdentityMappingRequest_s* zx_NEW_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x);
 char* zx_ENC_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x);
@@ -85,8 +84,7 @@ struct zx_im_IdentityMappingResponse_s {
 };
 
 struct zx_im_IdentityMappingResponse_s* zx_DEC_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x);
-struct zx_im_IdentityMappingResponse_s* zx_NEW_im_IdentityMappingResponse(struct zx_ctx* c);
-void zx_FREE_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x, int free_strs);
+struct zx_im_IdentityMappingResponse_s* zx_NEW_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x);
 char* zx_ENC_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x);
@@ -141,8 +139,7 @@ struct zx_im_MappingInput_s {
 };
 
 struct zx_im_MappingInput_s* zx_DEC_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x);
-struct zx_im_MappingInput_s* zx_NEW_im_MappingInput(struct zx_ctx* c);
-void zx_FREE_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x, int free_strs);
+struct zx_im_MappingInput_s* zx_NEW_im_MappingInput(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x);
 char* zx_ENC_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x);
@@ -198,8 +195,7 @@ struct zx_im_MappingOutput_s {
 };
 
 struct zx_im_MappingOutput_s* zx_DEC_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x);
-struct zx_im_MappingOutput_s* zx_NEW_im_MappingOutput(struct zx_ctx* c);
-void zx_FREE_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x, int free_strs);
+struct zx_im_MappingOutput_s* zx_NEW_im_MappingOutput(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x);
 char* zx_ENC_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x);

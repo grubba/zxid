@@ -48,86 +48,19 @@
 #define EL_NS     xaspcd1
 #define EL_TAG    XACMLAuthzDecisionQuery
 
-/* FUNC(zx_FREE_xaspcd1_XACMLAuthzDecisionQuery) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->CombinePolicies, free_strs);
-  zx_free_attr(c, x->Consent, free_strs);
-  zx_free_attr(c, x->Destination, free_strs);
-  zx_free_attr(c, x->ID, free_strs);
-  zx_free_attr(c, x->InputContextOnly, free_strs);
-  zx_free_attr(c, x->IssueInstant, free_strs);
-  zx_free_attr(c, x->ReturnContext, free_strs);
-  zx_free_attr(c, x->Version, free_strs);
-
-  for (e = &x->Issuer->gg;
-       e && e->g.tok == zx_sa_Issuer_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_Issuer(c, (struct zx_sa_Issuer_s*)e, free_strs);
-  }
-  for (e = &x->Signature->gg;
-       e && e->g.tok == zx_ds_Signature_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
-  }
-  for (e = &x->Extensions->gg;
-       e && e->g.tok == zx_sp_Extensions_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_Extensions(c, (struct zx_sp_Extensions_s*)e, free_strs);
-  }
-  for (e = &x->Request->gg;
-       e && e->g.tok == zx_xac_Request_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xac_Request(c, (struct zx_xac_Request_s*)e, free_strs);
-  }
-  for (e = &x->Policy->gg;
-       e && e->g.tok == zx_xa_Policy_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xa_Policy(c, (struct zx_xa_Policy_s*)e, free_strs);
-  }
-  for (e = &x->PolicySet->gg;
-       e && e->g.tok == zx_xa_PolicySet_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)e, free_strs);
-  }
-  for (e = &x->ReferencedPolicies->gg;
-       e && e->g.tok == zx_xasacd1_ReferencedPolicies_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xasacd1_ReferencedPolicies(c, (struct zx_xasacd1_ReferencedPolicies_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_xaspcd1_XACMLAuthzDecisionQuery) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zx_NEW_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c)
+struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* zx_NEW_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_xaspcd1_XACMLAuthzDecisionQuery_s* x = ZX_ZALLOC(c, struct zx_xaspcd1_XACMLAuthzDecisionQuery_s);
   x->gg.g.tok = zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -391,83 +324,19 @@ int zx_WALK_WO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspc
 #define EL_NS     xaspcd1
 #define EL_TAG    XACMLPolicyQuery
 
-/* FUNC(zx_FREE_xaspcd1_XACMLPolicyQuery) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACMLPolicyQuery_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Consent, free_strs);
-  zx_free_attr(c, x->Destination, free_strs);
-  zx_free_attr(c, x->ID, free_strs);
-  zx_free_attr(c, x->IssueInstant, free_strs);
-  zx_free_attr(c, x->Version, free_strs);
-
-  for (e = &x->Issuer->gg;
-       e && e->g.tok == zx_sa_Issuer_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_Issuer(c, (struct zx_sa_Issuer_s*)e, free_strs);
-  }
-  for (e = &x->Signature->gg;
-       e && e->g.tok == zx_ds_Signature_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
-  }
-  for (e = &x->Extensions->gg;
-       e && e->g.tok == zx_sp_Extensions_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_Extensions(c, (struct zx_sp_Extensions_s*)e, free_strs);
-  }
-  for (e = &x->Request->gg;
-       e && e->g.tok == zx_xac_Request_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xac_Request(c, (struct zx_xac_Request_s*)e, free_strs);
-  }
-  for (e = &x->Target->gg;
-       e && e->g.tok == zx_xa_Target_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xa_Target(c, (struct zx_xa_Target_s*)e, free_strs);
-  }
-  for (e = &x->PolicySetIdReference->gg;
-       e && e->g.tok == zx_xa_PolicySetIdReference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xa_PolicySetIdReference(c, (struct zx_xa_PolicySetIdReference_s*)e, free_strs);
-  }
-  for (e = &x->PolicyIdReference->gg;
-       e && e->g.tok == zx_xa_PolicyIdReference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xa_PolicyIdReference(c, (struct zx_xa_PolicyIdReference_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_xaspcd1_XACMLPolicyQuery) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_xaspcd1_XACMLPolicyQuery_s* zx_NEW_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c)
+struct zx_xaspcd1_XACMLPolicyQuery_s* zx_NEW_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_xaspcd1_XACMLPolicyQuery_s* x = ZX_ZALLOC(c, struct zx_xaspcd1_XACMLPolicyQuery_s);
   x->gg.g.tok = zx_xaspcd1_XACMLPolicyQuery_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

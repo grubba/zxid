@@ -48,38 +48,19 @@
 #define EL_NS     subs
 #define EL_TAG    RefItem
 
-/* FUNC(zx_FREE_subs_RefItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->subscriptionID, free_strs);
-  zx_free_attr(c, x->itemIDRef, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_subs_RefItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_subs_RefItem_s* zx_NEW_subs_RefItem(struct zx_ctx* c)
+struct zx_subs_RefItem_s* zx_NEW_subs_RefItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_subs_RefItem_s* x = ZX_ZALLOC(c, struct zx_subs_RefItem_s);
   x->gg.g.tok = zx_subs_RefItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

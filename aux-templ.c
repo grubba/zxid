@@ -41,8 +41,8 @@ struct ELSTRUCT* TXNEW_ELNAME(struct zx_ctx* c, struct zx_elem_s* father)
   struct ELSTRUCT* x = ZX_ZALLOC(c, struct ELSTRUCT);
   x->gg.g.tok = TXELNAME_ELEM;
   if (father) {
-    x->gg.g.n = &father->kids.g;
-    father->kids = x;
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
   }
   return x;
 }

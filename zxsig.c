@@ -83,7 +83,6 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
   int siglen;
   struct zx_str* ss;
   struct zx_str* b64;
-  struct zx_ds_Transform_s* txform;
   struct zx_ds_Reference_s* ref;
   struct zx_ds_Signature_s* sig = zx_NEW_ds_Signature(c,0);
   struct zx_ds_SignedInfo_s* si = sig->SignedInfo = zx_NEW_ds_SignedInfo(c, &sig->gg);
@@ -98,7 +97,7 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
     ref->Transforms->Transform = zx_NEW_ds_Transform(c, &ref->Transforms->gg);
     ref->Transforms->Transform->Algorithm = zx_ref_attr(c, zx_Algorithm_ATTR, CANON_ALGO);
 
-    ref->Transforms->Transform = zx_NEW_ds_Transform(c, &ref->Trasnforms->gg);
+    ref->Transforms->Transform = zx_NEW_ds_Transform(c, &ref->Transforms->gg);
     ref->Transforms->Transform->Algorithm = zx_ref_attr(c, zx_Algorithm_ATTR, ENVELOPED_ALGO);
     
     ref->DigestMethod = zx_NEW_ds_DigestMethod(c, &ref->gg);
@@ -108,7 +107,7 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
     SHA1((unsigned char*)sref->canon->s, sref->canon->len, (unsigned char*)sha1);
     b64 = zx_new_len_str(c, SIMPLE_BASE64_LEN(sizeof(sha1)));
     base64_fancy_raw(sha1, sizeof(sha1), b64->s, std_basis_64, 1<<31, 0, 0, '=');
-    ref->DigestValue = zx_new_simple_elem(c, &reg->gg, zx_ds_DigestValue_ELEM, b64);
+    ref->DigestValue = zx_new_simple_elem(c, &ref->gg, zx_ds_DigestValue_ELEM, b64);
     si->Reference = ref;  /* *** Need to reverse the list? */
   }
   
@@ -681,7 +680,7 @@ struct zx_xenc_EncryptedData_s* zxenc_pubkey_enc(zxid_conf* cf, struct zx_str* d
   ek->ReferenceList->DataReference->URI = zx_attrf(cf->ctx, zx_URI_ATTR, "#ED%s", idsuffix);
   ek->EncryptionMethod = zx_NEW_xenc_EncryptionMethod(cf->ctx, &ek->gg);
   ek->EncryptionMethod->Algorithm = zx_ref_attr(cf->ctx, zx_Algorithm_ATTR, ENC_KEYTRAN_ALGO);
-  ek->KeyInfo = zxid_key_info(cf, cert);
+  ek->KeyInfo = zxid_key_info(cf, &ek->gg, cert);
   if (meta && cf->enckey_opt & 0x01) {
     /* This hack may help early 2010 vintage Shibboleth SP to work without nested EncryptedKey.
      * (personal communication w/Scott 20100906 --Sampo) */

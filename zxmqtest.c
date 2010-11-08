@@ -115,7 +115,7 @@ void test_ibm_cert_problem_enc_dec()
   nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, "persistent");
   nameid->NameQualifier = zx_ref_attr(cf->ctx, zx_NameQualifier_ATTR, "ibmidp");
   /*nameid->SPNameQualifier = zx_ref_attr(cf->ctx, zx_SPNameQualifier_ATTR, spqual);*/
-  zx_add_content(c, &nameid->gg, zx_ref_str(cf->ctx, "a-persistent-nid"));
+  zx_add_content(cf->ctx, &nameid->gg, zx_ref_str(cf->ctx, "a-persistent-nid"));
 
 #if 0
   cf->enc_pkey = zxid_read_private_key(cf, "sym-idp-enc.pem");

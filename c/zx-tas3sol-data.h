@@ -37,8 +37,7 @@ struct zx_tas3sol_Dict_s {
 };
 
 struct zx_tas3sol_Dict_s* zx_DEC_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x);
-struct zx_tas3sol_Dict_s* zx_NEW_tas3sol_Dict(struct zx_ctx* c);
-void zx_FREE_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x, int free_strs);
+struct zx_tas3sol_Dict_s* zx_NEW_tas3sol_Dict(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x);
 char* zx_ENC_SO_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_tas3sol_Dict(struct zx_ctx* c, struct zx_tas3sol_Dict_s* x);
@@ -74,8 +73,7 @@ struct zx_tas3sol_Obligations_s {
 };
 
 struct zx_tas3sol_Obligations_s* zx_DEC_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x);
-struct zx_tas3sol_Obligations_s* zx_NEW_tas3sol_Obligations(struct zx_ctx* c);
-void zx_FREE_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x, int free_strs);
+struct zx_tas3sol_Obligations_s* zx_NEW_tas3sol_Obligations(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x);
 char* zx_ENC_SO_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_tas3sol_Obligations(struct zx_ctx* c, struct zx_tas3sol_Obligations_s* x);

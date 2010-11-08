@@ -980,7 +980,8 @@ scan_end:
     URL_DECODE(p, name, qs);
     *p = 0;
     
-    qs += strcspn(val = ++qs, "&\n\r"); /* Skip over = and scan val */
+    val = ++qs;
+    qs += strcspn(qs, "&\n\r"); /* Skip over = and scan val */
     v = p = val;
     URL_DECODE(p, val, qs);
     if (*qs)

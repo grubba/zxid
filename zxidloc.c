@@ -55,7 +55,7 @@ struct zx_str* zxid_idp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
 	break;
     if (!slo_svc)
       break;
-    loc = req ? slo_svc->Location : (slo_svc->ResponseLocation ? slo_svc->ResponseLocation : slo_svc->Location);
+    loc = req ? &slo_svc->Location->g : (slo_svc->ResponseLocation ? &slo_svc->ResponseLocation->g : &slo_svc->Location->g);
     if (!loc)
       break;
     return loc;
@@ -69,7 +69,7 @@ struct zx_str* zxid_idp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
 	break;
     if (!mni_svc)
       break;
-    loc = req ? mni_svc->Location : (mni_svc->ResponseLocation ? mni_svc->ResponseLocation : mni_svc->Location);
+    loc = req ? &mni_svc->Location->g : (mni_svc->ResponseLocation ? &mni_svc->ResponseLocation->g : &mni_svc->Location->g);
     if (!loc)
       break;
     return loc;
@@ -174,10 +174,10 @@ struct zx_str* zxid_sp_loc_by_index_raw(zxid_conf* cf, zxid_cgi* cgi,
 	break;
     if (!acs_svc)
       break;
-    loc = acs_svc->Location;
+    loc = &acs_svc->Location->g;
     if (!loc)
       break;
-    *binding = zxid_protocol_binding_map_saml2(acs_svc->Binding);
+    *binding = zxid_protocol_binding_map_saml2(&acs_svc->Binding->g);
     return loc;
   }
 
@@ -217,7 +217,7 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
 	break;
     if (!slo_svc)
       break;
-    loc = req ? slo_svc->Location : (slo_svc->ResponseLocation ? slo_svc->ResponseLocation : slo_svc->Location);
+    loc = req ? &slo_svc->Location->g : (slo_svc->ResponseLocation ? &slo_svc->ResponseLocation->g : &slo_svc->Location->g);
     if (!loc)
       break;
     return loc;
@@ -231,7 +231,7 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
 	break;
     if (!mni_svc)
       break;
-    loc = req ? mni_svc->Location : (mni_svc->ResponseLocation ? mni_svc->ResponseLocation : mni_svc->Location);
+    loc = req ? &mni_svc->Location->g : (mni_svc->ResponseLocation ? &mni_svc->ResponseLocation->g : &mni_svc->Location->g);
     if (!loc)
       break;
     return loc;
@@ -245,7 +245,7 @@ struct zx_str* zxid_sp_loc_raw(zxid_conf* cf, zxid_cgi* cgi,
 	break;
     if (!acs_svc)
       break;
-    loc = acs_svc->Location;
+    loc = &acs_svc->Location->g;
     if (!loc)
       break;
     return loc;

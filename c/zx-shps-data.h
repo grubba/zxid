@@ -46,8 +46,7 @@ struct zx_shps_CallbackEPR_s {
 };
 
 struct zx_shps_CallbackEPR_s* zx_DEC_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x);
-struct zx_shps_CallbackEPR_s* zx_NEW_shps_CallbackEPR(struct zx_ctx* c);
-void zx_FREE_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x, int free_strs);
+struct zx_shps_CallbackEPR_s* zx_NEW_shps_CallbackEPR(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x);
 char* zx_ENC_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x);
@@ -120,8 +119,7 @@ struct zx_shps_Delete_s {
 };
 
 struct zx_shps_Delete_s* zx_DEC_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x);
-struct zx_shps_Delete_s* zx_NEW_shps_Delete(struct zx_ctx* c);
-void zx_FREE_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x, int free_strs);
+struct zx_shps_Delete_s* zx_NEW_shps_Delete(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x);
 char* zx_ENC_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x);
@@ -166,8 +164,7 @@ struct zx_shps_DeleteResponse_s {
 };
 
 struct zx_shps_DeleteResponse_s* zx_DEC_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x);
-struct zx_shps_DeleteResponse_s* zx_NEW_shps_DeleteResponse(struct zx_ctx* c);
-void zx_FREE_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x, int free_strs);
+struct zx_shps_DeleteResponse_s* zx_NEW_shps_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x);
 char* zx_ENC_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteResponse_s* x);
@@ -212,8 +209,7 @@ struct zx_shps_GetStatus_s {
 };
 
 struct zx_shps_GetStatus_s* zx_DEC_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x);
-struct zx_shps_GetStatus_s* zx_NEW_shps_GetStatus(struct zx_ctx* c);
-void zx_FREE_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x, int free_strs);
+struct zx_shps_GetStatus_s* zx_NEW_shps_GetStatus(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x);
 char* zx_ENC_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x);
@@ -259,8 +255,7 @@ struct zx_shps_GetStatusResponse_s {
 };
 
 struct zx_shps_GetStatusResponse_s* zx_DEC_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x);
-struct zx_shps_GetStatusResponse_s* zx_NEW_shps_GetStatusResponse(struct zx_ctx* c);
-void zx_FREE_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x, int free_strs);
+struct zx_shps_GetStatusResponse_s* zx_NEW_shps_GetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x);
 char* zx_ENC_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusResponse_s* x);
@@ -314,8 +309,7 @@ struct zx_shps_GetStatusResponseItem_s {
 };
 
 struct zx_shps_GetStatusResponseItem_s* zx_DEC_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x);
-struct zx_shps_GetStatusResponseItem_s* zx_NEW_shps_GetStatusResponseItem(struct zx_ctx* c);
-void zx_FREE_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x, int free_strs);
+struct zx_shps_GetStatusResponseItem_s* zx_NEW_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x);
 char* zx_ENC_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetStatusResponseItem_s* x);
@@ -370,8 +364,7 @@ struct zx_shps_InvocationContext_s {
 };
 
 struct zx_shps_InvocationContext_s* zx_DEC_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x);
-struct zx_shps_InvocationContext_s* zx_NEW_shps_InvocationContext(struct zx_ctx* c);
-void zx_FREE_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x, int free_strs);
+struct zx_shps_InvocationContext_s* zx_NEW_shps_InvocationContext(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x);
 char* zx_ENC_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_InvocationContext_s* x);
@@ -433,8 +426,7 @@ struct zx_shps_InvokeItem_s {
 };
 
 struct zx_shps_InvokeItem_s* zx_DEC_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x);
-struct zx_shps_InvokeItem_s* zx_NEW_shps_InvokeItem(struct zx_ctx* c);
-void zx_FREE_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x, int free_strs);
+struct zx_shps_InvokeItem_s* zx_NEW_shps_InvokeItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x);
 char* zx_ENC_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x);
@@ -482,8 +474,7 @@ struct zx_shps_InvokeResponse_s {
 };
 
 struct zx_shps_InvokeResponse_s* zx_DEC_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x);
-struct zx_shps_InvokeResponse_s* zx_NEW_shps_InvokeResponse(struct zx_ctx* c);
-void zx_FREE_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x, int free_strs);
+struct zx_shps_InvokeResponse_s* zx_NEW_shps_InvokeResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x);
 char* zx_ENC_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeResponse_s* x);
@@ -536,8 +527,7 @@ struct zx_shps_InvokeResponseItem_s {
 };
 
 struct zx_shps_InvokeResponseItem_s* zx_DEC_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x);
-struct zx_shps_InvokeResponseItem_s* zx_NEW_shps_InvokeResponseItem(struct zx_ctx* c);
-void zx_FREE_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x, int free_strs);
+struct zx_shps_InvokeResponseItem_s* zx_NEW_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x);
 char* zx_ENC_SO_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeResponseItem_s* x);
@@ -578,8 +568,7 @@ struct zx_shps_Poll_s {
 };
 
 struct zx_shps_Poll_s* zx_DEC_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x);
-struct zx_shps_Poll_s* zx_NEW_shps_Poll(struct zx_ctx* c);
-void zx_FREE_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x, int free_strs);
+struct zx_shps_Poll_s* zx_NEW_shps_Poll(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x);
 char* zx_ENC_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x);
@@ -635,8 +624,7 @@ struct zx_shps_PollResponse_s {
 };
 
 struct zx_shps_PollResponse_s* zx_DEC_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x);
-struct zx_shps_PollResponse_s* zx_NEW_shps_PollResponse(struct zx_ctx* c);
-void zx_FREE_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x, int free_strs);
+struct zx_shps_PollResponse_s* zx_NEW_shps_PollResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x);
 char* zx_ENC_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s* x);
@@ -683,8 +671,7 @@ struct zx_shps_ProxyInvoke_s {
 };
 
 struct zx_shps_ProxyInvoke_s* zx_DEC_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x);
-struct zx_shps_ProxyInvoke_s* zx_NEW_shps_ProxyInvoke(struct zx_ctx* c);
-void zx_FREE_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x, int free_strs);
+struct zx_shps_ProxyInvoke_s* zx_NEW_shps_ProxyInvoke(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x);
 char* zx_ENC_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x);
@@ -732,8 +719,7 @@ struct zx_shps_ProxyInvokeItem_s {
 };
 
 struct zx_shps_ProxyInvokeItem_s* zx_DEC_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x);
-struct zx_shps_ProxyInvokeItem_s* zx_NEW_shps_ProxyInvokeItem(struct zx_ctx* c);
-void zx_FREE_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x, int free_strs);
+struct zx_shps_ProxyInvokeItem_s* zx_NEW_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x);
 char* zx_ENC_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeItem_s* x);
@@ -797,8 +783,7 @@ struct zx_shps_ProxyInvokeResponse_s {
 };
 
 struct zx_shps_ProxyInvokeResponse_s* zx_DEC_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x);
-struct zx_shps_ProxyInvokeResponse_s* zx_NEW_shps_ProxyInvokeResponse(struct zx_ctx* c);
-void zx_FREE_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x, int free_strs);
+struct zx_shps_ProxyInvokeResponse_s* zx_NEW_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x);
 char* zx_ENC_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponse_s* x);
@@ -853,8 +838,7 @@ struct zx_shps_ProxyInvokeResponseItem_s {
 };
 
 struct zx_shps_ProxyInvokeResponseItem_s* zx_DEC_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x);
-struct zx_shps_ProxyInvokeResponseItem_s* zx_NEW_shps_ProxyInvokeResponseItem(struct zx_ctx* c);
-void zx_FREE_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x, int free_strs);
+struct zx_shps_ProxyInvokeResponseItem_s* zx_NEW_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x);
 char* zx_ENC_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeResponseItem_s* x);
@@ -909,8 +893,7 @@ struct zx_shps_Query_s {
 };
 
 struct zx_shps_Query_s* zx_DEC_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x);
-struct zx_shps_Query_s* zx_NEW_shps_Query(struct zx_ctx* c);
-void zx_FREE_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x, int free_strs);
+struct zx_shps_Query_s* zx_NEW_shps_Query(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x);
 char* zx_ENC_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x);
@@ -955,8 +938,7 @@ struct zx_shps_QueryRegistered_s {
 };
 
 struct zx_shps_QueryRegistered_s* zx_DEC_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x);
-struct zx_shps_QueryRegistered_s* zx_NEW_shps_QueryRegistered(struct zx_ctx* c);
-void zx_FREE_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x, int free_strs);
+struct zx_shps_QueryRegistered_s* zx_NEW_shps_QueryRegistered(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x);
 char* zx_ENC_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegistered_s* x);
@@ -1002,8 +984,7 @@ struct zx_shps_QueryRegisteredResponse_s {
 };
 
 struct zx_shps_QueryRegisteredResponse_s* zx_DEC_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x);
-struct zx_shps_QueryRegisteredResponse_s* zx_NEW_shps_QueryRegisteredResponse(struct zx_ctx* c);
-void zx_FREE_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x, int free_strs);
+struct zx_shps_QueryRegisteredResponse_s* zx_NEW_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x);
 char* zx_ENC_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_QueryRegisteredResponse_s* x);
@@ -1057,8 +1038,7 @@ struct zx_shps_QueryResponse_s {
 };
 
 struct zx_shps_QueryResponse_s* zx_DEC_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x);
-struct zx_shps_QueryResponse_s* zx_NEW_shps_QueryResponse(struct zx_ctx* c);
-void zx_FREE_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x, int free_strs);
+struct zx_shps_QueryResponse_s* zx_NEW_shps_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x);
 char* zx_ENC_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_s* x);
@@ -1111,8 +1091,7 @@ struct zx_shps_Register_s {
 };
 
 struct zx_shps_Register_s* zx_DEC_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x);
-struct zx_shps_Register_s* zx_NEW_shps_Register(struct zx_ctx* c);
-void zx_FREE_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x, int free_strs);
+struct zx_shps_Register_s* zx_NEW_shps_Register(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x);
 char* zx_ENC_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x);
@@ -1158,8 +1137,7 @@ struct zx_shps_RegisterResponse_s {
 };
 
 struct zx_shps_RegisterResponse_s* zx_DEC_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x);
-struct zx_shps_RegisterResponse_s* zx_NEW_shps_RegisterResponse(struct zx_ctx* c);
-void zx_FREE_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x, int free_strs);
+struct zx_shps_RegisterResponse_s* zx_NEW_shps_RegisterResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x);
 char* zx_ENC_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterResponse_s* x);
@@ -1213,8 +1191,7 @@ struct zx_shps_RegisterResponseItem_s {
 };
 
 struct zx_shps_RegisterResponseItem_s* zx_DEC_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x);
-struct zx_shps_RegisterResponseItem_s* zx_NEW_shps_RegisterResponseItem(struct zx_ctx* c);
-void zx_FREE_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x, int free_strs);
+struct zx_shps_RegisterResponseItem_s* zx_NEW_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x);
 char* zx_ENC_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_RegisterResponseItem_s* x);
@@ -1261,8 +1238,7 @@ struct zx_shps_SetStatus_s {
 };
 
 struct zx_shps_SetStatus_s* zx_DEC_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x);
-struct zx_shps_SetStatus_s* zx_NEW_shps_SetStatus(struct zx_ctx* c);
-void zx_FREE_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x, int free_strs);
+struct zx_shps_SetStatus_s* zx_NEW_shps_SetStatus(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x);
 char* zx_ENC_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x);
@@ -1309,8 +1285,7 @@ struct zx_shps_SetStatusItem_s {
 };
 
 struct zx_shps_SetStatusItem_s* zx_DEC_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x);
-struct zx_shps_SetStatusItem_s* zx_NEW_shps_SetStatusItem(struct zx_ctx* c);
-void zx_FREE_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x, int free_strs);
+struct zx_shps_SetStatusItem_s* zx_NEW_shps_SetStatusItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x);
 char* zx_ENC_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_s* x);
@@ -1365,8 +1340,7 @@ struct zx_shps_SetStatusResponse_s {
 };
 
 struct zx_shps_SetStatusResponse_s* zx_DEC_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x);
-struct zx_shps_SetStatusResponse_s* zx_NEW_shps_SetStatusResponse(struct zx_ctx* c);
-void zx_FREE_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x, int free_strs);
+struct zx_shps_SetStatusResponse_s* zx_NEW_shps_SetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x);
 char* zx_ENC_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusResponse_s* x);
@@ -1411,8 +1385,7 @@ struct zx_shps_Update_s {
 };
 
 struct zx_shps_Update_s* zx_DEC_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x);
-struct zx_shps_Update_s* zx_NEW_shps_Update(struct zx_ctx* c);
-void zx_FREE_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x, int free_strs);
+struct zx_shps_Update_s* zx_NEW_shps_Update(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x);
 char* zx_ENC_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x);
@@ -1459,8 +1432,7 @@ struct zx_shps_UpdateItem_s {
 };
 
 struct zx_shps_UpdateItem_s* zx_DEC_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x);
-struct zx_shps_UpdateItem_s* zx_NEW_shps_UpdateItem(struct zx_ctx* c);
-void zx_FREE_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x, int free_strs);
+struct zx_shps_UpdateItem_s* zx_NEW_shps_UpdateItem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x);
 char* zx_ENC_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x);
@@ -1515,8 +1487,7 @@ struct zx_shps_UpdateResponse_s {
 };
 
 struct zx_shps_UpdateResponse_s* zx_DEC_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x);
-struct zx_shps_UpdateResponse_s* zx_NEW_shps_UpdateResponse(struct zx_ctx* c);
-void zx_FREE_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x, int free_strs);
+struct zx_shps_UpdateResponse_s* zx_NEW_shps_UpdateResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x);
 char* zx_ENC_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateResponse_s* x);

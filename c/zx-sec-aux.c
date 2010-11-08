@@ -48,63 +48,19 @@
 #define EL_NS     sec
 #define EL_TAG    Token
 
-/* FUNC(zx_FREE_sec_Token) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_sec_Token(struct zx_ctx* c, struct zx_sec_Token_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->ref, free_strs);
-  zx_free_attr(c, x->usage, free_strs);
-
-  for (e = &x->Assertion->gg;
-       e && e->g.tok == zx_sa_Assertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_Assertion(c, (struct zx_sa_Assertion_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedAssertion->gg;
-       e && e->g.tok == zx_sa_EncryptedAssertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)e, free_strs);
-  }
-  for (e = &x->sa11_Assertion->gg;
-       e && e->g.tok == zx_sa11_Assertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)e, free_strs);
-  }
-  for (e = &x->ff12_Assertion->gg;
-       e && e->g.tok == zx_ff12_Assertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_sec_Token) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_sec_Token_s* zx_NEW_sec_Token(struct zx_ctx* c)
+struct zx_sec_Token_s* zx_NEW_sec_Token(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_sec_Token_s* x = ZX_ZALLOC(c, struct zx_sec_Token_s);
   x->gg.g.tok = zx_sec_Token_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -295,46 +251,19 @@ int zx_WALK_WO_sec_Token(struct zx_ctx* c, struct zx_sec_Token_s* x, void* ctx, 
 #define EL_NS     sec
 #define EL_TAG    TokenPolicy
 
-/* FUNC(zx_FREE_sec_TokenPolicy) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->issueTo, free_strs);
-  zx_free_attr(c, x->type, free_strs);
-  zx_free_attr(c, x->validUntil, free_strs);
-  zx_free_attr(c, x->wantDSEPR, free_strs);
-
-  for (e = &x->NameIDPolicy->gg;
-       e && e->g.tok == zx_sp_NameIDPolicy_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_NameIDPolicy(c, (struct zx_sp_NameIDPolicy_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_sec_TokenPolicy) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_sec_TokenPolicy_s* zx_NEW_sec_TokenPolicy(struct zx_ctx* c)
+struct zx_sec_TokenPolicy_s* zx_NEW_sec_TokenPolicy(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_sec_TokenPolicy_s* x = ZX_ZALLOC(c, struct zx_sec_TokenPolicy_s);
   x->gg.g.tok = zx_sec_TokenPolicy_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -464,38 +393,19 @@ int zx_WALK_WO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x,
 #define EL_NS     sec
 #define EL_TAG    TransitedProvider
 
-/* FUNC(zx_FREE_sec_TransitedProvider) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_sec_TransitedProvider(struct zx_ctx* c, struct zx_sec_TransitedProvider_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->confirmationURI, free_strs);
-  zx_free_attr(c, x->timeStamp, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_sec_TransitedProvider) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_sec_TransitedProvider_s* zx_NEW_sec_TransitedProvider(struct zx_ctx* c)
+struct zx_sec_TransitedProvider_s* zx_NEW_sec_TransitedProvider(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_sec_TransitedProvider_s* x = ZX_ZALLOC(c, struct zx_sec_TransitedProvider_s);
   x->gg.g.tok = zx_sec_TransitedProvider_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -600,42 +510,19 @@ int zx_WALK_WO_sec_TransitedProvider(struct zx_ctx* c, struct zx_sec_TransitedPr
 #define EL_NS     sec
 #define EL_TAG    TransitedProviderPath
 
-/* FUNC(zx_FREE_sec_TransitedProviderPath) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_sec_TransitedProviderPath(struct zx_ctx* c, struct zx_sec_TransitedProviderPath_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->TransitedProvider->gg;
-       e && e->g.tok == zx_sec_TransitedProvider_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sec_TransitedProvider(c, (struct zx_sec_TransitedProvider_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_sec_TransitedProviderPath) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_sec_TransitedProviderPath_s* zx_NEW_sec_TransitedProviderPath(struct zx_ctx* c)
+struct zx_sec_TransitedProviderPath_s* zx_NEW_sec_TransitedProviderPath(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_sec_TransitedProviderPath_s* x = ZX_ZALLOC(c, struct zx_sec_TransitedProviderPath_s);
   x->gg.g.tok = zx_sec_TransitedProviderPath_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

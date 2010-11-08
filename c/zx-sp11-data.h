@@ -40,8 +40,7 @@ struct zx_sp11_AttributeQuery_s {
 };
 
 struct zx_sp11_AttributeQuery_s* zx_DEC_sp11_AttributeQuery(struct zx_ctx* c, struct zx_sp11_AttributeQuery_s* x);
-struct zx_sp11_AttributeQuery_s* zx_NEW_sp11_AttributeQuery(struct zx_ctx* c);
-void zx_FREE_sp11_AttributeQuery(struct zx_ctx* c, struct zx_sp11_AttributeQuery_s* x, int free_strs);
+struct zx_sp11_AttributeQuery_s* zx_NEW_sp11_AttributeQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp11_AttributeQuery(struct zx_ctx* c, struct zx_sp11_AttributeQuery_s* x);
 char* zx_ENC_SO_sp11_AttributeQuery(struct zx_ctx* c, struct zx_sp11_AttributeQuery_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp11_AttributeQuery(struct zx_ctx* c, struct zx_sp11_AttributeQuery_s* x);
@@ -97,8 +96,7 @@ struct zx_sp11_AuthenticationQuery_s {
 };
 
 struct zx_sp11_AuthenticationQuery_s* zx_DEC_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_sp11_AuthenticationQuery_s* x);
-struct zx_sp11_AuthenticationQuery_s* zx_NEW_sp11_AuthenticationQuery(struct zx_ctx* c);
-void zx_FREE_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_sp11_AuthenticationQuery_s* x, int free_strs);
+struct zx_sp11_AuthenticationQuery_s* zx_NEW_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_sp11_AuthenticationQuery_s* x);
 char* zx_ENC_SO_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_sp11_AuthenticationQuery_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_sp11_AuthenticationQuery_s* x);
@@ -148,8 +146,7 @@ struct zx_sp11_AuthorizationDecisionQuery_s {
 };
 
 struct zx_sp11_AuthorizationDecisionQuery_s* zx_DEC_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_sp11_AuthorizationDecisionQuery_s* x);
-struct zx_sp11_AuthorizationDecisionQuery_s* zx_NEW_sp11_AuthorizationDecisionQuery(struct zx_ctx* c);
-void zx_FREE_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_sp11_AuthorizationDecisionQuery_s* x, int free_strs);
+struct zx_sp11_AuthorizationDecisionQuery_s* zx_NEW_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_sp11_AuthorizationDecisionQuery_s* x);
 char* zx_ENC_SO_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_sp11_AuthorizationDecisionQuery_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_sp11_AuthorizationDecisionQuery_s* x);
@@ -224,8 +221,7 @@ struct zx_sp11_Request_s {
 };
 
 struct zx_sp11_Request_s* zx_DEC_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x);
-struct zx_sp11_Request_s* zx_NEW_sp11_Request(struct zx_ctx* c);
-void zx_FREE_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x, int free_strs);
+struct zx_sp11_Request_s* zx_NEW_sp11_Request(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x);
 char* zx_ENC_SO_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x);
@@ -350,8 +346,7 @@ struct zx_sp11_Response_s {
 };
 
 struct zx_sp11_Response_s* zx_DEC_sp11_Response(struct zx_ctx* c, struct zx_sp11_Response_s* x);
-struct zx_sp11_Response_s* zx_NEW_sp11_Response(struct zx_ctx* c);
-void zx_FREE_sp11_Response(struct zx_ctx* c, struct zx_sp11_Response_s* x, int free_strs);
+struct zx_sp11_Response_s* zx_NEW_sp11_Response(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp11_Response(struct zx_ctx* c, struct zx_sp11_Response_s* x);
 char* zx_ENC_SO_sp11_Response(struct zx_ctx* c, struct zx_sp11_Response_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp11_Response(struct zx_ctx* c, struct zx_sp11_Response_s* x);
@@ -426,8 +421,7 @@ struct zx_sp11_Status_s {
 };
 
 struct zx_sp11_Status_s* zx_DEC_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x);
-struct zx_sp11_Status_s* zx_NEW_sp11_Status(struct zx_ctx* c);
-void zx_FREE_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x, int free_strs);
+struct zx_sp11_Status_s* zx_NEW_sp11_Status(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x);
 char* zx_ENC_SO_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x);
@@ -489,8 +483,7 @@ struct zx_sp11_StatusCode_s {
 };
 
 struct zx_sp11_StatusCode_s* zx_DEC_sp11_StatusCode(struct zx_ctx* c, struct zx_sp11_StatusCode_s* x);
-struct zx_sp11_StatusCode_s* zx_NEW_sp11_StatusCode(struct zx_ctx* c);
-void zx_FREE_sp11_StatusCode(struct zx_ctx* c, struct zx_sp11_StatusCode_s* x, int free_strs);
+struct zx_sp11_StatusCode_s* zx_NEW_sp11_StatusCode(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp11_StatusCode(struct zx_ctx* c, struct zx_sp11_StatusCode_s* x);
 char* zx_ENC_SO_sp11_StatusCode(struct zx_ctx* c, struct zx_sp11_StatusCode_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp11_StatusCode(struct zx_ctx* c, struct zx_sp11_StatusCode_s* x);
@@ -536,8 +529,7 @@ struct zx_sp11_StatusDetail_s {
 };
 
 struct zx_sp11_StatusDetail_s* zx_DEC_sp11_StatusDetail(struct zx_ctx* c, struct zx_sp11_StatusDetail_s* x);
-struct zx_sp11_StatusDetail_s* zx_NEW_sp11_StatusDetail(struct zx_ctx* c);
-void zx_FREE_sp11_StatusDetail(struct zx_ctx* c, struct zx_sp11_StatusDetail_s* x, int free_strs);
+struct zx_sp11_StatusDetail_s* zx_NEW_sp11_StatusDetail(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp11_StatusDetail(struct zx_ctx* c, struct zx_sp11_StatusDetail_s* x);
 char* zx_ENC_SO_sp11_StatusDetail(struct zx_ctx* c, struct zx_sp11_StatusDetail_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp11_StatusDetail(struct zx_ctx* c, struct zx_sp11_StatusDetail_s* x);
@@ -574,8 +566,7 @@ struct zx_sp11_SubjectQuery_s {
 };
 
 struct zx_sp11_SubjectQuery_s* zx_DEC_sp11_SubjectQuery(struct zx_ctx* c, struct zx_sp11_SubjectQuery_s* x);
-struct zx_sp11_SubjectQuery_s* zx_NEW_sp11_SubjectQuery(struct zx_ctx* c);
-void zx_FREE_sp11_SubjectQuery(struct zx_ctx* c, struct zx_sp11_SubjectQuery_s* x, int free_strs);
+struct zx_sp11_SubjectQuery_s* zx_NEW_sp11_SubjectQuery(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sp11_SubjectQuery(struct zx_ctx* c, struct zx_sp11_SubjectQuery_s* x);
 char* zx_ENC_SO_sp11_SubjectQuery(struct zx_ctx* c, struct zx_sp11_SubjectQuery_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sp11_SubjectQuery(struct zx_ctx* c, struct zx_sp11_SubjectQuery_s* x);

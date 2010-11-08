@@ -42,8 +42,7 @@ struct zx_paos_Request_s {
 };
 
 struct zx_paos_Request_s* zx_DEC_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
-struct zx_paos_Request_s* zx_NEW_paos_Request(struct zx_ctx* c);
-void zx_FREE_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x, int free_strs);
+struct zx_paos_Request_s* zx_NEW_paos_Request(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
 char* zx_ENC_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x);
@@ -92,8 +91,7 @@ struct zx_paos_Response_s {
 };
 
 struct zx_paos_Response_s* zx_DEC_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
-struct zx_paos_Response_s* zx_NEW_paos_Response(struct zx_ctx* c);
-void zx_FREE_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x, int free_strs);
+struct zx_paos_Response_s* zx_NEW_paos_Response(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);
 char* zx_ENC_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x);

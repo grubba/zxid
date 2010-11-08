@@ -48,42 +48,19 @@
 #define EL_NS     im
 #define EL_TAG    IdentityMappingRequest
 
-/* FUNC(zx_FREE_im_IdentityMappingRequest) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMappingRequest_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->MappingInput->gg;
-       e && e->g.tok == zx_im_MappingInput_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_im_MappingInput(c, (struct zx_im_MappingInput_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_im_IdentityMappingRequest) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_im_IdentityMappingRequest_s* zx_NEW_im_IdentityMappingRequest(struct zx_ctx* c)
+struct zx_im_IdentityMappingRequest_s* zx_NEW_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_im_IdentityMappingRequest_s* x = ZX_ZALLOC(c, struct zx_im_IdentityMappingRequest_s);
   x->gg.g.tok = zx_im_IdentityMappingRequest_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -205,48 +182,19 @@ int zx_WALK_WO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_Identity
 #define EL_NS     im
 #define EL_TAG    IdentityMappingResponse
 
-/* FUNC(zx_FREE_im_IdentityMappingResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityMappingResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-  for (e = &x->MappingOutput->gg;
-       e && e->g.tok == zx_im_MappingOutput_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_im_MappingOutput(c, (struct zx_im_MappingOutput_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_im_IdentityMappingResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_im_IdentityMappingResponse_s* zx_NEW_im_IdentityMappingResponse(struct zx_ctx* c)
+struct zx_im_IdentityMappingResponse_s* zx_NEW_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_im_IdentityMappingResponse_s* x = ZX_ZALLOC(c, struct zx_im_IdentityMappingResponse_s);
   x->gg.g.tok = zx_im_IdentityMappingResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -389,49 +337,19 @@ int zx_WALK_WO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_Identit
 #define EL_NS     im
 #define EL_TAG    MappingInput
 
-/* FUNC(zx_FREE_im_MappingInput) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->reqID, free_strs);
-
-  for (e = &x->TokenPolicy->gg;
-       e && e->g.tok == zx_sec_TokenPolicy_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)e, free_strs);
-  }
-  for (e = &x->Token->gg;
-       e && e->g.tok == zx_sec_Token_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sec_Token(c, (struct zx_sec_Token_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_im_MappingInput) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_im_MappingInput_s* zx_NEW_im_MappingInput(struct zx_ctx* c)
+struct zx_im_MappingInput_s* zx_NEW_im_MappingInput(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_im_MappingInput_s* x = ZX_ZALLOC(c, struct zx_im_MappingInput_s);
   x->gg.g.tok = zx_im_MappingInput_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -576,43 +494,19 @@ int zx_WALK_WO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x,
 #define EL_NS     im
 #define EL_TAG    MappingOutput
 
-/* FUNC(zx_FREE_im_MappingOutput) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->reqRef, free_strs);
-
-  for (e = &x->Token->gg;
-       e && e->g.tok == zx_sec_Token_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sec_Token(c, (struct zx_sec_Token_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_im_MappingOutput) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_im_MappingOutput_s* zx_NEW_im_MappingOutput(struct zx_ctx* c)
+struct zx_im_MappingOutput_s* zx_NEW_im_MappingOutput(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_im_MappingOutput_s* x = ZX_ZALLOC(c, struct zx_im_MappingOutput_s);
   x->gg.g.tok = zx_im_MappingOutput_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

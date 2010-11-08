@@ -48,60 +48,19 @@
 #define EL_NS     wsp
 #define EL_TAG    All
 
-/* FUNC(zx_FREE_wsp_All) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Policy->gg;
-       e && e->g.tok == zx_wsp_Policy_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
-  }
-  for (e = &x->All->gg;
-       e && e->g.tok == zx_wsp_All_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_All(c, (struct zx_wsp_All_s*)e, free_strs);
-  }
-  for (e = &x->ExactlyOne->gg;
-       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)e, free_strs);
-  }
-  for (e = &x->PolicyReference->gg;
-       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_wsp_All) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_wsp_All_s* zx_NEW_wsp_All(struct zx_ctx* c)
+struct zx_wsp_All_s* zx_NEW_wsp_All(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_wsp_All_s* x = ZX_ZALLOC(c, struct zx_wsp_All_s);
   x->gg.g.tok = zx_wsp_All_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -286,36 +245,19 @@ int zx_WALK_WO_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x, void* ctx, int 
 #define EL_NS     wsp
 #define EL_TAG    AppliesTo
 
-/* FUNC(zx_FREE_wsp_AppliesTo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_wsp_AppliesTo(struct zx_ctx* c, struct zx_wsp_AppliesTo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_wsp_AppliesTo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_wsp_AppliesTo_s* zx_NEW_wsp_AppliesTo(struct zx_ctx* c)
+struct zx_wsp_AppliesTo_s* zx_NEW_wsp_AppliesTo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_wsp_AppliesTo_s* x = ZX_ZALLOC(c, struct zx_wsp_AppliesTo_s);
   x->gg.g.tok = zx_wsp_AppliesTo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -416,60 +358,19 @@ int zx_WALK_WO_wsp_AppliesTo(struct zx_ctx* c, struct zx_wsp_AppliesTo_s* x, voi
 #define EL_NS     wsp
 #define EL_TAG    ExactlyOne
 
-/* FUNC(zx_FREE_wsp_ExactlyOne) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Policy->gg;
-       e && e->g.tok == zx_wsp_Policy_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
-  }
-  for (e = &x->All->gg;
-       e && e->g.tok == zx_wsp_All_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_All(c, (struct zx_wsp_All_s*)e, free_strs);
-  }
-  for (e = &x->ExactlyOne->gg;
-       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)e, free_strs);
-  }
-  for (e = &x->PolicyReference->gg;
-       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_wsp_ExactlyOne) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_wsp_ExactlyOne_s* zx_NEW_wsp_ExactlyOne(struct zx_ctx* c)
+struct zx_wsp_ExactlyOne_s* zx_NEW_wsp_ExactlyOne(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_wsp_ExactlyOne_s* x = ZX_ZALLOC(c, struct zx_wsp_ExactlyOne_s);
   x->gg.g.tok = zx_wsp_ExactlyOne_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -654,62 +555,19 @@ int zx_WALK_WO_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x, v
 #define EL_NS     wsp
 #define EL_TAG    Policy
 
-/* FUNC(zx_FREE_wsp_Policy) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Name, free_strs);
-  zx_free_attr(c, x->Id, free_strs);
-
-  for (e = &x->Policy->gg;
-       e && e->g.tok == zx_wsp_Policy_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
-  }
-  for (e = &x->All->gg;
-       e && e->g.tok == zx_wsp_All_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_All(c, (struct zx_wsp_All_s*)e, free_strs);
-  }
-  for (e = &x->ExactlyOne->gg;
-       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)e, free_strs);
-  }
-  for (e = &x->PolicyReference->gg;
-       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_wsp_Policy) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_wsp_Policy_s* zx_NEW_wsp_Policy(struct zx_ctx* c)
+struct zx_wsp_Policy_s* zx_NEW_wsp_Policy(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_wsp_Policy_s* x = ZX_ZALLOC(c, struct zx_wsp_Policy_s);
   x->gg.g.tok = zx_wsp_Policy_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -898,54 +756,19 @@ int zx_WALK_WO_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x, void* ctx
 #define EL_NS     wsp
 #define EL_TAG    PolicyAttachment
 
-/* FUNC(zx_FREE_wsp_PolicyAttachment) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttachment_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->AppliesTo->gg;
-       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)e, free_strs);
-  }
-  for (e = &x->Policy->gg;
-       e && e->g.tok == zx_wsp_Policy_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
-  }
-  for (e = &x->PolicyReference->gg;
-       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_wsp_PolicyAttachment) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_wsp_PolicyAttachment_s* zx_NEW_wsp_PolicyAttachment(struct zx_ctx* c)
+struct zx_wsp_PolicyAttachment_s* zx_NEW_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_wsp_PolicyAttachment_s* x = ZX_ZALLOC(c, struct zx_wsp_PolicyAttachment_s);
   x->gg.g.tok = zx_wsp_PolicyAttachment_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1109,39 +932,19 @@ int zx_WALK_WO_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttach
 #define EL_NS     wsp
 #define EL_TAG    PolicyReference
 
-/* FUNC(zx_FREE_wsp_PolicyReference) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_wsp_PolicyReference(struct zx_ctx* c, struct zx_wsp_PolicyReference_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Digest, free_strs);
-  zx_free_attr(c, x->DigestAlgorithm, free_strs);
-  zx_free_attr(c, x->URI, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_wsp_PolicyReference) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_wsp_PolicyReference_s* zx_NEW_wsp_PolicyReference(struct zx_ctx* c)
+struct zx_wsp_PolicyReference_s* zx_NEW_wsp_PolicyReference(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_wsp_PolicyReference_s* x = ZX_ZALLOC(c, struct zx_wsp_PolicyReference_s);
   x->gg.g.tok = zx_wsp_PolicyReference_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

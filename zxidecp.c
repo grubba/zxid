@@ -84,7 +84,7 @@ struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
       continue;  /* Not eligible IdP, next one please. */
     }
     
-    idp_list->IDPEntry = idp_entry = zx_NEW_sp_IDPEntry(cf->ctx,idp_list);
+    idp_list->IDPEntry = idp_entry = zx_NEW_sp_IDPEntry(cf->ctx, &idp_list->gg);
     idp_entry->ProviderID = zx_ref_attr(cf->ctx, zx_ProviderID_ATTR, idp->eid);
     idp_entry->Name = zx_ref_attr(cf->ctx, zx_Name_ATTR, idp->dpy_name);
     idp_entry->Loc = sso_svc->Location;
@@ -104,7 +104,7 @@ struct zx_ecp_Request_s* zxid_mk_ecp_Request_hdr(zxid_conf* cf)
   hdr->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   /*hdr->IsPassive = zx_ref_attr(cf->ctx, zx_IsPassive_ATTR, ZXID_TRUE);  OPTIONAL, default=? */
   hdr->ProviderName = zxid_my_entity_id_attr(cf, zx_ProviderName_ATTR);  /* *** Friendly name? */
-  hdr->Issuer = zxid_my_issuer_attr(cf, zx_Issuer_ATTR);
+  hdr->Issuer = zxid_my_issuer(cf);
   hdr->IDPList = zxid_mk_idp_list(cf, SAML2_SOAP);
   return hdr;
 }
@@ -151,9 +151,9 @@ struct zx_str* zxid_lecp_check(zxid_conf* cf, zxid_cgi* cgi)
   /* SAML 2.0 ECP: Create PAOS request to be sent in HTTP response. */
     
   se = zx_NEW_e_Envelope(cf->ctx,0);
-  se->Body = zx_NEW_e_Body(cf->ctx,se);
+  se->Body = zx_NEW_e_Body(cf->ctx, &se->gg);
   se->Body->AuthnRequest = zxid_mk_authn_req(cf, cgi);
-  se->Header = zx_NEW_e_Header(cf->ctx,se);
+  se->Header = zx_NEW_e_Header(cf->ctx, &se->gg);
   se->Header->Request = zxid_mk_paos_Request_hdr(cf);
   se->Header->ecp_Request = zxid_mk_ecp_Request_hdr(cf);
   env = zx_EASY_ENC_SO_e_Envelope(cf->ctx, se);

@@ -283,7 +283,7 @@ int main(int argc, char** argv)
       env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
       env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
       env->Body->GetObjectRequest = zx_NEW_demomed_GetObjectRequest(cf->ctx, &env->Body->gg);
-      env->Body->GetObjectRequest->ObjectID = zx_new_simple_elem(cf->ctx, &env->Body->GetObjectRequest->gg, zx_demomed_ObjectID, &first_objinfo->objectID->g);
+      env->Body->GetObjectRequest->ObjectID = zx_new_simple_elem(cf->ctx, &env->Body->GetObjectRequest->gg, zx_demomed_ObjectID_ELEM, &first_objinfo->objectID->g);
 
       env = zxid_wsc_call(cf, ses, epr, env, 0);
 

@@ -282,7 +282,7 @@ int main(int argc, char** argv)
     env->Body->idhrxml_Query = zx_NEW_idhrxml_Query(cf->ctx, &env->Body->gg);
     env->Body->idhrxml_Query->QueryItem = zx_NEW_idhrxml_QueryItem(cf->ctx, &env->Body->idhrxml_Query->gg);
     env->Body->idhrxml_Query->QueryItem->Select
-      = zx_ref_simple_elem(cf->ctx, &env->Body->idhrxml_Query->->QueryItem->gg, zx_idhrxml_Select_ELEM, cgi.select);
+      = zx_ref_simple_elem(cf->ctx, &env->Body->idhrxml_Query->QueryItem->gg, zx_idhrxml_Select_ELEM, cgi.select);
         
     env = zxid_wsc_call(cf, ses, epr, env, 0);
     D("HERE env=%p", env);

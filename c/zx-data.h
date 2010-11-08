@@ -139,8 +139,7 @@ struct zx_root_s {
 };
 
 struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_root_s* x, int n_decode);
-struct zx_root_s* zx_NEW_root(struct zx_ctx* c);
-void zx_FREE_root(struct zx_ctx* c, struct zx_root_s* x, int free_strs);
+struct zx_root_s* zx_NEW_root(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_root(struct zx_ctx* c, struct zx_root_s* x);
 char* zx_ENC_SO_root(struct zx_ctx* c, struct zx_root_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_root(struct zx_ctx* c, struct zx_root_s* x);
@@ -491,7 +490,6 @@ struct zx_elem_s* zx_DEC_simple_elem(struct zx_ctx* c, struct zx_elem_s* el);
 struct zx_elem_s* zx_DEC_wrong_elem(struct zx_ctx* c, struct zx_elem_s* el);
 void zx_DUP_STRS_simple_elem(struct zx_ctx* c, struct zx_elem_s* x);
 struct zx_elem_s* zx_DEEP_CLONE_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, int dup_strs);
-void zx_FREE_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, int free_strs);
 int zx_WALK_SO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, void* ctx, int (*callback)(struct zx_str* node, void* ctx));
 int zx_WALK_WO_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, void* ctx, int (*callback)(struct zx_str* node, void* ctx));
 

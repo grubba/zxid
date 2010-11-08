@@ -109,7 +109,7 @@ zxid_fault* zxid_mk_fault(zxid_conf* cf, const char* fa, const char* fc, const c
 /* Called by:  zxid_wsf_validate_a7n x5, zxid_wsp_validate x12 */
 void zxid_set_fault(zxid_conf* cf, zxid_ses* ses, zxid_fault* flt) {
   if (ses->curflt) /* Free the previous fault */
-    zx_FREE_e_Fault(cf->ctx, ses->curflt, 1);
+    zx_free_elem(cf->ctx, &ses->curflt->gg, 1);
   ses->curflt = flt;
 }
 
@@ -172,7 +172,7 @@ zxid_tas3_status* zxid_get_fault_status(zxid_conf* cf, zxid_fault* flt) {
 /* Called by:  zxid_wsp_validate */
 void zxid_set_tas3_status(zxid_conf* cf, zxid_ses* ses, zxid_tas3_status* status) {
   if (ses->curstatus) /* Free the previous fault */
-    zx_FREE_tas3_Status(cf->ctx, ses->curstatus, 1);
+    zx_free_elem(cf->ctx, &ses->curstatus->gg, 1);
   ses->curstatus = status;
 }
 
@@ -260,7 +260,7 @@ struct zx_di_Query_s* zxid_mk_di_query(zxid_conf* cf, const char* svc_type, cons
 struct zx_a_Address_s* zxid_mk_addr(zxid_conf* cf, struct zx_str* url)
 {
   struct zx_a_Address_s* addr = zx_NEW_a_Address(cf->ctx,0);
-  zx_add_content(c, &addr->gg, url);
+  zx_add_content(cf->ctx, &addr->gg, url);
   return addr;
 }
 
@@ -293,7 +293,7 @@ struct zx_dap_QueryItem_s* zxid_mk_dap_query_item(zxid_conf* cf, struct zx_dap_S
   if (objtype)       qi->objectType = zx_ref_attr(cf->ctx, zx_objectType_ATTR, objtype);
   if (changed_since) qi->changedSince = zx_ref_attr(cf->ctx, zx_changedSince_ATTR, changed_since);
   if (predef)        qi->predefined = zx_ref_attr(cf->ctx, zx_predefined_ATTR, predef);
-  if (sort)          qi->Sort = zx_ref_simple_elem(cf->ctx, &qi->gg, zx_dap_sort_ELEM, sort);
+  if (sort)          qi->Sort = zx_ref_simple_elem(cf->ctx, &qi->gg, zx_dap_Sort_ELEM, sort);
 
 #if 0
   /* ID-DAP specification only allows ChangeFormat == "currentElements"
@@ -368,7 +368,7 @@ struct zx_dap_ResultQuery_s* zxid_mk_dap_resquery(zxid_conf* cf, struct zx_dap_S
   if (changed_since) qi->changedSince = zx_ref_attr(cf->ctx, zx_changedSince_ATTR, changed_since);
   if (objtype)       qi->objectType = zx_ref_attr(cf->ctx, zx_objectType_ATTR, objtype);
   if (predef)        qi->predefined = zx_ref_attr(cf->ctx, zx_predefined_ATTR, predef);
-  if (sort)          qi->Sort = zx_ref_simple_elem(cf->ctx, &qi->gg, zx_dap_sort_ELEM, sort);
+  if (sort)          qi->Sort = zx_ref_simple_elem(cf->ctx, &qi->gg, zx_dap_Sort_ELEM, sort);
 
 #if 0
   /* ID-DAP specification only allows ChangeFormat == "currentElements"

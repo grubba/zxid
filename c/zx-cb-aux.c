@@ -48,38 +48,19 @@
 #define EL_NS     cb
 #define EL_TAG    By
 
-/* FUNC(zx_FREE_cb_By) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_By(struct zx_ctx* c, struct zx_cb_By_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->sortAlg, free_strs);
-  zx_free_attr(c, x->sortWeight, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_By) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_By_s* zx_NEW_cb_By(struct zx_ctx* c)
+struct zx_cb_By_s* zx_NEW_cb_By(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_By_s* x = ZX_ZALLOC(c, struct zx_cb_By_s);
   x->gg.g.tok = zx_cb_By_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -184,73 +165,19 @@ int zx_WALK_WO_cb_By(struct zx_ctx* c, struct zx_cb_By_s* x, void* ctx, int (*ca
 #define EL_NS     cb
 #define EL_TAG    Create
 
-/* FUNC(zx_FREE_cb_Create) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Create(struct zx_ctx* c, struct zx_cb_Create_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->ResourceID->gg;
-       e && e->g.tok == zx_cb_ResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ResourceID(c, (struct zx_cb_ResourceID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedResourceID->gg;
-       e && e->g.tok == zx_cb_EncryptedResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_EncryptedResourceID(c, (struct zx_cb_EncryptedResourceID_s*)e, free_strs);
-  }
-  for (e = &x->Subscription->gg;
-       e && e->g.tok == zx_cb_Subscription_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Subscription(c, (struct zx_cb_Subscription_s*)e, free_strs);
-  }
-  for (e = &x->CreateItem->gg;
-       e && e->g.tok == zx_cb_CreateItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_CreateItem(c, (struct zx_cb_CreateItem_s*)e, free_strs);
-  }
-  for (e = &x->ItemSelection->gg;
-       e && e->g.tok == zx_cb_ItemSelection_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ItemSelection(c, (struct zx_cb_ItemSelection_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Create) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Create_s* zx_NEW_cb_Create(struct zx_ctx* c)
+struct zx_cb_Create_s* zx_NEW_cb_Create(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Create_s* x = ZX_ZALLOC(c, struct zx_cb_Create_s);
   x->gg.g.tok = zx_cb_Create_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -479,45 +406,19 @@ int zx_WALK_WO_cb_Create(struct zx_ctx* c, struct zx_cb_Create_s* x, void* ctx, 
 #define EL_NS     cb
 #define EL_TAG    CreateItem
 
-/* FUNC(zx_FREE_cb_CreateItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_CreateItem(struct zx_ctx* c, struct zx_cb_CreateItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemID, free_strs);
-  zx_free_attr(c, x->objectType, free_strs);
-
-  for (e = &x->NewData->gg;
-       e && e->g.tok == zx_cb_NewData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_NewData(c, (struct zx_cb_NewData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_CreateItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_CreateItem_s* zx_NEW_cb_CreateItem(struct zx_ctx* c)
+struct zx_cb_CreateItem_s* zx_NEW_cb_CreateItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_CreateItem_s* x = ZX_ZALLOC(c, struct zx_cb_CreateItem_s);
   x->gg.g.tok = zx_cb_CreateItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -645,56 +546,19 @@ int zx_WALK_WO_cb_CreateItem(struct zx_ctx* c, struct zx_cb_CreateItem_s* x, voi
 #define EL_NS     cb
 #define EL_TAG    CreateResponse
 
-/* FUNC(zx_FREE_cb_CreateResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_CreateResponse(struct zx_ctx* c, struct zx_cb_CreateResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->timeStamp, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_cb_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Status(c, (struct zx_cb_Status_s*)e, free_strs);
-  }
-  for (e = &x->ItemData->gg;
-       e && e->g.tok == zx_cb_ItemData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ItemData(c, (struct zx_cb_ItemData_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_CreateResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_CreateResponse_s* zx_NEW_cb_CreateResponse(struct zx_ctx* c)
+struct zx_cb_CreateResponse_s* zx_NEW_cb_CreateResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_CreateResponse_s* x = ZX_ZALLOC(c, struct zx_cb_CreateResponse_s);
   x->gg.g.tok = zx_cb_CreateResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -862,43 +726,19 @@ int zx_WALK_WO_cb_CreateResponse(struct zx_ctx* c, struct zx_cb_CreateResponse_s
 #define EL_NS     cb
 #define EL_TAG    Credential
 
-/* FUNC(zx_FREE_cb_Credential) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Credential(struct zx_ctx* c, struct zx_cb_Credential_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->notOnOrAfter, free_strs);
-
-  for (e = &x->Assertion->gg;
-       e && e->g.tok == zx_sa_Assertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_Assertion(c, (struct zx_sa_Assertion_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Credential) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Credential_s* zx_NEW_cb_Credential(struct zx_ctx* c)
+struct zx_cb_Credential_s* zx_NEW_cb_Credential(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Credential_s* x = ZX_ZALLOC(c, struct zx_cb_Credential_s);
   x->gg.g.tok = zx_cb_Credential_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1022,44 +862,19 @@ int zx_WALK_WO_cb_Credential(struct zx_ctx* c, struct zx_cb_Credential_s* x, voi
 #define EL_NS     cb
 #define EL_TAG    Data
 
-/* FUNC(zx_FREE_cb_Data) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Data(struct zx_ctx* c, struct zx_cb_Data_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemIDRef, free_strs);
-  zx_free_attr(c, x->nextOffset, free_strs);
-  zx_free_attr(c, x->notSorted, free_strs);
-  zx_free_attr(c, x->remaining, free_strs);
-  zx_free_attr(c, x->setID, free_strs);
-  zx_free_attr(c, x->changeFormat, free_strs);
-
-  zx_free_simple_elems(c, x->Card, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Data) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Data_s* zx_NEW_cb_Data(struct zx_ctx* c)
+struct zx_cb_Data_s* zx_NEW_cb_Data(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Data_s* x = ZX_ZALLOC(c, struct zx_cb_Data_s);
   x->gg.g.tok = zx_cb_Data_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1179,61 +994,19 @@ int zx_WALK_WO_cb_Data(struct zx_ctx* c, struct zx_cb_Data_s* x, void* ctx, int 
 #define EL_NS     cb
 #define EL_TAG    Delete
 
-/* FUNC(zx_FREE_cb_Delete) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Delete(struct zx_ctx* c, struct zx_cb_Delete_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->ResourceID->gg;
-       e && e->g.tok == zx_cb_ResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ResourceID(c, (struct zx_cb_ResourceID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedResourceID->gg;
-       e && e->g.tok == zx_cb_EncryptedResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_EncryptedResourceID(c, (struct zx_cb_EncryptedResourceID_s*)e, free_strs);
-  }
-  for (e = &x->DeleteItem->gg;
-       e && e->g.tok == zx_cb_DeleteItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_DeleteItem(c, (struct zx_cb_DeleteItem_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Delete) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Delete_s* zx_NEW_cb_Delete(struct zx_ctx* c)
+struct zx_cb_Delete_s* zx_NEW_cb_Delete(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Delete_s* x = ZX_ZALLOC(c, struct zx_cb_Delete_s);
   x->gg.g.tok = zx_cb_Delete_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1420,42 +1193,19 @@ int zx_WALK_WO_cb_Delete(struct zx_ctx* c, struct zx_cb_Delete_s* x, void* ctx, 
 #define EL_NS     cb
 #define EL_TAG    DeleteItem
 
-/* FUNC(zx_FREE_cb_DeleteItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_DeleteItem(struct zx_ctx* c, struct zx_cb_DeleteItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemID, free_strs);
-  zx_free_attr(c, x->notChangedSince, free_strs);
-  zx_free_attr(c, x->objectType, free_strs);
-  zx_free_attr(c, x->predefined, free_strs);
-
-  zx_free_simple_elems(c, x->Select, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_DeleteItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_DeleteItem_s* zx_NEW_cb_DeleteItem(struct zx_ctx* c)
+struct zx_cb_DeleteItem_s* zx_NEW_cb_DeleteItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_DeleteItem_s* x = ZX_ZALLOC(c, struct zx_cb_DeleteItem_s);
   x->gg.g.tok = zx_cb_DeleteItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1571,49 +1321,19 @@ int zx_WALK_WO_cb_DeleteItem(struct zx_ctx* c, struct zx_cb_DeleteItem_s* x, voi
 #define EL_NS     cb
 #define EL_TAG    DeleteResponse
 
-/* FUNC(zx_FREE_cb_DeleteResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_DeleteResponse(struct zx_ctx* c, struct zx_cb_DeleteResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_cb_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Status(c, (struct zx_cb_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_DeleteResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_DeleteResponse_s* zx_NEW_cb_DeleteResponse(struct zx_ctx* c)
+struct zx_cb_DeleteResponse_s* zx_NEW_cb_DeleteResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_DeleteResponse_s* x = ZX_ZALLOC(c, struct zx_cb_DeleteResponse_s);
   x->gg.g.tok = zx_cb_DeleteResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1758,48 +1478,19 @@ int zx_WALK_WO_cb_DeleteResponse(struct zx_ctx* c, struct zx_cb_DeleteResponse_s
 #define EL_NS     cb
 #define EL_TAG    EncryptedResourceID
 
-/* FUNC(zx_FREE_cb_EncryptedResourceID) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_EncryptedResourceID(struct zx_ctx* c, struct zx_cb_EncryptedResourceID_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->EncryptedData->gg;
-       e && e->g.tok == zx_xenc_EncryptedData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedKey->gg;
-       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_EncryptedResourceID) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_EncryptedResourceID_s* zx_NEW_cb_EncryptedResourceID(struct zx_ctx* c)
+struct zx_cb_EncryptedResourceID_s* zx_NEW_cb_EncryptedResourceID(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_EncryptedResourceID_s* x = ZX_ZALLOC(c, struct zx_cb_EncryptedResourceID_s);
   x->gg.g.tok = zx_cb_EncryptedResourceID_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1942,36 +1633,19 @@ int zx_WALK_WO_cb_EncryptedResourceID(struct zx_ctx* c, struct zx_cb_EncryptedRe
 #define EL_NS     cb
 #define EL_TAG    Extension
 
-/* FUNC(zx_FREE_cb_Extension) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Extension) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Extension_s* zx_NEW_cb_Extension(struct zx_ctx* c)
+struct zx_cb_Extension_s* zx_NEW_cb_Extension(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Extension_s* x = ZX_ZALLOC(c, struct zx_cb_Extension_s);
   x->gg.g.tok = zx_cb_Extension_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2072,41 +1746,19 @@ int zx_WALK_WO_cb_Extension(struct zx_ctx* c, struct zx_cb_Extension_s* x, void*
 #define EL_NS     cb
 #define EL_TAG    ItemData
 
-/* FUNC(zx_FREE_cb_ItemData) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_ItemData(struct zx_ctx* c, struct zx_cb_ItemData_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemIDRef, free_strs);
-  zx_free_attr(c, x->notSorted, free_strs);
-  zx_free_attr(c, x->changeFormat, free_strs);
-
-  zx_free_simple_elems(c, x->Card, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_ItemData) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_ItemData_s* zx_NEW_cb_ItemData(struct zx_ctx* c)
+struct zx_cb_ItemData_s* zx_NEW_cb_ItemData(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_ItemData_s* x = ZX_ZALLOC(c, struct zx_cb_ItemData_s);
   x->gg.g.tok = zx_cb_ItemData_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2220,37 +1872,19 @@ int zx_WALK_WO_cb_ItemData(struct zx_ctx* c, struct zx_cb_ItemData_s* x, void* c
 #define EL_NS     cb
 #define EL_TAG    ItemSelection
 
-/* FUNC(zx_FREE_cb_ItemSelection) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_ItemSelection(struct zx_ctx* c, struct zx_cb_ItemSelection_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->format, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_ItemSelection) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_ItemSelection_s* zx_NEW_cb_ItemSelection(struct zx_ctx* c)
+struct zx_cb_ItemSelection_s* zx_NEW_cb_ItemSelection(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_ItemSelection_s* x = ZX_ZALLOC(c, struct zx_cb_ItemSelection_s);
   x->gg.g.tok = zx_cb_ItemSelection_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2353,48 +1987,19 @@ int zx_WALK_WO_cb_ItemSelection(struct zx_ctx* c, struct zx_cb_ItemSelection_s* 
 #define EL_NS     cb
 #define EL_TAG    Modification
 
-/* FUNC(zx_FREE_cb_Modification) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Modification(struct zx_ctx* c, struct zx_cb_Modification_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemID, free_strs);
-  zx_free_attr(c, x->notChangedSince, free_strs);
-  zx_free_attr(c, x->objectType, free_strs);
-  zx_free_attr(c, x->overrideAllowed, free_strs);
-
-  zx_free_simple_elems(c, x->Select, free_strs);
-  for (e = &x->NewData->gg;
-       e && e->g.tok == zx_cb_NewData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_NewData(c, (struct zx_cb_NewData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Modification) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Modification_s* zx_NEW_cb_Modification(struct zx_ctx* c)
+struct zx_cb_Modification_s* zx_NEW_cb_Modification(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Modification_s* x = ZX_ZALLOC(c, struct zx_cb_Modification_s);
   x->gg.g.tok = zx_cb_Modification_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2531,73 +2136,19 @@ int zx_WALK_WO_cb_Modification(struct zx_ctx* c, struct zx_cb_Modification_s* x,
 #define EL_NS     cb
 #define EL_TAG    Modify
 
-/* FUNC(zx_FREE_cb_Modify) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Modify(struct zx_ctx* c, struct zx_cb_Modify_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->ResourceID->gg;
-       e && e->g.tok == zx_cb_ResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ResourceID(c, (struct zx_cb_ResourceID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedResourceID->gg;
-       e && e->g.tok == zx_cb_EncryptedResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_EncryptedResourceID(c, (struct zx_cb_EncryptedResourceID_s*)e, free_strs);
-  }
-  for (e = &x->Subscription->gg;
-       e && e->g.tok == zx_cb_Subscription_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Subscription(c, (struct zx_cb_Subscription_s*)e, free_strs);
-  }
-  for (e = &x->Modification->gg;
-       e && e->g.tok == zx_cb_Modification_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Modification(c, (struct zx_cb_Modification_s*)e, free_strs);
-  }
-  for (e = &x->ItemSelection->gg;
-       e && e->g.tok == zx_cb_ItemSelection_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ItemSelection(c, (struct zx_cb_ItemSelection_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Modify) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Modify_s* zx_NEW_cb_Modify(struct zx_ctx* c)
+struct zx_cb_Modify_s* zx_NEW_cb_Modify(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Modify_s* x = ZX_ZALLOC(c, struct zx_cb_Modify_s);
   x->gg.g.tok = zx_cb_Modify_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2826,56 +2377,19 @@ int zx_WALK_WO_cb_Modify(struct zx_ctx* c, struct zx_cb_Modify_s* x, void* ctx, 
 #define EL_NS     cb
 #define EL_TAG    ModifyResponse
 
-/* FUNC(zx_FREE_cb_ModifyResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_ModifyResponse(struct zx_ctx* c, struct zx_cb_ModifyResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->timeStamp, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_cb_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Status(c, (struct zx_cb_Status_s*)e, free_strs);
-  }
-  for (e = &x->ItemData->gg;
-       e && e->g.tok == zx_cb_ItemData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ItemData(c, (struct zx_cb_ItemData_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_ModifyResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_ModifyResponse_s* zx_NEW_cb_ModifyResponse(struct zx_ctx* c)
+struct zx_cb_ModifyResponse_s* zx_NEW_cb_ModifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_ModifyResponse_s* x = ZX_ZALLOC(c, struct zx_cb_ModifyResponse_s);
   x->gg.g.tok = zx_cb_ModifyResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3043,37 +2557,19 @@ int zx_WALK_WO_cb_ModifyResponse(struct zx_ctx* c, struct zx_cb_ModifyResponse_s
 #define EL_NS     cb
 #define EL_TAG    NewData
 
-/* FUNC(zx_FREE_cb_NewData) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_NewData(struct zx_ctx* c, struct zx_cb_NewData_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->Card, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_NewData) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_NewData_s* zx_NEW_cb_NewData(struct zx_ctx* c)
+struct zx_cb_NewData_s* zx_NEW_cb_NewData(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_NewData_s* x = ZX_ZALLOC(c, struct zx_cb_NewData_s);
   x->gg.g.tok = zx_cb_NewData_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3179,46 +2675,19 @@ int zx_WALK_WO_cb_NewData(struct zx_ctx* c, struct zx_cb_NewData_s* x, void* ctx
 #define EL_NS     cb
 #define EL_TAG    Notification
 
-/* FUNC(zx_FREE_cb_Notification) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Notification(struct zx_ctx* c, struct zx_cb_Notification_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->endReason, free_strs);
-  zx_free_attr(c, x->expires, free_strs);
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->subscriptionID, free_strs);
-
-  for (e = &x->ItemData->gg;
-       e && e->g.tok == zx_cb_ItemData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ItemData(c, (struct zx_cb_ItemData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Notification) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Notification_s* zx_NEW_cb_Notification(struct zx_ctx* c)
+struct zx_cb_Notification_s* zx_NEW_cb_Notification(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Notification_s* x = ZX_ZALLOC(c, struct zx_cb_Notification_s);
   x->gg.g.tok = zx_cb_Notification_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3348,50 +2817,19 @@ int zx_WALK_WO_cb_Notification(struct zx_ctx* c, struct zx_cb_Notification_s* x,
 #define EL_NS     cb
 #define EL_TAG    Notify
 
-/* FUNC(zx_FREE_cb_Notify) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Notify(struct zx_ctx* c, struct zx_cb_Notify_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->timeStamp, free_strs);
-
-  for (e = &x->Notification->gg;
-       e && e->g.tok == zx_cb_Notification_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Notification(c, (struct zx_cb_Notification_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Notify) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Notify_s* zx_NEW_cb_Notify(struct zx_ctx* c)
+struct zx_cb_Notify_s* zx_NEW_cb_Notify(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Notify_s* x = ZX_ZALLOC(c, struct zx_cb_Notify_s);
   x->gg.g.tok = zx_cb_Notify_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3538,45 +2976,19 @@ int zx_WALK_WO_cb_Notify(struct zx_ctx* c, struct zx_cb_Notify_s* x, void* ctx, 
 #define EL_NS     cb
 #define EL_TAG    NotifyAdminTo
 
-/* FUNC(zx_FREE_cb_NotifyAdminTo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_NotifyAdminTo(struct zx_ctx* c, struct zx_cb_NotifyAdminTo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  zx_free_simple_elems(c, x->SecurityMechID, free_strs);
-  for (e = &x->Credential->gg;
-       e && e->g.tok == zx_cb_Credential_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Credential(c, (struct zx_cb_Credential_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->Endpoint, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_NotifyAdminTo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_NotifyAdminTo_s* zx_NEW_cb_NotifyAdminTo(struct zx_ctx* c)
+struct zx_cb_NotifyAdminTo_s* zx_NEW_cb_NotifyAdminTo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_NotifyAdminTo_s* x = ZX_ZALLOC(c, struct zx_cb_NotifyAdminTo_s);
   x->gg.g.tok = zx_cb_NotifyAdminTo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3710,49 +3122,19 @@ int zx_WALK_WO_cb_NotifyAdminTo(struct zx_ctx* c, struct zx_cb_NotifyAdminTo_s* 
 #define EL_NS     cb
 #define EL_TAG    NotifyResponse
 
-/* FUNC(zx_FREE_cb_NotifyResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_NotifyResponse(struct zx_ctx* c, struct zx_cb_NotifyResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_cb_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Status(c, (struct zx_cb_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_NotifyResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_NotifyResponse_s* zx_NEW_cb_NotifyResponse(struct zx_ctx* c)
+struct zx_cb_NotifyResponse_s* zx_NEW_cb_NotifyResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_NotifyResponse_s* x = ZX_ZALLOC(c, struct zx_cb_NotifyResponse_s);
   x->gg.g.tok = zx_cb_NotifyResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3897,45 +3279,19 @@ int zx_WALK_WO_cb_NotifyResponse(struct zx_ctx* c, struct zx_cb_NotifyResponse_s
 #define EL_NS     cb
 #define EL_TAG    NotifyTo
 
-/* FUNC(zx_FREE_cb_NotifyTo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_NotifyTo(struct zx_ctx* c, struct zx_cb_NotifyTo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  zx_free_simple_elems(c, x->SecurityMechID, free_strs);
-  for (e = &x->Credential->gg;
-       e && e->g.tok == zx_cb_Credential_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Credential(c, (struct zx_cb_Credential_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->Endpoint, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_NotifyTo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_NotifyTo_s* zx_NEW_cb_NotifyTo(struct zx_ctx* c)
+struct zx_cb_NotifyTo_s* zx_NEW_cb_NotifyTo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_NotifyTo_s* x = ZX_ZALLOC(c, struct zx_cb_NotifyTo_s);
   x->gg.g.tok = zx_cb_NotifyTo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4069,67 +3425,19 @@ int zx_WALK_WO_cb_NotifyTo(struct zx_ctx* c, struct zx_cb_NotifyTo_s* x, void* c
 #define EL_NS     cb
 #define EL_TAG    Query
 
-/* FUNC(zx_FREE_cb_Query) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Query(struct zx_ctx* c, struct zx_cb_Query_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->ResourceID->gg;
-       e && e->g.tok == zx_cb_ResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ResourceID(c, (struct zx_cb_ResourceID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedResourceID->gg;
-       e && e->g.tok == zx_cb_EncryptedResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_EncryptedResourceID(c, (struct zx_cb_EncryptedResourceID_s*)e, free_strs);
-  }
-  for (e = &x->Subscription->gg;
-       e && e->g.tok == zx_cb_Subscription_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Subscription(c, (struct zx_cb_Subscription_s*)e, free_strs);
-  }
-  for (e = &x->QueryItem->gg;
-       e && e->g.tok == zx_cb_QueryItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_QueryItem(c, (struct zx_cb_QueryItem_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Query) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Query_s* zx_NEW_cb_Query(struct zx_ctx* c)
+struct zx_cb_Query_s* zx_NEW_cb_Query(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Query_s* x = ZX_ZALLOC(c, struct zx_cb_Query_s);
   x->gg.g.tok = zx_cb_Query_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4337,41 +3645,19 @@ int zx_WALK_WO_cb_Query(struct zx_ctx* c, struct zx_cb_Query_s* x, void* ctx, in
 #define EL_NS     cb
 #define EL_TAG    QueryItem
 
-/* FUNC(zx_FREE_cb_QueryItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_QueryItem(struct zx_ctx* c, struct zx_cb_QueryItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->count, free_strs);
-  zx_free_attr(c, x->offset, free_strs);
-  zx_free_attr(c, x->setID, free_strs);
-  zx_free_attr(c, x->setReq, free_strs);
-  zx_free_attr(c, x->format, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_QueryItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_QueryItem_s* zx_NEW_cb_QueryItem(struct zx_ctx* c)
+struct zx_cb_QueryItem_s* zx_NEW_cb_QueryItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_QueryItem_s* x = ZX_ZALLOC(c, struct zx_cb_QueryItem_s);
   x->gg.g.tok = zx_cb_QueryItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4482,57 +3768,19 @@ int zx_WALK_WO_cb_QueryItem(struct zx_ctx* c, struct zx_cb_QueryItem_s* x, void*
 #define EL_NS     cb
 #define EL_TAG    QueryResponse
 
-/* FUNC(zx_FREE_cb_QueryResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_QueryResponse(struct zx_ctx* c, struct zx_cb_QueryResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->itemIDRef, free_strs);
-  zx_free_attr(c, x->timeStamp, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_cb_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Status(c, (struct zx_cb_Status_s*)e, free_strs);
-  }
-  for (e = &x->Data->gg;
-       e && e->g.tok == zx_cb_Data_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Data(c, (struct zx_cb_Data_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_QueryResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_QueryResponse_s* zx_NEW_cb_QueryResponse(struct zx_ctx* c)
+struct zx_cb_QueryResponse_s* zx_NEW_cb_QueryResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_QueryResponse_s* x = ZX_ZALLOC(c, struct zx_cb_QueryResponse_s);
   x->gg.g.tok = zx_cb_QueryResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4702,38 +3950,19 @@ int zx_WALK_WO_cb_QueryResponse(struct zx_ctx* c, struct zx_cb_QueryResponse_s* 
 #define EL_NS     cb
 #define EL_TAG    RefItem
 
-/* FUNC(zx_FREE_cb_RefItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_RefItem(struct zx_ctx* c, struct zx_cb_RefItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->ItemIDRef, free_strs);
-  zx_free_attr(c, x->subscriptionID, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_RefItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_RefItem_s* zx_NEW_cb_RefItem(struct zx_ctx* c)
+struct zx_cb_RefItem_s* zx_NEW_cb_RefItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_RefItem_s* x = ZX_ZALLOC(c, struct zx_cb_RefItem_s);
   x->gg.g.tok = zx_cb_RefItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4838,56 +4067,19 @@ int zx_WALK_WO_cb_RefItem(struct zx_ctx* c, struct zx_cb_RefItem_s* x, void* ctx
 #define EL_NS     cb
 #define EL_TAG    ReportUsage
 
-/* FUNC(zx_FREE_cb_ReportUsage) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_ReportUsage(struct zx_ctx* c, struct zx_cb_ReportUsage_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->ResourceID->gg;
-       e && e->g.tok == zx_cb_ResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ResourceID(c, (struct zx_cb_ResourceID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedResourceID->gg;
-       e && e->g.tok == zx_cb_EncryptedResourceID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_EncryptedResourceID(c, (struct zx_cb_EncryptedResourceID_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->CARDID, free_strs);
-  for (e = &x->UsageType->gg;
-       e && e->g.tok == zx_cb_UsageType_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_UsageType(c, (struct zx_cb_UsageType_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_ReportUsage) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_ReportUsage_s* zx_NEW_cb_ReportUsage(struct zx_ctx* c)
+struct zx_cb_ReportUsage_s* zx_NEW_cb_ReportUsage(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_ReportUsage_s* x = ZX_ZALLOC(c, struct zx_cb_ReportUsage_s);
   x->gg.g.tok = zx_cb_ReportUsage_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5058,43 +4250,19 @@ int zx_WALK_WO_cb_ReportUsage(struct zx_ctx* c, struct zx_cb_ReportUsage_s* x, v
 #define EL_NS     cb
 #define EL_TAG    ReportUsageResponse
 
-/* FUNC(zx_FREE_cb_ReportUsageResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_ReportUsageResponse(struct zx_ctx* c, struct zx_cb_ReportUsageResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_cb_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Status(c, (struct zx_cb_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_ReportUsageResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_ReportUsageResponse_s* zx_NEW_cb_ReportUsageResponse(struct zx_ctx* c)
+struct zx_cb_ReportUsageResponse_s* zx_NEW_cb_ReportUsageResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_ReportUsageResponse_s* x = ZX_ZALLOC(c, struct zx_cb_ReportUsageResponse_s);
   x->gg.g.tok = zx_cb_ReportUsageResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5218,37 +4386,19 @@ int zx_WALK_WO_cb_ReportUsageResponse(struct zx_ctx* c, struct zx_cb_ReportUsage
 #define EL_NS     cb
 #define EL_TAG    ResourceID
 
-/* FUNC(zx_FREE_cb_ResourceID) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_ResourceID(struct zx_ctx* c, struct zx_cb_ResourceID_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->id, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_ResourceID) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_ResourceID_s* zx_NEW_cb_ResourceID(struct zx_ctx* c)
+struct zx_cb_ResourceID_s* zx_NEW_cb_ResourceID(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_ResourceID_s* x = ZX_ZALLOC(c, struct zx_cb_ResourceID_s);
   x->gg.g.tok = zx_cb_ResourceID_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5351,45 +4501,19 @@ int zx_WALK_WO_cb_ResourceID(struct zx_ctx* c, struct zx_cb_ResourceID_s* x, voi
 #define EL_NS     cb
 #define EL_TAG    Status
 
-/* FUNC(zx_FREE_cb_Status) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Status(struct zx_ctx* c, struct zx_cb_Status_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->code, free_strs);
-  zx_free_attr(c, x->comment, free_strs);
-  zx_free_attr(c, x->ref, free_strs);
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_cb_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Status(c, (struct zx_cb_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Status) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Status_s* zx_NEW_cb_Status(struct zx_ctx* c)
+struct zx_cb_Status_s* zx_NEW_cb_Status(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Status_s* x = ZX_ZALLOC(c, struct zx_cb_Status_s);
   x->gg.g.tok = zx_cb_Status_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5517,73 +4641,19 @@ int zx_WALK_WO_cb_Status(struct zx_ctx* c, struct zx_cb_Status_s* x, void* ctx, 
 #define EL_NS     cb
 #define EL_TAG    Subscription
 
-/* FUNC(zx_FREE_cb_Subscription) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_Subscription(struct zx_ctx* c, struct zx_cb_Subscription_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->expires, free_strs);
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->includeData, free_strs);
-  zx_free_attr(c, x->starts, free_strs);
-  zx_free_attr(c, x->subscriptionID, free_strs);
-
-  for (e = &x->ItemSelection->gg;
-       e && e->g.tok == zx_cb_ItemSelection_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_ItemSelection(c, (struct zx_cb_ItemSelection_s*)e, free_strs);
-  }
-  for (e = &x->RefItem->gg;
-       e && e->g.tok == zx_cb_RefItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_RefItem(c, (struct zx_cb_RefItem_s*)e, free_strs);
-  }
-  for (e = &x->NotifyTo->gg;
-       e && e->g.tok == zx_cb_NotifyTo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_NotifyTo(c, (struct zx_cb_NotifyTo_s*)e, free_strs);
-  }
-  for (e = &x->NotifyAdminTo->gg;
-       e && e->g.tok == zx_cb_NotifyAdminTo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_NotifyAdminTo(c, (struct zx_cb_NotifyAdminTo_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->Aggregation, free_strs);
-  zx_free_simple_elems(c, x->Trigger, free_strs);
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_cb_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_Subscription) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_Subscription_s* zx_NEW_cb_Subscription(struct zx_ctx* c)
+struct zx_cb_Subscription_s* zx_NEW_cb_Subscription(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_Subscription_s* x = ZX_ZALLOC(c, struct zx_cb_Subscription_s);
   x->gg.g.tok = zx_cb_Subscription_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5809,42 +4879,19 @@ int zx_WALK_WO_cb_Subscription(struct zx_ctx* c, struct zx_cb_Subscription_s* x,
 #define EL_NS     cb
 #define EL_TAG    UsageType
 
-/* FUNC(zx_FREE_cb_UsageType) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_cb_UsageType(struct zx_ctx* c, struct zx_cb_UsageType_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->success, free_strs);
-  zx_free_attr(c, x->ACC, free_strs);
-  zx_free_attr(c, x->ACCTime, free_strs);
-  zx_free_attr(c, x->id, free_strs);
-  zx_free_attr(c, x->modificationTime, free_strs);
-  zx_free_attr(c, x->modifier, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_cb_UsageType) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_cb_UsageType_s* zx_NEW_cb_UsageType(struct zx_ctx* c)
+struct zx_cb_UsageType_s* zx_NEW_cb_UsageType(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_cb_UsageType_s* x = ZX_ZALLOC(c, struct zx_cb_UsageType_s);
   x->gg.g.tok = zx_cb_UsageType_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

@@ -48,37 +48,19 @@
 #define EL_NS     ds
 #define EL_TAG    CanonicalizationMethod
 
-/* FUNC(zx_FREE_ds_CanonicalizationMethod) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_CanonicalizationMethod_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Algorithm, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_CanonicalizationMethod) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_CanonicalizationMethod_s* zx_NEW_ds_CanonicalizationMethod(struct zx_ctx* c)
+struct zx_ds_CanonicalizationMethod_s* zx_NEW_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_CanonicalizationMethod_s* x = ZX_ZALLOC(c, struct zx_ds_CanonicalizationMethod_s);
   x->gg.g.tok = zx_ds_CanonicalizationMethod_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -181,43 +163,19 @@ int zx_WALK_WO_ds_CanonicalizationMethod(struct zx_ctx* c, struct zx_ds_Canonica
 #define EL_NS     ds
 #define EL_TAG    DSAKeyValue
 
-/* FUNC(zx_FREE_ds_DSAKeyValue) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->P, free_strs);
-  zx_free_simple_elems(c, x->Q, free_strs);
-  zx_free_simple_elems(c, x->G, free_strs);
-  zx_free_simple_elems(c, x->Y, free_strs);
-  zx_free_simple_elems(c, x->J, free_strs);
-  zx_free_simple_elems(c, x->Seed, free_strs);
-  zx_free_simple_elems(c, x->PgenCounter, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_DSAKeyValue) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_DSAKeyValue_s* zx_NEW_ds_DSAKeyValue(struct zx_ctx* c)
+struct zx_ds_DSAKeyValue_s* zx_NEW_ds_DSAKeyValue(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_DSAKeyValue_s* x = ZX_ZALLOC(c, struct zx_ds_DSAKeyValue_s);
   x->gg.g.tok = zx_ds_DSAKeyValue_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -353,37 +311,19 @@ int zx_WALK_WO_ds_DSAKeyValue(struct zx_ctx* c, struct zx_ds_DSAKeyValue_s* x, v
 #define EL_NS     ds
 #define EL_TAG    DigestMethod
 
-/* FUNC(zx_FREE_ds_DigestMethod) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Algorithm, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_DigestMethod) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_DigestMethod_s* zx_NEW_ds_DigestMethod(struct zx_ctx* c)
+struct zx_ds_DigestMethod_s* zx_NEW_ds_DigestMethod(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_DigestMethod_s* x = ZX_ZALLOC(c, struct zx_ds_DigestMethod_s);
   x->gg.g.tok = zx_ds_DigestMethod_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -486,75 +426,19 @@ int zx_WALK_WO_ds_DigestMethod(struct zx_ctx* c, struct zx_ds_DigestMethod_s* x,
 #define EL_NS     ds
 #define EL_TAG    KeyInfo
 
-/* FUNC(zx_FREE_ds_KeyInfo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Id, free_strs);
-
-  zx_free_simple_elems(c, x->KeyName, free_strs);
-  for (e = &x->KeyValue->gg;
-       e && e->g.tok == zx_ds_KeyValue_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)e, free_strs);
-  }
-  for (e = &x->RetrievalMethod->gg;
-       e && e->g.tok == zx_ds_RetrievalMethod_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)e, free_strs);
-  }
-  for (e = &x->X509Data->gg;
-       e && e->g.tok == zx_ds_X509Data_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_X509Data(c, (struct zx_ds_X509Data_s*)e, free_strs);
-  }
-  for (e = &x->PGPData->gg;
-       e && e->g.tok == zx_ds_PGPData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_PGPData(c, (struct zx_ds_PGPData_s*)e, free_strs);
-  }
-  for (e = &x->SPKIData->gg;
-       e && e->g.tok == zx_ds_SPKIData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->MgmtData, free_strs);
-  for (e = &x->EncryptedKey->gg;
-       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_KeyInfo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_KeyInfo_s* zx_NEW_ds_KeyInfo(struct zx_ctx* c)
+struct zx_ds_KeyInfo_s* zx_NEW_ds_KeyInfo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_KeyInfo_s* x = ZX_ZALLOC(c, struct zx_ds_KeyInfo_s);
   x->gg.g.tok = zx_ds_KeyInfo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -793,48 +677,19 @@ int zx_WALK_WO_ds_KeyInfo(struct zx_ctx* c, struct zx_ds_KeyInfo_s* x, void* ctx
 #define EL_NS     ds
 #define EL_TAG    KeyValue
 
-/* FUNC(zx_FREE_ds_KeyValue) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->DSAKeyValue->gg;
-       e && e->g.tok == zx_ds_DSAKeyValue_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_DSAKeyValue(c, (struct zx_ds_DSAKeyValue_s*)e, free_strs);
-  }
-  for (e = &x->RSAKeyValue->gg;
-       e && e->g.tok == zx_ds_RSAKeyValue_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_RSAKeyValue(c, (struct zx_ds_RSAKeyValue_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_KeyValue) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_KeyValue_s* zx_NEW_ds_KeyValue(struct zx_ctx* c)
+struct zx_ds_KeyValue_s* zx_NEW_ds_KeyValue(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_KeyValue_s* x = ZX_ZALLOC(c, struct zx_ds_KeyValue_s);
   x->gg.g.tok = zx_ds_KeyValue_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -977,43 +832,19 @@ int zx_WALK_WO_ds_KeyValue(struct zx_ctx* c, struct zx_ds_KeyValue_s* x, void* c
 #define EL_NS     ds
 #define EL_TAG    Manifest
 
-/* FUNC(zx_FREE_ds_Manifest) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Id, free_strs);
-
-  for (e = &x->Reference->gg;
-       e && e->g.tok == zx_ds_Reference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_Reference(c, (struct zx_ds_Reference_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_Manifest) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_Manifest_s* zx_NEW_ds_Manifest(struct zx_ctx* c)
+struct zx_ds_Manifest_s* zx_NEW_ds_Manifest(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_Manifest_s* x = ZX_ZALLOC(c, struct zx_ds_Manifest_s);
   x->gg.g.tok = zx_ds_Manifest_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1137,39 +968,19 @@ int zx_WALK_WO_ds_Manifest(struct zx_ctx* c, struct zx_ds_Manifest_s* x, void* c
 #define EL_NS     ds
 #define EL_TAG    Object
 
-/* FUNC(zx_FREE_ds_Object) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Encoding, free_strs);
-  zx_free_attr(c, x->Id, free_strs);
-  zx_free_attr(c, x->MimeType, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_Object) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_Object_s* zx_NEW_ds_Object(struct zx_ctx* c)
+struct zx_ds_Object_s* zx_NEW_ds_Object(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_Object_s* x = ZX_ZALLOC(c, struct zx_ds_Object_s);
   x->gg.g.tok = zx_ds_Object_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1276,38 +1087,19 @@ int zx_WALK_WO_ds_Object(struct zx_ctx* c, struct zx_ds_Object_s* x, void* ctx, 
 #define EL_NS     ds
 #define EL_TAG    PGPData
 
-/* FUNC(zx_FREE_ds_PGPData) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->PGPKeyID, free_strs);
-  zx_free_simple_elems(c, x->PGPKeyPacket, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_PGPData) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_PGPData_s* zx_NEW_ds_PGPData(struct zx_ctx* c)
+struct zx_ds_PGPData_s* zx_NEW_ds_PGPData(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_PGPData_s* x = ZX_ZALLOC(c, struct zx_ds_PGPData_s);
   x->gg.g.tok = zx_ds_PGPData_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1418,38 +1210,19 @@ int zx_WALK_WO_ds_PGPData(struct zx_ctx* c, struct zx_ds_PGPData_s* x, void* ctx
 #define EL_NS     ds
 #define EL_TAG    RSAKeyValue
 
-/* FUNC(zx_FREE_ds_RSAKeyValue) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->Modulus, free_strs);
-  zx_free_simple_elems(c, x->Exponent, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_RSAKeyValue) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_RSAKeyValue_s* zx_NEW_ds_RSAKeyValue(struct zx_ctx* c)
+struct zx_ds_RSAKeyValue_s* zx_NEW_ds_RSAKeyValue(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_RSAKeyValue_s* x = ZX_ZALLOC(c, struct zx_ds_RSAKeyValue_s);
   x->gg.g.tok = zx_ds_RSAKeyValue_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1560,52 +1333,19 @@ int zx_WALK_WO_ds_RSAKeyValue(struct zx_ctx* c, struct zx_ds_RSAKeyValue_s* x, v
 #define EL_NS     ds
 #define EL_TAG    Reference
 
-/* FUNC(zx_FREE_ds_Reference) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Id, free_strs);
-  zx_free_attr(c, x->Type, free_strs);
-  zx_free_attr(c, x->URI, free_strs);
-
-  for (e = &x->Transforms->gg;
-       e && e->g.tok == zx_ds_Transforms_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_Transforms(c, (struct zx_ds_Transforms_s*)e, free_strs);
-  }
-  for (e = &x->DigestMethod->gg;
-       e && e->g.tok == zx_ds_DigestMethod_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_DigestMethod(c, (struct zx_ds_DigestMethod_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->DigestValue, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_Reference) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_Reference_s* zx_NEW_ds_Reference(struct zx_ctx* c)
+struct zx_ds_Reference_s* zx_NEW_ds_Reference(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_Reference_s* x = ZX_ZALLOC(c, struct zx_ds_Reference_s);
   x->gg.g.tok = zx_ds_Reference_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1759,44 +1499,19 @@ int zx_WALK_WO_ds_Reference(struct zx_ctx* c, struct zx_ds_Reference_s* x, void*
 #define EL_NS     ds
 #define EL_TAG    RetrievalMethod
 
-/* FUNC(zx_FREE_ds_RetrievalMethod) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Type, free_strs);
-  zx_free_attr(c, x->URI, free_strs);
-
-  for (e = &x->Transforms->gg;
-       e && e->g.tok == zx_ds_Transforms_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_Transforms(c, (struct zx_ds_Transforms_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_RetrievalMethod) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_RetrievalMethod_s* zx_NEW_ds_RetrievalMethod(struct zx_ctx* c)
+struct zx_ds_RetrievalMethod_s* zx_NEW_ds_RetrievalMethod(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_RetrievalMethod_s* x = ZX_ZALLOC(c, struct zx_ds_RetrievalMethod_s);
   x->gg.g.tok = zx_ds_RetrievalMethod_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1922,37 +1637,19 @@ int zx_WALK_WO_ds_RetrievalMethod(struct zx_ctx* c, struct zx_ds_RetrievalMethod
 #define EL_NS     ds
 #define EL_TAG    SPKIData
 
-/* FUNC(zx_FREE_ds_SPKIData) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->SPKISexp, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_SPKIData) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_SPKIData_s* zx_NEW_ds_SPKIData(struct zx_ctx* c)
+struct zx_ds_SPKIData_s* zx_NEW_ds_SPKIData(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_SPKIData_s* x = ZX_ZALLOC(c, struct zx_ds_SPKIData_s);
   x->gg.g.tok = zx_ds_SPKIData_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2058,61 +1755,19 @@ int zx_WALK_WO_ds_SPKIData(struct zx_ctx* c, struct zx_ds_SPKIData_s* x, void* c
 #define EL_NS     ds
 #define EL_TAG    Signature
 
-/* FUNC(zx_FREE_ds_Signature) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Id, free_strs);
-
-  for (e = &x->SignedInfo->gg;
-       e && e->g.tok == zx_ds_SignedInfo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_SignedInfo(c, (struct zx_ds_SignedInfo_s*)e, free_strs);
-  }
-  for (e = &x->SignatureValue->gg;
-       e && e->g.tok == zx_ds_SignatureValue_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_SignatureValue(c, (struct zx_ds_SignatureValue_s*)e, free_strs);
-  }
-  for (e = &x->KeyInfo->gg;
-       e && e->g.tok == zx_ds_KeyInfo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, free_strs);
-  }
-  for (e = &x->Object->gg;
-       e && e->g.tok == zx_ds_Object_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_Object(c, (struct zx_ds_Object_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_Signature) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_Signature_s* zx_NEW_ds_Signature(struct zx_ctx* c)
+struct zx_ds_Signature_s* zx_NEW_ds_Signature(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_Signature_s* x = ZX_ZALLOC(c, struct zx_ds_Signature_s);
   x->gg.g.tok = zx_ds_Signature_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2299,38 +1954,19 @@ int zx_WALK_WO_ds_Signature(struct zx_ctx* c, struct zx_ds_Signature_s* x, void*
 #define EL_NS     ds
 #define EL_TAG    SignatureMethod
 
-/* FUNC(zx_FREE_ds_SignatureMethod) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Algorithm, free_strs);
-
-  zx_free_simple_elems(c, x->HMACOutputLength, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_SignatureMethod) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_SignatureMethod_s* zx_NEW_ds_SignatureMethod(struct zx_ctx* c)
+struct zx_ds_SignatureMethod_s* zx_NEW_ds_SignatureMethod(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_SignatureMethod_s* x = ZX_ZALLOC(c, struct zx_ds_SignatureMethod_s);
   x->gg.g.tok = zx_ds_SignatureMethod_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2438,43 +2074,19 @@ int zx_WALK_WO_ds_SignatureMethod(struct zx_ctx* c, struct zx_ds_SignatureMethod
 #define EL_NS     ds
 #define EL_TAG    SignatureProperties
 
-/* FUNC(zx_FREE_ds_SignatureProperties) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignatureProperties_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Id, free_strs);
-
-  for (e = &x->SignatureProperty->gg;
-       e && e->g.tok == zx_ds_SignatureProperty_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_SignatureProperty(c, (struct zx_ds_SignatureProperty_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_SignatureProperties) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_SignatureProperties_s* zx_NEW_ds_SignatureProperties(struct zx_ctx* c)
+struct zx_ds_SignatureProperties_s* zx_NEW_ds_SignatureProperties(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_SignatureProperties_s* x = ZX_ZALLOC(c, struct zx_ds_SignatureProperties_s);
   x->gg.g.tok = zx_ds_SignatureProperties_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2598,38 +2210,19 @@ int zx_WALK_WO_ds_SignatureProperties(struct zx_ctx* c, struct zx_ds_SignaturePr
 #define EL_NS     ds
 #define EL_TAG    SignatureProperty
 
-/* FUNC(zx_FREE_ds_SignatureProperty) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProperty_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Id, free_strs);
-  zx_free_attr(c, x->Target, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_SignatureProperty) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_SignatureProperty_s* zx_NEW_ds_SignatureProperty(struct zx_ctx* c)
+struct zx_ds_SignatureProperty_s* zx_NEW_ds_SignatureProperty(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_SignatureProperty_s* x = ZX_ZALLOC(c, struct zx_ds_SignatureProperty_s);
   x->gg.g.tok = zx_ds_SignatureProperty_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2734,37 +2327,19 @@ int zx_WALK_WO_ds_SignatureProperty(struct zx_ctx* c, struct zx_ds_SignatureProp
 #define EL_NS     ds
 #define EL_TAG    SignatureValue
 
-/* FUNC(zx_FREE_ds_SignatureValue) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Id, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_SignatureValue) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_SignatureValue_s* zx_NEW_ds_SignatureValue(struct zx_ctx* c)
+struct zx_ds_SignatureValue_s* zx_NEW_ds_SignatureValue(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_SignatureValue_s* x = ZX_ZALLOC(c, struct zx_ds_SignatureValue_s);
   x->gg.g.tok = zx_ds_SignatureValue_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2867,55 +2442,19 @@ int zx_WALK_WO_ds_SignatureValue(struct zx_ctx* c, struct zx_ds_SignatureValue_s
 #define EL_NS     ds
 #define EL_TAG    SignedInfo
 
-/* FUNC(zx_FREE_ds_SignedInfo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Id, free_strs);
-
-  for (e = &x->CanonicalizationMethod->gg;
-       e && e->g.tok == zx_ds_CanonicalizationMethod_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_CanonicalizationMethod(c, (struct zx_ds_CanonicalizationMethod_s*)e, free_strs);
-  }
-  for (e = &x->SignatureMethod->gg;
-       e && e->g.tok == zx_ds_SignatureMethod_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_SignatureMethod(c, (struct zx_ds_SignatureMethod_s*)e, free_strs);
-  }
-  for (e = &x->Reference->gg;
-       e && e->g.tok == zx_ds_Reference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_Reference(c, (struct zx_ds_Reference_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_SignedInfo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_SignedInfo_s* zx_NEW_ds_SignedInfo(struct zx_ctx* c)
+struct zx_ds_SignedInfo_s* zx_NEW_ds_SignedInfo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_SignedInfo_s* x = ZX_ZALLOC(c, struct zx_ds_SignedInfo_s);
   x->gg.g.tok = zx_ds_SignedInfo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3081,44 +2620,19 @@ int zx_WALK_WO_ds_SignedInfo(struct zx_ctx* c, struct zx_ds_SignedInfo_s* x, voi
 #define EL_NS     ds
 #define EL_TAG    Transform
 
-/* FUNC(zx_FREE_ds_Transform) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Algorithm, free_strs);
-
-  zx_free_simple_elems(c, x->XPath, free_strs);
-  for (e = &x->InclusiveNamespaces->gg;
-       e && e->g.tok == zx_exca_InclusiveNamespaces_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_exca_InclusiveNamespaces(c, (struct zx_exca_InclusiveNamespaces_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_Transform) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_Transform_s* zx_NEW_ds_Transform(struct zx_ctx* c)
+struct zx_ds_Transform_s* zx_NEW_ds_Transform(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_Transform_s* x = ZX_ZALLOC(c, struct zx_ds_Transform_s);
   x->gg.g.tok = zx_ds_Transform_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3247,42 +2761,19 @@ int zx_WALK_WO_ds_Transform(struct zx_ctx* c, struct zx_ds_Transform_s* x, void*
 #define EL_NS     ds
 #define EL_TAG    Transforms
 
-/* FUNC(zx_FREE_ds_Transforms) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Transform->gg;
-       e && e->g.tok == zx_ds_Transform_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_Transform(c, (struct zx_ds_Transform_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_Transforms) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_Transforms_s* zx_NEW_ds_Transforms(struct zx_ctx* c)
+struct zx_ds_Transforms_s* zx_NEW_ds_Transforms(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_Transforms_s* x = ZX_ZALLOC(c, struct zx_ds_Transforms_s);
   x->gg.g.tok = zx_ds_Transforms_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3404,46 +2895,19 @@ int zx_WALK_WO_ds_Transforms(struct zx_ctx* c, struct zx_ds_Transforms_s* x, voi
 #define EL_NS     ds
 #define EL_TAG    X509Data
 
-/* FUNC(zx_FREE_ds_X509Data) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->X509IssuerSerial->gg;
-       e && e->g.tok == zx_ds_X509IssuerSerial_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ds_X509IssuerSerial(c, (struct zx_ds_X509IssuerSerial_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->X509SKI, free_strs);
-  zx_free_simple_elems(c, x->X509SubjectName, free_strs);
-  zx_free_simple_elems(c, x->X509Certificate, free_strs);
-  zx_free_simple_elems(c, x->X509CRL, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_X509Data) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_X509Data_s* zx_NEW_ds_X509Data(struct zx_ctx* c)
+struct zx_ds_X509Data_s* zx_NEW_ds_X509Data(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_X509Data_s* x = ZX_ZALLOC(c, struct zx_ds_X509Data_s);
   x->gg.g.tok = zx_ds_X509Data_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3585,38 +3049,19 @@ int zx_WALK_WO_ds_X509Data(struct zx_ctx* c, struct zx_ds_X509Data_s* x, void* c
 #define EL_NS     ds
 #define EL_TAG    X509IssuerSerial
 
-/* FUNC(zx_FREE_ds_X509IssuerSerial) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_ds_X509IssuerSerial_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->X509IssuerName, free_strs);
-  zx_free_simple_elems(c, x->X509SerialNumber, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ds_X509IssuerSerial) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ds_X509IssuerSerial_s* zx_NEW_ds_X509IssuerSerial(struct zx_ctx* c)
+struct zx_ds_X509IssuerSerial_s* zx_NEW_ds_X509IssuerSerial(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ds_X509IssuerSerial_s* x = ZX_ZALLOC(c, struct zx_ds_X509IssuerSerial_s);
   x->gg.g.tok = zx_ds_X509IssuerSerial_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

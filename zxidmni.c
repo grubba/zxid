@@ -132,7 +132,7 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mni_do(zxid_conf* cf, zxid_cgi* cgi, z
     return 0;
   }
   
-  newnym = zxid_decrypt_newnym(cf, ZX_GET_CONTENT(mni->NewID):0, mni->NewEncryptedID);
+  newnym = zxid_decrypt_newnym(cf, ZX_GET_CONTENT(mni->NewID), mni->NewEncryptedID);
   if (!newnym) {
     D("MNI Terminate %d",0);
   } else {

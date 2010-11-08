@@ -48,55 +48,19 @@
 #define EL_NS     wsc
 #define EL_TAG    DerivedKeyToken
 
-/* FUNC(zx_FREE_wsc_DerivedKeyToken) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Algorithm, free_strs);
-  zx_free_attr(c, x->Id, free_strs);
-
-  for (e = &x->SecurityTokenReference->gg;
-       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)e, free_strs);
-  }
-  for (e = &x->Properties->gg;
-       e && e->g.tok == zx_wsc_Properties_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_wsc_Properties(c, (struct zx_wsc_Properties_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->Generation, free_strs);
-  zx_free_simple_elems(c, x->Offset, free_strs);
-  zx_free_simple_elems(c, x->Length, free_strs);
-  zx_free_simple_elems(c, x->Label, free_strs);
-  zx_free_simple_elems(c, x->Nonce, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_wsc_DerivedKeyToken) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_wsc_DerivedKeyToken_s* zx_NEW_wsc_DerivedKeyToken(struct zx_ctx* c)
+struct zx_wsc_DerivedKeyToken_s* zx_NEW_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_wsc_DerivedKeyToken_s* x = ZX_ZALLOC(c, struct zx_wsc_DerivedKeyToken_s);
   x->gg.g.tok = zx_wsc_DerivedKeyToken_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -268,36 +232,19 @@ int zx_WALK_WO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyTok
 #define EL_NS     wsc
 #define EL_TAG    Properties
 
-/* FUNC(zx_FREE_wsc_Properties) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_wsc_Properties) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_wsc_Properties_s* zx_NEW_wsc_Properties(struct zx_ctx* c)
+struct zx_wsc_Properties_s* zx_NEW_wsc_Properties(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_wsc_Properties_s* x = ZX_ZALLOC(c, struct zx_wsc_Properties_s);
   x->gg.g.tok = zx_wsc_Properties_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -398,37 +345,19 @@ int zx_WALK_WO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, v
 #define EL_NS     wsc
 #define EL_TAG    SecurityContextToken
 
-/* FUNC(zx_FREE_wsc_SecurityContextToken) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityContextToken_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Id, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_wsc_SecurityContextToken) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_wsc_SecurityContextToken_s* zx_NEW_wsc_SecurityContextToken(struct zx_ctx* c)
+struct zx_wsc_SecurityContextToken_s* zx_NEW_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_wsc_SecurityContextToken_s* x = ZX_ZALLOC(c, struct zx_wsc_SecurityContextToken_s);
   x->gg.g.tok = zx_wsc_SecurityContextToken_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

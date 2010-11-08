@@ -37,8 +37,7 @@ struct zx_lu_Extension_s {
 };
 
 struct zx_lu_Extension_s* zx_DEC_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x);
-struct zx_lu_Extension_s* zx_NEW_lu_Extension(struct zx_ctx* c);
-void zx_FREE_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x, int free_strs);
+struct zx_lu_Extension_s* zx_NEW_lu_Extension(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x);
 char* zx_ENC_SO_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_lu_Extension(struct zx_ctx* c, struct zx_lu_Extension_s* x);
@@ -78,8 +77,7 @@ struct zx_lu_Status_s {
 };
 
 struct zx_lu_Status_s* zx_DEC_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x);
-struct zx_lu_Status_s* zx_NEW_lu_Status(struct zx_ctx* c);
-void zx_FREE_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x, int free_strs);
+struct zx_lu_Status_s* zx_NEW_lu_Status(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x);
 char* zx_ENC_SO_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_lu_Status(struct zx_ctx* c, struct zx_lu_Status_s* x);
@@ -130,8 +128,7 @@ struct zx_lu_TestResult_s {
 };
 
 struct zx_lu_TestResult_s* zx_DEC_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x);
-struct zx_lu_TestResult_s* zx_NEW_lu_TestResult(struct zx_ctx* c);
-void zx_FREE_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x, int free_strs);
+struct zx_lu_TestResult_s* zx_NEW_lu_TestResult(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x);
 char* zx_ENC_SO_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_lu_TestResult(struct zx_ctx* c, struct zx_lu_TestResult_s* x);

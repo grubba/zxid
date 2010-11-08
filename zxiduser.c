@@ -79,7 +79,7 @@ zxid_nid* zxid_parse_mni(zxid_conf* cf, char* buf, char** pmniptr)
   if (*buf)              nameid->Format = zx_dup_attr(cf->ctx, zx_Format_ATTR, buf);
   if (idpent && *idpent) nameid->NameQualifier = zx_dup_attr(cf->ctx, zx_NameQualifier_ATTR, idpent);
   if (spqual && *spqual) nameid->SPNameQualifier = zx_dup_attr(cf->ctx, zx_SPNameQualifier_ATTR, spqual);
-  if (nid && *nid)       zx_add_content(c, &nameid->gg, zx_dup_str(cf->ctx, nid));
+  if (nid && *nid)       zx_add_content(cf->ctx, &nameid->gg, zx_dup_str(cf->ctx, nid));
   return nameid;
 }
 
@@ -121,7 +121,7 @@ zxid_nid* zxid_get_user_nameid(zxid_conf* cf, zxid_nid* oldnid)
   if (!cf->user_local)
     return oldnid;
   
-  zxid_user_sha1_name(cf, oldnid->NameQualifier, ZX_GET_CONTENT(oldnid), sha1_name);
+  zxid_user_sha1_name(cf, &oldnid->NameQualifier->g, ZX_GET_CONTENT(oldnid), sha1_name);
   buf = ZX_ALLOC(cf->ctx, ZXID_MAX_USER);
   mniptr = sha1_name;
 
@@ -145,9 +145,9 @@ zxid_nid* zxid_get_user_nameid(zxid_conf* cf, zxid_nid* oldnid)
 void zxid_user_change_nameid(zxid_conf* cf, zxid_nid* oldnid, struct zx_str* newnym)
 {
   char sha1_name[28];
-  zxid_user_sha1_name(cf, oldnid->NameQualifier, newnym, sha1_name);
-  zxid_put_user(cf, oldnid->Format, oldnid->NameQualifier, oldnid->SPNameQualifier, newnym, 0);
-  zxid_put_user(cf, oldnid->Format, oldnid->NameQualifier, oldnid->SPNameQualifier, ZX_GET_CONTENT(oldnid), sha1_name);
+  zxid_user_sha1_name(cf, &oldnid->NameQualifier->g, newnym, sha1_name);
+  zxid_put_user(cf, &oldnid->Format->g, &oldnid->NameQualifier->g, &oldnid->SPNameQualifier->g, newnym, 0);
+  zxid_put_user(cf, &oldnid->Format->g, &oldnid->NameQualifier->g, &oldnid->SPNameQualifier->g, ZX_GET_CONTENT(oldnid), sha1_name);
 }
 
 /*() Create new user object in file system. Will create user diretory (but not

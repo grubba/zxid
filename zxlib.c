@@ -347,7 +347,7 @@ void zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont)
 {
   cont->tok = ZX_TOK_DATA;
   cont->n = &x->kids->g;
-  x->kids = (struct zx_elems_s)cont;
+  x->kids = (struct zx_elem_s*)cont;
 }
 /*() Construct new simple element from zx_str by referencing, not copying, it. */
 
@@ -358,8 +358,8 @@ struct zx_elem_s* zx_new_simple_elem(struct zx_ctx* c, struct zx_elem_s* father,
   el = ZX_ZALLOC(c, struct zx_elem_s);
   el->g.tok = tok;
   if (father) {
-    x->gg.g.n = &father->kids.g;
-    father->kids = x;
+    el->g.n = &father->kids->g;
+    father->kids = el;
   }
   zx_add_content(c, el, ss);
   return el;
@@ -602,7 +602,7 @@ int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop
     case ZX_TOK_AND_NS_NOT_FOUND:
       len += zx_LEN_SO_simple_elem(c, ae, ae->g.len, ae->ns);
       break;
-    default: /* All known elements are already handled by SO encoder. */
+      /* default:  All known elements are already handled by SO encoder. */
     }
   return len;
 }
@@ -610,7 +610,6 @@ int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop
 /* Called by:  TXENC_SO_ELNAME */
 char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_elem_s* x)
 {
-  struct zx_attr_s* aa;
   struct zx_elem_s* ae;
 
 #if 0
@@ -630,7 +629,7 @@ char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_e
     case ZX_TOK_AND_NS_NOT_FOUND:
       p = zx_ENC_SO_simple_elem(c, ae, p, x->g.s, x->g.len, x->ns);
       break;
-    default: /* All known elements are already handled by SO encoder. */
+      /* default:  All known elements are already handled by SO encoder. */
     }
   return p;
 }
@@ -660,7 +659,6 @@ void zx_free_attr(struct zx_ctx* c, struct zx_attr_s* aa, int free_strs)
 /* Called by:  TXFREE_ELNAME */
 void zx_free_elem(struct zx_ctx* c, struct zx_elem_s* x, int free_strs)
 {
-  struct zx_attr_s* aa;
   struct zx_elem_s* ae;
   struct zx_elem_s* aen;
   

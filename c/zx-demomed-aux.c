@@ -48,37 +48,19 @@
 #define EL_NS     demomed
 #define EL_TAG    DeleteObjectRequest
 
-/* FUNC(zx_FREE_demomed_DeleteObjectRequest) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->ObjectID, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_DeleteObjectRequest) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_DeleteObjectRequest_s* zx_NEW_demomed_DeleteObjectRequest(struct zx_ctx* c)
+struct zx_demomed_DeleteObjectRequest_s* zx_NEW_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_DeleteObjectRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_DeleteObjectRequest_s);
   x->gg.g.tok = zx_demomed_DeleteObjectRequest_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -184,43 +166,19 @@ int zx_WALK_WO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_D
 #define EL_NS     demomed
 #define EL_TAG    DeleteObjectResponse
 
-/* FUNC(zx_FREE_demomed_DeleteObjectResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->Count, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_DeleteObjectResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_DeleteObjectResponse_s* zx_NEW_demomed_DeleteObjectResponse(struct zx_ctx* c)
+struct zx_demomed_DeleteObjectResponse_s* zx_NEW_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_DeleteObjectResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_DeleteObjectResponse_s);
   x->gg.g.tok = zx_demomed_DeleteObjectResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -347,42 +305,19 @@ int zx_WALK_WO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_
 #define EL_NS     demomed
 #define EL_TAG    GetObjectListRequest
 
-/* FUNC(zx_FREE_demomed_GetObjectListRequest) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->ObjectSearchParm->gg;
-       e && e->g.tok == zx_demomed_ObjectSearchParm_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_demomed_ObjectSearchParm(c, (struct zx_demomed_ObjectSearchParm_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_GetObjectListRequest) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_GetObjectListRequest_s* zx_NEW_demomed_GetObjectListRequest(struct zx_ctx* c)
+struct zx_demomed_GetObjectListRequest_s* zx_NEW_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_GetObjectListRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectListRequest_s);
   x->gg.g.tok = zx_demomed_GetObjectListRequest_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -504,48 +439,19 @@ int zx_WALK_WO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_
 #define EL_NS     demomed
 #define EL_TAG    GetObjectListResponse
 
-/* FUNC(zx_FREE_demomed_GetObjectListResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-  for (e = &x->ObjectInfo->gg;
-       e && e->g.tok == zx_demomed_ObjectInfo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_GetObjectListResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_GetObjectListResponse_s* zx_NEW_demomed_GetObjectListResponse(struct zx_ctx* c)
+struct zx_demomed_GetObjectListResponse_s* zx_NEW_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_GetObjectListResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectListResponse_s);
   x->gg.g.tok = zx_demomed_GetObjectListResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -688,37 +594,19 @@ int zx_WALK_WO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed
 #define EL_NS     demomed
 #define EL_TAG    GetObjectRequest
 
-/* FUNC(zx_FREE_demomed_GetObjectRequest) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->ObjectID, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_GetObjectRequest) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_GetObjectRequest_s* zx_NEW_demomed_GetObjectRequest(struct zx_ctx* c)
+struct zx_demomed_GetObjectRequest_s* zx_NEW_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_GetObjectRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectRequest_s);
   x->gg.g.tok = zx_demomed_GetObjectRequest_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -824,48 +712,19 @@ int zx_WALK_WO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetO
 #define EL_NS     demomed
 #define EL_TAG    GetObjectResponse
 
-/* FUNC(zx_FREE_demomed_GetObjectResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-  for (e = &x->ObjectData->gg;
-       e && e->g.tok == zx_demomed_ObjectData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_GetObjectResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_GetObjectResponse_s* zx_NEW_demomed_GetObjectResponse(struct zx_ctx* c)
+struct zx_demomed_GetObjectResponse_s* zx_NEW_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_GetObjectResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_GetObjectResponse_s);
   x->gg.g.tok = zx_demomed_GetObjectResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1008,49 +867,19 @@ int zx_WALK_WO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_Get
 #define EL_NS     demomed
 #define EL_TAG    Object
 
-/* FUNC(zx_FREE_demomed_Object) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->reqID, free_strs);
-
-  for (e = &x->ObjectInfo->gg;
-       e && e->g.tok == zx_demomed_ObjectInfo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)e, free_strs);
-  }
-  for (e = &x->ObjectData->gg;
-       e && e->g.tok == zx_demomed_ObjectData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_Object) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_Object_s* zx_NEW_demomed_Object(struct zx_ctx* c)
+struct zx_demomed_Object_s* zx_NEW_demomed_Object(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_Object_s* x = ZX_ZALLOC(c, struct zx_demomed_Object_s);
   x->gg.g.tok = zx_demomed_Object_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1195,37 +1024,19 @@ int zx_WALK_WO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, v
 #define EL_NS     demomed
 #define EL_TAG    ObjectData
 
-/* FUNC(zx_FREE_demomed_ObjectData) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->objectID, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_ObjectData) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_ObjectData_s* zx_NEW_demomed_ObjectData(struct zx_ctx* c)
+struct zx_demomed_ObjectData_s* zx_NEW_demomed_ObjectData(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_ObjectData_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectData_s);
   x->gg.g.tok = zx_demomed_ObjectData_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1328,42 +1139,19 @@ int zx_WALK_WO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData
 #define EL_NS     demomed
 #define EL_TAG    ObjectInfo
 
-/* FUNC(zx_FREE_demomed_ObjectInfo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->objectID, free_strs);
-
-  zx_free_simple_elems(c, x->Dir, free_strs);
-  zx_free_simple_elems(c, x->Name, free_strs);
-  zx_free_simple_elems(c, x->Type, free_strs);
-  zx_free_simple_elems(c, x->Created, free_strs);
-  zx_free_simple_elems(c, x->Comment, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_ObjectInfo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_ObjectInfo_s* zx_NEW_demomed_ObjectInfo(struct zx_ctx* c)
+struct zx_demomed_ObjectInfo_s* zx_NEW_demomed_ObjectInfo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_ObjectInfo_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectInfo_s);
   x->gg.g.tok = zx_demomed_ObjectInfo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1491,40 +1279,19 @@ int zx_WALK_WO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo
 #define EL_NS     demomed
 #define EL_TAG    ObjectSearchParm
 
-/* FUNC(zx_FREE_demomed_ObjectSearchParm) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->Dir, free_strs);
-  zx_free_simple_elems(c, x->Name, free_strs);
-  zx_free_simple_elems(c, x->Type, free_strs);
-  zx_free_simple_elems(c, x->objectID, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_ObjectSearchParm) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_ObjectSearchParm_s* zx_NEW_demomed_ObjectSearchParm(struct zx_ctx* c)
+struct zx_demomed_ObjectSearchParm_s* zx_NEW_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_ObjectSearchParm_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectSearchParm_s);
   x->gg.g.tok = zx_demomed_ObjectSearchParm_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1645,38 +1412,19 @@ int zx_WALK_WO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Obje
 #define EL_NS     demomed
 #define EL_TAG    ObjectStoreInfo
 
-/* FUNC(zx_FREE_demomed_ObjectStoreInfo) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->objectID, free_strs);
-  zx_free_attr(c, x->storeRef, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_ObjectStoreInfo) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_ObjectStoreInfo_s* zx_NEW_demomed_ObjectStoreInfo(struct zx_ctx* c)
+struct zx_demomed_ObjectStoreInfo_s* zx_NEW_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_ObjectStoreInfo_s* x = ZX_ZALLOC(c, struct zx_demomed_ObjectStoreInfo_s);
   x->gg.g.tok = zx_demomed_ObjectStoreInfo_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1781,42 +1529,19 @@ int zx_WALK_WO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Objec
 #define EL_NS     demomed
 #define EL_TAG    StoreObjectRequest
 
-/* FUNC(zx_FREE_demomed_StoreObjectRequest) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Object->gg;
-       e && e->g.tok == zx_demomed_Object_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_demomed_Object(c, (struct zx_demomed_Object_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_StoreObjectRequest) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_StoreObjectRequest_s* zx_NEW_demomed_StoreObjectRequest(struct zx_ctx* c)
+struct zx_demomed_StoreObjectRequest_s* zx_NEW_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_StoreObjectRequest_s* x = ZX_ZALLOC(c, struct zx_demomed_StoreObjectRequest_s);
   x->gg.g.tok = zx_demomed_StoreObjectRequest_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1938,48 +1663,19 @@ int zx_WALK_WO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_St
 #define EL_NS     demomed
 #define EL_TAG    StoreObjectResponse
 
-/* FUNC(zx_FREE_demomed_StoreObjectResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-  for (e = &x->ObjectStoreInfo->gg;
-       e && e->g.tok == zx_demomed_ObjectStoreInfo_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_demomed_ObjectStoreInfo(c, (struct zx_demomed_ObjectStoreInfo_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_demomed_StoreObjectResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_demomed_StoreObjectResponse_s* zx_NEW_demomed_StoreObjectResponse(struct zx_ctx* c)
+struct zx_demomed_StoreObjectResponse_s* zx_NEW_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_demomed_StoreObjectResponse_s* x = ZX_ZALLOC(c, struct zx_demomed_StoreObjectResponse_s);
   x->gg.g.tok = zx_demomed_StoreObjectResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

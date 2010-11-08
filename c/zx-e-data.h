@@ -264,8 +264,7 @@ struct zx_e_Body_s {
 };
 
 struct zx_e_Body_s* zx_DEC_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
-struct zx_e_Body_s* zx_NEW_e_Body(struct zx_ctx* c);
-void zx_FREE_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, int free_strs);
+struct zx_e_Body_s* zx_NEW_e_Body(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
 char* zx_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x);
@@ -2114,8 +2113,7 @@ struct zx_e_Envelope_s {
 };
 
 struct zx_e_Envelope_s* zx_DEC_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
-struct zx_e_Envelope_s* zx_NEW_e_Envelope(struct zx_ctx* c);
-void zx_FREE_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, int free_strs);
+struct zx_e_Envelope_s* zx_NEW_e_Envelope(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
 char* zx_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x);
@@ -2173,8 +2171,7 @@ struct zx_e_Fault_s {
 };
 
 struct zx_e_Fault_s* zx_DEC_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
-struct zx_e_Fault_s* zx_NEW_e_Fault(struct zx_ctx* c);
-void zx_FREE_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, int free_strs);
+struct zx_e_Fault_s* zx_NEW_e_Fault(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
 char* zx_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x);
@@ -2279,8 +2276,7 @@ struct zx_e_Header_s {
 };
 
 struct zx_e_Header_s* zx_DEC_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
-struct zx_e_Header_s* zx_NEW_e_Header(struct zx_ctx* c);
-void zx_FREE_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, int free_strs);
+struct zx_e_Header_s* zx_NEW_e_Header(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
 char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x);
@@ -2607,8 +2603,7 @@ struct zx_e_detail_s {
 };
 
 struct zx_e_detail_s* zx_DEC_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);
-struct zx_e_detail_s* zx_NEW_e_detail(struct zx_ctx* c);
-void zx_FREE_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, int free_strs);
+struct zx_e_detail_s* zx_NEW_e_detail(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);
 char* zx_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x);

@@ -48,41 +48,19 @@
 #define EL_NS     idpdisc
 #define EL_TAG    DiscoveryResponse
 
-/* FUNC(zx_FREE_idpdisc_DiscoveryResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_idpdisc_DiscoveryResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->Binding, free_strs);
-  zx_free_attr(c, x->Location, free_strs);
-  zx_free_attr(c, x->ResponseLocation, free_strs);
-  zx_free_attr(c, x->index, free_strs);
-  zx_free_attr(c, x->isDefault, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_idpdisc_DiscoveryResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_idpdisc_DiscoveryResponse_s* zx_NEW_idpdisc_DiscoveryResponse(struct zx_ctx* c)
+struct zx_idpdisc_DiscoveryResponse_s* zx_NEW_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_idpdisc_DiscoveryResponse_s* x = ZX_ZALLOC(c, struct zx_idpdisc_DiscoveryResponse_s);
   x->gg.g.tok = zx_idpdisc_DiscoveryResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

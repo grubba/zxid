@@ -37,8 +37,7 @@ struct zx_as_Extensions_s {
 };
 
 struct zx_as_Extensions_s* zx_DEC_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x);
-struct zx_as_Extensions_s* zx_NEW_as_Extensions(struct zx_ctx* c);
-void zx_FREE_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x, int free_strs);
+struct zx_as_Extensions_s* zx_NEW_as_Extensions(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x);
 char* zx_ENC_SO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x);
@@ -75,8 +74,7 @@ struct zx_as_Parameter_s {
 };
 
 struct zx_as_Parameter_s* zx_DEC_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x);
-struct zx_as_Parameter_s* zx_NEW_as_Parameter(struct zx_ctx* c);
-void zx_FREE_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x, int free_strs);
+struct zx_as_Parameter_s* zx_NEW_as_Parameter(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x);
 char* zx_ENC_SO_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x);
@@ -115,8 +113,7 @@ struct zx_as_PasswordTransforms_s {
 };
 
 struct zx_as_PasswordTransforms_s* zx_DEC_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x);
-struct zx_as_PasswordTransforms_s* zx_NEW_as_PasswordTransforms(struct zx_ctx* c);
-void zx_FREE_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x, int free_strs);
+struct zx_as_PasswordTransforms_s* zx_NEW_as_PasswordTransforms(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x);
 char* zx_ENC_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransforms_s* x);
@@ -166,8 +163,7 @@ struct zx_as_SASLRequest_s {
 };
 
 struct zx_as_SASLRequest_s* zx_DEC_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x);
-struct zx_as_SASLRequest_s* zx_NEW_as_SASLRequest(struct zx_ctx* c);
-void zx_FREE_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x, int free_strs);
+struct zx_as_SASLRequest_s* zx_NEW_as_SASLRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x);
 char* zx_ENC_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x);
@@ -238,8 +234,7 @@ struct zx_as_SASLResponse_s {
 };
 
 struct zx_as_SASLResponse_s* zx_DEC_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x);
-struct zx_as_SASLResponse_s* zx_NEW_as_SASLResponse(struct zx_ctx* c);
-void zx_FREE_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x, int free_strs);
+struct zx_as_SASLResponse_s* zx_NEW_as_SASLResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x);
 char* zx_ENC_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x);
@@ -311,8 +306,7 @@ struct zx_as_Transform_s {
 };
 
 struct zx_as_Transform_s* zx_DEC_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x);
-struct zx_as_Transform_s* zx_NEW_as_Transform(struct zx_ctx* c);
-void zx_FREE_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x, int free_strs);
+struct zx_as_Transform_s* zx_NEW_as_Transform(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x);
 char* zx_ENC_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x);

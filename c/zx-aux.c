@@ -47,271 +47,19 @@
 #define EL_NS     
 #define EL_TAG    root
 
-/* FUNC(zx_FREE_root) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_root(struct zx_ctx* c, struct zx_root_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Assertion->gg;
-       e && e->g.tok == zx_sa_Assertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_Assertion(c, (struct zx_sa_Assertion_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedAssertion->gg;
-       e && e->g.tok == zx_sa_EncryptedAssertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)e, free_strs);
-  }
-  for (e = &x->NameID->gg;
-       e && e->g.tok == zx_sa_NameID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_NameID(c, (struct zx_sa_NameID_s*)e, free_strs);
-  }
-  for (e = &x->EncryptedID->gg;
-       e && e->g.tok == zx_sa_EncryptedID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_EncryptedID(c, (struct zx_sa_EncryptedID_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->NewID, free_strs);
-  for (e = &x->AuthnRequest->gg;
-       e && e->g.tok == zx_sp_AuthnRequest_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_AuthnRequest(c, (struct zx_sp_AuthnRequest_s*)e, free_strs);
-  }
-  for (e = &x->Response->gg;
-       e && e->g.tok == zx_sp_Response_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_Response(c, (struct zx_sp_Response_s*)e, free_strs);
-  }
-  for (e = &x->LogoutRequest->gg;
-       e && e->g.tok == zx_sp_LogoutRequest_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_LogoutRequest(c, (struct zx_sp_LogoutRequest_s*)e, free_strs);
-  }
-  for (e = &x->LogoutResponse->gg;
-       e && e->g.tok == zx_sp_LogoutResponse_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_LogoutResponse(c, (struct zx_sp_LogoutResponse_s*)e, free_strs);
-  }
-  for (e = &x->ManageNameIDRequest->gg;
-       e && e->g.tok == zx_sp_ManageNameIDRequest_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_ManageNameIDRequest(c, (struct zx_sp_ManageNameIDRequest_s*)e, free_strs);
-  }
-  for (e = &x->ManageNameIDResponse->gg;
-       e && e->g.tok == zx_sp_ManageNameIDResponse_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_ManageNameIDResponse(c, (struct zx_sp_ManageNameIDResponse_s*)e, free_strs);
-  }
-  for (e = &x->Envelope->gg;
-       e && e->g.tok == zx_e_Envelope_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_e_Envelope(c, (struct zx_e_Envelope_s*)e, free_strs);
-  }
-  for (e = &x->Header->gg;
-       e && e->g.tok == zx_e_Header_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_e_Header(c, (struct zx_e_Header_s*)e, free_strs);
-  }
-  for (e = &x->Body->gg;
-       e && e->g.tok == zx_e_Body_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_e_Body(c, (struct zx_e_Body_s*)e, free_strs);
-  }
-  for (e = &x->EntityDescriptor->gg;
-       e && e->g.tok == zx_md_EntityDescriptor_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_md_EntityDescriptor(c, (struct zx_md_EntityDescriptor_s*)e, free_strs);
-  }
-  for (e = &x->EntitiesDescriptor->gg;
-       e && e->g.tok == zx_md_EntitiesDescriptor_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_md_EntitiesDescriptor(c, (struct zx_md_EntitiesDescriptor_s*)e, free_strs);
-  }
-  for (e = &x->XACMLAuthzDecisionQuery->gg;
-       e && e->g.tok == zx_xasp_XACMLAuthzDecisionQuery_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xasp_XACMLAuthzDecisionQuery(c, (struct zx_xasp_XACMLAuthzDecisionQuery_s*)e, free_strs);
-  }
-  for (e = &x->XACMLPolicyQuery->gg;
-       e && e->g.tok == zx_xasp_XACMLPolicyQuery_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xasp_XACMLPolicyQuery(c, (struct zx_xasp_XACMLPolicyQuery_s*)e, free_strs);
-  }
-  for (e = &x->xaspcd1_XACMLAuthzDecisionQuery->gg;
-       e && e->g.tok == zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xaspcd1_XACMLAuthzDecisionQuery(c, (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)e, free_strs);
-  }
-  for (e = &x->xaspcd1_XACMLPolicyQuery->gg;
-       e && e->g.tok == zx_xaspcd1_XACMLPolicyQuery_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xaspcd1_XACMLPolicyQuery(c, (struct zx_xaspcd1_XACMLPolicyQuery_s*)e, free_strs);
-  }
-  for (e = &x->EndpointReference->gg;
-       e && e->g.tok == zx_a_EndpointReference_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)e, free_strs);
-  }
-  for (e = &x->Token->gg;
-       e && e->g.tok == zx_sec_Token_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sec_Token(c, (struct zx_sec_Token_s*)e, free_strs);
-  }
-  for (e = &x->Candidate->gg;
-       e && e->g.tok == zx_hrxml_Candidate_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_hrxml_Candidate(c, (struct zx_hrxml_Candidate_s*)e, free_strs);
-  }
-  for (e = &x->sa11_Assertion->gg;
-       e && e->g.tok == zx_sa11_Assertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)e, free_strs);
-  }
-  for (e = &x->Request->gg;
-       e && e->g.tok == zx_sp11_Request_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp11_Request(c, (struct zx_sp11_Request_s*)e, free_strs);
-  }
-  for (e = &x->sp11_Response->gg;
-       e && e->g.tok == zx_sp11_Response_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp11_Response(c, (struct zx_sp11_Response_s*)e, free_strs);
-  }
-  for (e = &x->ff12_Assertion->gg;
-       e && e->g.tok == zx_ff12_Assertion_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)e, free_strs);
-  }
-  for (e = &x->ff12_AuthnRequest->gg;
-       e && e->g.tok == zx_ff12_AuthnRequest_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_AuthnRequest(c, (struct zx_ff12_AuthnRequest_s*)e, free_strs);
-  }
-  for (e = &x->AuthnResponse->gg;
-       e && e->g.tok == zx_ff12_AuthnResponse_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_AuthnResponse(c, (struct zx_ff12_AuthnResponse_s*)e, free_strs);
-  }
-  for (e = &x->AuthnRequestEnvelope->gg;
-       e && e->g.tok == zx_ff12_AuthnRequestEnvelope_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_AuthnRequestEnvelope(c, (struct zx_ff12_AuthnRequestEnvelope_s*)e, free_strs);
-  }
-  for (e = &x->AuthnResponseEnvelope->gg;
-       e && e->g.tok == zx_ff12_AuthnResponseEnvelope_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_AuthnResponseEnvelope(c, (struct zx_ff12_AuthnResponseEnvelope_s*)e, free_strs);
-  }
-  for (e = &x->RegisterNameIdentifierRequest->gg;
-       e && e->g.tok == zx_ff12_RegisterNameIdentifierRequest_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_RegisterNameIdentifierRequest(c, (struct zx_ff12_RegisterNameIdentifierRequest_s*)e, free_strs);
-  }
-  for (e = &x->RegisterNameIdentifierResponse->gg;
-       e && e->g.tok == zx_ff12_RegisterNameIdentifierResponse_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_RegisterNameIdentifierResponse(c, (struct zx_ff12_RegisterNameIdentifierResponse_s*)e, free_strs);
-  }
-  for (e = &x->FederationTerminationNotification->gg;
-       e && e->g.tok == zx_ff12_FederationTerminationNotification_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_FederationTerminationNotification(c, (struct zx_ff12_FederationTerminationNotification_s*)e, free_strs);
-  }
-  for (e = &x->ff12_LogoutRequest->gg;
-       e && e->g.tok == zx_ff12_LogoutRequest_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_LogoutRequest(c, (struct zx_ff12_LogoutRequest_s*)e, free_strs);
-  }
-  for (e = &x->ff12_LogoutResponse->gg;
-       e && e->g.tok == zx_ff12_LogoutResponse_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_LogoutResponse(c, (struct zx_ff12_LogoutResponse_s*)e, free_strs);
-  }
-  for (e = &x->NameIdentifierMappingRequest->gg;
-       e && e->g.tok == zx_ff12_NameIdentifierMappingRequest_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_NameIdentifierMappingRequest(c, (struct zx_ff12_NameIdentifierMappingRequest_s*)e, free_strs);
-  }
-  for (e = &x->NameIdentifierMappingResponse->gg;
-       e && e->g.tok == zx_ff12_NameIdentifierMappingResponse_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_ff12_NameIdentifierMappingResponse(c, (struct zx_ff12_NameIdentifierMappingResponse_s*)e, free_strs);
-  }
-  for (e = &x->m20_EntityDescriptor->gg;
-       e && e->g.tok == zx_m20_EntityDescriptor_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_m20_EntityDescriptor(c, (struct zx_m20_EntityDescriptor_s*)e, free_strs);
-  }
-  for (e = &x->m20_EntitiesDescriptor->gg;
-       e && e->g.tok == zx_m20_EntitiesDescriptor_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_m20_EntitiesDescriptor(c, (struct zx_m20_EntitiesDescriptor_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_root) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_root_s* zx_NEW_root(struct zx_ctx* c)
+struct zx_root_s* zx_NEW_root(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_root_s* x = ZX_ZALLOC(c, struct zx_root_s);
   x->gg.g.tok = zx_root_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1236,36 +984,19 @@ int zx_WALK_WO_root(struct zx_ctx* c, struct zx_root_s* x, void* ctx, int (*call
 #define EL_NS     
 #define EL_TAG    simple_elem
 
-/* FUNC(zx_FREE_simple_elem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_simple_elem(struct zx_ctx* c, struct zx_elem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-
-
-  zx_free_elem_common(c, x, free_strs); 
-}
-
 /* FUNC(zx_NEW_simple_elem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_elem_s* zx_NEW_simple_elem(struct zx_ctx* c)
+struct zx_elem_s* zx_NEW_simple_elem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_elem_s* x = ZX_ZALLOC(c, struct zx_elem_s);
   x->g.tok = ZX_TOK_AND_NS_NOT_FOUND;
+  if (father) {
+    x->g.n = &father->kids->g;
+    father->kids = x;
+  }
   return x;
 }
 

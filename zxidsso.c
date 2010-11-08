@@ -404,10 +404,15 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
   struct timeval tsbuf;
   struct zx_sa_AudienceRestriction_s* audr;
   struct zx_elem_s* aud;
+  struct zx_str* ss;
   int secs;
 
   if (!a7n || !a7n->Conditions) {
     INFO("Assertion does not have Conditions. %p", a7n);
+    return ZXSIG_OK;
+  }
+  if (!myentid || !myentid->len) {
+    ERR("My entity ID missing %p", myentid);
     return ZXSIG_OK;
   }
 
@@ -419,15 +424,17 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
   if (a7n->Conditions->AudienceRestriction) {
     for (audr = a7n->Conditions->AudienceRestriction;
 	 audr && audr->gg.g.tok == zx_sa_AudienceRestriction_ELEM;
-	 audr = (struct zx_sa_AudienceRestriction_s*)audr->gg.g.n)
+	 audr = (struct zx_sa_AudienceRestriction_s*)audr->gg.g.n) {
       for (aud = audr->Audience;
 	   aud && aud->g.tok == zx_sa_Audience_ELEM;
-	   aud = (struct zx_elem_s*)aud->g.n)
-	if (ZX_GET_CONTENT_LEN(aud) == myentid->len
-	    && !memcmp(ZX_GET_CONTENT_S(aud), myentid->s, ZX_GET_CONTENT_LEN(aud))) {
+	   aud = (struct zx_elem_s*)aud->g.n) {
+	ss = ZX_GET_CONTENT(aud);
+	if (ss?ss->len:0 == myentid->len && !memcmp(ss->s, myentid->s, ss->len)) {
 	  D("Found audience. %d", 0);
 	  goto found_audience;
 	}
+      }
+    }
     if (cgi) {
       cgi->sigval = "V";
       cgi->sigmsg = "This SP not included in the Assertion Audience.";

@@ -38,8 +38,7 @@ struct zx_wst_Authenticator_s {
 };
 
 struct zx_wst_Authenticator_s* zx_DEC_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x);
-struct zx_wst_Authenticator_s* zx_NEW_wst_Authenticator(struct zx_ctx* c);
-void zx_FREE_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x, int free_strs);
+struct zx_wst_Authenticator_s* zx_NEW_wst_Authenticator(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x);
 char* zx_ENC_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s* x);
@@ -85,8 +84,7 @@ struct zx_wst_BinaryExchange_s {
 };
 
 struct zx_wst_BinaryExchange_s* zx_DEC_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x);
-struct zx_wst_BinaryExchange_s* zx_NEW_wst_BinaryExchange(struct zx_ctx* c);
-void zx_FREE_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x, int free_strs);
+struct zx_wst_BinaryExchange_s* zx_NEW_wst_BinaryExchange(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x);
 char* zx_ENC_SO_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_s* x);
@@ -127,8 +125,7 @@ struct zx_wst_BinarySecret_s {
 };
 
 struct zx_wst_BinarySecret_s* zx_DEC_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x);
-struct zx_wst_BinarySecret_s* zx_NEW_wst_BinarySecret(struct zx_ctx* c);
-void zx_FREE_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x, int free_strs);
+struct zx_wst_BinarySecret_s* zx_NEW_wst_BinarySecret(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x);
 char* zx_ENC_SO_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x);
@@ -166,8 +163,7 @@ struct zx_wst_CancelTarget_s {
 };
 
 struct zx_wst_CancelTarget_s* zx_DEC_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x);
-struct zx_wst_CancelTarget_s* zx_NEW_wst_CancelTarget(struct zx_ctx* c);
-void zx_FREE_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x, int free_strs);
+struct zx_wst_CancelTarget_s* zx_NEW_wst_CancelTarget(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x);
 char* zx_ENC_SO_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x);
@@ -204,8 +200,7 @@ struct zx_wst_Claims_s {
 };
 
 struct zx_wst_Claims_s* zx_DEC_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x);
-struct zx_wst_Claims_s* zx_NEW_wst_Claims(struct zx_ctx* c);
-void zx_FREE_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x, int free_strs);
+struct zx_wst_Claims_s* zx_NEW_wst_Claims(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x);
 char* zx_ENC_SO_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x);
@@ -243,8 +238,7 @@ struct zx_wst_DelegateTo_s {
 };
 
 struct zx_wst_DelegateTo_s* zx_DEC_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x);
-struct zx_wst_DelegateTo_s* zx_NEW_wst_DelegateTo(struct zx_ctx* c);
-void zx_FREE_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x, int free_strs);
+struct zx_wst_DelegateTo_s* zx_NEW_wst_DelegateTo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x);
 char* zx_ENC_SO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x);
@@ -280,8 +274,7 @@ struct zx_wst_Encryption_s {
 };
 
 struct zx_wst_Encryption_s* zx_DEC_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x);
-struct zx_wst_Encryption_s* zx_NEW_wst_Encryption(struct zx_ctx* c);
-void zx_FREE_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x, int free_strs);
+struct zx_wst_Encryption_s* zx_NEW_wst_Encryption(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x);
 char* zx_ENC_SO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x);
@@ -317,8 +310,7 @@ struct zx_wst_Entropy_s {
 };
 
 struct zx_wst_Entropy_s* zx_DEC_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x);
-struct zx_wst_Entropy_s* zx_NEW_wst_Entropy(struct zx_ctx* c);
-void zx_FREE_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x, int free_strs);
+struct zx_wst_Entropy_s* zx_NEW_wst_Entropy(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x);
 char* zx_ENC_SO_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x);
@@ -355,8 +347,7 @@ struct zx_wst_IssuedTokens_s {
 };
 
 struct zx_wst_IssuedTokens_s* zx_DEC_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x);
-struct zx_wst_IssuedTokens_s* zx_NEW_wst_IssuedTokens(struct zx_ctx* c);
-void zx_FREE_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x, int free_strs);
+struct zx_wst_IssuedTokens_s* zx_NEW_wst_IssuedTokens(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x);
 char* zx_ENC_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x);
@@ -409,8 +400,7 @@ struct zx_wst_Issuer_s {
 };
 
 struct zx_wst_Issuer_s* zx_DEC_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x);
-struct zx_wst_Issuer_s* zx_NEW_wst_Issuer(struct zx_ctx* c);
-void zx_FREE_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x, int free_strs);
+struct zx_wst_Issuer_s* zx_NEW_wst_Issuer(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x);
 char* zx_ENC_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x);
@@ -482,8 +472,7 @@ struct zx_wst_KeyExchangeToken_s {
 };
 
 struct zx_wst_KeyExchangeToken_s* zx_DEC_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x);
-struct zx_wst_KeyExchangeToken_s* zx_NEW_wst_KeyExchangeToken(struct zx_ctx* c);
-void zx_FREE_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x, int free_strs);
+struct zx_wst_KeyExchangeToken_s* zx_NEW_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x);
 char* zx_ENC_SO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeToken_s* x);
@@ -521,8 +510,7 @@ struct zx_wst_Lifetime_s {
 };
 
 struct zx_wst_Lifetime_s* zx_DEC_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x);
-struct zx_wst_Lifetime_s* zx_NEW_wst_Lifetime(struct zx_ctx* c);
-void zx_FREE_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x, int free_strs);
+struct zx_wst_Lifetime_s* zx_NEW_wst_Lifetime(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x);
 char* zx_ENC_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x);
@@ -574,8 +562,7 @@ struct zx_wst_OnBehalfOf_s {
 };
 
 struct zx_wst_OnBehalfOf_s* zx_DEC_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x);
-struct zx_wst_OnBehalfOf_s* zx_NEW_wst_OnBehalfOf(struct zx_ctx* c);
-void zx_FREE_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x, int free_strs);
+struct zx_wst_OnBehalfOf_s* zx_NEW_wst_OnBehalfOf(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x);
 char* zx_ENC_SO_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x);
@@ -611,8 +598,7 @@ struct zx_wst_Participant_s {
 };
 
 struct zx_wst_Participant_s* zx_DEC_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x);
-struct zx_wst_Participant_s* zx_NEW_wst_Participant(struct zx_ctx* c);
-void zx_FREE_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x, int free_strs);
+struct zx_wst_Participant_s* zx_NEW_wst_Participant(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x);
 char* zx_ENC_SO_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x);
@@ -650,8 +636,7 @@ struct zx_wst_Participants_s {
 };
 
 struct zx_wst_Participants_s* zx_DEC_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x);
-struct zx_wst_Participants_s* zx_NEW_wst_Participants(struct zx_ctx* c);
-void zx_FREE_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x, int free_strs);
+struct zx_wst_Participants_s* zx_NEW_wst_Participants(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x);
 char* zx_ENC_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x);
@@ -703,8 +688,7 @@ struct zx_wst_Primary_s {
 };
 
 struct zx_wst_Primary_s* zx_DEC_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x);
-struct zx_wst_Primary_s* zx_NEW_wst_Primary(struct zx_ctx* c);
-void zx_FREE_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x, int free_strs);
+struct zx_wst_Primary_s* zx_NEW_wst_Primary(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x);
 char* zx_ENC_SO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x);
@@ -740,8 +724,7 @@ struct zx_wst_ProofEncryption_s {
 };
 
 struct zx_wst_ProofEncryption_s* zx_DEC_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x);
-struct zx_wst_ProofEncryption_s* zx_NEW_wst_ProofEncryption(struct zx_ctx* c);
-void zx_FREE_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x, int free_strs);
+struct zx_wst_ProofEncryption_s* zx_NEW_wst_ProofEncryption(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x);
 char* zx_ENC_SO_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryption_s* x);
@@ -777,8 +760,7 @@ struct zx_wst_RenewTarget_s {
 };
 
 struct zx_wst_RenewTarget_s* zx_DEC_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x);
-struct zx_wst_RenewTarget_s* zx_NEW_wst_RenewTarget(struct zx_ctx* c);
-void zx_FREE_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x, int free_strs);
+struct zx_wst_RenewTarget_s* zx_NEW_wst_RenewTarget(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x);
 char* zx_ENC_SO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x);
@@ -816,8 +798,7 @@ struct zx_wst_Renewing_s {
 };
 
 struct zx_wst_Renewing_s* zx_DEC_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x);
-struct zx_wst_Renewing_s* zx_NEW_wst_Renewing(struct zx_ctx* c);
-void zx_FREE_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x, int free_strs);
+struct zx_wst_Renewing_s* zx_NEW_wst_Renewing(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x);
 char* zx_ENC_SO_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x);
@@ -884,8 +865,7 @@ struct zx_wst_RequestSecurityToken_s {
 };
 
 struct zx_wst_RequestSecurityToken_s* zx_DEC_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x);
-struct zx_wst_RequestSecurityToken_s* zx_NEW_wst_RequestSecurityToken(struct zx_ctx* c);
-void zx_FREE_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x, int free_strs);
+struct zx_wst_RequestSecurityToken_s* zx_NEW_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x);
 char* zx_ENC_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSecurityToken_s* x);
@@ -1132,8 +1112,7 @@ struct zx_wst_RequestSecurityTokenCollection_s {
 };
 
 struct zx_wst_RequestSecurityTokenCollection_s* zx_DEC_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x);
-struct zx_wst_RequestSecurityTokenCollection_s* zx_NEW_wst_RequestSecurityTokenCollection(struct zx_ctx* c);
-void zx_FREE_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x, int free_strs);
+struct zx_wst_RequestSecurityTokenCollection_s* zx_NEW_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x);
 char* zx_ENC_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenCollection_s* x);
@@ -1209,8 +1188,7 @@ struct zx_wst_RequestSecurityTokenResponse_s {
 };
 
 struct zx_wst_RequestSecurityTokenResponse_s* zx_DEC_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x);
-struct zx_wst_RequestSecurityTokenResponse_s* zx_NEW_wst_RequestSecurityTokenResponse(struct zx_ctx* c);
-void zx_FREE_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x, int free_strs);
+struct zx_wst_RequestSecurityTokenResponse_s* zx_NEW_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x);
 char* zx_ENC_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponse_s* x);
@@ -1497,8 +1475,7 @@ struct zx_wst_RequestSecurityTokenResponseCollection_s {
 };
 
 struct zx_wst_RequestSecurityTokenResponseCollection_s* zx_DEC_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x);
-struct zx_wst_RequestSecurityTokenResponseCollection_s* zx_NEW_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c);
-void zx_FREE_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x, int free_strs);
+struct zx_wst_RequestSecurityTokenResponseCollection_s* zx_NEW_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x);
 char* zx_ENC_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct zx_wst_RequestSecurityTokenResponseCollection_s* x);
@@ -1543,8 +1520,7 @@ struct zx_wst_RequestedAttachedReference_s {
 };
 
 struct zx_wst_RequestedAttachedReference_s* zx_DEC_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x);
-struct zx_wst_RequestedAttachedReference_s* zx_NEW_wst_RequestedAttachedReference(struct zx_ctx* c);
-void zx_FREE_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x, int free_strs);
+struct zx_wst_RequestedAttachedReference_s* zx_NEW_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x);
 char* zx_ENC_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_RequestedAttachedReference_s* x);
@@ -1588,8 +1564,7 @@ struct zx_wst_RequestedProofToken_s {
 };
 
 struct zx_wst_RequestedProofToken_s* zx_DEC_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x);
-struct zx_wst_RequestedProofToken_s* zx_NEW_wst_RequestedProofToken(struct zx_ctx* c);
-void zx_FREE_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x, int free_strs);
+struct zx_wst_RequestedProofToken_s* zx_NEW_wst_RequestedProofToken(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x);
 char* zx_ENC_SO_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedProofToken_s* x);
@@ -1625,8 +1600,7 @@ struct zx_wst_RequestedSecurityToken_s {
 };
 
 struct zx_wst_RequestedSecurityToken_s* zx_DEC_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x);
-struct zx_wst_RequestedSecurityToken_s* zx_NEW_wst_RequestedSecurityToken(struct zx_ctx* c);
-void zx_FREE_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x, int free_strs);
+struct zx_wst_RequestedSecurityToken_s* zx_NEW_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x);
 char* zx_ENC_SO_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_RequestedSecurityToken_s* x);
@@ -1663,8 +1637,7 @@ struct zx_wst_RequestedUnattachedReference_s {
 };
 
 struct zx_wst_RequestedUnattachedReference_s* zx_DEC_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x);
-struct zx_wst_RequestedUnattachedReference_s* zx_NEW_wst_RequestedUnattachedReference(struct zx_ctx* c);
-void zx_FREE_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x, int free_strs);
+struct zx_wst_RequestedUnattachedReference_s* zx_NEW_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x);
 char* zx_ENC_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_RequestedUnattachedReference_s* x);
@@ -1709,8 +1682,7 @@ struct zx_wst_SignChallenge_s {
 };
 
 struct zx_wst_SignChallenge_s* zx_DEC_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x);
-struct zx_wst_SignChallenge_s* zx_NEW_wst_SignChallenge(struct zx_ctx* c);
-void zx_FREE_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x, int free_strs);
+struct zx_wst_SignChallenge_s* zx_NEW_wst_SignChallenge(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x);
 char* zx_ENC_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s* x);
@@ -1755,8 +1727,7 @@ struct zx_wst_SignChallengeResponse_s {
 };
 
 struct zx_wst_SignChallengeResponse_s* zx_DEC_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x);
-struct zx_wst_SignChallengeResponse_s* zx_NEW_wst_SignChallengeResponse(struct zx_ctx* c);
-void zx_FREE_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x, int free_strs);
+struct zx_wst_SignChallengeResponse_s* zx_NEW_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x);
 char* zx_ENC_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChallengeResponse_s* x);
@@ -1802,8 +1773,7 @@ struct zx_wst_Status_s {
 };
 
 struct zx_wst_Status_s* zx_DEC_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x);
-struct zx_wst_Status_s* zx_NEW_wst_Status(struct zx_ctx* c);
-void zx_FREE_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x, int free_strs);
+struct zx_wst_Status_s* zx_NEW_wst_Status(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x);
 char* zx_ENC_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x);
@@ -1856,8 +1826,7 @@ struct zx_wst_UseKey_s {
 };
 
 struct zx_wst_UseKey_s* zx_DEC_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x);
-struct zx_wst_UseKey_s* zx_NEW_wst_UseKey(struct zx_ctx* c);
-void zx_FREE_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x, int free_strs);
+struct zx_wst_UseKey_s* zx_NEW_wst_UseKey(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x);
 char* zx_ENC_SO_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x);
@@ -1895,8 +1864,7 @@ struct zx_wst_ValidateTarget_s {
 };
 
 struct zx_wst_ValidateTarget_s* zx_DEC_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x);
-struct zx_wst_ValidateTarget_s* zx_NEW_wst_ValidateTarget(struct zx_ctx* c);
-void zx_FREE_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x, int free_strs);
+struct zx_wst_ValidateTarget_s* zx_NEW_wst_ValidateTarget(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x);
 char* zx_ENC_SO_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_s* x);

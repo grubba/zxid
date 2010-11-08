@@ -38,8 +38,7 @@ struct zx_demomed_DeleteObjectRequest_s {
 };
 
 struct zx_demomed_DeleteObjectRequest_s* zx_DEC_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x);
-struct zx_demomed_DeleteObjectRequest_s* zx_NEW_demomed_DeleteObjectRequest(struct zx_ctx* c);
-void zx_FREE_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x, int free_strs);
+struct zx_demomed_DeleteObjectRequest_s* zx_NEW_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x);
 char* zx_ENC_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_DeleteObjectRequest_s* x);
@@ -85,8 +84,7 @@ struct zx_demomed_DeleteObjectResponse_s {
 };
 
 struct zx_demomed_DeleteObjectResponse_s* zx_DEC_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x);
-struct zx_demomed_DeleteObjectResponse_s* zx_NEW_demomed_DeleteObjectResponse(struct zx_ctx* c);
-void zx_FREE_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x, int free_strs);
+struct zx_demomed_DeleteObjectResponse_s* zx_NEW_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x);
 char* zx_ENC_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_DeleteObjectResponse_s* x);
@@ -139,8 +137,7 @@ struct zx_demomed_GetObjectListRequest_s {
 };
 
 struct zx_demomed_GetObjectListRequest_s* zx_DEC_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x);
-struct zx_demomed_GetObjectListRequest_s* zx_NEW_demomed_GetObjectListRequest(struct zx_ctx* c);
-void zx_FREE_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x, int free_strs);
+struct zx_demomed_GetObjectListRequest_s* zx_NEW_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x);
 char* zx_ENC_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_GetObjectListRequest_s* x);
@@ -186,8 +183,7 @@ struct zx_demomed_GetObjectListResponse_s {
 };
 
 struct zx_demomed_GetObjectListResponse_s* zx_DEC_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x);
-struct zx_demomed_GetObjectListResponse_s* zx_NEW_demomed_GetObjectListResponse(struct zx_ctx* c);
-void zx_FREE_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x, int free_strs);
+struct zx_demomed_GetObjectListResponse_s* zx_NEW_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x);
 char* zx_ENC_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_GetObjectListResponse_s* x);
@@ -240,8 +236,7 @@ struct zx_demomed_GetObjectRequest_s {
 };
 
 struct zx_demomed_GetObjectRequest_s* zx_DEC_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x);
-struct zx_demomed_GetObjectRequest_s* zx_NEW_demomed_GetObjectRequest(struct zx_ctx* c);
-void zx_FREE_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x, int free_strs);
+struct zx_demomed_GetObjectRequest_s* zx_NEW_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x);
 char* zx_ENC_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetObjectRequest_s* x);
@@ -287,8 +282,7 @@ struct zx_demomed_GetObjectResponse_s {
 };
 
 struct zx_demomed_GetObjectResponse_s* zx_DEC_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x);
-struct zx_demomed_GetObjectResponse_s* zx_NEW_demomed_GetObjectResponse(struct zx_ctx* c);
-void zx_FREE_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x, int free_strs);
+struct zx_demomed_GetObjectResponse_s* zx_NEW_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x);
 char* zx_ENC_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetObjectResponse_s* x);
@@ -343,8 +337,7 @@ struct zx_demomed_Object_s {
 };
 
 struct zx_demomed_Object_s* zx_DEC_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x);
-struct zx_demomed_Object_s* zx_NEW_demomed_Object(struct zx_ctx* c);
-void zx_FREE_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, int free_strs);
+struct zx_demomed_Object_s* zx_NEW_demomed_Object(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x);
 char* zx_ENC_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x);
@@ -399,8 +392,7 @@ struct zx_demomed_ObjectData_s {
 };
 
 struct zx_demomed_ObjectData_s* zx_DEC_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x);
-struct zx_demomed_ObjectData_s* zx_NEW_demomed_ObjectData(struct zx_ctx* c);
-void zx_FREE_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x, int free_strs);
+struct zx_demomed_ObjectData_s* zx_NEW_demomed_ObjectData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x);
 char* zx_ENC_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_s* x);
@@ -444,8 +436,7 @@ struct zx_demomed_ObjectInfo_s {
 };
 
 struct zx_demomed_ObjectInfo_s* zx_DEC_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x);
-struct zx_demomed_ObjectInfo_s* zx_NEW_demomed_ObjectInfo(struct zx_ctx* c);
-void zx_FREE_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x, int free_strs);
+struct zx_demomed_ObjectInfo_s* zx_NEW_demomed_ObjectInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x);
 char* zx_ENC_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_s* x);
@@ -527,8 +518,7 @@ struct zx_demomed_ObjectSearchParm_s {
 };
 
 struct zx_demomed_ObjectSearchParm_s* zx_DEC_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x);
-struct zx_demomed_ObjectSearchParm_s* zx_NEW_demomed_ObjectSearchParm(struct zx_ctx* c);
-void zx_FREE_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x, int free_strs);
+struct zx_demomed_ObjectSearchParm_s* zx_NEW_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x);
 char* zx_ENC_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_ObjectSearchParm_s* x);
@@ -598,8 +588,7 @@ struct zx_demomed_ObjectStoreInfo_s {
 };
 
 struct zx_demomed_ObjectStoreInfo_s* zx_DEC_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x);
-struct zx_demomed_ObjectStoreInfo_s* zx_NEW_demomed_ObjectStoreInfo(struct zx_ctx* c);
-void zx_FREE_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x, int free_strs);
+struct zx_demomed_ObjectStoreInfo_s* zx_NEW_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x);
 char* zx_ENC_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_ObjectStoreInfo_s* x);
@@ -640,8 +629,7 @@ struct zx_demomed_StoreObjectRequest_s {
 };
 
 struct zx_demomed_StoreObjectRequest_s* zx_DEC_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x);
-struct zx_demomed_StoreObjectRequest_s* zx_NEW_demomed_StoreObjectRequest(struct zx_ctx* c);
-void zx_FREE_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x, int free_strs);
+struct zx_demomed_StoreObjectRequest_s* zx_NEW_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x);
 char* zx_ENC_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_StoreObjectRequest_s* x);
@@ -687,8 +675,7 @@ struct zx_demomed_StoreObjectResponse_s {
 };
 
 struct zx_demomed_StoreObjectResponse_s* zx_DEC_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x);
-struct zx_demomed_StoreObjectResponse_s* zx_NEW_demomed_StoreObjectResponse(struct zx_ctx* c);
-void zx_FREE_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x, int free_strs);
+struct zx_demomed_StoreObjectResponse_s* zx_NEW_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x);
 char* zx_ENC_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_StoreObjectResponse_s* x);

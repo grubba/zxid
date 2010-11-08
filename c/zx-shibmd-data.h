@@ -39,8 +39,7 @@ struct zx_shibmd_KeyAuthority_s {
 };
 
 struct zx_shibmd_KeyAuthority_s* zx_DEC_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
-struct zx_shibmd_KeyAuthority_s* zx_NEW_shibmd_KeyAuthority(struct zx_ctx* c);
-void zx_FREE_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x, int free_strs);
+struct zx_shibmd_KeyAuthority_s* zx_NEW_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
 char* zx_ENC_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority_s* x);
@@ -87,8 +86,7 @@ struct zx_shibmd_Scope_s {
 };
 
 struct zx_shibmd_Scope_s* zx_DEC_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);
-struct zx_shibmd_Scope_s* zx_NEW_shibmd_Scope(struct zx_ctx* c);
-void zx_FREE_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x, int free_strs);
+struct zx_shibmd_Scope_s* zx_NEW_shibmd_Scope(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);
 char* zx_ENC_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x);

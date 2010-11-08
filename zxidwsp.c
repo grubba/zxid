@@ -78,7 +78,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
 
 #if 0
   hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
-  zx_add_content(c, &hdr->Action->gg, zx_ref_str(cf->ctx, ***));
+  zx_add_content(cf->ctx, &hdr->Action->gg, zx_ref_str(cf->ctx, ***));
   hdr->Action->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->Action->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 #endif
@@ -122,15 +122,15 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
   sec->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   sec->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
   sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
-  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->TimeStamp->gg);
+  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
   
   hdr->MessageID = zx_NEW_a_MessageID(cf->ctx, &hdr->gg);
   hdr->MessageID->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->MessageID->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
   if (is_resp) {
-    zx_add_content(c, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
-    zx_add_content(c, &hdr->MessageID->gg, zxid_mk_id(cf, "urn:M", ZXID_ID_BITS));
+    zx_add_content(cf->ctx, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
+    zx_add_content(cf->ctx, &hdr->MessageID->gg, zxid_mk_id(cf, "urn:M", ZXID_ID_BITS));
     /* Clear away any credentials from previous iteration. */
     sec->Signature = 0;
     sec->BinarySecurityToken = 0;
@@ -142,7 +142,7 @@ int zxid_wsf_decor(zxid_conf* cf, zxid_ses* ses, struct zx_e_Envelope_s* env, in
 #if 1
     if (ses->wsp_msgid && *ses->wsp_msgid) {
       hdr->RelatesTo = zx_NEW_a_RelatesTo(cf->ctx, &hdr->gg);
-      zx_add_content(c, &hdr->RelatesTo->gg, zx_ref_str(cf->ctx, ses->wsp_msgid));
+      zx_add_content(cf->ctx, &hdr->RelatesTo->gg, zx_ref_str(cf->ctx, ses->wsp_msgid));
       hdr->RelatesTo->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
       hdr->RelatesTo->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
     }

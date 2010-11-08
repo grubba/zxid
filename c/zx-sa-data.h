@@ -38,8 +38,7 @@ struct zx_sa_Action_s {
 };
 
 struct zx_sa_Action_s* zx_DEC_sa_Action(struct zx_ctx* c, struct zx_sa_Action_s* x);
-struct zx_sa_Action_s* zx_NEW_sa_Action(struct zx_ctx* c);
-void zx_FREE_sa_Action(struct zx_ctx* c, struct zx_sa_Action_s* x, int free_strs);
+struct zx_sa_Action_s* zx_NEW_sa_Action(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_Action(struct zx_ctx* c, struct zx_sa_Action_s* x);
 char* zx_ENC_SO_sa_Action(struct zx_ctx* c, struct zx_sa_Action_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_Action(struct zx_ctx* c, struct zx_sa_Action_s* x);
@@ -83,8 +82,7 @@ struct zx_sa_Advice_s {
 };
 
 struct zx_sa_Advice_s* zx_DEC_sa_Advice(struct zx_ctx* c, struct zx_sa_Advice_s* x);
-struct zx_sa_Advice_s* zx_NEW_sa_Advice(struct zx_ctx* c);
-void zx_FREE_sa_Advice(struct zx_ctx* c, struct zx_sa_Advice_s* x, int free_strs);
+struct zx_sa_Advice_s* zx_NEW_sa_Advice(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_Advice(struct zx_ctx* c, struct zx_sa_Advice_s* x);
 char* zx_ENC_SO_sa_Advice(struct zx_ctx* c, struct zx_sa_Advice_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_Advice(struct zx_ctx* c, struct zx_sa_Advice_s* x);
@@ -184,8 +182,7 @@ struct zx_sa_Assertion_s {
 };
 
 struct zx_sa_Assertion_s* zx_DEC_sa_Assertion(struct zx_ctx* c, struct zx_sa_Assertion_s* x);
-struct zx_sa_Assertion_s* zx_NEW_sa_Assertion(struct zx_ctx* c);
-void zx_FREE_sa_Assertion(struct zx_ctx* c, struct zx_sa_Assertion_s* x, int free_strs);
+struct zx_sa_Assertion_s* zx_NEW_sa_Assertion(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_Assertion(struct zx_ctx* c, struct zx_sa_Assertion_s* x);
 char* zx_ENC_SO_sa_Assertion(struct zx_ctx* c, struct zx_sa_Assertion_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_Assertion(struct zx_ctx* c, struct zx_sa_Assertion_s* x);
@@ -335,8 +332,7 @@ struct zx_sa_Attribute_s {
 };
 
 struct zx_sa_Attribute_s* zx_DEC_sa_Attribute(struct zx_ctx* c, struct zx_sa_Attribute_s* x);
-struct zx_sa_Attribute_s* zx_NEW_sa_Attribute(struct zx_ctx* c);
-void zx_FREE_sa_Attribute(struct zx_ctx* c, struct zx_sa_Attribute_s* x, int free_strs);
+struct zx_sa_Attribute_s* zx_NEW_sa_Attribute(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_Attribute(struct zx_ctx* c, struct zx_sa_Attribute_s* x);
 char* zx_ENC_SO_sa_Attribute(struct zx_ctx* c, struct zx_sa_Attribute_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_Attribute(struct zx_ctx* c, struct zx_sa_Attribute_s* x);
@@ -388,8 +384,7 @@ struct zx_sa_AttributeStatement_s {
 };
 
 struct zx_sa_AttributeStatement_s* zx_DEC_sa_AttributeStatement(struct zx_ctx* c, struct zx_sa_AttributeStatement_s* x);
-struct zx_sa_AttributeStatement_s* zx_NEW_sa_AttributeStatement(struct zx_ctx* c);
-void zx_FREE_sa_AttributeStatement(struct zx_ctx* c, struct zx_sa_AttributeStatement_s* x, int free_strs);
+struct zx_sa_AttributeStatement_s* zx_NEW_sa_AttributeStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_AttributeStatement(struct zx_ctx* c, struct zx_sa_AttributeStatement_s* x);
 char* zx_ENC_SO_sa_AttributeStatement(struct zx_ctx* c, struct zx_sa_AttributeStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_AttributeStatement(struct zx_ctx* c, struct zx_sa_AttributeStatement_s* x);
@@ -444,8 +439,7 @@ struct zx_sa_AttributeValue_s {
 };
 
 struct zx_sa_AttributeValue_s* zx_DEC_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s* x);
-struct zx_sa_AttributeValue_s* zx_NEW_sa_AttributeValue(struct zx_ctx* c);
-void zx_FREE_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s* x, int free_strs);
+struct zx_sa_AttributeValue_s* zx_NEW_sa_AttributeValue(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s* x);
 char* zx_ENC_SO_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_AttributeValue(struct zx_ctx* c, struct zx_sa_AttributeValue_s* x);
@@ -500,8 +494,7 @@ struct zx_sa_AudienceRestriction_s {
 };
 
 struct zx_sa_AudienceRestriction_s* zx_DEC_sa_AudienceRestriction(struct zx_ctx* c, struct zx_sa_AudienceRestriction_s* x);
-struct zx_sa_AudienceRestriction_s* zx_NEW_sa_AudienceRestriction(struct zx_ctx* c);
-void zx_FREE_sa_AudienceRestriction(struct zx_ctx* c, struct zx_sa_AudienceRestriction_s* x, int free_strs);
+struct zx_sa_AudienceRestriction_s* zx_NEW_sa_AudienceRestriction(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_AudienceRestriction(struct zx_ctx* c, struct zx_sa_AudienceRestriction_s* x);
 char* zx_ENC_SO_sa_AudienceRestriction(struct zx_ctx* c, struct zx_sa_AudienceRestriction_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_AudienceRestriction(struct zx_ctx* c, struct zx_sa_AudienceRestriction_s* x);
@@ -549,8 +542,7 @@ struct zx_sa_AuthnContext_s {
 };
 
 struct zx_sa_AuthnContext_s* zx_DEC_sa_AuthnContext(struct zx_ctx* c, struct zx_sa_AuthnContext_s* x);
-struct zx_sa_AuthnContext_s* zx_NEW_sa_AuthnContext(struct zx_ctx* c);
-void zx_FREE_sa_AuthnContext(struct zx_ctx* c, struct zx_sa_AuthnContext_s* x, int free_strs);
+struct zx_sa_AuthnContext_s* zx_NEW_sa_AuthnContext(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_AuthnContext(struct zx_ctx* c, struct zx_sa_AuthnContext_s* x);
 char* zx_ENC_SO_sa_AuthnContext(struct zx_ctx* c, struct zx_sa_AuthnContext_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_AuthnContext(struct zx_ctx* c, struct zx_sa_AuthnContext_s* x);
@@ -623,8 +615,7 @@ struct zx_sa_AuthnStatement_s {
 };
 
 struct zx_sa_AuthnStatement_s* zx_DEC_sa_AuthnStatement(struct zx_ctx* c, struct zx_sa_AuthnStatement_s* x);
-struct zx_sa_AuthnStatement_s* zx_NEW_sa_AuthnStatement(struct zx_ctx* c);
-void zx_FREE_sa_AuthnStatement(struct zx_ctx* c, struct zx_sa_AuthnStatement_s* x, int free_strs);
+struct zx_sa_AuthnStatement_s* zx_NEW_sa_AuthnStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_AuthnStatement(struct zx_ctx* c, struct zx_sa_AuthnStatement_s* x);
 char* zx_ENC_SO_sa_AuthnStatement(struct zx_ctx* c, struct zx_sa_AuthnStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_AuthnStatement(struct zx_ctx* c, struct zx_sa_AuthnStatement_s* x);
@@ -686,8 +677,7 @@ struct zx_sa_AuthzDecisionStatement_s {
 };
 
 struct zx_sa_AuthzDecisionStatement_s* zx_DEC_sa_AuthzDecisionStatement(struct zx_ctx* c, struct zx_sa_AuthzDecisionStatement_s* x);
-struct zx_sa_AuthzDecisionStatement_s* zx_NEW_sa_AuthzDecisionStatement(struct zx_ctx* c);
-void zx_FREE_sa_AuthzDecisionStatement(struct zx_ctx* c, struct zx_sa_AuthzDecisionStatement_s* x, int free_strs);
+struct zx_sa_AuthzDecisionStatement_s* zx_NEW_sa_AuthzDecisionStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_AuthzDecisionStatement(struct zx_ctx* c, struct zx_sa_AuthzDecisionStatement_s* x);
 char* zx_ENC_SO_sa_AuthzDecisionStatement(struct zx_ctx* c, struct zx_sa_AuthzDecisionStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_AuthzDecisionStatement(struct zx_ctx* c, struct zx_sa_AuthzDecisionStatement_s* x);
@@ -745,8 +735,7 @@ struct zx_sa_BaseID_s {
 };
 
 struct zx_sa_BaseID_s* zx_DEC_sa_BaseID(struct zx_ctx* c, struct zx_sa_BaseID_s* x);
-struct zx_sa_BaseID_s* zx_NEW_sa_BaseID(struct zx_ctx* c);
-void zx_FREE_sa_BaseID(struct zx_ctx* c, struct zx_sa_BaseID_s* x, int free_strs);
+struct zx_sa_BaseID_s* zx_NEW_sa_BaseID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_BaseID(struct zx_ctx* c, struct zx_sa_BaseID_s* x);
 char* zx_ENC_SO_sa_BaseID(struct zx_ctx* c, struct zx_sa_BaseID_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_BaseID(struct zx_ctx* c, struct zx_sa_BaseID_s* x);
@@ -793,8 +782,7 @@ struct zx_sa_Conditions_s {
 };
 
 struct zx_sa_Conditions_s* zx_DEC_sa_Conditions(struct zx_ctx* c, struct zx_sa_Conditions_s* x);
-struct zx_sa_Conditions_s* zx_NEW_sa_Conditions(struct zx_ctx* c);
-void zx_FREE_sa_Conditions(struct zx_ctx* c, struct zx_sa_Conditions_s* x, int free_strs);
+struct zx_sa_Conditions_s* zx_NEW_sa_Conditions(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_Conditions(struct zx_ctx* c, struct zx_sa_Conditions_s* x);
 char* zx_ENC_SO_sa_Conditions(struct zx_ctx* c, struct zx_sa_Conditions_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_Conditions(struct zx_ctx* c, struct zx_sa_Conditions_s* x);
@@ -876,8 +864,7 @@ struct zx_sa_EncryptedAssertion_s {
 };
 
 struct zx_sa_EncryptedAssertion_s* zx_DEC_sa_EncryptedAssertion(struct zx_ctx* c, struct zx_sa_EncryptedAssertion_s* x);
-struct zx_sa_EncryptedAssertion_s* zx_NEW_sa_EncryptedAssertion(struct zx_ctx* c);
-void zx_FREE_sa_EncryptedAssertion(struct zx_ctx* c, struct zx_sa_EncryptedAssertion_s* x, int free_strs);
+struct zx_sa_EncryptedAssertion_s* zx_NEW_sa_EncryptedAssertion(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_EncryptedAssertion(struct zx_ctx* c, struct zx_sa_EncryptedAssertion_s* x);
 char* zx_ENC_SO_sa_EncryptedAssertion(struct zx_ctx* c, struct zx_sa_EncryptedAssertion_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_EncryptedAssertion(struct zx_ctx* c, struct zx_sa_EncryptedAssertion_s* x);
@@ -931,8 +918,7 @@ struct zx_sa_EncryptedAttribute_s {
 };
 
 struct zx_sa_EncryptedAttribute_s* zx_DEC_sa_EncryptedAttribute(struct zx_ctx* c, struct zx_sa_EncryptedAttribute_s* x);
-struct zx_sa_EncryptedAttribute_s* zx_NEW_sa_EncryptedAttribute(struct zx_ctx* c);
-void zx_FREE_sa_EncryptedAttribute(struct zx_ctx* c, struct zx_sa_EncryptedAttribute_s* x, int free_strs);
+struct zx_sa_EncryptedAttribute_s* zx_NEW_sa_EncryptedAttribute(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_EncryptedAttribute(struct zx_ctx* c, struct zx_sa_EncryptedAttribute_s* x);
 char* zx_ENC_SO_sa_EncryptedAttribute(struct zx_ctx* c, struct zx_sa_EncryptedAttribute_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_EncryptedAttribute(struct zx_ctx* c, struct zx_sa_EncryptedAttribute_s* x);
@@ -986,8 +972,7 @@ struct zx_sa_EncryptedID_s {
 };
 
 struct zx_sa_EncryptedID_s* zx_DEC_sa_EncryptedID(struct zx_ctx* c, struct zx_sa_EncryptedID_s* x);
-struct zx_sa_EncryptedID_s* zx_NEW_sa_EncryptedID(struct zx_ctx* c);
-void zx_FREE_sa_EncryptedID(struct zx_ctx* c, struct zx_sa_EncryptedID_s* x, int free_strs);
+struct zx_sa_EncryptedID_s* zx_NEW_sa_EncryptedID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_EncryptedID(struct zx_ctx* c, struct zx_sa_EncryptedID_s* x);
 char* zx_ENC_SO_sa_EncryptedID(struct zx_ctx* c, struct zx_sa_EncryptedID_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_EncryptedID(struct zx_ctx* c, struct zx_sa_EncryptedID_s* x);
@@ -1043,8 +1028,7 @@ struct zx_sa_Evidence_s {
 };
 
 struct zx_sa_Evidence_s* zx_DEC_sa_Evidence(struct zx_ctx* c, struct zx_sa_Evidence_s* x);
-struct zx_sa_Evidence_s* zx_NEW_sa_Evidence(struct zx_ctx* c);
-void zx_FREE_sa_Evidence(struct zx_ctx* c, struct zx_sa_Evidence_s* x, int free_strs);
+struct zx_sa_Evidence_s* zx_NEW_sa_Evidence(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_Evidence(struct zx_ctx* c, struct zx_sa_Evidence_s* x);
 char* zx_ENC_SO_sa_Evidence(struct zx_ctx* c, struct zx_sa_Evidence_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_Evidence(struct zx_ctx* c, struct zx_sa_Evidence_s* x);
@@ -1116,8 +1100,7 @@ struct zx_sa_Issuer_s {
 };
 
 struct zx_sa_Issuer_s* zx_DEC_sa_Issuer(struct zx_ctx* c, struct zx_sa_Issuer_s* x);
-struct zx_sa_Issuer_s* zx_NEW_sa_Issuer(struct zx_ctx* c);
-void zx_FREE_sa_Issuer(struct zx_ctx* c, struct zx_sa_Issuer_s* x, int free_strs);
+struct zx_sa_Issuer_s* zx_NEW_sa_Issuer(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_Issuer(struct zx_ctx* c, struct zx_sa_Issuer_s* x);
 char* zx_ENC_SO_sa_Issuer(struct zx_ctx* c, struct zx_sa_Issuer_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_Issuer(struct zx_ctx* c, struct zx_sa_Issuer_s* x);
@@ -1165,8 +1148,7 @@ struct zx_sa_NameID_s {
 };
 
 struct zx_sa_NameID_s* zx_DEC_sa_NameID(struct zx_ctx* c, struct zx_sa_NameID_s* x);
-struct zx_sa_NameID_s* zx_NEW_sa_NameID(struct zx_ctx* c);
-void zx_FREE_sa_NameID(struct zx_ctx* c, struct zx_sa_NameID_s* x, int free_strs);
+struct zx_sa_NameID_s* zx_NEW_sa_NameID(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_NameID(struct zx_ctx* c, struct zx_sa_NameID_s* x);
 char* zx_ENC_SO_sa_NameID(struct zx_ctx* c, struct zx_sa_NameID_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_NameID(struct zx_ctx* c, struct zx_sa_NameID_s* x);
@@ -1210,8 +1192,7 @@ struct zx_sa_OneTimeUse_s {
 };
 
 struct zx_sa_OneTimeUse_s* zx_DEC_sa_OneTimeUse(struct zx_ctx* c, struct zx_sa_OneTimeUse_s* x);
-struct zx_sa_OneTimeUse_s* zx_NEW_sa_OneTimeUse(struct zx_ctx* c);
-void zx_FREE_sa_OneTimeUse(struct zx_ctx* c, struct zx_sa_OneTimeUse_s* x, int free_strs);
+struct zx_sa_OneTimeUse_s* zx_NEW_sa_OneTimeUse(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_OneTimeUse(struct zx_ctx* c, struct zx_sa_OneTimeUse_s* x);
 char* zx_ENC_SO_sa_OneTimeUse(struct zx_ctx* c, struct zx_sa_OneTimeUse_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_OneTimeUse(struct zx_ctx* c, struct zx_sa_OneTimeUse_s* x);
@@ -1249,8 +1230,7 @@ struct zx_sa_ProxyRestriction_s {
 };
 
 struct zx_sa_ProxyRestriction_s* zx_DEC_sa_ProxyRestriction(struct zx_ctx* c, struct zx_sa_ProxyRestriction_s* x);
-struct zx_sa_ProxyRestriction_s* zx_NEW_sa_ProxyRestriction(struct zx_ctx* c);
-void zx_FREE_sa_ProxyRestriction(struct zx_ctx* c, struct zx_sa_ProxyRestriction_s* x, int free_strs);
+struct zx_sa_ProxyRestriction_s* zx_NEW_sa_ProxyRestriction(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_ProxyRestriction(struct zx_ctx* c, struct zx_sa_ProxyRestriction_s* x);
 char* zx_ENC_SO_sa_ProxyRestriction(struct zx_ctx* c, struct zx_sa_ProxyRestriction_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_ProxyRestriction(struct zx_ctx* c, struct zx_sa_ProxyRestriction_s* x);
@@ -1299,8 +1279,7 @@ struct zx_sa_Statement_s {
 };
 
 struct zx_sa_Statement_s* zx_DEC_sa_Statement(struct zx_ctx* c, struct zx_sa_Statement_s* x);
-struct zx_sa_Statement_s* zx_NEW_sa_Statement(struct zx_ctx* c);
-void zx_FREE_sa_Statement(struct zx_ctx* c, struct zx_sa_Statement_s* x, int free_strs);
+struct zx_sa_Statement_s* zx_NEW_sa_Statement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_Statement(struct zx_ctx* c, struct zx_sa_Statement_s* x);
 char* zx_ENC_SO_sa_Statement(struct zx_ctx* c, struct zx_sa_Statement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_Statement(struct zx_ctx* c, struct zx_sa_Statement_s* x);
@@ -1358,8 +1337,7 @@ struct zx_sa_Subject_s {
 };
 
 struct zx_sa_Subject_s* zx_DEC_sa_Subject(struct zx_ctx* c, struct zx_sa_Subject_s* x);
-struct zx_sa_Subject_s* zx_NEW_sa_Subject(struct zx_ctx* c);
-void zx_FREE_sa_Subject(struct zx_ctx* c, struct zx_sa_Subject_s* x, int free_strs);
+struct zx_sa_Subject_s* zx_NEW_sa_Subject(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_Subject(struct zx_ctx* c, struct zx_sa_Subject_s* x);
 char* zx_ENC_SO_sa_Subject(struct zx_ctx* c, struct zx_sa_Subject_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_Subject(struct zx_ctx* c, struct zx_sa_Subject_s* x);
@@ -1432,8 +1410,7 @@ struct zx_sa_SubjectConfirmation_s {
 };
 
 struct zx_sa_SubjectConfirmation_s* zx_DEC_sa_SubjectConfirmation(struct zx_ctx* c, struct zx_sa_SubjectConfirmation_s* x);
-struct zx_sa_SubjectConfirmation_s* zx_NEW_sa_SubjectConfirmation(struct zx_ctx* c);
-void zx_FREE_sa_SubjectConfirmation(struct zx_ctx* c, struct zx_sa_SubjectConfirmation_s* x, int free_strs);
+struct zx_sa_SubjectConfirmation_s* zx_NEW_sa_SubjectConfirmation(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_SubjectConfirmation(struct zx_ctx* c, struct zx_sa_SubjectConfirmation_s* x);
 char* zx_ENC_SO_sa_SubjectConfirmation(struct zx_ctx* c, struct zx_sa_SubjectConfirmation_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_SubjectConfirmation(struct zx_ctx* c, struct zx_sa_SubjectConfirmation_s* x);
@@ -1510,8 +1487,7 @@ struct zx_sa_SubjectConfirmationData_s {
 };
 
 struct zx_sa_SubjectConfirmationData_s* zx_DEC_sa_SubjectConfirmationData(struct zx_ctx* c, struct zx_sa_SubjectConfirmationData_s* x);
-struct zx_sa_SubjectConfirmationData_s* zx_NEW_sa_SubjectConfirmationData(struct zx_ctx* c);
-void zx_FREE_sa_SubjectConfirmationData(struct zx_ctx* c, struct zx_sa_SubjectConfirmationData_s* x, int free_strs);
+struct zx_sa_SubjectConfirmationData_s* zx_NEW_sa_SubjectConfirmationData(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_SubjectConfirmationData(struct zx_ctx* c, struct zx_sa_SubjectConfirmationData_s* x);
 char* zx_ENC_SO_sa_SubjectConfirmationData(struct zx_ctx* c, struct zx_sa_SubjectConfirmationData_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_SubjectConfirmationData(struct zx_ctx* c, struct zx_sa_SubjectConfirmationData_s* x);
@@ -1569,8 +1545,7 @@ struct zx_sa_SubjectLocality_s {
 };
 
 struct zx_sa_SubjectLocality_s* zx_DEC_sa_SubjectLocality(struct zx_ctx* c, struct zx_sa_SubjectLocality_s* x);
-struct zx_sa_SubjectLocality_s* zx_NEW_sa_SubjectLocality(struct zx_ctx* c);
-void zx_FREE_sa_SubjectLocality(struct zx_ctx* c, struct zx_sa_SubjectLocality_s* x, int free_strs);
+struct zx_sa_SubjectLocality_s* zx_NEW_sa_SubjectLocality(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_SubjectLocality(struct zx_ctx* c, struct zx_sa_SubjectLocality_s* x);
 char* zx_ENC_SO_sa_SubjectLocality(struct zx_ctx* c, struct zx_sa_SubjectLocality_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_SubjectLocality(struct zx_ctx* c, struct zx_sa_SubjectLocality_s* x);
@@ -1611,8 +1586,7 @@ struct zx_sa_TestElem_s {
 };
 
 struct zx_sa_TestElem_s* zx_DEC_sa_TestElem(struct zx_ctx* c, struct zx_sa_TestElem_s* x);
-struct zx_sa_TestElem_s* zx_NEW_sa_TestElem(struct zx_ctx* c);
-void zx_FREE_sa_TestElem(struct zx_ctx* c, struct zx_sa_TestElem_s* x, int free_strs);
+struct zx_sa_TestElem_s* zx_NEW_sa_TestElem(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_sa_TestElem(struct zx_ctx* c, struct zx_sa_TestElem_s* x);
 char* zx_ENC_SO_sa_TestElem(struct zx_ctx* c, struct zx_sa_TestElem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_sa_TestElem(struct zx_ctx* c, struct zx_sa_TestElem_s* x);

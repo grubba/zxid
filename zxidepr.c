@@ -287,6 +287,8 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char* url, const char* di_opt, const char* action, int n)
 {
   struct zx_root_s* r;
+  struct zx_str* ss;
+  struct zx_str* pi;
   int len, epr_len;
   char path[ZXID_MAX_BUF];
   char* epr_buf;  /* MUST NOT come from stack. */
@@ -358,18 +360,17 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
       ERR("No Metadata %p or ServiceType. Failed to parse epr_buf(%.*s)", md, epr_len, epr_buf);
       continue;
     }
-    if (svc && (len != ZX_GET_CONTENT_LEN(md->ServiceType)
-		|| memcmp(svc, ZX_GET_CONTENT_S(md->ServiceType), len))) {
-      D("%d Internal svctype(%.*s) does not match desired(%s). Reject.", n, ZX_GET_CONTENT_LEN(md->ServiceType), ZX_GET_CONTENT_S(md->ServiceType), svc);
+    ss = ZX_GET_CONTENT(md->ServiceType);
+    if (svc && (!ss || len != ss->len || memcmp(svc, ss->s, len))) {
+      D("%d Internal svctype(%.*s) does not match desired(%s). Reject.", n, ss?ss->len:0, ss?ss->s:"", svc);
       continue;
     }
     
-    if (url && (strlen(url) != ZX_GET_CONTENT_LEN(epr->Address)
-		|| memcmp(url, ZX_GET_CONTENT_S(epr->Address), ZX_GET_CONTENT_LEN(epr->Address)))) {
-      if (md && ZX_SIMPLE_ELEM_CHK(md->ProviderID)
-	  && (strlen(url) != ZX_GET_CONTENT_LEN(md->ProviderID)
-	      || memcmp(url, ZX_GET_CONTENT_S(md->ProviderID), ZX_GET_CONTENT_LEN(md->ProviderID)))) {
-	D("%d ProviderID(%.*s) or endpoint URL(%.*s) does not match desired url(%s). Reject.", n, ZX_GET_CONTENT_LEN(epr->Metadata->ProviderID), ZX_GET_CONTENT_S(epr->Metadata->ProviderID), ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address), url);
+    ss = ZX_GET_CONTENT(epr->Address);
+    if (url && (!ss || strlen(url) != ss->len || memcmp(url, ss->s, ss->len))) {
+      pi = md?ZX_GET_CONTENT(md->ProviderID):0;
+      if (pi && (strlen(url) != pi->len || memcmp(url, pi->s, pi->len))) {
+	D("%d ProviderID(%.*s) or endpoint URL(%.*s) does not match desired url(%s). Reject.", n, pi->len, pi->s, ss?ss->len:0, ss?ss->s:"", url);
 	continue;
       }
     }
@@ -423,8 +424,8 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
   
   INFO("%d Discovering svc(%s)...", n, STRNULLCHK(svc));
   env = zx_NEW_e_Envelope(cf->ctx,0);
-  env->Header = zx_NEW_e_Header(cf->ctx,env);
-  env->Body = zx_NEW_e_Body(cf->ctx,env);
+  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+  env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
   env->Body->Query = zxid_mk_di_query(cf, svc, url, di_opt, 0);
   if (ses->deleg_di_epr) {
     epr = ses->deleg_di_epr;

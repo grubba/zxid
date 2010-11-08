@@ -38,8 +38,7 @@ struct zx_xml_DummyToPullLang_s {
 };
 
 struct zx_xml_DummyToPullLang_s* zx_DEC_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
-struct zx_xml_DummyToPullLang_s* zx_NEW_xml_DummyToPullLang(struct zx_ctx* c);
-void zx_FREE_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, int free_strs);
+struct zx_xml_DummyToPullLang_s* zx_NEW_xml_DummyToPullLang(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);
 char* zx_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullLang_s* x);

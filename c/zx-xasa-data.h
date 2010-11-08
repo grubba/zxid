@@ -39,8 +39,7 @@ struct zx_xasa_XACMLAuthzDecisionStatement_s {
 };
 
 struct zx_xasa_XACMLAuthzDecisionStatement_s* zx_DEC_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x);
-struct zx_xasa_XACMLAuthzDecisionStatement_s* zx_NEW_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c);
-void zx_FREE_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x, int free_strs);
+struct zx_xasa_XACMLAuthzDecisionStatement_s* zx_NEW_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x);
 char* zx_ENC_SO_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_XACMLAuthzDecisionStatement_s* x);
@@ -94,8 +93,7 @@ struct zx_xasa_XACMLPolicyStatement_s {
 };
 
 struct zx_xasa_XACMLPolicyStatement_s* zx_DEC_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x);
-struct zx_xasa_XACMLPolicyStatement_s* zx_NEW_xasa_XACMLPolicyStatement(struct zx_ctx* c);
-void zx_FREE_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x, int free_strs);
+struct zx_xasa_XACMLPolicyStatement_s* zx_NEW_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x);
 char* zx_ENC_SO_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPolicyStatement_s* x);

@@ -174,11 +174,11 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
   hdr = zx_NEW_e_Header(cf->ctx,0);
 #if 0
   hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
-  //zx_add_content(c, &hdr->Action->gg, zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01"));
-  zx_add_content(c, &hdr->Action->gg, zx_dup_str(cf->ctx, "urn:oasis:xacml:2.0:saml:protocol:schema:os"));
+  //zx_add_content(cf->ctx, &hdr->Action->gg, zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01"));
+  zx_add_content(cf->ctx, &hdr->Action->gg, zx_dup_str(cf->ctx, "urn:oasis:xacml:2.0:saml:protocol:schema:os"));
 
-  //zx_add_content(c, &hdr->Action->gg, zx_dup_str(cf->ctx, "SAML2XACMLAuthzRequest"));
-  //zx_add_content(c, &hdr->Action->gg, zx_dup_str(cf->ctx, "http://ws.apache.org/axis2/TestPolicyPortType/authRequestRequest"));
+  //zx_add_content(cf->ctx, &hdr->Action->gg, zx_dup_str(cf->ctx, "SAML2XACMLAuthzRequest"));
+  //zx_add_content(cf->ctx, &hdr->Action->gg, zx_dup_str(cf->ctx, "http://ws.apache.org/axis2/TestPolicyPortType/authRequestRequest"));
   hdr->Action->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
   hdr->Action->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
 #endif

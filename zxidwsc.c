@@ -61,6 +61,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   struct zx_e_Header_s* hdr;
   struct zx_str* issuer;
   struct zx_str* logpath;
+  struct zx_str* relto;
   struct zx_str ss;
   zxid_cgi cgi;
 
@@ -84,21 +85,20 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "No MessageID header found.", "IDStarMsgNotUnderstood", 0, 0, 0));
     return 0;
   }
-  if (ZX_SIMPLE_ELEM_CHK(hdr->RelatesTo)) {
+  relto = ZX_GET_CONTENT(hdr->RelatesTo);
+  if (relto && relto->len) {
     if (ses->wsc_msgid) {
-      if (strlen(ses->wsc_msgid) == ZX_GET_CONTENT_LEN(hdr->RelatesTo)
-	  && !memcmp(ses->wsc_msgid,
-		     ZX_GET_CONTENT_S(hdr->RelatesTo),
-		     ZX_GET_CONTENT_LEN(hdr->RelatesTo))) {
+      if (strlen(ses->wsc_msgid) == relto->len
+	  && !memcmp(ses->wsc_msgid, relto->s, relto->len)) {
 	D("RelatesTo check OK %d",1);
       } else {
 	/* N.B. [SOAPBinding2] p.27, ll.818-822 indicates RelatesTo checking as SHOULD. */
 	if (cf->relto_fatal) {
-	  ERR("<a:RelatesTo> (%.*s) does not match request msgid(%s).", ZX_GET_CONTENT_LEN(hdr->RelatesTo), ZX_GET_CONTENT_S(hdr->RelatesTo), ses->wsc_msgid);
+	  ERR("<a:RelatesTo> (%.*s) does not match request msgid(%s).", relto->len, relto->s, ses->wsc_msgid);
 	  zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "RelatesTo in response does not match request MessageID.", "InvalidRefToMsgID", 0, 0, 0));
 	  return 0;
 	} else {
-	  INFO("<a:RelatesTo> (%.*s) does not match request msgid(%s), but configured to ignore this error (RELTO_FATAL=0).", ZX_GET_CONTENT_LEN(hdr->RelatesTo), ZX_GET_CONTENT_S(hdr->RelatesTo), ses->wsc_msgid);
+	  INFO("<a:RelatesTo> (%.*s) does not match request msgid(%s), but configured to ignore this error (RELTO_FATAL=0).", relto->len, relto->s, ses->wsc_msgid);
 	}
       }
     } else {
@@ -258,7 +258,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
   } /* else this is just implied by the sec mech */
 
   hdr->To = zx_NEW_a_To(cf->ctx, &hdr->gg);
-  zx_add_content(c, &hdr->To->gg, ZX_GET_CONTENT(epr->Address));
+  zx_add_content(cf->ctx, &hdr->To->gg, ZX_GET_CONTENT(epr->Address));
   hdr->To->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->To->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
@@ -320,13 +320,13 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
   }
 
   hdr = env->Header;
-  zx_add_content(c, &hdr->MessageID->gg, zxid_mk_id(cf, "urn:M", ZXID_ID_BITS));
+  zx_add_content(cf->ctx, &hdr->MessageID->gg, zxid_mk_id(cf, "urn:M", ZXID_ID_BITS));
   sec = hdr->Security;
   if (!sec || !sec->Timestamp || !sec->Timestamp->Created) {
     ERR("MUST supply wsse:Security and Timestamp %p", sec);
     return 0;
   }
-  zx_add_content(c, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
+  zx_add_content(cf->ctx, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
     
   /* Clear away any credentials from previous iteration, if any. */
   sec->Signature = 0;
@@ -349,7 +349,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
     str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx, &str->gg);
     str->KeyIdentifier->ValueType = zx_ref_attr(cf->ctx, zx_ValueType_ATTR, SAMLID_TOK_PROFILE);
     if (sec->Assertion)
-      zx_add_content(c, &str->KeyIdentifier->gg, &sec->Assertion->ID->g);
+      zx_add_content(cf->ctx, &str->KeyIdentifier->gg, &sec->Assertion->ID->g);
     /* *** In case of encrypted assertion, how is the KeyIdentifier populated? */
     
     zxid_wsf_sign(cf, cf->wsc_sign, sec, str, hdr, env->Body);

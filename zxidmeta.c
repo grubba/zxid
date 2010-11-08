@@ -171,7 +171,7 @@ zxid_entity* zxid_parse_meta(zxid_conf* cf, char** md, char* lim)
  bad_md:
   ERR("Bad metadata. EntityDescriptor could not be found or was corrupt. MD(%.*s) %d chars parsed.", lim-cf->ctx->bas, cf->ctx->bas, *md - cf->ctx->bas);
   zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "B", "BADMD", 0, "chars_parsed(%d)", *md - cf->ctx->bas);
-  zx_FREE_root(cf->ctx, r, 0);
+  zx_free_elem(cf->ctx, &r->gg, 0);
   return 0;
 }
 
@@ -513,7 +513,7 @@ struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, struct zx_elem_s* fat
 {
   struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx,father);
   kd->use = zx_ref_attr(cf->ctx, zx_use_ATTR, use);
-  kd->KeyInfo = zxid_key_info(cf, x);
+  kd->KeyInfo = zxid_key_info(cf, father, x);
   return kd;
 }
 
@@ -599,11 +599,6 @@ struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, struct zx_e
 /* Called by:  zxid_sp_meta */
 struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s* father)
 {
-  struct zx_md_AssertionConsumerService_s* za;
-  struct zx_elem_s* ze;
-  struct zx_md_ManageNameIDService_s* z3;
-  struct zx_md_SingleLogoutService_s* z2;
-  struct zx_md_KeyDescriptor_s* zk;
   struct zx_md_SPSSODescriptor_s* sp_ssod = zx_NEW_md_SPSSODescriptor(cf->ctx,father);
   sp_ssod->AuthnRequestsSigned        = zx_ref_attr(cf->ctx, zx_AuthnRequestsSigned_ATTR, cf->authn_req_sign?"1":"0");
   sp_ssod->WantAssertionsSigned       = zx_ref_attr(cf->ctx, zx_WantAssertionsSigned_ATTR, cf->want_sso_a7n_signed?"1":"0");
@@ -651,12 +646,6 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s
 /* Called by:  zxid_sp_meta */
 struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem_s* father)
 {
-  /*struct zx_md_ArtifactResolutionService_s* z5;*/
-  struct zx_elem_s* ze;
-  /*struct zx_md_ManageNameIDService_s* z3;*/
-  struct zx_md_SingleLogoutService_s* z2;
-  struct zx_md_SingleSignOnService_s* z4;
-  struct zx_md_KeyDescriptor_s* zk;
   struct zx_md_IDPSSODescriptor_s* idp_ssod = zx_NEW_md_IDPSSODescriptor(cf->ctx,father);
   idp_ssod->WantAuthnRequestsSigned    = zx_ref_attr(cf->ctx, zx_WantAuthnRequestsSigned_ATTR, cf->want_authn_req_signed?"1":"0");
   idp_ssod->errorURL                   = zx_attrf(cf->ctx, zx_errorURL_ATTR, "%s?o=E", cf->url);
@@ -692,8 +681,8 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem
   idp_ssod->ManageNameIDService = zxid_mni_desc(cf, &idp_ssod->gg, SAML2_SOAP, "?o=S", 0);
 #endif
 
-  idp_ssod->NameIDFormat = zx_ref_simple_elem(cf->ctx, &sp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_PERSISTENT_NID_FMT);
-  idp_ssod->NameIDFormat = zx_ref_simple_elem(cf->ctx, &sp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_TRANSIENT_NID_FMT);
+  idp_ssod->NameIDFormat = zx_ref_simple_elem(cf->ctx, &idp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_PERSISTENT_NID_FMT);
+  idp_ssod->NameIDFormat = zx_ref_simple_elem(cf->ctx, &idp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_TRANSIENT_NID_FMT);
 
   idp_ssod->SingleSignOnService = zxid_sso_desc(cf, &idp_ssod->gg, SAML2_REDIR, "?o=F", 0);
 
@@ -711,21 +700,21 @@ struct zx_md_Organization_s* zxid_org_desc(zxid_conf* cf, struct zx_elem_s* fath
   struct zx_md_Organization_s* org = zx_NEW_md_Organization(cf->ctx,father);
   org->OrganizationDisplayName = zx_NEW_md_OrganizationDisplayName(cf->ctx, &org->gg);
   org->OrganizationDisplayName->lang = zx_ref_attr(cf->ctx, zx_lang_ATTR, "en");  /* *** config */
-  zx_add_content(c, &org->OrganizationDisplayName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
+  zx_add_content(cf->ctx, &org->OrganizationDisplayName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
 
   org->OrganizationName = zx_NEW_md_OrganizationName(cf->ctx, &org->gg);
   org->OrganizationName->lang = zx_ref_attr(cf->ctx, zx_lang_ATTR, "en");  /* *** config */
   if (cf->org_name && cf->org_name[0])
-    zx_add_content(c, &org->OrganizationName->gg, zx_ref_str(cf->ctx, cf->org_name));
+    zx_add_content(cf->ctx, &org->OrganizationName->gg, zx_ref_str(cf->ctx, cf->org_name));
   else
-    zx_add_content(c, &org->OrganizationName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
+    zx_add_content(cf->ctx, &org->OrganizationName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
 
   org->OrganizationURL = zx_NEW_md_OrganizationURL(cf->ctx, &org->gg);
   org->OrganizationURL->lang = zx_ref_attr(cf->ctx, zx_lang_ATTR, "en");  /* *** config */
   if (cf->org_url && cf->org_url[0])
-    zx_add_content(c, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->org_url));
+    zx_add_content(cf->ctx, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->org_url));
   else
-    zx_add_content(c, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->url));
+    zx_add_content(cf->ctx, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->url));
 
   return org;
 }
@@ -741,7 +730,7 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf, struct zx_elem_s*
 
   if (cf->contact_org) {
     if (cf->contact_org[0])
-      contact->Company = zx_ref_simple_elem(cf->ctx, cf->contact_org);
+      contact->Company = zx_ref_simple_elem(cf->ctx, &contact->gg, zx_md_Company_ELEM, cf->contact_org);
   } else
     if (cf->org_name && cf->org_name[0])
       contact->Company
@@ -814,7 +803,7 @@ struct zx_str* zxid_my_cdc_url(zxid_conf* cf)
 struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_str* nameid, char* affiliation)
 {
   struct zx_sa_Issuer_s* is = zx_NEW_sa_Issuer(cf->ctx,0);
-  zx_add_content(c, &is->gg, nameid);
+  zx_add_content(cf->ctx, &is->gg, nameid);
   if (affiliation && affiliation[0])
     is->NameQualifier = zx_ref_attr(cf->ctx, zx_NameQualifier_ATTR, affiliation);
   /*is->Format = zx_ref_str(cf->ctx, );*/

@@ -199,6 +199,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
   struct zx_sa_Attribute_s* at;
   zxid_epr* epr;
   struct zx_root_s* r;
+  struct zx_str* ss;
   DIR* dir;
   struct dirent * de;
   char mdpath[ZXID_MAX_BUF];
@@ -257,8 +258,8 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
       ZX_FREE(cf->ctx, epr_buf);
       continue;
     }
-    is_di = !memcmp(ZX_GET_CONTENT_S(epr->Metadata->ServiceType), XMLNS_DISCO_2_0,
-		    ZX_GET_CONTENT_LEN(epr->Metadata->ServiceType));
+    ss = ZX_GET_CONTENT(epr->Metadata->ServiceType);
+    is_di = ss? !memcmp(ss->s, XMLNS_DISCO_2_0, ss->len) : 0;
     D("FOUND BOOTSTRAP url(%.*s) is_di=%d", ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address), is_di);
     
     if (is_di) {
@@ -389,7 +390,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
       nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, SAML2_PERSISTENT_NID_FMT);
       nameid->NameQualifier = idp_eid = zxid_my_entity_id_attr(cf, zx_NameQualifier_ATTR);
       nameid->SPNameQualifier = zx_ref_len_attr(cf->ctx, zx_SPNameQualifier_ATTR, affil->len, affil->s);
-      zx_add_content(c, &nameid->gg, nid);
+      zx_add_content(cf->ctx, &nameid->gg, nid);
 
       if (!write_all_path_fmt("put_fed", ZXID_MAX_USER, buf,
 			      "%s%s", dir, "/.mni",
@@ -452,7 +453,7 @@ void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_
 
   D_INDENT("mk_trans: ");
   nameid->Format = zx_dup_attr(cf->ctx, zx_Format_ATTR, SAML2_TRANSIENT_NID_FMT);
-  zx_add_content(c, &nameid->gg, (nid = zxid_mk_id(cf, "T", ZXID_ID_BITS)));
+  zx_add_content(cf->ctx, &nameid->gg, (nid = zxid_mk_id(cf, "T", ZXID_ID_BITS)));
   
   /* Create entry for reverse mapping from pseudonym nid to uid */
   
@@ -859,7 +860,7 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
   ZERO(&ses, sizeof(ses));
 
   if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(ZX_GET_CONTENT_LEN(req->Data)) >= sizeof(buf)-1) {
-    ERR("Too long username and password data %d", ZX_GET_CONTENT(req->Data));
+    ERR("Too long username and password data %p", ZX_GET_CONTENT(req->Data));
     res->Status = zxid_mk_lu_Status(cf, "ERR", 0, 0, 0);
   }
   q = unbase64_raw(ZX_GET_CONTENT_S(req->Data), ZX_GET_CONTENT_S(req->Data) + ZX_GET_CONTENT_LEN(req->Data), buf, zx_std_index_64);

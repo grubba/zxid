@@ -48,48 +48,19 @@
 #define EL_NS     xasacd1
 #define EL_TAG    ReferencedPolicies
 
-/* FUNC(zx_FREE_xasacd1_ReferencedPolicies) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_ReferencedPolicies_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Policy->gg;
-       e && e->g.tok == zx_xa_Policy_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xa_Policy(c, (struct zx_xa_Policy_s*)e, free_strs);
-  }
-  for (e = &x->PolicySet->gg;
-       e && e->g.tok == zx_xa_PolicySet_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_xasacd1_ReferencedPolicies) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_xasacd1_ReferencedPolicies_s* zx_NEW_xasacd1_ReferencedPolicies(struct zx_ctx* c)
+struct zx_xasacd1_ReferencedPolicies_s* zx_NEW_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_xasacd1_ReferencedPolicies_s* x = ZX_ZALLOC(c, struct zx_xasacd1_ReferencedPolicies_s);
   x->gg.g.tok = zx_xasacd1_ReferencedPolicies_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -232,48 +203,19 @@ int zx_WALK_WO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_Re
 #define EL_NS     xasacd1
 #define EL_TAG    XACMLAuthzDecisionStatement
 
-/* FUNC(zx_FREE_xasacd1_XACMLAuthzDecisionStatement) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Response->gg;
-       e && e->g.tok == zx_xac_Response_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xac_Response(c, (struct zx_xac_Response_s*)e, free_strs);
-  }
-  for (e = &x->Request->gg;
-       e && e->g.tok == zx_xac_Request_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xac_Request(c, (struct zx_xac_Request_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_xasacd1_XACMLAuthzDecisionStatement) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_xasacd1_XACMLAuthzDecisionStatement_s* zx_NEW_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c)
+struct zx_xasacd1_XACMLAuthzDecisionStatement_s* zx_NEW_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_xasacd1_XACMLAuthzDecisionStatement_s* x = ZX_ZALLOC(c, struct zx_xasacd1_XACMLAuthzDecisionStatement_s);
   x->gg.g.tok = zx_xasacd1_XACMLAuthzDecisionStatement_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -416,54 +358,19 @@ int zx_WALK_WO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_x
 #define EL_NS     xasacd1
 #define EL_TAG    XACMLPolicyStatement
 
-/* FUNC(zx_FREE_xasacd1_XACMLPolicyStatement) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_XACMLPolicyStatement_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Policy->gg;
-       e && e->g.tok == zx_xa_Policy_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xa_Policy(c, (struct zx_xa_Policy_s*)e, free_strs);
-  }
-  for (e = &x->PolicySet->gg;
-       e && e->g.tok == zx_xa_PolicySet_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)e, free_strs);
-  }
-  for (e = &x->ReferencedPolicies->gg;
-       e && e->g.tok == zx_xasacd1_ReferencedPolicies_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_xasacd1_ReferencedPolicies(c, (struct zx_xasacd1_ReferencedPolicies_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_xasacd1_XACMLPolicyStatement) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_xasacd1_XACMLPolicyStatement_s* zx_NEW_xasacd1_XACMLPolicyStatement(struct zx_ctx* c)
+struct zx_xasacd1_XACMLPolicyStatement_s* zx_NEW_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_xasacd1_XACMLPolicyStatement_s* x = ZX_ZALLOC(c, struct zx_xasacd1_XACMLPolicyStatement_s);
   x->gg.g.tok = zx_xasacd1_XACMLPolicyStatement_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

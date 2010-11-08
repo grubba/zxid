@@ -48,37 +48,19 @@
 #define EL_NS     mm7
 #define EL_TAG    AdditionalInformation
 
-/* FUNC(zx_FREE_mm7_AdditionalInformation) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_AdditionalInformation(struct zx_ctx* c, struct zx_mm7_AdditionalInformation_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->href, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_AdditionalInformation) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_AdditionalInformation_s* zx_NEW_mm7_AdditionalInformation(struct zx_ctx* c)
+struct zx_mm7_AdditionalInformation_s* zx_NEW_mm7_AdditionalInformation(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_AdditionalInformation_s* x = ZX_ZALLOC(c, struct zx_mm7_AdditionalInformation_s);
   x->gg.g.tok = zx_mm7_AdditionalInformation_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -181,60 +163,19 @@ int zx_WALK_WO_mm7_AdditionalInformation(struct zx_ctx* c, struct zx_mm7_Additio
 #define EL_NS     mm7
 #define EL_TAG    Bcc
 
-/* FUNC(zx_FREE_mm7_Bcc) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->RFC2822Address->gg;
-       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
-  }
-  for (e = &x->Number->gg;
-       e && e->g.tok == zx_mm7_Number_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
-  }
-  for (e = &x->ShortCode->gg;
-       e && e->g.tok == zx_mm7_ShortCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Bcc) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Bcc_s* zx_NEW_mm7_Bcc(struct zx_ctx* c)
+struct zx_mm7_Bcc_s* zx_NEW_mm7_Bcc(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Bcc_s* x = ZX_ZALLOC(c, struct zx_mm7_Bcc_s);
   x->gg.g.tok = zx_mm7_Bcc_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -419,59 +360,19 @@ int zx_WALK_WO_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x, void* ctx, int 
 #define EL_NS     mm7
 #define EL_TAG    CancelReq
 
-/* FUNC(zx_FREE_mm7_CancelReq) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->SenderIdentification->gg;
-       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->Recipients->gg;
-       e && e->g.tok == zx_mm7_Recipients_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->ApplicID, free_strs);
-  zx_free_simple_elems(c, x->ReplyApplicID, free_strs);
-  zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_CancelReq) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_CancelReq_s* zx_NEW_mm7_CancelReq(struct zx_ctx* c)
+struct zx_mm7_CancelReq_s* zx_NEW_mm7_CancelReq(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_CancelReq_s* x = ZX_ZALLOC(c, struct zx_mm7_CancelReq_s);
   x->gg.g.tok = zx_mm7_CancelReq_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -660,49 +561,19 @@ int zx_WALK_WO_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x, voi
 #define EL_NS     mm7
 #define EL_TAG    CancelRsp
 
-/* FUNC(zx_FREE_mm7_CancelRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_CancelRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_CancelRsp_s* zx_NEW_mm7_CancelRsp(struct zx_ctx* c)
+struct zx_mm7_CancelRsp_s* zx_NEW_mm7_CancelRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_CancelRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_CancelRsp_s);
   x->gg.g.tok = zx_mm7_CancelRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -850,60 +721,19 @@ int zx_WALK_WO_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x, voi
 #define EL_NS     mm7
 #define EL_TAG    Cc
 
-/* FUNC(zx_FREE_mm7_Cc) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->RFC2822Address->gg;
-       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
-  }
-  for (e = &x->Number->gg;
-       e && e->g.tok == zx_mm7_Number_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
-  }
-  for (e = &x->ShortCode->gg;
-       e && e->g.tok == zx_mm7_ShortCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Cc) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Cc_s* zx_NEW_mm7_Cc(struct zx_ctx* c)
+struct zx_mm7_Cc_s* zx_NEW_mm7_Cc(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Cc_s* x = ZX_ZALLOC(c, struct zx_mm7_Cc_s);
   x->gg.g.tok = zx_mm7_Cc_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1088,39 +918,19 @@ int zx_WALK_WO_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x, void* ctx, int (*
 #define EL_NS     mm7
 #define EL_TAG    Content
 
-/* FUNC(zx_FREE_mm7_Content) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Content(struct zx_ctx* c, struct zx_mm7_Content_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->allowAdaptations, free_strs);
-  zx_free_attr(c, x->href, free_strs);
-  zx_free_attr(c, x->type, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Content) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Content_s* zx_NEW_mm7_Content(struct zx_ctx* c)
+struct zx_mm7_Content_s* zx_NEW_mm7_Content(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Content_s* x = ZX_ZALLOC(c, struct zx_mm7_Content_s);
   x->gg.g.tok = zx_mm7_Content_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1227,37 +1037,19 @@ int zx_WALK_WO_mm7_Content(struct zx_ctx* c, struct zx_mm7_Content_s* x, void* c
 #define EL_NS     mm7
 #define EL_TAG    DateTime
 
-/* FUNC(zx_FREE_mm7_DateTime) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_DateTime(struct zx_ctx* c, struct zx_mm7_DateTime_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->sequence, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_DateTime) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_DateTime_s* zx_NEW_mm7_DateTime(struct zx_ctx* c)
+struct zx_mm7_DateTime_s* zx_NEW_mm7_DateTime(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_DateTime_s* x = ZX_ZALLOC(c, struct zx_mm7_DateTime_s);
   x->gg.g.tok = zx_mm7_DateTime_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1360,104 +1152,19 @@ int zx_WALK_WO_mm7_DateTime(struct zx_ctx* c, struct zx_mm7_DateTime_s* x, void*
 #define EL_NS     mm7
 #define EL_TAG    DeliverReq
 
-/* FUNC(zx_FREE_mm7_DeliverReq) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  zx_free_simple_elems(c, x->MMSRelayServerID, free_strs);
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->VASPID, free_strs);
-  zx_free_simple_elems(c, x->VASID, free_strs);
-  zx_free_simple_elems(c, x->LinkedID, free_strs);
-  for (e = &x->Sender->gg;
-       e && e->g.tok == zx_mm7_Sender_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Sender(c, (struct zx_mm7_Sender_s*)e, free_strs);
-  }
-  for (e = &x->Recipients->gg;
-       e && e->g.tok == zx_mm7_Recipients_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)e, free_strs);
-  }
-  for (e = &x->Previouslysentby->gg;
-       e && e->g.tok == zx_mm7_Previouslysentby_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Previouslysentby(c, (struct zx_mm7_Previouslysentby_s*)e, free_strs);
-  }
-  for (e = &x->Previouslysentdateandtime->gg;
-       e && e->g.tok == zx_mm7_Previouslysentdateandtime_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Previouslysentdateandtime(c, (struct zx_mm7_Previouslysentdateandtime_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->SenderSPI, free_strs);
-  zx_free_simple_elems(c, x->RecipientSPI, free_strs);
-  zx_free_simple_elems(c, x->TimeStamp, free_strs);
-  zx_free_simple_elems(c, x->ReplyChargingID, free_strs);
-  zx_free_simple_elems(c, x->Priority, free_strs);
-  zx_free_simple_elems(c, x->Subject, free_strs);
-  zx_free_simple_elems(c, x->ApplicID, free_strs);
-  zx_free_simple_elems(c, x->ReplyApplicID, free_strs);
-  zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
-  for (e = &x->UACapabilities->gg;
-       e && e->g.tok == zx_mm7_UACapabilities_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_UACapabilities(c, (struct zx_mm7_UACapabilities_s*)e, free_strs);
-  }
-  for (e = &x->Content->gg;
-       e && e->g.tok == zx_mm7_Content_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Content(c, (struct zx_mm7_Content_s*)e, free_strs);
-  }
-  for (e = &x->AdditionalInformation->gg;
-       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, free_strs);
-  }
-  for (e = &x->MessageExtraData->gg;
-       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_DeliverReq) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_DeliverReq_s* zx_NEW_mm7_DeliverReq(struct zx_ctx* c)
+struct zx_mm7_DeliverReq_s* zx_NEW_mm7_DeliverReq(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_DeliverReq_s* x = ZX_ZALLOC(c, struct zx_mm7_DeliverReq_s);
   x->gg.g.tok = zx_mm7_DeliverReq_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1817,55 +1524,19 @@ int zx_WALK_WO_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x, v
 #define EL_NS     mm7
 #define EL_TAG    DeliverRsp
 
-/* FUNC(zx_FREE_mm7_DeliverRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-  for (e = &x->ServiceCode->gg;
-       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_DeliverRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_DeliverRsp_s* zx_NEW_mm7_DeliverRsp(struct zx_ctx* c)
+struct zx_mm7_DeliverRsp_s* zx_NEW_mm7_DeliverRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_DeliverRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_DeliverRsp_s);
   x->gg.g.tok = zx_mm7_DeliverRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2034,37 +1705,19 @@ int zx_WALK_WO_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x, v
 #define EL_NS     mm7
 #define EL_TAG    DeliveryCondition
 
-/* FUNC(zx_FREE_mm7_DeliveryCondition) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_DeliveryCondition(struct zx_ctx* c, struct zx_mm7_DeliveryCondition_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->DC, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_DeliveryCondition) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_DeliveryCondition_s* zx_NEW_mm7_DeliveryCondition(struct zx_ctx* c)
+struct zx_mm7_DeliveryCondition_s* zx_NEW_mm7_DeliveryCondition(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_DeliveryCondition_s* x = ZX_ZALLOC(c, struct zx_mm7_DeliveryCondition_s);
   x->gg.g.tok = zx_mm7_DeliveryCondition_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2170,70 +1823,19 @@ int zx_WALK_WO_mm7_DeliveryCondition(struct zx_ctx* c, struct zx_mm7_DeliveryCon
 #define EL_NS     mm7
 #define EL_TAG    DeliveryReportReq
 
-/* FUNC(zx_FREE_mm7_DeliveryReportReq) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryReportReq_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  zx_free_simple_elems(c, x->MMSRelayServerID, free_strs);
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->Recipient->gg;
-       e && e->g.tok == zx_mm7_Recipient_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Recipient(c, (struct zx_mm7_Recipient_s*)e, free_strs);
-  }
-  for (e = &x->Sender->gg;
-       e && e->g.tok == zx_mm7_Sender_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Sender(c, (struct zx_mm7_Sender_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->Date, free_strs);
-  zx_free_simple_elems(c, x->MMStatus, free_strs);
-  zx_free_simple_elems(c, x->MMStatusExtension, free_strs);
-  zx_free_simple_elems(c, x->StatusText, free_strs);
-  zx_free_simple_elems(c, x->ApplicID, free_strs);
-  zx_free_simple_elems(c, x->ReplyApplicID, free_strs);
-  zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
-  for (e = &x->UACapabilities->gg;
-       e && e->g.tok == zx_mm7_UACapabilities_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_UACapabilities(c, (struct zx_mm7_UACapabilities_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_DeliveryReportReq) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_DeliveryReportReq_s* zx_NEW_mm7_DeliveryReportReq(struct zx_ctx* c)
+struct zx_mm7_DeliveryReportReq_s* zx_NEW_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_DeliveryReportReq_s* x = ZX_ZALLOC(c, struct zx_mm7_DeliveryReportReq_s);
   x->gg.g.tok = zx_mm7_DeliveryReportReq_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2468,49 +2070,19 @@ int zx_WALK_WO_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryRep
 #define EL_NS     mm7
 #define EL_TAG    DeliveryReportRsp
 
-/* FUNC(zx_FREE_mm7_DeliveryReportRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryReportRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_DeliveryReportRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_DeliveryReportRsp_s* zx_NEW_mm7_DeliveryReportRsp(struct zx_ctx* c)
+struct zx_mm7_DeliveryReportRsp_s* zx_NEW_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_DeliveryReportRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_DeliveryReportRsp_s);
   x->gg.g.tok = zx_mm7_DeliveryReportRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2658,36 +2230,19 @@ int zx_WALK_WO_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryRep
 #define EL_NS     mm7
 #define EL_TAG    Details
 
-/* FUNC(zx_FREE_mm7_Details) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Details) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Details_s* zx_NEW_mm7_Details(struct zx_ctx* c)
+struct zx_mm7_Details_s* zx_NEW_mm7_Details(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Details_s* x = ZX_ZALLOC(c, struct zx_mm7_Details_s);
   x->gg.g.tok = zx_mm7_Details_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2788,48 +2343,19 @@ int zx_WALK_WO_mm7_Details(struct zx_ctx* c, struct zx_mm7_Details_s* x, void* c
 #define EL_NS     mm7
 #define EL_TAG    Extension
 
-/* FUNC(zx_FREE_mm7_Extension) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->IdentityAddressingToken->gg;
-       e && e->g.tok == zx_mm7_IdentityAddressingToken_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_IdentityAddressingToken(c, (struct zx_mm7_IdentityAddressingToken_s*)e, free_strs);
-  }
-  for (e = &x->MessageExtraData->gg;
-       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Extension) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Extension_s* zx_NEW_mm7_Extension(struct zx_ctx* c)
+struct zx_mm7_Extension_s* zx_NEW_mm7_Extension(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Extension_s* x = ZX_ZALLOC(c, struct zx_mm7_Extension_s);
   x->gg.g.tok = zx_mm7_Extension_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2972,37 +2498,19 @@ int zx_WALK_WO_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x, voi
 #define EL_NS     mm7
 #define EL_TAG    IdentityAddressingToken
 
-/* FUNC(zx_FREE_mm7_IdentityAddressingToken) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_IdentityAddressingToken(struct zx_ctx* c, struct zx_mm7_IdentityAddressingToken_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->CredentialRef, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_IdentityAddressingToken) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_IdentityAddressingToken_s* zx_NEW_mm7_IdentityAddressingToken(struct zx_ctx* c)
+struct zx_mm7_IdentityAddressingToken_s* zx_NEW_mm7_IdentityAddressingToken(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_IdentityAddressingToken_s* x = ZX_ZALLOC(c, struct zx_mm7_IdentityAddressingToken_s);
   x->gg.g.tok = zx_mm7_IdentityAddressingToken_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3108,42 +2616,19 @@ int zx_WALK_WO_mm7_IdentityAddressingToken(struct zx_ctx* c, struct zx_mm7_Ident
 #define EL_NS     mm7
 #define EL_TAG    MessageExtraData
 
-/* FUNC(zx_FREE_mm7_MessageExtraData) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtraData_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->element->gg;
-       e && e->g.tok == zx_mm7_element_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_element(c, (struct zx_mm7_element_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_MessageExtraData) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_MessageExtraData_s* zx_NEW_mm7_MessageExtraData(struct zx_ctx* c)
+struct zx_mm7_MessageExtraData_s* zx_NEW_mm7_MessageExtraData(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_MessageExtraData_s* x = ZX_ZALLOC(c, struct zx_mm7_MessageExtraData_s);
   x->gg.g.tok = zx_mm7_MessageExtraData_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3265,39 +2750,19 @@ int zx_WALK_WO_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtra
 #define EL_NS     mm7
 #define EL_TAG    Number
 
-/* FUNC(zx_FREE_mm7_Number) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Number(struct zx_ctx* c, struct zx_mm7_Number_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->addressCoding, free_strs);
-  zx_free_attr(c, x->displayOnly, free_strs);
-  zx_free_attr(c, x->id, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Number) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Number_s* zx_NEW_mm7_Number(struct zx_ctx* c)
+struct zx_mm7_Number_s* zx_NEW_mm7_Number(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Number_s* x = ZX_ZALLOC(c, struct zx_mm7_Number_s);
   x->gg.g.tok = zx_mm7_Number_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3404,37 +2869,19 @@ int zx_WALK_WO_mm7_Number(struct zx_ctx* c, struct zx_mm7_Number_s* x, void* ctx
 #define EL_NS     mm7
 #define EL_TAG    PreferredChannels
 
-/* FUNC(zx_FREE_mm7_PreferredChannels) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_PreferredChannels(struct zx_ctx* c, struct zx_mm7_PreferredChannels_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->DeliverUsing, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_PreferredChannels) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_PreferredChannels_s* zx_NEW_mm7_PreferredChannels(struct zx_ctx* c)
+struct zx_mm7_PreferredChannels_s* zx_NEW_mm7_PreferredChannels(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_PreferredChannels_s* x = ZX_ZALLOC(c, struct zx_mm7_PreferredChannels_s);
   x->gg.g.tok = zx_mm7_PreferredChannels_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3540,42 +2987,19 @@ int zx_WALK_WO_mm7_PreferredChannels(struct zx_ctx* c, struct zx_mm7_PreferredCh
 #define EL_NS     mm7
 #define EL_TAG    Previouslysentby
 
-/* FUNC(zx_FREE_mm7_Previouslysentby) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslysentby_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->UserAgent->gg;
-       e && e->g.tok == zx_mm7_UserAgent_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_UserAgent(c, (struct zx_mm7_UserAgent_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Previouslysentby) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Previouslysentby_s* zx_NEW_mm7_Previouslysentby(struct zx_ctx* c)
+struct zx_mm7_Previouslysentby_s* zx_NEW_mm7_Previouslysentby(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Previouslysentby_s* x = ZX_ZALLOC(c, struct zx_mm7_Previouslysentby_s);
   x->gg.g.tok = zx_mm7_Previouslysentby_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3697,42 +3121,19 @@ int zx_WALK_WO_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslyse
 #define EL_NS     mm7
 #define EL_TAG    Previouslysentdateandtime
 
-/* FUNC(zx_FREE_mm7_Previouslysentdateandtime) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Previouslysentdateandtime_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->DateTime->gg;
-       e && e->g.tok == zx_mm7_DateTime_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_DateTime(c, (struct zx_mm7_DateTime_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Previouslysentdateandtime) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Previouslysentdateandtime_s* zx_NEW_mm7_Previouslysentdateandtime(struct zx_ctx* c)
+struct zx_mm7_Previouslysentdateandtime_s* zx_NEW_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Previouslysentdateandtime_s* x = ZX_ZALLOC(c, struct zx_mm7_Previouslysentdateandtime_s);
   x->gg.g.tok = zx_mm7_Previouslysentdateandtime_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -3854,47 +3255,19 @@ int zx_WALK_WO_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Pre
 #define EL_NS     mm7
 #define EL_TAG    QueryStatusReq
 
-/* FUNC(zx_FREE_mm7_QueryStatusReq) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->TransactionID->gg;
-       e && e->g.tok == zx_mm7_TransactionID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->MessageType, free_strs);
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  zx_free_simple_elems(c, x->VASPID, free_strs);
-  zx_free_simple_elems(c, x->VASID, free_strs);
-  zx_free_simple_elems(c, x->MessageID, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_QueryStatusReq) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_QueryStatusReq_s* zx_NEW_mm7_QueryStatusReq(struct zx_ctx* c)
+struct zx_mm7_QueryStatusReq_s* zx_NEW_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_QueryStatusReq_s* x = ZX_ZALLOC(c, struct zx_mm7_QueryStatusReq_s);
   x->gg.g.tok = zx_mm7_QueryStatusReq_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4041,52 +3414,19 @@ int zx_WALK_WO_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq
 #define EL_NS     mm7
 #define EL_TAG    QueryStatusRsp
 
-/* FUNC(zx_FREE_mm7_QueryStatusRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->TransactionID->gg;
-       e && e->g.tok == zx_mm7_TransactionID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->MessageType, free_strs);
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  zx_free_simple_elems(c, x->StatusCode, free_strs);
-  zx_free_simple_elems(c, x->StatusText, free_strs);
-  for (e = &x->Details->gg;
-       e && e->g.tok == zx_mm7_Details_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Details(c, (struct zx_mm7_Details_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_QueryStatusRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_QueryStatusRsp_s* zx_NEW_mm7_QueryStatusRsp(struct zx_ctx* c)
+struct zx_mm7_QueryStatusRsp_s* zx_NEW_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_QueryStatusRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_QueryStatusRsp_s);
   x->gg.g.tok = zx_mm7_QueryStatusRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4249,39 +3589,19 @@ int zx_WALK_WO_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp
 #define EL_NS     mm7
 #define EL_TAG    RFC2822Address
 
-/* FUNC(zx_FREE_mm7_RFC2822Address) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_RFC2822Address(struct zx_ctx* c, struct zx_mm7_RFC2822Address_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->addressCoding, free_strs);
-  zx_free_attr(c, x->displayOnly, free_strs);
-  zx_free_attr(c, x->id, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_RFC2822Address) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_RFC2822Address_s* zx_NEW_mm7_RFC2822Address(struct zx_ctx* c)
+struct zx_mm7_RFC2822Address_s* zx_NEW_mm7_RFC2822Address(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_RFC2822Address_s* x = ZX_ZALLOC(c, struct zx_mm7_RFC2822Address_s);
   x->gg.g.tok = zx_mm7_RFC2822Address_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4388,49 +3708,19 @@ int zx_WALK_WO_mm7_RFC2822Address(struct zx_ctx* c, struct zx_mm7_RFC2822Address
 #define EL_NS     mm7
 #define EL_TAG    RSErrorRsp
 
-/* FUNC(zx_FREE_mm7_RSErrorRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_RSErrorRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_RSErrorRsp_s* zx_NEW_mm7_RSErrorRsp(struct zx_ctx* c)
+struct zx_mm7_RSErrorRsp_s* zx_NEW_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_RSErrorRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_RSErrorRsp_s);
   x->gg.g.tok = zx_mm7_RSErrorRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4578,63 +3868,19 @@ int zx_WALK_WO_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x, v
 #define EL_NS     mm7
 #define EL_TAG    ReadReplyReq
 
-/* FUNC(zx_FREE_mm7_ReadReplyReq) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  zx_free_simple_elems(c, x->MMSRelayServerID, free_strs);
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->Recipient->gg;
-       e && e->g.tok == zx_mm7_Recipient_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Recipient(c, (struct zx_mm7_Recipient_s*)e, free_strs);
-  }
-  for (e = &x->Sender->gg;
-       e && e->g.tok == zx_mm7_Sender_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Sender(c, (struct zx_mm7_Sender_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->TimeStamp, free_strs);
-  zx_free_simple_elems(c, x->MMStatus, free_strs);
-  zx_free_simple_elems(c, x->StatusText, free_strs);
-  zx_free_simple_elems(c, x->ApplicID, free_strs);
-  zx_free_simple_elems(c, x->ReplyApplicID, free_strs);
-  zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_ReadReplyReq) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_ReadReplyReq_s* zx_NEW_mm7_ReadReplyReq(struct zx_ctx* c)
+struct zx_mm7_ReadReplyReq_s* zx_NEW_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_ReadReplyReq_s* x = ZX_ZALLOC(c, struct zx_mm7_ReadReplyReq_s);
   x->gg.g.tok = zx_mm7_ReadReplyReq_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -4843,49 +4089,19 @@ int zx_WALK_WO_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* 
 #define EL_NS     mm7
 #define EL_TAG    ReadReplyRsp
 
-/* FUNC(zx_FREE_mm7_ReadReplyRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_ReadReplyRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_ReadReplyRsp_s* zx_NEW_mm7_ReadReplyRsp(struct zx_ctx* c)
+struct zx_mm7_ReadReplyRsp_s* zx_NEW_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_ReadReplyRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_ReadReplyRsp_s);
   x->gg.g.tok = zx_mm7_ReadReplyRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5033,60 +4249,19 @@ int zx_WALK_WO_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* 
 #define EL_NS     mm7
 #define EL_TAG    Recipient
 
-/* FUNC(zx_FREE_mm7_Recipient) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->RFC2822Address->gg;
-       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
-  }
-  for (e = &x->Number->gg;
-       e && e->g.tok == zx_mm7_Number_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
-  }
-  for (e = &x->ShortCode->gg;
-       e && e->g.tok == zx_mm7_ShortCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Recipient) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Recipient_s* zx_NEW_mm7_Recipient(struct zx_ctx* c)
+struct zx_mm7_Recipient_s* zx_NEW_mm7_Recipient(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Recipient_s* x = ZX_ZALLOC(c, struct zx_mm7_Recipient_s);
   x->gg.g.tok = zx_mm7_Recipient_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5271,54 +4446,19 @@ int zx_WALK_WO_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x, voi
 #define EL_NS     mm7
 #define EL_TAG    Recipients
 
-/* FUNC(zx_FREE_mm7_Recipients) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->To->gg;
-       e && e->g.tok == zx_mm7_To_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_To(c, (struct zx_mm7_To_s*)e, free_strs);
-  }
-  for (e = &x->Cc->gg;
-       e && e->g.tok == zx_mm7_Cc_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Cc(c, (struct zx_mm7_Cc_s*)e, free_strs);
-  }
-  for (e = &x->Bcc->gg;
-       e && e->g.tok == zx_mm7_Bcc_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Bcc(c, (struct zx_mm7_Bcc_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Recipients) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Recipients_s* zx_NEW_mm7_Recipients(struct zx_ctx* c)
+struct zx_mm7_Recipients_s* zx_NEW_mm7_Recipients(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Recipients_s* x = ZX_ZALLOC(c, struct zx_mm7_Recipients_s);
   x->gg.g.tok = zx_mm7_Recipients_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5482,83 +4622,19 @@ int zx_WALK_WO_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x, v
 #define EL_NS     mm7
 #define EL_TAG    ReplaceReq
 
-/* FUNC(zx_FREE_mm7_ReplaceReq) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->SenderIdentification->gg;
-       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->ServiceCode->gg;
-       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->TimeStamp, free_strs);
-  zx_free_simple_elems(c, x->ReadReply, free_strs);
-  zx_free_simple_elems(c, x->EarliestDeliveryTime, free_strs);
-  zx_free_simple_elems(c, x->DistributionIndicator, free_strs);
-  zx_free_simple_elems(c, x->ContentClass, free_strs);
-  zx_free_simple_elems(c, x->DRMContent, free_strs);
-  zx_free_simple_elems(c, x->ApplicID, free_strs);
-  zx_free_simple_elems(c, x->ReplyApplicID, free_strs);
-  zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
-  for (e = &x->Content->gg;
-       e && e->g.tok == zx_mm7_Content_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Content(c, (struct zx_mm7_Content_s*)e, free_strs);
-  }
-  for (e = &x->AdditionalInformation->gg;
-       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, free_strs);
-  }
-  for (e = &x->MessageExtraData->gg;
-       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_ReplaceReq) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_ReplaceReq_s* zx_NEW_mm7_ReplaceReq(struct zx_ctx* c)
+struct zx_mm7_ReplaceReq_s* zx_NEW_mm7_ReplaceReq(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_ReplaceReq_s* x = ZX_ZALLOC(c, struct zx_mm7_ReplaceReq_s);
   x->gg.g.tok = zx_mm7_ReplaceReq_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -5840,49 +4916,19 @@ int zx_WALK_WO_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x, v
 #define EL_NS     mm7
 #define EL_TAG    ReplaceRsp
 
-/* FUNC(zx_FREE_mm7_ReplaceRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_ReplaceRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_ReplaceRsp_s* zx_NEW_mm7_ReplaceRsp(struct zx_ctx* c)
+struct zx_mm7_ReplaceRsp_s* zx_NEW_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_ReplaceRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_ReplaceRsp_s);
   x->gg.g.tok = zx_mm7_ReplaceRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6030,38 +5076,19 @@ int zx_WALK_WO_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x, v
 #define EL_NS     mm7
 #define EL_TAG    ReplyCharging
 
-/* FUNC(zx_FREE_mm7_ReplyCharging) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_ReplyCharging(struct zx_ctx* c, struct zx_mm7_ReplyCharging_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->replyChargingSize, free_strs);
-  zx_free_attr(c, x->replyDeadline, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_ReplyCharging) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_ReplyCharging_s* zx_NEW_mm7_ReplyCharging(struct zx_ctx* c)
+struct zx_mm7_ReplyCharging_s* zx_NEW_mm7_ReplyCharging(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_ReplyCharging_s* x = ZX_ZALLOC(c, struct zx_mm7_ReplyCharging_s);
   x->gg.g.tok = zx_mm7_ReplyCharging_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6166,60 +5193,19 @@ int zx_WALK_WO_mm7_ReplyCharging(struct zx_ctx* c, struct zx_mm7_ReplyCharging_s
 #define EL_NS     mm7
 #define EL_TAG    Sender
 
-/* FUNC(zx_FREE_mm7_Sender) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->RFC2822Address->gg;
-       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
-  }
-  for (e = &x->Number->gg;
-       e && e->g.tok == zx_mm7_Number_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
-  }
-  for (e = &x->ShortCode->gg;
-       e && e->g.tok == zx_mm7_ShortCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Sender) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Sender_s* zx_NEW_mm7_Sender(struct zx_ctx* c)
+struct zx_mm7_Sender_s* zx_NEW_mm7_Sender(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Sender_s* x = ZX_ZALLOC(c, struct zx_mm7_Sender_s);
   x->gg.g.tok = zx_mm7_Sender_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6404,60 +5390,19 @@ int zx_WALK_WO_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x, void* ctx
 #define EL_NS     mm7
 #define EL_TAG    SenderAddress
 
-/* FUNC(zx_FREE_mm7_SenderAddress) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->RFC2822Address->gg;
-       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
-  }
-  for (e = &x->Number->gg;
-       e && e->g.tok == zx_mm7_Number_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
-  }
-  for (e = &x->ShortCode->gg;
-       e && e->g.tok == zx_mm7_ShortCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_SenderAddress) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_SenderAddress_s* zx_NEW_mm7_SenderAddress(struct zx_ctx* c)
+struct zx_mm7_SenderAddress_s* zx_NEW_mm7_SenderAddress(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_SenderAddress_s* x = ZX_ZALLOC(c, struct zx_mm7_SenderAddress_s);
   x->gg.g.tok = zx_mm7_SenderAddress_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6642,44 +5587,19 @@ int zx_WALK_WO_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s
 #define EL_NS     mm7
 #define EL_TAG    SenderIdentification
 
-/* FUNC(zx_FREE_mm7_SenderIdentification) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderIdentification_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->VASPID, free_strs);
-  zx_free_simple_elems(c, x->VASID, free_strs);
-  for (e = &x->SenderAddress->gg;
-       e && e->g.tok == zx_mm7_SenderAddress_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_SenderAddress(c, (struct zx_mm7_SenderAddress_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_SenderIdentification) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_SenderIdentification_s* zx_NEW_mm7_SenderIdentification(struct zx_ctx* c)
+struct zx_mm7_SenderIdentification_s* zx_NEW_mm7_SenderIdentification(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_SenderIdentification_s* x = ZX_ZALLOC(c, struct zx_mm7_SenderIdentification_s);
   x->gg.g.tok = zx_mm7_SenderIdentification_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6811,36 +5731,19 @@ int zx_WALK_WO_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderId
 #define EL_NS     mm7
 #define EL_TAG    ServiceCode
 
-/* FUNC(zx_FREE_mm7_ServiceCode) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_ServiceCode) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_ServiceCode_s* zx_NEW_mm7_ServiceCode(struct zx_ctx* c)
+struct zx_mm7_ServiceCode_s* zx_NEW_mm7_ServiceCode(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_ServiceCode_s* x = ZX_ZALLOC(c, struct zx_mm7_ServiceCode_s);
   x->gg.g.tok = zx_mm7_ServiceCode_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -6941,39 +5844,19 @@ int zx_WALK_WO_mm7_ServiceCode(struct zx_ctx* c, struct zx_mm7_ServiceCode_s* x,
 #define EL_NS     mm7
 #define EL_TAG    ShortCode
 
-/* FUNC(zx_FREE_mm7_ShortCode) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_ShortCode(struct zx_ctx* c, struct zx_mm7_ShortCode_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->addressCoding, free_strs);
-  zx_free_attr(c, x->displayOnly, free_strs);
-  zx_free_attr(c, x->id, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_ShortCode) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_ShortCode_s* zx_NEW_mm7_ShortCode(struct zx_ctx* c)
+struct zx_mm7_ShortCode_s* zx_NEW_mm7_ShortCode(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_ShortCode_s* x = ZX_ZALLOC(c, struct zx_mm7_ShortCode_s);
   x->gg.g.tok = zx_mm7_ShortCode_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -7080,44 +5963,19 @@ int zx_WALK_WO_mm7_ShortCode(struct zx_ctx* c, struct zx_mm7_ShortCode_s* x, voi
 #define EL_NS     mm7
 #define EL_TAG    Status
 
-/* FUNC(zx_FREE_mm7_Status) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->StatusCode, free_strs);
-  zx_free_simple_elems(c, x->StatusText, free_strs);
-  for (e = &x->Details->gg;
-       e && e->g.tok == zx_mm7_Details_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Details(c, (struct zx_mm7_Details_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_Status) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_Status_s* zx_NEW_mm7_Status(struct zx_ctx* c)
+struct zx_mm7_Status_s* zx_NEW_mm7_Status(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_Status_s* x = ZX_ZALLOC(c, struct zx_mm7_Status_s);
   x->gg.g.tok = zx_mm7_Status_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -7249,120 +6107,19 @@ int zx_WALK_WO_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x, void* ctx
 #define EL_NS     mm7
 #define EL_TAG    SubmitReq
 
-/* FUNC(zx_FREE_mm7_SubmitReq) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->SenderIdentification->gg;
-       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-  for (e = &x->Recipients->gg;
-       e && e->g.tok == zx_mm7_Recipients_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)e, free_strs);
-  }
-  for (e = &x->PreferredChannels->gg;
-       e && e->g.tok == zx_mm7_PreferredChannels_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_PreferredChannels(c, (struct zx_mm7_PreferredChannels_s*)e, free_strs);
-  }
-  for (e = &x->ServiceCode->gg;
-       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->LinkedID, free_strs);
-  zx_free_simple_elems(c, x->MessageClass, free_strs);
-  zx_free_simple_elems(c, x->TimeStamp, free_strs);
-  for (e = &x->ReplyCharging->gg;
-       e && e->g.tok == zx_mm7_ReplyCharging_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ReplyCharging(c, (struct zx_mm7_ReplyCharging_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->EarliestDeliveryTime, free_strs);
-  zx_free_simple_elems(c, x->ExpiryDate, free_strs);
-  zx_free_simple_elems(c, x->DeliveryReport, free_strs);
-  zx_free_simple_elems(c, x->ReadReply, free_strs);
-  zx_free_simple_elems(c, x->Priority, free_strs);
-  zx_free_simple_elems(c, x->Subject, free_strs);
-  zx_free_simple_elems(c, x->ChargedParty, free_strs);
-  zx_free_simple_elems(c, x->ChargedPartyID, free_strs);
-  for (e = &x->ThirdPartyPayer->gg;
-       e && e->g.tok == zx_mm7_ThirdPartyPayer_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ThirdPartyPayer(c, (struct zx_mm7_ThirdPartyPayer_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->DistributionIndicator, free_strs);
-  for (e = &x->DeliveryCondition->gg;
-       e && e->g.tok == zx_mm7_DeliveryCondition_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_DeliveryCondition(c, (struct zx_mm7_DeliveryCondition_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->ApplicID, free_strs);
-  zx_free_simple_elems(c, x->ReplyApplicID, free_strs);
-  zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
-  zx_free_simple_elems(c, x->ContentClass, free_strs);
-  zx_free_simple_elems(c, x->DRMContent, free_strs);
-  for (e = &x->Content->gg;
-       e && e->g.tok == zx_mm7_Content_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Content(c, (struct zx_mm7_Content_s*)e, free_strs);
-  }
-  for (e = &x->AdditionalInformation->gg;
-       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, free_strs);
-  }
-  for (e = &x->MessageExtraData->gg;
-       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_SubmitReq) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_SubmitReq_s* zx_NEW_mm7_SubmitReq(struct zx_ctx* c)
+struct zx_mm7_SubmitReq_s* zx_NEW_mm7_SubmitReq(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_SubmitReq_s* x = ZX_ZALLOC(c, struct zx_mm7_SubmitReq_s);
   x->gg.g.tok = zx_mm7_SubmitReq_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -7784,50 +6541,19 @@ int zx_WALK_WO_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, voi
 #define EL_NS     mm7
 #define EL_TAG    SubmitRsp
 
-/* FUNC(zx_FREE_mm7_SubmitRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->MessageID, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_SubmitRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_SubmitRsp_s* zx_NEW_mm7_SubmitRsp(struct zx_ctx* c)
+struct zx_mm7_SubmitRsp_s* zx_NEW_mm7_SubmitRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_SubmitRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_SubmitRsp_s);
   x->gg.g.tok = zx_mm7_SubmitRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -7980,60 +6706,19 @@ int zx_WALK_WO_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x, voi
 #define EL_NS     mm7
 #define EL_TAG    ThirdPartyPayer
 
-/* FUNC(zx_FREE_mm7_ThirdPartyPayer) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPayer_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->RFC2822Address->gg;
-       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
-  }
-  for (e = &x->Number->gg;
-       e && e->g.tok == zx_mm7_Number_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
-  }
-  for (e = &x->ShortCode->gg;
-       e && e->g.tok == zx_mm7_ShortCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_ThirdPartyPayer) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_ThirdPartyPayer_s* zx_NEW_mm7_ThirdPartyPayer(struct zx_ctx* c)
+struct zx_mm7_ThirdPartyPayer_s* zx_NEW_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_ThirdPartyPayer_s* x = ZX_ZALLOC(c, struct zx_mm7_ThirdPartyPayer_s);
   x->gg.g.tok = zx_mm7_ThirdPartyPayer_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8218,60 +6903,19 @@ int zx_WALK_WO_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPay
 #define EL_NS     mm7
 #define EL_TAG    To
 
-/* FUNC(zx_FREE_mm7_To) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->RFC2822Address->gg;
-       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
-  }
-  for (e = &x->Number->gg;
-       e && e->g.tok == zx_mm7_Number_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
-  }
-  for (e = &x->ShortCode->gg;
-       e && e->g.tok == zx_mm7_ShortCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_To) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_To_s* zx_NEW_mm7_To(struct zx_ctx* c)
+struct zx_mm7_To_s* zx_NEW_mm7_To(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_To_s* x = ZX_ZALLOC(c, struct zx_mm7_To_s);
   x->gg.g.tok = zx_mm7_To_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8456,39 +7100,19 @@ int zx_WALK_WO_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x, void* ctx, int (*
 #define EL_NS     mm7
 #define EL_TAG    TransactionID
 
-/* FUNC(zx_FREE_mm7_TransactionID) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_TransactionID(struct zx_ctx* c, struct zx_mm7_TransactionID_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->actor, free_strs);
-  zx_free_attr(c, x->encodingStyle, free_strs);
-  zx_free_attr(c, x->mustUnderstand, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_TransactionID) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_TransactionID_s* zx_NEW_mm7_TransactionID(struct zx_ctx* c)
+struct zx_mm7_TransactionID_s* zx_NEW_mm7_TransactionID(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_TransactionID_s* x = ZX_ZALLOC(c, struct zx_mm7_TransactionID_s);
   x->gg.g.tok = zx_mm7_TransactionID_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8595,38 +7219,19 @@ int zx_WALK_WO_mm7_TransactionID(struct zx_ctx* c, struct zx_mm7_TransactionID_s
 #define EL_NS     mm7
 #define EL_TAG    UACapabilities
 
-/* FUNC(zx_FREE_mm7_UACapabilities) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_UACapabilities(struct zx_ctx* c, struct zx_mm7_UACapabilities_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->TimeStamp, free_strs);
-  zx_free_attr(c, x->UAProf, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_UACapabilities) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_UACapabilities_s* zx_NEW_mm7_UACapabilities(struct zx_ctx* c)
+struct zx_mm7_UACapabilities_s* zx_NEW_mm7_UACapabilities(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_UACapabilities_s* x = ZX_ZALLOC(c, struct zx_mm7_UACapabilities_s);
   x->gg.g.tok = zx_mm7_UACapabilities_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8731,61 +7336,19 @@ int zx_WALK_WO_mm7_UACapabilities(struct zx_ctx* c, struct zx_mm7_UACapabilities
 #define EL_NS     mm7
 #define EL_TAG    UserAgent
 
-/* FUNC(zx_FREE_mm7_UserAgent) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->sequence, free_strs);
-
-  for (e = &x->RFC2822Address->gg;
-       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
-  }
-  for (e = &x->Number->gg;
-       e && e->g.tok == zx_mm7_Number_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
-  }
-  for (e = &x->ShortCode->gg;
-       e && e->g.tok == zx_mm7_ShortCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_UserAgent) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_UserAgent_s* zx_NEW_mm7_UserAgent(struct zx_ctx* c)
+struct zx_mm7_UserAgent_s* zx_NEW_mm7_UserAgent(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_UserAgent_s* x = ZX_ZALLOC(c, struct zx_mm7_UserAgent_s);
   x->gg.g.tok = zx_mm7_UserAgent_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -8972,49 +7535,19 @@ int zx_WALK_WO_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x, voi
 #define EL_NS     mm7
 #define EL_TAG    VASPErrorRsp
 
-/* FUNC(zx_FREE_mm7_VASPErrorRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_VASPErrorRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_VASPErrorRsp_s* zx_NEW_mm7_VASPErrorRsp(struct zx_ctx* c)
+struct zx_mm7_VASPErrorRsp_s* zx_NEW_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_VASPErrorRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_VASPErrorRsp_s);
   x->gg.g.tok = zx_mm7_VASPErrorRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9162,38 +7695,19 @@ int zx_WALK_WO_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* 
 #define EL_NS     mm7
 #define EL_TAG    element
 
-/* FUNC(zx_FREE_mm7_element) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_element(struct zx_ctx* c, struct zx_mm7_element_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->key, free_strs);
-  zx_free_simple_elems(c, x->value, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_element) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_element_s* zx_NEW_mm7_element(struct zx_ctx* c)
+struct zx_mm7_element_s* zx_NEW_mm7_element(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_element_s* x = ZX_ZALLOC(c, struct zx_mm7_element_s);
   x->gg.g.tok = zx_mm7_element_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9304,50 +7818,19 @@ int zx_WALK_WO_mm7_element(struct zx_ctx* c, struct zx_mm7_element_s* x, void* c
 #define EL_NS     mm7
 #define EL_TAG    extendedCancelReq
 
-/* FUNC(zx_FREE_mm7_extendedCancelReq) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCancelReq_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->SenderIdentification->gg;
-       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, free_strs);
-  }
-  for (e = &x->Extension->gg;
-       e && e->g.tok == zx_mm7_Extension_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->CancelID, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_extendedCancelReq) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_extendedCancelReq_s* zx_NEW_mm7_extendedCancelReq(struct zx_ctx* c)
+struct zx_mm7_extendedCancelReq_s* zx_NEW_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_extendedCancelReq_s* x = ZX_ZALLOC(c, struct zx_mm7_extendedCancelReq_s);
   x->gg.g.tok = zx_mm7_extendedCancelReq_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9500,43 +7983,19 @@ int zx_WALK_WO_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCan
 #define EL_NS     mm7
 #define EL_TAG    extendedCancelRsp
 
-/* FUNC(zx_FREE_mm7_extendedCancelRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCancelRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_extendedCancelRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_extendedCancelRsp_s* zx_NEW_mm7_extendedCancelRsp(struct zx_ctx* c)
+struct zx_mm7_extendedCancelRsp_s* zx_NEW_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_extendedCancelRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_extendedCancelRsp_s);
   x->gg.g.tok = zx_mm7_extendedCancelRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9663,69 +8122,19 @@ int zx_WALK_WO_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCan
 #define EL_NS     mm7
 #define EL_TAG    extendedReplaceReq
 
-/* FUNC(zx_FREE_mm7_extendedReplaceReq) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedReplaceReq_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  zx_free_simple_elems(c, x->VASPID, free_strs);
-  zx_free_simple_elems(c, x->VASID, free_strs);
-  for (e = &x->ServiceCode->gg;
-       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->ReplaceID, free_strs);
-  zx_free_simple_elems(c, x->TimeStamp, free_strs);
-  zx_free_simple_elems(c, x->EarliestDeliveryTime, free_strs);
-  zx_free_simple_elems(c, x->ExpiryDate, free_strs);
-  zx_free_simple_elems(c, x->ReadReply, free_strs);
-  zx_free_simple_elems(c, x->DeliveryReport, free_strs);
-  for (e = &x->Content->gg;
-       e && e->g.tok == zx_mm7_Content_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Content(c, (struct zx_mm7_Content_s*)e, free_strs);
-  }
-  for (e = &x->AdditionalInformation->gg;
-       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, free_strs);
-  }
-  for (e = &x->MessageExtraData->gg;
-       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_extendedReplaceReq) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_extendedReplaceReq_s* zx_NEW_mm7_extendedReplaceReq(struct zx_ctx* c)
+struct zx_mm7_extendedReplaceReq_s* zx_NEW_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_extendedReplaceReq_s* x = ZX_ZALLOC(c, struct zx_mm7_extendedReplaceReq_s);
   x->gg.g.tok = zx_mm7_extendedReplaceReq_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -9955,44 +8364,19 @@ int zx_WALK_WO_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedRe
 #define EL_NS     mm7
 #define EL_TAG    extendedReplaceRsp
 
-/* FUNC(zx_FREE_mm7_extendedReplaceRsp) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extendedReplaceRsp_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  zx_free_simple_elems(c, x->MM7Version, free_strs);
-  zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_mm7_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_mm7_extendedReplaceRsp) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_mm7_extendedReplaceRsp_s* zx_NEW_mm7_extendedReplaceRsp(struct zx_ctx* c)
+struct zx_mm7_extendedReplaceRsp_s* zx_NEW_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_mm7_extendedReplaceRsp_s* x = ZX_ZALLOC(c, struct zx_mm7_extendedReplaceRsp_s);
   x->gg.g.tok = zx_mm7_extendedReplaceRsp_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

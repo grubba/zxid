@@ -563,11 +563,11 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
   resp->Object = zx_NEW_ps_Object(cf->ctx, &resp->gg);
   resp->Object->ObjectID = zx_new_simple_elem(cf->ctx, &resp->Object->gg, zx_ps_ObjectID_ELEM, zxid_psobj_enc(cf, issuer,"ZO",obj->psobj));
   resp->Object->DisplayName = zx_NEW_ps_DisplayName(cf->ctx, &resp->Object->gg);
-  zx_add_content(c, &resp->Object->DisplayName->gg, obj->dispname);
+  zx_add_content(cf->ctx, &resp->Object->DisplayName->gg, obj->dispname);
   resp->Object->DisplayName->Locale = zx_dup_attr(cf->ctx, zx_Locale_ATTR, "xx");  /* unknown locale */
   for (tag = obj->tags; tag; tag = tag->n) {
-    resp->Object->Tag = zx_NEW_ps_Tag(cf->ctx, &resp->Object->rr);
-    zx_add_content(c, &resp->Object->Tag->gg, tag);
+    resp->Object->Tag = zx_NEW_ps_Tag(cf->ctx, &resp->Object->gg);
+    zx_add_content(cf->ctx, &resp->Object->Tag->gg, tag);
   }
   resp->Object->NodeType = zx_dup_attr(cf->ctx, zx_NodeType_ATTR, obj->nodetype?PS_COL:PS_ENT);
   resp->Object->CreatedDateTime = zxid_date_time_attr(cf, zx_CreatedDateTime_ATTR, obj->create_secs);

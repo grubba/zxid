@@ -653,7 +653,7 @@ void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec
 int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* ts, struct timeval* ourts, struct timeval* srcts, const char* ctlpt, const char* faultactor)
 {
   if (ts && ZX_SIMPLE_ELEM_CHK(ts->Created)) {
-    srcts->tv_sec = zx_date_time_to_secs(ZX_GET_CONTENT_S(ts->Created->gg.content->s));
+    srcts->tv_sec = zx_date_time_to_secs(ZX_GET_CONTENT_S(ts->Created));
      
     if (srcts->tv_sec >= ourts->tv_sec - cf->before_slop
 	&& srcts->tv_sec <= ourts->tv_sec + cf->after_slop) {
@@ -714,7 +714,7 @@ void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_
   ud->Obligation->AttributeAssignment = zx_NEW_xa_AttributeAssignment(cf->ctx, &ud->Obligation->gg);
   ud->Obligation->AttributeAssignment->AttributeId = zx_dup_attr(cf->ctx, zx_AttributeId_ATTR, attrid);
   ud->Obligation->AttributeAssignment->DataType = zx_dup_attr(cf->ctx, zx_DataType_ATTR, XS_STRING);
-  zx_add_content(c, &ud->Obligation->AttributeAssignment->gg, zx_dup_str(cf->ctx, obl));
+  zx_add_content(cf->ctx, &ud->Obligation->AttributeAssignment->gg, zx_dup_str(cf->ctx, obl));
   D("Attached (%s) obligations(%s)", attrid, obl);
 }
 

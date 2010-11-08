@@ -154,7 +154,6 @@ struct zx_elem_s {
   struct zx_attr_s* attr;      /* list of attributes */
   struct zx_ns_s*   ns;        /* namespace of the element */
   struct zx_ns_s*   xmlns;     /* xmlns declarations (for inc_ns processing) */
-  /* *** xap: struct zx_str*    content;   /* non-element content, if any */
 };
 
 #define ZX_ELEM_EXT struct zx_elem_s gg;   /* Used in generated data types */
@@ -188,11 +187,12 @@ int   zx_str_ends_in(struct zx_str* ss, int len, const char* suffix);
 #define ZX_STR_EQ(ss, cstr) ((ss) && (cstr) && (ss)->s && (ss)->len == strlen(cstr) && !memcmp((cstr), (ss)->s, (ss)->len))
 #define ZX_STR_ENDS_IN_CONST(ss, suffix) zx_str_ends_in((ss), sizeof(suffix)-1, (suffix))
 
-#define ZX_SIMPLE_ELEM_CHK(el) ((el) && (el)->kids && (el)->kids->g.tag == ZX_TAG_DATA && (el)->kids->g.len && (el)->kids->g->s && (el)->kids->g.s[0])
-#define ZX_CONTENT_EQ_CONST(e, c) ((e) && (e)->kids && (e)->kids->g.tag == ZX_TAG_DATA && (e)->kids->g.len == sizeof(c)-1 && !memcmp((e)->kids->g.s, (c), sizeof(c)-1))
-#define ZX_GET_CONTENT(e) ((e) && (e)->kids && (e)->kids->g.tag == ZX_TAG_DATA ? &(e)->kids->g : 0)
-#define ZX_GET_CONTENT_LEN(e) ((e) && (e)->kids && (e)->kids->g.tag == ZX_TAG_DATA ? (e)->kids->g.len : 0)
-#define ZX_GET_CONTENT_S(e) ((e) && (e)->kids && (e)->kids->g.tag == ZX_TAG_DATA ? (e)->kids->g.s : 0)
+#define ZX_ELEM_S(e) ((struct zx_elem_s*)(e))
+#define ZX_SIMPLE_ELEM_CHK(e) ((e) && ZX_ELEM_S(e)->kids && ZX_ELEM_S(e)->kids->g.tok == ZX_TOK_DATA && ZX_ELEM_S(e)->kids->g.len && ZX_ELEM_S(e)->kids->g.s && ZX_ELEM_S(e)->kids->g.s[0])
+#define ZX_CONTENT_EQ_CONST(e, c) ((e) && ZX_ELEM_S(e)->kids && ZX_ELEM_S(e)->kids->g.tok == ZX_TOK_DATA && ZX_ELEM_S(e)->kids->g.len == sizeof(c)-1 && !memcmp(ZX_ELEM_S(e)->kids->g.s, (c), sizeof(c)-1))
+#define ZX_GET_CONTENT(e) ((e) && ZX_ELEM_S(e)->kids && ZX_ELEM_S(e)->kids->g.tok == ZX_TOK_DATA ? &ZX_ELEM_S(e)->kids->g : 0)
+#define ZX_GET_CONTENT_LEN(e) ((e) && ZX_ELEM_S(e)->kids && ZX_ELEM_S(e)->kids->g.tok == ZX_TOK_DATA ? ZX_ELEM_S(e)->kids->g.len : 0)
+#define ZX_GET_CONTENT_S(e) ((e) && ZX_ELEM_S(e)->kids && ZX_ELEM_S(e)->kids->g.tok == ZX_TOK_DATA ? ZX_ELEM_S(e)->kids->g.s : 0)
 
 char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int needle_len);
 void* zx_alloc(struct zx_ctx* c, int size);
@@ -290,6 +290,7 @@ char* zx_enc_seen(char* p, struct zx_ns_s* ns);
 int   zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp);
 void  zx_see_attr_ns(struct zx_ctx* c, struct zx_attr_s* aa, struct zx_ns_s** pop_seenp);
 char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_elem_s* x);
+int   zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x);
 char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p);
 struct zx_str* zx_EASY_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x);
 struct zx_str* zx_easy_enc_common(struct zx_ctx* c, char* p, char* buf, int len);

@@ -221,6 +221,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, z
   zxid_a7n* a7n;
   struct zx_str* affil;
   struct zx_str* subj;
+  struct zx_str* ss;
   struct zx_xac_Attribute_s* xac_at;
   
   if (!zxid_chk_sig(cf, cgi, ses, &azq->gg, azq->Signature, azq->Issuer, 0, "XACMLAuthzDecisionQuery"))
@@ -242,8 +243,8 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, z
 	 xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
       if (xac_at->AttributeId->g.len == sizeof("role")-1
 	  && !memcmp(xac_at->AttributeId->g.s, "role", sizeof("role")-1)) {
-	if (ZX_GET_CONTENT_LEN(xac_at->AttributeValue) == sizeof("deny")-1
-	    && !memcmp(ZX_GET_CONTENT_S(xac_at->AttributeValue), "deny", sizeof("deny")-1)) {
+	ss = ZX_GET_CONTENT(xac_at->AttributeValue);
+	if (ss?ss->len:0 == sizeof("deny")-1 && !memcmp(ss->s, "deny", sizeof("deny")-1)) {
 	  D("PDP: Deny due to role=deny %d",0);
 	  zxid_ins_xacml_az_stmt(cf, a7n, "Deny");
 	  resp = zxid_mk_saml_resp(cf);
@@ -267,6 +268,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
   zxid_a7n* a7n;
   struct zx_str* affil;
   struct zx_str* subj;
+  struct zx_str* ss;
   struct zx_xac_Attribute_s* xac_at;
   
   if (!zxid_chk_sig(cf, cgi, ses, &azq->gg, azq->Signature, azq->Issuer, 0, "XACMLAuthzDecisionQuery"))
@@ -288,8 +290,8 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
 	 xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
       if (xac_at->AttributeId->g.len == sizeof("role")-1
 	  && !memcmp(xac_at->AttributeId->g.s, "role", sizeof("role")-1)) {
-	if (ZX_GET_CONTENT_LEN(xac_at->AttributeValue) == sizeof("deny")-1
-	    && !memcmp(ZX_GET_CONTENT_S(xac_at->AttributeValue), "deny", sizeof("deny")-1)) {
+	ss = ZX_GET_CONTENT(xac_at->AttributeValue);
+	if (ss?ss->len:0 == sizeof("deny")-1 && !memcmp(ss->s, "deny", sizeof("deny")-1)) {
 	  D("PDP: Deny due to role=deny %d",0);
 	  zxid_ins_xacml_az_cd1_stmt(cf, a7n, "Deny");
 	  resp = zxid_mk_saml_resp(cf);

@@ -38,8 +38,7 @@ struct zx_exca_InclusiveNamespaces_s {
 };
 
 struct zx_exca_InclusiveNamespaces_s* zx_DEC_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
-struct zx_exca_InclusiveNamespaces_s* zx_NEW_exca_InclusiveNamespaces(struct zx_ctx* c);
-void zx_FREE_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x, int free_strs);
+struct zx_exca_InclusiveNamespaces_s* zx_NEW_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_elem_s* father);
 int zx_LEN_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);
 char* zx_ENC_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x, char* p);
 struct zx_str* zx_EASY_ENC_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_InclusiveNamespaces_s* x);

@@ -48,38 +48,19 @@
 #define EL_NS     ecp
 #define EL_TAG    RelayState
 
-/* FUNC(zx_FREE_ecp_RelayState) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->actor, free_strs);
-  zx_free_attr(c, x->mustUnderstand, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ecp_RelayState) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ecp_RelayState_s* zx_NEW_ecp_RelayState(struct zx_ctx* c)
+struct zx_ecp_RelayState_s* zx_NEW_ecp_RelayState(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ecp_RelayState_s* x = ZX_ZALLOC(c, struct zx_ecp_RelayState_s);
   x->gg.g.tok = zx_ecp_RelayState_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -184,52 +165,19 @@ int zx_WALK_WO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x, v
 #define EL_NS     ecp
 #define EL_TAG    Request
 
-/* FUNC(zx_FREE_ecp_Request) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->IsPassive, free_strs);
-  zx_free_attr(c, x->ProviderName, free_strs);
-  zx_free_attr(c, x->actor, free_strs);
-  zx_free_attr(c, x->mustUnderstand, free_strs);
-
-  for (e = &x->Issuer->gg;
-       e && e->g.tok == zx_sa_Issuer_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sa_Issuer(c, (struct zx_sa_Issuer_s*)e, free_strs);
-  }
-  for (e = &x->IDPList->gg;
-       e && e->g.tok == zx_sp_IDPList_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_sp_IDPList(c, (struct zx_sp_IDPList_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ecp_Request) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ecp_Request_s* zx_NEW_ecp_Request(struct zx_ctx* c)
+struct zx_ecp_Request_s* zx_NEW_ecp_Request(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ecp_Request_s* x = ZX_ZALLOC(c, struct zx_ecp_Request_s);
   x->gg.g.tok = zx_ecp_Request_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -380,39 +328,19 @@ int zx_WALK_WO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, void* c
 #define EL_NS     ecp
 #define EL_TAG    Response
 
-/* FUNC(zx_FREE_ecp_Response) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->AssertionConsumerServiceURL, free_strs);
-  zx_free_attr(c, x->actor, free_strs);
-  zx_free_attr(c, x->mustUnderstand, free_strs);
-
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_ecp_Response) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_ecp_Response_s* zx_NEW_ecp_Response(struct zx_ctx* c)
+struct zx_ecp_Response_s* zx_NEW_ecp_Response(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_ecp_Response_s* x = ZX_ZALLOC(c, struct zx_ecp_Response_s);
   x->gg.g.tok = zx_ecp_Response_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 

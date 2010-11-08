@@ -113,7 +113,7 @@ void test_ibm_cert_problem_enc_dec()
   nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, "persistent");
   nameid->NameQualifier = zx_ref_attr(cf->ctx, zx_NameQualifier_ATTR, "ibmidp");
   /*nameid->SPNameQualifier = zx_ref_attr(cf->ctx, zx_SPNameQualifier_ATTR, spqual);*/
-  zx_add_content(c, nameid, zx_ref_str(cf->ctx, "a-persistent-nid"));
+  zx_add_content(cf->ctx, &nameid->gg, zx_ref_str(cf->ctx, "a-persistent-nid"));
 
 #if 0
   cf->enc_pkey = zxid_read_private_key(cf, "sym-idp-enc.pem");
@@ -377,15 +377,15 @@ int main(int argc, char** argv, char** env)
     if (!so_p)
       DIE("encoding error");
 
-    len_wo = zx_LEN_WO_any_elem(&ctx, r);
+    len_wo = zx_LEN_WO_any_elem(&ctx, &r->gg);
     D("Enc wo len %d chars", len_wo);
 
     ctx.bas = wo_out;
-    wo_p = zx_ENC_WO_any_elem(&ctx, r, wo_out);
+    wo_p = zx_ENC_WO_any_elem(&ctx, &r->gg, wo_out);
     if (!wo_p)
       DIE("encoding error");
 
-    zx_FREE_root(&ctx, r, 0);
+    zx_free_elem(&ctx, &r->gg, 0);
   }
 
   if (got_all != len_wo)

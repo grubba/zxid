@@ -48,43 +48,19 @@
 #define EL_NS     pmm
 #define EL_TAG    PMActivate
 
-/* FUNC(zx_FREE_pmm_PMActivate) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->PMActivateItem->gg;
-       e && e->g.tok == zx_pmm_PMActivateItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_pmm_PMActivateItem(c, (struct zx_pmm_PMActivateItem_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->NotifyTo, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMActivate) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMActivate_s* zx_NEW_pmm_PMActivate(struct zx_ctx* c)
+struct zx_pmm_PMActivate_s* zx_NEW_pmm_PMActivate(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMActivate_s* x = ZX_ZALLOC(c, struct zx_pmm_PMActivate_s);
   x->gg.g.tok = zx_pmm_PMActivate_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -211,44 +187,19 @@ int zx_WALK_WO_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x, v
 #define EL_NS     pmm
 #define EL_TAG    PMActivateItem
 
-/* FUNC(zx_FREE_pmm_PMActivateItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->at, free_strs);
-  zx_free_attr(c, x->itemID, free_strs);
-
-  for (e = &x->PMID->gg;
-       e && e->g.tok == zx_prov_PMID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMActivateItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMActivateItem_s* zx_NEW_pmm_PMActivateItem(struct zx_ctx* c)
+struct zx_pmm_PMActivateItem_s* zx_NEW_pmm_PMActivateItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMActivateItem_s* x = ZX_ZALLOC(c, struct zx_pmm_PMActivateItem_s);
   x->gg.g.tok = zx_pmm_PMActivateItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -374,42 +325,19 @@ int zx_WALK_WO_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateItem
 #define EL_NS     pmm
 #define EL_TAG    PMActivateResponse
 
-/* FUNC(zx_FREE_pmm_PMActivateResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivateResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMActivateResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMActivateResponse_s* zx_NEW_pmm_PMActivateResponse(struct zx_ctx* c)
+struct zx_pmm_PMActivateResponse_s* zx_NEW_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMActivateResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMActivateResponse_s);
   x->gg.g.tok = zx_pmm_PMActivateResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -531,43 +459,19 @@ int zx_WALK_WO_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivate
 #define EL_NS     pmm
 #define EL_TAG    PMDeactivate
 
-/* FUNC(zx_FREE_pmm_PMDeactivate) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->PMDeactivateItem->gg;
-       e && e->g.tok == zx_pmm_PMDeactivateItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_pmm_PMDeactivateItem(c, (struct zx_pmm_PMDeactivateItem_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->NotifyTo, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMDeactivate) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMDeactivate_s* zx_NEW_pmm_PMDeactivate(struct zx_ctx* c)
+struct zx_pmm_PMDeactivate_s* zx_NEW_pmm_PMDeactivate(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMDeactivate_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeactivate_s);
   x->gg.g.tok = zx_pmm_PMDeactivate_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -694,44 +598,19 @@ int zx_WALK_WO_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s* 
 #define EL_NS     pmm
 #define EL_TAG    PMDeactivateItem
 
-/* FUNC(zx_FREE_pmm_PMDeactivateItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivateItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->at, free_strs);
-  zx_free_attr(c, x->itemID, free_strs);
-
-  for (e = &x->PMID->gg;
-       e && e->g.tok == zx_prov_PMID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMDeactivateItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMDeactivateItem_s* zx_NEW_pmm_PMDeactivateItem(struct zx_ctx* c)
+struct zx_pmm_PMDeactivateItem_s* zx_NEW_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMDeactivateItem_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeactivateItem_s);
   x->gg.g.tok = zx_pmm_PMDeactivateItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -857,42 +736,19 @@ int zx_WALK_WO_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivate
 #define EL_NS     pmm
 #define EL_TAG    PMDeactivateResponse
 
-/* FUNC(zx_FREE_pmm_PMDeactivateResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeactivateResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMDeactivateResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMDeactivateResponse_s* zx_NEW_pmm_PMDeactivateResponse(struct zx_ctx* c)
+struct zx_pmm_PMDeactivateResponse_s* zx_NEW_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMDeactivateResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeactivateResponse_s);
   x->gg.g.tok = zx_pmm_PMDeactivateResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1014,42 +870,19 @@ int zx_WALK_WO_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeacti
 #define EL_NS     pmm
 #define EL_TAG    PMDelete
 
-/* FUNC(zx_FREE_pmm_PMDelete) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->PMDeleteItem->gg;
-       e && e->g.tok == zx_pmm_PMDeleteItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_pmm_PMDeleteItem(c, (struct zx_pmm_PMDeleteItem_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMDelete) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMDelete_s* zx_NEW_pmm_PMDelete(struct zx_ctx* c)
+struct zx_pmm_PMDelete_s* zx_NEW_pmm_PMDelete(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMDelete_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDelete_s);
   x->gg.g.tok = zx_pmm_PMDelete_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1171,43 +1004,19 @@ int zx_WALK_WO_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x, void*
 #define EL_NS     pmm
 #define EL_TAG    PMDeleteItem
 
-/* FUNC(zx_FREE_pmm_PMDeleteItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->itemID, free_strs);
-
-  for (e = &x->PMID->gg;
-       e && e->g.tok == zx_prov_PMID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMDeleteItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMDeleteItem_s* zx_NEW_pmm_PMDeleteItem(struct zx_ctx* c)
+struct zx_pmm_PMDeleteItem_s* zx_NEW_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMDeleteItem_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeleteItem_s);
   x->gg.g.tok = zx_pmm_PMDeleteItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1331,42 +1140,19 @@ int zx_WALK_WO_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s* 
 #define EL_NS     pmm
 #define EL_TAG    PMDeleteResponse
 
-/* FUNC(zx_FREE_pmm_PMDeleteResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMDeleteResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMDeleteResponse_s* zx_NEW_pmm_PMDeleteResponse(struct zx_ctx* c)
+struct zx_pmm_PMDeleteResponse_s* zx_NEW_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMDeleteResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMDeleteResponse_s);
   x->gg.g.tok = zx_pmm_PMDeleteResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1488,42 +1274,19 @@ int zx_WALK_WO_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteResp
 #define EL_NS     pmm
 #define EL_TAG    PMGetStatus
 
-/* FUNC(zx_FREE_pmm_PMGetStatus) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->PMID->gg;
-       e && e->g.tok == zx_prov_PMID_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMGetStatus) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMGetStatus_s* zx_NEW_pmm_PMGetStatus(struct zx_ctx* c)
+struct zx_pmm_PMGetStatus_s* zx_NEW_pmm_PMGetStatus(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMGetStatus_s* x = ZX_ZALLOC(c, struct zx_pmm_PMGetStatus_s);
   x->gg.g.tok = zx_pmm_PMGetStatus_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1645,48 +1408,19 @@ int zx_WALK_WO_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x,
 #define EL_NS     pmm
 #define EL_TAG    PMGetStatusResponse
 
-/* FUNC(zx_FREE_pmm_PMGetStatusResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetStatusResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-  for (e = &x->PMStatus->gg;
-       e && e->g.tok == zx_prov_PMStatus_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMGetStatusResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMGetStatusResponse_s* zx_NEW_pmm_PMGetStatusResponse(struct zx_ctx* c)
+struct zx_pmm_PMGetStatusResponse_s* zx_NEW_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMGetStatusResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMGetStatusResponse_s);
   x->gg.g.tok = zx_pmm_PMGetStatusResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1829,42 +1563,19 @@ int zx_WALK_WO_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetStat
 #define EL_NS     pmm
 #define EL_TAG    PMSetStatus
 
-/* FUNC(zx_FREE_pmm_PMSetStatus) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->PMStatus->gg;
-       e && e->g.tok == zx_prov_PMStatus_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMSetStatus) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMSetStatus_s* zx_NEW_pmm_PMSetStatus(struct zx_ctx* c)
+struct zx_pmm_PMSetStatus_s* zx_NEW_pmm_PMSetStatus(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMSetStatus_s* x = ZX_ZALLOC(c, struct zx_pmm_PMSetStatus_s);
   x->gg.g.tok = zx_pmm_PMSetStatus_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -1986,42 +1697,19 @@ int zx_WALK_WO_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x,
 #define EL_NS     pmm
 #define EL_TAG    PMSetStatusResponse
 
-/* FUNC(zx_FREE_pmm_PMSetStatusResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetStatusResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMSetStatusResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMSetStatusResponse_s* zx_NEW_pmm_PMSetStatusResponse(struct zx_ctx* c)
+struct zx_pmm_PMSetStatusResponse_s* zx_NEW_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMSetStatusResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMSetStatusResponse_s);
   x->gg.g.tok = zx_pmm_PMSetStatusResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2143,43 +1831,19 @@ int zx_WALK_WO_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetStat
 #define EL_NS     pmm
 #define EL_TAG    PMUpdate
 
-/* FUNC(zx_FREE_pmm_PMUpdate) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->PMUpdateItem->gg;
-       e && e->g.tok == zx_pmm_PMUpdateItem_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_pmm_PMUpdateItem(c, (struct zx_pmm_PMUpdateItem_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->NotifyTo, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMUpdate) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMUpdate_s* zx_NEW_pmm_PMUpdate(struct zx_ctx* c)
+struct zx_pmm_PMUpdate_s* zx_NEW_pmm_PMUpdate(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMUpdate_s* x = ZX_ZALLOC(c, struct zx_pmm_PMUpdate_s);
   x->gg.g.tok = zx_pmm_PMUpdate_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2306,45 +1970,19 @@ int zx_WALK_WO_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x, void*
 #define EL_NS     pmm
 #define EL_TAG    PMUpdateItem
 
-/* FUNC(zx_FREE_pmm_PMUpdateItem) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->at, free_strs);
-  zx_free_attr(c, x->itemID, free_strs);
-  zx_free_attr(c, x->type, free_strs);
-
-  for (e = &x->PMDescriptor->gg;
-       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMUpdateItem) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMUpdateItem_s* zx_NEW_pmm_PMUpdateItem(struct zx_ctx* c)
+struct zx_pmm_PMUpdateItem_s* zx_NEW_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMUpdateItem_s* x = ZX_ZALLOC(c, struct zx_pmm_PMUpdateItem_s);
   x->gg.g.tok = zx_pmm_PMUpdateItem_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2472,42 +2110,19 @@ int zx_WALK_WO_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s* 
 #define EL_NS     pmm
 #define EL_TAG    PMUpdateResponse
 
-/* FUNC(zx_FREE_pmm_PMUpdateResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_PMUpdateResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_PMUpdateResponse_s* zx_NEW_pmm_PMUpdateResponse(struct zx_ctx* c)
+struct zx_pmm_PMUpdateResponse_s* zx_NEW_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_PMUpdateResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_PMUpdateResponse_s);
   x->gg.g.tok = zx_pmm_PMUpdateResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2629,50 +2244,19 @@ int zx_WALK_WO_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateResp
 #define EL_NS     pmm
 #define EL_TAG    Provision
 
-/* FUNC(zx_FREE_pmm_Provision) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-  zx_free_attr(c, x->wait, free_strs);
-
-  for (e = &x->ProvisioningHandle->gg;
-       e && e->g.tok == zx_prov_ProvisioningHandle_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_prov_ProvisioningHandle(c, (struct zx_prov_ProvisioningHandle_s*)e, free_strs);
-  }
-  for (e = &x->PMDescriptor->gg;
-       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)e, free_strs);
-  }
-  zx_free_simple_elems(c, x->NotifyTo, free_strs);
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_Provision) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_Provision_s* zx_NEW_pmm_Provision(struct zx_ctx* c)
+struct zx_pmm_Provision_s* zx_NEW_pmm_Provision(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_Provision_s* x = ZX_ZALLOC(c, struct zx_pmm_Provision_s);
   x->gg.g.tok = zx_pmm_Provision_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
@@ -2822,42 +2406,19 @@ int zx_WALK_WO_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x, voi
 #define EL_NS     pmm
 #define EL_TAG    ProvisionResponse
 
-/* FUNC(zx_FREE_pmm_ProvisionResponse) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void zx_FREE_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_pmm_ProvisionResponse_s* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-
-  for (e = &x->Status->gg;
-       e && e->g.tok == zx_lu_Status_ELEM;
-       e = en) {
-    en = (struct zx_elem_s*)e->g.n;
-    zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
-  }
-
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(zx_NEW_pmm_ProvisionResponse) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct zx_pmm_ProvisionResponse_s* zx_NEW_pmm_ProvisionResponse(struct zx_ctx* c)
+struct zx_pmm_ProvisionResponse_s* zx_NEW_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct zx_pmm_ProvisionResponse_s* x = ZX_ZALLOC(c, struct zx_pmm_ProvisionResponse_s);
   x->gg.g.tok = zx_pmm_ProvisionResponse_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids->g;
+    father->kids = &x->gg;
+  }
   return x;
 }
 
