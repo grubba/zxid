@@ -294,7 +294,7 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
     return 1;
   }
   epr = r->EndpointReference;
-  if (!epr->Address || !epr->Address->gg.content || !epr->Address->gg.content->len) {
+  if (!ZX_SIMPLE_ELEM_CHK(epr->Address)) {
     ERR("<EndpointReference> MUST have <Address> element buf(%.*s)", got, buf);
     return 1;
   }
@@ -302,8 +302,7 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
     ERR("<EndpointReference> MUST have <Metadata> element buf(%.*s)", got, buf);
     return 1;
   }
-  if (!epr->Metadata->ProviderID
-      || !epr->Metadata->ProviderID->content->len || !epr->Metadata->ProviderID->content->len) {
+  if (!ZX_SIMPLE_ELEM_CHK(epr->Metadata->ProviderID)) {
     ERR("<EndpointReference> MUST have <Metadata> with <ProviderID> element buf(%.*s)", got, buf);
     return 1;
   }
@@ -320,11 +319,11 @@ static int zxid_reg_svc(zxid_conf* cf, int bs_reg, int dry_run, const char* ddim
   
 #if 0
   // *** wrong
-  got = MIN(epr->Metadata->ProviderID->content->len, sizeof(path)-1);
-  memcpy(path, epr->Metadata->ProviderID->content->s, got);
+  got = MIN(ZX_GET_CONTENT_LEN(epr->Metadata->ProviderID), sizeof(path)-1);
+  memcpy(path, ZX_GET_CONTENT_S(epr->Metadata->ProviderID), got);
 #else
-  got = MIN(epr->Metadata->ServiceType->content->len, sizeof(path)-1);
-  memcpy(path, epr->Metadata->ServiceType->content->s, got);
+  got = MIN(ZX_GET_CONTENT_LEN(epr->Metadata->ServiceType), sizeof(path)-1);
+  memcpy(path, ZX_GET_CONTENT_S(epr->Metadata->ServiceType), got);
 #endif
   path[got] = 0;
   zxid_fold_svc(path, got);

@@ -85,9 +85,9 @@ int zx_LEN_SO_b12_Consent(struct zx_ctx* c, struct zx_b12_Consent_s* x )
   int len = sizeof("<b12:Consent")-1 + 1 + sizeof("</b12:Consent>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->timestamp, sizeof("timestamp")-1, &pop_seen);
@@ -126,9 +126,9 @@ char* zx_ENC_SO_b12_Consent(struct zx_ctx* c, struct zx_b12_Consent_s* x, char* 
   ZX_OUT_TAG(p, "<b12:Consent");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -224,9 +224,9 @@ int zx_LEN_SO_b12_Correlation(struct zx_ctx* c, struct zx_b12_Correlation_s* x )
   int len = sizeof("<b12:Correlation")-1 + 1 + sizeof("</b12:Correlation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->messageID, sizeof("messageID")-1, &pop_seen);
@@ -266,9 +266,9 @@ char* zx_ENC_SO_b12_Correlation(struct zx_ctx* c, struct zx_b12_Correlation_s* x
   ZX_OUT_TAG(p, "<b12:Correlation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -365,9 +365,9 @@ int zx_LEN_SO_b12_ProcessingContext(struct zx_ctx* c, struct zx_b12_ProcessingCo
   int len = sizeof("<b12:ProcessingContext")-1 + 1 + sizeof("</b12:ProcessingContext>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->actor, sizeof("e:actor")-1, &pop_seen);
@@ -404,9 +404,9 @@ char* zx_ENC_SO_b12_ProcessingContext(struct zx_ctx* c, struct zx_b12_Processing
   ZX_OUT_TAG(p, "<b12:ProcessingContext");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -500,9 +500,9 @@ int zx_LEN_SO_b12_Provider(struct zx_ctx* c, struct zx_b12_Provider_s* x )
   int len = sizeof("<b12:Provider")-1 + 1 + sizeof("</b12:Provider>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->affiliationID, sizeof("affiliationID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -541,9 +541,9 @@ char* zx_ENC_SO_b12_Provider(struct zx_ctx* c, struct zx_b12_Provider_s* x, char
   ZX_OUT_TAG(p, "<b12:Provider");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -639,9 +639,9 @@ int zx_LEN_SO_b12_UsageDirective(struct zx_ctx* c, struct zx_b12_UsageDirective_
   int len = sizeof("<b12:UsageDirective")-1 + 1 + sizeof("</b12:UsageDirective>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
@@ -679,9 +679,9 @@ char* zx_ENC_SO_b12_UsageDirective(struct zx_ctx* c, struct zx_b12_UsageDirectiv
   ZX_OUT_TAG(p, "<b12:UsageDirective");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_b12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_b12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 

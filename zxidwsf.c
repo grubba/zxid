@@ -46,8 +46,7 @@ int zxid_map_sec_mech(zxid_epr* epr)
     return ZXID_SEC_MECH_X509;
   }
   secmechid = epr->Metadata->SecurityContext->SecurityMechID;
-  if (!secmechid || !secmechid->content
-      || !secmechid->content->s || !secmechid->content->len) {
+  if (!ZX_SIMPLE_ELEM_CHK(secmechid)) {
     if (epr->Metadata->SecurityContext->Token) {
       INFO("EPR does not specify sec mech id. Forcing Bearer. %p", secmechid);
       return ZXID_SEC_MECH_BEARER;
@@ -57,8 +56,8 @@ int zxid_map_sec_mech(zxid_epr* epr)
     }
   }
 
-  len = secmechid->content->len;
-  s = secmechid->content->s;
+  len = ZX_GET_CONTENT_LEN(secmechid);
+  s   = ZX_GET_CONTENT_S(secmechid);
 
   D("mapping secmec(%.*s)", len, s);
 
@@ -654,7 +653,7 @@ void zxid_wsf_sign(zxid_conf* cf, int sign_flags, struct zx_wsse_Security_s* sec
 int zxid_wsf_timestamp_check(zxid_conf* cf, zxid_ses* ses, struct zx_wsu_Timestamp_s* ts, struct timeval* ourts, struct timeval* srcts, const char* ctlpt, const char* faultactor)
 {
   if (ts && ZX_SIMPLE_ELEM_CHK(ts->Created)) {
-    srcts->tv_sec = zx_date_time_to_secs(ts->Created->gg.content->s);
+    srcts->tv_sec = zx_date_time_to_secs(ZX_GET_CONTENT_S(ts->Created->gg.content->s));
      
     if (srcts->tv_sec >= ourts->tv_sec - cf->before_slop
 	&& srcts->tv_sec <= ourts->tv_sec + cf->after_slop) {
@@ -706,16 +705,16 @@ void zxid_attach_sol1_usage_directive(zxid_conf* cf, zxid_ses* ses, struct zx_e_
   if (!obl || !*obl)
     return;
 
-  env->Header->UsageDirective = ud = zx_NEW_b_UsageDirective(cf->ctx);
+  env->Header->UsageDirective = ud = zx_NEW_b_UsageDirective(cf->ctx,0);
   ud->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   ud->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
-  ud->Obligation = zx_NEW_xa_Obligation(cf->ctx);
+  ud->Obligation = zx_NEW_xa_Obligation(cf->ctx, &ud->gg);
   ud->Obligation->ObligationId = zx_dup_attr(cf->ctx, zx_ObligationId_ATTR, TAS3_SOL1_ENGINE);
   ud->Obligation->FulfillOn = zx_dup_attr(cf->ctx, zx_FulfillOn_ATTR, "Permit");
-  ud->Obligation->AttributeAssignment = zx_NEW_xa_AttributeAssignment(cf->ctx);
+  ud->Obligation->AttributeAssignment = zx_NEW_xa_AttributeAssignment(cf->ctx, &ud->Obligation->gg);
   ud->Obligation->AttributeAssignment->AttributeId = zx_dup_attr(cf->ctx, zx_AttributeId_ATTR, attrid);
   ud->Obligation->AttributeAssignment->DataType = zx_dup_attr(cf->ctx, zx_DataType_ATTR, XS_STRING);
-  ud->Obligation->AttributeAssignment->gg.content = zx_dup_str(cf->ctx, obl);
+  zx_add_content(c, &ud->Obligation->AttributeAssignment->gg, zx_dup_str(cf->ctx, obl));
   D("Attached (%s) obligations(%s)", attrid, obl);
 }
 

@@ -233,12 +233,12 @@ int main(int argc, char** argv)
     }
     D("Here %p", epr);
 
-    env = zx_NEW_e_Envelope(cf->ctx);
-    env->Header = zx_NEW_e_Header(cf->ctx);
-    env->Body = zx_NEW_e_Body(cf->ctx);
-    env->Body->idhrxml_Create = zx_NEW_idhrxml_Create(cf->ctx);
-    env->Body->idhrxml_Create->CreateItem = zx_NEW_idhrxml_CreateItem(cf->ctx);
-    env->Body->idhrxml_Create->CreateItem->NewData = zx_NEW_idhrxml_NewData(cf->ctx);
+    env = zx_NEW_e_Envelope(cf->ctx,0);
+    env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+    env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
+    env->Body->idhrxml_Create = zx_NEW_idhrxml_Create(cf->ctx, &env->Body->gg);
+    env->Body->idhrxml_Create->CreateItem = zx_NEW_idhrxml_CreateItem(cf->ctx, &env->Body->idhrxml_Create->gg);
+    env->Body->idhrxml_Create->CreateItem->NewData = zx_NEW_idhrxml_NewData(cf->ctx, &env->Body->idhrxml_Create->CreateItem->gg);
     
     /* Parse the XML from the form field into data structure and include it as NewData. */
     
@@ -276,12 +276,13 @@ int main(int argc, char** argv)
       ERR("EPR could not be discovered %d", 0);
       break;
     }
-    env = zx_NEW_e_Envelope(cf->ctx);
-    env->Header = zx_NEW_e_Header(cf->ctx);
-    env->Body = zx_NEW_e_Body(cf->ctx);
-    env->Body->idhrxml_Query = zx_NEW_idhrxml_Query(cf->ctx);
-    env->Body->idhrxml_Query->QueryItem = zx_NEW_idhrxml_QueryItem(cf->ctx);
-    env->Body->idhrxml_Query->QueryItem->Select = zx_ref_simple_elem(cf->ctx, cgi.select);
+    env = zx_NEW_e_Envelope(cf->ctx,0);
+    env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+    env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
+    env->Body->idhrxml_Query = zx_NEW_idhrxml_Query(cf->ctx, &env->Body->gg);
+    env->Body->idhrxml_Query->QueryItem = zx_NEW_idhrxml_QueryItem(cf->ctx, &env->Body->idhrxml_Query->gg);
+    env->Body->idhrxml_Query->QueryItem->Select
+      = zx_ref_simple_elem(cf->ctx, &env->Body->idhrxml_Query->->QueryItem->gg, zx_idhrxml_Select_ELEM, cgi.select);
         
     env = zxid_wsc_call(cf, ses, epr, env, 0);
     D("HERE env=%p", env);

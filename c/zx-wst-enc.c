@@ -85,7 +85,7 @@ int zx_LEN_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s*
   int len = sizeof("<wst:Authenticator")-1 + 1 + sizeof("</wst:Authenticator>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -93,8 +93,10 @@ int zx_LEN_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_s*
   int len = 0;
 #endif
   
-  for (se = x->CombinedHash; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:CombinedHash")-1, zx_ns_tab+zx_wst_NS);
+  for (se = x->CombinedHash;
+    se && se->g.tok == zx_wst_CombinedHash_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:CombinedHash")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -121,7 +123,7 @@ char* zx_ENC_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_
   ZX_OUT_TAG(p, "<wst:Authenticator");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -133,8 +135,10 @@ char* zx_ENC_SO_wst_Authenticator(struct zx_ctx* c, struct zx_wst_Authenticator_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->CombinedHash; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:CombinedHash", sizeof("wst:CombinedHash")-1, zx_ns_tab+zx_wst_NS);
+  for (se = x->CombinedHash;
+       se && se->g.tok == zx_wst_CombinedHash_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:CombinedHash", sizeof("wst:CombinedHash")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -214,7 +218,7 @@ int zx_LEN_SO_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchange_
   int len = sizeof("<wst:BinaryExchange")-1 + 1 + sizeof("</wst:BinaryExchange>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->EncodingType, sizeof("EncodingType")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ValueType, sizeof("ValueType")-1, &pop_seen);
@@ -250,7 +254,7 @@ char* zx_ENC_SO_wst_BinaryExchange(struct zx_ctx* c, struct zx_wst_BinaryExchang
   ZX_OUT_TAG(p, "<wst:BinaryExchange");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -343,7 +347,7 @@ int zx_LEN_SO_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s* x
   int len = sizeof("<wst:BinarySecret")-1 + 1 + sizeof("</wst:BinarySecret>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Type, sizeof("Type")-1, &pop_seen);
 
@@ -378,7 +382,7 @@ char* zx_ENC_SO_wst_BinarySecret(struct zx_ctx* c, struct zx_wst_BinarySecret_s*
   ZX_OUT_TAG(p, "<wst:BinarySecret");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -470,7 +474,7 @@ int zx_LEN_SO_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s* x
   int len = sizeof("<wst:CancelTarget")-1 + 1 + sizeof("</wst:CancelTarget>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -504,7 +508,7 @@ char* zx_ENC_SO_wst_CancelTarget(struct zx_ctx* c, struct zx_wst_CancelTarget_s*
   ZX_OUT_TAG(p, "<wst:CancelTarget");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -595,7 +599,7 @@ int zx_LEN_SO_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x )
   int len = sizeof("<wst:Claims")-1 + 1 + sizeof("</wst:Claims>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Dialect, sizeof("Dialect")-1, &pop_seen);
 
@@ -630,7 +634,7 @@ char* zx_ENC_SO_wst_Claims(struct zx_ctx* c, struct zx_wst_Claims_s* x, char* p 
   ZX_OUT_TAG(p, "<wst:Claims");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -722,7 +726,7 @@ int zx_LEN_SO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x )
   int len = sizeof("<wst:DelegateTo")-1 + 1 + sizeof("</wst:DelegateTo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -756,7 +760,7 @@ char* zx_ENC_SO_wst_DelegateTo(struct zx_ctx* c, struct zx_wst_DelegateTo_s* x, 
   ZX_OUT_TAG(p, "<wst:DelegateTo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -847,7 +851,7 @@ int zx_LEN_SO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x )
   int len = sizeof("<wst:Encryption")-1 + 1 + sizeof("</wst:Encryption>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -881,7 +885,7 @@ char* zx_ENC_SO_wst_Encryption(struct zx_ctx* c, struct zx_wst_Encryption_s* x, 
   ZX_OUT_TAG(p, "<wst:Encryption");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -972,7 +976,7 @@ int zx_LEN_SO_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x )
   int len = sizeof("<wst:Entropy")-1 + 1 + sizeof("</wst:Entropy>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1006,7 +1010,7 @@ char* zx_ENC_SO_wst_Entropy(struct zx_ctx* c, struct zx_wst_Entropy_s* x, char* 
   ZX_OUT_TAG(p, "<wst:Entropy");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1097,7 +1101,7 @@ int zx_LEN_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x
   int len = sizeof("<wst:IssuedTokens")-1 + 1 + sizeof("</wst:IssuedTokens>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1105,7 +1109,9 @@ int zx_LEN_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x
   int len = 0;
 #endif
   
-  for (se = &x->RequestSecurityTokenResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestSecurityTokenResponse->gg;
+       se && se->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)se);
 
 
@@ -1133,7 +1139,7 @@ char* zx_ENC_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s*
   ZX_OUT_TAG(p, "<wst:IssuedTokens");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1145,7 +1151,9 @@ char* zx_ENC_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->RequestSecurityTokenResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestSecurityTokenResponse->gg;
+       se && se->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1227,10 +1235,10 @@ int zx_LEN_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -1244,11 +1252,17 @@ int zx_LEN_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 
@@ -1277,10 +1291,10 @@ char* zx_ENC_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x, char* p 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1298,11 +1312,17 @@ char* zx_ENC_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Address(c, (struct zx_a_Address_s*)se, p);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se, p);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Metadata(c, (struct zx_a_Metadata_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1383,7 +1403,7 @@ int zx_LEN_SO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchangeTo
   int len = sizeof("<wst:KeyExchangeToken")-1 + 1 + sizeof("</wst:KeyExchangeToken>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1417,7 +1437,7 @@ char* zx_ENC_SO_wst_KeyExchangeToken(struct zx_ctx* c, struct zx_wst_KeyExchange
   ZX_OUT_TAG(p, "<wst:KeyExchangeToken");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1508,7 +1528,7 @@ int zx_LEN_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x )
   int len = sizeof("<wst:Lifetime")-1 + 1 + sizeof("</wst:Lifetime>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1516,9 +1536,13 @@ int zx_LEN_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Created->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Created->gg;
+       se && se->g.tok == zx_wsu_Created_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsu_Created(c, (struct zx_wsu_Created_s*)se);
-  for (se = &x->Expires->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Expires->gg;
+       se && se->g.tok == zx_wsu_Expires_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsu_Expires(c, (struct zx_wsu_Expires_s*)se);
 
 
@@ -1546,7 +1570,7 @@ char* zx_ENC_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x, char
   ZX_OUT_TAG(p, "<wst:Lifetime");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1558,9 +1582,13 @@ char* zx_ENC_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Created->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Created->gg;
+       se && se->g.tok == zx_wsu_Created_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsu_Created(c, (struct zx_wsu_Created_s*)se, p);
-  for (se = &x->Expires->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Expires->gg;
+       se && se->g.tok == zx_wsu_Expires_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsu_Expires(c, (struct zx_wsu_Expires_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1641,7 +1669,7 @@ int zx_LEN_SO_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x )
   int len = sizeof("<wst:OnBehalfOf")-1 + 1 + sizeof("</wst:OnBehalfOf>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1675,7 +1703,7 @@ char* zx_ENC_SO_wst_OnBehalfOf(struct zx_ctx* c, struct zx_wst_OnBehalfOf_s* x, 
   ZX_OUT_TAG(p, "<wst:OnBehalfOf");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1766,7 +1794,7 @@ int zx_LEN_SO_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x )
   int len = sizeof("<wst:Participant")-1 + 1 + sizeof("</wst:Participant>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1800,7 +1828,7 @@ char* zx_ENC_SO_wst_Participant(struct zx_ctx* c, struct zx_wst_Participant_s* x
   ZX_OUT_TAG(p, "<wst:Participant");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1891,7 +1919,7 @@ int zx_LEN_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x
   int len = sizeof("<wst:Participants")-1 + 1 + sizeof("</wst:Participants>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1899,9 +1927,13 @@ int zx_LEN_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Primary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Primary->gg;
+       se && se->g.tok == zx_wst_Primary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Primary(c, (struct zx_wst_Primary_s*)se);
-  for (se = &x->Participant->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Participant->gg;
+       se && se->g.tok == zx_wst_Participant_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Participant(c, (struct zx_wst_Participant_s*)se);
 
 
@@ -1929,7 +1961,7 @@ char* zx_ENC_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s*
   ZX_OUT_TAG(p, "<wst:Participants");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1941,9 +1973,13 @@ char* zx_ENC_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Primary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Primary->gg;
+       se && se->g.tok == zx_wst_Primary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Primary(c, (struct zx_wst_Primary_s*)se, p);
-  for (se = &x->Participant->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Participant->gg;
+       se && se->g.tok == zx_wst_Participant_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Participant(c, (struct zx_wst_Participant_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2024,7 +2060,7 @@ int zx_LEN_SO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x )
   int len = sizeof("<wst:Primary")-1 + 1 + sizeof("</wst:Primary>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2058,7 +2094,7 @@ char* zx_ENC_SO_wst_Primary(struct zx_ctx* c, struct zx_wst_Primary_s* x, char* 
   ZX_OUT_TAG(p, "<wst:Primary");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2149,7 +2185,7 @@ int zx_LEN_SO_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncryptio
   int len = sizeof("<wst:ProofEncryption")-1 + 1 + sizeof("</wst:ProofEncryption>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2183,7 +2219,7 @@ char* zx_ENC_SO_wst_ProofEncryption(struct zx_ctx* c, struct zx_wst_ProofEncrypt
   ZX_OUT_TAG(p, "<wst:ProofEncryption");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2274,7 +2310,7 @@ int zx_LEN_SO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x )
   int len = sizeof("<wst:RenewTarget")-1 + 1 + sizeof("</wst:RenewTarget>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2308,7 +2344,7 @@ char* zx_ENC_SO_wst_RenewTarget(struct zx_ctx* c, struct zx_wst_RenewTarget_s* x
   ZX_OUT_TAG(p, "<wst:RenewTarget");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2399,7 +2435,7 @@ int zx_LEN_SO_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x )
   int len = sizeof("<wst:Renewing")-1 + 1 + sizeof("</wst:Renewing>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Allow, sizeof("Allow")-1, &pop_seen);
   len += zx_attr_so_len(c, x->OK, sizeof("OK")-1, &pop_seen);
@@ -2435,7 +2471,7 @@ char* zx_ENC_SO_wst_Renewing(struct zx_ctx* c, struct zx_wst_Renewing_s* x, char
   ZX_OUT_TAG(p, "<wst:Renewing");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2528,7 +2564,7 @@ int zx_LEN_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSe
   int len = sizeof("<wst:RequestSecurityToken")-1 + 1 + sizeof("</wst:RequestSecurityToken>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Context, sizeof("Context")-1, &pop_seen);
 
@@ -2537,57 +2573,109 @@ int zx_LEN_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSe
   int len = 0;
 #endif
   
-  for (se = x->TokenType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:TokenType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->RequestType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:RequestType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->AppliesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TokenType;
+    se && se->g.tok == zx_wst_TokenType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:TokenType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RequestType;
+    se && se->g.tok == zx_wst_RequestType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:RequestType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AppliesTo->gg;
+       se && se->g.tok == zx_wsp_AppliesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)se);
-  for (se = &x->Claims->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Claims->gg;
+       se && se->g.tok == zx_wst_Claims_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Claims(c, (struct zx_wst_Claims_s*)se);
-  for (se = &x->Entropy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Entropy->gg;
+       se && se->g.tok == zx_wst_Entropy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Entropy(c, (struct zx_wst_Entropy_s*)se);
-  for (se = &x->Lifetime->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Lifetime->gg;
+       se && se->g.tok == zx_wst_Lifetime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)se);
-  for (se = x->AllowPostdating; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:AllowPostdating")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Renewing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AllowPostdating;
+    se && se->g.tok == zx_wst_AllowPostdating_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:AllowPostdating")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Renewing->gg;
+       se && se->g.tok == zx_wst_Renewing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Renewing(c, (struct zx_wst_Renewing_s*)se);
-  for (se = &x->OnBehalfOf->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OnBehalfOf->gg;
+       se && se->g.tok == zx_wst_OnBehalfOf_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)se);
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_wst_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Issuer(c, (struct zx_wst_Issuer_s*)se);
-  for (se = x->AuthenticationType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:AuthenticationType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->KeyType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:KeyType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:KeySize")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->SignatureAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:SignatureAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Encryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AuthenticationType;
+    se && se->g.tok == zx_wst_AuthenticationType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:AuthenticationType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->KeyType;
+    se && se->g.tok == zx_wst_KeyType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:KeyType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->KeySize;
+    se && se->g.tok == zx_wst_KeySize_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:KeySize")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SignatureAlgorithm;
+    se && se->g.tok == zx_wst_SignatureAlgorithm_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:SignatureAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Encryption->gg;
+       se && se->g.tok == zx_wst_Encryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Encryption(c, (struct zx_wst_Encryption_s*)se);
-  for (se = x->EncryptionAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:EncryptionAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->CanonicalizationAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:CanonicalizationAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->ProofEncryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EncryptionAlgorithm;
+    se && se->g.tok == zx_wst_EncryptionAlgorithm_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:EncryptionAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CanonicalizationAlgorithm;
+    se && se->g.tok == zx_wst_CanonicalizationAlgorithm_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:CanonicalizationAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ProofEncryption->gg;
+       se && se->g.tok == zx_wst_ProofEncryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)se);
-  for (se = &x->UseKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UseKey->gg;
+       se && se->g.tok == zx_wst_UseKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_UseKey(c, (struct zx_wst_UseKey_s*)se);
-  for (se = x->SignWith; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:SignWith")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->EncryptWith; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:EncryptWith")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->DelegateTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SignWith;
+    se && se->g.tok == zx_wst_SignWith_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:SignWith")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EncryptWith;
+    se && se->g.tok == zx_wst_EncryptWith_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:EncryptWith")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DelegateTo->gg;
+       se && se->g.tok == zx_wst_DelegateTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)se);
-  for (se = x->Forwardable; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Forwardable")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->Delegatable; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Delegatable")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Forwardable;
+    se && se->g.tok == zx_wst_Forwardable_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Forwardable")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Delegatable;
+    se && se->g.tok == zx_wst_Delegatable_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Delegatable")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 
@@ -2615,7 +2703,7 @@ char* zx_ENC_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_Request
   ZX_OUT_TAG(p, "<wst:RequestSecurityToken");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2628,57 +2716,109 @@ char* zx_ENC_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_Request
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TokenType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:TokenType", sizeof("wst:TokenType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->RequestType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:RequestType", sizeof("wst:RequestType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->AppliesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TokenType;
+       se && se->g.tok == zx_wst_TokenType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:TokenType", sizeof("wst:TokenType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RequestType;
+       se && se->g.tok == zx_wst_RequestType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:RequestType", sizeof("wst:RequestType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AppliesTo->gg;
+       se && se->g.tok == zx_wsp_AppliesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)se, p);
-  for (se = &x->Claims->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Claims->gg;
+       se && se->g.tok == zx_wst_Claims_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Claims(c, (struct zx_wst_Claims_s*)se, p);
-  for (se = &x->Entropy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Entropy->gg;
+       se && se->g.tok == zx_wst_Entropy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Entropy(c, (struct zx_wst_Entropy_s*)se, p);
-  for (se = &x->Lifetime->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Lifetime->gg;
+       se && se->g.tok == zx_wst_Lifetime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)se, p);
-  for (se = x->AllowPostdating; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:AllowPostdating", sizeof("wst:AllowPostdating")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Renewing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AllowPostdating;
+       se && se->g.tok == zx_wst_AllowPostdating_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:AllowPostdating", sizeof("wst:AllowPostdating")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Renewing->gg;
+       se && se->g.tok == zx_wst_Renewing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Renewing(c, (struct zx_wst_Renewing_s*)se, p);
-  for (se = &x->OnBehalfOf->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OnBehalfOf->gg;
+       se && se->g.tok == zx_wst_OnBehalfOf_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)se, p);
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_wst_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Issuer(c, (struct zx_wst_Issuer_s*)se, p);
-  for (se = x->AuthenticationType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:AuthenticationType", sizeof("wst:AuthenticationType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->KeyType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:KeyType", sizeof("wst:KeyType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:KeySize", sizeof("wst:KeySize")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->SignatureAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:SignatureAlgorithm", sizeof("wst:SignatureAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Encryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AuthenticationType;
+       se && se->g.tok == zx_wst_AuthenticationType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:AuthenticationType", sizeof("wst:AuthenticationType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->KeyType;
+       se && se->g.tok == zx_wst_KeyType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:KeyType", sizeof("wst:KeyType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->KeySize;
+       se && se->g.tok == zx_wst_KeySize_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:KeySize", sizeof("wst:KeySize")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SignatureAlgorithm;
+       se && se->g.tok == zx_wst_SignatureAlgorithm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:SignatureAlgorithm", sizeof("wst:SignatureAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Encryption->gg;
+       se && se->g.tok == zx_wst_Encryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Encryption(c, (struct zx_wst_Encryption_s*)se, p);
-  for (se = x->EncryptionAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:EncryptionAlgorithm", sizeof("wst:EncryptionAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->CanonicalizationAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:CanonicalizationAlgorithm", sizeof("wst:CanonicalizationAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->ProofEncryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EncryptionAlgorithm;
+       se && se->g.tok == zx_wst_EncryptionAlgorithm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:EncryptionAlgorithm", sizeof("wst:EncryptionAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CanonicalizationAlgorithm;
+       se && se->g.tok == zx_wst_CanonicalizationAlgorithm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:CanonicalizationAlgorithm", sizeof("wst:CanonicalizationAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ProofEncryption->gg;
+       se && se->g.tok == zx_wst_ProofEncryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)se, p);
-  for (se = &x->UseKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UseKey->gg;
+       se && se->g.tok == zx_wst_UseKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_UseKey(c, (struct zx_wst_UseKey_s*)se, p);
-  for (se = x->SignWith; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:SignWith", sizeof("wst:SignWith")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->EncryptWith; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:EncryptWith", sizeof("wst:EncryptWith")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->DelegateTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SignWith;
+       se && se->g.tok == zx_wst_SignWith_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:SignWith", sizeof("wst:SignWith")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EncryptWith;
+       se && se->g.tok == zx_wst_EncryptWith_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:EncryptWith", sizeof("wst:EncryptWith")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DelegateTo->gg;
+       se && se->g.tok == zx_wst_DelegateTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)se, p);
-  for (se = x->Forwardable; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Forwardable", sizeof("wst:Forwardable")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->Delegatable; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Delegatable", sizeof("wst:Delegatable")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Forwardable;
+       se && se->g.tok == zx_wst_Forwardable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Forwardable", sizeof("wst:Forwardable")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Delegatable;
+       se && se->g.tok == zx_wst_Delegatable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Delegatable", sizeof("wst:Delegatable")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se, p);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2759,7 +2899,7 @@ int zx_LEN_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst
   int len = sizeof("<wst:RequestSecurityTokenCollection")-1 + 1 + sizeof("</wst:RequestSecurityTokenCollection>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2767,7 +2907,9 @@ int zx_LEN_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst
   int len = 0;
 #endif
   
-  for (se = &x->RequestSecurityToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestSecurityToken->gg;
+       se && se->g.tok == zx_wst_RequestSecurityToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_RequestSecurityToken(c, (struct zx_wst_RequestSecurityToken_s*)se);
 
 
@@ -2795,7 +2937,7 @@ char* zx_ENC_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_w
   ZX_OUT_TAG(p, "<wst:RequestSecurityTokenCollection");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2807,7 +2949,9 @@ char* zx_ENC_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_w
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->RequestSecurityToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestSecurityToken->gg;
+       se && se->g.tok == zx_wst_RequestSecurityToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_RequestSecurityToken(c, (struct zx_wst_RequestSecurityToken_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2888,7 +3032,7 @@ int zx_LEN_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_R
   int len = sizeof("<wst:RequestSecurityTokenResponse")-1 + 1 + sizeof("</wst:RequestSecurityTokenResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Context, sizeof("Context")-1, &pop_seen);
 
@@ -2897,67 +3041,129 @@ int zx_LEN_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_R
   int len = 0;
 #endif
   
-  for (se = x->TokenType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:TokenType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->RequestType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:RequestType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->RequestedSecurityToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TokenType;
+    se && se->g.tok == zx_wst_TokenType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:TokenType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RequestType;
+    se && se->g.tok == zx_wst_RequestType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:RequestType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RequestedSecurityToken->gg;
+       se && se->g.tok == zx_wst_RequestedSecurityToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_RequestedSecurityToken(c, (struct zx_wst_RequestedSecurityToken_s*)se);
-  for (se = &x->AppliesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AppliesTo->gg;
+       se && se->g.tok == zx_wsp_AppliesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)se);
-  for (se = &x->RequestedAttachedReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedAttachedReference->gg;
+       se && se->g.tok == zx_wst_RequestedAttachedReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_RequestedAttachedReference(c, (struct zx_wst_RequestedAttachedReference_s*)se);
-  for (se = &x->RequestedUnattachedReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedUnattachedReference->gg;
+       se && se->g.tok == zx_wst_RequestedUnattachedReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_RequestedUnattachedReference(c, (struct zx_wst_RequestedUnattachedReference_s*)se);
-  for (se = &x->RequestedProofToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedProofToken->gg;
+       se && se->g.tok == zx_wst_RequestedProofToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_RequestedProofToken(c, (struct zx_wst_RequestedProofToken_s*)se);
-  for (se = &x->Entropy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Entropy->gg;
+       se && se->g.tok == zx_wst_Entropy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Entropy(c, (struct zx_wst_Entropy_s*)se);
-  for (se = &x->Lifetime->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Lifetime->gg;
+       se && se->g.tok == zx_wst_Lifetime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)se);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_wst_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Status(c, (struct zx_wst_Status_s*)se);
-  for (se = x->AllowPostdating; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:AllowPostdating")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Renewing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AllowPostdating;
+    se && se->g.tok == zx_wst_AllowPostdating_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:AllowPostdating")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Renewing->gg;
+       se && se->g.tok == zx_wst_Renewing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Renewing(c, (struct zx_wst_Renewing_s*)se);
-  for (se = &x->OnBehalfOf->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OnBehalfOf->gg;
+       se && se->g.tok == zx_wst_OnBehalfOf_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)se);
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_wst_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Issuer(c, (struct zx_wst_Issuer_s*)se);
-  for (se = x->AuthenticationType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:AuthenticationType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Authenticator->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AuthenticationType;
+    se && se->g.tok == zx_wst_AuthenticationType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:AuthenticationType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Authenticator->gg;
+       se && se->g.tok == zx_wst_Authenticator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Authenticator(c, (struct zx_wst_Authenticator_s*)se);
-  for (se = x->KeyType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:KeyType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:KeySize")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->SignatureAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:SignatureAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Encryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->KeyType;
+    se && se->g.tok == zx_wst_KeyType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:KeyType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->KeySize;
+    se && se->g.tok == zx_wst_KeySize_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:KeySize")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SignatureAlgorithm;
+    se && se->g.tok == zx_wst_SignatureAlgorithm_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:SignatureAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Encryption->gg;
+       se && se->g.tok == zx_wst_Encryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_Encryption(c, (struct zx_wst_Encryption_s*)se);
-  for (se = x->EncryptionAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:EncryptionAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->CanonicalizationAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:CanonicalizationAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->ProofEncryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EncryptionAlgorithm;
+    se && se->g.tok == zx_wst_EncryptionAlgorithm_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:EncryptionAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CanonicalizationAlgorithm;
+    se && se->g.tok == zx_wst_CanonicalizationAlgorithm_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:CanonicalizationAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ProofEncryption->gg;
+       se && se->g.tok == zx_wst_ProofEncryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)se);
-  for (se = &x->UseKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UseKey->gg;
+       se && se->g.tok == zx_wst_UseKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_UseKey(c, (struct zx_wst_UseKey_s*)se);
-  for (se = x->SignWith; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:SignWith")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->EncryptWith; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:EncryptWith")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->DelegateTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SignWith;
+    se && se->g.tok == zx_wst_SignWith_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:SignWith")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EncryptWith;
+    se && se->g.tok == zx_wst_EncryptWith_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:EncryptWith")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DelegateTo->gg;
+       se && se->g.tok == zx_wst_DelegateTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)se);
-  for (se = x->Forwardable; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Forwardable")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->Delegatable; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Delegatable")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Forwardable;
+    se && se->g.tok == zx_wst_Forwardable_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Forwardable")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Delegatable;
+    se && se->g.tok == zx_wst_Delegatable_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Delegatable")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 
@@ -2985,7 +3191,7 @@ char* zx_ENC_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst
   ZX_OUT_TAG(p, "<wst:RequestSecurityTokenResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2998,67 +3204,129 @@ char* zx_ENC_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TokenType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:TokenType", sizeof("wst:TokenType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->RequestType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:RequestType", sizeof("wst:RequestType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->RequestedSecurityToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TokenType;
+       se && se->g.tok == zx_wst_TokenType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:TokenType", sizeof("wst:TokenType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RequestType;
+       se && se->g.tok == zx_wst_RequestType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:RequestType", sizeof("wst:RequestType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RequestedSecurityToken->gg;
+       se && se->g.tok == zx_wst_RequestedSecurityToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_RequestedSecurityToken(c, (struct zx_wst_RequestedSecurityToken_s*)se, p);
-  for (se = &x->AppliesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AppliesTo->gg;
+       se && se->g.tok == zx_wsp_AppliesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)se, p);
-  for (se = &x->RequestedAttachedReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedAttachedReference->gg;
+       se && se->g.tok == zx_wst_RequestedAttachedReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_RequestedAttachedReference(c, (struct zx_wst_RequestedAttachedReference_s*)se, p);
-  for (se = &x->RequestedUnattachedReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedUnattachedReference->gg;
+       se && se->g.tok == zx_wst_RequestedUnattachedReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_RequestedUnattachedReference(c, (struct zx_wst_RequestedUnattachedReference_s*)se, p);
-  for (se = &x->RequestedProofToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedProofToken->gg;
+       se && se->g.tok == zx_wst_RequestedProofToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_RequestedProofToken(c, (struct zx_wst_RequestedProofToken_s*)se, p);
-  for (se = &x->Entropy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Entropy->gg;
+       se && se->g.tok == zx_wst_Entropy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Entropy(c, (struct zx_wst_Entropy_s*)se, p);
-  for (se = &x->Lifetime->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Lifetime->gg;
+       se && se->g.tok == zx_wst_Lifetime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)se, p);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_wst_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Status(c, (struct zx_wst_Status_s*)se, p);
-  for (se = x->AllowPostdating; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:AllowPostdating", sizeof("wst:AllowPostdating")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Renewing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AllowPostdating;
+       se && se->g.tok == zx_wst_AllowPostdating_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:AllowPostdating", sizeof("wst:AllowPostdating")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Renewing->gg;
+       se && se->g.tok == zx_wst_Renewing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Renewing(c, (struct zx_wst_Renewing_s*)se, p);
-  for (se = &x->OnBehalfOf->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OnBehalfOf->gg;
+       se && se->g.tok == zx_wst_OnBehalfOf_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)se, p);
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_wst_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Issuer(c, (struct zx_wst_Issuer_s*)se, p);
-  for (se = x->AuthenticationType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:AuthenticationType", sizeof("wst:AuthenticationType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Authenticator->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AuthenticationType;
+       se && se->g.tok == zx_wst_AuthenticationType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:AuthenticationType", sizeof("wst:AuthenticationType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Authenticator->gg;
+       se && se->g.tok == zx_wst_Authenticator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Authenticator(c, (struct zx_wst_Authenticator_s*)se, p);
-  for (se = x->KeyType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:KeyType", sizeof("wst:KeyType")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:KeySize", sizeof("wst:KeySize")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->SignatureAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:SignatureAlgorithm", sizeof("wst:SignatureAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Encryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->KeyType;
+       se && se->g.tok == zx_wst_KeyType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:KeyType", sizeof("wst:KeyType")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->KeySize;
+       se && se->g.tok == zx_wst_KeySize_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:KeySize", sizeof("wst:KeySize")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SignatureAlgorithm;
+       se && se->g.tok == zx_wst_SignatureAlgorithm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:SignatureAlgorithm", sizeof("wst:SignatureAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Encryption->gg;
+       se && se->g.tok == zx_wst_Encryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_Encryption(c, (struct zx_wst_Encryption_s*)se, p);
-  for (se = x->EncryptionAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:EncryptionAlgorithm", sizeof("wst:EncryptionAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->CanonicalizationAlgorithm; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:CanonicalizationAlgorithm", sizeof("wst:CanonicalizationAlgorithm")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->ProofEncryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EncryptionAlgorithm;
+       se && se->g.tok == zx_wst_EncryptionAlgorithm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:EncryptionAlgorithm", sizeof("wst:EncryptionAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CanonicalizationAlgorithm;
+       se && se->g.tok == zx_wst_CanonicalizationAlgorithm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:CanonicalizationAlgorithm", sizeof("wst:CanonicalizationAlgorithm")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ProofEncryption->gg;
+       se && se->g.tok == zx_wst_ProofEncryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)se, p);
-  for (se = &x->UseKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UseKey->gg;
+       se && se->g.tok == zx_wst_UseKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_UseKey(c, (struct zx_wst_UseKey_s*)se, p);
-  for (se = x->SignWith; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:SignWith", sizeof("wst:SignWith")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->EncryptWith; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:EncryptWith", sizeof("wst:EncryptWith")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->DelegateTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SignWith;
+       se && se->g.tok == zx_wst_SignWith_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:SignWith", sizeof("wst:SignWith")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EncryptWith;
+       se && se->g.tok == zx_wst_EncryptWith_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:EncryptWith", sizeof("wst:EncryptWith")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DelegateTo->gg;
+       se && se->g.tok == zx_wst_DelegateTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)se, p);
-  for (se = x->Forwardable; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Forwardable", sizeof("wst:Forwardable")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->Delegatable; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Delegatable", sizeof("wst:Delegatable")-1, zx_ns_tab+zx_wst_NS);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Forwardable;
+       se && se->g.tok == zx_wst_Forwardable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Forwardable", sizeof("wst:Forwardable")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Delegatable;
+       se && se->g.tok == zx_wst_Delegatable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Delegatable", sizeof("wst:Delegatable")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se, p);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3139,7 +3407,7 @@ int zx_LEN_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struc
   int len = sizeof("<wst:RequestSecurityTokenResponseCollection")-1 + 1 + sizeof("</wst:RequestSecurityTokenResponseCollection>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3147,7 +3415,9 @@ int zx_LEN_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struc
   int len = 0;
 #endif
   
-  for (se = &x->RequestSecurityTokenResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestSecurityTokenResponse->gg;
+       se && se->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)se);
 
 
@@ -3175,7 +3445,7 @@ char* zx_ENC_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, str
   ZX_OUT_TAG(p, "<wst:RequestSecurityTokenResponseCollection");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3187,7 +3457,9 @@ char* zx_ENC_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, str
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->RequestSecurityTokenResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestSecurityTokenResponse->gg;
+       se && se->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3268,7 +3540,7 @@ int zx_LEN_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_Req
   int len = sizeof("<wst:RequestedAttachedReference")-1 + 1 + sizeof("</wst:RequestedAttachedReference>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3276,7 +3548,9 @@ int zx_LEN_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_Req
   int len = 0;
 #endif
   
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se);
 
 
@@ -3304,7 +3578,7 @@ char* zx_ENC_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_R
   ZX_OUT_TAG(p, "<wst:RequestedAttachedReference");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3316,7 +3590,9 @@ char* zx_ENC_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_R
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3397,7 +3673,7 @@ int zx_LEN_SO_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_RequestedP
   int len = sizeof("<wst:RequestedProofToken")-1 + 1 + sizeof("</wst:RequestedProofToken>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3431,7 +3707,7 @@ char* zx_ENC_SO_wst_RequestedProofToken(struct zx_ctx* c, struct zx_wst_Requeste
   ZX_OUT_TAG(p, "<wst:RequestedProofToken");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3522,7 +3798,7 @@ int zx_LEN_SO_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_Request
   int len = sizeof("<wst:RequestedSecurityToken")-1 + 1 + sizeof("</wst:RequestedSecurityToken>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3556,7 +3832,7 @@ char* zx_ENC_SO_wst_RequestedSecurityToken(struct zx_ctx* c, struct zx_wst_Reque
   ZX_OUT_TAG(p, "<wst:RequestedSecurityToken");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3647,7 +3923,7 @@ int zx_LEN_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_R
   int len = sizeof("<wst:RequestedUnattachedReference")-1 + 1 + sizeof("</wst:RequestedUnattachedReference>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3655,7 +3931,9 @@ int zx_LEN_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_R
   int len = 0;
 #endif
   
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se);
 
 
@@ -3683,7 +3961,7 @@ char* zx_ENC_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst
   ZX_OUT_TAG(p, "<wst:RequestedUnattachedReference");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3695,7 +3973,9 @@ char* zx_ENC_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3776,7 +4056,7 @@ int zx_LEN_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s*
   int len = sizeof("<wst:SignChallenge")-1 + 1 + sizeof("</wst:SignChallenge>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3784,8 +4064,10 @@ int zx_LEN_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_s*
   int len = 0;
 #endif
   
-  for (se = x->Challenge; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Challenge")-1, zx_ns_tab+zx_wst_NS);
+  for (se = x->Challenge;
+    se && se->g.tok == zx_wst_Challenge_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Challenge")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3812,7 +4094,7 @@ char* zx_ENC_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_
   ZX_OUT_TAG(p, "<wst:SignChallenge");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3824,8 +4106,10 @@ char* zx_ENC_SO_wst_SignChallenge(struct zx_ctx* c, struct zx_wst_SignChallenge_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Challenge; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Challenge", sizeof("wst:Challenge")-1, zx_ns_tab+zx_wst_NS);
+  for (se = x->Challenge;
+       se && se->g.tok == zx_wst_Challenge_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Challenge", sizeof("wst:Challenge")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3905,7 +4189,7 @@ int zx_LEN_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChal
   int len = sizeof("<wst:SignChallengeResponse")-1 + 1 + sizeof("</wst:SignChallengeResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3913,8 +4197,10 @@ int zx_LEN_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignChal
   int len = 0;
 #endif
   
-  for (se = x->Challenge; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Challenge")-1, zx_ns_tab+zx_wst_NS);
+  for (se = x->Challenge;
+    se && se->g.tok == zx_wst_Challenge_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Challenge")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3941,7 +4227,7 @@ char* zx_ENC_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignCh
   ZX_OUT_TAG(p, "<wst:SignChallengeResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3953,8 +4239,10 @@ char* zx_ENC_SO_wst_SignChallengeResponse(struct zx_ctx* c, struct zx_wst_SignCh
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Challenge; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Challenge", sizeof("wst:Challenge")-1, zx_ns_tab+zx_wst_NS);
+  for (se = x->Challenge;
+       se && se->g.tok == zx_wst_Challenge_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Challenge", sizeof("wst:Challenge")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -4034,7 +4322,7 @@ int zx_LEN_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x )
   int len = sizeof("<wst:Status")-1 + 1 + sizeof("</wst:Status>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -4042,10 +4330,14 @@ int zx_LEN_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Code; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Code")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->Reason; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Reason")-1, zx_ns_tab+zx_wst_NS);
+  for (se = x->Code;
+    se && se->g.tok == zx_wst_Code_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Code")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Reason;
+    se && se->g.tok == zx_wst_Reason_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wst:Reason")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -4072,7 +4364,7 @@ char* zx_ENC_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x, char* p 
   ZX_OUT_TAG(p, "<wst:Status");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4084,10 +4376,14 @@ char* zx_ENC_SO_wst_Status(struct zx_ctx* c, struct zx_wst_Status_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Code; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Code", sizeof("wst:Code")-1, zx_ns_tab+zx_wst_NS);
-  for (se = x->Reason; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Reason", sizeof("wst:Reason")-1, zx_ns_tab+zx_wst_NS);
+  for (se = x->Code;
+       se && se->g.tok == zx_wst_Code_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Code", sizeof("wst:Code")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Reason;
+       se && se->g.tok == zx_wst_Reason_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wst:Reason", sizeof("wst:Reason")-1, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -4167,7 +4463,7 @@ int zx_LEN_SO_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x )
   int len = sizeof("<wst:UseKey")-1 + 1 + sizeof("</wst:UseKey>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Sig, sizeof("Sig")-1, &pop_seen);
 
@@ -4202,7 +4498,7 @@ char* zx_ENC_SO_wst_UseKey(struct zx_ctx* c, struct zx_wst_UseKey_s* x, char* p 
   ZX_OUT_TAG(p, "<wst:UseKey");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4294,7 +4590,7 @@ int zx_LEN_SO_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarget_
   int len = sizeof("<wst:ValidateTarget")-1 + 1 + sizeof("</wst:ValidateTarget>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -4328,7 +4624,7 @@ char* zx_ENC_SO_wst_ValidateTarget(struct zx_ctx* c, struct zx_wst_ValidateTarge
   ZX_OUT_TAG(p, "<wst:ValidateTarget");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wst_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 

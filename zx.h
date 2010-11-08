@@ -154,17 +154,16 @@ struct zx_elem_s {
   struct zx_attr_s* attr;      /* list of attributes */
   struct zx_ns_s*   ns;        /* namespace of the element */
   struct zx_ns_s*   xmlns;     /* xmlns declarations (for inc_ns processing) */
-  struct zx_str*    content;   /* non-element content, if any */
+  /* *** xap: struct zx_str*    content;   /* non-element content, if any */
 };
 
 #define ZX_ELEM_EXT struct zx_elem_s gg;   /* Used in generated data types */
 
-struct zx_elem_s* zx_new_simple_elem(struct zx_ctx* c, struct zx_str* ss);
-struct zx_elem_s* zx_ref_len_simple_elem(struct zx_ctx* c, int len, const char* s);
-struct zx_elem_s* zx_ref_simple_elem(struct zx_ctx* c, const char* s);
-struct zx_elem_s* zx_dup_len_simple_elem(struct zx_ctx* c, int len, const char* s);
-struct zx_elem_s* zx_dup_simple_elem(struct zx_ctx* c, const char* s);
-#define ZX_SIMPLE_ELEM_CHK(el) ((el) && (el)->gg.content && (el)->gg.content->len && (el)->gg.content->s && (el)->gg.content->s[0])
+struct zx_elem_s* zx_new_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, struct zx_str* ss);
+struct zx_elem_s* zx_ref_len_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, int len, const char* s);
+struct zx_elem_s* zx_ref_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, const char* s);
+struct zx_elem_s* zx_dup_len_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, int len, const char* s);
+struct zx_elem_s* zx_dup_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, const char* s);
 
 struct zx_attr_s* zx_ref_len_attr(struct zx_ctx* c, int tok, int len, const char* s);
 struct zx_attr_s* zx_ref_attr(struct zx_ctx* c, int tok, const char* s);
@@ -188,7 +187,12 @@ int   zx_str_ends_in(struct zx_str* ss, int len, const char* suffix);
 #define ZX_STRCMP(a, b) ((a)?((b)?((a)->len == (b)->len?memcmp((a)->s, (b)->s, (a)->len):(a)->len - (b)->len):1):((b)?-1:0))
 #define ZX_STR_EQ(ss, cstr) ((ss) && (cstr) && (ss)->s && (ss)->len == strlen(cstr) && !memcmp((cstr), (ss)->s, (ss)->len))
 #define ZX_STR_ENDS_IN_CONST(ss, suffix) zx_str_ends_in((ss), sizeof(suffix)-1, (suffix))
-#define ZX_CONTENT_EQ_CONST(e, c) ((e) && (e)->content->len == sizeof(c)-1 && !memcmp((e)->content->s, (c), sizeof(c)-1))
+
+#define ZX_SIMPLE_ELEM_CHK(el) ((el) && (el)->kids && (el)->kids->g.tag == ZX_TAG_DATA && (el)->kids->g.len && (el)->kids->g->s && (el)->kids->g.s[0])
+#define ZX_CONTENT_EQ_CONST(e, c) ((e) && (e)->kids && (e)->kids->g.tag == ZX_TAG_DATA && (e)->kids->g.len == sizeof(c)-1 && !memcmp((e)->kids->g.s, (c), sizeof(c)-1))
+#define ZX_GET_CONTENT(e) ((e) && (e)->kids && (e)->kids->g.tag == ZX_TAG_DATA ? &(e)->kids->g : 0)
+#define ZX_GET_CONTENT_LEN(e) ((e) && (e)->kids && (e)->kids->g.tag == ZX_TAG_DATA ? (e)->kids->g.len : 0)
+#define ZX_GET_CONTENT_S(e) ((e) && (e)->kids && (e)->kids->g.tag == ZX_TAG_DATA ? (e)->kids->g.s : 0)
 
 char* zx_memmem(const char* haystack, int haystack_len, const char* needle, int needle_len);
 void* zx_alloc(struct zx_ctx* c, int size);
@@ -293,8 +297,8 @@ int   zx_attr_so_len(struct zx_ctx* c, struct zx_attr_s* attr, int name_len, str
 char* zx_attr_so_enc(char* p, struct zx_attr_s* attr, char* name, int name_len);
 char* zx_attr_wo_enc(char* p, struct zx_attr_s* attr);
 void  zx_free_attr(struct zx_ctx* c, struct zx_attr_s* attr, int free_strs);
-void  zx_free_elem_common(struct zx_ctx* c, struct zx_elem_s* x, int free_strs);
-void  zx_free_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, int free_strs);
+void  zx_free_elem(struct zx_ctx* c, struct zx_elem_s* x, int free_strs);
+void  zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont);
 
 #ifdef ZX_ENA_AUX
 void  zx_dup_attr(struct zx_ctx* c, struct zx_str* attr);

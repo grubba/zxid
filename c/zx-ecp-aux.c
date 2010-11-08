@@ -204,11 +204,15 @@ void zx_FREE_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, int free_
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Issuer->gg; e; e = en) {
+  for (e = &x->Issuer->gg;
+       e && e->g.tok == zx_sa_Issuer_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa_Issuer(c, (struct zx_sa_Issuer_s*)e, free_strs);
   }
-  for (e = &x->IDPList->gg; e; e = en) {
+  for (e = &x->IDPList->gg;
+       e && e->g.tok == zx_sp_IDPList_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp_IDPList(c, (struct zx_sp_IDPList_s*)e, free_strs);
   }
@@ -252,9 +256,13 @@ void zx_DUP_STRS_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x)
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_sa_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa_Issuer(c, (struct zx_sa_Issuer_s*)se);
-  for (se = &x->IDPList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPList->gg;
+       se && se->g.tok == zx_sp_IDPList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp_IDPList(c, (struct zx_sp_IDPList_s*)se);
 
 }
@@ -279,7 +287,9 @@ struct zx_ecp_Request_s* zx_DEEP_CLONE_ecp_Request(struct zx_ctx* c, struct zx_e
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Issuer->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Issuer->gg;
+       e && e->g.tok == zx_sa_Issuer_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa_Issuer(c,(struct zx_sa_Issuer_s*)e,dup_strs);
   	  if (!enn)
   	      x->Issuer = (struct zx_sa_Issuer_s*)en;
@@ -287,7 +297,9 @@ struct zx_ecp_Request_s* zx_DEEP_CLONE_ecp_Request(struct zx_ctx* c, struct zx_e
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->IDPList->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IDPList->gg;
+       e && e->g.tok == zx_sp_IDPList_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp_IDPList(c,(struct zx_sp_IDPList_s*)e,dup_strs);
   	  if (!enn)
   	      x->IDPList = (struct zx_sp_IDPList_s*)en;
@@ -318,12 +330,16 @@ int zx_WALK_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->Issuer->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Issuer->gg;
+       e && e->g.tok == zx_sa_Issuer_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa_Issuer(c, (struct zx_sa_Issuer_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->IDPList->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IDPList->gg;
+       e && e->g.tok == zx_sp_IDPList_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp_IDPList(c, (struct zx_sp_IDPList_s*)e, ctx, callback);
     if (ret)
       return ret;

@@ -49,9 +49,9 @@ int zxid_idp_map_nid2uid(zxid_conf* cf, int len, char* uid, zxid_a7n* a7n, struc
     *nameidp = nameid;
   affil = nameid->SPNameQualifier ? &nameid->SPNameQualifier->g : zxid_my_entity_id(cf);
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
-  len = read_all(len-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
+  len = read_all(len-1, uid, "idp_map_nid2uid", 1, "%s" ZXID_NID_DIR "%s/%.*s", cf->path, sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
   if (!len) {
-    ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, nameid->gg.content->len, nameid->gg.content->s);
+    ERR("Can not find reverse mapping for SP,SHA1(%s) nid(%.*s)", sp_name_buf, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
     if (stp)
       *stp = zxid_mk_lu_Status(cf, "Fail", 0, 0, 0);
     return 0;
@@ -66,7 +66,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 {
   zxid_nid* nameid;
   struct zx_di_RequestedService_s* rs;
-  struct zx_di_QueryResponse_s* resp = zx_NEW_di_QueryResponse(cf->ctx);
+  struct zx_di_QueryResponse_s* resp = zx_NEW_di_QueryResponse(cf->ctx,0);
   struct zx_root_s* r;
   char* logop;
   int len, epr_len, match, n_discovered = 0;
@@ -76,7 +76,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
   char* epr_buf;
   DIR* dir;
   struct dirent* de;
-  struct zx_elem_s* el;
+  struct zx_str* el;
   struct zx_a_Metadata_s* md = 0;  
   struct zx_str* addr = 0;  
   zxid_epr* epr = 0;
@@ -97,7 +97,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 
     /* Look for all entities providing service */
 
-    if (rs->ServiceType && rs->ServiceType->content && rs->ServiceType->content->len) {
+    if (ZX_SIMPLE_ELEM_CHK(rs->ServiceType)) {
       /* *** proper handling of discovering simultaneously multiple service types? */
     } else {
       D("%d: No specific service type given. Looking for all. %p", n_discovered, rs->ServiceType);
@@ -128,10 +128,10 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       for (el = rs->ServiceType;
 	   el && el->g.tok == zx_di_ServiceType_ELEM;
 	   el = (struct zx_elem_s*)el->g.n) {
-	if (!el->content || !el->content->len)
+	if (!ZX_SIMPLE_ELEM_CHK(el))
 	  continue;
-	len = MIN(el->content->len, sizeof(path)-1);
-	memcpy(path, el->content->s, len);
+	len = MIN(ZX_GET_CONTENT_LEN(el), sizeof(path)-1);
+	memcpy(path, ZX_GET_CONTENT_S(el), len);
 	path[len] = 0;
 	zxid_fold_svc(path, len);
 	if (memcmp(de->d_name, path, len) || de->d_name[len] != ',') {
@@ -160,12 +160,12 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 	ZX_FREE(cf->ctx, epr_buf);
 	continue;
       }
-      if (!epr->Address || !epr->Address->gg.content || !epr->Address->gg.content->len) {
+      if (!ZX_SIMPLE_ELEM_CHK(epr->Address)) {
 	ERR("EPR missing <Address>. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
 	ZX_FREE(cf->ctx, epr_buf);
 	continue;
       }
-      addr = epr->Address->gg.content;
+      addr = ZX_GET_CONTENT(epr->Address);
       md = epr->Metadata;
 
       /* Filter by service type */
@@ -174,17 +174,17 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       for (el = rs->ServiceType;
 	   el && el->g.tok == zx_di_ServiceType_ELEM;
 	   el = (struct zx_elem_s*)el->g.n) {
-	if (!el->content || !el->content->len)
+	if (!ZX_SIMPLE_ELEM_CHK(el))
 	  continue;
 	match = 0;
-	if (!md->ServiceType || !md->ServiceType->content || !md->ServiceType->content->len) {
+	if (!ZX_SIMPLE_ELEM_CHK(md->ServiceType)) {
 	  INFO("EPR missing ServiceType. Rejected. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
 	  ZX_FREE(cf->ctx, epr_buf);
 	  goto next_file;
 	}
-	if (el->content->len != md->ServiceType->content->len
-	    || memcmp(el->content->s, md->ServiceType->content->s, el->content->len)) {
-	  D("%d: Internal svctype(%.*s) does not match desired(%.*s)", n_discovered, md->ServiceType->content->len, md->ServiceType->content->s, el->content->len, el->content->s);
+	if (ZX_GET_CONTENT_LEN(el) != ZX_GET_CONTENT_LEN(md->ServiceType)
+	    || memcmp(ZX_GET_CONTENT_S(el), ZX_GET_CONTENT_S(md->ServiceType), ZX_GET_CONTENT_LEN(el))) {
+	  D("%d: Internal svctype(%.*s) does not match desired(%.*s)", n_discovered, ZX_GET_CONTENT_LEN(md->ServiceType), ZX_GET_CONTENT_S(md->ServiceType), ZX_GET_CONTENT_LEN(el), ZX_GET_CONTENT_S(el));
 	  continue;
 	}
 	D("%d: ServiceType matches. file(%s)", n_discovered, de->d_name);
@@ -202,16 +202,16 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       for (el = rs->ProviderID;
 	   el && el->g.tok == zx_di_ProviderID_ELEM;
 	   el = (struct zx_elem_s*)el->g.n) {
-	if (!el->content || !el->content->len)
+	if (!ZX_SIMPLE_ELEM_CHK(el))
 	  continue;
 	match = 0;
-	if (!md->ProviderID || !md->ProviderID->content || !md->ProviderID->content->len) {
+	if (!ZX_SIMPLE_ELEM_CHK(md->ProviderID)) {
 	  INFO("EPR missing ProviderID. epr_buf(%.*s) file(%s)", epr_len, epr_buf, de->d_name);
 	  break;
 	}
-	if (el->content->len != md->ProviderID->content->len
-	    || memcmp(el->content->s, md->ProviderID->content->s, el->content->len)) {
-	  D("%d: ProviderID(%.*s) does not match desired(%.*s)", n_discovered, md->ProviderID->content->len, md->ProviderID->content->s, el->content->len, el->content->s);
+	if (ZX_GET_CONTENT_LEN(el) != ZX_GET_CONTENT_LEN(md->ProviderID)
+	    || memcmp(ZX_GET_CONTENT_S(el), ZX_GET_CONTENT_S(md->ProviderID), ZX_GET_CONTENT_LEN(el))) {
+	  D("%d: ProviderID(%.*s) does not match desired(%.*s)", n_discovered, ZX_GET_CONTENT_LEN(md->ProviderID), ZX_GET_CONTENT_S(md), ZX_GET_CONTENT_LEN(el), ZX_GET_CONTENT_S(el));
 	  continue;
 	}
 	D("%d: ProviderID matches. file(%s)", n_discovered, de->d_name);
@@ -224,12 +224,12 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
 	for (el = rs->ProviderID;
 	     el && el->g.tok == zx_di_ProviderID_ELEM;
 	     el = (struct zx_elem_s*)el->g.n) {
-	  if (!el->content || !el->content->len)
+	  if (!ZX_SIMPLE_ELEM_CHK(el))
 	    continue;
 	  match = 0;
-	  if (el->content->len != addr->len
-	      || memcmp(el->content->s, addr->s, el->content->len)) {
-	    D("%d: Address(%.*s) does not match desired(%.*s)", n_discovered, addr->len, addr->s, el->content->len, el->content->s);
+	  if (ZX_GET_CONTENT_LEN(el) != addr->len
+	      || memcmp(ZX_GET_CONTENT_S(el), addr->s, ZX_GET_CONTENT_LEN(el))) {
+	    D("%d: Address(%.*s) does not match desired(%.*s)", n_discovered, addr->len, addr->s, ZX_GET_CONTENT_LEN(el), ZX_GET_CONTENT_S(el));
 	    continue;
 	  }
 	  D("%d: Address matches. file(%s)", n_discovered, de->d_name);
@@ -265,7 +265,7 @@ struct zx_di_QueryResponse_s* zxid_di_query(zxid_conf* cf, zxid_a7n* a7n, struct
       epr->gg.g.n = (void*)resp->EndpointReference;
       resp->EndpointReference = epr;
 
-      zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, uid, "");
+      zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, uid, "");
 
       if (rs->resultsType && rs->resultsType->g.s
 	  && (!memcmp(rs->resultsType->g.s, "only-one", rs->resultsType->g.len)
@@ -280,10 +280,9 @@ next_file:
     
     closedir(dir);
   }
-  el = req->RequestedService->ServiceType && req->RequestedService->ServiceType->content
-    ? req->RequestedService->ServiceType : 0;
-  D("TOTAL discovered %d svctype(%.*s)", n_discovered, el?el->content->len:0, el?el->content->s:"");
-  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, nameid->gg.content, "N", "K", "DIOK", 0, "%.*s n=%d", el?el->content->len:1, el?el->content->s:"-", n_discovered);
+  el = ZX_GET_CONTENT(req->RequestedService->ServiceType);
+  D("TOTAL discovered %d svctype(%.*s)", n_discovered, el?el->len:0, el?el->s:"");
+  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "DIOK", 0, "%.*s n=%d", el?el->len:1, el?el->s:"-", n_discovered);
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
   D_DEDENT("di_query: ");
   return resp;

@@ -104,9 +104,9 @@ int main(int argc, char** argv)
   if (!strcmp(svc, XMLNS_DISCO_2_0)) {
     /* Discover service (call discovery service using bootstrap) */
     
-    env = zx_NEW_e_Envelope(cf->ctx);
-    env->Header = zx_NEW_e_Header(cf->ctx);
-    env->Body = zx_NEW_e_Body(cf->ctx);
+    env = zx_NEW_e_Envelope(cf->ctx,0);
+    env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+    env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
     env->Body->Query = zxid_mk_di_query(cf, svc, 0,0,0);
     epr = zxid_find_epr(cf, ses, XMLNS_DISCO_2_0, 0,0,0, 1);
     env = zxid_wsc_call(cf, ses, epr, env, 0);
@@ -120,9 +120,9 @@ int main(int argc, char** argv)
 
     epr = zxid_get_epr(cf, ses, XMLNS_DAP, 0,0,0, 1);
     if (epr) {
-      env = zx_NEW_e_Envelope(cf->ctx);
-      env->Header = zx_NEW_e_Header(cf->ctx);
-      env->Body = zx_NEW_e_Body(cf->ctx);
+      env = zx_NEW_e_Envelope(cf->ctx,0);
+      env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+      env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
 #if 1
       env->Body->dap_Query
 	= zxid_mk_dap_query(cf,
@@ -225,8 +225,8 @@ int main(int argc, char** argv)
       if (env)
 	if (env->Body->dap_QueryResponse)
 	  D("Result is LDIF(%.*s)",
-	    env->Body->dap_QueryResponse->Data->LDIF->gg.content->len,
-	    env->Body->dap_QueryResponse->Data->LDIF->gg.content->s);
+	    ZX_GET_CONTENT_LEN(env->Body->dap_QueryResponse->Data->LDIF),
+	    ZX_GET_CONTENT_S(env->Body->dap_QueryResponse->Data->LDIF));
 	else
 	  ERR("There was no result %p", env->Body);
       else
@@ -245,11 +245,11 @@ int main(int argc, char** argv)
       
       /* Get list of media objects. */
       
-      env = zx_NEW_e_Envelope(cf->ctx);
-      env->Header = zx_NEW_e_Header(cf->ctx);
-      env->Body = zx_NEW_e_Body(cf->ctx);
-      env->Body->GetObjectListRequest = zx_NEW_demomed_GetObjectListRequest(cf->ctx);
-      env->Body->GetObjectListRequest->ObjectSearchParm = zx_NEW_demomed_ObjectSearchParm(cf->ctx);
+      env = zx_NEW_e_Envelope(cf->ctx,0);
+      env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+      env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
+      env->Body->GetObjectListRequest = zx_NEW_demomed_GetObjectListRequest(cf->ctx, &env->Body->gg);
+      env->Body->GetObjectListRequest->ObjectSearchParm = zx_NEW_demomed_ObjectSearchParm(cf->ctx, &env->Body->GetObjectListRequest->gg);
 
       env = zxid_wsc_call(cf, ses, epr, env, 0);
 
@@ -263,12 +263,11 @@ int main(int argc, char** argv)
 		 objinfo = (struct zx_demomed_ObjectInfo_s*)objinfo->gg.g.n) {
 	      D("objectID(%.*s) Dir(%.*s) Name(%.*s) Type(%.*s) Created(%.*s) Comment(%.*s)",
 		objinfo->objectID->g.len,       objinfo->objectID->g.s,
-		objinfo->Dir->content->len,     objinfo->Dir->content->s,
-		objinfo->Name->content->len,    objinfo->Name->content->s,
-		objinfo->Type->content->len,    objinfo->Type->content->s,
-		objinfo->Created->content->len, objinfo->Created->content->s,
-		objinfo->Comment?objinfo->Comment->content->len:0,
-		objinfo->Comment?objinfo->Comment->content->s:"");
+		ZX_GET_CONTENT_LEN(objinfo->Dir),     ZX_GET_CONTENT_S(objinfo->Dir),
+		ZX_GET_CONTENT_LEN(objinfo->Name),    ZX_GET_CONTENT_S(objinfo->Name),
+		ZX_GET_CONTENT_LEN(objinfo->Type),    ZX_GET_CONTENT_S(objinfo->Type),
+		ZX_GET_CONTENT_LEN(objinfo->Created), ZX_GET_CONTENT_S(objinfo->Created),
+		ZX_GET_CONTENT_LEN(objinfo->Comment), ZX_GET_CONTENT_S(objinfo->Comment));
 	    }
 	  } else {
 	    D("Non OK status(%.*s)", env->Body->GetObjectListResponse->Status->code->g.len, env->Body->GetObjectListResponse->Status->code->g.s);
@@ -280,11 +279,11 @@ int main(int argc, char** argv)
 
       /* Get first media object from the list */
 
-      env = zx_NEW_e_Envelope(cf->ctx);
-      env->Header = zx_NEW_e_Header(cf->ctx);
-      env->Body = zx_NEW_e_Body(cf->ctx);
-      env->Body->GetObjectRequest = zx_NEW_demomed_GetObjectRequest(cf->ctx);
-      env->Body->GetObjectRequest->ObjectID = zx_new_simple_elem(cf->ctx, &first_objinfo->objectID->g);
+      env = zx_NEW_e_Envelope(cf->ctx,0);
+      env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
+      env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
+      env->Body->GetObjectRequest = zx_NEW_demomed_GetObjectRequest(cf->ctx, &env->Body->gg);
+      env->Body->GetObjectRequest->ObjectID = zx_new_simple_elem(cf->ctx, &env->Body->GetObjectRequest->gg, zx_demomed_ObjectID, &first_objinfo->objectID->g);
 
       env = zxid_wsc_call(cf, ses, epr, env, 0);
 

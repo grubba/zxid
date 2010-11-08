@@ -85,7 +85,7 @@ int zx_LEN_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthorit
   int len = sizeof("<shibmd:KeyAuthority")-1 + 1 + sizeof("</shibmd:KeyAuthority>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shibmd_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shibmd_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->VerifyDepth, sizeof("VerifyDepth")-1, &pop_seen);
 
@@ -94,7 +94,9 @@ int zx_LEN_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthorit
   int len = 0;
 #endif
   
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
 
 
@@ -122,7 +124,7 @@ char* zx_ENC_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthor
   ZX_OUT_TAG(p, "<shibmd:KeyAuthority");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shibmd_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shibmd_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -135,7 +137,9 @@ char* zx_ENC_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthor
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -216,7 +220,7 @@ int zx_LEN_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x )
   int len = sizeof("<shibmd:Scope")-1 + 1 + sizeof("</shibmd:Scope>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shibmd_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shibmd_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->regexp, sizeof("regexp")-1, &pop_seen);
 
@@ -251,7 +255,7 @@ char* zx_ENC_SO_shibmd_Scope(struct zx_ctx* c, struct zx_shibmd_Scope_s* x, char
   ZX_OUT_TAG(p, "<shibmd:Scope");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shibmd_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shibmd_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 

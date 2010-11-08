@@ -85,7 +85,7 @@ int zx_LEN_SO_sec_Token(struct zx_ctx* c, struct zx_sec_Token_s* x )
   int len = sizeof("<sec:Token")-1 + 1 + sizeof("</sec:Token>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_sec_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_sec_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
@@ -96,13 +96,21 @@ int zx_LEN_SO_sec_Token(struct zx_ctx* c, struct zx_sec_Token_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)se);
-  for (se = &x->EncryptedAssertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedAssertion->gg;
+       se && se->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)se);
-  for (se = &x->sa11_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->sa11_Assertion->gg;
+       se && se->g.tok == zx_sa11_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)se);
-  for (se = &x->ff12_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ff12_Assertion->gg;
+       se && se->g.tok == zx_ff12_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)se);
 
 
@@ -130,7 +138,7 @@ char* zx_ENC_SO_sec_Token(struct zx_ctx* c, struct zx_sec_Token_s* x, char* p )
   ZX_OUT_TAG(p, "<sec:Token");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_sec_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_sec_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -145,13 +153,21 @@ char* zx_ENC_SO_sec_Token(struct zx_ctx* c, struct zx_sec_Token_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)se, p);
-  for (se = &x->EncryptedAssertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedAssertion->gg;
+       se && se->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)se, p);
-  for (se = &x->sa11_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->sa11_Assertion->gg;
+       se && se->g.tok == zx_sa11_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)se, p);
-  for (se = &x->ff12_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ff12_Assertion->gg;
+       se && se->g.tok == zx_ff12_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -232,7 +248,7 @@ int zx_LEN_SO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x )
   int len = sizeof("<sec:TokenPolicy")-1 + 1 + sizeof("</sec:TokenPolicy>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_sec_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_sec_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->issueTo, sizeof("issueTo")-1, &pop_seen);
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
@@ -244,7 +260,9 @@ int zx_LEN_SO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->NameIDPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIDPolicy->gg;
+       se && se->g.tok == zx_sp_NameIDPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_NameIDPolicy(c, (struct zx_sp_NameIDPolicy_s*)se);
 
 
@@ -272,7 +290,7 @@ char* zx_ENC_SO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x
   ZX_OUT_TAG(p, "<sec:TokenPolicy");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_sec_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_sec_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -288,7 +306,9 @@ char* zx_ENC_SO_sec_TokenPolicy(struct zx_ctx* c, struct zx_sec_TokenPolicy_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->NameIDPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIDPolicy->gg;
+       se && se->g.tok == zx_sp_NameIDPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_NameIDPolicy(c, (struct zx_sp_NameIDPolicy_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -369,7 +389,7 @@ int zx_LEN_SO_sec_TransitedProvider(struct zx_ctx* c, struct zx_sec_TransitedPro
   int len = sizeof("<sec:TransitedProvider")-1 + 1 + sizeof("</sec:TransitedProvider>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_sec_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_sec_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->confirmationURI, sizeof("confirmationURI")-1, &pop_seen);
   len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
@@ -405,7 +425,7 @@ char* zx_ENC_SO_sec_TransitedProvider(struct zx_ctx* c, struct zx_sec_TransitedP
   ZX_OUT_TAG(p, "<sec:TransitedProvider");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_sec_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_sec_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -498,7 +518,7 @@ int zx_LEN_SO_sec_TransitedProviderPath(struct zx_ctx* c, struct zx_sec_Transite
   int len = sizeof("<sec:TransitedProviderPath")-1 + 1 + sizeof("</sec:TransitedProviderPath>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_sec_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_sec_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -506,7 +526,9 @@ int zx_LEN_SO_sec_TransitedProviderPath(struct zx_ctx* c, struct zx_sec_Transite
   int len = 0;
 #endif
   
-  for (se = &x->TransitedProvider->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TransitedProvider->gg;
+       se && se->g.tok == zx_sec_TransitedProvider_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_TransitedProvider(c, (struct zx_sec_TransitedProvider_s*)se);
 
 
@@ -534,7 +556,7 @@ char* zx_ENC_SO_sec_TransitedProviderPath(struct zx_ctx* c, struct zx_sec_Transi
   ZX_OUT_TAG(p, "<sec:TransitedProviderPath");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_sec_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_sec_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -546,7 +568,9 @@ char* zx_ENC_SO_sec_TransitedProviderPath(struct zx_ctx* c, struct zx_sec_Transi
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->TransitedProvider->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TransitedProvider->gg;
+       se && se->g.tok == zx_sec_TransitedProvider_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_TransitedProvider(c, (struct zx_sec_TransitedProvider_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

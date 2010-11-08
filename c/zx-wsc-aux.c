@@ -66,11 +66,15 @@ void zx_FREE_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToken
   zx_free_attr(c, x->Algorithm, free_strs);
   zx_free_attr(c, x->Id, free_strs);
 
-  for (e = &x->SecurityTokenReference->gg; e; e = en) {
+  for (e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)e, free_strs);
   }
-  for (e = &x->Properties->gg; e; e = en) {
+  for (e = &x->Properties->gg;
+       e && e->g.tok == zx_wsc_Properties_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsc_Properties(c, (struct zx_wsc_Properties_s*)e, free_strs);
   }
@@ -117,9 +121,13 @@ void zx_DUP_STRS_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyT
   zx_dup_attr(c, x->Algorithm);
   zx_dup_attr(c, x->Id);
 
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se);
-  for (se = &x->Properties->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Properties->gg;
+       se && se->g.tok == zx_wsc_Properties_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsc_Properties(c, (struct zx_wsc_Properties_s*)se);
   zx_dup_strs_simple_elems(c, x->Generation);
   zx_dup_strs_simple_elems(c, x->Offset);
@@ -147,7 +155,9 @@ struct zx_wsc_DerivedKeyToken_s* zx_DEEP_CLONE_wsc_DerivedKeyToken(struct zx_ctx
   x->Algorithm = zx_clone_attr(c, x->Algorithm);
   x->Id = zx_clone_attr(c, x->Id);
 
-  for (enn = 0, e = &x->SecurityTokenReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsse_SecurityTokenReference(c,(struct zx_wsse_SecurityTokenReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->SecurityTokenReference = (struct zx_wsse_SecurityTokenReference_s*)en;
@@ -155,7 +165,9 @@ struct zx_wsc_DerivedKeyToken_s* zx_DEEP_CLONE_wsc_DerivedKeyToken(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Properties->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Properties->gg;
+       e && e->g.tok == zx_wsc_Properties_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsc_Properties(c,(struct zx_wsc_Properties_s*)e,dup_strs);
   	  if (!enn)
   	      x->Properties = (struct zx_wsc_Properties_s*)en;
@@ -191,12 +203,16 @@ int zx_WALK_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyTok
   if (ret)
     return ret;
 
-  for (e = &x->SecurityTokenReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Properties->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Properties->gg;
+       e && e->g.tok == zx_wsc_Properties_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsc_Properties(c, (struct zx_wsc_Properties_s*)e, ctx, callback);
     if (ret)
       return ret;

@@ -688,16 +688,16 @@ zxid_entity* zxid_get_ent_by_sha1_name(zxid_conf* cf, char* sha1_name);
 zxid_entity* zxid_load_cot_cache(zxid_conf* cf);
 
 #ifdef USE_OPENSSL
-struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, X509* x);
-struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, char* use, X509* cert);
+struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, struct zx_elem_s* father, X509* x);
+struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, struct zx_elem_s* father, char* use, X509* cert);
 #endif
-struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc);
-struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc);
-struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc);
-struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc);
-struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, char* binding, char* loc, char* index);
-struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf);
-struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf);
+struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc);
+struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc);
+struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc);
+struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc);
+struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* index);
+struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem_s* father);
+struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s* father);
 struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi);
 int zxid_send_sp_meta(zxid_conf* cf, zxid_cgi* cgi);
 struct zx_str* zxid_sp_carml(zxid_conf* cf);

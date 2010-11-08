@@ -66,11 +66,15 @@ void zx_FREE_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMeth
   zx_free_attr(c, x->Algorithm, free_strs);
 
   zx_free_simple_elems(c, x->KA_Nonce, free_strs);
-  for (e = &x->OriginatorKeyInfo->gg; e; e = en) {
+  for (e = &x->OriginatorKeyInfo->gg;
+       e && e->g.tok == zx_xenc_OriginatorKeyInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_OriginatorKeyInfo(c, (struct zx_xenc_OriginatorKeyInfo_s*)e, free_strs);
   }
-  for (e = &x->RecipientKeyInfo->gg; e; e = en) {
+  for (e = &x->RecipientKeyInfo->gg;
+       e && e->g.tok == zx_xenc_RecipientKeyInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_RecipientKeyInfo(c, (struct zx_xenc_RecipientKeyInfo_s*)e, free_strs);
   }
@@ -112,9 +116,13 @@ void zx_DUP_STRS_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_Agreement
   zx_dup_attr(c, x->Algorithm);
 
   zx_dup_strs_simple_elems(c, x->KA_Nonce);
-  for (se = &x->OriginatorKeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OriginatorKeyInfo->gg;
+       se && se->g.tok == zx_xenc_OriginatorKeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_OriginatorKeyInfo(c, (struct zx_xenc_OriginatorKeyInfo_s*)se);
-  for (se = &x->RecipientKeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RecipientKeyInfo->gg;
+       se && se->g.tok == zx_xenc_RecipientKeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_RecipientKeyInfo(c, (struct zx_xenc_RecipientKeyInfo_s*)se);
 
 }
@@ -137,7 +145,9 @@ struct zx_xenc_AgreementMethod_s* zx_DEEP_CLONE_xenc_AgreementMethod(struct zx_c
   x->Algorithm = zx_clone_attr(c, x->Algorithm);
 
   x->KA_Nonce = zx_deep_clone_simple_elems(c,x->KA_Nonce, dup_strs);
-  for (enn = 0, e = &x->OriginatorKeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OriginatorKeyInfo->gg;
+       e && e->g.tok == zx_xenc_OriginatorKeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_OriginatorKeyInfo(c,(struct zx_xenc_OriginatorKeyInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->OriginatorKeyInfo = (struct zx_xenc_OriginatorKeyInfo_s*)en;
@@ -145,7 +155,9 @@ struct zx_xenc_AgreementMethod_s* zx_DEEP_CLONE_xenc_AgreementMethod(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RecipientKeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RecipientKeyInfo->gg;
+       e && e->g.tok == zx_xenc_RecipientKeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_RecipientKeyInfo(c,(struct zx_xenc_RecipientKeyInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->RecipientKeyInfo = (struct zx_xenc_RecipientKeyInfo_s*)en;
@@ -179,12 +191,16 @@ int zx_WALK_SO_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMe
   ret = zx_walk_so_simple_elems(c, x->KA_Nonce, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->OriginatorKeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OriginatorKeyInfo->gg;
+       e && e->g.tok == zx_xenc_OriginatorKeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_OriginatorKeyInfo(c, (struct zx_xenc_OriginatorKeyInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RecipientKeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RecipientKeyInfo->gg;
+       e && e->g.tok == zx_xenc_RecipientKeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_RecipientKeyInfo(c, (struct zx_xenc_RecipientKeyInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -242,7 +258,9 @@ void zx_FREE_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x, i
 
 
   zx_free_simple_elems(c, x->CipherValue, free_strs);
-  for (e = &x->CipherReference->gg; e; e = en) {
+  for (e = &x->CipherReference->gg;
+       e && e->g.tok == zx_xenc_CipherReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_CipherReference(c, (struct zx_xenc_CipherReference_s*)e, free_strs);
   }
@@ -283,7 +301,9 @@ void zx_DUP_STRS_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* 
 
 
   zx_dup_strs_simple_elems(c, x->CipherValue);
-  for (se = &x->CipherReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CipherReference->gg;
+       se && se->g.tok == zx_xenc_CipherReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_CipherReference(c, (struct zx_xenc_CipherReference_s*)se);
 
 }
@@ -305,7 +325,9 @@ struct zx_xenc_CipherData_s* zx_DEEP_CLONE_xenc_CipherData(struct zx_ctx* c, str
 
 
   x->CipherValue = zx_deep_clone_simple_elems(c,x->CipherValue, dup_strs);
-  for (enn = 0, e = &x->CipherReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CipherReference->gg;
+       e && e->g.tok == zx_xenc_CipherReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_CipherReference(c,(struct zx_xenc_CipherReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->CipherReference = (struct zx_xenc_CipherReference_s*)en;
@@ -339,7 +361,9 @@ int zx_WALK_SO_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x,
   ret = zx_walk_so_simple_elems(c, x->CipherValue, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->CipherReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CipherReference->gg;
+       e && e->g.tok == zx_xenc_CipherReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_CipherReference(c, (struct zx_xenc_CipherReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -397,7 +421,9 @@ void zx_FREE_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherReferen
 
   zx_free_attr(c, x->URI, free_strs);
 
-  for (e = &x->Transforms->gg; e; e = en) {
+  for (e = &x->Transforms->gg;
+       e && e->g.tok == zx_xenc_Transforms_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_Transforms(c, (struct zx_xenc_Transforms_s*)e, free_strs);
   }
@@ -438,7 +464,9 @@ void zx_DUP_STRS_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherRef
 
   zx_dup_attr(c, x->URI);
 
-  for (se = &x->Transforms->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Transforms->gg;
+       se && se->g.tok == zx_xenc_Transforms_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_Transforms(c, (struct zx_xenc_Transforms_s*)se);
 
 }
@@ -460,7 +488,9 @@ struct zx_xenc_CipherReference_s* zx_DEEP_CLONE_xenc_CipherReference(struct zx_c
 
   x->URI = zx_clone_attr(c, x->URI);
 
-  for (enn = 0, e = &x->Transforms->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Transforms->gg;
+       e && e->g.tok == zx_xenc_Transforms_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_Transforms(c,(struct zx_xenc_Transforms_s*)e,dup_strs);
   	  if (!enn)
   	      x->Transforms = (struct zx_xenc_Transforms_s*)en;
@@ -491,7 +521,9 @@ int zx_WALK_SO_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherRefer
   if (ret)
     return ret;
 
-  for (e = &x->Transforms->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Transforms->gg;
+       e && e->g.tok == zx_xenc_Transforms_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_Transforms(c, (struct zx_xenc_Transforms_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -685,19 +717,27 @@ void zx_FREE_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData_s
   zx_free_attr(c, x->MimeType, free_strs);
   zx_free_attr(c, x->Type, free_strs);
 
-  for (e = &x->EncryptionMethod->gg; e; e = en) {
+  for (e = &x->EncryptionMethod->gg;
+       e && e->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)e, free_strs);
   }
-  for (e = &x->KeyInfo->gg; e; e = en) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, free_strs);
   }
-  for (e = &x->CipherData->gg; e; e = en) {
+  for (e = &x->CipherData->gg;
+       e && e->g.tok == zx_xenc_CipherData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)e, free_strs);
   }
-  for (e = &x->EncryptionProperties->gg; e; e = en) {
+  for (e = &x->EncryptionProperties->gg;
+       e && e->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)e, free_strs);
   }
@@ -741,13 +781,21 @@ void zx_DUP_STRS_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedDa
   zx_dup_attr(c, x->MimeType);
   zx_dup_attr(c, x->Type);
 
-  for (se = &x->EncryptionMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionMethod->gg;
+       se && se->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)se);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
-  for (se = &x->CipherData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CipherData->gg;
+       se && se->g.tok == zx_xenc_CipherData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)se);
-  for (se = &x->EncryptionProperties->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionProperties->gg;
+       se && se->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)se);
 
 }
@@ -772,7 +820,9 @@ struct zx_xenc_EncryptedData_s* zx_DEEP_CLONE_xenc_EncryptedData(struct zx_ctx* 
   x->MimeType = zx_clone_attr(c, x->MimeType);
   x->Type = zx_clone_attr(c, x->Type);
 
-  for (enn = 0, e = &x->EncryptionMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptionMethod->gg;
+       e && e->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptionMethod(c,(struct zx_xenc_EncryptionMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptionMethod = (struct zx_xenc_EncryptionMethod_s*)en;
@@ -780,7 +830,9 @@ struct zx_xenc_EncryptedData_s* zx_DEEP_CLONE_xenc_EncryptedData(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_KeyInfo(c,(struct zx_ds_KeyInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyInfo = (struct zx_ds_KeyInfo_s*)en;
@@ -788,7 +840,9 @@ struct zx_xenc_EncryptedData_s* zx_DEEP_CLONE_xenc_EncryptedData(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CipherData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CipherData->gg;
+       e && e->g.tok == zx_xenc_CipherData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_CipherData(c,(struct zx_xenc_CipherData_s*)e,dup_strs);
   	  if (!enn)
   	      x->CipherData = (struct zx_xenc_CipherData_s*)en;
@@ -796,7 +850,9 @@ struct zx_xenc_EncryptedData_s* zx_DEEP_CLONE_xenc_EncryptedData(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptionProperties->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptionProperties->gg;
+       e && e->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptionProperties(c,(struct zx_xenc_EncryptionProperties_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptionProperties = (struct zx_xenc_EncryptionProperties_s*)en;
@@ -827,22 +883,30 @@ int zx_WALK_SO_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData
   if (ret)
     return ret;
 
-  for (e = &x->EncryptionMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptionMethod->gg;
+       e && e->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CipherData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CipherData->gg;
+       e && e->g.tok == zx_xenc_CipherData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptionProperties->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptionProperties->gg;
+       e && e->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -904,23 +968,33 @@ void zx_FREE_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s* 
   zx_free_attr(c, x->Recipient, free_strs);
   zx_free_attr(c, x->Type, free_strs);
 
-  for (e = &x->EncryptionMethod->gg; e; e = en) {
+  for (e = &x->EncryptionMethod->gg;
+       e && e->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)e, free_strs);
   }
-  for (e = &x->KeyInfo->gg; e; e = en) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, free_strs);
   }
-  for (e = &x->CipherData->gg; e; e = en) {
+  for (e = &x->CipherData->gg;
+       e && e->g.tok == zx_xenc_CipherData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)e, free_strs);
   }
-  for (e = &x->EncryptionProperties->gg; e; e = en) {
+  for (e = &x->EncryptionProperties->gg;
+       e && e->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)e, free_strs);
   }
-  for (e = &x->ReferenceList->gg; e; e = en) {
+  for (e = &x->ReferenceList->gg;
+       e && e->g.tok == zx_xenc_ReferenceList_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_ReferenceList(c, (struct zx_xenc_ReferenceList_s*)e, free_strs);
   }
@@ -966,15 +1040,25 @@ void zx_DUP_STRS_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey
   zx_dup_attr(c, x->Recipient);
   zx_dup_attr(c, x->Type);
 
-  for (se = &x->EncryptionMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionMethod->gg;
+       se && se->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)se);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
-  for (se = &x->CipherData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CipherData->gg;
+       se && se->g.tok == zx_xenc_CipherData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)se);
-  for (se = &x->EncryptionProperties->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionProperties->gg;
+       se && se->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)se);
-  for (se = &x->ReferenceList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceList->gg;
+       se && se->g.tok == zx_xenc_ReferenceList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_ReferenceList(c, (struct zx_xenc_ReferenceList_s*)se);
   zx_dup_strs_simple_elems(c, x->CarriedKeyName);
 
@@ -1001,7 +1085,9 @@ struct zx_xenc_EncryptedKey_s* zx_DEEP_CLONE_xenc_EncryptedKey(struct zx_ctx* c,
   x->Recipient = zx_clone_attr(c, x->Recipient);
   x->Type = zx_clone_attr(c, x->Type);
 
-  for (enn = 0, e = &x->EncryptionMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptionMethod->gg;
+       e && e->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptionMethod(c,(struct zx_xenc_EncryptionMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptionMethod = (struct zx_xenc_EncryptionMethod_s*)en;
@@ -1009,7 +1095,9 @@ struct zx_xenc_EncryptedKey_s* zx_DEEP_CLONE_xenc_EncryptedKey(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_KeyInfo(c,(struct zx_ds_KeyInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyInfo = (struct zx_ds_KeyInfo_s*)en;
@@ -1017,7 +1105,9 @@ struct zx_xenc_EncryptedKey_s* zx_DEEP_CLONE_xenc_EncryptedKey(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CipherData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CipherData->gg;
+       e && e->g.tok == zx_xenc_CipherData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_CipherData(c,(struct zx_xenc_CipherData_s*)e,dup_strs);
   	  if (!enn)
   	      x->CipherData = (struct zx_xenc_CipherData_s*)en;
@@ -1025,7 +1115,9 @@ struct zx_xenc_EncryptedKey_s* zx_DEEP_CLONE_xenc_EncryptedKey(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptionProperties->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptionProperties->gg;
+       e && e->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptionProperties(c,(struct zx_xenc_EncryptionProperties_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptionProperties = (struct zx_xenc_EncryptionProperties_s*)en;
@@ -1033,7 +1125,9 @@ struct zx_xenc_EncryptedKey_s* zx_DEEP_CLONE_xenc_EncryptedKey(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ReferenceList->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ReferenceList->gg;
+       e && e->g.tok == zx_xenc_ReferenceList_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_ReferenceList(c,(struct zx_xenc_ReferenceList_s*)e,dup_strs);
   	  if (!enn)
   	      x->ReferenceList = (struct zx_xenc_ReferenceList_s*)en;
@@ -1065,27 +1159,37 @@ int zx_WALK_SO_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s
   if (ret)
     return ret;
 
-  for (e = &x->EncryptionMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptionMethod->gg;
+       e && e->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CipherData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CipherData->gg;
+       e && e->g.tok == zx_xenc_CipherData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptionProperties->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptionProperties->gg;
+       e && e->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ReferenceList->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ReferenceList->gg;
+       e && e->g.tok == zx_xenc_ReferenceList_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_ReferenceList(c, (struct zx_xenc_ReferenceList_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1291,7 +1395,9 @@ void zx_FREE_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_Encrypti
 
   zx_free_attr(c, x->Id, free_strs);
 
-  for (e = &x->EncryptionProperty->gg; e; e = en) {
+  for (e = &x->EncryptionProperty->gg;
+       e && e->g.tok == zx_xenc_EncryptionProperty_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptionProperty(c, (struct zx_xenc_EncryptionProperty_s*)e, free_strs);
   }
@@ -1332,7 +1438,9 @@ void zx_DUP_STRS_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_Encr
 
   zx_dup_attr(c, x->Id);
 
-  for (se = &x->EncryptionProperty->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionProperty->gg;
+       se && se->g.tok == zx_xenc_EncryptionProperty_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptionProperty(c, (struct zx_xenc_EncryptionProperty_s*)se);
 
 }
@@ -1354,7 +1462,9 @@ struct zx_xenc_EncryptionProperties_s* zx_DEEP_CLONE_xenc_EncryptionProperties(s
 
   x->Id = zx_clone_attr(c, x->Id);
 
-  for (enn = 0, e = &x->EncryptionProperty->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptionProperty->gg;
+       e && e->g.tok == zx_xenc_EncryptionProperty_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptionProperty(c,(struct zx_xenc_EncryptionProperty_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptionProperty = (struct zx_xenc_EncryptionProperty_s*)en;
@@ -1385,7 +1495,9 @@ int zx_WALK_SO_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_Encryp
   if (ret)
     return ret;
 
-  for (e = &x->EncryptionProperty->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptionProperty->gg;
+       e && e->g.tok == zx_xenc_EncryptionProperty_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptionProperty(c, (struct zx_xenc_EncryptionProperty_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1713,28 +1825,40 @@ void zx_FREE_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_OriginatorK
   zx_free_attr(c, x->Id, free_strs);
 
   zx_free_simple_elems(c, x->KeyName, free_strs);
-  for (e = &x->KeyValue->gg; e; e = en) {
+  for (e = &x->KeyValue->gg;
+       e && e->g.tok == zx_ds_KeyValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)e, free_strs);
   }
-  for (e = &x->RetrievalMethod->gg; e; e = en) {
+  for (e = &x->RetrievalMethod->gg;
+       e && e->g.tok == zx_ds_RetrievalMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)e, free_strs);
   }
-  for (e = &x->X509Data->gg; e; e = en) {
+  for (e = &x->X509Data->gg;
+       e && e->g.tok == zx_ds_X509Data_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_X509Data(c, (struct zx_ds_X509Data_s*)e, free_strs);
   }
-  for (e = &x->PGPData->gg; e; e = en) {
+  for (e = &x->PGPData->gg;
+       e && e->g.tok == zx_ds_PGPData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_PGPData(c, (struct zx_ds_PGPData_s*)e, free_strs);
   }
-  for (e = &x->SPKIData->gg; e; e = en) {
+  for (e = &x->SPKIData->gg;
+       e && e->g.tok == zx_ds_SPKIData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->MgmtData, free_strs);
-  for (e = &x->EncryptedKey->gg; e; e = en) {
+  for (e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, free_strs);
   }
@@ -1776,18 +1900,30 @@ void zx_DUP_STRS_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_Origina
   zx_dup_attr(c, x->Id);
 
   zx_dup_strs_simple_elems(c, x->KeyName);
-  for (se = &x->KeyValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyValue->gg;
+       se && se->g.tok == zx_ds_KeyValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)se);
-  for (se = &x->RetrievalMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RetrievalMethod->gg;
+       se && se->g.tok == zx_ds_RetrievalMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)se);
-  for (se = &x->X509Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->X509Data->gg;
+       se && se->g.tok == zx_ds_X509Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_X509Data(c, (struct zx_ds_X509Data_s*)se);
-  for (se = &x->PGPData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PGPData->gg;
+       se && se->g.tok == zx_ds_PGPData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_PGPData(c, (struct zx_ds_PGPData_s*)se);
-  for (se = &x->SPKIData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPKIData->gg;
+       se && se->g.tok == zx_ds_SPKIData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)se);
   zx_dup_strs_simple_elems(c, x->MgmtData);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se);
 
 }
@@ -1810,7 +1946,9 @@ struct zx_xenc_OriginatorKeyInfo_s* zx_DEEP_CLONE_xenc_OriginatorKeyInfo(struct 
   x->Id = zx_clone_attr(c, x->Id);
 
   x->KeyName = zx_deep_clone_simple_elems(c,x->KeyName, dup_strs);
-  for (enn = 0, e = &x->KeyValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyValue->gg;
+       e && e->g.tok == zx_ds_KeyValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_KeyValue(c,(struct zx_ds_KeyValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyValue = (struct zx_ds_KeyValue_s*)en;
@@ -1818,7 +1956,9 @@ struct zx_xenc_OriginatorKeyInfo_s* zx_DEEP_CLONE_xenc_OriginatorKeyInfo(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RetrievalMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RetrievalMethod->gg;
+       e && e->g.tok == zx_ds_RetrievalMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_RetrievalMethod(c,(struct zx_ds_RetrievalMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->RetrievalMethod = (struct zx_ds_RetrievalMethod_s*)en;
@@ -1826,7 +1966,9 @@ struct zx_xenc_OriginatorKeyInfo_s* zx_DEEP_CLONE_xenc_OriginatorKeyInfo(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->X509Data->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->X509Data->gg;
+       e && e->g.tok == zx_ds_X509Data_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_X509Data(c,(struct zx_ds_X509Data_s*)e,dup_strs);
   	  if (!enn)
   	      x->X509Data = (struct zx_ds_X509Data_s*)en;
@@ -1834,7 +1976,9 @@ struct zx_xenc_OriginatorKeyInfo_s* zx_DEEP_CLONE_xenc_OriginatorKeyInfo(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PGPData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PGPData->gg;
+       e && e->g.tok == zx_ds_PGPData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_PGPData(c,(struct zx_ds_PGPData_s*)e,dup_strs);
   	  if (!enn)
   	      x->PGPData = (struct zx_ds_PGPData_s*)en;
@@ -1842,7 +1986,9 @@ struct zx_xenc_OriginatorKeyInfo_s* zx_DEEP_CLONE_xenc_OriginatorKeyInfo(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SPKIData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SPKIData->gg;
+       e && e->g.tok == zx_ds_SPKIData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_SPKIData(c,(struct zx_ds_SPKIData_s*)e,dup_strs);
   	  if (!enn)
   	      x->SPKIData = (struct zx_ds_SPKIData_s*)en;
@@ -1851,7 +1997,9 @@ struct zx_xenc_OriginatorKeyInfo_s* zx_DEEP_CLONE_xenc_OriginatorKeyInfo(struct 
   	  enn = en;
   }
   x->MgmtData = zx_deep_clone_simple_elems(c,x->MgmtData, dup_strs);
-  for (enn = 0, e = &x->EncryptedKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptedKey(c,(struct zx_xenc_EncryptedKey_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)en;
@@ -1885,27 +2033,37 @@ int zx_WALK_SO_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_Originato
   ret = zx_walk_so_simple_elems(c, x->KeyName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->KeyValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyValue->gg;
+       e && e->g.tok == zx_ds_KeyValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RetrievalMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RetrievalMethod->gg;
+       e && e->g.tok == zx_ds_RetrievalMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->X509Data->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->X509Data->gg;
+       e && e->g.tok == zx_ds_X509Data_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_X509Data(c, (struct zx_ds_X509Data_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PGPData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PGPData->gg;
+       e && e->g.tok == zx_ds_PGPData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_PGPData(c, (struct zx_ds_PGPData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SPKIData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SPKIData->gg;
+       e && e->g.tok == zx_ds_SPKIData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1913,7 +2071,9 @@ int zx_WALK_SO_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_Originato
   ret = zx_walk_so_simple_elems(c, x->MgmtData, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->EncryptedKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1972,28 +2132,40 @@ void zx_FREE_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientKey
   zx_free_attr(c, x->Id, free_strs);
 
   zx_free_simple_elems(c, x->KeyName, free_strs);
-  for (e = &x->KeyValue->gg; e; e = en) {
+  for (e = &x->KeyValue->gg;
+       e && e->g.tok == zx_ds_KeyValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)e, free_strs);
   }
-  for (e = &x->RetrievalMethod->gg; e; e = en) {
+  for (e = &x->RetrievalMethod->gg;
+       e && e->g.tok == zx_ds_RetrievalMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)e, free_strs);
   }
-  for (e = &x->X509Data->gg; e; e = en) {
+  for (e = &x->X509Data->gg;
+       e && e->g.tok == zx_ds_X509Data_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_X509Data(c, (struct zx_ds_X509Data_s*)e, free_strs);
   }
-  for (e = &x->PGPData->gg; e; e = en) {
+  for (e = &x->PGPData->gg;
+       e && e->g.tok == zx_ds_PGPData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_PGPData(c, (struct zx_ds_PGPData_s*)e, free_strs);
   }
-  for (e = &x->SPKIData->gg; e; e = en) {
+  for (e = &x->SPKIData->gg;
+       e && e->g.tok == zx_ds_SPKIData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->MgmtData, free_strs);
-  for (e = &x->EncryptedKey->gg; e; e = en) {
+  for (e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, free_strs);
   }
@@ -2035,18 +2207,30 @@ void zx_DUP_STRS_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_Recipien
   zx_dup_attr(c, x->Id);
 
   zx_dup_strs_simple_elems(c, x->KeyName);
-  for (se = &x->KeyValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyValue->gg;
+       se && se->g.tok == zx_ds_KeyValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)se);
-  for (se = &x->RetrievalMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RetrievalMethod->gg;
+       se && se->g.tok == zx_ds_RetrievalMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)se);
-  for (se = &x->X509Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->X509Data->gg;
+       se && se->g.tok == zx_ds_X509Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_X509Data(c, (struct zx_ds_X509Data_s*)se);
-  for (se = &x->PGPData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PGPData->gg;
+       se && se->g.tok == zx_ds_PGPData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_PGPData(c, (struct zx_ds_PGPData_s*)se);
-  for (se = &x->SPKIData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPKIData->gg;
+       se && se->g.tok == zx_ds_SPKIData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)se);
   zx_dup_strs_simple_elems(c, x->MgmtData);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se);
 
 }
@@ -2069,7 +2253,9 @@ struct zx_xenc_RecipientKeyInfo_s* zx_DEEP_CLONE_xenc_RecipientKeyInfo(struct zx
   x->Id = zx_clone_attr(c, x->Id);
 
   x->KeyName = zx_deep_clone_simple_elems(c,x->KeyName, dup_strs);
-  for (enn = 0, e = &x->KeyValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyValue->gg;
+       e && e->g.tok == zx_ds_KeyValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_KeyValue(c,(struct zx_ds_KeyValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyValue = (struct zx_ds_KeyValue_s*)en;
@@ -2077,7 +2263,9 @@ struct zx_xenc_RecipientKeyInfo_s* zx_DEEP_CLONE_xenc_RecipientKeyInfo(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RetrievalMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RetrievalMethod->gg;
+       e && e->g.tok == zx_ds_RetrievalMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_RetrievalMethod(c,(struct zx_ds_RetrievalMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->RetrievalMethod = (struct zx_ds_RetrievalMethod_s*)en;
@@ -2085,7 +2273,9 @@ struct zx_xenc_RecipientKeyInfo_s* zx_DEEP_CLONE_xenc_RecipientKeyInfo(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->X509Data->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->X509Data->gg;
+       e && e->g.tok == zx_ds_X509Data_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_X509Data(c,(struct zx_ds_X509Data_s*)e,dup_strs);
   	  if (!enn)
   	      x->X509Data = (struct zx_ds_X509Data_s*)en;
@@ -2093,7 +2283,9 @@ struct zx_xenc_RecipientKeyInfo_s* zx_DEEP_CLONE_xenc_RecipientKeyInfo(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PGPData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PGPData->gg;
+       e && e->g.tok == zx_ds_PGPData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_PGPData(c,(struct zx_ds_PGPData_s*)e,dup_strs);
   	  if (!enn)
   	      x->PGPData = (struct zx_ds_PGPData_s*)en;
@@ -2101,7 +2293,9 @@ struct zx_xenc_RecipientKeyInfo_s* zx_DEEP_CLONE_xenc_RecipientKeyInfo(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SPKIData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SPKIData->gg;
+       e && e->g.tok == zx_ds_SPKIData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_SPKIData(c,(struct zx_ds_SPKIData_s*)e,dup_strs);
   	  if (!enn)
   	      x->SPKIData = (struct zx_ds_SPKIData_s*)en;
@@ -2110,7 +2304,9 @@ struct zx_xenc_RecipientKeyInfo_s* zx_DEEP_CLONE_xenc_RecipientKeyInfo(struct zx
   	  enn = en;
   }
   x->MgmtData = zx_deep_clone_simple_elems(c,x->MgmtData, dup_strs);
-  for (enn = 0, e = &x->EncryptedKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptedKey(c,(struct zx_xenc_EncryptedKey_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)en;
@@ -2144,27 +2340,37 @@ int zx_WALK_SO_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientK
   ret = zx_walk_so_simple_elems(c, x->KeyName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->KeyValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyValue->gg;
+       e && e->g.tok == zx_ds_KeyValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RetrievalMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RetrievalMethod->gg;
+       e && e->g.tok == zx_ds_RetrievalMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->X509Data->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->X509Data->gg;
+       e && e->g.tok == zx_ds_X509Data_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_X509Data(c, (struct zx_ds_X509Data_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PGPData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PGPData->gg;
+       e && e->g.tok == zx_ds_PGPData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_PGPData(c, (struct zx_ds_PGPData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SPKIData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SPKIData->gg;
+       e && e->g.tok == zx_ds_SPKIData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2172,7 +2378,9 @@ int zx_WALK_SO_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientK
   ret = zx_walk_so_simple_elems(c, x->MgmtData, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->EncryptedKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2229,11 +2437,15 @@ void zx_FREE_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->DataReference->gg; e; e = en) {
+  for (e = &x->DataReference->gg;
+       e && e->g.tok == zx_xenc_DataReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_DataReference(c, (struct zx_xenc_DataReference_s*)e, free_strs);
   }
-  for (e = &x->KeyReference->gg; e; e = en) {
+  for (e = &x->KeyReference->gg;
+       e && e->g.tok == zx_xenc_KeyReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_KeyReference(c, (struct zx_xenc_KeyReference_s*)e, free_strs);
   }
@@ -2273,9 +2485,13 @@ void zx_DUP_STRS_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceLi
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->DataReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DataReference->gg;
+       se && se->g.tok == zx_xenc_DataReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_DataReference(c, (struct zx_xenc_DataReference_s*)se);
-  for (se = &x->KeyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyReference->gg;
+       se && se->g.tok == zx_xenc_KeyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_KeyReference(c, (struct zx_xenc_KeyReference_s*)se);
 
 }
@@ -2296,7 +2512,9 @@ struct zx_xenc_ReferenceList_s* zx_DEEP_CLONE_xenc_ReferenceList(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->DataReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DataReference->gg;
+       e && e->g.tok == zx_xenc_DataReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_DataReference(c,(struct zx_xenc_DataReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->DataReference = (struct zx_xenc_DataReference_s*)en;
@@ -2304,7 +2522,9 @@ struct zx_xenc_ReferenceList_s* zx_DEEP_CLONE_xenc_ReferenceList(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->KeyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyReference->gg;
+       e && e->g.tok == zx_xenc_KeyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_KeyReference(c,(struct zx_xenc_KeyReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyReference = (struct zx_xenc_KeyReference_s*)en;
@@ -2335,12 +2555,16 @@ int zx_WALK_SO_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList
   if (ret)
     return ret;
 
-  for (e = &x->DataReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DataReference->gg;
+       e && e->g.tok == zx_xenc_DataReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_DataReference(c, (struct zx_xenc_DataReference_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->KeyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyReference->gg;
+       e && e->g.tok == zx_xenc_KeyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_KeyReference(c, (struct zx_xenc_KeyReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2397,7 +2621,9 @@ void zx_FREE_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x, i
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Transform->gg; e; e = en) {
+  for (e = &x->Transform->gg;
+       e && e->g.tok == zx_ds_Transform_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Transform(c, (struct zx_ds_Transform_s*)e, free_strs);
   }
@@ -2437,7 +2663,9 @@ void zx_DUP_STRS_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Transform->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Transform->gg;
+       se && se->g.tok == zx_ds_Transform_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Transform(c, (struct zx_ds_Transform_s*)se);
 
 }
@@ -2458,7 +2686,9 @@ struct zx_xenc_Transforms_s* zx_DEEP_CLONE_xenc_Transforms(struct zx_ctx* c, str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Transform->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Transform->gg;
+       e && e->g.tok == zx_ds_Transform_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Transform(c,(struct zx_ds_Transform_s*)e,dup_strs);
   	  if (!enn)
   	      x->Transform = (struct zx_ds_Transform_s*)en;
@@ -2489,7 +2719,9 @@ int zx_WALK_SO_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->Transform->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Transform->gg;
+       e && e->g.tok == zx_ds_Transform_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Transform(c, (struct zx_ds_Transform_s*)e, ctx, callback);
     if (ret)
       return ret;

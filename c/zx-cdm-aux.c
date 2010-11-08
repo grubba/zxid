@@ -73,31 +73,45 @@ void zx_FREE_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x, int free_strs)
   zx_free_simple_elems(c, x->DOM, free_strs);
   zx_free_simple_elems(c, x->INTL, free_strs);
   zx_free_simple_elems(c, x->PREF, free_strs);
-  for (e = &x->POBOX->gg; e; e = en) {
+  for (e = &x->POBOX->gg;
+       e && e->g.tok == zx_cdm_POBOX_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_POBOX(c, (struct zx_cdm_POBOX_s*)e, free_strs);
   }
-  for (e = &x->EXTADR->gg; e; e = en) {
+  for (e = &x->EXTADR->gg;
+       e && e->g.tok == zx_cdm_EXTADR_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_EXTADR(c, (struct zx_cdm_EXTADR_s*)e, free_strs);
   }
-  for (e = &x->STREET->gg; e; e = en) {
+  for (e = &x->STREET->gg;
+       e && e->g.tok == zx_cdm_STREET_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_STREET(c, (struct zx_cdm_STREET_s*)e, free_strs);
   }
-  for (e = &x->LOCALITY->gg; e; e = en) {
+  for (e = &x->LOCALITY->gg;
+       e && e->g.tok == zx_cdm_LOCALITY_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_LOCALITY(c, (struct zx_cdm_LOCALITY_s*)e, free_strs);
   }
-  for (e = &x->REGION->gg; e; e = en) {
+  for (e = &x->REGION->gg;
+       e && e->g.tok == zx_cdm_REGION_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_REGION(c, (struct zx_cdm_REGION_s*)e, free_strs);
   }
-  for (e = &x->PCODE->gg; e; e = en) {
+  for (e = &x->PCODE->gg;
+       e && e->g.tok == zx_cdm_PCODE_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_PCODE(c, (struct zx_cdm_PCODE_s*)e, free_strs);
   }
-  for (e = &x->CTRY->gg; e; e = en) {
+  for (e = &x->CTRY->gg;
+       e && e->g.tok == zx_cdm_CTRY_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_CTRY(c, (struct zx_cdm_CTRY_s*)e, free_strs);
   }
@@ -146,19 +160,33 @@ void zx_DUP_STRS_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x)
   zx_dup_strs_simple_elems(c, x->DOM);
   zx_dup_strs_simple_elems(c, x->INTL);
   zx_dup_strs_simple_elems(c, x->PREF);
-  for (se = &x->POBOX->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->POBOX->gg;
+       se && se->g.tok == zx_cdm_POBOX_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_POBOX(c, (struct zx_cdm_POBOX_s*)se);
-  for (se = &x->EXTADR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EXTADR->gg;
+       se && se->g.tok == zx_cdm_EXTADR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_EXTADR(c, (struct zx_cdm_EXTADR_s*)se);
-  for (se = &x->STREET->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->STREET->gg;
+       se && se->g.tok == zx_cdm_STREET_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_STREET(c, (struct zx_cdm_STREET_s*)se);
-  for (se = &x->LOCALITY->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LOCALITY->gg;
+       se && se->g.tok == zx_cdm_LOCALITY_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_LOCALITY(c, (struct zx_cdm_LOCALITY_s*)se);
-  for (se = &x->REGION->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->REGION->gg;
+       se && se->g.tok == zx_cdm_REGION_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_REGION(c, (struct zx_cdm_REGION_s*)se);
-  for (se = &x->PCODE->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PCODE->gg;
+       se && se->g.tok == zx_cdm_PCODE_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_PCODE(c, (struct zx_cdm_PCODE_s*)se);
-  for (se = &x->CTRY->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CTRY->gg;
+       se && se->g.tok == zx_cdm_CTRY_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_CTRY(c, (struct zx_cdm_CTRY_s*)se);
 
 }
@@ -188,7 +216,9 @@ struct zx_cdm_ADR_s* zx_DEEP_CLONE_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s
   x->DOM = zx_deep_clone_simple_elems(c,x->DOM, dup_strs);
   x->INTL = zx_deep_clone_simple_elems(c,x->INTL, dup_strs);
   x->PREF = zx_deep_clone_simple_elems(c,x->PREF, dup_strs);
-  for (enn = 0, e = &x->POBOX->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->POBOX->gg;
+       e && e->g.tok == zx_cdm_POBOX_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_POBOX(c,(struct zx_cdm_POBOX_s*)e,dup_strs);
   	  if (!enn)
   	      x->POBOX = (struct zx_cdm_POBOX_s*)en;
@@ -196,7 +226,9 @@ struct zx_cdm_ADR_s* zx_DEEP_CLONE_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EXTADR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EXTADR->gg;
+       e && e->g.tok == zx_cdm_EXTADR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_EXTADR(c,(struct zx_cdm_EXTADR_s*)e,dup_strs);
   	  if (!enn)
   	      x->EXTADR = (struct zx_cdm_EXTADR_s*)en;
@@ -204,7 +236,9 @@ struct zx_cdm_ADR_s* zx_DEEP_CLONE_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->STREET->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->STREET->gg;
+       e && e->g.tok == zx_cdm_STREET_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_STREET(c,(struct zx_cdm_STREET_s*)e,dup_strs);
   	  if (!enn)
   	      x->STREET = (struct zx_cdm_STREET_s*)en;
@@ -212,7 +246,9 @@ struct zx_cdm_ADR_s* zx_DEEP_CLONE_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LOCALITY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LOCALITY->gg;
+       e && e->g.tok == zx_cdm_LOCALITY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_LOCALITY(c,(struct zx_cdm_LOCALITY_s*)e,dup_strs);
   	  if (!enn)
   	      x->LOCALITY = (struct zx_cdm_LOCALITY_s*)en;
@@ -220,7 +256,9 @@ struct zx_cdm_ADR_s* zx_DEEP_CLONE_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->REGION->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->REGION->gg;
+       e && e->g.tok == zx_cdm_REGION_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_REGION(c,(struct zx_cdm_REGION_s*)e,dup_strs);
   	  if (!enn)
   	      x->REGION = (struct zx_cdm_REGION_s*)en;
@@ -228,7 +266,9 @@ struct zx_cdm_ADR_s* zx_DEEP_CLONE_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PCODE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PCODE->gg;
+       e && e->g.tok == zx_cdm_PCODE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_PCODE(c,(struct zx_cdm_PCODE_s*)e,dup_strs);
   	  if (!enn)
   	      x->PCODE = (struct zx_cdm_PCODE_s*)en;
@@ -236,7 +276,9 @@ struct zx_cdm_ADR_s* zx_DEEP_CLONE_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CTRY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CTRY->gg;
+       e && e->g.tok == zx_cdm_CTRY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_CTRY(c,(struct zx_cdm_CTRY_s*)e,dup_strs);
   	  if (!enn)
   	      x->CTRY = (struct zx_cdm_CTRY_s*)en;
@@ -288,37 +330,51 @@ int zx_WALK_SO_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x, void* ctx, int 
   ret = zx_walk_so_simple_elems(c, x->PREF, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->POBOX->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->POBOX->gg;
+       e && e->g.tok == zx_cdm_POBOX_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_POBOX(c, (struct zx_cdm_POBOX_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EXTADR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EXTADR->gg;
+       e && e->g.tok == zx_cdm_EXTADR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_EXTADR(c, (struct zx_cdm_EXTADR_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->STREET->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->STREET->gg;
+       e && e->g.tok == zx_cdm_STREET_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_STREET(c, (struct zx_cdm_STREET_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LOCALITY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LOCALITY->gg;
+       e && e->g.tok == zx_cdm_LOCALITY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_LOCALITY(c, (struct zx_cdm_LOCALITY_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->REGION->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->REGION->gg;
+       e && e->g.tok == zx_cdm_REGION_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_REGION(c, (struct zx_cdm_REGION_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PCODE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PCODE->gg;
+       e && e->g.tok == zx_cdm_PCODE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_PCODE(c, (struct zx_cdm_PCODE_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CTRY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CTRY->gg;
+       e && e->g.tok == zx_cdm_CTRY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_CTRY(c, (struct zx_cdm_CTRY_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -377,11 +433,15 @@ void zx_FREE_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x, int free_strs
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->modificationTime, free_strs);
 
-  for (e = &x->vCard->gg; e; e = en) {
+  for (e = &x->vCard->gg;
+       e && e->g.tok == zx_cdm_vCard_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_vCard(c, (struct zx_cdm_vCard_s*)e, free_strs);
   }
-  for (e = &x->EXTVAL->gg; e; e = en) {
+  for (e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)e, free_strs);
   }
@@ -423,9 +483,13 @@ void zx_DUP_STRS_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->modificationTime);
 
-  for (se = &x->vCard->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->vCard->gg;
+       se && se->g.tok == zx_cdm_vCard_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_vCard(c, (struct zx_cdm_vCard_s*)se);
-  for (se = &x->EXTVAL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EXTVAL->gg;
+       se && se->g.tok == zx_cdm_EXTVAL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)se);
 
 }
@@ -448,7 +512,9 @@ struct zx_cdm_AGENT_s* zx_DEEP_CLONE_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_A
   x->id = zx_clone_attr(c, x->id);
   x->modificationTime = zx_clone_attr(c, x->modificationTime);
 
-  for (enn = 0, e = &x->vCard->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->vCard->gg;
+       e && e->g.tok == zx_cdm_vCard_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_vCard(c,(struct zx_cdm_vCard_s*)e,dup_strs);
   	  if (!enn)
   	      x->vCard = (struct zx_cdm_vCard_s*)en;
@@ -456,7 +522,9 @@ struct zx_cdm_AGENT_s* zx_DEEP_CLONE_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_A
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EXTVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_EXTVAL(c,(struct zx_cdm_EXTVAL_s*)e,dup_strs);
   	  if (!enn)
   	      x->EXTVAL = (struct zx_cdm_EXTVAL_s*)en;
@@ -487,12 +555,16 @@ int zx_WALK_SO_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->vCard->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->vCard->gg;
+       e && e->g.tok == zx_cdm_vCard_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_vCard(c, (struct zx_cdm_vCard_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EXTVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -845,7 +917,9 @@ void zx_FREE_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x, int f
   zx_free_attr(c, x->modifier, free_strs);
 
   zx_free_simple_elems(c, x->PREF, free_strs);
-  for (e = &x->URI->gg; e; e = en) {
+  for (e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_URI(c, (struct zx_cdm_URI_s*)e, free_strs);
   }
@@ -891,7 +965,9 @@ void zx_DUP_STRS_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x)
   zx_dup_attr(c, x->modifier);
 
   zx_dup_strs_simple_elems(c, x->PREF);
-  for (se = &x->URI->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->URI->gg;
+       se && se->g.tok == zx_cdm_URI_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_URI(c, (struct zx_cdm_URI_s*)se);
 
 }
@@ -918,7 +994,9 @@ struct zx_cdm_CALADRURI_s* zx_DEEP_CLONE_cdm_CALADRURI(struct zx_ctx* c, struct 
   x->modifier = zx_clone_attr(c, x->modifier);
 
   x->PREF = zx_deep_clone_simple_elems(c,x->PREF, dup_strs);
-  for (enn = 0, e = &x->URI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_URI(c,(struct zx_cdm_URI_s*)e,dup_strs);
   	  if (!enn)
   	      x->URI = (struct zx_cdm_URI_s*)en;
@@ -952,7 +1030,9 @@ int zx_WALK_SO_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->PREF, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->URI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_URI(c, (struct zx_cdm_URI_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1015,7 +1095,9 @@ void zx_FREE_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x, int free_st
   zx_free_attr(c, x->modifier, free_strs);
 
   zx_free_simple_elems(c, x->PREF, free_strs);
-  for (e = &x->URI->gg; e; e = en) {
+  for (e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_URI(c, (struct zx_cdm_URI_s*)e, free_strs);
   }
@@ -1061,7 +1143,9 @@ void zx_DUP_STRS_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x)
   zx_dup_attr(c, x->modifier);
 
   zx_dup_strs_simple_elems(c, x->PREF);
-  for (se = &x->URI->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->URI->gg;
+       se && se->g.tok == zx_cdm_URI_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_URI(c, (struct zx_cdm_URI_s*)se);
 
 }
@@ -1088,7 +1172,9 @@ struct zx_cdm_CALURI_s* zx_DEEP_CLONE_cdm_CALURI(struct zx_ctx* c, struct zx_cdm
   x->modifier = zx_clone_attr(c, x->modifier);
 
   x->PREF = zx_deep_clone_simple_elems(c,x->PREF, dup_strs);
-  for (enn = 0, e = &x->URI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_URI(c,(struct zx_cdm_URI_s*)e,dup_strs);
   	  if (!enn)
   	      x->URI = (struct zx_cdm_URI_s*)en;
@@ -1122,7 +1208,9 @@ int zx_WALK_SO_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x, void* ctx
   ret = zx_walk_so_simple_elems(c, x->PREF, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->URI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_URI(c, (struct zx_cdm_URI_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1185,7 +1273,9 @@ void zx_FREE_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x, int free_st
   zx_free_attr(c, x->modifier, free_strs);
 
   zx_free_simple_elems(c, x->PREF, free_strs);
-  for (e = &x->URI->gg; e; e = en) {
+  for (e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_URI(c, (struct zx_cdm_URI_s*)e, free_strs);
   }
@@ -1231,7 +1321,9 @@ void zx_DUP_STRS_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x)
   zx_dup_attr(c, x->modifier);
 
   zx_dup_strs_simple_elems(c, x->PREF);
-  for (se = &x->URI->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->URI->gg;
+       se && se->g.tok == zx_cdm_URI_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_URI(c, (struct zx_cdm_URI_s*)se);
 
 }
@@ -1258,7 +1350,9 @@ struct zx_cdm_CAPURI_s* zx_DEEP_CLONE_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm
   x->modifier = zx_clone_attr(c, x->modifier);
 
   x->PREF = zx_deep_clone_simple_elems(c,x->PREF, dup_strs);
-  for (enn = 0, e = &x->URI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_URI(c,(struct zx_cdm_URI_s*)e,dup_strs);
   	  if (!enn)
   	      x->URI = (struct zx_cdm_URI_s*)en;
@@ -1292,7 +1386,9 @@ int zx_WALK_SO_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x, void* ctx
   ret = zx_walk_so_simple_elems(c, x->PREF, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->URI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_URI(c, (struct zx_cdm_URI_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1351,7 +1447,9 @@ void zx_FREE_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x, int
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->modificationTime, free_strs);
 
-  for (e = &x->KEYWORD->gg; e; e = en) {
+  for (e = &x->KEYWORD->gg;
+       e && e->g.tok == zx_cdm_KEYWORD_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_KEYWORD(c, (struct zx_cdm_KEYWORD_s*)e, free_strs);
   }
@@ -1393,7 +1491,9 @@ void zx_DUP_STRS_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->modificationTime);
 
-  for (se = &x->KEYWORD->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KEYWORD->gg;
+       se && se->g.tok == zx_cdm_KEYWORD_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_KEYWORD(c, (struct zx_cdm_KEYWORD_s*)se);
 
 }
@@ -1416,7 +1516,9 @@ struct zx_cdm_CATEGORIES_s* zx_DEEP_CLONE_cdm_CATEGORIES(struct zx_ctx* c, struc
   x->id = zx_clone_attr(c, x->id);
   x->modificationTime = zx_clone_attr(c, x->modificationTime);
 
-  for (enn = 0, e = &x->KEYWORD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KEYWORD->gg;
+       e && e->g.tok == zx_cdm_KEYWORD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_KEYWORD(c,(struct zx_cdm_KEYWORD_s*)e,dup_strs);
   	  if (!enn)
   	      x->KEYWORD = (struct zx_cdm_KEYWORD_s*)en;
@@ -1447,7 +1549,9 @@ int zx_WALK_SO_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->KEYWORD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KEYWORD->gg;
+       e && e->g.tok == zx_cdm_KEYWORD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_KEYWORD(c, (struct zx_cdm_KEYWORD_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2085,7 +2189,9 @@ void zx_FREE_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x, int free_strs
   zx_free_simple_elems(c, x->INTERNET, free_strs);
   zx_free_simple_elems(c, x->PREF, free_strs);
   zx_free_simple_elems(c, x->X400, free_strs);
-  for (e = &x->USERID->gg; e; e = en) {
+  for (e = &x->USERID->gg;
+       e && e->g.tok == zx_cdm_USERID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_USERID(c, (struct zx_cdm_USERID_s*)e, free_strs);
   }
@@ -2132,7 +2238,9 @@ void zx_DUP_STRS_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x)
   zx_dup_strs_simple_elems(c, x->INTERNET);
   zx_dup_strs_simple_elems(c, x->PREF);
   zx_dup_strs_simple_elems(c, x->X400);
-  for (se = &x->USERID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->USERID->gg;
+       se && se->g.tok == zx_cdm_USERID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_USERID(c, (struct zx_cdm_USERID_s*)se);
 
 }
@@ -2160,7 +2268,9 @@ struct zx_cdm_EMAIL_s* zx_DEEP_CLONE_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_E
   x->INTERNET = zx_deep_clone_simple_elems(c,x->INTERNET, dup_strs);
   x->PREF = zx_deep_clone_simple_elems(c,x->PREF, dup_strs);
   x->X400 = zx_deep_clone_simple_elems(c,x->X400, dup_strs);
-  for (enn = 0, e = &x->USERID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->USERID->gg;
+       e && e->g.tok == zx_cdm_USERID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_USERID(c,(struct zx_cdm_USERID_s*)e,dup_strs);
   	  if (!enn)
   	      x->USERID = (struct zx_cdm_USERID_s*)en;
@@ -2206,7 +2316,9 @@ int zx_WALK_SO_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x, void* ctx, 
   ret = zx_walk_so_simple_elems(c, x->X400, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->USERID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->USERID->gg;
+       e && e->g.tok == zx_cdm_USERID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_USERID(c, (struct zx_cdm_USERID_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2680,7 +2792,9 @@ void zx_FREE_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x, int free_strs
   zx_free_attr(c, x->modifier, free_strs);
 
   zx_free_simple_elems(c, x->PREF, free_strs);
-  for (e = &x->URI->gg; e; e = en) {
+  for (e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_URI(c, (struct zx_cdm_URI_s*)e, free_strs);
   }
@@ -2726,7 +2840,9 @@ void zx_DUP_STRS_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x)
   zx_dup_attr(c, x->modifier);
 
   zx_dup_strs_simple_elems(c, x->PREF);
-  for (se = &x->URI->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->URI->gg;
+       se && se->g.tok == zx_cdm_URI_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_URI(c, (struct zx_cdm_URI_s*)se);
 
 }
@@ -2753,7 +2869,9 @@ struct zx_cdm_FBURL_s* zx_DEEP_CLONE_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_F
   x->modifier = zx_clone_attr(c, x->modifier);
 
   x->PREF = zx_deep_clone_simple_elems(c,x->PREF, dup_strs);
-  for (enn = 0, e = &x->URI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_URI(c,(struct zx_cdm_URI_s*)e,dup_strs);
   	  if (!enn)
   	      x->URI = (struct zx_cdm_URI_s*)en;
@@ -2787,7 +2905,9 @@ int zx_WALK_SO_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x, void* ctx, 
   ret = zx_walk_so_simple_elems(c, x->PREF, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->URI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->URI->gg;
+       e && e->g.tok == zx_cdm_URI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_URI(c, (struct zx_cdm_URI_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2979,11 +3099,15 @@ void zx_FREE_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x, int free_strs)
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->modificationTime, free_strs);
 
-  for (e = &x->LAT->gg; e; e = en) {
+  for (e = &x->LAT->gg;
+       e && e->g.tok == zx_cdm_LAT_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_LAT(c, (struct zx_cdm_LAT_s*)e, free_strs);
   }
-  for (e = &x->LON->gg; e; e = en) {
+  for (e = &x->LON->gg;
+       e && e->g.tok == zx_cdm_LON_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_LON(c, (struct zx_cdm_LON_s*)e, free_strs);
   }
@@ -3025,9 +3149,13 @@ void zx_DUP_STRS_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->modificationTime);
 
-  for (se = &x->LAT->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LAT->gg;
+       se && se->g.tok == zx_cdm_LAT_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_LAT(c, (struct zx_cdm_LAT_s*)se);
-  for (se = &x->LON->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LON->gg;
+       se && se->g.tok == zx_cdm_LON_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_LON(c, (struct zx_cdm_LON_s*)se);
 
 }
@@ -3050,7 +3178,9 @@ struct zx_cdm_GEO_s* zx_DEEP_CLONE_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s
   x->id = zx_clone_attr(c, x->id);
   x->modificationTime = zx_clone_attr(c, x->modificationTime);
 
-  for (enn = 0, e = &x->LAT->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LAT->gg;
+       e && e->g.tok == zx_cdm_LAT_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_LAT(c,(struct zx_cdm_LAT_s*)e,dup_strs);
   	  if (!enn)
   	      x->LAT = (struct zx_cdm_LAT_s*)en;
@@ -3058,7 +3188,9 @@ struct zx_cdm_GEO_s* zx_DEEP_CLONE_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LON->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LON->gg;
+       e && e->g.tok == zx_cdm_LON_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_LON(c,(struct zx_cdm_LON_s*)e,dup_strs);
   	  if (!enn)
   	      x->LON = (struct zx_cdm_LON_s*)en;
@@ -3089,12 +3221,16 @@ int zx_WALK_SO_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x, void* ctx, int 
   if (ret)
     return ret;
 
-  for (e = &x->LAT->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LAT->gg;
+       e && e->g.tok == zx_cdm_LAT_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_LAT(c, (struct zx_cdm_LAT_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LON->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LON->gg;
+       e && e->g.tok == zx_cdm_LON_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_LON(c, (struct zx_cdm_LON_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3429,11 +3565,15 @@ void zx_FREE_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x, int free_strs)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->TYPE->gg; e; e = en) {
+  for (e = &x->TYPE->gg;
+       e && e->g.tok == zx_cdm_TYPE_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_TYPE(c, (struct zx_cdm_TYPE_s*)e, free_strs);
   }
-  for (e = &x->CRED->gg; e; e = en) {
+  for (e = &x->CRED->gg;
+       e && e->g.tok == zx_cdm_CRED_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_CRED(c, (struct zx_cdm_CRED_s*)e, free_strs);
   }
@@ -3473,9 +3613,13 @@ void zx_DUP_STRS_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->TYPE->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TYPE->gg;
+       se && se->g.tok == zx_cdm_TYPE_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_TYPE(c, (struct zx_cdm_TYPE_s*)se);
-  for (se = &x->CRED->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CRED->gg;
+       se && se->g.tok == zx_cdm_CRED_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_CRED(c, (struct zx_cdm_CRED_s*)se);
 
 }
@@ -3496,7 +3640,9 @@ struct zx_cdm_KEY_s* zx_DEEP_CLONE_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->TYPE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TYPE->gg;
+       e && e->g.tok == zx_cdm_TYPE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_TYPE(c,(struct zx_cdm_TYPE_s*)e,dup_strs);
   	  if (!enn)
   	      x->TYPE = (struct zx_cdm_TYPE_s*)en;
@@ -3504,7 +3650,9 @@ struct zx_cdm_KEY_s* zx_DEEP_CLONE_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CRED->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CRED->gg;
+       e && e->g.tok == zx_cdm_CRED_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_CRED(c,(struct zx_cdm_CRED_s*)e,dup_strs);
   	  if (!enn)
   	      x->CRED = (struct zx_cdm_CRED_s*)en;
@@ -3535,12 +3683,16 @@ int zx_WALK_SO_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x, void* ctx, int 
   if (ret)
     return ret;
 
-  for (e = &x->TYPE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TYPE->gg;
+       e && e->g.tok == zx_cdm_TYPE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_TYPE(c, (struct zx_cdm_TYPE_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CRED->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CRED->gg;
+       e && e->g.tok == zx_cdm_CRED_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_CRED(c, (struct zx_cdm_CRED_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3751,7 +3903,9 @@ void zx_FREE_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x, int free_strs
   zx_free_simple_elems(c, x->DOM, free_strs);
   zx_free_simple_elems(c, x->INTL, free_strs);
   zx_free_simple_elems(c, x->PREF, free_strs);
-  for (e = &x->LINE->gg; e; e = en) {
+  for (e = &x->LINE->gg;
+       e && e->g.tok == zx_cdm_LINE_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_LINE(c, (struct zx_cdm_LINE_s*)e, free_strs);
   }
@@ -3800,7 +3954,9 @@ void zx_DUP_STRS_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x)
   zx_dup_strs_simple_elems(c, x->DOM);
   zx_dup_strs_simple_elems(c, x->INTL);
   zx_dup_strs_simple_elems(c, x->PREF);
-  for (se = &x->LINE->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LINE->gg;
+       se && se->g.tok == zx_cdm_LINE_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_LINE(c, (struct zx_cdm_LINE_s*)se);
 
 }
@@ -3830,7 +3986,9 @@ struct zx_cdm_LABEL_s* zx_DEEP_CLONE_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_L
   x->DOM = zx_deep_clone_simple_elems(c,x->DOM, dup_strs);
   x->INTL = zx_deep_clone_simple_elems(c,x->INTL, dup_strs);
   x->PREF = zx_deep_clone_simple_elems(c,x->PREF, dup_strs);
-  for (enn = 0, e = &x->LINE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LINE->gg;
+       e && e->g.tok == zx_cdm_LINE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_LINE(c,(struct zx_cdm_LINE_s*)e,dup_strs);
   	  if (!enn)
   	      x->LINE = (struct zx_cdm_LINE_s*)en;
@@ -3882,7 +4040,9 @@ int zx_WALK_SO_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x, void* ctx, 
   ret = zx_walk_so_simple_elems(c, x->PREF, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->LINE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LINE->gg;
+       e && e->g.tok == zx_cdm_LINE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_LINE(c, (struct zx_cdm_LINE_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4497,15 +4657,21 @@ void zx_FREE_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x, int free_strs)
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->modificationTime, free_strs);
 
-  for (e = &x->TYPE->gg; e; e = en) {
+  for (e = &x->TYPE->gg;
+       e && e->g.tok == zx_cdm_TYPE_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_TYPE(c, (struct zx_cdm_TYPE_s*)e, free_strs);
   }
-  for (e = &x->BINVAL->gg; e; e = en) {
+  for (e = &x->BINVAL->gg;
+       e && e->g.tok == zx_cdm_BINVAL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_BINVAL(c, (struct zx_cdm_BINVAL_s*)e, free_strs);
   }
-  for (e = &x->EXTVAL->gg; e; e = en) {
+  for (e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)e, free_strs);
   }
@@ -4547,11 +4713,17 @@ void zx_DUP_STRS_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->modificationTime);
 
-  for (se = &x->TYPE->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TYPE->gg;
+       se && se->g.tok == zx_cdm_TYPE_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_TYPE(c, (struct zx_cdm_TYPE_s*)se);
-  for (se = &x->BINVAL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BINVAL->gg;
+       se && se->g.tok == zx_cdm_BINVAL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_BINVAL(c, (struct zx_cdm_BINVAL_s*)se);
-  for (se = &x->EXTVAL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EXTVAL->gg;
+       se && se->g.tok == zx_cdm_EXTVAL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)se);
 
 }
@@ -4574,7 +4746,9 @@ struct zx_cdm_LOGO_s* zx_DEEP_CLONE_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOG
   x->id = zx_clone_attr(c, x->id);
   x->modificationTime = zx_clone_attr(c, x->modificationTime);
 
-  for (enn = 0, e = &x->TYPE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TYPE->gg;
+       e && e->g.tok == zx_cdm_TYPE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_TYPE(c,(struct zx_cdm_TYPE_s*)e,dup_strs);
   	  if (!enn)
   	      x->TYPE = (struct zx_cdm_TYPE_s*)en;
@@ -4582,7 +4756,9 @@ struct zx_cdm_LOGO_s* zx_DEEP_CLONE_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOG
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->BINVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->BINVAL->gg;
+       e && e->g.tok == zx_cdm_BINVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_BINVAL(c,(struct zx_cdm_BINVAL_s*)e,dup_strs);
   	  if (!enn)
   	      x->BINVAL = (struct zx_cdm_BINVAL_s*)en;
@@ -4590,7 +4766,9 @@ struct zx_cdm_LOGO_s* zx_DEEP_CLONE_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOG
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EXTVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_EXTVAL(c,(struct zx_cdm_EXTVAL_s*)e,dup_strs);
   	  if (!enn)
   	      x->EXTVAL = (struct zx_cdm_EXTVAL_s*)en;
@@ -4621,17 +4799,23 @@ int zx_WALK_SO_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x, void* ctx, in
   if (ret)
     return ret;
 
-  for (e = &x->TYPE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TYPE->gg;
+       e && e->g.tok == zx_cdm_TYPE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_TYPE(c, (struct zx_cdm_TYPE_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->BINVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->BINVAL->gg;
+       e && e->g.tok == zx_cdm_BINVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_BINVAL(c, (struct zx_cdm_BINVAL_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EXTVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5113,23 +5297,33 @@ void zx_FREE_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, int free_strs)
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->modificationTime, free_strs);
 
-  for (e = &x->FAMILY->gg; e; e = en) {
+  for (e = &x->FAMILY->gg;
+       e && e->g.tok == zx_cdm_FAMILY_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_FAMILY(c, (struct zx_cdm_FAMILY_s*)e, free_strs);
   }
-  for (e = &x->GIVEN->gg; e; e = en) {
+  for (e = &x->GIVEN->gg;
+       e && e->g.tok == zx_cdm_GIVEN_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_GIVEN(c, (struct zx_cdm_GIVEN_s*)e, free_strs);
   }
-  for (e = &x->MIDDLE->gg; e; e = en) {
+  for (e = &x->MIDDLE->gg;
+       e && e->g.tok == zx_cdm_MIDDLE_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_MIDDLE(c, (struct zx_cdm_MIDDLE_s*)e, free_strs);
   }
-  for (e = &x->PREFIX->gg; e; e = en) {
+  for (e = &x->PREFIX->gg;
+       e && e->g.tok == zx_cdm_PREFIX_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_PREFIX(c, (struct zx_cdm_PREFIX_s*)e, free_strs);
   }
-  for (e = &x->SUFFIX->gg; e; e = en) {
+  for (e = &x->SUFFIX->gg;
+       e && e->g.tok == zx_cdm_SUFFIX_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_SUFFIX(c, (struct zx_cdm_SUFFIX_s*)e, free_strs);
   }
@@ -5171,15 +5365,25 @@ void zx_DUP_STRS_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->modificationTime);
 
-  for (se = &x->FAMILY->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FAMILY->gg;
+       se && se->g.tok == zx_cdm_FAMILY_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_FAMILY(c, (struct zx_cdm_FAMILY_s*)se);
-  for (se = &x->GIVEN->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GIVEN->gg;
+       se && se->g.tok == zx_cdm_GIVEN_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_GIVEN(c, (struct zx_cdm_GIVEN_s*)se);
-  for (se = &x->MIDDLE->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MIDDLE->gg;
+       se && se->g.tok == zx_cdm_MIDDLE_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_MIDDLE(c, (struct zx_cdm_MIDDLE_s*)se);
-  for (se = &x->PREFIX->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PREFIX->gg;
+       se && se->g.tok == zx_cdm_PREFIX_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_PREFIX(c, (struct zx_cdm_PREFIX_s*)se);
-  for (se = &x->SUFFIX->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SUFFIX->gg;
+       se && se->g.tok == zx_cdm_SUFFIX_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_SUFFIX(c, (struct zx_cdm_SUFFIX_s*)se);
 
 }
@@ -5202,7 +5406,9 @@ struct zx_cdm_N_s* zx_DEEP_CLONE_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, i
   x->id = zx_clone_attr(c, x->id);
   x->modificationTime = zx_clone_attr(c, x->modificationTime);
 
-  for (enn = 0, e = &x->FAMILY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->FAMILY->gg;
+       e && e->g.tok == zx_cdm_FAMILY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_FAMILY(c,(struct zx_cdm_FAMILY_s*)e,dup_strs);
   	  if (!enn)
   	      x->FAMILY = (struct zx_cdm_FAMILY_s*)en;
@@ -5210,7 +5416,9 @@ struct zx_cdm_N_s* zx_DEEP_CLONE_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, i
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->GIVEN->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->GIVEN->gg;
+       e && e->g.tok == zx_cdm_GIVEN_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_GIVEN(c,(struct zx_cdm_GIVEN_s*)e,dup_strs);
   	  if (!enn)
   	      x->GIVEN = (struct zx_cdm_GIVEN_s*)en;
@@ -5218,7 +5426,9 @@ struct zx_cdm_N_s* zx_DEEP_CLONE_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, i
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MIDDLE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MIDDLE->gg;
+       e && e->g.tok == zx_cdm_MIDDLE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_MIDDLE(c,(struct zx_cdm_MIDDLE_s*)e,dup_strs);
   	  if (!enn)
   	      x->MIDDLE = (struct zx_cdm_MIDDLE_s*)en;
@@ -5226,7 +5436,9 @@ struct zx_cdm_N_s* zx_DEEP_CLONE_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, i
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PREFIX->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PREFIX->gg;
+       e && e->g.tok == zx_cdm_PREFIX_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_PREFIX(c,(struct zx_cdm_PREFIX_s*)e,dup_strs);
   	  if (!enn)
   	      x->PREFIX = (struct zx_cdm_PREFIX_s*)en;
@@ -5234,7 +5446,9 @@ struct zx_cdm_N_s* zx_DEEP_CLONE_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, i
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SUFFIX->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SUFFIX->gg;
+       e && e->g.tok == zx_cdm_SUFFIX_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_SUFFIX(c,(struct zx_cdm_SUFFIX_s*)e,dup_strs);
   	  if (!enn)
   	      x->SUFFIX = (struct zx_cdm_SUFFIX_s*)en;
@@ -5265,27 +5479,37 @@ int zx_WALK_SO_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, void* ctx, int (*ca
   if (ret)
     return ret;
 
-  for (e = &x->FAMILY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->FAMILY->gg;
+       e && e->g.tok == zx_cdm_FAMILY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_FAMILY(c, (struct zx_cdm_FAMILY_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->GIVEN->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->GIVEN->gg;
+       e && e->g.tok == zx_cdm_GIVEN_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_GIVEN(c, (struct zx_cdm_GIVEN_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MIDDLE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MIDDLE->gg;
+       e && e->g.tok == zx_cdm_MIDDLE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_MIDDLE(c, (struct zx_cdm_MIDDLE_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PREFIX->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PREFIX->gg;
+       e && e->g.tok == zx_cdm_PREFIX_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_PREFIX(c, (struct zx_cdm_PREFIX_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SUFFIX->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SUFFIX->gg;
+       e && e->g.tok == zx_cdm_SUFFIX_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_SUFFIX(c, (struct zx_cdm_SUFFIX_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5755,11 +5979,15 @@ void zx_FREE_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x, int free_strs)
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->modificationTime, free_strs);
 
-  for (e = &x->ORGNAME->gg; e; e = en) {
+  for (e = &x->ORGNAME->gg;
+       e && e->g.tok == zx_cdm_ORGNAME_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_ORGNAME(c, (struct zx_cdm_ORGNAME_s*)e, free_strs);
   }
-  for (e = &x->ORGUNIT->gg; e; e = en) {
+  for (e = &x->ORGUNIT->gg;
+       e && e->g.tok == zx_cdm_ORGUNIT_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_ORGUNIT(c, (struct zx_cdm_ORGUNIT_s*)e, free_strs);
   }
@@ -5801,9 +6029,13 @@ void zx_DUP_STRS_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->modificationTime);
 
-  for (se = &x->ORGNAME->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ORGNAME->gg;
+       se && se->g.tok == zx_cdm_ORGNAME_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_ORGNAME(c, (struct zx_cdm_ORGNAME_s*)se);
-  for (se = &x->ORGUNIT->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ORGUNIT->gg;
+       se && se->g.tok == zx_cdm_ORGUNIT_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_ORGUNIT(c, (struct zx_cdm_ORGUNIT_s*)se);
 
 }
@@ -5826,7 +6058,9 @@ struct zx_cdm_ORG_s* zx_DEEP_CLONE_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s
   x->id = zx_clone_attr(c, x->id);
   x->modificationTime = zx_clone_attr(c, x->modificationTime);
 
-  for (enn = 0, e = &x->ORGNAME->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ORGNAME->gg;
+       e && e->g.tok == zx_cdm_ORGNAME_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_ORGNAME(c,(struct zx_cdm_ORGNAME_s*)e,dup_strs);
   	  if (!enn)
   	      x->ORGNAME = (struct zx_cdm_ORGNAME_s*)en;
@@ -5834,7 +6068,9 @@ struct zx_cdm_ORG_s* zx_DEEP_CLONE_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ORGUNIT->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ORGUNIT->gg;
+       e && e->g.tok == zx_cdm_ORGUNIT_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_ORGUNIT(c,(struct zx_cdm_ORGUNIT_s*)e,dup_strs);
   	  if (!enn)
   	      x->ORGUNIT = (struct zx_cdm_ORGUNIT_s*)en;
@@ -5865,12 +6101,16 @@ int zx_WALK_SO_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x, void* ctx, int 
   if (ret)
     return ret;
 
-  for (e = &x->ORGNAME->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ORGNAME->gg;
+       e && e->g.tok == zx_cdm_ORGNAME_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_ORGNAME(c, (struct zx_cdm_ORGNAME_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ORGUNIT->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ORGUNIT->gg;
+       e && e->g.tok == zx_cdm_ORGUNIT_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_ORGUNIT(c, (struct zx_cdm_ORGUNIT_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6461,15 +6701,21 @@ void zx_FREE_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x, int free_strs
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->modificationTime, free_strs);
 
-  for (e = &x->TYPE->gg; e; e = en) {
+  for (e = &x->TYPE->gg;
+       e && e->g.tok == zx_cdm_TYPE_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_TYPE(c, (struct zx_cdm_TYPE_s*)e, free_strs);
   }
-  for (e = &x->BINVAL->gg; e; e = en) {
+  for (e = &x->BINVAL->gg;
+       e && e->g.tok == zx_cdm_BINVAL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_BINVAL(c, (struct zx_cdm_BINVAL_s*)e, free_strs);
   }
-  for (e = &x->EXTVAL->gg; e; e = en) {
+  for (e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)e, free_strs);
   }
@@ -6511,11 +6757,17 @@ void zx_DUP_STRS_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->modificationTime);
 
-  for (se = &x->TYPE->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TYPE->gg;
+       se && se->g.tok == zx_cdm_TYPE_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_TYPE(c, (struct zx_cdm_TYPE_s*)se);
-  for (se = &x->BINVAL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BINVAL->gg;
+       se && se->g.tok == zx_cdm_BINVAL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_BINVAL(c, (struct zx_cdm_BINVAL_s*)se);
-  for (se = &x->EXTVAL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EXTVAL->gg;
+       se && se->g.tok == zx_cdm_EXTVAL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)se);
 
 }
@@ -6538,7 +6790,9 @@ struct zx_cdm_PHOTO_s* zx_DEEP_CLONE_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_P
   x->id = zx_clone_attr(c, x->id);
   x->modificationTime = zx_clone_attr(c, x->modificationTime);
 
-  for (enn = 0, e = &x->TYPE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TYPE->gg;
+       e && e->g.tok == zx_cdm_TYPE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_TYPE(c,(struct zx_cdm_TYPE_s*)e,dup_strs);
   	  if (!enn)
   	      x->TYPE = (struct zx_cdm_TYPE_s*)en;
@@ -6546,7 +6800,9 @@ struct zx_cdm_PHOTO_s* zx_DEEP_CLONE_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_P
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->BINVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->BINVAL->gg;
+       e && e->g.tok == zx_cdm_BINVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_BINVAL(c,(struct zx_cdm_BINVAL_s*)e,dup_strs);
   	  if (!enn)
   	      x->BINVAL = (struct zx_cdm_BINVAL_s*)en;
@@ -6554,7 +6810,9 @@ struct zx_cdm_PHOTO_s* zx_DEEP_CLONE_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_P
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EXTVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_EXTVAL(c,(struct zx_cdm_EXTVAL_s*)e,dup_strs);
   	  if (!enn)
   	      x->EXTVAL = (struct zx_cdm_EXTVAL_s*)en;
@@ -6585,17 +6843,23 @@ int zx_WALK_SO_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->TYPE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TYPE->gg;
+       e && e->g.tok == zx_cdm_TYPE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_TYPE(c, (struct zx_cdm_TYPE_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->BINVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->BINVAL->gg;
+       e && e->g.tok == zx_cdm_BINVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_BINVAL(c, (struct zx_cdm_BINVAL_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EXTVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7742,15 +8006,21 @@ void zx_FREE_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x, int free_strs
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->modificationTime, free_strs);
 
-  for (e = &x->PHONETIC->gg; e; e = en) {
+  for (e = &x->PHONETIC->gg;
+       e && e->g.tok == zx_cdm_PHONETIC_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_PHONETIC(c, (struct zx_cdm_PHONETIC_s*)e, free_strs);
   }
-  for (e = &x->BINVAL->gg; e; e = en) {
+  for (e = &x->BINVAL->gg;
+       e && e->g.tok == zx_cdm_BINVAL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_BINVAL(c, (struct zx_cdm_BINVAL_s*)e, free_strs);
   }
-  for (e = &x->EXTVAL->gg; e; e = en) {
+  for (e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)e, free_strs);
   }
@@ -7792,11 +8062,17 @@ void zx_DUP_STRS_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->modificationTime);
 
-  for (se = &x->PHONETIC->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PHONETIC->gg;
+       se && se->g.tok == zx_cdm_PHONETIC_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_PHONETIC(c, (struct zx_cdm_PHONETIC_s*)se);
-  for (se = &x->BINVAL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BINVAL->gg;
+       se && se->g.tok == zx_cdm_BINVAL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_BINVAL(c, (struct zx_cdm_BINVAL_s*)se);
-  for (se = &x->EXTVAL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EXTVAL->gg;
+       se && se->g.tok == zx_cdm_EXTVAL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)se);
 
 }
@@ -7819,7 +8095,9 @@ struct zx_cdm_SOUND_s* zx_DEEP_CLONE_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_S
   x->id = zx_clone_attr(c, x->id);
   x->modificationTime = zx_clone_attr(c, x->modificationTime);
 
-  for (enn = 0, e = &x->PHONETIC->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PHONETIC->gg;
+       e && e->g.tok == zx_cdm_PHONETIC_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_PHONETIC(c,(struct zx_cdm_PHONETIC_s*)e,dup_strs);
   	  if (!enn)
   	      x->PHONETIC = (struct zx_cdm_PHONETIC_s*)en;
@@ -7827,7 +8105,9 @@ struct zx_cdm_SOUND_s* zx_DEEP_CLONE_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_S
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->BINVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->BINVAL->gg;
+       e && e->g.tok == zx_cdm_BINVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_BINVAL(c,(struct zx_cdm_BINVAL_s*)e,dup_strs);
   	  if (!enn)
   	      x->BINVAL = (struct zx_cdm_BINVAL_s*)en;
@@ -7835,7 +8115,9 @@ struct zx_cdm_SOUND_s* zx_DEEP_CLONE_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_S
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EXTVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_EXTVAL(c,(struct zx_cdm_EXTVAL_s*)e,dup_strs);
   	  if (!enn)
   	      x->EXTVAL = (struct zx_cdm_EXTVAL_s*)en;
@@ -7866,17 +8148,23 @@ int zx_WALK_SO_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->PHONETIC->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PHONETIC->gg;
+       e && e->g.tok == zx_cdm_PHONETIC_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_PHONETIC(c, (struct zx_cdm_PHONETIC_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->BINVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->BINVAL->gg;
+       e && e->g.tok == zx_cdm_BINVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_BINVAL(c, (struct zx_cdm_BINVAL_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EXTVAL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EXTVAL->gg;
+       e && e->g.tok == zx_cdm_EXTVAL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_EXTVAL(c, (struct zx_cdm_EXTVAL_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8214,7 +8502,9 @@ void zx_FREE_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x, int free_strs)
   zx_free_simple_elems(c, x->ISDN, free_strs);
   zx_free_simple_elems(c, x->PCS, free_strs);
   zx_free_simple_elems(c, x->PREF, free_strs);
-  for (e = &x->NUMBER->gg; e; e = en) {
+  for (e = &x->NUMBER->gg;
+       e && e->g.tok == zx_cdm_NUMBER_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_NUMBER(c, (struct zx_cdm_NUMBER_s*)e, free_strs);
   }
@@ -8269,7 +8559,9 @@ void zx_DUP_STRS_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x)
   zx_dup_strs_simple_elems(c, x->ISDN);
   zx_dup_strs_simple_elems(c, x->PCS);
   zx_dup_strs_simple_elems(c, x->PREF);
-  for (se = &x->NUMBER->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NUMBER->gg;
+       se && se->g.tok == zx_cdm_NUMBER_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_NUMBER(c, (struct zx_cdm_NUMBER_s*)se);
 
 }
@@ -8305,7 +8597,9 @@ struct zx_cdm_TEL_s* zx_DEEP_CLONE_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s
   x->ISDN = zx_deep_clone_simple_elems(c,x->ISDN, dup_strs);
   x->PCS = zx_deep_clone_simple_elems(c,x->PCS, dup_strs);
   x->PREF = zx_deep_clone_simple_elems(c,x->PREF, dup_strs);
-  for (enn = 0, e = &x->NUMBER->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NUMBER->gg;
+       e && e->g.tok == zx_cdm_NUMBER_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_NUMBER(c,(struct zx_cdm_NUMBER_s*)e,dup_strs);
   	  if (!enn)
   	      x->NUMBER = (struct zx_cdm_NUMBER_s*)en;
@@ -8375,7 +8669,9 @@ int zx_WALK_SO_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x, void* ctx, int 
   ret = zx_walk_so_simple_elems(c, x->PREF, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->NUMBER->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NUMBER->gg;
+       e && e->g.tok == zx_cdm_NUMBER_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_NUMBER(c, (struct zx_cdm_NUMBER_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9582,7 +9878,9 @@ void zx_FREE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x, int free_strs
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->modificationTime, free_strs);
 
-  for (e = &x->VERSION_is_Perl_MakeMaker_gobbled->gg; e; e = en) {
+  for (e = &x->VERSION_is_Perl_MakeMaker_gobbled->gg;
+       e && e->g.tok == zx_cdm_VERSION_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_VERSION(c, (struct zx_cdm_VERSION_s*)e, free_strs);
   }
@@ -9590,147 +9888,219 @@ void zx_FREE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x, int free_strs
   zx_free_simple_elems(c, x->DISTRIBUTIONLIST, free_strs);
   zx_free_simple_elems(c, x->SELF, free_strs);
   zx_free_simple_elems(c, x->FAVORITE, free_strs);
-  for (e = &x->FN->gg; e; e = en) {
+  for (e = &x->FN->gg;
+       e && e->g.tok == zx_cdm_FN_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_FN(c, (struct zx_cdm_FN_s*)e, free_strs);
   }
-  for (e = &x->N->gg; e; e = en) {
+  for (e = &x->N->gg;
+       e && e->g.tok == zx_cdm_N_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_N(c, (struct zx_cdm_N_s*)e, free_strs);
   }
-  for (e = &x->LISTMEMBER->gg; e; e = en) {
+  for (e = &x->LISTMEMBER->gg;
+       e && e->g.tok == zx_cdm_LISTMEMBER_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_LISTMEMBER(c, (struct zx_cdm_LISTMEMBER_s*)e, free_strs);
   }
-  for (e = &x->NICKNAME->gg; e; e = en) {
+  for (e = &x->NICKNAME->gg;
+       e && e->g.tok == zx_cdm_NICKNAME_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_NICKNAME(c, (struct zx_cdm_NICKNAME_s*)e, free_strs);
   }
-  for (e = &x->PHOTO->gg; e; e = en) {
+  for (e = &x->PHOTO->gg;
+       e && e->g.tok == zx_cdm_PHOTO_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_PHOTO(c, (struct zx_cdm_PHOTO_s*)e, free_strs);
   }
-  for (e = &x->BDAY->gg; e; e = en) {
+  for (e = &x->BDAY->gg;
+       e && e->g.tok == zx_cdm_BDAY_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_BDAY(c, (struct zx_cdm_BDAY_s*)e, free_strs);
   }
-  for (e = &x->ADR->gg; e; e = en) {
+  for (e = &x->ADR->gg;
+       e && e->g.tok == zx_cdm_ADR_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_ADR(c, (struct zx_cdm_ADR_s*)e, free_strs);
   }
-  for (e = &x->LABEL->gg; e; e = en) {
+  for (e = &x->LABEL->gg;
+       e && e->g.tok == zx_cdm_LABEL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_LABEL(c, (struct zx_cdm_LABEL_s*)e, free_strs);
   }
-  for (e = &x->TEL->gg; e; e = en) {
+  for (e = &x->TEL->gg;
+       e && e->g.tok == zx_cdm_TEL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_TEL(c, (struct zx_cdm_TEL_s*)e, free_strs);
   }
-  for (e = &x->EMAIL->gg; e; e = en) {
+  for (e = &x->EMAIL->gg;
+       e && e->g.tok == zx_cdm_EMAIL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_EMAIL(c, (struct zx_cdm_EMAIL_s*)e, free_strs);
   }
-  for (e = &x->JABBERID->gg; e; e = en) {
+  for (e = &x->JABBERID->gg;
+       e && e->g.tok == zx_cdm_JABBERID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_JABBERID(c, (struct zx_cdm_JABBERID_s*)e, free_strs);
   }
-  for (e = &x->MAILER->gg; e; e = en) {
+  for (e = &x->MAILER->gg;
+       e && e->g.tok == zx_cdm_MAILER_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_MAILER(c, (struct zx_cdm_MAILER_s*)e, free_strs);
   }
-  for (e = &x->TZ->gg; e; e = en) {
+  for (e = &x->TZ->gg;
+       e && e->g.tok == zx_cdm_TZ_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_TZ(c, (struct zx_cdm_TZ_s*)e, free_strs);
   }
-  for (e = &x->GEO->gg; e; e = en) {
+  for (e = &x->GEO->gg;
+       e && e->g.tok == zx_cdm_GEO_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_GEO(c, (struct zx_cdm_GEO_s*)e, free_strs);
   }
-  for (e = &x->TITLE->gg; e; e = en) {
+  for (e = &x->TITLE->gg;
+       e && e->g.tok == zx_cdm_TITLE_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_TITLE(c, (struct zx_cdm_TITLE_s*)e, free_strs);
   }
-  for (e = &x->ROLE->gg; e; e = en) {
+  for (e = &x->ROLE->gg;
+       e && e->g.tok == zx_cdm_ROLE_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_ROLE(c, (struct zx_cdm_ROLE_s*)e, free_strs);
   }
-  for (e = &x->LOGO->gg; e; e = en) {
+  for (e = &x->LOGO->gg;
+       e && e->g.tok == zx_cdm_LOGO_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_LOGO(c, (struct zx_cdm_LOGO_s*)e, free_strs);
   }
-  for (e = &x->AGENT->gg; e; e = en) {
+  for (e = &x->AGENT->gg;
+       e && e->g.tok == zx_cdm_AGENT_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_AGENT(c, (struct zx_cdm_AGENT_s*)e, free_strs);
   }
-  for (e = &x->ORG->gg; e; e = en) {
+  for (e = &x->ORG->gg;
+       e && e->g.tok == zx_cdm_ORG_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_ORG(c, (struct zx_cdm_ORG_s*)e, free_strs);
   }
-  for (e = &x->CATEGORIES->gg; e; e = en) {
+  for (e = &x->CATEGORIES->gg;
+       e && e->g.tok == zx_cdm_CATEGORIES_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_CATEGORIES(c, (struct zx_cdm_CATEGORIES_s*)e, free_strs);
   }
-  for (e = &x->NOTE->gg; e; e = en) {
+  for (e = &x->NOTE->gg;
+       e && e->g.tok == zx_cdm_NOTE_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_NOTE(c, (struct zx_cdm_NOTE_s*)e, free_strs);
   }
-  for (e = &x->PRODID->gg; e; e = en) {
+  for (e = &x->PRODID->gg;
+       e && e->g.tok == zx_cdm_PRODID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_PRODID(c, (struct zx_cdm_PRODID_s*)e, free_strs);
   }
-  for (e = &x->REV->gg; e; e = en) {
+  for (e = &x->REV->gg;
+       e && e->g.tok == zx_cdm_REV_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_REV(c, (struct zx_cdm_REV_s*)e, free_strs);
   }
-  for (e = &x->SORT_STRING->gg; e; e = en) {
+  for (e = &x->SORT_STRING->gg;
+       e && e->g.tok == zx_cdm_SORT_STRING_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_SORT_STRING(c, (struct zx_cdm_SORT_STRING_s*)e, free_strs);
   }
-  for (e = &x->SOUND->gg; e; e = en) {
+  for (e = &x->SOUND->gg;
+       e && e->g.tok == zx_cdm_SOUND_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_SOUND(c, (struct zx_cdm_SOUND_s*)e, free_strs);
   }
-  for (e = &x->UID->gg; e; e = en) {
+  for (e = &x->UID->gg;
+       e && e->g.tok == zx_cdm_UID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_UID(c, (struct zx_cdm_UID_s*)e, free_strs);
   }
-  for (e = &x->URL->gg; e; e = en) {
+  for (e = &x->URL->gg;
+       e && e->g.tok == zx_cdm_URL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_URL(c, (struct zx_cdm_URL_s*)e, free_strs);
   }
-  for (e = &x->CLASS->gg; e; e = en) {
+  for (e = &x->CLASS->gg;
+       e && e->g.tok == zx_cdm_CLASS_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_CLASS(c, (struct zx_cdm_CLASS_s*)e, free_strs);
   }
-  for (e = &x->KEY->gg; e; e = en) {
+  for (e = &x->KEY->gg;
+       e && e->g.tok == zx_cdm_KEY_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_KEY(c, (struct zx_cdm_KEY_s*)e, free_strs);
   }
-  for (e = &x->DESC->gg; e; e = en) {
+  for (e = &x->DESC->gg;
+       e && e->g.tok == zx_cdm_DESC_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_DESC(c, (struct zx_cdm_DESC_s*)e, free_strs);
   }
-  for (e = &x->PHYSICALACCESS->gg; e; e = en) {
+  for (e = &x->PHYSICALACCESS->gg;
+       e && e->g.tok == zx_cdm_PHYSICALACCESS_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_PHYSICALACCESS(c, (struct zx_cdm_PHYSICALACCESS_s*)e, free_strs);
   }
-  for (e = &x->CALURI->gg; e; e = en) {
+  for (e = &x->CALURI->gg;
+       e && e->g.tok == zx_cdm_CALURI_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_CALURI(c, (struct zx_cdm_CALURI_s*)e, free_strs);
   }
-  for (e = &x->CAPURI->gg; e; e = en) {
+  for (e = &x->CAPURI->gg;
+       e && e->g.tok == zx_cdm_CAPURI_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_CAPURI(c, (struct zx_cdm_CAPURI_s*)e, free_strs);
   }
-  for (e = &x->CALADRURI->gg; e; e = en) {
+  for (e = &x->CALADRURI->gg;
+       e && e->g.tok == zx_cdm_CALADRURI_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_CALADRURI(c, (struct zx_cdm_CALADRURI_s*)e, free_strs);
   }
-  for (e = &x->FBURL->gg; e; e = en) {
+  for (e = &x->FBURL->gg;
+       e && e->g.tok == zx_cdm_FBURL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cdm_FBURL(c, (struct zx_cdm_FBURL_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_cb_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_cb_Extension(c, (struct zx_cb_Extension_s*)e, free_strs);
   }
@@ -9772,83 +10142,157 @@ void zx_DUP_STRS_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->modificationTime);
 
-  for (se = &x->VERSION_is_Perl_MakeMaker_gobbled->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VERSION_is_Perl_MakeMaker_gobbled->gg;
+       se && se->g.tok == zx_cdm_VERSION_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_VERSION(c, (struct zx_cdm_VERSION_s*)se);
   zx_dup_strs_simple_elems(c, x->CARDID);
   zx_dup_strs_simple_elems(c, x->DISTRIBUTIONLIST);
   zx_dup_strs_simple_elems(c, x->SELF);
   zx_dup_strs_simple_elems(c, x->FAVORITE);
-  for (se = &x->FN->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FN->gg;
+       se && se->g.tok == zx_cdm_FN_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_FN(c, (struct zx_cdm_FN_s*)se);
-  for (se = &x->N->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->N->gg;
+       se && se->g.tok == zx_cdm_N_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_N(c, (struct zx_cdm_N_s*)se);
-  for (se = &x->LISTMEMBER->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LISTMEMBER->gg;
+       se && se->g.tok == zx_cdm_LISTMEMBER_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_LISTMEMBER(c, (struct zx_cdm_LISTMEMBER_s*)se);
-  for (se = &x->NICKNAME->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NICKNAME->gg;
+       se && se->g.tok == zx_cdm_NICKNAME_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_NICKNAME(c, (struct zx_cdm_NICKNAME_s*)se);
-  for (se = &x->PHOTO->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PHOTO->gg;
+       se && se->g.tok == zx_cdm_PHOTO_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_PHOTO(c, (struct zx_cdm_PHOTO_s*)se);
-  for (se = &x->BDAY->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BDAY->gg;
+       se && se->g.tok == zx_cdm_BDAY_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_BDAY(c, (struct zx_cdm_BDAY_s*)se);
-  for (se = &x->ADR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ADR->gg;
+       se && se->g.tok == zx_cdm_ADR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_ADR(c, (struct zx_cdm_ADR_s*)se);
-  for (se = &x->LABEL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LABEL->gg;
+       se && se->g.tok == zx_cdm_LABEL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_LABEL(c, (struct zx_cdm_LABEL_s*)se);
-  for (se = &x->TEL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TEL->gg;
+       se && se->g.tok == zx_cdm_TEL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_TEL(c, (struct zx_cdm_TEL_s*)se);
-  for (se = &x->EMAIL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EMAIL->gg;
+       se && se->g.tok == zx_cdm_EMAIL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_EMAIL(c, (struct zx_cdm_EMAIL_s*)se);
-  for (se = &x->JABBERID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JABBERID->gg;
+       se && se->g.tok == zx_cdm_JABBERID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_JABBERID(c, (struct zx_cdm_JABBERID_s*)se);
-  for (se = &x->MAILER->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MAILER->gg;
+       se && se->g.tok == zx_cdm_MAILER_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_MAILER(c, (struct zx_cdm_MAILER_s*)se);
-  for (se = &x->TZ->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TZ->gg;
+       se && se->g.tok == zx_cdm_TZ_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_TZ(c, (struct zx_cdm_TZ_s*)se);
-  for (se = &x->GEO->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GEO->gg;
+       se && se->g.tok == zx_cdm_GEO_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_GEO(c, (struct zx_cdm_GEO_s*)se);
-  for (se = &x->TITLE->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TITLE->gg;
+       se && se->g.tok == zx_cdm_TITLE_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_TITLE(c, (struct zx_cdm_TITLE_s*)se);
-  for (se = &x->ROLE->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ROLE->gg;
+       se && se->g.tok == zx_cdm_ROLE_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_ROLE(c, (struct zx_cdm_ROLE_s*)se);
-  for (se = &x->LOGO->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LOGO->gg;
+       se && se->g.tok == zx_cdm_LOGO_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_LOGO(c, (struct zx_cdm_LOGO_s*)se);
-  for (se = &x->AGENT->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AGENT->gg;
+       se && se->g.tok == zx_cdm_AGENT_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_AGENT(c, (struct zx_cdm_AGENT_s*)se);
-  for (se = &x->ORG->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ORG->gg;
+       se && se->g.tok == zx_cdm_ORG_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_ORG(c, (struct zx_cdm_ORG_s*)se);
-  for (se = &x->CATEGORIES->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CATEGORIES->gg;
+       se && se->g.tok == zx_cdm_CATEGORIES_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_CATEGORIES(c, (struct zx_cdm_CATEGORIES_s*)se);
-  for (se = &x->NOTE->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NOTE->gg;
+       se && se->g.tok == zx_cdm_NOTE_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_NOTE(c, (struct zx_cdm_NOTE_s*)se);
-  for (se = &x->PRODID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PRODID->gg;
+       se && se->g.tok == zx_cdm_PRODID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_PRODID(c, (struct zx_cdm_PRODID_s*)se);
-  for (se = &x->REV->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->REV->gg;
+       se && se->g.tok == zx_cdm_REV_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_REV(c, (struct zx_cdm_REV_s*)se);
-  for (se = &x->SORT_STRING->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SORT_STRING->gg;
+       se && se->g.tok == zx_cdm_SORT_STRING_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_SORT_STRING(c, (struct zx_cdm_SORT_STRING_s*)se);
-  for (se = &x->SOUND->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SOUND->gg;
+       se && se->g.tok == zx_cdm_SOUND_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_SOUND(c, (struct zx_cdm_SOUND_s*)se);
-  for (se = &x->UID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UID->gg;
+       se && se->g.tok == zx_cdm_UID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_UID(c, (struct zx_cdm_UID_s*)se);
-  for (se = &x->URL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->URL->gg;
+       se && se->g.tok == zx_cdm_URL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_URL(c, (struct zx_cdm_URL_s*)se);
-  for (se = &x->CLASS->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CLASS->gg;
+       se && se->g.tok == zx_cdm_CLASS_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_CLASS(c, (struct zx_cdm_CLASS_s*)se);
-  for (se = &x->KEY->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KEY->gg;
+       se && se->g.tok == zx_cdm_KEY_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_KEY(c, (struct zx_cdm_KEY_s*)se);
-  for (se = &x->DESC->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DESC->gg;
+       se && se->g.tok == zx_cdm_DESC_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_DESC(c, (struct zx_cdm_DESC_s*)se);
-  for (se = &x->PHYSICALACCESS->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PHYSICALACCESS->gg;
+       se && se->g.tok == zx_cdm_PHYSICALACCESS_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_PHYSICALACCESS(c, (struct zx_cdm_PHYSICALACCESS_s*)se);
-  for (se = &x->CALURI->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CALURI->gg;
+       se && se->g.tok == zx_cdm_CALURI_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_CALURI(c, (struct zx_cdm_CALURI_s*)se);
-  for (se = &x->CAPURI->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CAPURI->gg;
+       se && se->g.tok == zx_cdm_CAPURI_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_CAPURI(c, (struct zx_cdm_CAPURI_s*)se);
-  for (se = &x->CALADRURI->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CALADRURI->gg;
+       se && se->g.tok == zx_cdm_CALADRURI_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_CALADRURI(c, (struct zx_cdm_CALADRURI_s*)se);
-  for (se = &x->FBURL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FBURL->gg;
+       se && se->g.tok == zx_cdm_FBURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cdm_FBURL(c, (struct zx_cdm_FBURL_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_cb_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_cb_Extension(c, (struct zx_cb_Extension_s*)se);
 
 }
@@ -9871,7 +10315,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   x->id = zx_clone_attr(c, x->id);
   x->modificationTime = zx_clone_attr(c, x->modificationTime);
 
-  for (enn = 0, e = &x->VERSION_is_Perl_MakeMaker_gobbled->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->VERSION_is_Perl_MakeMaker_gobbled->gg;
+       e && e->g.tok == zx_cdm_VERSION_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_VERSION(c,(struct zx_cdm_VERSION_s*)e,dup_strs);
   	  if (!enn)
   	      x->VERSION_is_Perl_MakeMaker_gobbled = (struct zx_cdm_VERSION_s*)en;
@@ -9883,7 +10329,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   x->DISTRIBUTIONLIST = zx_deep_clone_simple_elems(c,x->DISTRIBUTIONLIST, dup_strs);
   x->SELF = zx_deep_clone_simple_elems(c,x->SELF, dup_strs);
   x->FAVORITE = zx_deep_clone_simple_elems(c,x->FAVORITE, dup_strs);
-  for (enn = 0, e = &x->FN->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->FN->gg;
+       e && e->g.tok == zx_cdm_FN_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_FN(c,(struct zx_cdm_FN_s*)e,dup_strs);
   	  if (!enn)
   	      x->FN = (struct zx_cdm_FN_s*)en;
@@ -9891,7 +10339,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->N->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->N->gg;
+       e && e->g.tok == zx_cdm_N_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_N(c,(struct zx_cdm_N_s*)e,dup_strs);
   	  if (!enn)
   	      x->N = (struct zx_cdm_N_s*)en;
@@ -9899,7 +10349,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LISTMEMBER->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LISTMEMBER->gg;
+       e && e->g.tok == zx_cdm_LISTMEMBER_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_LISTMEMBER(c,(struct zx_cdm_LISTMEMBER_s*)e,dup_strs);
   	  if (!enn)
   	      x->LISTMEMBER = (struct zx_cdm_LISTMEMBER_s*)en;
@@ -9907,7 +10359,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->NICKNAME->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NICKNAME->gg;
+       e && e->g.tok == zx_cdm_NICKNAME_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_NICKNAME(c,(struct zx_cdm_NICKNAME_s*)e,dup_strs);
   	  if (!enn)
   	      x->NICKNAME = (struct zx_cdm_NICKNAME_s*)en;
@@ -9915,7 +10369,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PHOTO->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PHOTO->gg;
+       e && e->g.tok == zx_cdm_PHOTO_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_PHOTO(c,(struct zx_cdm_PHOTO_s*)e,dup_strs);
   	  if (!enn)
   	      x->PHOTO = (struct zx_cdm_PHOTO_s*)en;
@@ -9923,7 +10379,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->BDAY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->BDAY->gg;
+       e && e->g.tok == zx_cdm_BDAY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_BDAY(c,(struct zx_cdm_BDAY_s*)e,dup_strs);
   	  if (!enn)
   	      x->BDAY = (struct zx_cdm_BDAY_s*)en;
@@ -9931,7 +10389,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ADR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ADR->gg;
+       e && e->g.tok == zx_cdm_ADR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_ADR(c,(struct zx_cdm_ADR_s*)e,dup_strs);
   	  if (!enn)
   	      x->ADR = (struct zx_cdm_ADR_s*)en;
@@ -9939,7 +10399,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LABEL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LABEL->gg;
+       e && e->g.tok == zx_cdm_LABEL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_LABEL(c,(struct zx_cdm_LABEL_s*)e,dup_strs);
   	  if (!enn)
   	      x->LABEL = (struct zx_cdm_LABEL_s*)en;
@@ -9947,7 +10409,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TEL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TEL->gg;
+       e && e->g.tok == zx_cdm_TEL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_TEL(c,(struct zx_cdm_TEL_s*)e,dup_strs);
   	  if (!enn)
   	      x->TEL = (struct zx_cdm_TEL_s*)en;
@@ -9955,7 +10419,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EMAIL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EMAIL->gg;
+       e && e->g.tok == zx_cdm_EMAIL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_EMAIL(c,(struct zx_cdm_EMAIL_s*)e,dup_strs);
   	  if (!enn)
   	      x->EMAIL = (struct zx_cdm_EMAIL_s*)en;
@@ -9963,7 +10429,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->JABBERID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->JABBERID->gg;
+       e && e->g.tok == zx_cdm_JABBERID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_JABBERID(c,(struct zx_cdm_JABBERID_s*)e,dup_strs);
   	  if (!enn)
   	      x->JABBERID = (struct zx_cdm_JABBERID_s*)en;
@@ -9971,7 +10439,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MAILER->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MAILER->gg;
+       e && e->g.tok == zx_cdm_MAILER_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_MAILER(c,(struct zx_cdm_MAILER_s*)e,dup_strs);
   	  if (!enn)
   	      x->MAILER = (struct zx_cdm_MAILER_s*)en;
@@ -9979,7 +10449,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TZ->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TZ->gg;
+       e && e->g.tok == zx_cdm_TZ_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_TZ(c,(struct zx_cdm_TZ_s*)e,dup_strs);
   	  if (!enn)
   	      x->TZ = (struct zx_cdm_TZ_s*)en;
@@ -9987,7 +10459,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->GEO->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->GEO->gg;
+       e && e->g.tok == zx_cdm_GEO_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_GEO(c,(struct zx_cdm_GEO_s*)e,dup_strs);
   	  if (!enn)
   	      x->GEO = (struct zx_cdm_GEO_s*)en;
@@ -9995,7 +10469,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TITLE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TITLE->gg;
+       e && e->g.tok == zx_cdm_TITLE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_TITLE(c,(struct zx_cdm_TITLE_s*)e,dup_strs);
   	  if (!enn)
   	      x->TITLE = (struct zx_cdm_TITLE_s*)en;
@@ -10003,7 +10479,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ROLE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ROLE->gg;
+       e && e->g.tok == zx_cdm_ROLE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_ROLE(c,(struct zx_cdm_ROLE_s*)e,dup_strs);
   	  if (!enn)
   	      x->ROLE = (struct zx_cdm_ROLE_s*)en;
@@ -10011,7 +10489,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LOGO->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LOGO->gg;
+       e && e->g.tok == zx_cdm_LOGO_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_LOGO(c,(struct zx_cdm_LOGO_s*)e,dup_strs);
   	  if (!enn)
   	      x->LOGO = (struct zx_cdm_LOGO_s*)en;
@@ -10019,7 +10499,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AGENT->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AGENT->gg;
+       e && e->g.tok == zx_cdm_AGENT_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_AGENT(c,(struct zx_cdm_AGENT_s*)e,dup_strs);
   	  if (!enn)
   	      x->AGENT = (struct zx_cdm_AGENT_s*)en;
@@ -10027,7 +10509,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ORG->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ORG->gg;
+       e && e->g.tok == zx_cdm_ORG_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_ORG(c,(struct zx_cdm_ORG_s*)e,dup_strs);
   	  if (!enn)
   	      x->ORG = (struct zx_cdm_ORG_s*)en;
@@ -10035,7 +10519,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CATEGORIES->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CATEGORIES->gg;
+       e && e->g.tok == zx_cdm_CATEGORIES_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_CATEGORIES(c,(struct zx_cdm_CATEGORIES_s*)e,dup_strs);
   	  if (!enn)
   	      x->CATEGORIES = (struct zx_cdm_CATEGORIES_s*)en;
@@ -10043,7 +10529,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->NOTE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NOTE->gg;
+       e && e->g.tok == zx_cdm_NOTE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_NOTE(c,(struct zx_cdm_NOTE_s*)e,dup_strs);
   	  if (!enn)
   	      x->NOTE = (struct zx_cdm_NOTE_s*)en;
@@ -10051,7 +10539,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PRODID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PRODID->gg;
+       e && e->g.tok == zx_cdm_PRODID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_PRODID(c,(struct zx_cdm_PRODID_s*)e,dup_strs);
   	  if (!enn)
   	      x->PRODID = (struct zx_cdm_PRODID_s*)en;
@@ -10059,7 +10549,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->REV->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->REV->gg;
+       e && e->g.tok == zx_cdm_REV_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_REV(c,(struct zx_cdm_REV_s*)e,dup_strs);
   	  if (!enn)
   	      x->REV = (struct zx_cdm_REV_s*)en;
@@ -10067,7 +10559,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SORT_STRING->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SORT_STRING->gg;
+       e && e->g.tok == zx_cdm_SORT_STRING_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_SORT_STRING(c,(struct zx_cdm_SORT_STRING_s*)e,dup_strs);
   	  if (!enn)
   	      x->SORT_STRING = (struct zx_cdm_SORT_STRING_s*)en;
@@ -10075,7 +10569,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SOUND->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SOUND->gg;
+       e && e->g.tok == zx_cdm_SOUND_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_SOUND(c,(struct zx_cdm_SOUND_s*)e,dup_strs);
   	  if (!enn)
   	      x->SOUND = (struct zx_cdm_SOUND_s*)en;
@@ -10083,7 +10579,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UID->gg;
+       e && e->g.tok == zx_cdm_UID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_UID(c,(struct zx_cdm_UID_s*)e,dup_strs);
   	  if (!enn)
   	      x->UID = (struct zx_cdm_UID_s*)en;
@@ -10091,7 +10589,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->URL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->URL->gg;
+       e && e->g.tok == zx_cdm_URL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_URL(c,(struct zx_cdm_URL_s*)e,dup_strs);
   	  if (!enn)
   	      x->URL = (struct zx_cdm_URL_s*)en;
@@ -10099,7 +10599,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CLASS->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CLASS->gg;
+       e && e->g.tok == zx_cdm_CLASS_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_CLASS(c,(struct zx_cdm_CLASS_s*)e,dup_strs);
   	  if (!enn)
   	      x->CLASS = (struct zx_cdm_CLASS_s*)en;
@@ -10107,7 +10609,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->KEY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KEY->gg;
+       e && e->g.tok == zx_cdm_KEY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_KEY(c,(struct zx_cdm_KEY_s*)e,dup_strs);
   	  if (!enn)
   	      x->KEY = (struct zx_cdm_KEY_s*)en;
@@ -10115,7 +10619,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DESC->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DESC->gg;
+       e && e->g.tok == zx_cdm_DESC_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_DESC(c,(struct zx_cdm_DESC_s*)e,dup_strs);
   	  if (!enn)
   	      x->DESC = (struct zx_cdm_DESC_s*)en;
@@ -10123,7 +10629,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PHYSICALACCESS->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PHYSICALACCESS->gg;
+       e && e->g.tok == zx_cdm_PHYSICALACCESS_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_PHYSICALACCESS(c,(struct zx_cdm_PHYSICALACCESS_s*)e,dup_strs);
   	  if (!enn)
   	      x->PHYSICALACCESS = (struct zx_cdm_PHYSICALACCESS_s*)en;
@@ -10131,7 +10639,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CALURI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CALURI->gg;
+       e && e->g.tok == zx_cdm_CALURI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_CALURI(c,(struct zx_cdm_CALURI_s*)e,dup_strs);
   	  if (!enn)
   	      x->CALURI = (struct zx_cdm_CALURI_s*)en;
@@ -10139,7 +10649,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CAPURI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CAPURI->gg;
+       e && e->g.tok == zx_cdm_CAPURI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_CAPURI(c,(struct zx_cdm_CAPURI_s*)e,dup_strs);
   	  if (!enn)
   	      x->CAPURI = (struct zx_cdm_CAPURI_s*)en;
@@ -10147,7 +10659,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CALADRURI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CALADRURI->gg;
+       e && e->g.tok == zx_cdm_CALADRURI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_CALADRURI(c,(struct zx_cdm_CALADRURI_s*)e,dup_strs);
   	  if (!enn)
   	      x->CALADRURI = (struct zx_cdm_CALADRURI_s*)en;
@@ -10155,7 +10669,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->FBURL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->FBURL->gg;
+       e && e->g.tok == zx_cdm_FBURL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cdm_FBURL(c,(struct zx_cdm_FBURL_s*)e,dup_strs);
   	  if (!enn)
   	      x->FBURL = (struct zx_cdm_FBURL_s*)en;
@@ -10163,7 +10679,9 @@ struct zx_cdm_vCard_s* zx_DEEP_CLONE_cdm_vCard(struct zx_ctx* c, struct zx_cdm_v
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_cb_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_cb_Extension(c,(struct zx_cb_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_cb_Extension_s*)en;
@@ -10194,7 +10712,9 @@ int zx_WALK_SO_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->VERSION_is_Perl_MakeMaker_gobbled->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->VERSION_is_Perl_MakeMaker_gobbled->gg;
+       e && e->g.tok == zx_cdm_VERSION_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_VERSION(c, (struct zx_cdm_VERSION_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -10211,182 +10731,254 @@ int zx_WALK_SO_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x, void* ctx, 
   ret = zx_walk_so_simple_elems(c, x->FAVORITE, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->FN->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->FN->gg;
+       e && e->g.tok == zx_cdm_FN_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_FN(c, (struct zx_cdm_FN_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->N->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->N->gg;
+       e && e->g.tok == zx_cdm_N_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_N(c, (struct zx_cdm_N_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LISTMEMBER->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LISTMEMBER->gg;
+       e && e->g.tok == zx_cdm_LISTMEMBER_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_LISTMEMBER(c, (struct zx_cdm_LISTMEMBER_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->NICKNAME->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NICKNAME->gg;
+       e && e->g.tok == zx_cdm_NICKNAME_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_NICKNAME(c, (struct zx_cdm_NICKNAME_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PHOTO->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PHOTO->gg;
+       e && e->g.tok == zx_cdm_PHOTO_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_PHOTO(c, (struct zx_cdm_PHOTO_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->BDAY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->BDAY->gg;
+       e && e->g.tok == zx_cdm_BDAY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_BDAY(c, (struct zx_cdm_BDAY_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ADR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ADR->gg;
+       e && e->g.tok == zx_cdm_ADR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_ADR(c, (struct zx_cdm_ADR_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LABEL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LABEL->gg;
+       e && e->g.tok == zx_cdm_LABEL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_LABEL(c, (struct zx_cdm_LABEL_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TEL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TEL->gg;
+       e && e->g.tok == zx_cdm_TEL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_TEL(c, (struct zx_cdm_TEL_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EMAIL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EMAIL->gg;
+       e && e->g.tok == zx_cdm_EMAIL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_EMAIL(c, (struct zx_cdm_EMAIL_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->JABBERID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->JABBERID->gg;
+       e && e->g.tok == zx_cdm_JABBERID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_JABBERID(c, (struct zx_cdm_JABBERID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MAILER->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MAILER->gg;
+       e && e->g.tok == zx_cdm_MAILER_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_MAILER(c, (struct zx_cdm_MAILER_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TZ->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TZ->gg;
+       e && e->g.tok == zx_cdm_TZ_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_TZ(c, (struct zx_cdm_TZ_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->GEO->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->GEO->gg;
+       e && e->g.tok == zx_cdm_GEO_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_GEO(c, (struct zx_cdm_GEO_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TITLE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TITLE->gg;
+       e && e->g.tok == zx_cdm_TITLE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_TITLE(c, (struct zx_cdm_TITLE_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ROLE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ROLE->gg;
+       e && e->g.tok == zx_cdm_ROLE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_ROLE(c, (struct zx_cdm_ROLE_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LOGO->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LOGO->gg;
+       e && e->g.tok == zx_cdm_LOGO_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_LOGO(c, (struct zx_cdm_LOGO_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AGENT->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AGENT->gg;
+       e && e->g.tok == zx_cdm_AGENT_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_AGENT(c, (struct zx_cdm_AGENT_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ORG->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ORG->gg;
+       e && e->g.tok == zx_cdm_ORG_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_ORG(c, (struct zx_cdm_ORG_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CATEGORIES->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CATEGORIES->gg;
+       e && e->g.tok == zx_cdm_CATEGORIES_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_CATEGORIES(c, (struct zx_cdm_CATEGORIES_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->NOTE->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NOTE->gg;
+       e && e->g.tok == zx_cdm_NOTE_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_NOTE(c, (struct zx_cdm_NOTE_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PRODID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PRODID->gg;
+       e && e->g.tok == zx_cdm_PRODID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_PRODID(c, (struct zx_cdm_PRODID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->REV->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->REV->gg;
+       e && e->g.tok == zx_cdm_REV_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_REV(c, (struct zx_cdm_REV_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SORT_STRING->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SORT_STRING->gg;
+       e && e->g.tok == zx_cdm_SORT_STRING_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_SORT_STRING(c, (struct zx_cdm_SORT_STRING_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SOUND->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SOUND->gg;
+       e && e->g.tok == zx_cdm_SOUND_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_SOUND(c, (struct zx_cdm_SOUND_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UID->gg;
+       e && e->g.tok == zx_cdm_UID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_UID(c, (struct zx_cdm_UID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->URL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->URL->gg;
+       e && e->g.tok == zx_cdm_URL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_URL(c, (struct zx_cdm_URL_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CLASS->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CLASS->gg;
+       e && e->g.tok == zx_cdm_CLASS_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_CLASS(c, (struct zx_cdm_CLASS_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->KEY->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KEY->gg;
+       e && e->g.tok == zx_cdm_KEY_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_KEY(c, (struct zx_cdm_KEY_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DESC->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DESC->gg;
+       e && e->g.tok == zx_cdm_DESC_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_DESC(c, (struct zx_cdm_DESC_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PHYSICALACCESS->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PHYSICALACCESS->gg;
+       e && e->g.tok == zx_cdm_PHYSICALACCESS_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_PHYSICALACCESS(c, (struct zx_cdm_PHYSICALACCESS_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CALURI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CALURI->gg;
+       e && e->g.tok == zx_cdm_CALURI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_CALURI(c, (struct zx_cdm_CALURI_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CAPURI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CAPURI->gg;
+       e && e->g.tok == zx_cdm_CAPURI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_CAPURI(c, (struct zx_cdm_CAPURI_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CALADRURI->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CALADRURI->gg;
+       e && e->g.tok == zx_cdm_CALADRURI_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_CALADRURI(c, (struct zx_cdm_CALADRURI_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->FBURL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->FBURL->gg;
+       e && e->g.tok == zx_cdm_FBURL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cdm_FBURL(c, (struct zx_cdm_FBURL_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_cb_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_cb_Extension(c, (struct zx_cb_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;

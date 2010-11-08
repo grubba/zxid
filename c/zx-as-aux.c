@@ -327,7 +327,9 @@ void zx_FREE_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTransf
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Transform->gg; e; e = en) {
+  for (e = &x->Transform->gg;
+       e && e->g.tok == zx_as_Transform_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_as_Transform(c, (struct zx_as_Transform_s*)e, free_strs);
   }
@@ -367,7 +369,9 @@ void zx_DUP_STRS_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTr
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Transform->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Transform->gg;
+       se && se->g.tok == zx_as_Transform_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_as_Transform(c, (struct zx_as_Transform_s*)se);
 
 }
@@ -388,7 +392,9 @@ struct zx_as_PasswordTransforms_s* zx_DEEP_CLONE_as_PasswordTransforms(struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Transform->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Transform->gg;
+       e && e->g.tok == zx_as_Transform_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_as_Transform(c,(struct zx_as_Transform_s*)e,dup_strs);
   	  if (!enn)
   	      x->Transform = (struct zx_as_Transform_s*)en;
@@ -419,7 +425,9 @@ int zx_WALK_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTran
   if (ret)
     return ret;
 
-  for (e = &x->Transform->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Transform->gg;
+       e && e->g.tok == zx_as_Transform_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_as_Transform(c, (struct zx_as_Transform_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -480,11 +488,15 @@ void zx_FREE_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x, int
   zx_free_attr(c, x->mechanism, free_strs);
 
   zx_free_simple_elems(c, x->Data, free_strs);
-  for (e = &x->RequestedAuthnContext->gg; e; e = en) {
+  for (e = &x->RequestedAuthnContext->gg;
+       e && e->g.tok == zx_sp_RequestedAuthnContext_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp_RequestedAuthnContext(c, (struct zx_sp_RequestedAuthnContext_s*)e, free_strs);
   }
-  for (e = &x->Extensions->gg; e; e = en) {
+  for (e = &x->Extensions->gg;
+       e && e->g.tok == zx_as_Extensions_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_as_Extensions(c, (struct zx_as_Extensions_s*)e, free_strs);
   }
@@ -528,9 +540,13 @@ void zx_DUP_STRS_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x)
   zx_dup_attr(c, x->mechanism);
 
   zx_dup_strs_simple_elems(c, x->Data);
-  for (se = &x->RequestedAuthnContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedAuthnContext->gg;
+       se && se->g.tok == zx_sp_RequestedAuthnContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp_RequestedAuthnContext(c, (struct zx_sp_RequestedAuthnContext_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_as_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_as_Extensions(c, (struct zx_as_Extensions_s*)se);
 
 }
@@ -555,7 +571,9 @@ struct zx_as_SASLRequest_s* zx_DEEP_CLONE_as_SASLRequest(struct zx_ctx* c, struc
   x->mechanism = zx_clone_attr(c, x->mechanism);
 
   x->Data = zx_deep_clone_simple_elems(c,x->Data, dup_strs);
-  for (enn = 0, e = &x->RequestedAuthnContext->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestedAuthnContext->gg;
+       e && e->g.tok == zx_sp_RequestedAuthnContext_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp_RequestedAuthnContext(c,(struct zx_sp_RequestedAuthnContext_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestedAuthnContext = (struct zx_sp_RequestedAuthnContext_s*)en;
@@ -563,7 +581,9 @@ struct zx_as_SASLRequest_s* zx_DEEP_CLONE_as_SASLRequest(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extensions->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extensions->gg;
+       e && e->g.tok == zx_as_Extensions_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_as_Extensions(c,(struct zx_as_Extensions_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extensions = (struct zx_as_Extensions_s*)en;
@@ -597,12 +617,16 @@ int zx_WALK_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x, v
   ret = zx_walk_so_simple_elems(c, x->Data, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->RequestedAuthnContext->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestedAuthnContext->gg;
+       e && e->g.tok == zx_sp_RequestedAuthnContext_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp_RequestedAuthnContext(c, (struct zx_sp_RequestedAuthnContext_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extensions->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extensions->gg;
+       e && e->g.tok == zx_as_Extensions_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_as_Extensions(c, (struct zx_as_Extensions_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -660,16 +684,22 @@ void zx_FREE_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x, i
 
   zx_free_attr(c, x->serverMechanism, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->PasswordTransforms->gg; e; e = en) {
+  for (e = &x->PasswordTransforms->gg;
+       e && e->g.tok == zx_as_PasswordTransforms_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_as_PasswordTransforms(c, (struct zx_as_PasswordTransforms_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Data, free_strs);
-  for (e = &x->EndpointReference->gg; e; e = en) {
+  for (e = &x->EndpointReference->gg;
+       e && e->g.tok == zx_a_EndpointReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)e, free_strs);
   }
@@ -710,12 +740,18 @@ void zx_DUP_STRS_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* 
 
   zx_dup_attr(c, x->serverMechanism);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PasswordTransforms->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PasswordTransforms->gg;
+       se && se->g.tok == zx_as_PasswordTransforms_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_as_PasswordTransforms(c, (struct zx_as_PasswordTransforms_s*)se);
   zx_dup_strs_simple_elems(c, x->Data);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se);
 
 }
@@ -737,7 +773,9 @@ struct zx_as_SASLResponse_s* zx_DEEP_CLONE_as_SASLResponse(struct zx_ctx* c, str
 
   x->serverMechanism = zx_clone_attr(c, x->serverMechanism);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -745,7 +783,9 @@ struct zx_as_SASLResponse_s* zx_DEEP_CLONE_as_SASLResponse(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PasswordTransforms->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PasswordTransforms->gg;
+       e && e->g.tok == zx_as_PasswordTransforms_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_as_PasswordTransforms(c,(struct zx_as_PasswordTransforms_s*)e,dup_strs);
   	  if (!enn)
   	      x->PasswordTransforms = (struct zx_as_PasswordTransforms_s*)en;
@@ -754,7 +794,9 @@ struct zx_as_SASLResponse_s* zx_DEEP_CLONE_as_SASLResponse(struct zx_ctx* c, str
   	  enn = en;
   }
   x->Data = zx_deep_clone_simple_elems(c,x->Data, dup_strs);
-  for (enn = 0, e = &x->EndpointReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndpointReference->gg;
+       e && e->g.tok == zx_a_EndpointReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_EndpointReference(c,(struct zx_a_EndpointReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndpointReference = (struct zx_a_EndpointReference_s*)en;
@@ -785,12 +827,16 @@ int zx_WALK_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PasswordTransforms->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PasswordTransforms->gg;
+       e && e->g.tok == zx_as_PasswordTransforms_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_as_PasswordTransforms(c, (struct zx_as_PasswordTransforms_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -798,7 +844,9 @@ int zx_WALK_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x,
   ret = zx_walk_so_simple_elems(c, x->Data, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->EndpointReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndpointReference->gg;
+       e && e->g.tok == zx_a_EndpointReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -856,7 +904,9 @@ void zx_FREE_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x, int fre
 
   zx_free_attr(c, x->name, free_strs);
 
-  for (e = &x->Parameter->gg; e; e = en) {
+  for (e = &x->Parameter->gg;
+       e && e->g.tok == zx_as_Parameter_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_as_Parameter(c, (struct zx_as_Parameter_s*)e, free_strs);
   }
@@ -897,7 +947,9 @@ void zx_DUP_STRS_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x)
 
   zx_dup_attr(c, x->name);
 
-  for (se = &x->Parameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Parameter->gg;
+       se && se->g.tok == zx_as_Parameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_as_Parameter(c, (struct zx_as_Parameter_s*)se);
 
 }
@@ -919,7 +971,9 @@ struct zx_as_Transform_s* zx_DEEP_CLONE_as_Transform(struct zx_ctx* c, struct zx
 
   x->name = zx_clone_attr(c, x->name);
 
-  for (enn = 0, e = &x->Parameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Parameter->gg;
+       e && e->g.tok == zx_as_Parameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_as_Parameter(c,(struct zx_as_Parameter_s*)e,dup_strs);
   	  if (!enn)
   	      x->Parameter = (struct zx_as_Parameter_s*)en;
@@ -950,7 +1004,9 @@ int zx_WALK_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->Parameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Parameter->gg;
+       e && e->g.tok == zx_as_Parameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_as_Parameter(c, (struct zx_as_Parameter_s*)e, ctx, callback);
     if (ret)
       return ret;

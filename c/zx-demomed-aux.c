@@ -200,7 +200,9 @@ void zx_FREE_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_De
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -241,7 +243,9 @@ void zx_DUP_STRS_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demome
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
   zx_dup_strs_simple_elems(c, x->Count);
 
@@ -263,7 +267,9 @@ struct zx_demomed_DeleteObjectResponse_s* zx_DEEP_CLONE_demomed_DeleteObjectResp
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -295,7 +301,9 @@ int zx_WALK_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -355,7 +363,9 @@ void zx_FREE_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_Ge
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ObjectSearchParm->gg; e; e = en) {
+  for (e = &x->ObjectSearchParm->gg;
+       e && e->g.tok == zx_demomed_ObjectSearchParm_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_demomed_ObjectSearchParm(c, (struct zx_demomed_ObjectSearchParm_s*)e, free_strs);
   }
@@ -395,7 +405,9 @@ void zx_DUP_STRS_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demome
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ObjectSearchParm->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectSearchParm->gg;
+       se && se->g.tok == zx_demomed_ObjectSearchParm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_demomed_ObjectSearchParm(c, (struct zx_demomed_ObjectSearchParm_s*)se);
 
 }
@@ -416,7 +428,9 @@ struct zx_demomed_GetObjectListRequest_s* zx_DEEP_CLONE_demomed_GetObjectListReq
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ObjectSearchParm->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ObjectSearchParm->gg;
+       e && e->g.tok == zx_demomed_ObjectSearchParm_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_demomed_ObjectSearchParm(c,(struct zx_demomed_ObjectSearchParm_s*)e,dup_strs);
   	  if (!enn)
   	      x->ObjectSearchParm = (struct zx_demomed_ObjectSearchParm_s*)en;
@@ -447,7 +461,9 @@ int zx_WALK_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_
   if (ret)
     return ret;
 
-  for (e = &x->ObjectSearchParm->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ObjectSearchParm->gg;
+       e && e->g.tok == zx_demomed_ObjectSearchParm_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_demomed_ObjectSearchParm(c, (struct zx_demomed_ObjectSearchParm_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -504,11 +520,15 @@ void zx_FREE_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_G
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->ObjectInfo->gg; e; e = en) {
+  for (e = &x->ObjectInfo->gg;
+       e && e->g.tok == zx_demomed_ObjectInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)e, free_strs);
   }
@@ -548,9 +568,13 @@ void zx_DUP_STRS_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demom
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->ObjectInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectInfo->gg;
+       se && se->g.tok == zx_demomed_ObjectInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)se);
 
 }
@@ -571,7 +595,9 @@ struct zx_demomed_GetObjectListResponse_s* zx_DEEP_CLONE_demomed_GetObjectListRe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -579,7 +605,9 @@ struct zx_demomed_GetObjectListResponse_s* zx_DEEP_CLONE_demomed_GetObjectListRe
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ObjectInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ObjectInfo->gg;
+       e && e->g.tok == zx_demomed_ObjectInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_demomed_ObjectInfo(c,(struct zx_demomed_ObjectInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->ObjectInfo = (struct zx_demomed_ObjectInfo_s*)en;
@@ -610,12 +638,16 @@ int zx_WALK_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ObjectInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ObjectInfo->gg;
+       e && e->g.tok == zx_demomed_ObjectInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -808,11 +840,15 @@ void zx_FREE_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetOb
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->ObjectData->gg; e; e = en) {
+  for (e = &x->ObjectData->gg;
+       e && e->g.tok == zx_demomed_ObjectData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)e, free_strs);
   }
@@ -852,9 +888,13 @@ void zx_DUP_STRS_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_G
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->ObjectData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectData->gg;
+       se && se->g.tok == zx_demomed_ObjectData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)se);
 
 }
@@ -875,7 +915,9 @@ struct zx_demomed_GetObjectResponse_s* zx_DEEP_CLONE_demomed_GetObjectResponse(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -883,7 +925,9 @@ struct zx_demomed_GetObjectResponse_s* zx_DEEP_CLONE_demomed_GetObjectResponse(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ObjectData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ObjectData->gg;
+       e && e->g.tok == zx_demomed_ObjectData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_demomed_ObjectData(c,(struct zx_demomed_ObjectData_s*)e,dup_strs);
   	  if (!enn)
   	      x->ObjectData = (struct zx_demomed_ObjectData_s*)en;
@@ -914,12 +958,16 @@ int zx_WALK_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_Get
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ObjectData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ObjectData->gg;
+       e && e->g.tok == zx_demomed_ObjectData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -977,11 +1025,15 @@ void zx_FREE_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, int
 
   zx_free_attr(c, x->reqID, free_strs);
 
-  for (e = &x->ObjectInfo->gg; e; e = en) {
+  for (e = &x->ObjectInfo->gg;
+       e && e->g.tok == zx_demomed_ObjectInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)e, free_strs);
   }
-  for (e = &x->ObjectData->gg; e; e = en) {
+  for (e = &x->ObjectData->gg;
+       e && e->g.tok == zx_demomed_ObjectData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)e, free_strs);
   }
@@ -1022,9 +1074,13 @@ void zx_DUP_STRS_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x)
 
   zx_dup_attr(c, x->reqID);
 
-  for (se = &x->ObjectInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectInfo->gg;
+       se && se->g.tok == zx_demomed_ObjectInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)se);
-  for (se = &x->ObjectData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectData->gg;
+       se && se->g.tok == zx_demomed_ObjectData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)se);
 
 }
@@ -1046,7 +1102,9 @@ struct zx_demomed_Object_s* zx_DEEP_CLONE_demomed_Object(struct zx_ctx* c, struc
 
   x->reqID = zx_clone_attr(c, x->reqID);
 
-  for (enn = 0, e = &x->ObjectInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ObjectInfo->gg;
+       e && e->g.tok == zx_demomed_ObjectInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_demomed_ObjectInfo(c,(struct zx_demomed_ObjectInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->ObjectInfo = (struct zx_demomed_ObjectInfo_s*)en;
@@ -1054,7 +1112,9 @@ struct zx_demomed_Object_s* zx_DEEP_CLONE_demomed_Object(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ObjectData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ObjectData->gg;
+       e && e->g.tok == zx_demomed_ObjectData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_demomed_ObjectData(c,(struct zx_demomed_ObjectData_s*)e,dup_strs);
   	  if (!enn)
   	      x->ObjectData = (struct zx_demomed_ObjectData_s*)en;
@@ -1085,12 +1145,16 @@ int zx_WALK_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->ObjectInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ObjectInfo->gg;
+       e && e->g.tok == zx_demomed_ObjectInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ObjectData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ObjectData->gg;
+       e && e->g.tok == zx_demomed_ObjectData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1733,7 +1797,9 @@ void zx_FREE_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_Stor
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Object->gg; e; e = en) {
+  for (e = &x->Object->gg;
+       e && e->g.tok == zx_demomed_Object_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_demomed_Object(c, (struct zx_demomed_Object_s*)e, free_strs);
   }
@@ -1773,7 +1839,9 @@ void zx_DUP_STRS_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_demomed_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_demomed_Object(c, (struct zx_demomed_Object_s*)se);
 
 }
@@ -1794,7 +1862,9 @@ struct zx_demomed_StoreObjectRequest_s* zx_DEEP_CLONE_demomed_StoreObjectRequest
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Object->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Object->gg;
+       e && e->g.tok == zx_demomed_Object_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_demomed_Object(c,(struct zx_demomed_Object_s*)e,dup_strs);
   	  if (!enn)
   	      x->Object = (struct zx_demomed_Object_s*)en;
@@ -1825,7 +1895,9 @@ int zx_WALK_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_St
   if (ret)
     return ret;
 
-  for (e = &x->Object->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Object->gg;
+       e && e->g.tok == zx_demomed_Object_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_demomed_Object(c, (struct zx_demomed_Object_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1882,11 +1954,15 @@ void zx_FREE_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_Sto
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->ObjectStoreInfo->gg; e; e = en) {
+  for (e = &x->ObjectStoreInfo->gg;
+       e && e->g.tok == zx_demomed_ObjectStoreInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_demomed_ObjectStoreInfo(c, (struct zx_demomed_ObjectStoreInfo_s*)e, free_strs);
   }
@@ -1926,9 +2002,13 @@ void zx_DUP_STRS_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->ObjectStoreInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectStoreInfo->gg;
+       se && se->g.tok == zx_demomed_ObjectStoreInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_demomed_ObjectStoreInfo(c, (struct zx_demomed_ObjectStoreInfo_s*)se);
 
 }
@@ -1949,7 +2029,9 @@ struct zx_demomed_StoreObjectResponse_s* zx_DEEP_CLONE_demomed_StoreObjectRespon
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -1957,7 +2039,9 @@ struct zx_demomed_StoreObjectResponse_s* zx_DEEP_CLONE_demomed_StoreObjectRespon
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ObjectStoreInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ObjectStoreInfo->gg;
+       e && e->g.tok == zx_demomed_ObjectStoreInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_demomed_ObjectStoreInfo(c,(struct zx_demomed_ObjectStoreInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->ObjectStoreInfo = (struct zx_demomed_ObjectStoreInfo_s*)en;
@@ -1988,12 +2072,16 @@ int zx_WALK_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_S
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ObjectStoreInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ObjectStoreInfo->gg;
+       e && e->g.tok == zx_demomed_ObjectStoreInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_demomed_ObjectStoreInfo(c, (struct zx_demomed_ObjectStoreInfo_s*)e, ctx, callback);
     if (ret)
       return ret;

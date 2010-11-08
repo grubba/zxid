@@ -86,10 +86,10 @@ int zx_LEN_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_sbf_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_sbf_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->version, sizeof("version")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Id, sizeof("wsu:Id")-1, &pop_seen);
@@ -128,10 +128,10 @@ char* zx_ENC_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x, ch
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_sbf_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_sbf_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 

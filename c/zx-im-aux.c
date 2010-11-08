@@ -64,7 +64,9 @@ void zx_FREE_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityMa
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->MappingInput->gg; e; e = en) {
+  for (e = &x->MappingInput->gg;
+       e && e->g.tok == zx_im_MappingInput_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_im_MappingInput(c, (struct zx_im_MappingInput_s*)e, free_strs);
   }
@@ -104,7 +106,9 @@ void zx_DUP_STRS_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_Identi
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->MappingInput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MappingInput->gg;
+       se && se->g.tok == zx_im_MappingInput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_im_MappingInput(c, (struct zx_im_MappingInput_s*)se);
 
 }
@@ -125,7 +129,9 @@ struct zx_im_IdentityMappingRequest_s* zx_DEEP_CLONE_im_IdentityMappingRequest(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->MappingInput->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MappingInput->gg;
+       e && e->g.tok == zx_im_MappingInput_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_im_MappingInput(c,(struct zx_im_MappingInput_s*)e,dup_strs);
   	  if (!enn)
   	      x->MappingInput = (struct zx_im_MappingInput_s*)en;
@@ -156,7 +162,9 @@ int zx_WALK_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_Identity
   if (ret)
     return ret;
 
-  for (e = &x->MappingInput->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MappingInput->gg;
+       e && e->g.tok == zx_im_MappingInput_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_im_MappingInput(c, (struct zx_im_MappingInput_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -213,11 +221,15 @@ void zx_FREE_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_IdentityM
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->MappingOutput->gg; e; e = en) {
+  for (e = &x->MappingOutput->gg;
+       e && e->g.tok == zx_im_MappingOutput_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_im_MappingOutput(c, (struct zx_im_MappingOutput_s*)e, free_strs);
   }
@@ -257,9 +269,13 @@ void zx_DUP_STRS_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_Ident
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->MappingOutput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MappingOutput->gg;
+       se && se->g.tok == zx_im_MappingOutput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_im_MappingOutput(c, (struct zx_im_MappingOutput_s*)se);
 
 }
@@ -280,7 +296,9 @@ struct zx_im_IdentityMappingResponse_s* zx_DEEP_CLONE_im_IdentityMappingResponse
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -288,7 +306,9 @@ struct zx_im_IdentityMappingResponse_s* zx_DEEP_CLONE_im_IdentityMappingResponse
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MappingOutput->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MappingOutput->gg;
+       e && e->g.tok == zx_im_MappingOutput_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_im_MappingOutput(c,(struct zx_im_MappingOutput_s*)e,dup_strs);
   	  if (!enn)
   	      x->MappingOutput = (struct zx_im_MappingOutput_s*)en;
@@ -319,12 +339,16 @@ int zx_WALK_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_Identit
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MappingOutput->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MappingOutput->gg;
+       e && e->g.tok == zx_im_MappingOutput_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_im_MappingOutput(c, (struct zx_im_MappingOutput_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -382,11 +406,15 @@ void zx_FREE_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x, i
 
   zx_free_attr(c, x->reqID, free_strs);
 
-  for (e = &x->TokenPolicy->gg; e; e = en) {
+  for (e = &x->TokenPolicy->gg;
+       e && e->g.tok == zx_sec_TokenPolicy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)e, free_strs);
   }
-  for (e = &x->Token->gg; e; e = en) {
+  for (e = &x->Token->gg;
+       e && e->g.tok == zx_sec_Token_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sec_Token(c, (struct zx_sec_Token_s*)e, free_strs);
   }
@@ -427,9 +455,13 @@ void zx_DUP_STRS_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* 
 
   zx_dup_attr(c, x->reqID);
 
-  for (se = &x->TokenPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TokenPolicy->gg;
+       se && se->g.tok == zx_sec_TokenPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)se);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sec_Token(c, (struct zx_sec_Token_s*)se);
 
 }
@@ -451,7 +483,9 @@ struct zx_im_MappingInput_s* zx_DEEP_CLONE_im_MappingInput(struct zx_ctx* c, str
 
   x->reqID = zx_clone_attr(c, x->reqID);
 
-  for (enn = 0, e = &x->TokenPolicy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TokenPolicy->gg;
+       e && e->g.tok == zx_sec_TokenPolicy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sec_TokenPolicy(c,(struct zx_sec_TokenPolicy_s*)e,dup_strs);
   	  if (!enn)
   	      x->TokenPolicy = (struct zx_sec_TokenPolicy_s*)en;
@@ -459,7 +493,9 @@ struct zx_im_MappingInput_s* zx_DEEP_CLONE_im_MappingInput(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Token->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Token->gg;
+       e && e->g.tok == zx_sec_Token_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sec_Token(c,(struct zx_sec_Token_s*)e,dup_strs);
   	  if (!enn)
   	      x->Token = (struct zx_sec_Token_s*)en;
@@ -490,12 +526,16 @@ int zx_WALK_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->TokenPolicy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TokenPolicy->gg;
+       e && e->g.tok == zx_sec_TokenPolicy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Token->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Token->gg;
+       e && e->g.tok == zx_sec_Token_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sec_Token(c, (struct zx_sec_Token_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -553,7 +593,9 @@ void zx_FREE_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x,
 
   zx_free_attr(c, x->reqRef, free_strs);
 
-  for (e = &x->Token->gg; e; e = en) {
+  for (e = &x->Token->gg;
+       e && e->g.tok == zx_sec_Token_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sec_Token(c, (struct zx_sec_Token_s*)e, free_strs);
   }
@@ -594,7 +636,9 @@ void zx_DUP_STRS_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s
 
   zx_dup_attr(c, x->reqRef);
 
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sec_Token(c, (struct zx_sec_Token_s*)se);
 
 }
@@ -616,7 +660,9 @@ struct zx_im_MappingOutput_s* zx_DEEP_CLONE_im_MappingOutput(struct zx_ctx* c, s
 
   x->reqRef = zx_clone_attr(c, x->reqRef);
 
-  for (enn = 0, e = &x->Token->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Token->gg;
+       e && e->g.tok == zx_sec_Token_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sec_Token(c,(struct zx_sec_Token_s*)e,dup_strs);
   	  if (!enn)
   	      x->Token = (struct zx_sec_Token_s*)en;
@@ -647,7 +693,9 @@ int zx_WALK_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* 
   if (ret)
     return ret;
 
-  for (e = &x->Token->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Token->gg;
+       e && e->g.tok == zx_sec_Token_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sec_Token(c, (struct zx_sec_Token_s*)e, ctx, callback);
     if (ret)
       return ret;

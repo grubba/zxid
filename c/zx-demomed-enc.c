@@ -85,7 +85,7 @@ int zx_LEN_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_De
   int len = sizeof("<demomed:DeleteObjectRequest")-1 + 1 + sizeof("</demomed:DeleteObjectRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -93,8 +93,10 @@ int zx_LEN_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_De
   int len = 0;
 #endif
   
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:ObjectID")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->ObjectID;
+    se && se->g.tok == zx_demomed_ObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:ObjectID")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -121,7 +123,7 @@ char* zx_ENC_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_
   ZX_OUT_TAG(p, "<demomed:DeleteObjectRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -133,8 +135,10 @@ char* zx_ENC_SO_demomed_DeleteObjectRequest(struct zx_ctx* c, struct zx_demomed_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:ObjectID", sizeof("demomed:ObjectID")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->ObjectID;
+       se && se->g.tok == zx_demomed_ObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:ObjectID", sizeof("demomed:ObjectID")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -214,7 +218,7 @@ int zx_LEN_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_D
   int len = sizeof("<demomed:DeleteObjectResponse")-1 + 1 + sizeof("</demomed:DeleteObjectResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -222,10 +226,14 @@ int zx_LEN_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed_D
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = x->Count; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Count")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->Count;
+    se && se->g.tok == zx_demomed_Count_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Count")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -252,7 +260,7 @@ char* zx_ENC_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed
   ZX_OUT_TAG(p, "<demomed:DeleteObjectResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -264,10 +272,14 @@ char* zx_ENC_SO_demomed_DeleteObjectResponse(struct zx_ctx* c, struct zx_demomed
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = x->Count; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Count", sizeof("demomed:Count")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->Count;
+       se && se->g.tok == zx_demomed_Count_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Count", sizeof("demomed:Count")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -347,7 +359,7 @@ int zx_LEN_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_G
   int len = sizeof("<demomed:GetObjectListRequest")-1 + 1 + sizeof("</demomed:GetObjectListRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -355,7 +367,9 @@ int zx_LEN_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed_G
   int len = 0;
 #endif
   
-  for (se = &x->ObjectSearchParm->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectSearchParm->gg;
+       se && se->g.tok == zx_demomed_ObjectSearchParm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_ObjectSearchParm(c, (struct zx_demomed_ObjectSearchParm_s*)se);
 
 
@@ -383,7 +397,7 @@ char* zx_ENC_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed
   ZX_OUT_TAG(p, "<demomed:GetObjectListRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -395,7 +409,9 @@ char* zx_ENC_SO_demomed_GetObjectListRequest(struct zx_ctx* c, struct zx_demomed
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ObjectSearchParm->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectSearchParm->gg;
+       se && se->g.tok == zx_demomed_ObjectSearchParm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_ObjectSearchParm(c, (struct zx_demomed_ObjectSearchParm_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -476,7 +492,7 @@ int zx_LEN_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_
   int len = sizeof("<demomed:GetObjectListResponse")-1 + 1 + sizeof("</demomed:GetObjectListResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -484,9 +500,13 @@ int zx_LEN_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demomed_
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->ObjectInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectInfo->gg;
+       se && se->g.tok == zx_demomed_ObjectInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)se);
 
 
@@ -514,7 +534,7 @@ char* zx_ENC_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demome
   ZX_OUT_TAG(p, "<demomed:GetObjectListResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -526,9 +546,13 @@ char* zx_ENC_SO_demomed_GetObjectListResponse(struct zx_ctx* c, struct zx_demome
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->ObjectInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectInfo->gg;
+       se && se->g.tok == zx_demomed_ObjectInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -609,7 +633,7 @@ int zx_LEN_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetOb
   int len = sizeof("<demomed:GetObjectRequest")-1 + 1 + sizeof("</demomed:GetObjectRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -617,8 +641,10 @@ int zx_LEN_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_GetOb
   int len = 0;
 #endif
   
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:ObjectID")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->ObjectID;
+    se && se->g.tok == zx_demomed_ObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:ObjectID")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -645,7 +671,7 @@ char* zx_ENC_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_Get
   ZX_OUT_TAG(p, "<demomed:GetObjectRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -657,8 +683,10 @@ char* zx_ENC_SO_demomed_GetObjectRequest(struct zx_ctx* c, struct zx_demomed_Get
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:ObjectID", sizeof("demomed:ObjectID")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->ObjectID;
+       se && se->g.tok == zx_demomed_ObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:ObjectID", sizeof("demomed:ObjectID")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -738,7 +766,7 @@ int zx_LEN_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetO
   int len = sizeof("<demomed:GetObjectResponse")-1 + 1 + sizeof("</demomed:GetObjectResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -746,9 +774,13 @@ int zx_LEN_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_GetO
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->ObjectData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectData->gg;
+       se && se->g.tok == zx_demomed_ObjectData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)se);
 
 
@@ -776,7 +808,7 @@ char* zx_ENC_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_Ge
   ZX_OUT_TAG(p, "<demomed:GetObjectResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -788,9 +820,13 @@ char* zx_ENC_SO_demomed_GetObjectResponse(struct zx_ctx* c, struct zx_demomed_Ge
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->ObjectData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectData->gg;
+       se && se->g.tok == zx_demomed_ObjectData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -871,7 +907,7 @@ int zx_LEN_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x )
   int len = sizeof("<demomed:Object")-1 + 1 + sizeof("</demomed:Object>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->reqID, sizeof("reqID")-1, &pop_seen);
 
@@ -880,9 +916,13 @@ int zx_LEN_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ObjectInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectInfo->gg;
+       se && se->g.tok == zx_demomed_ObjectInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)se);
-  for (se = &x->ObjectData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectData->gg;
+       se && se->g.tok == zx_demomed_ObjectData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)se);
 
 
@@ -910,7 +950,7 @@ char* zx_ENC_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, 
   ZX_OUT_TAG(p, "<demomed:Object");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -923,9 +963,13 @@ char* zx_ENC_SO_demomed_Object(struct zx_ctx* c, struct zx_demomed_Object_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ObjectInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectInfo->gg;
+       se && se->g.tok == zx_demomed_ObjectInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_ObjectInfo(c, (struct zx_demomed_ObjectInfo_s*)se, p);
-  for (se = &x->ObjectData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectData->gg;
+       se && se->g.tok == zx_demomed_ObjectData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_ObjectData(c, (struct zx_demomed_ObjectData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1006,7 +1050,7 @@ int zx_LEN_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectData_
   int len = sizeof("<demomed:ObjectData")-1 + 1 + sizeof("</demomed:ObjectData>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->objectID, sizeof("objectID")-1, &pop_seen);
 
@@ -1041,7 +1085,7 @@ char* zx_ENC_SO_demomed_ObjectData(struct zx_ctx* c, struct zx_demomed_ObjectDat
   ZX_OUT_TAG(p, "<demomed:ObjectData");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1133,7 +1177,7 @@ int zx_LEN_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_
   int len = sizeof("<demomed:ObjectInfo")-1 + 1 + sizeof("</demomed:ObjectInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->objectID, sizeof("objectID")-1, &pop_seen);
 
@@ -1142,16 +1186,26 @@ int zx_LEN_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInfo_
   int len = 0;
 #endif
   
-  for (se = x->Dir; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Dir")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Name")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Type; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Type")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Created; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Created")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Comment; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Comment")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->Dir;
+    se && se->g.tok == zx_demomed_Dir_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Dir")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+    se && se->g.tok == zx_demomed_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Name")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Type;
+    se && se->g.tok == zx_demomed_Type_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Type")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Created;
+    se && se->g.tok == zx_demomed_Created_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Created")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comment;
+    se && se->g.tok == zx_demomed_Comment_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Comment")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1178,7 +1232,7 @@ char* zx_ENC_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInf
   ZX_OUT_TAG(p, "<demomed:ObjectInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1191,16 +1245,26 @@ char* zx_ENC_SO_demomed_ObjectInfo(struct zx_ctx* c, struct zx_demomed_ObjectInf
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Dir; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Dir", sizeof("demomed:Dir")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Name", sizeof("demomed:Name")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Type; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Type", sizeof("demomed:Type")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Created; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Created", sizeof("demomed:Created")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Comment; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Comment", sizeof("demomed:Comment")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->Dir;
+       se && se->g.tok == zx_demomed_Dir_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Dir", sizeof("demomed:Dir")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+       se && se->g.tok == zx_demomed_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Name", sizeof("demomed:Name")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Type;
+       se && se->g.tok == zx_demomed_Type_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Type", sizeof("demomed:Type")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Created;
+       se && se->g.tok == zx_demomed_Created_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Created", sizeof("demomed:Created")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comment;
+       se && se->g.tok == zx_demomed_Comment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Comment", sizeof("demomed:Comment")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1280,7 +1344,7 @@ int zx_LEN_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Objec
   int len = sizeof("<demomed:ObjectSearchParm")-1 + 1 + sizeof("</demomed:ObjectSearchParm>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1288,14 +1352,22 @@ int zx_LEN_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Objec
   int len = 0;
 #endif
   
-  for (se = x->Dir; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Dir")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Name")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Type; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Type")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->objectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:objectID")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->Dir;
+    se && se->g.tok == zx_demomed_Dir_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Dir")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+    se && se->g.tok == zx_demomed_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Name")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Type;
+    se && se->g.tok == zx_demomed_Type_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:Type")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->objectID;
+    se && se->g.tok == zx_demomed_objectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("demomed:objectID")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1322,7 +1394,7 @@ char* zx_ENC_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Obj
   ZX_OUT_TAG(p, "<demomed:ObjectSearchParm");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1334,14 +1406,22 @@ char* zx_ENC_SO_demomed_ObjectSearchParm(struct zx_ctx* c, struct zx_demomed_Obj
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Dir; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Dir", sizeof("demomed:Dir")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Name", sizeof("demomed:Name")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->Type; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Type", sizeof("demomed:Type")-1, zx_ns_tab+zx_demomed_NS);
-  for (se = x->objectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:objectID", sizeof("demomed:objectID")-1, zx_ns_tab+zx_demomed_NS);
+  for (se = x->Dir;
+       se && se->g.tok == zx_demomed_Dir_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Dir", sizeof("demomed:Dir")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+       se && se->g.tok == zx_demomed_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Name", sizeof("demomed:Name")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Type;
+       se && se->g.tok == zx_demomed_Type_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:Type", sizeof("demomed:Type")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->objectID;
+       se && se->g.tok == zx_demomed_objectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "demomed:objectID", sizeof("demomed:objectID")-1, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1421,7 +1501,7 @@ int zx_LEN_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Object
   int len = sizeof("<demomed:ObjectStoreInfo")-1 + 1 + sizeof("</demomed:ObjectStoreInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->objectID, sizeof("objectID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->storeRef, sizeof("storeRef")-1, &pop_seen);
@@ -1457,7 +1537,7 @@ char* zx_ENC_SO_demomed_ObjectStoreInfo(struct zx_ctx* c, struct zx_demomed_Obje
   ZX_OUT_TAG(p, "<demomed:ObjectStoreInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1550,7 +1630,7 @@ int zx_LEN_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_Sto
   int len = sizeof("<demomed:StoreObjectRequest")-1 + 1 + sizeof("</demomed:StoreObjectRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1558,7 +1638,9 @@ int zx_LEN_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_Sto
   int len = 0;
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_demomed_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_Object(c, (struct zx_demomed_Object_s*)se);
 
 
@@ -1586,7 +1668,7 @@ char* zx_ENC_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_S
   ZX_OUT_TAG(p, "<demomed:StoreObjectRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1598,7 +1680,9 @@ char* zx_ENC_SO_demomed_StoreObjectRequest(struct zx_ctx* c, struct zx_demomed_S
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_demomed_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_Object(c, (struct zx_demomed_Object_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1679,7 +1763,7 @@ int zx_LEN_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_St
   int len = sizeof("<demomed:StoreObjectResponse")-1 + 1 + sizeof("</demomed:StoreObjectResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1687,9 +1771,13 @@ int zx_LEN_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_St
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->ObjectStoreInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectStoreInfo->gg;
+       se && se->g.tok == zx_demomed_ObjectStoreInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_ObjectStoreInfo(c, (struct zx_demomed_ObjectStoreInfo_s*)se);
 
 
@@ -1717,7 +1805,7 @@ char* zx_ENC_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_
   ZX_OUT_TAG(p, "<demomed:StoreObjectResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_demomed_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_demomed_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1729,9 +1817,13 @@ char* zx_ENC_SO_demomed_StoreObjectResponse(struct zx_ctx* c, struct zx_demomed_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->ObjectStoreInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ObjectStoreInfo->gg;
+       se && se->g.tok == zx_demomed_ObjectStoreInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_ObjectStoreInfo(c, (struct zx_demomed_ObjectStoreInfo_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

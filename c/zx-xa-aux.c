@@ -64,7 +64,9 @@ void zx_FREE_xa_Action(struct zx_ctx* c, struct zx_xa_Action_s* x, int free_strs
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ActionMatch->gg; e; e = en) {
+  for (e = &x->ActionMatch->gg;
+       e && e->g.tok == zx_xa_ActionMatch_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_ActionMatch(c, (struct zx_xa_ActionMatch_s*)e, free_strs);
   }
@@ -104,7 +106,9 @@ void zx_DUP_STRS_xa_Action(struct zx_ctx* c, struct zx_xa_Action_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ActionMatch->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ActionMatch->gg;
+       se && se->g.tok == zx_xa_ActionMatch_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_ActionMatch(c, (struct zx_xa_ActionMatch_s*)se);
 
 }
@@ -125,7 +129,9 @@ struct zx_xa_Action_s* zx_DEEP_CLONE_xa_Action(struct zx_ctx* c, struct zx_xa_Ac
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ActionMatch->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ActionMatch->gg;
+       e && e->g.tok == zx_xa_ActionMatch_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_ActionMatch(c,(struct zx_xa_ActionMatch_s*)e,dup_strs);
   	  if (!enn)
   	      x->ActionMatch = (struct zx_xa_ActionMatch_s*)en;
@@ -156,7 +162,9 @@ int zx_WALK_SO_xa_Action(struct zx_ctx* c, struct zx_xa_Action_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->ActionMatch->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ActionMatch->gg;
+       e && e->g.tok == zx_xa_ActionMatch_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_ActionMatch(c, (struct zx_xa_ActionMatch_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -356,15 +364,21 @@ void zx_FREE_xa_ActionMatch(struct zx_ctx* c, struct zx_xa_ActionMatch_s* x, int
 
   zx_free_attr(c, x->MatchId, free_strs);
 
-  for (e = &x->AttributeValue->gg; e; e = en) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, free_strs);
   }
-  for (e = &x->ActionAttributeDesignator->gg; e; e = en) {
+  for (e = &x->ActionAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_ActionAttributeDesignator_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_ActionAttributeDesignator(c, (struct zx_xa_ActionAttributeDesignator_s*)e, free_strs);
   }
-  for (e = &x->AttributeSelector->gg; e; e = en) {
+  for (e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)e, free_strs);
   }
@@ -405,11 +419,17 @@ void zx_DUP_STRS_xa_ActionMatch(struct zx_ctx* c, struct zx_xa_ActionMatch_s* x)
 
   zx_dup_attr(c, x->MatchId);
 
-  for (se = &x->AttributeValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeValue->gg;
+       se && se->g.tok == zx_xa_AttributeValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)se);
-  for (se = &x->ActionAttributeDesignator->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ActionAttributeDesignator->gg;
+       se && se->g.tok == zx_xa_ActionAttributeDesignator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_ActionAttributeDesignator(c, (struct zx_xa_ActionAttributeDesignator_s*)se);
-  for (se = &x->AttributeSelector->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeSelector->gg;
+       se && se->g.tok == zx_xa_AttributeSelector_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)se);
 
 }
@@ -431,7 +451,9 @@ struct zx_xa_ActionMatch_s* zx_DEEP_CLONE_xa_ActionMatch(struct zx_ctx* c, struc
 
   x->MatchId = zx_clone_attr(c, x->MatchId);
 
-  for (enn = 0, e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeValue(c,(struct zx_xa_AttributeValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeValue = (struct zx_xa_AttributeValue_s*)en;
@@ -439,7 +461,9 @@ struct zx_xa_ActionMatch_s* zx_DEEP_CLONE_xa_ActionMatch(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ActionAttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ActionAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_ActionAttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_ActionAttributeDesignator(c,(struct zx_xa_ActionAttributeDesignator_s*)e,dup_strs);
   	  if (!enn)
   	      x->ActionAttributeDesignator = (struct zx_xa_ActionAttributeDesignator_s*)en;
@@ -447,7 +471,9 @@ struct zx_xa_ActionMatch_s* zx_DEEP_CLONE_xa_ActionMatch(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AttributeSelector->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeSelector(c,(struct zx_xa_AttributeSelector_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeSelector = (struct zx_xa_AttributeSelector_s*)en;
@@ -478,17 +504,23 @@ int zx_WALK_SO_xa_ActionMatch(struct zx_ctx* c, struct zx_xa_ActionMatch_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ActionAttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ActionAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_ActionAttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_ActionAttributeDesignator(c, (struct zx_xa_ActionAttributeDesignator_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AttributeSelector->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -545,7 +577,9 @@ void zx_FREE_xa_Actions(struct zx_ctx* c, struct zx_xa_Actions_s* x, int free_st
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Action->gg; e; e = en) {
+  for (e = &x->Action->gg;
+       e && e->g.tok == zx_xa_Action_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Action(c, (struct zx_xa_Action_s*)e, free_strs);
   }
@@ -585,7 +619,9 @@ void zx_DUP_STRS_xa_Actions(struct zx_ctx* c, struct zx_xa_Actions_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_xa_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Action(c, (struct zx_xa_Action_s*)se);
 
 }
@@ -606,7 +642,9 @@ struct zx_xa_Actions_s* zx_DEEP_CLONE_xa_Actions(struct zx_ctx* c, struct zx_xa_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Action->gg;
+       e && e->g.tok == zx_xa_Action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Action(c,(struct zx_xa_Action_s*)e,dup_strs);
   	  if (!enn)
   	      x->Action = (struct zx_xa_Action_s*)en;
@@ -637,7 +675,9 @@ int zx_WALK_SO_xa_Actions(struct zx_ctx* c, struct zx_xa_Actions_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Action->gg;
+       e && e->g.tok == zx_xa_Action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Action(c, (struct zx_xa_Action_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1242,7 +1282,9 @@ void zx_FREE_xa_CombinerParameter(struct zx_ctx* c, struct zx_xa_CombinerParamet
 
   zx_free_attr(c, x->ParameterName, free_strs);
 
-  for (e = &x->AttributeValue->gg; e; e = en) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, free_strs);
   }
@@ -1283,7 +1325,9 @@ void zx_DUP_STRS_xa_CombinerParameter(struct zx_ctx* c, struct zx_xa_CombinerPar
 
   zx_dup_attr(c, x->ParameterName);
 
-  for (se = &x->AttributeValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeValue->gg;
+       se && se->g.tok == zx_xa_AttributeValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)se);
 
 }
@@ -1305,7 +1349,9 @@ struct zx_xa_CombinerParameter_s* zx_DEEP_CLONE_xa_CombinerParameter(struct zx_c
 
   x->ParameterName = zx_clone_attr(c, x->ParameterName);
 
-  for (enn = 0, e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeValue(c,(struct zx_xa_AttributeValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeValue = (struct zx_xa_AttributeValue_s*)en;
@@ -1336,7 +1382,9 @@ int zx_WALK_SO_xa_CombinerParameter(struct zx_ctx* c, struct zx_xa_CombinerParam
   if (ret)
     return ret;
 
-  for (e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1393,7 +1441,9 @@ void zx_FREE_xa_CombinerParameters(struct zx_ctx* c, struct zx_xa_CombinerParame
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->CombinerParameter->gg; e; e = en) {
+  for (e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)e, free_strs);
   }
@@ -1433,7 +1483,9 @@ void zx_DUP_STRS_xa_CombinerParameters(struct zx_ctx* c, struct zx_xa_CombinerPa
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->CombinerParameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CombinerParameter->gg;
+       se && se->g.tok == zx_xa_CombinerParameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)se);
 
 }
@@ -1454,7 +1506,9 @@ struct zx_xa_CombinerParameters_s* zx_DEEP_CLONE_xa_CombinerParameters(struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->CombinerParameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_CombinerParameter(c,(struct zx_xa_CombinerParameter_s*)e,dup_strs);
   	  if (!enn)
   	      x->CombinerParameter = (struct zx_xa_CombinerParameter_s*)en;
@@ -1485,7 +1539,9 @@ int zx_WALK_SO_xa_CombinerParameters(struct zx_ctx* c, struct zx_xa_CombinerPara
   if (ret)
     return ret;
 
-  for (e = &x->CombinerParameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1678,7 +1734,9 @@ void zx_FREE_xa_Environment(struct zx_ctx* c, struct zx_xa_Environment_s* x, int
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->EnvironmentMatch->gg; e; e = en) {
+  for (e = &x->EnvironmentMatch->gg;
+       e && e->g.tok == zx_xa_EnvironmentMatch_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_EnvironmentMatch(c, (struct zx_xa_EnvironmentMatch_s*)e, free_strs);
   }
@@ -1718,7 +1776,9 @@ void zx_DUP_STRS_xa_Environment(struct zx_ctx* c, struct zx_xa_Environment_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->EnvironmentMatch->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EnvironmentMatch->gg;
+       se && se->g.tok == zx_xa_EnvironmentMatch_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_EnvironmentMatch(c, (struct zx_xa_EnvironmentMatch_s*)se);
 
 }
@@ -1739,7 +1799,9 @@ struct zx_xa_Environment_s* zx_DEEP_CLONE_xa_Environment(struct zx_ctx* c, struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->EnvironmentMatch->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EnvironmentMatch->gg;
+       e && e->g.tok == zx_xa_EnvironmentMatch_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_EnvironmentMatch(c,(struct zx_xa_EnvironmentMatch_s*)e,dup_strs);
   	  if (!enn)
   	      x->EnvironmentMatch = (struct zx_xa_EnvironmentMatch_s*)en;
@@ -1770,7 +1832,9 @@ int zx_WALK_SO_xa_Environment(struct zx_ctx* c, struct zx_xa_Environment_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->EnvironmentMatch->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EnvironmentMatch->gg;
+       e && e->g.tok == zx_xa_EnvironmentMatch_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_EnvironmentMatch(c, (struct zx_xa_EnvironmentMatch_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1970,15 +2034,21 @@ void zx_FREE_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_xa_EnvironmentMatch
 
   zx_free_attr(c, x->MatchId, free_strs);
 
-  for (e = &x->AttributeValue->gg; e; e = en) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, free_strs);
   }
-  for (e = &x->EnvironmentAttributeDesignator->gg; e; e = en) {
+  for (e = &x->EnvironmentAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_EnvironmentAttributeDesignator_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_EnvironmentAttributeDesignator(c, (struct zx_xa_EnvironmentAttributeDesignator_s*)e, free_strs);
   }
-  for (e = &x->AttributeSelector->gg; e; e = en) {
+  for (e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)e, free_strs);
   }
@@ -2019,11 +2089,17 @@ void zx_DUP_STRS_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_xa_EnvironmentM
 
   zx_dup_attr(c, x->MatchId);
 
-  for (se = &x->AttributeValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeValue->gg;
+       se && se->g.tok == zx_xa_AttributeValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)se);
-  for (se = &x->EnvironmentAttributeDesignator->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EnvironmentAttributeDesignator->gg;
+       se && se->g.tok == zx_xa_EnvironmentAttributeDesignator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_EnvironmentAttributeDesignator(c, (struct zx_xa_EnvironmentAttributeDesignator_s*)se);
-  for (se = &x->AttributeSelector->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeSelector->gg;
+       se && se->g.tok == zx_xa_AttributeSelector_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)se);
 
 }
@@ -2045,7 +2121,9 @@ struct zx_xa_EnvironmentMatch_s* zx_DEEP_CLONE_xa_EnvironmentMatch(struct zx_ctx
 
   x->MatchId = zx_clone_attr(c, x->MatchId);
 
-  for (enn = 0, e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeValue(c,(struct zx_xa_AttributeValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeValue = (struct zx_xa_AttributeValue_s*)en;
@@ -2053,7 +2131,9 @@ struct zx_xa_EnvironmentMatch_s* zx_DEEP_CLONE_xa_EnvironmentMatch(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EnvironmentAttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EnvironmentAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_EnvironmentAttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_EnvironmentAttributeDesignator(c,(struct zx_xa_EnvironmentAttributeDesignator_s*)e,dup_strs);
   	  if (!enn)
   	      x->EnvironmentAttributeDesignator = (struct zx_xa_EnvironmentAttributeDesignator_s*)en;
@@ -2061,7 +2141,9 @@ struct zx_xa_EnvironmentMatch_s* zx_DEEP_CLONE_xa_EnvironmentMatch(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AttributeSelector->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeSelector(c,(struct zx_xa_AttributeSelector_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeSelector = (struct zx_xa_AttributeSelector_s*)en;
@@ -2092,17 +2174,23 @@ int zx_WALK_SO_xa_EnvironmentMatch(struct zx_ctx* c, struct zx_xa_EnvironmentMat
   if (ret)
     return ret;
 
-  for (e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EnvironmentAttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EnvironmentAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_EnvironmentAttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_EnvironmentAttributeDesignator(c, (struct zx_xa_EnvironmentAttributeDesignator_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AttributeSelector->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2159,7 +2247,9 @@ void zx_FREE_xa_Environments(struct zx_ctx* c, struct zx_xa_Environments_s* x, i
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Environment->gg; e; e = en) {
+  for (e = &x->Environment->gg;
+       e && e->g.tok == zx_xa_Environment_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Environment(c, (struct zx_xa_Environment_s*)e, free_strs);
   }
@@ -2199,7 +2289,9 @@ void zx_DUP_STRS_xa_Environments(struct zx_ctx* c, struct zx_xa_Environments_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Environment->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Environment->gg;
+       se && se->g.tok == zx_xa_Environment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Environment(c, (struct zx_xa_Environment_s*)se);
 
 }
@@ -2220,7 +2312,9 @@ struct zx_xa_Environments_s* zx_DEEP_CLONE_xa_Environments(struct zx_ctx* c, str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Environment->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Environment->gg;
+       e && e->g.tok == zx_xa_Environment_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Environment(c,(struct zx_xa_Environment_s*)e,dup_strs);
   	  if (!enn)
   	      x->Environment = (struct zx_xa_Environment_s*)en;
@@ -2251,7 +2345,9 @@ int zx_WALK_SO_xa_Environments(struct zx_ctx* c, struct zx_xa_Environments_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->Environment->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Environment->gg;
+       e && e->g.tok == zx_xa_Environment_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Environment(c, (struct zx_xa_Environment_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2443,7 +2539,9 @@ void zx_FREE_xa_Obligation(struct zx_ctx* c, struct zx_xa_Obligation_s* x, int f
   zx_free_attr(c, x->FulfillOn, free_strs);
   zx_free_attr(c, x->ObligationId, free_strs);
 
-  for (e = &x->AttributeAssignment->gg; e; e = en) {
+  for (e = &x->AttributeAssignment->gg;
+       e && e->g.tok == zx_xa_AttributeAssignment_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeAssignment(c, (struct zx_xa_AttributeAssignment_s*)e, free_strs);
   }
@@ -2485,7 +2583,9 @@ void zx_DUP_STRS_xa_Obligation(struct zx_ctx* c, struct zx_xa_Obligation_s* x)
   zx_dup_attr(c, x->FulfillOn);
   zx_dup_attr(c, x->ObligationId);
 
-  for (se = &x->AttributeAssignment->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeAssignment->gg;
+       se && se->g.tok == zx_xa_AttributeAssignment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeAssignment(c, (struct zx_xa_AttributeAssignment_s*)se);
 
 }
@@ -2508,7 +2608,9 @@ struct zx_xa_Obligation_s* zx_DEEP_CLONE_xa_Obligation(struct zx_ctx* c, struct 
   x->FulfillOn = zx_clone_attr(c, x->FulfillOn);
   x->ObligationId = zx_clone_attr(c, x->ObligationId);
 
-  for (enn = 0, e = &x->AttributeAssignment->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeAssignment->gg;
+       e && e->g.tok == zx_xa_AttributeAssignment_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeAssignment(c,(struct zx_xa_AttributeAssignment_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeAssignment = (struct zx_xa_AttributeAssignment_s*)en;
@@ -2539,7 +2641,9 @@ int zx_WALK_SO_xa_Obligation(struct zx_ctx* c, struct zx_xa_Obligation_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->AttributeAssignment->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeAssignment->gg;
+       e && e->g.tok == zx_xa_AttributeAssignment_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeAssignment(c, (struct zx_xa_AttributeAssignment_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2596,7 +2700,9 @@ void zx_FREE_xa_Obligations(struct zx_ctx* c, struct zx_xa_Obligations_s* x, int
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Obligation->gg; e; e = en) {
+  for (e = &x->Obligation->gg;
+       e && e->g.tok == zx_xa_Obligation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Obligation(c, (struct zx_xa_Obligation_s*)e, free_strs);
   }
@@ -2636,7 +2742,9 @@ void zx_DUP_STRS_xa_Obligations(struct zx_ctx* c, struct zx_xa_Obligations_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Obligation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Obligation->gg;
+       se && se->g.tok == zx_xa_Obligation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Obligation(c, (struct zx_xa_Obligation_s*)se);
 
 }
@@ -2657,7 +2765,9 @@ struct zx_xa_Obligations_s* zx_DEEP_CLONE_xa_Obligations(struct zx_ctx* c, struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Obligation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Obligation->gg;
+       e && e->g.tok == zx_xa_Obligation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Obligation(c,(struct zx_xa_Obligation_s*)e,dup_strs);
   	  if (!enn)
   	      x->Obligation = (struct zx_xa_Obligation_s*)en;
@@ -2688,7 +2798,9 @@ int zx_WALK_SO_xa_Obligations(struct zx_ctx* c, struct zx_xa_Obligations_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->Obligation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Obligation->gg;
+       e && e->g.tok == zx_xa_Obligation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Obligation(c, (struct zx_xa_Obligation_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2749,31 +2861,45 @@ void zx_FREE_xa_Policy(struct zx_ctx* c, struct zx_xa_Policy_s* x, int free_strs
   zx_free_attr(c, x->Version, free_strs);
 
   zx_free_simple_elems(c, x->Description, free_strs);
-  for (e = &x->PolicyDefaults->gg; e; e = en) {
+  for (e = &x->PolicyDefaults->gg;
+       e && e->g.tok == zx_xa_PolicyDefaults_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_PolicyDefaults(c, (struct zx_xa_PolicyDefaults_s*)e, free_strs);
   }
-  for (e = &x->Target->gg; e; e = en) {
+  for (e = &x->Target->gg;
+       e && e->g.tok == zx_xa_Target_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Target(c, (struct zx_xa_Target_s*)e, free_strs);
   }
-  for (e = &x->CombinerParameters->gg; e; e = en) {
+  for (e = &x->CombinerParameters->gg;
+       e && e->g.tok == zx_xa_CombinerParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_CombinerParameters(c, (struct zx_xa_CombinerParameters_s*)e, free_strs);
   }
-  for (e = &x->RuleCombinerParameters->gg; e; e = en) {
+  for (e = &x->RuleCombinerParameters->gg;
+       e && e->g.tok == zx_xa_RuleCombinerParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_RuleCombinerParameters(c, (struct zx_xa_RuleCombinerParameters_s*)e, free_strs);
   }
-  for (e = &x->VariableDefinition->gg; e; e = en) {
+  for (e = &x->VariableDefinition->gg;
+       e && e->g.tok == zx_xa_VariableDefinition_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_VariableDefinition(c, (struct zx_xa_VariableDefinition_s*)e, free_strs);
   }
-  for (e = &x->Rule->gg; e; e = en) {
+  for (e = &x->Rule->gg;
+       e && e->g.tok == zx_xa_Rule_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Rule(c, (struct zx_xa_Rule_s*)e, free_strs);
   }
-  for (e = &x->Obligations->gg; e; e = en) {
+  for (e = &x->Obligations->gg;
+       e && e->g.tok == zx_xa_Obligations_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Obligations(c, (struct zx_xa_Obligations_s*)e, free_strs);
   }
@@ -2817,19 +2943,33 @@ void zx_DUP_STRS_xa_Policy(struct zx_ctx* c, struct zx_xa_Policy_s* x)
   zx_dup_attr(c, x->Version);
 
   zx_dup_strs_simple_elems(c, x->Description);
-  for (se = &x->PolicyDefaults->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyDefaults->gg;
+       se && se->g.tok == zx_xa_PolicyDefaults_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_PolicyDefaults(c, (struct zx_xa_PolicyDefaults_s*)se);
-  for (se = &x->Target->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Target->gg;
+       se && se->g.tok == zx_xa_Target_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Target(c, (struct zx_xa_Target_s*)se);
-  for (se = &x->CombinerParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CombinerParameters->gg;
+       se && se->g.tok == zx_xa_CombinerParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_CombinerParameters(c, (struct zx_xa_CombinerParameters_s*)se);
-  for (se = &x->RuleCombinerParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RuleCombinerParameters->gg;
+       se && se->g.tok == zx_xa_RuleCombinerParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_RuleCombinerParameters(c, (struct zx_xa_RuleCombinerParameters_s*)se);
-  for (se = &x->VariableDefinition->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VariableDefinition->gg;
+       se && se->g.tok == zx_xa_VariableDefinition_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_VariableDefinition(c, (struct zx_xa_VariableDefinition_s*)se);
-  for (se = &x->Rule->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Rule->gg;
+       se && se->g.tok == zx_xa_Rule_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Rule(c, (struct zx_xa_Rule_s*)se);
-  for (se = &x->Obligations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Obligations->gg;
+       se && se->g.tok == zx_xa_Obligations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Obligations(c, (struct zx_xa_Obligations_s*)se);
 
 }
@@ -2854,7 +2994,9 @@ struct zx_xa_Policy_s* zx_DEEP_CLONE_xa_Policy(struct zx_ctx* c, struct zx_xa_Po
   x->Version = zx_clone_attr(c, x->Version);
 
   x->Description = zx_deep_clone_simple_elems(c,x->Description, dup_strs);
-  for (enn = 0, e = &x->PolicyDefaults->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicyDefaults->gg;
+       e && e->g.tok == zx_xa_PolicyDefaults_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_PolicyDefaults(c,(struct zx_xa_PolicyDefaults_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicyDefaults = (struct zx_xa_PolicyDefaults_s*)en;
@@ -2862,7 +3004,9 @@ struct zx_xa_Policy_s* zx_DEEP_CLONE_xa_Policy(struct zx_ctx* c, struct zx_xa_Po
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Target->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Target->gg;
+       e && e->g.tok == zx_xa_Target_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Target(c,(struct zx_xa_Target_s*)e,dup_strs);
   	  if (!enn)
   	      x->Target = (struct zx_xa_Target_s*)en;
@@ -2870,7 +3014,9 @@ struct zx_xa_Policy_s* zx_DEEP_CLONE_xa_Policy(struct zx_ctx* c, struct zx_xa_Po
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CombinerParameters->gg;
+       e && e->g.tok == zx_xa_CombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_CombinerParameters(c,(struct zx_xa_CombinerParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->CombinerParameters = (struct zx_xa_CombinerParameters_s*)en;
@@ -2878,7 +3024,9 @@ struct zx_xa_Policy_s* zx_DEEP_CLONE_xa_Policy(struct zx_ctx* c, struct zx_xa_Po
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RuleCombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RuleCombinerParameters->gg;
+       e && e->g.tok == zx_xa_RuleCombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_RuleCombinerParameters(c,(struct zx_xa_RuleCombinerParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->RuleCombinerParameters = (struct zx_xa_RuleCombinerParameters_s*)en;
@@ -2886,7 +3034,9 @@ struct zx_xa_Policy_s* zx_DEEP_CLONE_xa_Policy(struct zx_ctx* c, struct zx_xa_Po
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->VariableDefinition->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->VariableDefinition->gg;
+       e && e->g.tok == zx_xa_VariableDefinition_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_VariableDefinition(c,(struct zx_xa_VariableDefinition_s*)e,dup_strs);
   	  if (!enn)
   	      x->VariableDefinition = (struct zx_xa_VariableDefinition_s*)en;
@@ -2894,7 +3044,9 @@ struct zx_xa_Policy_s* zx_DEEP_CLONE_xa_Policy(struct zx_ctx* c, struct zx_xa_Po
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Rule->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Rule->gg;
+       e && e->g.tok == zx_xa_Rule_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Rule(c,(struct zx_xa_Rule_s*)e,dup_strs);
   	  if (!enn)
   	      x->Rule = (struct zx_xa_Rule_s*)en;
@@ -2902,7 +3054,9 @@ struct zx_xa_Policy_s* zx_DEEP_CLONE_xa_Policy(struct zx_ctx* c, struct zx_xa_Po
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Obligations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Obligations->gg;
+       e && e->g.tok == zx_xa_Obligations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Obligations(c,(struct zx_xa_Obligations_s*)e,dup_strs);
   	  if (!enn)
   	      x->Obligations = (struct zx_xa_Obligations_s*)en;
@@ -2936,37 +3090,51 @@ int zx_WALK_SO_xa_Policy(struct zx_ctx* c, struct zx_xa_Policy_s* x, void* ctx, 
   ret = zx_walk_so_simple_elems(c, x->Description, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PolicyDefaults->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicyDefaults->gg;
+       e && e->g.tok == zx_xa_PolicyDefaults_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_PolicyDefaults(c, (struct zx_xa_PolicyDefaults_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Target->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Target->gg;
+       e && e->g.tok == zx_xa_Target_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Target(c, (struct zx_xa_Target_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CombinerParameters->gg;
+       e && e->g.tok == zx_xa_CombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_CombinerParameters(c, (struct zx_xa_CombinerParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RuleCombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RuleCombinerParameters->gg;
+       e && e->g.tok == zx_xa_RuleCombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_RuleCombinerParameters(c, (struct zx_xa_RuleCombinerParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->VariableDefinition->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->VariableDefinition->gg;
+       e && e->g.tok == zx_xa_VariableDefinition_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_VariableDefinition(c, (struct zx_xa_VariableDefinition_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Rule->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Rule->gg;
+       e && e->g.tok == zx_xa_Rule_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Rule(c, (struct zx_xa_Rule_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Obligations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Obligations->gg;
+       e && e->g.tok == zx_xa_Obligations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Obligations(c, (struct zx_xa_Obligations_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3024,7 +3192,9 @@ void zx_FREE_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_xa_PolicyCo
 
   zx_free_attr(c, x->PolicyIdRef, free_strs);
 
-  for (e = &x->CombinerParameter->gg; e; e = en) {
+  for (e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)e, free_strs);
   }
@@ -3065,7 +3235,9 @@ void zx_DUP_STRS_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_xa_Poli
 
   zx_dup_attr(c, x->PolicyIdRef);
 
-  for (se = &x->CombinerParameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CombinerParameter->gg;
+       se && se->g.tok == zx_xa_CombinerParameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)se);
 
 }
@@ -3087,7 +3259,9 @@ struct zx_xa_PolicyCombinerParameters_s* zx_DEEP_CLONE_xa_PolicyCombinerParamete
 
   x->PolicyIdRef = zx_clone_attr(c, x->PolicyIdRef);
 
-  for (enn = 0, e = &x->CombinerParameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_CombinerParameter(c,(struct zx_xa_CombinerParameter_s*)e,dup_strs);
   	  if (!enn)
   	      x->CombinerParameter = (struct zx_xa_CombinerParameter_s*)en;
@@ -3118,7 +3292,9 @@ int zx_WALK_SO_xa_PolicyCombinerParameters(struct zx_ctx* c, struct zx_xa_Policy
   if (ret)
     return ret;
 
-  for (e = &x->CombinerParameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3454,43 +3630,63 @@ void zx_FREE_xa_PolicySet(struct zx_ctx* c, struct zx_xa_PolicySet_s* x, int fre
   zx_free_attr(c, x->Version, free_strs);
 
   zx_free_simple_elems(c, x->Description, free_strs);
-  for (e = &x->PolicySetDefaults->gg; e; e = en) {
+  for (e = &x->PolicySetDefaults->gg;
+       e && e->g.tok == zx_xa_PolicySetDefaults_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_PolicySetDefaults(c, (struct zx_xa_PolicySetDefaults_s*)e, free_strs);
   }
-  for (e = &x->Target->gg; e; e = en) {
+  for (e = &x->Target->gg;
+       e && e->g.tok == zx_xa_Target_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Target(c, (struct zx_xa_Target_s*)e, free_strs);
   }
-  for (e = &x->PolicySet->gg; e; e = en) {
+  for (e = &x->PolicySet->gg;
+       e && e->g.tok == zx_xa_PolicySet_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)e, free_strs);
   }
-  for (e = &x->Policy->gg; e; e = en) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_xa_Policy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Policy(c, (struct zx_xa_Policy_s*)e, free_strs);
   }
-  for (e = &x->PolicySetIdReference->gg; e; e = en) {
+  for (e = &x->PolicySetIdReference->gg;
+       e && e->g.tok == zx_xa_PolicySetIdReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_PolicySetIdReference(c, (struct zx_xa_PolicySetIdReference_s*)e, free_strs);
   }
-  for (e = &x->PolicyIdReference->gg; e; e = en) {
+  for (e = &x->PolicyIdReference->gg;
+       e && e->g.tok == zx_xa_PolicyIdReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_PolicyIdReference(c, (struct zx_xa_PolicyIdReference_s*)e, free_strs);
   }
-  for (e = &x->CombinerParameters->gg; e; e = en) {
+  for (e = &x->CombinerParameters->gg;
+       e && e->g.tok == zx_xa_CombinerParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_CombinerParameters(c, (struct zx_xa_CombinerParameters_s*)e, free_strs);
   }
-  for (e = &x->PolicyCombinerParameters->gg; e; e = en) {
+  for (e = &x->PolicyCombinerParameters->gg;
+       e && e->g.tok == zx_xa_PolicyCombinerParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_PolicyCombinerParameters(c, (struct zx_xa_PolicyCombinerParameters_s*)e, free_strs);
   }
-  for (e = &x->PolicySetCombinerParameters->gg; e; e = en) {
+  for (e = &x->PolicySetCombinerParameters->gg;
+       e && e->g.tok == zx_xa_PolicySetCombinerParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_PolicySetCombinerParameters(c, (struct zx_xa_PolicySetCombinerParameters_s*)e, free_strs);
   }
-  for (e = &x->Obligations->gg; e; e = en) {
+  for (e = &x->Obligations->gg;
+       e && e->g.tok == zx_xa_Obligations_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Obligations(c, (struct zx_xa_Obligations_s*)e, free_strs);
   }
@@ -3534,25 +3730,45 @@ void zx_DUP_STRS_xa_PolicySet(struct zx_ctx* c, struct zx_xa_PolicySet_s* x)
   zx_dup_attr(c, x->Version);
 
   zx_dup_strs_simple_elems(c, x->Description);
-  for (se = &x->PolicySetDefaults->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySetDefaults->gg;
+       se && se->g.tok == zx_xa_PolicySetDefaults_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_PolicySetDefaults(c, (struct zx_xa_PolicySetDefaults_s*)se);
-  for (se = &x->Target->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Target->gg;
+       se && se->g.tok == zx_xa_Target_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Target(c, (struct zx_xa_Target_s*)se);
-  for (se = &x->PolicySet->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySet->gg;
+       se && se->g.tok == zx_xa_PolicySet_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)se);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_xa_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Policy(c, (struct zx_xa_Policy_s*)se);
-  for (se = &x->PolicySetIdReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySetIdReference->gg;
+       se && se->g.tok == zx_xa_PolicySetIdReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_PolicySetIdReference(c, (struct zx_xa_PolicySetIdReference_s*)se);
-  for (se = &x->PolicyIdReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyIdReference->gg;
+       se && se->g.tok == zx_xa_PolicyIdReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_PolicyIdReference(c, (struct zx_xa_PolicyIdReference_s*)se);
-  for (se = &x->CombinerParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CombinerParameters->gg;
+       se && se->g.tok == zx_xa_CombinerParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_CombinerParameters(c, (struct zx_xa_CombinerParameters_s*)se);
-  for (se = &x->PolicyCombinerParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyCombinerParameters->gg;
+       se && se->g.tok == zx_xa_PolicyCombinerParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_PolicyCombinerParameters(c, (struct zx_xa_PolicyCombinerParameters_s*)se);
-  for (se = &x->PolicySetCombinerParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySetCombinerParameters->gg;
+       se && se->g.tok == zx_xa_PolicySetCombinerParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_PolicySetCombinerParameters(c, (struct zx_xa_PolicySetCombinerParameters_s*)se);
-  for (se = &x->Obligations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Obligations->gg;
+       se && se->g.tok == zx_xa_Obligations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Obligations(c, (struct zx_xa_Obligations_s*)se);
 
 }
@@ -3577,7 +3793,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   x->Version = zx_clone_attr(c, x->Version);
 
   x->Description = zx_deep_clone_simple_elems(c,x->Description, dup_strs);
-  for (enn = 0, e = &x->PolicySetDefaults->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicySetDefaults->gg;
+       e && e->g.tok == zx_xa_PolicySetDefaults_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_PolicySetDefaults(c,(struct zx_xa_PolicySetDefaults_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicySetDefaults = (struct zx_xa_PolicySetDefaults_s*)en;
@@ -3585,7 +3803,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Target->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Target->gg;
+       e && e->g.tok == zx_xa_Target_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Target(c,(struct zx_xa_Target_s*)e,dup_strs);
   	  if (!enn)
   	      x->Target = (struct zx_xa_Target_s*)en;
@@ -3593,7 +3813,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicySet->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicySet->gg;
+       e && e->g.tok == zx_xa_PolicySet_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_PolicySet(c,(struct zx_xa_PolicySet_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicySet = (struct zx_xa_PolicySet_s*)en;
@@ -3601,7 +3823,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Policy->gg;
+       e && e->g.tok == zx_xa_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Policy(c,(struct zx_xa_Policy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Policy = (struct zx_xa_Policy_s*)en;
@@ -3609,7 +3833,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicySetIdReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicySetIdReference->gg;
+       e && e->g.tok == zx_xa_PolicySetIdReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_PolicySetIdReference(c,(struct zx_xa_PolicySetIdReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicySetIdReference = (struct zx_xa_PolicySetIdReference_s*)en;
@@ -3617,7 +3843,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicyIdReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicyIdReference->gg;
+       e && e->g.tok == zx_xa_PolicyIdReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_PolicyIdReference(c,(struct zx_xa_PolicyIdReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicyIdReference = (struct zx_xa_PolicyIdReference_s*)en;
@@ -3625,7 +3853,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CombinerParameters->gg;
+       e && e->g.tok == zx_xa_CombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_CombinerParameters(c,(struct zx_xa_CombinerParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->CombinerParameters = (struct zx_xa_CombinerParameters_s*)en;
@@ -3633,7 +3863,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicyCombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicyCombinerParameters->gg;
+       e && e->g.tok == zx_xa_PolicyCombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_PolicyCombinerParameters(c,(struct zx_xa_PolicyCombinerParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicyCombinerParameters = (struct zx_xa_PolicyCombinerParameters_s*)en;
@@ -3641,7 +3873,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicySetCombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicySetCombinerParameters->gg;
+       e && e->g.tok == zx_xa_PolicySetCombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_PolicySetCombinerParameters(c,(struct zx_xa_PolicySetCombinerParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicySetCombinerParameters = (struct zx_xa_PolicySetCombinerParameters_s*)en;
@@ -3649,7 +3883,9 @@ struct zx_xa_PolicySet_s* zx_DEEP_CLONE_xa_PolicySet(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Obligations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Obligations->gg;
+       e && e->g.tok == zx_xa_Obligations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Obligations(c,(struct zx_xa_Obligations_s*)e,dup_strs);
   	  if (!enn)
   	      x->Obligations = (struct zx_xa_Obligations_s*)en;
@@ -3683,52 +3919,72 @@ int zx_WALK_SO_xa_PolicySet(struct zx_ctx* c, struct zx_xa_PolicySet_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->Description, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PolicySetDefaults->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicySetDefaults->gg;
+       e && e->g.tok == zx_xa_PolicySetDefaults_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_PolicySetDefaults(c, (struct zx_xa_PolicySetDefaults_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Target->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Target->gg;
+       e && e->g.tok == zx_xa_Target_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Target(c, (struct zx_xa_Target_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicySet->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicySet->gg;
+       e && e->g.tok == zx_xa_PolicySet_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_xa_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Policy(c, (struct zx_xa_Policy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicySetIdReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicySetIdReference->gg;
+       e && e->g.tok == zx_xa_PolicySetIdReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_PolicySetIdReference(c, (struct zx_xa_PolicySetIdReference_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicyIdReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicyIdReference->gg;
+       e && e->g.tok == zx_xa_PolicyIdReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_PolicyIdReference(c, (struct zx_xa_PolicyIdReference_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CombinerParameters->gg;
+       e && e->g.tok == zx_xa_CombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_CombinerParameters(c, (struct zx_xa_CombinerParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicyCombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicyCombinerParameters->gg;
+       e && e->g.tok == zx_xa_PolicyCombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_PolicyCombinerParameters(c, (struct zx_xa_PolicyCombinerParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicySetCombinerParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicySetCombinerParameters->gg;
+       e && e->g.tok == zx_xa_PolicySetCombinerParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_PolicySetCombinerParameters(c, (struct zx_xa_PolicySetCombinerParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Obligations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Obligations->gg;
+       e && e->g.tok == zx_xa_Obligations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Obligations(c, (struct zx_xa_Obligations_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3786,7 +4042,9 @@ void zx_FREE_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_xa_Polic
 
   zx_free_attr(c, x->PolicySetIdRef, free_strs);
 
-  for (e = &x->CombinerParameter->gg; e; e = en) {
+  for (e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)e, free_strs);
   }
@@ -3827,7 +4085,9 @@ void zx_DUP_STRS_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_xa_P
 
   zx_dup_attr(c, x->PolicySetIdRef);
 
-  for (se = &x->CombinerParameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CombinerParameter->gg;
+       se && se->g.tok == zx_xa_CombinerParameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)se);
 
 }
@@ -3849,7 +4109,9 @@ struct zx_xa_PolicySetCombinerParameters_s* zx_DEEP_CLONE_xa_PolicySetCombinerPa
 
   x->PolicySetIdRef = zx_clone_attr(c, x->PolicySetIdRef);
 
-  for (enn = 0, e = &x->CombinerParameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_CombinerParameter(c,(struct zx_xa_CombinerParameter_s*)e,dup_strs);
   	  if (!enn)
   	      x->CombinerParameter = (struct zx_xa_CombinerParameter_s*)en;
@@ -3880,7 +4142,9 @@ int zx_WALK_SO_xa_PolicySetCombinerParameters(struct zx_ctx* c, struct zx_xa_Pol
   if (ret)
     return ret;
 
-  for (e = &x->CombinerParameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4212,7 +4476,9 @@ void zx_FREE_xa_Resource(struct zx_ctx* c, struct zx_xa_Resource_s* x, int free_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ResourceMatch->gg; e; e = en) {
+  for (e = &x->ResourceMatch->gg;
+       e && e->g.tok == zx_xa_ResourceMatch_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_ResourceMatch(c, (struct zx_xa_ResourceMatch_s*)e, free_strs);
   }
@@ -4252,7 +4518,9 @@ void zx_DUP_STRS_xa_Resource(struct zx_ctx* c, struct zx_xa_Resource_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ResourceMatch->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceMatch->gg;
+       se && se->g.tok == zx_xa_ResourceMatch_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_ResourceMatch(c, (struct zx_xa_ResourceMatch_s*)se);
 
 }
@@ -4273,7 +4541,9 @@ struct zx_xa_Resource_s* zx_DEEP_CLONE_xa_Resource(struct zx_ctx* c, struct zx_x
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ResourceMatch->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceMatch->gg;
+       e && e->g.tok == zx_xa_ResourceMatch_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_ResourceMatch(c,(struct zx_xa_ResourceMatch_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceMatch = (struct zx_xa_ResourceMatch_s*)en;
@@ -4304,7 +4574,9 @@ int zx_WALK_SO_xa_Resource(struct zx_ctx* c, struct zx_xa_Resource_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->ResourceMatch->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceMatch->gg;
+       e && e->g.tok == zx_xa_ResourceMatch_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_ResourceMatch(c, (struct zx_xa_ResourceMatch_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4504,15 +4776,21 @@ void zx_FREE_xa_ResourceMatch(struct zx_ctx* c, struct zx_xa_ResourceMatch_s* x,
 
   zx_free_attr(c, x->MatchId, free_strs);
 
-  for (e = &x->AttributeValue->gg; e; e = en) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, free_strs);
   }
-  for (e = &x->ResourceAttributeDesignator->gg; e; e = en) {
+  for (e = &x->ResourceAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_ResourceAttributeDesignator_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_ResourceAttributeDesignator(c, (struct zx_xa_ResourceAttributeDesignator_s*)e, free_strs);
   }
-  for (e = &x->AttributeSelector->gg; e; e = en) {
+  for (e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)e, free_strs);
   }
@@ -4553,11 +4831,17 @@ void zx_DUP_STRS_xa_ResourceMatch(struct zx_ctx* c, struct zx_xa_ResourceMatch_s
 
   zx_dup_attr(c, x->MatchId);
 
-  for (se = &x->AttributeValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeValue->gg;
+       se && se->g.tok == zx_xa_AttributeValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)se);
-  for (se = &x->ResourceAttributeDesignator->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceAttributeDesignator->gg;
+       se && se->g.tok == zx_xa_ResourceAttributeDesignator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_ResourceAttributeDesignator(c, (struct zx_xa_ResourceAttributeDesignator_s*)se);
-  for (se = &x->AttributeSelector->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeSelector->gg;
+       se && se->g.tok == zx_xa_AttributeSelector_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)se);
 
 }
@@ -4579,7 +4863,9 @@ struct zx_xa_ResourceMatch_s* zx_DEEP_CLONE_xa_ResourceMatch(struct zx_ctx* c, s
 
   x->MatchId = zx_clone_attr(c, x->MatchId);
 
-  for (enn = 0, e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeValue(c,(struct zx_xa_AttributeValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeValue = (struct zx_xa_AttributeValue_s*)en;
@@ -4587,7 +4873,9 @@ struct zx_xa_ResourceMatch_s* zx_DEEP_CLONE_xa_ResourceMatch(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ResourceAttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_ResourceAttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_ResourceAttributeDesignator(c,(struct zx_xa_ResourceAttributeDesignator_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceAttributeDesignator = (struct zx_xa_ResourceAttributeDesignator_s*)en;
@@ -4595,7 +4883,9 @@ struct zx_xa_ResourceMatch_s* zx_DEEP_CLONE_xa_ResourceMatch(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AttributeSelector->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeSelector(c,(struct zx_xa_AttributeSelector_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeSelector = (struct zx_xa_AttributeSelector_s*)en;
@@ -4626,17 +4916,23 @@ int zx_WALK_SO_xa_ResourceMatch(struct zx_ctx* c, struct zx_xa_ResourceMatch_s* 
   if (ret)
     return ret;
 
-  for (e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ResourceAttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_ResourceAttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_ResourceAttributeDesignator(c, (struct zx_xa_ResourceAttributeDesignator_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AttributeSelector->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4693,7 +4989,9 @@ void zx_FREE_xa_Resources(struct zx_ctx* c, struct zx_xa_Resources_s* x, int fre
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Resource->gg; e; e = en) {
+  for (e = &x->Resource->gg;
+       e && e->g.tok == zx_xa_Resource_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Resource(c, (struct zx_xa_Resource_s*)e, free_strs);
   }
@@ -4733,7 +5031,9 @@ void zx_DUP_STRS_xa_Resources(struct zx_ctx* c, struct zx_xa_Resources_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Resource->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Resource->gg;
+       se && se->g.tok == zx_xa_Resource_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Resource(c, (struct zx_xa_Resource_s*)se);
 
 }
@@ -4754,7 +5054,9 @@ struct zx_xa_Resources_s* zx_DEEP_CLONE_xa_Resources(struct zx_ctx* c, struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Resource->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Resource->gg;
+       e && e->g.tok == zx_xa_Resource_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Resource(c,(struct zx_xa_Resource_s*)e,dup_strs);
   	  if (!enn)
   	      x->Resource = (struct zx_xa_Resource_s*)en;
@@ -4785,7 +5087,9 @@ int zx_WALK_SO_xa_Resources(struct zx_ctx* c, struct zx_xa_Resources_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->Resource->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Resource->gg;
+       e && e->g.tok == zx_xa_Resource_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Resource(c, (struct zx_xa_Resource_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4845,11 +5149,15 @@ void zx_FREE_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s* x, int free_strs)
   zx_free_attr(c, x->RuleId, free_strs);
 
   zx_free_simple_elems(c, x->Description, free_strs);
-  for (e = &x->Target->gg; e; e = en) {
+  for (e = &x->Target->gg;
+       e && e->g.tok == zx_xa_Target_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Target(c, (struct zx_xa_Target_s*)e, free_strs);
   }
-  for (e = &x->Condition->gg; e; e = en) {
+  for (e = &x->Condition->gg;
+       e && e->g.tok == zx_xa_Condition_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Condition(c, (struct zx_xa_Condition_s*)e, free_strs);
   }
@@ -4892,9 +5200,13 @@ void zx_DUP_STRS_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s* x)
   zx_dup_attr(c, x->RuleId);
 
   zx_dup_strs_simple_elems(c, x->Description);
-  for (se = &x->Target->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Target->gg;
+       se && se->g.tok == zx_xa_Target_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Target(c, (struct zx_xa_Target_s*)se);
-  for (se = &x->Condition->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Condition->gg;
+       se && se->g.tok == zx_xa_Condition_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Condition(c, (struct zx_xa_Condition_s*)se);
 
 }
@@ -4918,7 +5230,9 @@ struct zx_xa_Rule_s* zx_DEEP_CLONE_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s
   x->RuleId = zx_clone_attr(c, x->RuleId);
 
   x->Description = zx_deep_clone_simple_elems(c,x->Description, dup_strs);
-  for (enn = 0, e = &x->Target->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Target->gg;
+       e && e->g.tok == zx_xa_Target_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Target(c,(struct zx_xa_Target_s*)e,dup_strs);
   	  if (!enn)
   	      x->Target = (struct zx_xa_Target_s*)en;
@@ -4926,7 +5240,9 @@ struct zx_xa_Rule_s* zx_DEEP_CLONE_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Condition->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Condition->gg;
+       e && e->g.tok == zx_xa_Condition_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Condition(c,(struct zx_xa_Condition_s*)e,dup_strs);
   	  if (!enn)
   	      x->Condition = (struct zx_xa_Condition_s*)en;
@@ -4960,12 +5276,16 @@ int zx_WALK_SO_xa_Rule(struct zx_ctx* c, struct zx_xa_Rule_s* x, void* ctx, int 
   ret = zx_walk_so_simple_elems(c, x->Description, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Target->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Target->gg;
+       e && e->g.tok == zx_xa_Target_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Target(c, (struct zx_xa_Target_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Condition->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Condition->gg;
+       e && e->g.tok == zx_xa_Condition_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Condition(c, (struct zx_xa_Condition_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5023,7 +5343,9 @@ void zx_FREE_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_xa_RuleCombin
 
   zx_free_attr(c, x->RuleIdRef, free_strs);
 
-  for (e = &x->CombinerParameter->gg; e; e = en) {
+  for (e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)e, free_strs);
   }
@@ -5064,7 +5386,9 @@ void zx_DUP_STRS_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_xa_RuleCo
 
   zx_dup_attr(c, x->RuleIdRef);
 
-  for (se = &x->CombinerParameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CombinerParameter->gg;
+       se && se->g.tok == zx_xa_CombinerParameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)se);
 
 }
@@ -5086,7 +5410,9 @@ struct zx_xa_RuleCombinerParameters_s* zx_DEEP_CLONE_xa_RuleCombinerParameters(s
 
   x->RuleIdRef = zx_clone_attr(c, x->RuleIdRef);
 
-  for (enn = 0, e = &x->CombinerParameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_CombinerParameter(c,(struct zx_xa_CombinerParameter_s*)e,dup_strs);
   	  if (!enn)
   	      x->CombinerParameter = (struct zx_xa_CombinerParameter_s*)en;
@@ -5117,7 +5443,9 @@ int zx_WALK_SO_xa_RuleCombinerParameters(struct zx_ctx* c, struct zx_xa_RuleComb
   if (ret)
     return ret;
 
-  for (e = &x->CombinerParameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CombinerParameter->gg;
+       e && e->g.tok == zx_xa_CombinerParameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_CombinerParameter(c, (struct zx_xa_CombinerParameter_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5174,7 +5502,9 @@ void zx_FREE_xa_Subject(struct zx_ctx* c, struct zx_xa_Subject_s* x, int free_st
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SubjectMatch->gg; e; e = en) {
+  for (e = &x->SubjectMatch->gg;
+       e && e->g.tok == zx_xa_SubjectMatch_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_SubjectMatch(c, (struct zx_xa_SubjectMatch_s*)e, free_strs);
   }
@@ -5214,7 +5544,9 @@ void zx_DUP_STRS_xa_Subject(struct zx_ctx* c, struct zx_xa_Subject_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SubjectMatch->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubjectMatch->gg;
+       se && se->g.tok == zx_xa_SubjectMatch_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_SubjectMatch(c, (struct zx_xa_SubjectMatch_s*)se);
 
 }
@@ -5235,7 +5567,9 @@ struct zx_xa_Subject_s* zx_DEEP_CLONE_xa_Subject(struct zx_ctx* c, struct zx_xa_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SubjectMatch->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SubjectMatch->gg;
+       e && e->g.tok == zx_xa_SubjectMatch_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_SubjectMatch(c,(struct zx_xa_SubjectMatch_s*)e,dup_strs);
   	  if (!enn)
   	      x->SubjectMatch = (struct zx_xa_SubjectMatch_s*)en;
@@ -5266,7 +5600,9 @@ int zx_WALK_SO_xa_Subject(struct zx_ctx* c, struct zx_xa_Subject_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->SubjectMatch->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SubjectMatch->gg;
+       e && e->g.tok == zx_xa_SubjectMatch_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_SubjectMatch(c, (struct zx_xa_SubjectMatch_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5469,15 +5805,21 @@ void zx_FREE_xa_SubjectMatch(struct zx_ctx* c, struct zx_xa_SubjectMatch_s* x, i
 
   zx_free_attr(c, x->MatchId, free_strs);
 
-  for (e = &x->AttributeValue->gg; e; e = en) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, free_strs);
   }
-  for (e = &x->SubjectAttributeDesignator->gg; e; e = en) {
+  for (e = &x->SubjectAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_SubjectAttributeDesignator_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_SubjectAttributeDesignator(c, (struct zx_xa_SubjectAttributeDesignator_s*)e, free_strs);
   }
-  for (e = &x->AttributeSelector->gg; e; e = en) {
+  for (e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)e, free_strs);
   }
@@ -5518,11 +5860,17 @@ void zx_DUP_STRS_xa_SubjectMatch(struct zx_ctx* c, struct zx_xa_SubjectMatch_s* 
 
   zx_dup_attr(c, x->MatchId);
 
-  for (se = &x->AttributeValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeValue->gg;
+       se && se->g.tok == zx_xa_AttributeValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)se);
-  for (se = &x->SubjectAttributeDesignator->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubjectAttributeDesignator->gg;
+       se && se->g.tok == zx_xa_SubjectAttributeDesignator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_SubjectAttributeDesignator(c, (struct zx_xa_SubjectAttributeDesignator_s*)se);
-  for (se = &x->AttributeSelector->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeSelector->gg;
+       se && se->g.tok == zx_xa_AttributeSelector_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)se);
 
 }
@@ -5544,7 +5892,9 @@ struct zx_xa_SubjectMatch_s* zx_DEEP_CLONE_xa_SubjectMatch(struct zx_ctx* c, str
 
   x->MatchId = zx_clone_attr(c, x->MatchId);
 
-  for (enn = 0, e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeValue(c,(struct zx_xa_AttributeValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeValue = (struct zx_xa_AttributeValue_s*)en;
@@ -5552,7 +5902,9 @@ struct zx_xa_SubjectMatch_s* zx_DEEP_CLONE_xa_SubjectMatch(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SubjectAttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SubjectAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_SubjectAttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_SubjectAttributeDesignator(c,(struct zx_xa_SubjectAttributeDesignator_s*)e,dup_strs);
   	  if (!enn)
   	      x->SubjectAttributeDesignator = (struct zx_xa_SubjectAttributeDesignator_s*)en;
@@ -5560,7 +5912,9 @@ struct zx_xa_SubjectMatch_s* zx_DEEP_CLONE_xa_SubjectMatch(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AttributeSelector->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_AttributeSelector(c,(struct zx_xa_AttributeSelector_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeSelector = (struct zx_xa_AttributeSelector_s*)en;
@@ -5591,17 +5945,23 @@ int zx_WALK_SO_xa_SubjectMatch(struct zx_ctx* c, struct zx_xa_SubjectMatch_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->AttributeValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeValue->gg;
+       e && e->g.tok == zx_xa_AttributeValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeValue(c, (struct zx_xa_AttributeValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SubjectAttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SubjectAttributeDesignator->gg;
+       e && e->g.tok == zx_xa_SubjectAttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_SubjectAttributeDesignator(c, (struct zx_xa_SubjectAttributeDesignator_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AttributeSelector->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeSelector->gg;
+       e && e->g.tok == zx_xa_AttributeSelector_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_AttributeSelector(c, (struct zx_xa_AttributeSelector_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5658,7 +6018,9 @@ void zx_FREE_xa_Subjects(struct zx_ctx* c, struct zx_xa_Subjects_s* x, int free_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Subject->gg; e; e = en) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_xa_Subject_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Subject(c, (struct zx_xa_Subject_s*)e, free_strs);
   }
@@ -5698,7 +6060,9 @@ void zx_DUP_STRS_xa_Subjects(struct zx_ctx* c, struct zx_xa_Subjects_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Subject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subject->gg;
+       se && se->g.tok == zx_xa_Subject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Subject(c, (struct zx_xa_Subject_s*)se);
 
 }
@@ -5719,7 +6083,9 @@ struct zx_xa_Subjects_s* zx_DEEP_CLONE_xa_Subjects(struct zx_ctx* c, struct zx_x
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subject->gg;
+       e && e->g.tok == zx_xa_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Subject(c,(struct zx_xa_Subject_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subject = (struct zx_xa_Subject_s*)en;
@@ -5750,7 +6116,9 @@ int zx_WALK_SO_xa_Subjects(struct zx_ctx* c, struct zx_xa_Subjects_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_xa_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Subject(c, (struct zx_xa_Subject_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5807,19 +6175,27 @@ void zx_FREE_xa_Target(struct zx_ctx* c, struct zx_xa_Target_s* x, int free_strs
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Subjects->gg; e; e = en) {
+  for (e = &x->Subjects->gg;
+       e && e->g.tok == zx_xa_Subjects_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Subjects(c, (struct zx_xa_Subjects_s*)e, free_strs);
   }
-  for (e = &x->Resources->gg; e; e = en) {
+  for (e = &x->Resources->gg;
+       e && e->g.tok == zx_xa_Resources_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Resources(c, (struct zx_xa_Resources_s*)e, free_strs);
   }
-  for (e = &x->Actions->gg; e; e = en) {
+  for (e = &x->Actions->gg;
+       e && e->g.tok == zx_xa_Actions_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Actions(c, (struct zx_xa_Actions_s*)e, free_strs);
   }
-  for (e = &x->Environments->gg; e; e = en) {
+  for (e = &x->Environments->gg;
+       e && e->g.tok == zx_xa_Environments_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Environments(c, (struct zx_xa_Environments_s*)e, free_strs);
   }
@@ -5859,13 +6235,21 @@ void zx_DUP_STRS_xa_Target(struct zx_ctx* c, struct zx_xa_Target_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Subjects->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subjects->gg;
+       se && se->g.tok == zx_xa_Subjects_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Subjects(c, (struct zx_xa_Subjects_s*)se);
-  for (se = &x->Resources->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Resources->gg;
+       se && se->g.tok == zx_xa_Resources_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Resources(c, (struct zx_xa_Resources_s*)se);
-  for (se = &x->Actions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Actions->gg;
+       se && se->g.tok == zx_xa_Actions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Actions(c, (struct zx_xa_Actions_s*)se);
-  for (se = &x->Environments->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Environments->gg;
+       se && se->g.tok == zx_xa_Environments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Environments(c, (struct zx_xa_Environments_s*)se);
 
 }
@@ -5886,7 +6270,9 @@ struct zx_xa_Target_s* zx_DEEP_CLONE_xa_Target(struct zx_ctx* c, struct zx_xa_Ta
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Subjects->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subjects->gg;
+       e && e->g.tok == zx_xa_Subjects_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Subjects(c,(struct zx_xa_Subjects_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subjects = (struct zx_xa_Subjects_s*)en;
@@ -5894,7 +6280,9 @@ struct zx_xa_Target_s* zx_DEEP_CLONE_xa_Target(struct zx_ctx* c, struct zx_xa_Ta
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Resources->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Resources->gg;
+       e && e->g.tok == zx_xa_Resources_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Resources(c,(struct zx_xa_Resources_s*)e,dup_strs);
   	  if (!enn)
   	      x->Resources = (struct zx_xa_Resources_s*)en;
@@ -5902,7 +6290,9 @@ struct zx_xa_Target_s* zx_DEEP_CLONE_xa_Target(struct zx_ctx* c, struct zx_xa_Ta
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Actions->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Actions->gg;
+       e && e->g.tok == zx_xa_Actions_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Actions(c,(struct zx_xa_Actions_s*)e,dup_strs);
   	  if (!enn)
   	      x->Actions = (struct zx_xa_Actions_s*)en;
@@ -5910,7 +6300,9 @@ struct zx_xa_Target_s* zx_DEEP_CLONE_xa_Target(struct zx_ctx* c, struct zx_xa_Ta
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Environments->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Environments->gg;
+       e && e->g.tok == zx_xa_Environments_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Environments(c,(struct zx_xa_Environments_s*)e,dup_strs);
   	  if (!enn)
   	      x->Environments = (struct zx_xa_Environments_s*)en;
@@ -5941,22 +6333,30 @@ int zx_WALK_SO_xa_Target(struct zx_ctx* c, struct zx_xa_Target_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->Subjects->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subjects->gg;
+       e && e->g.tok == zx_xa_Subjects_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Subjects(c, (struct zx_xa_Subjects_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Resources->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Resources->gg;
+       e && e->g.tok == zx_xa_Resources_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Resources(c, (struct zx_xa_Resources_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Actions->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Actions->gg;
+       e && e->g.tok == zx_xa_Actions_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Actions(c, (struct zx_xa_Actions_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Environments->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Environments->gg;
+       e && e->g.tok == zx_xa_Environments_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Environments(c, (struct zx_xa_Environments_s*)e, ctx, callback);
     if (ret)
       return ret;

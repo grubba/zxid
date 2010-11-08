@@ -887,16 +887,16 @@ static char* zxid_simple_idp_show_an(zxid_conf* cf, zxid_cgi* cgi, int* res_len,
   r = zxid_decode_redir_or_post(cf, cgi, &sess, 0x2);
   if (r) {
     issuer = zxid_extract_issuer(cf, cgi, &sess, r);
-    if (issuer && issuer->gg.content && issuer->gg.content->len && issuer->gg.content->s[0]) {
-      meta = zxid_get_ent_ss(cf, issuer->gg.content);
+    if (ZX_SIMPLE_ELEM_CHK(issuer)) {
+      meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(issuer));
       if (meta) {
 	cgi->sp_eid = meta->eid;
 	cgi->sp_dpy_name = meta->dpy_name;
       } else {
-	ERR("Unable to find metadata for Issuer(%.*s) in AnReq Redir", issuer->gg.content->len, issuer->gg.content->s);
+	ERR("Unable to find metadata for Issuer(%.*s) in AnReq Redir", ZX_GET_CONTENT_LEN(issuer), ZX_GET_CONTENT_S(issuer));
 	cgi->err = "Issuer unknown - metadata exchange may be needed (AnReq).";
 	cgi->sp_dpy_name = "--SP description unavailable--";
-	cgi->sp_eid = zx_str_to_c(cf->ctx, issuer->gg.content);
+	cgi->sp_eid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(issuer));
       }
     } else {
       cgi->err = "Issuer could not be determined from Authentication Request.";
@@ -1063,7 +1063,7 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
   switch (cgi->op) {
   case 'l':
     if (cf->log_level>0)
-      zxlog(cf, 0,0,0,0,0,0, ses->nameid?ses->nameid->gg.content:0, "N", "W", "LOCLO", ses->sid,0);
+      zxlog(cf, 0,0,0,0,0,0, ZX_GET_CONTENT(ses->nameid), "N", "W", "LOCLO", ses->sid,0);
     zxid_del_ses(cf, ses);
     cgi->msg = "Local logout Ok. Session terminated.";
     return zxid_simple_show_idp_sel(cf, cgi, res_len, auto_flags);
@@ -1143,7 +1143,8 @@ char* zxid_simple_ses_active_cf(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int
   }
   if (cf->required_authnctx) {
     zxid_get_ses_sso_a7n(cf, ses);
-    accr = ses->a7n&&ses->a7n->AuthnStatement&&ses->a7n->AuthnStatement->AuthnContext&&ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef&&ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content&&ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content?ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef->content:0;
+    accr = ses->a7n&&ses->a7n->AuthnStatement&&ses->a7n->AuthnStatement->AuthnContext
+      ?ZX_GET_CONTENT(ses->a7n->AuthnStatement->AuthnContext->AuthnContextClassRef):0;
 
     if (accr)
       for (p = cf->required_authnctx[0]; p; ++p)

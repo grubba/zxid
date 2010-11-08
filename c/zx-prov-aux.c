@@ -70,15 +70,21 @@ void zx_FREE_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* x,
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Address->gg; e; e = en) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Address(c, (struct zx_a_Address_s*)e, free_strs);
   }
-  for (e = &x->ReferenceParameters->gg; e; e = en) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, free_strs);
   }
-  for (e = &x->Metadata->gg; e; e = en) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Metadata(c, (struct zx_a_Metadata_s*)e, free_strs);
   }
@@ -124,11 +130,17 @@ void zx_DUP_STRS_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 }
@@ -155,7 +167,9 @@ struct zx_prov_CallbackEPR_s* zx_DEEP_CLONE_prov_CallbackEPR(struct zx_ctx* c, s
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Address(c,(struct zx_a_Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->Address = (struct zx_a_Address_s*)en;
@@ -163,7 +177,9 @@ struct zx_prov_CallbackEPR_s* zx_DEEP_CLONE_prov_CallbackEPR(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_ReferenceParameters(c,(struct zx_a_ReferenceParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)en;
@@ -171,7 +187,9 @@ struct zx_prov_CallbackEPR_s* zx_DEEP_CLONE_prov_CallbackEPR(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Metadata(c,(struct zx_a_Metadata_s*)e,dup_strs);
   	  if (!enn)
   	      x->Metadata = (struct zx_a_Metadata_s*)en;
@@ -202,17 +220,23 @@ int zx_WALK_SO_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* 
   if (ret)
     return ret;
 
-  for (e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Address(c, (struct zx_a_Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Metadata(c, (struct zx_a_Metadata_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -269,7 +293,9 @@ void zx_FREE_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x, i
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PMActivateItem->gg; e; e = en) {
+  for (e = &x->PMActivateItem->gg;
+       e && e->g.tok == zx_prov_PMActivateItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMActivateItem(c, (struct zx_prov_PMActivateItem_s*)e, free_strs);
   }
@@ -310,7 +336,9 @@ void zx_DUP_STRS_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PMActivateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMActivateItem->gg;
+       se && se->g.tok == zx_prov_PMActivateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMActivateItem(c, (struct zx_prov_PMActivateItem_s*)se);
   zx_dup_strs_simple_elems(c, x->NotifyTo);
 
@@ -332,7 +360,9 @@ struct zx_prov_PMActivate_s* zx_DEEP_CLONE_prov_PMActivate(struct zx_ctx* c, str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PMActivateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMActivateItem->gg;
+       e && e->g.tok == zx_prov_PMActivateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMActivateItem(c,(struct zx_prov_PMActivateItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMActivateItem = (struct zx_prov_PMActivateItem_s*)en;
@@ -364,7 +394,9 @@ int zx_WALK_SO_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->PMActivateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMActivateItem->gg;
+       e && e->g.tok == zx_prov_PMActivateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMActivateItem(c, (struct zx_prov_PMActivateItem_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -426,7 +458,9 @@ void zx_FREE_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateItem
   zx_free_attr(c, x->at, free_strs);
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->PMID->gg; e; e = en) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
   }
@@ -468,7 +502,9 @@ void zx_DUP_STRS_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivate
   zx_dup_attr(c, x->at);
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMID(c, (struct zx_prov_PMID_s*)se);
 
 }
@@ -491,7 +527,9 @@ struct zx_prov_PMActivateItem_s* zx_DEEP_CLONE_prov_PMActivateItem(struct zx_ctx
   x->at = zx_clone_attr(c, x->at);
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMID(c,(struct zx_prov_PMID_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMID = (struct zx_prov_PMID_s*)en;
@@ -522,7 +560,9 @@ int zx_WALK_SO_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateIt
   if (ret)
     return ret;
 
-  for (e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMID(c, (struct zx_prov_PMID_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -579,7 +619,9 @@ void zx_FREE_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActivate
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -619,7 +661,9 @@ void zx_DUP_STRS_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActi
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -640,7 +684,9 @@ struct zx_prov_PMActivateResponse_s* zx_DEEP_CLONE_prov_PMActivateResponse(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -671,7 +717,9 @@ int zx_WALK_SO_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActiva
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -728,7 +776,9 @@ void zx_FREE_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PMDeactivateItem->gg; e; e = en) {
+  for (e = &x->PMDeactivateItem->gg;
+       e && e->g.tok == zx_prov_PMDeactivateItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMDeactivateItem(c, (struct zx_prov_PMDeactivateItem_s*)e, free_strs);
   }
@@ -769,7 +819,9 @@ void zx_DUP_STRS_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PMDeactivateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeactivateItem->gg;
+       se && se->g.tok == zx_prov_PMDeactivateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMDeactivateItem(c, (struct zx_prov_PMDeactivateItem_s*)se);
   zx_dup_strs_simple_elems(c, x->NotifyTo);
 
@@ -791,7 +843,9 @@ struct zx_prov_PMDeactivate_s* zx_DEEP_CLONE_prov_PMDeactivate(struct zx_ctx* c,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PMDeactivateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMDeactivateItem->gg;
+       e && e->g.tok == zx_prov_PMDeactivateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMDeactivateItem(c,(struct zx_prov_PMDeactivateItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMDeactivateItem = (struct zx_prov_PMDeactivateItem_s*)en;
@@ -823,7 +877,9 @@ int zx_WALK_SO_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s
   if (ret)
     return ret;
 
-  for (e = &x->PMDeactivateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMDeactivateItem->gg;
+       e && e->g.tok == zx_prov_PMDeactivateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMDeactivateItem(c, (struct zx_prov_PMDeactivateItem_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -885,7 +941,9 @@ void zx_FREE_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactivate
   zx_free_attr(c, x->at, free_strs);
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->PMID->gg; e; e = en) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
   }
@@ -927,7 +985,9 @@ void zx_DUP_STRS_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeacti
   zx_dup_attr(c, x->at);
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMID(c, (struct zx_prov_PMID_s*)se);
 
 }
@@ -950,7 +1010,9 @@ struct zx_prov_PMDeactivateItem_s* zx_DEEP_CLONE_prov_PMDeactivateItem(struct zx
   x->at = zx_clone_attr(c, x->at);
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMID(c,(struct zx_prov_PMID_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMID = (struct zx_prov_PMID_s*)en;
@@ -981,7 +1043,9 @@ int zx_WALK_SO_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactiva
   if (ret)
     return ret;
 
-  for (e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMID(c, (struct zx_prov_PMID_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1038,7 +1102,9 @@ void zx_FREE_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeacti
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -1078,7 +1144,9 @@ void zx_DUP_STRS_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -1099,7 +1167,9 @@ struct zx_prov_PMDeactivateResponse_s* zx_DEEP_CLONE_prov_PMDeactivateResponse(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -1130,7 +1200,9 @@ int zx_WALK_SO_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeac
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1187,7 +1259,9 @@ void zx_FREE_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x, int f
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PMDeleteItem->gg; e; e = en) {
+  for (e = &x->PMDeleteItem->gg;
+       e && e->g.tok == zx_prov_PMDeleteItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMDeleteItem(c, (struct zx_prov_PMDeleteItem_s*)e, free_strs);
   }
@@ -1228,7 +1302,9 @@ void zx_DUP_STRS_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PMDeleteItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeleteItem->gg;
+       se && se->g.tok == zx_prov_PMDeleteItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMDeleteItem(c, (struct zx_prov_PMDeleteItem_s*)se);
   zx_dup_strs_simple_elems(c, x->NotifyTo);
 
@@ -1250,7 +1326,9 @@ struct zx_prov_PMDelete_s* zx_DEEP_CLONE_prov_PMDelete(struct zx_ctx* c, struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PMDeleteItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMDeleteItem->gg;
+       e && e->g.tok == zx_prov_PMDeleteItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMDeleteItem(c,(struct zx_prov_PMDeleteItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMDeleteItem = (struct zx_prov_PMDeleteItem_s*)en;
@@ -1282,7 +1360,9 @@ int zx_WALK_SO_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->PMDeleteItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMDeleteItem->gg;
+       e && e->g.tok == zx_prov_PMDeleteItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMDeleteItem(c, (struct zx_prov_PMDeleteItem_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1343,7 +1423,9 @@ void zx_FREE_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s* 
 
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->PMID->gg; e; e = en) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
   }
@@ -1384,7 +1466,9 @@ void zx_DUP_STRS_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem
 
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMID(c, (struct zx_prov_PMID_s*)se);
 
 }
@@ -1406,7 +1490,9 @@ struct zx_prov_PMDeleteItem_s* zx_DEEP_CLONE_prov_PMDeleteItem(struct zx_ctx* c,
 
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMID(c,(struct zx_prov_PMID_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMID = (struct zx_prov_PMID_s*)en;
@@ -1437,7 +1523,9 @@ int zx_WALK_SO_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s
   if (ret)
     return ret;
 
-  for (e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMID(c, (struct zx_prov_PMID_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1494,7 +1582,9 @@ void zx_FREE_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteResp
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -1534,7 +1624,9 @@ void zx_DUP_STRS_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDelete
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -1555,7 +1647,9 @@ struct zx_prov_PMDeleteResponse_s* zx_DEEP_CLONE_prov_PMDeleteResponse(struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -1586,7 +1680,9 @@ int zx_WALK_SO_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteRe
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1646,14 +1742,18 @@ void zx_FREE_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s* 
   zx_free_attr(c, x->activateAt, free_strs);
   zx_free_attr(c, x->deactivateAt, free_strs);
 
-  for (e = &x->PMID->gg; e; e = en) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->PMEngineRef, free_strs);
   zx_free_simple_elems(c, x->PMInitData, free_strs);
   zx_free_simple_elems(c, x->PMRTData, free_strs);
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
@@ -1696,12 +1796,16 @@ void zx_DUP_STRS_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor
   zx_dup_attr(c, x->activateAt);
   zx_dup_attr(c, x->deactivateAt);
 
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMID(c, (struct zx_prov_PMID_s*)se);
   zx_dup_strs_simple_elems(c, x->PMEngineRef);
   zx_dup_strs_simple_elems(c, x->PMInitData);
   zx_dup_strs_simple_elems(c, x->PMRTData);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
 }
@@ -1725,7 +1829,9 @@ struct zx_prov_PMDescriptor_s* zx_DEEP_CLONE_prov_PMDescriptor(struct zx_ctx* c,
   x->activateAt = zx_clone_attr(c, x->activateAt);
   x->deactivateAt = zx_clone_attr(c, x->deactivateAt);
 
-  for (enn = 0, e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMID(c,(struct zx_prov_PMID_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMID = (struct zx_prov_PMID_s*)en;
@@ -1736,7 +1842,9 @@ struct zx_prov_PMDescriptor_s* zx_DEEP_CLONE_prov_PMDescriptor(struct zx_ctx* c,
   x->PMEngineRef = zx_deep_clone_simple_elems(c,x->PMEngineRef, dup_strs);
   x->PMInitData = zx_deep_clone_simple_elems(c,x->PMInitData, dup_strs);
   x->PMRTData = zx_deep_clone_simple_elems(c,x->PMRTData, dup_strs);
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -1767,7 +1875,9 @@ int zx_WALK_SO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s
   if (ret)
     return ret;
 
-  for (e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMID(c, (struct zx_prov_PMID_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1781,7 +1891,9 @@ int zx_WALK_SO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s
   ret = zx_walk_so_simple_elems(c, x->PMRTData, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1974,7 +2086,9 @@ void zx_FREE_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDeleteRe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -2014,7 +2128,9 @@ void zx_DUP_STRS_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDele
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -2035,7 +2151,9 @@ struct zx_prov_PMEDeleteResponse_s* zx_DEEP_CLONE_prov_PMEDeleteResponse(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -2066,7 +2184,9 @@ int zx_WALK_SO_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDelete
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2259,7 +2379,9 @@ void zx_FREE_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisable
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -2299,7 +2421,9 @@ void zx_DUP_STRS_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDis
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -2320,7 +2444,9 @@ struct zx_prov_PMEDisableResponse_s* zx_DEEP_CLONE_prov_PMEDisableResponse(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -2351,7 +2477,9 @@ int zx_WALK_SO_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisab
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2544,7 +2672,9 @@ void zx_FREE_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDownlo
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -2585,7 +2715,9 @@ void zx_DUP_STRS_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDo
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
   zx_dup_strs_simple_elems(c, x->EngineData);
 
@@ -2607,7 +2739,9 @@ struct zx_prov_PMEDownloadResponse_s* zx_DEEP_CLONE_prov_PMEDownloadResponse(str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -2639,7 +2773,9 @@ int zx_WALK_SO_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDown
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2835,7 +2971,9 @@ void zx_FREE_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnableRe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -2875,7 +3013,9 @@ void zx_DUP_STRS_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnab
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -2896,7 +3036,9 @@ struct zx_prov_PMEEnableResponse_s* zx_DEEP_CLONE_prov_PMEEnableResponse(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -2927,7 +3069,9 @@ int zx_WALK_SO_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnable
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3120,11 +3264,15 @@ void zx_FREE_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetInfo
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->PMEInfo->gg; e; e = en) {
+  for (e = &x->PMEInfo->gg;
+       e && e->g.tok == zx_prov_PMEInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMEInfo(c, (struct zx_prov_PMEInfo_s*)e, free_strs);
   }
@@ -3164,9 +3312,13 @@ void zx_DUP_STRS_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGet
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PMEInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEInfo->gg;
+       se && se->g.tok == zx_prov_PMEInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMEInfo(c, (struct zx_prov_PMEInfo_s*)se);
 
 }
@@ -3187,7 +3339,9 @@ struct zx_prov_PMEGetInfoResponse_s* zx_DEEP_CLONE_prov_PMEGetInfoResponse(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -3195,7 +3349,9 @@ struct zx_prov_PMEGetInfoResponse_s* zx_DEEP_CLONE_prov_PMEGetInfoResponse(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PMEInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMEInfo->gg;
+       e && e->g.tok == zx_prov_PMEInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMEInfo(c,(struct zx_prov_PMEInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMEInfo = (struct zx_prov_PMEInfo_s*)en;
@@ -3226,12 +3382,16 @@ int zx_WALK_SO_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetIn
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PMEInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMEInfo->gg;
+       e && e->g.tok == zx_prov_PMEInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMEInfo(c, (struct zx_prov_PMEInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3427,7 +3587,9 @@ void zx_FREE_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x, int fre
   zx_free_simple_elems(c, x->PMEEnabled, free_strs);
   zx_free_simple_elems(c, x->PMEWhenEnabled, free_strs);
   zx_free_simple_elems(c, x->PMESize, free_strs);
-  for (e = &x->PMEHash->gg; e; e = en) {
+  for (e = &x->PMEHash->gg;
+       e && e->g.tok == zx_prov_PMEHash_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)e, free_strs);
   }
@@ -3473,7 +3635,9 @@ void zx_DUP_STRS_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x)
   zx_dup_strs_simple_elems(c, x->PMEEnabled);
   zx_dup_strs_simple_elems(c, x->PMEWhenEnabled);
   zx_dup_strs_simple_elems(c, x->PMESize);
-  for (se = &x->PMEHash->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEHash->gg;
+       se && se->g.tok == zx_prov_PMEHash_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)se);
 
 }
@@ -3500,7 +3664,9 @@ struct zx_prov_PMEInfo_s* zx_DEEP_CLONE_prov_PMEInfo(struct zx_ctx* c, struct zx
   x->PMEEnabled = zx_deep_clone_simple_elems(c,x->PMEEnabled, dup_strs);
   x->PMEWhenEnabled = zx_deep_clone_simple_elems(c,x->PMEWhenEnabled, dup_strs);
   x->PMESize = zx_deep_clone_simple_elems(c,x->PMESize, dup_strs);
-  for (enn = 0, e = &x->PMEHash->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMEHash->gg;
+       e && e->g.tok == zx_prov_PMEHash_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMEHash(c,(struct zx_prov_PMEHash_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMEHash = (struct zx_prov_PMEHash_s*)en;
@@ -3549,7 +3715,9 @@ int zx_WALK_SO_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->PMESize, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PMEHash->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMEHash->gg;
+       e && e->g.tok == zx_prov_PMEHash_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3608,7 +3776,9 @@ void zx_FREE_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* x,
 
   zx_free_simple_elems(c, x->PMEngineRef, free_strs);
   zx_free_simple_elems(c, x->PMESize, free_strs);
-  for (e = &x->PMEHash->gg; e; e = en) {
+  for (e = &x->PMEHash->gg;
+       e && e->g.tok == zx_prov_PMEHash_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)e, free_strs);
   }
@@ -3650,7 +3820,9 @@ void zx_DUP_STRS_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s
 
   zx_dup_strs_simple_elems(c, x->PMEngineRef);
   zx_dup_strs_simple_elems(c, x->PMESize);
-  for (se = &x->PMEHash->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEHash->gg;
+       se && se->g.tok == zx_prov_PMEHash_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)se);
 
 }
@@ -3673,7 +3845,9 @@ struct zx_prov_PMERegister_s* zx_DEEP_CLONE_prov_PMERegister(struct zx_ctx* c, s
 
   x->PMEngineRef = zx_deep_clone_simple_elems(c,x->PMEngineRef, dup_strs);
   x->PMESize = zx_deep_clone_simple_elems(c,x->PMESize, dup_strs);
-  for (enn = 0, e = &x->PMEHash->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMEHash->gg;
+       e && e->g.tok == zx_prov_PMEHash_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMEHash(c,(struct zx_prov_PMEHash_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMEHash = (struct zx_prov_PMEHash_s*)en;
@@ -3710,7 +3884,9 @@ int zx_WALK_SO_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* 
   ret = zx_walk_so_simple_elems(c, x->PMESize, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PMEHash->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMEHash->gg;
+       e && e->g.tok == zx_prov_PMEHash_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3767,7 +3943,9 @@ void zx_FREE_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegist
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -3808,7 +3986,9 @@ void zx_DUP_STRS_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
   zx_dup_strs_simple_elems(c, x->PMEUploadMax);
 
@@ -3830,7 +4010,9 @@ struct zx_prov_PMERegisterResponse_s* zx_DEEP_CLONE_prov_PMERegisterResponse(str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -3862,7 +4044,9 @@ int zx_WALK_SO_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegi
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4070,7 +4254,9 @@ void zx_FREE_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploadRe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -4110,7 +4296,9 @@ void zx_DUP_STRS_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUplo
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -4131,7 +4319,9 @@ struct zx_prov_PMEUploadResponse_s* zx_DEEP_CLONE_prov_PMEUploadResponse(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -4162,7 +4352,9 @@ int zx_WALK_SO_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUpload
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4220,7 +4412,9 @@ void zx_FREE_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescript
 
 
   zx_free_simple_elems(c, x->PMDArtifact, free_strs);
-  for (e = &x->CallbackEPR->gg; e; e = en) {
+  for (e = &x->CallbackEPR->gg;
+       e && e->g.tok == zx_prov_CallbackEPR_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)e, free_strs);
   }
@@ -4261,7 +4455,9 @@ void zx_DUP_STRS_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDesc
 
 
   zx_dup_strs_simple_elems(c, x->PMDArtifact);
-  for (se = &x->CallbackEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CallbackEPR->gg;
+       se && se->g.tok == zx_prov_CallbackEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)se);
 
 }
@@ -4283,7 +4479,9 @@ struct zx_prov_PMGetDescriptor_s* zx_DEEP_CLONE_prov_PMGetDescriptor(struct zx_c
 
 
   x->PMDArtifact = zx_deep_clone_simple_elems(c,x->PMDArtifact, dup_strs);
-  for (enn = 0, e = &x->CallbackEPR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CallbackEPR->gg;
+       e && e->g.tok == zx_prov_CallbackEPR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_CallbackEPR(c,(struct zx_prov_CallbackEPR_s*)e,dup_strs);
   	  if (!enn)
   	      x->CallbackEPR = (struct zx_prov_CallbackEPR_s*)en;
@@ -4317,7 +4515,9 @@ int zx_WALK_SO_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescri
   ret = zx_walk_so_simple_elems(c, x->PMDArtifact, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->CallbackEPR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CallbackEPR->gg;
+       e && e->g.tok == zx_prov_CallbackEPR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4374,11 +4574,15 @@ void zx_FREE_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMGet
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->PMDescriptor->gg; e; e = en) {
+  for (e = &x->PMDescriptor->gg;
+       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)e, free_strs);
   }
@@ -4418,9 +4622,13 @@ void zx_DUP_STRS_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_P
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PMDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDescriptor->gg;
+       se && se->g.tok == zx_prov_PMDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)se);
 
 }
@@ -4441,7 +4649,9 @@ struct zx_prov_PMGetDescriptorResponse_s* zx_DEEP_CLONE_prov_PMGetDescriptorResp
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -4449,7 +4659,9 @@ struct zx_prov_PMGetDescriptorResponse_s* zx_DEEP_CLONE_prov_PMGetDescriptorResp
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PMDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMDescriptor->gg;
+       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMDescriptor(c,(struct zx_prov_PMDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMDescriptor = (struct zx_prov_PMDescriptor_s*)en;
@@ -4480,12 +4692,16 @@ int zx_WALK_SO_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMG
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PMDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMDescriptor->gg;
+       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4542,7 +4758,9 @@ void zx_FREE_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PMID->gg; e; e = en) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
   }
@@ -4582,7 +4800,9 @@ void zx_DUP_STRS_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMID(c, (struct zx_prov_PMID_s*)se);
 
 }
@@ -4603,7 +4823,9 @@ struct zx_prov_PMGetStatus_s* zx_DEEP_CLONE_prov_PMGetStatus(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMID(c,(struct zx_prov_PMID_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMID = (struct zx_prov_PMID_s*)en;
@@ -4634,7 +4856,9 @@ int zx_WALK_SO_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* 
   if (ret)
     return ret;
 
-  for (e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMID(c, (struct zx_prov_PMID_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4691,11 +4915,15 @@ void zx_FREE_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetStat
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->PMStatus->gg; e; e = en) {
+  for (e = &x->PMStatus->gg;
+       e && e->g.tok == zx_prov_PMStatus_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)e, free_strs);
   }
@@ -4735,9 +4963,13 @@ void zx_DUP_STRS_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGet
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PMStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMStatus->gg;
+       se && se->g.tok == zx_prov_PMStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)se);
 
 }
@@ -4758,7 +4990,9 @@ struct zx_prov_PMGetStatusResponse_s* zx_DEEP_CLONE_prov_PMGetStatusResponse(str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -4766,7 +5000,9 @@ struct zx_prov_PMGetStatusResponse_s* zx_DEEP_CLONE_prov_PMGetStatusResponse(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PMStatus->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMStatus->gg;
+       e && e->g.tok == zx_prov_PMStatus_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMStatus(c,(struct zx_prov_PMStatus_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMStatus = (struct zx_prov_PMStatus_s*)en;
@@ -4797,12 +5033,16 @@ int zx_WALK_SO_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetSt
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PMStatus->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMStatus->gg;
+       e && e->g.tok == zx_prov_PMStatus_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4992,7 +5232,9 @@ void zx_FREE_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegist
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PMRegisterDescriptorItem->gg; e; e = en) {
+  for (e = &x->PMRegisterDescriptorItem->gg;
+       e && e->g.tok == zx_prov_PMRegisterDescriptorItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMRegisterDescriptorItem(c, (struct zx_prov_PMRegisterDescriptorItem_s*)e, free_strs);
   }
@@ -5032,7 +5274,9 @@ void zx_DUP_STRS_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PMRegisterDescriptorItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptorItem->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptorItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMRegisterDescriptorItem(c, (struct zx_prov_PMRegisterDescriptorItem_s*)se);
 
 }
@@ -5053,7 +5297,9 @@ struct zx_prov_PMRegisterDescriptor_s* zx_DEEP_CLONE_prov_PMRegisterDescriptor(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PMRegisterDescriptorItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMRegisterDescriptorItem->gg;
+       e && e->g.tok == zx_prov_PMRegisterDescriptorItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMRegisterDescriptorItem(c,(struct zx_prov_PMRegisterDescriptorItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMRegisterDescriptorItem = (struct zx_prov_PMRegisterDescriptorItem_s*)en;
@@ -5084,7 +5330,9 @@ int zx_WALK_SO_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegi
   if (ret)
     return ret;
 
-  for (e = &x->PMRegisterDescriptorItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMRegisterDescriptorItem->gg;
+       e && e->g.tok == zx_prov_PMRegisterDescriptorItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMRegisterDescriptorItem(c, (struct zx_prov_PMRegisterDescriptorItem_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5142,7 +5390,9 @@ void zx_FREE_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PMRe
 
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->PMDescriptor->gg; e; e = en) {
+  for (e = &x->PMDescriptor->gg;
+       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)e, free_strs);
   }
@@ -5183,7 +5433,9 @@ void zx_DUP_STRS_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_
 
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->PMDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDescriptor->gg;
+       se && se->g.tok == zx_prov_PMDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)se);
 
 }
@@ -5205,7 +5457,9 @@ struct zx_prov_PMRegisterDescriptorItem_s* zx_DEEP_CLONE_prov_PMRegisterDescript
 
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->PMDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMDescriptor->gg;
+       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMDescriptor(c,(struct zx_prov_PMDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMDescriptor = (struct zx_prov_PMDescriptor_s*)en;
@@ -5236,7 +5490,9 @@ int zx_WALK_SO_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PM
   if (ret)
     return ret;
 
-  for (e = &x->PMDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMDescriptor->gg;
+       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5293,11 +5549,15 @@ void zx_FREE_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_prov_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->PMRegisterDescriptorResponseItem->gg; e; e = en) {
+  for (e = &x->PMRegisterDescriptorResponseItem->gg;
+       e && e->g.tok == zx_prov_PMRegisterDescriptorResponseItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMRegisterDescriptorResponseItem(c, (struct zx_prov_PMRegisterDescriptorResponseItem_s*)e, free_strs);
   }
@@ -5337,9 +5597,13 @@ void zx_DUP_STRS_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_p
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PMRegisterDescriptorResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptorResponseItem->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptorResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMRegisterDescriptorResponseItem(c, (struct zx_prov_PMRegisterDescriptorResponseItem_s*)se);
 
 }
@@ -5360,7 +5624,9 @@ struct zx_prov_PMRegisterDescriptorResponse_s* zx_DEEP_CLONE_prov_PMRegisterDesc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -5368,7 +5634,9 @@ struct zx_prov_PMRegisterDescriptorResponse_s* zx_DEEP_CLONE_prov_PMRegisterDesc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PMRegisterDescriptorResponseItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMRegisterDescriptorResponseItem->gg;
+       e && e->g.tok == zx_prov_PMRegisterDescriptorResponseItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMRegisterDescriptorResponseItem(c,(struct zx_prov_PMRegisterDescriptorResponseItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMRegisterDescriptorResponseItem = (struct zx_prov_PMRegisterDescriptorResponseItem_s*)en;
@@ -5399,12 +5667,16 @@ int zx_WALK_SO_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_pro
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PMRegisterDescriptorResponseItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMRegisterDescriptorResponseItem->gg;
+       e && e->g.tok == zx_prov_PMRegisterDescriptorResponseItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMRegisterDescriptorResponseItem(c, (struct zx_prov_PMRegisterDescriptorResponseItem_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5462,7 +5734,9 @@ void zx_FREE_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_p
 
   zx_free_attr(c, x->ref, free_strs);
 
-  for (e = &x->ProvisioningHandle->gg; e; e = en) {
+  for (e = &x->ProvisioningHandle->gg;
+       e && e->g.tok == zx_prov_ProvisioningHandle_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_ProvisioningHandle(c, (struct zx_prov_ProvisioningHandle_s*)e, free_strs);
   }
@@ -5503,7 +5777,9 @@ void zx_DUP_STRS_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct 
 
   zx_dup_attr(c, x->ref);
 
-  for (se = &x->ProvisioningHandle->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProvisioningHandle->gg;
+       se && se->g.tok == zx_prov_ProvisioningHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_ProvisioningHandle(c, (struct zx_prov_ProvisioningHandle_s*)se);
 
 }
@@ -5525,7 +5801,9 @@ struct zx_prov_PMRegisterDescriptorResponseItem_s* zx_DEEP_CLONE_prov_PMRegister
 
   x->ref = zx_clone_attr(c, x->ref);
 
-  for (enn = 0, e = &x->ProvisioningHandle->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ProvisioningHandle->gg;
+       e && e->g.tok == zx_prov_ProvisioningHandle_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_ProvisioningHandle(c,(struct zx_prov_ProvisioningHandle_s*)e,dup_strs);
   	  if (!enn)
   	      x->ProvisioningHandle = (struct zx_prov_ProvisioningHandle_s*)en;
@@ -5556,7 +5834,9 @@ int zx_WALK_SO_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx
   if (ret)
     return ret;
 
-  for (e = &x->ProvisioningHandle->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ProvisioningHandle->gg;
+       e && e->g.tok == zx_prov_ProvisioningHandle_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_ProvisioningHandle(c, (struct zx_prov_ProvisioningHandle_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5613,7 +5893,9 @@ void zx_FREE_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PMStatus->gg; e; e = en) {
+  for (e = &x->PMStatus->gg;
+       e && e->g.tok == zx_prov_PMStatus_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)e, free_strs);
   }
@@ -5653,7 +5935,9 @@ void zx_DUP_STRS_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PMStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMStatus->gg;
+       se && se->g.tok == zx_prov_PMStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)se);
 
 }
@@ -5674,7 +5958,9 @@ struct zx_prov_PMSetStatus_s* zx_DEEP_CLONE_prov_PMSetStatus(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PMStatus->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMStatus->gg;
+       e && e->g.tok == zx_prov_PMStatus_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMStatus(c,(struct zx_prov_PMStatus_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMStatus = (struct zx_prov_PMStatus_s*)en;
@@ -5705,7 +5991,9 @@ int zx_WALK_SO_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* 
   if (ret)
     return ret;
 
-  for (e = &x->PMStatus->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMStatus->gg;
+       e && e->g.tok == zx_prov_PMStatus_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5762,7 +6050,9 @@ void zx_FREE_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetStat
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -5802,7 +6092,9 @@ void zx_DUP_STRS_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSet
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -5823,7 +6115,9 @@ struct zx_prov_PMSetStatusResponse_s* zx_DEEP_CLONE_prov_PMSetStatusResponse(str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -5854,7 +6148,9 @@ int zx_WALK_SO_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetSt
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5911,11 +6207,15 @@ void zx_FREE_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x, int f
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PMID->gg; e; e = en) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
   }
-  for (e = &x->State->gg; e; e = en) {
+  for (e = &x->State->gg;
+       e && e->g.tok == zx_prov_State_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_State(c, (struct zx_prov_State_s*)e, free_strs);
   }
@@ -5955,9 +6255,13 @@ void zx_DUP_STRS_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMID(c, (struct zx_prov_PMID_s*)se);
-  for (se = &x->State->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->State->gg;
+       se && se->g.tok == zx_prov_State_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_State(c, (struct zx_prov_State_s*)se);
 
 }
@@ -5978,7 +6282,9 @@ struct zx_prov_PMStatus_s* zx_DEEP_CLONE_prov_PMStatus(struct zx_ctx* c, struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMID(c,(struct zx_prov_PMID_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMID = (struct zx_prov_PMID_s*)en;
@@ -5986,7 +6292,9 @@ struct zx_prov_PMStatus_s* zx_DEEP_CLONE_prov_PMStatus(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->State->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->State->gg;
+       e && e->g.tok == zx_prov_State_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_State(c,(struct zx_prov_State_s*)e,dup_strs);
   	  if (!enn)
   	      x->State = (struct zx_prov_State_s*)en;
@@ -6017,12 +6325,16 @@ int zx_WALK_SO_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMID(c, (struct zx_prov_PMID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->State->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->State->gg;
+       e && e->g.tok == zx_prov_State_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_State(c, (struct zx_prov_State_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6079,7 +6391,9 @@ void zx_FREE_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x, int f
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PMUpdateItem->gg; e; e = en) {
+  for (e = &x->PMUpdateItem->gg;
+       e && e->g.tok == zx_prov_PMUpdateItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMUpdateItem(c, (struct zx_prov_PMUpdateItem_s*)e, free_strs);
   }
@@ -6120,7 +6434,9 @@ void zx_DUP_STRS_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PMUpdateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMUpdateItem->gg;
+       se && se->g.tok == zx_prov_PMUpdateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMUpdateItem(c, (struct zx_prov_PMUpdateItem_s*)se);
   zx_dup_strs_simple_elems(c, x->NotifyTo);
 
@@ -6142,7 +6458,9 @@ struct zx_prov_PMUpdate_s* zx_DEEP_CLONE_prov_PMUpdate(struct zx_ctx* c, struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PMUpdateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMUpdateItem->gg;
+       e && e->g.tok == zx_prov_PMUpdateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMUpdateItem(c,(struct zx_prov_PMUpdateItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMUpdateItem = (struct zx_prov_PMUpdateItem_s*)en;
@@ -6174,7 +6492,9 @@ int zx_WALK_SO_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->PMUpdateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMUpdateItem->gg;
+       e && e->g.tok == zx_prov_PMUpdateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMUpdateItem(c, (struct zx_prov_PMUpdateItem_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6237,7 +6557,9 @@ void zx_FREE_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s* 
   zx_free_attr(c, x->itemID, free_strs);
   zx_free_attr(c, x->type, free_strs);
 
-  for (e = &x->PMDescriptor->gg; e; e = en) {
+  for (e = &x->PMDescriptor->gg;
+       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)e, free_strs);
   }
@@ -6280,7 +6602,9 @@ void zx_DUP_STRS_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem
   zx_dup_attr(c, x->itemID);
   zx_dup_attr(c, x->type);
 
-  for (se = &x->PMDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDescriptor->gg;
+       se && se->g.tok == zx_prov_PMDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)se);
 
 }
@@ -6304,7 +6628,9 @@ struct zx_prov_PMUpdateItem_s* zx_DEEP_CLONE_prov_PMUpdateItem(struct zx_ctx* c,
   x->itemID = zx_clone_attr(c, x->itemID);
   x->type = zx_clone_attr(c, x->type);
 
-  for (enn = 0, e = &x->PMDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMDescriptor->gg;
+       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMDescriptor(c,(struct zx_prov_PMDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMDescriptor = (struct zx_prov_PMDescriptor_s*)en;
@@ -6335,7 +6661,9 @@ int zx_WALK_SO_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s
   if (ret)
     return ret;
 
-  for (e = &x->PMDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMDescriptor->gg;
+       e && e->g.tok == zx_prov_PMDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6392,7 +6720,9 @@ void zx_FREE_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateResp
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -6432,7 +6762,9 @@ void zx_DUP_STRS_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdate
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -6453,7 +6785,9 @@ struct zx_prov_PMUpdateResponse_s* zx_DEEP_CLONE_prov_PMUpdateResponse(struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -6484,7 +6818,9 @@ int zx_WALK_SO_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateRe
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6542,11 +6878,15 @@ void zx_FREE_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x, int free_strs
 
   zx_free_attr(c, x->wait, free_strs);
 
-  for (e = &x->Action->gg; e; e = en) {
+  for (e = &x->Action->gg;
+       e && e->g.tok == zx_a_Action_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Action(c, (struct zx_a_Action_s*)e, free_strs);
   }
-  for (e = &x->Response->gg; e; e = en) {
+  for (e = &x->Response->gg;
+       e && e->g.tok == zx_dp_Response_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dp_Response(c, (struct zx_dp_Response_s*)e, free_strs);
   }
@@ -6587,9 +6927,13 @@ void zx_DUP_STRS_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x)
 
   zx_dup_attr(c, x->wait);
 
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_a_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Action(c, (struct zx_a_Action_s*)se);
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_dp_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dp_Response(c, (struct zx_dp_Response_s*)se);
 
 }
@@ -6611,7 +6955,9 @@ struct zx_prov_Poll_s* zx_DEEP_CLONE_prov_Poll(struct zx_ctx* c, struct zx_prov_
 
   x->wait = zx_clone_attr(c, x->wait);
 
-  for (enn = 0, e = &x->Action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Action->gg;
+       e && e->g.tok == zx_a_Action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Action(c,(struct zx_a_Action_s*)e,dup_strs);
   	  if (!enn)
   	      x->Action = (struct zx_a_Action_s*)en;
@@ -6619,7 +6965,9 @@ struct zx_prov_Poll_s* zx_DEEP_CLONE_prov_Poll(struct zx_ctx* c, struct zx_prov_
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Response->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Response->gg;
+       e && e->g.tok == zx_dp_Response_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dp_Response(c,(struct zx_dp_Response_s*)e,dup_strs);
   	  if (!enn)
   	      x->Response = (struct zx_dp_Response_s*)en;
@@ -6650,12 +6998,16 @@ int zx_WALK_SO_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->Action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Action->gg;
+       e && e->g.tok == zx_a_Action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Action(c, (struct zx_a_Action_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Response->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Response->gg;
+       e && e->g.tok == zx_dp_Response_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dp_Response(c, (struct zx_dp_Response_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6713,7 +7065,9 @@ void zx_FREE_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s* 
 
   zx_free_attr(c, x->nextPoll, free_strs);
 
-  for (e = &x->Request->gg; e; e = en) {
+  for (e = &x->Request->gg;
+       e && e->g.tok == zx_dp_Request_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dp_Request(c, (struct zx_dp_Request_s*)e, free_strs);
   }
@@ -6754,7 +7108,9 @@ void zx_DUP_STRS_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse
 
   zx_dup_attr(c, x->nextPoll);
 
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_dp_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dp_Request(c, (struct zx_dp_Request_s*)se);
 
 }
@@ -6776,7 +7132,9 @@ struct zx_prov_PollResponse_s* zx_DEEP_CLONE_prov_PollResponse(struct zx_ctx* c,
 
   x->nextPoll = zx_clone_attr(c, x->nextPoll);
 
-  for (enn = 0, e = &x->Request->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Request->gg;
+       e && e->g.tok == zx_dp_Request_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dp_Request(c,(struct zx_dp_Request_s*)e,dup_strs);
   	  if (!enn)
   	      x->Request = (struct zx_dp_Request_s*)en;
@@ -6807,7 +7165,9 @@ int zx_WALK_SO_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s
   if (ret)
     return ret;
 
-  for (e = &x->Request->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Request->gg;
+       e && e->g.tok == zx_dp_Request_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dp_Request(c, (struct zx_dp_Request_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6866,11 +7226,15 @@ void zx_FREE_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_Provisioni
   zx_free_attr(c, x->expires, free_strs);
 
   zx_free_simple_elems(c, x->PMDArtifact, free_strs);
-  for (e = &x->ProvisioningServiceEPR->gg; e; e = en) {
+  for (e = &x->ProvisioningServiceEPR->gg;
+       e && e->g.tok == zx_prov_ProvisioningServiceEPR_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_ProvisioningServiceEPR(c, (struct zx_prov_ProvisioningServiceEPR_s*)e, free_strs);
   }
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
@@ -6912,9 +7276,13 @@ void zx_DUP_STRS_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_Provis
   zx_dup_attr(c, x->expires);
 
   zx_dup_strs_simple_elems(c, x->PMDArtifact);
-  for (se = &x->ProvisioningServiceEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProvisioningServiceEPR->gg;
+       se && se->g.tok == zx_prov_ProvisioningServiceEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_ProvisioningServiceEPR(c, (struct zx_prov_ProvisioningServiceEPR_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
 }
@@ -6937,7 +7305,9 @@ struct zx_prov_ProvisioningHandle_s* zx_DEEP_CLONE_prov_ProvisioningHandle(struc
   x->expires = zx_clone_attr(c, x->expires);
 
   x->PMDArtifact = zx_deep_clone_simple_elems(c,x->PMDArtifact, dup_strs);
-  for (enn = 0, e = &x->ProvisioningServiceEPR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ProvisioningServiceEPR->gg;
+       e && e->g.tok == zx_prov_ProvisioningServiceEPR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_ProvisioningServiceEPR(c,(struct zx_prov_ProvisioningServiceEPR_s*)e,dup_strs);
   	  if (!enn)
   	      x->ProvisioningServiceEPR = (struct zx_prov_ProvisioningServiceEPR_s*)en;
@@ -6945,7 +7315,9 @@ struct zx_prov_ProvisioningHandle_s* zx_DEEP_CLONE_prov_ProvisioningHandle(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -6979,12 +7351,16 @@ int zx_WALK_SO_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_Provisio
   ret = zx_walk_so_simple_elems(c, x->PMDArtifact, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ProvisioningServiceEPR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ProvisioningServiceEPR->gg;
+       e && e->g.tok == zx_prov_ProvisioningServiceEPR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_ProvisioningServiceEPR(c, (struct zx_prov_ProvisioningServiceEPR_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7047,15 +7423,21 @@ void zx_FREE_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_Provis
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Address->gg; e; e = en) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Address(c, (struct zx_a_Address_s*)e, free_strs);
   }
-  for (e = &x->ReferenceParameters->gg; e; e = en) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, free_strs);
   }
-  for (e = &x->Metadata->gg; e; e = en) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Metadata(c, (struct zx_a_Metadata_s*)e, free_strs);
   }
@@ -7101,11 +7483,17 @@ void zx_DUP_STRS_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_Pr
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 }
@@ -7132,7 +7520,9 @@ struct zx_prov_ProvisioningServiceEPR_s* zx_DEEP_CLONE_prov_ProvisioningServiceE
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Address(c,(struct zx_a_Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->Address = (struct zx_a_Address_s*)en;
@@ -7140,7 +7530,9 @@ struct zx_prov_ProvisioningServiceEPR_s* zx_DEEP_CLONE_prov_ProvisioningServiceE
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_ReferenceParameters(c,(struct zx_a_ReferenceParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)en;
@@ -7148,7 +7540,9 @@ struct zx_prov_ProvisioningServiceEPR_s* zx_DEEP_CLONE_prov_ProvisioningServiceE
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Metadata(c,(struct zx_a_Metadata_s*)e,dup_strs);
   	  if (!enn)
   	      x->Metadata = (struct zx_a_Metadata_s*)en;
@@ -7179,17 +7573,23 @@ int zx_WALK_SO_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_Prov
   if (ret)
     return ret;
 
-  for (e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Address(c, (struct zx_a_Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Metadata(c, (struct zx_a_Metadata_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7379,7 +7779,9 @@ void zx_FREE_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x, int
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->UpdateEPRItem->gg; e; e = en) {
+  for (e = &x->UpdateEPRItem->gg;
+       e && e->g.tok == zx_prov_UpdateEPRItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_UpdateEPRItem(c, (struct zx_prov_UpdateEPRItem_s*)e, free_strs);
   }
@@ -7419,7 +7821,9 @@ void zx_DUP_STRS_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->UpdateEPRItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateEPRItem->gg;
+       se && se->g.tok == zx_prov_UpdateEPRItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_UpdateEPRItem(c, (struct zx_prov_UpdateEPRItem_s*)se);
 
 }
@@ -7440,7 +7844,9 @@ struct zx_prov_UpdateEPR_s* zx_DEEP_CLONE_prov_UpdateEPR(struct zx_ctx* c, struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->UpdateEPRItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UpdateEPRItem->gg;
+       e && e->g.tok == zx_prov_UpdateEPRItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_UpdateEPRItem(c,(struct zx_prov_UpdateEPRItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->UpdateEPRItem = (struct zx_prov_UpdateEPRItem_s*)en;
@@ -7471,7 +7877,9 @@ int zx_WALK_SO_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->UpdateEPRItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UpdateEPRItem->gg;
+       e && e->g.tok == zx_prov_UpdateEPRItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_UpdateEPRItem(c, (struct zx_prov_UpdateEPRItem_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7529,11 +7937,15 @@ void zx_FREE_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem_s
 
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->PMID->gg; e; e = en) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_PMID(c, (struct zx_prov_PMID_s*)e, free_strs);
   }
-  for (e = &x->CallbackEPR->gg; e; e = en) {
+  for (e = &x->CallbackEPR->gg;
+       e && e->g.tok == zx_prov_CallbackEPR_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)e, free_strs);
   }
@@ -7574,9 +7986,13 @@ void zx_DUP_STRS_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRIt
 
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_PMID(c, (struct zx_prov_PMID_s*)se);
-  for (se = &x->CallbackEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CallbackEPR->gg;
+       se && se->g.tok == zx_prov_CallbackEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)se);
 
 }
@@ -7598,7 +8014,9 @@ struct zx_prov_UpdateEPRItem_s* zx_DEEP_CLONE_prov_UpdateEPRItem(struct zx_ctx* 
 
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_PMID(c,(struct zx_prov_PMID_s*)e,dup_strs);
   	  if (!enn)
   	      x->PMID = (struct zx_prov_PMID_s*)en;
@@ -7606,7 +8024,9 @@ struct zx_prov_UpdateEPRItem_s* zx_DEEP_CLONE_prov_UpdateEPRItem(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CallbackEPR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CallbackEPR->gg;
+       e && e->g.tok == zx_prov_CallbackEPR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_prov_CallbackEPR(c,(struct zx_prov_CallbackEPR_s*)e,dup_strs);
   	  if (!enn)
   	      x->CallbackEPR = (struct zx_prov_CallbackEPR_s*)en;
@@ -7637,12 +8057,16 @@ int zx_WALK_SO_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem
   if (ret)
     return ret;
 
-  for (e = &x->PMID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PMID->gg;
+       e && e->g.tok == zx_prov_PMID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_PMID(c, (struct zx_prov_PMID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CallbackEPR->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CallbackEPR->gg;
+       e && e->g.tok == zx_prov_CallbackEPR_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7699,7 +8123,9 @@ void zx_FREE_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEPRRe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -7739,7 +8165,9 @@ void zx_DUP_STRS_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateE
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -7760,7 +8188,9 @@ struct zx_prov_UpdateEPRResponse_s* zx_DEEP_CLONE_prov_UpdateEPRResponse(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -7791,7 +8221,9 @@ int zx_WALK_SO_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEPR
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;

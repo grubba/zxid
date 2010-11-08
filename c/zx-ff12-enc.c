@@ -85,7 +85,7 @@ int zx_LEN_SO_ff12_Assertion(struct zx_ctx* c, struct zx_ff12_Assertion_s* x )
   int len = sizeof("<ff12:Assertion")-1 + 1 + sizeof("</ff12:Assertion>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->AssertionID, sizeof("AssertionID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->InResponseTo, sizeof("InResponseTo")-1, &pop_seen);
@@ -99,29 +99,53 @@ int zx_LEN_SO_ff12_Assertion(struct zx_ctx* c, struct zx_ff12_Assertion_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Conditions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Conditions->gg;
+       se && se->g.tok == zx_sa11_Conditions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_Conditions(c, (struct zx_sa11_Conditions_s*)se);
-  for (se = &x->Advice->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Advice->gg;
+       se && se->g.tok == zx_sa11_Advice_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_Advice(c, (struct zx_sa11_Advice_s*)se);
-  for (se = x->Statement; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("sa11:Statement")-1, zx_ns_tab+zx_sa11_NS);
-  for (se = &x->SubjectStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Statement;
+    se && se->g.tok == zx_sa11_Statement_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("sa11:Statement")-1, zx_ns_tab+(zx_sa11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SubjectStatement->gg;
+       se && se->g.tok == zx_sa11_SubjectStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_SubjectStatement(c, (struct zx_sa11_SubjectStatement_s*)se);
-  for (se = &x->AuthenticationStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthenticationStatement->gg;
+       se && se->g.tok == zx_sa11_AuthenticationStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_AuthenticationStatement(c, (struct zx_sa11_AuthenticationStatement_s*)se);
-  for (se = &x->AuthorizationDecisionStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthorizationDecisionStatement->gg;
+       se && se->g.tok == zx_sa11_AuthorizationDecisionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_AuthorizationDecisionStatement(c, (struct zx_sa11_AuthorizationDecisionStatement_s*)se);
-  for (se = &x->AttributeStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeStatement->gg;
+       se && se->g.tok == zx_sa11_AttributeStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_AttributeStatement(c, (struct zx_sa11_AttributeStatement_s*)se);
-  for (se = &x->XACMLAuthzDecisionStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->XACMLAuthzDecisionStatement->gg;
+       se && se->g.tok == zx_xasa_XACMLAuthzDecisionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xasa_XACMLAuthzDecisionStatement(c, (struct zx_xasa_XACMLAuthzDecisionStatement_s*)se);
-  for (se = &x->XACMLPolicyStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->XACMLPolicyStatement->gg;
+       se && se->g.tok == zx_xasa_XACMLPolicyStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xasa_XACMLPolicyStatement(c, (struct zx_xasa_XACMLPolicyStatement_s*)se);
-  for (se = &x->xasacd1_XACMLAuthzDecisionStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xasacd1_XACMLAuthzDecisionStatement->gg;
+       se && se->g.tok == zx_xasacd1_XACMLAuthzDecisionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xasacd1_XACMLAuthzDecisionStatement(c, (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)se);
-  for (se = &x->xasacd1_XACMLPolicyStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xasacd1_XACMLPolicyStatement->gg;
+       se && se->g.tok == zx_xasacd1_XACMLPolicyStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xasacd1_XACMLPolicyStatement(c, (struct zx_xasacd1_XACMLPolicyStatement_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
@@ -150,7 +174,7 @@ char* zx_ENC_SO_ff12_Assertion(struct zx_ctx* c, struct zx_ff12_Assertion_s* x, 
   ZX_OUT_TAG(p, "<ff12:Assertion");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -168,29 +192,53 @@ char* zx_ENC_SO_ff12_Assertion(struct zx_ctx* c, struct zx_ff12_Assertion_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Conditions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Conditions->gg;
+       se && se->g.tok == zx_sa11_Conditions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_Conditions(c, (struct zx_sa11_Conditions_s*)se, p);
-  for (se = &x->Advice->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Advice->gg;
+       se && se->g.tok == zx_sa11_Advice_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_Advice(c, (struct zx_sa11_Advice_s*)se, p);
-  for (se = x->Statement; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "sa11:Statement", sizeof("sa11:Statement")-1, zx_ns_tab+zx_sa11_NS);
-  for (se = &x->SubjectStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Statement;
+       se && se->g.tok == zx_sa11_Statement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "sa11:Statement", sizeof("sa11:Statement")-1, zx_ns_tab+(zx_sa11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SubjectStatement->gg;
+       se && se->g.tok == zx_sa11_SubjectStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_SubjectStatement(c, (struct zx_sa11_SubjectStatement_s*)se, p);
-  for (se = &x->AuthenticationStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthenticationStatement->gg;
+       se && se->g.tok == zx_sa11_AuthenticationStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_AuthenticationStatement(c, (struct zx_sa11_AuthenticationStatement_s*)se, p);
-  for (se = &x->AuthorizationDecisionStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthorizationDecisionStatement->gg;
+       se && se->g.tok == zx_sa11_AuthorizationDecisionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_AuthorizationDecisionStatement(c, (struct zx_sa11_AuthorizationDecisionStatement_s*)se, p);
-  for (se = &x->AttributeStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeStatement->gg;
+       se && se->g.tok == zx_sa11_AttributeStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_AttributeStatement(c, (struct zx_sa11_AttributeStatement_s*)se, p);
-  for (se = &x->XACMLAuthzDecisionStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->XACMLAuthzDecisionStatement->gg;
+       se && se->g.tok == zx_xasa_XACMLAuthzDecisionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xasa_XACMLAuthzDecisionStatement(c, (struct zx_xasa_XACMLAuthzDecisionStatement_s*)se, p);
-  for (se = &x->XACMLPolicyStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->XACMLPolicyStatement->gg;
+       se && se->g.tok == zx_xasa_XACMLPolicyStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xasa_XACMLPolicyStatement(c, (struct zx_xasa_XACMLPolicyStatement_s*)se, p);
-  for (se = &x->xasacd1_XACMLAuthzDecisionStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xasacd1_XACMLAuthzDecisionStatement->gg;
+       se && se->g.tok == zx_xasacd1_XACMLAuthzDecisionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xasacd1_XACMLAuthzDecisionStatement(c, (struct zx_xasacd1_XACMLAuthzDecisionStatement_s*)se, p);
-  for (se = &x->xasacd1_XACMLPolicyStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xasacd1_XACMLPolicyStatement->gg;
+       se && se->g.tok == zx_xasacd1_XACMLPolicyStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xasacd1_XACMLPolicyStatement(c, (struct zx_xasacd1_XACMLPolicyStatement_s*)se, p);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
 
@@ -272,7 +320,7 @@ int zx_LEN_SO_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_ff12_Auth
   int len = sizeof("<ff12:AuthenticationStatement")-1 + 1 + sizeof("</ff12:AuthenticationStatement>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->AuthenticationInstant, sizeof("AuthenticationInstant")-1, &pop_seen);
   len += zx_attr_so_len(c, x->AuthenticationMethod, sizeof("AuthenticationMethod")-1, &pop_seen);
@@ -284,13 +332,21 @@ int zx_LEN_SO_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_ff12_Auth
   int len = 0;
 #endif
   
-  for (se = &x->Subject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subject->gg;
+       se && se->g.tok == zx_sa11_Subject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_Subject(c, (struct zx_sa11_Subject_s*)se);
-  for (se = &x->SubjectLocality->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubjectLocality->gg;
+       se && se->g.tok == zx_sa11_SubjectLocality_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_SubjectLocality(c, (struct zx_sa11_SubjectLocality_s*)se);
-  for (se = &x->AuthorityBinding->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthorityBinding->gg;
+       se && se->g.tok == zx_sa11_AuthorityBinding_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_AuthorityBinding(c, (struct zx_sa11_AuthorityBinding_s*)se);
-  for (se = &x->AuthnContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnContext->gg;
+       se && se->g.tok == zx_ff12_AuthnContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_AuthnContext(c, (struct zx_ff12_AuthnContext_s*)se);
 
 
@@ -318,7 +374,7 @@ char* zx_ENC_SO_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_ff12_Au
   ZX_OUT_TAG(p, "<ff12:AuthenticationStatement");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -334,13 +390,21 @@ char* zx_ENC_SO_ff12_AuthenticationStatement(struct zx_ctx* c, struct zx_ff12_Au
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Subject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subject->gg;
+       se && se->g.tok == zx_sa11_Subject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_Subject(c, (struct zx_sa11_Subject_s*)se, p);
-  for (se = &x->SubjectLocality->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubjectLocality->gg;
+       se && se->g.tok == zx_sa11_SubjectLocality_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_SubjectLocality(c, (struct zx_sa11_SubjectLocality_s*)se, p);
-  for (se = &x->AuthorityBinding->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthorityBinding->gg;
+       se && se->g.tok == zx_sa11_AuthorityBinding_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_AuthorityBinding(c, (struct zx_sa11_AuthorityBinding_s*)se, p);
-  for (se = &x->AuthnContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnContext->gg;
+       se && se->g.tok == zx_ff12_AuthnContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_AuthnContext(c, (struct zx_ff12_AuthnContext_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -421,7 +485,7 @@ int zx_LEN_SO_ff12_AuthnContext(struct zx_ctx* c, struct zx_ff12_AuthnContext_s*
   int len = sizeof("<ff12:AuthnContext")-1 + 1 + sizeof("</ff12:AuthnContext>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -429,12 +493,18 @@ int zx_LEN_SO_ff12_AuthnContext(struct zx_ctx* c, struct zx_ff12_AuthnContext_s*
   int len = 0;
 #endif
   
-  for (se = x->AuthnContextClassRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextClassRef")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->AuthenticationContextStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AuthnContextClassRef;
+    se && se->g.tok == zx_ff12_AuthnContextClassRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextClassRef")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AuthenticationContextStatement->gg;
+       se && se->g.tok == zx_ac_AuthenticationContextStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ac_AuthenticationContextStatement(c, (struct zx_ac_AuthenticationContextStatement_s*)se);
-  for (se = x->AuthnContextStatementRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextStatementRef")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->AuthnContextStatementRef;
+    se && se->g.tok == zx_ff12_AuthnContextStatementRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextStatementRef")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -461,7 +531,7 @@ char* zx_ENC_SO_ff12_AuthnContext(struct zx_ctx* c, struct zx_ff12_AuthnContext_
   ZX_OUT_TAG(p, "<ff12:AuthnContext");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -473,12 +543,18 @@ char* zx_ENC_SO_ff12_AuthnContext(struct zx_ctx* c, struct zx_ff12_AuthnContext_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AuthnContextClassRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextClassRef", sizeof("ff12:AuthnContextClassRef")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->AuthenticationContextStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AuthnContextClassRef;
+       se && se->g.tok == zx_ff12_AuthnContextClassRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextClassRef", sizeof("ff12:AuthnContextClassRef")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AuthenticationContextStatement->gg;
+       se && se->g.tok == zx_ac_AuthenticationContextStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ac_AuthenticationContextStatement(c, (struct zx_ac_AuthenticationContextStatement_s*)se, p);
-  for (se = x->AuthnContextStatementRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextStatementRef", sizeof("ff12:AuthnContextStatementRef")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->AuthnContextStatementRef;
+       se && se->g.tok == zx_ff12_AuthnContextStatementRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextStatementRef", sizeof("ff12:AuthnContextStatementRef")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -558,7 +634,7 @@ int zx_LEN_SO_ff12_AuthnRequest(struct zx_ctx* c, struct zx_ff12_AuthnRequest_s*
   int len = sizeof("<ff12:AuthnRequest")-1 + 1 + sizeof("</ff12:AuthnRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
   len += zx_attr_so_len(c, x->MajorVersion, sizeof("MajorVersion")-1, &pop_seen);
@@ -571,32 +647,58 @@ int zx_LEN_SO_ff12_AuthnRequest(struct zx_ctx* c, struct zx_ff12_AuthnRequest_s*
   int len = 0;
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+    se && se->g.tok == zx_sp11_RespondWith_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AffiliationID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AffiliationID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->NameIDPolicy; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:NameIDPolicy")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->ForceAuthn; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ForceAuthn")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->IsPassive; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:IsPassive")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->ProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProtocolProfile")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AssertionConsumerServiceID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AssertionConsumerServiceID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->RequestAuthnContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AffiliationID;
+    se && se->g.tok == zx_ff12_AffiliationID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AffiliationID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIDPolicy;
+    se && se->g.tok == zx_ff12_NameIDPolicy_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:NameIDPolicy")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ForceAuthn;
+    se && se->g.tok == zx_ff12_ForceAuthn_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ForceAuthn")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->IsPassive;
+    se && se->g.tok == zx_ff12_IsPassive_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:IsPassive")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ProtocolProfile;
+    se && se->g.tok == zx_ff12_ProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProtocolProfile")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AssertionConsumerServiceID;
+    se && se->g.tok == zx_ff12_AssertionConsumerServiceID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AssertionConsumerServiceID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RequestAuthnContext->gg;
+       se && se->g.tok == zx_ff12_RequestAuthnContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_RequestAuthnContext(c, (struct zx_ff12_RequestAuthnContext_s*)se);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->Scoping->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RelayState;
+    se && se->g.tok == zx_ff12_RelayState_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Scoping->gg;
+       se && se->g.tok == zx_ff12_Scoping_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Scoping(c, (struct zx_ff12_Scoping_s*)se);
 
 
@@ -624,7 +726,7 @@ char* zx_ENC_SO_ff12_AuthnRequest(struct zx_ctx* c, struct zx_ff12_AuthnRequest_
   ZX_OUT_TAG(p, "<ff12:AuthnRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -641,32 +743,58 @@ char* zx_ENC_SO_ff12_AuthnRequest(struct zx_ctx* c, struct zx_ff12_AuthnRequest_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+       se && se->g.tok == zx_sp11_RespondWith_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AffiliationID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AffiliationID", sizeof("ff12:AffiliationID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->NameIDPolicy; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:NameIDPolicy", sizeof("ff12:NameIDPolicy")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->ForceAuthn; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ForceAuthn", sizeof("ff12:ForceAuthn")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->IsPassive; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:IsPassive", sizeof("ff12:IsPassive")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->ProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProtocolProfile", sizeof("ff12:ProtocolProfile")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AssertionConsumerServiceID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AssertionConsumerServiceID", sizeof("ff12:AssertionConsumerServiceID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->RequestAuthnContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AffiliationID;
+       se && se->g.tok == zx_ff12_AffiliationID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AffiliationID", sizeof("ff12:AffiliationID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIDPolicy;
+       se && se->g.tok == zx_ff12_NameIDPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:NameIDPolicy", sizeof("ff12:NameIDPolicy")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ForceAuthn;
+       se && se->g.tok == zx_ff12_ForceAuthn_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ForceAuthn", sizeof("ff12:ForceAuthn")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->IsPassive;
+       se && se->g.tok == zx_ff12_IsPassive_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:IsPassive", sizeof("ff12:IsPassive")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ProtocolProfile;
+       se && se->g.tok == zx_ff12_ProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProtocolProfile", sizeof("ff12:ProtocolProfile")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AssertionConsumerServiceID;
+       se && se->g.tok == zx_ff12_AssertionConsumerServiceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AssertionConsumerServiceID", sizeof("ff12:AssertionConsumerServiceID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RequestAuthnContext->gg;
+       se && se->g.tok == zx_ff12_RequestAuthnContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_RequestAuthnContext(c, (struct zx_ff12_RequestAuthnContext_s*)se, p);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->Scoping->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RelayState;
+       se && se->g.tok == zx_ff12_RelayState_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Scoping->gg;
+       se && se->g.tok == zx_ff12_Scoping_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Scoping(c, (struct zx_ff12_Scoping_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -747,7 +875,7 @@ int zx_LEN_SO_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnRe
   int len = sizeof("<ff12:AuthnRequestEnvelope")-1 + 1 + sizeof("</ff12:AuthnRequestEnvelope>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -755,20 +883,34 @@ int zx_LEN_SO_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnRe
   int len = 0;
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = &x->AuthnRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnRequest->gg;
+       se && se->g.tok == zx_ff12_AuthnRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_AuthnRequest(c, (struct zx_ff12_AuthnRequest_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->ProviderName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderName")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AssertionConsumerServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AssertionConsumerServiceURL")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->IDPList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ProviderName;
+    se && se->g.tok == zx_ff12_ProviderName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderName")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AssertionConsumerServiceURL;
+    se && se->g.tok == zx_ff12_AssertionConsumerServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AssertionConsumerServiceURL")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IDPList->gg;
+       se && se->g.tok == zx_ff12_IDPList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_IDPList(c, (struct zx_ff12_IDPList_s*)se);
-  for (se = x->IsPassive; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:IsPassive")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->IsPassive;
+    se && se->g.tok == zx_ff12_IsPassive_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:IsPassive")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -795,7 +937,7 @@ char* zx_ENC_SO_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_ff12_Authn
   ZX_OUT_TAG(p, "<ff12:AuthnRequestEnvelope");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -807,20 +949,34 @@ char* zx_ENC_SO_ff12_AuthnRequestEnvelope(struct zx_ctx* c, struct zx_ff12_Authn
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = &x->AuthnRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnRequest->gg;
+       se && se->g.tok == zx_ff12_AuthnRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_AuthnRequest(c, (struct zx_ff12_AuthnRequest_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->ProviderName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderName", sizeof("ff12:ProviderName")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AssertionConsumerServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AssertionConsumerServiceURL", sizeof("ff12:AssertionConsumerServiceURL")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->IDPList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ProviderName;
+       se && se->g.tok == zx_ff12_ProviderName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderName", sizeof("ff12:ProviderName")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AssertionConsumerServiceURL;
+       se && se->g.tok == zx_ff12_AssertionConsumerServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AssertionConsumerServiceURL", sizeof("ff12:AssertionConsumerServiceURL")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IDPList->gg;
+       se && se->g.tok == zx_ff12_IDPList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_IDPList(c, (struct zx_ff12_IDPList_s*)se, p);
-  for (se = x->IsPassive; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:IsPassive", sizeof("ff12:IsPassive")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->IsPassive;
+       se && se->g.tok == zx_ff12_IsPassive_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:IsPassive", sizeof("ff12:IsPassive")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -900,7 +1056,7 @@ int zx_LEN_SO_ff12_AuthnResponse(struct zx_ctx* c, struct zx_ff12_AuthnResponse_
   int len = sizeof("<ff12:AuthnResponse")-1 + 1 + sizeof("</ff12:AuthnResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->InResponseTo, sizeof("InResponseTo")-1, &pop_seen);
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
@@ -915,19 +1071,31 @@ int zx_LEN_SO_ff12_AuthnResponse(struct zx_ctx* c, struct zx_ff12_AuthnResponse_
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_sp11_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp11_Status(c, (struct zx_sp11_Status_s*)se);
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa11_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RelayState;
+    se && se->g.tok == zx_ff12_RelayState_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -954,7 +1122,7 @@ char* zx_ENC_SO_ff12_AuthnResponse(struct zx_ctx* c, struct zx_ff12_AuthnRespons
   ZX_OUT_TAG(p, "<ff12:AuthnResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -973,19 +1141,31 @@ char* zx_ENC_SO_ff12_AuthnResponse(struct zx_ctx* c, struct zx_ff12_AuthnRespons
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_sp11_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp11_Status(c, (struct zx_sp11_Status_s*)se, p);
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa11_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RelayState;
+       se && se->g.tok == zx_ff12_RelayState_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1065,7 +1245,7 @@ int zx_LEN_SO_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnR
   int len = sizeof("<ff12:AuthnResponseEnvelope")-1 + 1 + sizeof("</ff12:AuthnResponseEnvelope>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1073,12 +1253,18 @@ int zx_LEN_SO_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_ff12_AuthnR
   int len = 0;
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = &x->AuthnResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnResponse->gg;
+       se && se->g.tok == zx_ff12_AuthnResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_AuthnResponse(c, (struct zx_ff12_AuthnResponse_s*)se);
-  for (se = x->AssertionConsumerServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AssertionConsumerServiceURL")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->AssertionConsumerServiceURL;
+    se && se->g.tok == zx_ff12_AssertionConsumerServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AssertionConsumerServiceURL")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1105,7 +1291,7 @@ char* zx_ENC_SO_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_ff12_Auth
   ZX_OUT_TAG(p, "<ff12:AuthnResponseEnvelope");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1117,12 +1303,18 @@ char* zx_ENC_SO_ff12_AuthnResponseEnvelope(struct zx_ctx* c, struct zx_ff12_Auth
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = &x->AuthnResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnResponse->gg;
+       se && se->g.tok == zx_ff12_AuthnResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_AuthnResponse(c, (struct zx_ff12_AuthnResponse_s*)se, p);
-  for (se = x->AssertionConsumerServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AssertionConsumerServiceURL", sizeof("ff12:AssertionConsumerServiceURL")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->AssertionConsumerServiceURL;
+       se && se->g.tok == zx_ff12_AssertionConsumerServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AssertionConsumerServiceURL", sizeof("ff12:AssertionConsumerServiceURL")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1202,7 +1394,7 @@ int zx_LEN_SO_ff12_EncryptableNameIdentifier(struct zx_ctx* c, struct zx_ff12_En
   int len = sizeof("<ff12:EncryptableNameIdentifier")-1 + 1 + sizeof("</ff12:EncryptableNameIdentifier>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Format, sizeof("Format")-1, &pop_seen);
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
@@ -1240,7 +1432,7 @@ char* zx_ENC_SO_ff12_EncryptableNameIdentifier(struct zx_ctx* c, struct zx_ff12_
   ZX_OUT_TAG(p, "<ff12:EncryptableNameIdentifier");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1335,7 +1527,7 @@ int zx_LEN_SO_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_ff12_Encr
   int len = sizeof("<ff12:EncryptedNameIdentifier")-1 + 1 + sizeof("</ff12:EncryptedNameIdentifier>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1343,9 +1535,13 @@ int zx_LEN_SO_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_ff12_Encr
   int len = 0;
 #endif
   
-  for (se = &x->EncryptedData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedData->gg;
+       se && se->g.tok == zx_xenc_EncryptedData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)se);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se);
 
 
@@ -1373,7 +1569,7 @@ char* zx_ENC_SO_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_ff12_En
   ZX_OUT_TAG(p, "<ff12:EncryptedNameIdentifier");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1385,9 +1581,13 @@ char* zx_ENC_SO_ff12_EncryptedNameIdentifier(struct zx_ctx* c, struct zx_ff12_En
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EncryptedData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedData->gg;
+       se && se->g.tok == zx_xenc_EncryptedData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)se, p);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1468,7 +1668,7 @@ int zx_LEN_SO_ff12_Extension(struct zx_ctx* c, struct zx_ff12_Extension_s* x )
   int len = sizeof("<ff12:Extension")-1 + 1 + sizeof("</ff12:Extension>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1502,7 +1702,7 @@ char* zx_ENC_SO_ff12_Extension(struct zx_ctx* c, struct zx_ff12_Extension_s* x, 
   ZX_OUT_TAG(p, "<ff12:Extension");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1593,7 +1793,7 @@ int zx_LEN_SO_ff12_FederationTerminationNotification(struct zx_ctx* c, struct zx
   int len = sizeof("<ff12:FederationTerminationNotification")-1 + 1 + sizeof("</ff12:FederationTerminationNotification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
   len += zx_attr_so_len(c, x->MajorVersion, sizeof("MajorVersion")-1, &pop_seen);
@@ -1606,16 +1806,26 @@ int zx_LEN_SO_ff12_FederationTerminationNotification(struct zx_ctx* c, struct zx
   int len = 0;
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+    se && se->g.tok == zx_sp11_RespondWith_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se);
 
 
@@ -1643,7 +1853,7 @@ char* zx_ENC_SO_ff12_FederationTerminationNotification(struct zx_ctx* c, struct 
   ZX_OUT_TAG(p, "<ff12:FederationTerminationNotification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1660,16 +1870,26 @@ char* zx_ENC_SO_ff12_FederationTerminationNotification(struct zx_ctx* c, struct 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+       se && se->g.tok == zx_sp11_RespondWith_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1750,7 +1970,7 @@ int zx_LEN_SO_ff12_IDPEntries(struct zx_ctx* c, struct zx_ff12_IDPEntries_s* x )
   int len = sizeof("<ff12:IDPEntries")-1 + 1 + sizeof("</ff12:IDPEntries>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1758,7 +1978,9 @@ int zx_LEN_SO_ff12_IDPEntries(struct zx_ctx* c, struct zx_ff12_IDPEntries_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IDPEntry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPEntry->gg;
+       se && se->g.tok == zx_ff12_IDPEntry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_IDPEntry(c, (struct zx_ff12_IDPEntry_s*)se);
 
 
@@ -1786,7 +2008,7 @@ char* zx_ENC_SO_ff12_IDPEntries(struct zx_ctx* c, struct zx_ff12_IDPEntries_s* x
   ZX_OUT_TAG(p, "<ff12:IDPEntries");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1798,7 +2020,9 @@ char* zx_ENC_SO_ff12_IDPEntries(struct zx_ctx* c, struct zx_ff12_IDPEntries_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IDPEntry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPEntry->gg;
+       se && se->g.tok == zx_ff12_IDPEntry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_IDPEntry(c, (struct zx_ff12_IDPEntry_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1879,7 +2103,7 @@ int zx_LEN_SO_ff12_IDPEntry(struct zx_ctx* c, struct zx_ff12_IDPEntry_s* x )
   int len = sizeof("<ff12:IDPEntry")-1 + 1 + sizeof("</ff12:IDPEntry>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1887,12 +2111,18 @@ int zx_LEN_SO_ff12_IDPEntry(struct zx_ctx* c, struct zx_ff12_IDPEntry_s* x )
   int len = 0;
 #endif
   
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->ProviderName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderName")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->Loc; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:Loc")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ProviderName;
+    se && se->g.tok == zx_ff12_ProviderName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderName")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Loc;
+    se && se->g.tok == zx_ff12_Loc_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:Loc")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1919,7 +2149,7 @@ char* zx_ENC_SO_ff12_IDPEntry(struct zx_ctx* c, struct zx_ff12_IDPEntry_s* x, ch
   ZX_OUT_TAG(p, "<ff12:IDPEntry");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1931,12 +2161,18 @@ char* zx_ENC_SO_ff12_IDPEntry(struct zx_ctx* c, struct zx_ff12_IDPEntry_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->ProviderName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderName", sizeof("ff12:ProviderName")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->Loc; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:Loc", sizeof("ff12:Loc")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ProviderName;
+       se && se->g.tok == zx_ff12_ProviderName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderName", sizeof("ff12:ProviderName")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Loc;
+       se && se->g.tok == zx_ff12_Loc_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:Loc", sizeof("ff12:Loc")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2016,7 +2252,7 @@ int zx_LEN_SO_ff12_IDPList(struct zx_ctx* c, struct zx_ff12_IDPList_s* x )
   int len = sizeof("<ff12:IDPList")-1 + 1 + sizeof("</ff12:IDPList>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2024,10 +2260,14 @@ int zx_LEN_SO_ff12_IDPList(struct zx_ctx* c, struct zx_ff12_IDPList_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IDPEntries->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPEntries->gg;
+       se && se->g.tok == zx_ff12_IDPEntries_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_IDPEntries(c, (struct zx_ff12_IDPEntries_s*)se);
-  for (se = x->GetComplete; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:GetComplete")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->GetComplete;
+    se && se->g.tok == zx_ff12_GetComplete_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:GetComplete")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2054,7 +2294,7 @@ char* zx_ENC_SO_ff12_IDPList(struct zx_ctx* c, struct zx_ff12_IDPList_s* x, char
   ZX_OUT_TAG(p, "<ff12:IDPList");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2066,10 +2306,14 @@ char* zx_ENC_SO_ff12_IDPList(struct zx_ctx* c, struct zx_ff12_IDPList_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IDPEntries->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPEntries->gg;
+       se && se->g.tok == zx_ff12_IDPEntries_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_IDPEntries(c, (struct zx_ff12_IDPEntries_s*)se, p);
-  for (se = x->GetComplete; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:GetComplete", sizeof("ff12:GetComplete")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->GetComplete;
+       se && se->g.tok == zx_ff12_GetComplete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:GetComplete", sizeof("ff12:GetComplete")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2149,7 +2393,7 @@ int zx_LEN_SO_ff12_IDPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_ID
   int len = sizeof("<ff12:IDPProvidedNameIdentifier")-1 + 1 + sizeof("</ff12:IDPProvidedNameIdentifier>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Format, sizeof("Format")-1, &pop_seen);
   len += zx_attr_so_len(c, x->NameQualifier, sizeof("NameQualifier")-1, &pop_seen);
@@ -2185,7 +2429,7 @@ char* zx_ENC_SO_ff12_IDPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_
   ZX_OUT_TAG(p, "<ff12:IDPProvidedNameIdentifier");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2278,7 +2522,7 @@ int zx_LEN_SO_ff12_LogoutRequest(struct zx_ctx* c, struct zx_ff12_LogoutRequest_
   int len = sizeof("<ff12:LogoutRequest")-1 + 1 + sizeof("</ff12:LogoutRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
   len += zx_attr_so_len(c, x->MajorVersion, sizeof("MajorVersion")-1, &pop_seen);
@@ -2292,21 +2536,35 @@ int zx_LEN_SO_ff12_LogoutRequest(struct zx_ctx* c, struct zx_ff12_LogoutRequest_
   int len = 0;
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+    se && se->g.tok == zx_sp11_RespondWith_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se);
-  for (se = x->SessionIndex; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:SessionIndex")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->SessionIndex;
+    se && se->g.tok == zx_ff12_SessionIndex_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:SessionIndex")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RelayState;
+    se && se->g.tok == zx_ff12_RelayState_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2333,7 +2591,7 @@ char* zx_ENC_SO_ff12_LogoutRequest(struct zx_ctx* c, struct zx_ff12_LogoutReques
   ZX_OUT_TAG(p, "<ff12:LogoutRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2351,21 +2609,35 @@ char* zx_ENC_SO_ff12_LogoutRequest(struct zx_ctx* c, struct zx_ff12_LogoutReques
   /* root node has no begin tag */
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+       se && se->g.tok == zx_sp11_RespondWith_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se, p);
-  for (se = x->SessionIndex; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:SessionIndex", sizeof("ff12:SessionIndex")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->SessionIndex;
+       se && se->g.tok == zx_ff12_SessionIndex_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:SessionIndex", sizeof("ff12:SessionIndex")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RelayState;
+       se && se->g.tok == zx_ff12_RelayState_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2445,7 +2717,7 @@ int zx_LEN_SO_ff12_LogoutResponse(struct zx_ctx* c, struct zx_ff12_LogoutRespons
   int len = sizeof("<ff12:LogoutResponse")-1 + 1 + sizeof("</ff12:LogoutResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->InResponseTo, sizeof("InResponseTo")-1, &pop_seen);
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
@@ -2459,17 +2731,27 @@ int zx_LEN_SO_ff12_LogoutResponse(struct zx_ctx* c, struct zx_ff12_LogoutRespons
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_sp11_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp11_Status(c, (struct zx_sp11_Status_s*)se);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->RelayState;
+    se && se->g.tok == zx_ff12_RelayState_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2496,7 +2778,7 @@ char* zx_ENC_SO_ff12_LogoutResponse(struct zx_ctx* c, struct zx_ff12_LogoutRespo
   ZX_OUT_TAG(p, "<ff12:LogoutResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2514,17 +2796,27 @@ char* zx_ENC_SO_ff12_LogoutResponse(struct zx_ctx* c, struct zx_ff12_LogoutRespo
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_sp11_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp11_Status(c, (struct zx_sp11_Status_s*)se, p);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->RelayState;
+       se && se->g.tok == zx_ff12_RelayState_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2604,7 +2896,7 @@ int zx_LEN_SO_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_ff12
   int len = sizeof("<ff12:NameIdentifierMappingRequest")-1 + 1 + sizeof("</ff12:NameIdentifierMappingRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
   len += zx_attr_so_len(c, x->MajorVersion, sizeof("MajorVersion")-1, &pop_seen);
@@ -2617,19 +2909,31 @@ int zx_LEN_SO_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_ff12
   int len = 0;
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+    se && se->g.tok == zx_sp11_RespondWith_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se);
-  for (se = x->TargetNamespace; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:TargetNamespace")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->TargetNamespace;
+    se && se->g.tok == zx_ff12_TargetNamespace_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:TargetNamespace")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2656,7 +2960,7 @@ char* zx_ENC_SO_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_ff
   ZX_OUT_TAG(p, "<ff12:NameIdentifierMappingRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2673,19 +2977,31 @@ char* zx_ENC_SO_ff12_NameIdentifierMappingRequest(struct zx_ctx* c, struct zx_ff
   /* root node has no begin tag */
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+       se && se->g.tok == zx_sp11_RespondWith_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se, p);
-  for (se = x->TargetNamespace; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:TargetNamespace", sizeof("ff12:TargetNamespace")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->TargetNamespace;
+       se && se->g.tok == zx_ff12_TargetNamespace_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:TargetNamespace", sizeof("ff12:TargetNamespace")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2765,7 +3081,7 @@ int zx_LEN_SO_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_ff1
   int len = sizeof("<ff12:NameIdentifierMappingResponse")-1 + 1 + sizeof("</ff12:NameIdentifierMappingResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->InResponseTo, sizeof("InResponseTo")-1, &pop_seen);
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
@@ -2779,16 +3095,26 @@ int zx_LEN_SO_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_ff1
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_sp11_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp11_Status(c, (struct zx_sp11_Status_s*)se);
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se);
 
 
@@ -2816,7 +3142,7 @@ char* zx_ENC_SO_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_f
   ZX_OUT_TAG(p, "<ff12:NameIdentifierMappingResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2834,16 +3160,26 @@ char* zx_ENC_SO_ff12_NameIdentifierMappingResponse(struct zx_ctx* c, struct zx_f
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_sp11_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp11_Status(c, (struct zx_sp11_Status_s*)se, p);
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2924,7 +3260,7 @@ int zx_LEN_SO_ff12_OldProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_Ol
   int len = sizeof("<ff12:OldProvidedNameIdentifier")-1 + 1 + sizeof("</ff12:OldProvidedNameIdentifier>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Format, sizeof("Format")-1, &pop_seen);
   len += zx_attr_so_len(c, x->NameQualifier, sizeof("NameQualifier")-1, &pop_seen);
@@ -2960,7 +3296,7 @@ char* zx_ENC_SO_ff12_OldProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_
   ZX_OUT_TAG(p, "<ff12:OldProvidedNameIdentifier");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3053,7 +3389,7 @@ int zx_LEN_SO_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_ff1
   int len = sizeof("<ff12:RegisterNameIdentifierRequest")-1 + 1 + sizeof("</ff12:RegisterNameIdentifierRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
   len += zx_attr_so_len(c, x->MajorVersion, sizeof("MajorVersion")-1, &pop_seen);
@@ -3065,23 +3401,39 @@ int zx_LEN_SO_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_ff1
   int len = 0;
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+    se && se->g.tok == zx_sp11_RespondWith_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->IDPProvidedNameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IDPProvidedNameIdentifier->gg;
+       se && se->g.tok == zx_ff12_IDPProvidedNameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_IDPProvidedNameIdentifier(c, (struct zx_ff12_IDPProvidedNameIdentifier_s*)se);
-  for (se = &x->SPProvidedNameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPProvidedNameIdentifier->gg;
+       se && se->g.tok == zx_ff12_SPProvidedNameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_SPProvidedNameIdentifier(c, (struct zx_ff12_SPProvidedNameIdentifier_s*)se);
-  for (se = &x->OldProvidedNameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OldProvidedNameIdentifier->gg;
+       se && se->g.tok == zx_ff12_OldProvidedNameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_OldProvidedNameIdentifier(c, (struct zx_ff12_OldProvidedNameIdentifier_s*)se);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->RelayState;
+    se && se->g.tok == zx_ff12_RelayState_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3108,7 +3460,7 @@ char* zx_ENC_SO_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_f
   ZX_OUT_TAG(p, "<ff12:RegisterNameIdentifierRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3124,23 +3476,39 @@ char* zx_ENC_SO_ff12_RegisterNameIdentifierRequest(struct zx_ctx* c, struct zx_f
   /* root node has no begin tag */
 #endif
   
-  for (se = x->RespondWith; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+zx_sp11_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RespondWith;
+       se && se->g.tok == zx_sp11_RespondWith_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "sp11:RespondWith", sizeof("sp11:RespondWith")-1, zx_ns_tab+(zx_sp11_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->IDPProvidedNameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IDPProvidedNameIdentifier->gg;
+       se && se->g.tok == zx_ff12_IDPProvidedNameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_IDPProvidedNameIdentifier(c, (struct zx_ff12_IDPProvidedNameIdentifier_s*)se, p);
-  for (se = &x->SPProvidedNameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPProvidedNameIdentifier->gg;
+       se && se->g.tok == zx_ff12_SPProvidedNameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_SPProvidedNameIdentifier(c, (struct zx_ff12_SPProvidedNameIdentifier_s*)se, p);
-  for (se = &x->OldProvidedNameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OldProvidedNameIdentifier->gg;
+       se && se->g.tok == zx_ff12_OldProvidedNameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_OldProvidedNameIdentifier(c, (struct zx_ff12_OldProvidedNameIdentifier_s*)se, p);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->RelayState;
+       se && se->g.tok == zx_ff12_RelayState_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3220,7 +3588,7 @@ int zx_LEN_SO_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_ff
   int len = sizeof("<ff12:RegisterNameIdentifierResponse")-1 + 1 + sizeof("</ff12:RegisterNameIdentifierResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->InResponseTo, sizeof("InResponseTo")-1, &pop_seen);
   len += zx_attr_so_len(c, x->IssueInstant, sizeof("IssueInstant")-1, &pop_seen);
@@ -3234,17 +3602,27 @@ int zx_LEN_SO_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_ff
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_ff12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_sp11_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp11_Status(c, (struct zx_sp11_Status_s*)se);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->RelayState;
+    se && se->g.tok == zx_ff12_RelayState_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3271,7 +3649,7 @@ char* zx_ENC_SO_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_
   ZX_OUT_TAG(p, "<ff12:RegisterNameIdentifierResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3289,17 +3667,27 @@ char* zx_ENC_SO_ff12_RegisterNameIdentifierResponse(struct zx_ctx* c, struct zx_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_ff12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Extension(c, (struct zx_ff12_Extension_s*)se, p);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_ff12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProviderID", sizeof("ff12:ProviderID")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_sp11_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp11_Status(c, (struct zx_sp11_Status_s*)se, p);
-  for (se = x->RelayState; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->RelayState;
+       se && se->g.tok == zx_ff12_RelayState_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:RelayState", sizeof("ff12:RelayState")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3379,7 +3767,7 @@ int zx_LEN_SO_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_ff12_RequestA
   int len = sizeof("<ff12:RequestAuthnContext")-1 + 1 + sizeof("</ff12:RequestAuthnContext>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3387,12 +3775,18 @@ int zx_LEN_SO_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_ff12_RequestA
   int len = 0;
 #endif
   
-  for (se = x->AuthnContextClassRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextClassRef")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AuthnContextStatementRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextStatementRef")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AuthnContextComparison; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextComparison")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->AuthnContextClassRef;
+    se && se->g.tok == zx_ff12_AuthnContextClassRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextClassRef")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AuthnContextStatementRef;
+    se && se->g.tok == zx_ff12_AuthnContextStatementRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextStatementRef")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AuthnContextComparison;
+    se && se->g.tok == zx_ff12_AuthnContextComparison_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:AuthnContextComparison")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3419,7 +3813,7 @@ char* zx_ENC_SO_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_ff12_Reques
   ZX_OUT_TAG(p, "<ff12:RequestAuthnContext");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3431,12 +3825,18 @@ char* zx_ENC_SO_ff12_RequestAuthnContext(struct zx_ctx* c, struct zx_ff12_Reques
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AuthnContextClassRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextClassRef", sizeof("ff12:AuthnContextClassRef")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AuthnContextStatementRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextStatementRef", sizeof("ff12:AuthnContextStatementRef")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = x->AuthnContextComparison; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextComparison", sizeof("ff12:AuthnContextComparison")-1, zx_ns_tab+zx_ff12_NS);
+  for (se = x->AuthnContextClassRef;
+       se && se->g.tok == zx_ff12_AuthnContextClassRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextClassRef", sizeof("ff12:AuthnContextClassRef")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AuthnContextStatementRef;
+       se && se->g.tok == zx_ff12_AuthnContextStatementRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextStatementRef", sizeof("ff12:AuthnContextStatementRef")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AuthnContextComparison;
+       se && se->g.tok == zx_ff12_AuthnContextComparison_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:AuthnContextComparison", sizeof("ff12:AuthnContextComparison")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3516,7 +3916,7 @@ int zx_LEN_SO_ff12_SPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_SPP
   int len = sizeof("<ff12:SPProvidedNameIdentifier")-1 + 1 + sizeof("</ff12:SPProvidedNameIdentifier>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Format, sizeof("Format")-1, &pop_seen);
   len += zx_attr_so_len(c, x->NameQualifier, sizeof("NameQualifier")-1, &pop_seen);
@@ -3552,7 +3952,7 @@ char* zx_ENC_SO_ff12_SPProvidedNameIdentifier(struct zx_ctx* c, struct zx_ff12_S
   ZX_OUT_TAG(p, "<ff12:SPProvidedNameIdentifier");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3645,7 +4045,7 @@ int zx_LEN_SO_ff12_Scoping(struct zx_ctx* c, struct zx_ff12_Scoping_s* x )
   int len = sizeof("<ff12:Scoping")-1 + 1 + sizeof("</ff12:Scoping>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3653,9 +4053,13 @@ int zx_LEN_SO_ff12_Scoping(struct zx_ctx* c, struct zx_ff12_Scoping_s* x )
   int len = 0;
 #endif
   
-  for (se = x->ProxyCount; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProxyCount")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->IDPList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProxyCount;
+    se && se->g.tok == zx_ff12_ProxyCount_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ff12:ProxyCount")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IDPList->gg;
+       se && se->g.tok == zx_ff12_IDPList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_IDPList(c, (struct zx_ff12_IDPList_s*)se);
 
 
@@ -3683,7 +4087,7 @@ char* zx_ENC_SO_ff12_Scoping(struct zx_ctx* c, struct zx_ff12_Scoping_s* x, char
   ZX_OUT_TAG(p, "<ff12:Scoping");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3695,9 +4099,13 @@ char* zx_ENC_SO_ff12_Scoping(struct zx_ctx* c, struct zx_ff12_Scoping_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ProxyCount; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProxyCount", sizeof("ff12:ProxyCount")-1, zx_ns_tab+zx_ff12_NS);
-  for (se = &x->IDPList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProxyCount;
+       se && se->g.tok == zx_ff12_ProxyCount_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ff12:ProxyCount", sizeof("ff12:ProxyCount")-1, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IDPList->gg;
+       se && se->g.tok == zx_ff12_IDPList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_IDPList(c, (struct zx_ff12_IDPList_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3778,7 +4186,7 @@ int zx_LEN_SO_ff12_Subject(struct zx_ctx* c, struct zx_ff12_Subject_s* x )
   int len = sizeof("<ff12:Subject")-1 + 1 + sizeof("</ff12:Subject>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3786,11 +4194,17 @@ int zx_LEN_SO_ff12_Subject(struct zx_ctx* c, struct zx_ff12_Subject_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se);
-  for (se = &x->SubjectConfirmation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubjectConfirmation->gg;
+       se && se->g.tok == zx_sa11_SubjectConfirmation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_SubjectConfirmation(c, (struct zx_sa11_SubjectConfirmation_s*)se);
-  for (se = &x->IDPProvidedNameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPProvidedNameIdentifier->gg;
+       se && se->g.tok == zx_ff12_IDPProvidedNameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_IDPProvidedNameIdentifier(c, (struct zx_ff12_IDPProvidedNameIdentifier_s*)se);
 
 
@@ -3818,7 +4232,7 @@ char* zx_ENC_SO_ff12_Subject(struct zx_ctx* c, struct zx_ff12_Subject_s* x, char
   ZX_OUT_TAG(p, "<ff12:Subject");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ff12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ff12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3830,11 +4244,17 @@ char* zx_ENC_SO_ff12_Subject(struct zx_ctx* c, struct zx_ff12_Subject_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->NameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIdentifier->gg;
+       se && se->g.tok == zx_sa11_NameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_NameIdentifier(c, (struct zx_sa11_NameIdentifier_s*)se, p);
-  for (se = &x->SubjectConfirmation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubjectConfirmation->gg;
+       se && se->g.tok == zx_sa11_SubjectConfirmation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_SubjectConfirmation(c, (struct zx_sa11_SubjectConfirmation_s*)se, p);
-  for (se = &x->IDPProvidedNameIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPProvidedNameIdentifier->gg;
+       se && se->g.tok == zx_ff12_IDPProvidedNameIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_IDPProvidedNameIdentifier(c, (struct zx_ff12_IDPProvidedNameIdentifier_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

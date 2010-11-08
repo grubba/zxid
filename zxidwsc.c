@@ -86,19 +86,19 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   }
   if (ZX_SIMPLE_ELEM_CHK(hdr->RelatesTo)) {
     if (ses->wsc_msgid) {
-      if (strlen(ses->wsc_msgid) == hdr->RelatesTo->gg.content->len
+      if (strlen(ses->wsc_msgid) == ZX_GET_CONTENT_LEN(hdr->RelatesTo)
 	  && !memcmp(ses->wsc_msgid,
-		     hdr->RelatesTo->gg.content->s,
-		     hdr->RelatesTo->gg.content->len)) {
+		     ZX_GET_CONTENT_S(hdr->RelatesTo),
+		     ZX_GET_CONTENT_LEN(hdr->RelatesTo))) {
 	D("RelatesTo check OK %d",1);
       } else {
 	/* N.B. [SOAPBinding2] p.27, ll.818-822 indicates RelatesTo checking as SHOULD. */
 	if (cf->relto_fatal) {
-	  ERR("<a:RelatesTo> (%.*s) does not match request msgid(%s).", hdr->RelatesTo->gg.content->len, hdr->RelatesTo->gg.content->s, ses->wsc_msgid);
+	  ERR("<a:RelatesTo> (%.*s) does not match request msgid(%s).", ZX_GET_CONTENT_LEN(hdr->RelatesTo), ZX_GET_CONTENT_S(hdr->RelatesTo), ses->wsc_msgid);
 	  zxid_set_fault(cf, ses, zxid_mk_fault(cf, TAS3_PEP_RS_IN, "e:Server", "RelatesTo in response does not match request MessageID.", "InvalidRefToMsgID", 0, 0, 0));
 	  return 0;
 	} else {
-	  INFO("<a:RelatesTo> (%.*s) does not match request msgid(%s), but configured to ignore this error (RELTO_FATAL=0).", hdr->RelatesTo->gg.content->len, hdr->RelatesTo->gg.content->s, ses->wsc_msgid);
+	  INFO("<a:RelatesTo> (%.*s) does not match request msgid(%s), but configured to ignore this error (RELTO_FATAL=0).", ZX_GET_CONTENT_LEN(hdr->RelatesTo), ZX_GET_CONTENT_S(hdr->RelatesTo), ses->wsc_msgid);
 	}
       }
     } else {
@@ -169,11 +169,11 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     return 0;
 
   if (hdr->UsageDirective) {
-    if (hdr->UsageDirective->Obligation && hdr->UsageDirective->Obligation->AttributeAssignment && hdr->UsageDirective->Obligation->AttributeAssignment->gg.content) {
-      ses->rcvd_usagedir = zx_str_to_c(cf->ctx, hdr->UsageDirective->Obligation->AttributeAssignment->gg.content);
+    if (hdr->UsageDirective->Obligation && ZX_GET_CONTENT(hdr->UsageDirective->Obligation->AttributeAssignment)) {
+      ses->rcvd_usagedir = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(hdr->UsageDirective->Obligation->AttributeAssignment));
       D("Found TAS3 UsageDirective with obligation(%s)", ses->rcvd_usagedir);
-    } else if (hdr->UsageDirective->gg.content) {
-      ses->rcvd_usagedir = zx_str_to_c(cf->ctx, hdr->UsageDirective->gg.content);
+    } else if (ZX_GET_CONTENT(hdr->UsageDirective)) {
+      ses->rcvd_usagedir = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(hdr->UsageDirective));
       D("Found unknown UsageDirective(%s)", ses->rcvd_usagedir);
     } else {
       ERR("UsageDirective empty or not understood. %p", hdr->UsageDirective->Dict);
@@ -210,7 +210,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
   
   ss.s = (char*)enve;
   ss.len = strlen(enve);
-  logpath = zxlog_path(cf, issuer, hdr->MessageID->gg.content,
+  logpath = zxlog_path(cf, issuer, ZX_GET_CONTENT(hdr->MessageID),
 		       ZXLOG_RELY_DIR, ZXLOG_MSG_KIND, 1);
   if (zxlog_dup_check(cf, logpath, "validate response")) {
     if (cf->dup_msg_fatal) {
@@ -222,7 +222,7 @@ static int zxid_wsc_validate_resp_env(zxid_conf* cf, zxid_ses* ses, const char* 
     }
   }
   zxlog_blob(cf, cf->log_rely_msg, logpath, &ss, "validate response");
-  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n?&ses->a7n->ID->g:0, ses->nameid?ses->nameid->gg.content:0, "N", "K", "VALID", logpath->s, 0);
+  zxlog(cf, &ourts, &srcts, 0, issuer, 0, ses->a7n?&ses->a7n->ID->g:0, ZX_GET_CONTENT(ses->nameid), "N", "K", "VALID", logpath->s, 0);
   return 1;
 }
 
@@ -245,7 +245,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
       D("TargetIdentity: Using token from EPR due to specification of ses->call_invoktok %d",0);
       tok = epr->Metadata->SecurityContext->Token;
     }
-    hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx);
+    hdr->TargetIdentity = zx_NEW_b_TargetIdentity(cf->ctx,0);
     hdr->TargetIdentity->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
     hdr->TargetIdentity->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
     if (tok->EncryptedAssertion)
@@ -257,13 +257,13 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
     }
   } /* else this is just implied by the sec mech */
 
-  hdr->To = zx_NEW_a_To(cf->ctx);
-  hdr->To->gg.content = epr->Address->gg.content;
+  hdr->To = zx_NEW_a_To(cf->ctx, &hdr->gg);
+  zx_add_content(c, &hdr->To->gg, ZX_GET_CONTENT(epr->Address));
   hdr->To->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->To->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
 
   /* Mandatory for a request. */
-  hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx);
+  hdr->ReplyTo = zx_NEW_a_ReplyTo(cf->ctx, &hdr->gg);
   /*hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_strf(cf->ctx, "%s?o=P", cf->url));*/
   hdr->ReplyTo->Address = zxid_mk_addr(cf, zx_dup_str(cf->ctx, A_ANON));
   hdr->ReplyTo->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
@@ -271,7 +271,7 @@ static int zxid_wsc_prep(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_
 
 #if 0
   /* Omission means to use same address as ReplyTo */
-  hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx);
+  hdr->FaultTo = zx_NEW_a_FaultTo(cf->ctx, &hdr->gg);
   hdr->FaultTo->Address = zx_mk_addr(cf->ctx, zx_strf(cf->ctx, "%s?o=P", cf->url));
   hdr->FaultTo->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   hdr->FaultTo->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
@@ -320,13 +320,13 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
   }
 
   hdr = env->Header;
-  hdr->MessageID->gg.content = zxid_mk_id(cf, "urn:M", ZXID_ID_BITS);
+  zx_add_content(c, &hdr->MessageID->gg, zxid_mk_id(cf, "urn:M", ZXID_ID_BITS));
   sec = hdr->Security;
   if (!sec || !sec->Timestamp || !sec->Timestamp->Created) {
     ERR("MUST supply wsse:Security and Timestamp %p", sec);
     return 0;
   }
-  sec->Timestamp->Created->gg.content = zxid_date_time(cf, time(0));
+  zx_add_content(c, &sec->Timestamp->Created->gg, zxid_date_time(cf, time(0)));
     
   /* Clear away any credentials from previous iteration, if any. */
   sec->Signature = 0;
@@ -345,11 +345,11 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
     break;
   case ZXID_SEC_MECH_BEARER:
     zxid_choose_security_token(cf, ses, epr, sec);
-    str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx);
-    str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx);
+    str = sec->SecurityTokenReference = zx_NEW_wsse_SecurityTokenReference(cf->ctx,0);
+    str->KeyIdentifier = zx_NEW_wsse_KeyIdentifier(cf->ctx, &str->gg);
     str->KeyIdentifier->ValueType = zx_ref_attr(cf->ctx, zx_ValueType_ATTR, SAMLID_TOK_PROFILE);
     if (sec->Assertion)
-      str->KeyIdentifier->gg.content = &sec->Assertion->ID->g;
+      zx_add_content(c, &str->KeyIdentifier->gg, &sec->Assertion->ID->g);
     /* *** In case of encrypted assertion, how is the KeyIdentifier populated? */
     
     zxid_wsf_sign(cf, cf->wsc_sign, sec, str, hdr, env->Body);
@@ -393,6 +393,9 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
 struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, struct zx_e_Envelope_s* env, char** ret_enve)
 {
   int i, res;
+  struct zx_str* code;
+  struct zx_str* str;
+  struct zx_str* actor;
   struct zx_root_s* root;
   struct zx_e_Fault_s* flt;
 
@@ -408,9 +411,9 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
       D_DEDENT("wsc_call: ");
       return 0;
     }
-    ses->wsc_msgid = zx_str_to_c(cf->ctx, env->Header->MessageID->gg.content);
+    ses->wsc_msgid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(env->Header->MessageID));
     
-    root = zxid_soap_call_envelope(cf, epr->Address->gg.content, env, ret_enve);
+    root = zxid_soap_call_envelope(cf, ZX_GET_CONTENT(epr->Address), env, ret_enve);
     if (!root || !root->Envelope || !root->Envelope->Body) {
       ERR("soap call returned empty or seriously flawed response %p", root);
       D_DEDENT("wsc_call: ");
@@ -418,7 +421,10 @@ struct zx_e_Envelope_s* zxid_wsc_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* ep
     }
     flt = root->Envelope->Body->Fault;
     if (flt) {
-      D("SOAP Fault(%.*s) string(%.*s) actor(%.*s)", flt->faultcode?flt->faultcode->content->len:1, flt->faultcode?flt->faultcode->content->s:"?", flt->faultstring?flt->faultstring->content->len:1, flt->faultstring?flt->faultstring->content->s:"?", flt->faultactor?flt->faultactor->content->len:1, flt->faultactor?flt->faultactor->content->s:"?");
+      code = ZX_GET_CONTENT(flt->faultcode);
+      str = ZX_GET_CONTENT(flt->faultstring);
+      actor = ZX_GET_CONTENT(flt->faultactor);
+      D("SOAP Fault(%.*s) string(%.*s) actor(%.*s)", code?code->len:1, code?code->s:"?", str?str->len:1, str?str->s:"?", actor?actor->len:1, actor?actor->s:"?");
       D_DEDENT("wsc_call: ");
       return 0;
     }
@@ -485,15 +491,15 @@ struct zx_e_Envelope_s* zxid_add_env_if_needed(zxid_conf* cf, const char* enve)
   env = r->Envelope;
   if (env) {
     if (!env->Body)
-      env->Body = zx_NEW_e_Body(cf->ctx);
+      env->Body = zx_NEW_e_Body(cf->ctx, &env->gg);
     if (!env->Header)
-      env->Header = zx_NEW_e_Header(cf->ctx);
+      env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   } else if (r->Body) {
-    env = zx_NEW_e_Envelope(cf->ctx);
+    env = zx_NEW_e_Envelope(cf->ctx,0);
     if (r->Header)
       env->Header = r->Header;
     else
-      env->Header = zx_NEW_e_Header(cf->ctx);
+      env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
     env->Body = r->Body;
   } else { /* Resort to stringwise attempt to add envelope. */
     ZX_FREE(cf->ctx, r);
@@ -717,7 +723,7 @@ struct zx_str* zxid_wsc_prepare_call(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr
     D_DEDENT("prep: ");
     return 0;
   }
-  ses->wsc_msgid = zx_str_to_c(cf->ctx, env->Header->MessageID->gg.content);
+  ses->wsc_msgid = zx_str_to_c(cf->ctx, ZX_GET_CONTENT(env->Header->MessageID));
 
   /* Call Rq-Out PDP */
   

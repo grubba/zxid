@@ -85,7 +85,7 @@ int zx_LEN_SO_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x )
   int len = sizeof("<is:Confirm")-1 + 1 + sizeof("</is:Confirm>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
 
@@ -94,14 +94,22 @@ int zx_LEN_SO_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Help(c, (struct zx_is_Help_s*)se);
-  for (se = x->Hint; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Hint")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Label; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Label")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Value")-1, zx_ns_tab+zx_is_NS);
+  for (se = x->Hint;
+    se && se->g.tok == zx_is_Hint_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Hint")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Label;
+    se && se->g.tok == zx_is_Label_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Label")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Value;
+    se && se->g.tok == zx_is_Value_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Value")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -128,7 +136,7 @@ char* zx_ENC_SO_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x, char* p 
   ZX_OUT_TAG(p, "<is:Confirm");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -141,14 +149,22 @@ char* zx_ENC_SO_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Help(c, (struct zx_is_Help_s*)se, p);
-  for (se = x->Hint; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Hint", sizeof("is:Hint")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Label; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Label", sizeof("is:Label")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Value", sizeof("is:Value")-1, zx_ns_tab+zx_is_NS);
+  for (se = x->Hint;
+       se && se->g.tok == zx_is_Hint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Hint", sizeof("is:Hint")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Label;
+       se && se->g.tok == zx_is_Label_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Label", sizeof("is:Label")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Value;
+       se && se->g.tok == zx_is_Value_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Value", sizeof("is:Value")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -228,7 +244,7 @@ int zx_LEN_SO_is_Help(struct zx_ctx* c, struct zx_is_Help_s* x )
   int len = sizeof("<is:Help")-1 + 1 + sizeof("</is:Help>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->label, sizeof("label")-1, &pop_seen);
   len += zx_attr_so_len(c, x->link, sizeof("link")-1, &pop_seen);
@@ -265,7 +281,7 @@ char* zx_ENC_SO_is_Help(struct zx_ctx* c, struct zx_is_Help_s* x, char* p )
   ZX_OUT_TAG(p, "<is:Help");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -359,7 +375,7 @@ int zx_LEN_SO_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x )
   int len = sizeof("<is:Inquiry")-1 + 1 + sizeof("</is:Inquiry>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->title, sizeof("title")-1, &pop_seen);
@@ -369,13 +385,21 @@ int zx_LEN_SO_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Help(c, (struct zx_is_Help_s*)se);
-  for (se = &x->Select->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Select->gg;
+       se && se->g.tok == zx_is_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Select(c, (struct zx_is_Select_s*)se);
-  for (se = &x->Confirm->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Confirm->gg;
+       se && se->g.tok == zx_is_Confirm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Confirm(c, (struct zx_is_Confirm_s*)se);
-  for (se = &x->Text->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Text->gg;
+       se && se->g.tok == zx_is_Text_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Text(c, (struct zx_is_Text_s*)se);
 
 
@@ -403,7 +427,7 @@ char* zx_ENC_SO_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x, char* p 
   ZX_OUT_TAG(p, "<is:Inquiry");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -417,13 +441,21 @@ char* zx_ENC_SO_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Help(c, (struct zx_is_Help_s*)se, p);
-  for (se = &x->Select->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Select->gg;
+       se && se->g.tok == zx_is_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Select(c, (struct zx_is_Select_s*)se, p);
-  for (se = &x->Confirm->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Confirm->gg;
+       se && se->g.tok == zx_is_Confirm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Confirm(c, (struct zx_is_Confirm_s*)se, p);
-  for (se = &x->Text->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Text->gg;
+       se && se->g.tok == zx_is_Text_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Text(c, (struct zx_is_Text_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -504,7 +536,7 @@ int zx_LEN_SO_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionRe
   int len = sizeof("<is:InteractionRequest")-1 + 1 + sizeof("</is:InteractionRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->language, sizeof("language")-1, &pop_seen);
@@ -516,9 +548,13 @@ int zx_LEN_SO_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionRe
   int len = 0;
 #endif
   
-  for (se = &x->Inquiry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Inquiry->gg;
+       se && se->g.tok == zx_is_Inquiry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Inquiry(c, (struct zx_is_Inquiry_s*)se);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
 
 
@@ -546,7 +582,7 @@ char* zx_ENC_SO_is_InteractionRequest(struct zx_ctx* c, struct zx_is_Interaction
   ZX_OUT_TAG(p, "<is:InteractionRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -562,9 +598,13 @@ char* zx_ENC_SO_is_InteractionRequest(struct zx_ctx* c, struct zx_is_Interaction
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Inquiry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Inquiry->gg;
+       se && se->g.tok == zx_is_Inquiry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Inquiry(c, (struct zx_is_Inquiry_s*)se, p);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -645,7 +685,7 @@ int zx_LEN_SO_is_InteractionResponse(struct zx_ctx* c, struct zx_is_InteractionR
   int len = sizeof("<is:InteractionResponse")-1 + 1 + sizeof("</is:InteractionResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -653,11 +693,17 @@ int zx_LEN_SO_is_InteractionResponse(struct zx_ctx* c, struct zx_is_InteractionR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->InteractionStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InteractionStatement->gg;
+       se && se->g.tok == zx_is_InteractionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_InteractionStatement(c, (struct zx_is_InteractionStatement_s*)se);
-  for (se = &x->Parameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Parameter->gg;
+       se && se->g.tok == zx_is_Parameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Parameter(c, (struct zx_is_Parameter_s*)se);
 
 
@@ -685,7 +731,7 @@ char* zx_ENC_SO_is_InteractionResponse(struct zx_ctx* c, struct zx_is_Interactio
   ZX_OUT_TAG(p, "<is:InteractionResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -697,11 +743,17 @@ char* zx_ENC_SO_is_InteractionResponse(struct zx_ctx* c, struct zx_is_Interactio
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->InteractionStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InteractionStatement->gg;
+       se && se->g.tok == zx_is_InteractionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_InteractionStatement(c, (struct zx_is_InteractionStatement_s*)se, p);
-  for (se = &x->Parameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Parameter->gg;
+       se && se->g.tok == zx_is_Parameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Parameter(c, (struct zx_is_Parameter_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -782,7 +834,7 @@ int zx_LEN_SO_is_InteractionStatement(struct zx_ctx* c, struct zx_is_Interaction
   int len = sizeof("<is:InteractionStatement")-1 + 1 + sizeof("</is:InteractionStatement>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -790,9 +842,13 @@ int zx_LEN_SO_is_InteractionStatement(struct zx_ctx* c, struct zx_is_Interaction
   int len = 0;
 #endif
   
-  for (se = &x->Inquiry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Inquiry->gg;
+       se && se->g.tok == zx_is_Inquiry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Inquiry(c, (struct zx_is_Inquiry_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
@@ -821,7 +877,7 @@ char* zx_ENC_SO_is_InteractionStatement(struct zx_ctx* c, struct zx_is_Interacti
   ZX_OUT_TAG(p, "<is:InteractionStatement");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -833,9 +889,13 @@ char* zx_ENC_SO_is_InteractionStatement(struct zx_ctx* c, struct zx_is_Interacti
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Inquiry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Inquiry->gg;
+       se && se->g.tok == zx_is_Inquiry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Inquiry(c, (struct zx_is_Inquiry_s*)se, p);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
 
@@ -917,7 +977,7 @@ int zx_LEN_SO_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x )
   int len = sizeof("<is:Item")-1 + 1 + sizeof("</is:Item>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->label, sizeof("label")-1, &pop_seen);
   len += zx_attr_so_len(c, x->value, sizeof("value")-1, &pop_seen);
@@ -927,8 +987,10 @@ int zx_LEN_SO_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Hint; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Hint")-1, zx_ns_tab+zx_is_NS);
+  for (se = x->Hint;
+    se && se->g.tok == zx_is_Hint_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Hint")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -955,7 +1017,7 @@ char* zx_ENC_SO_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x, char* p )
   ZX_OUT_TAG(p, "<is:Item");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -969,8 +1031,10 @@ char* zx_ENC_SO_is_Item(struct zx_ctx* c, struct zx_is_Item_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Hint; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Hint", sizeof("is:Hint")-1, zx_ns_tab+zx_is_NS);
+  for (se = x->Hint;
+       se && se->g.tok == zx_is_Hint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Hint", sizeof("is:Hint")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1050,7 +1114,7 @@ int zx_LEN_SO_is_Parameter(struct zx_ctx* c, struct zx_is_Parameter_s* x )
   int len = sizeof("<is:Parameter")-1 + 1 + sizeof("</is:Parameter>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
   len += zx_attr_so_len(c, x->value, sizeof("value")-1, &pop_seen);
@@ -1086,7 +1150,7 @@ char* zx_ENC_SO_is_Parameter(struct zx_ctx* c, struct zx_is_Parameter_s* x, char
   ZX_OUT_TAG(p, "<is:Parameter");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1179,7 +1243,7 @@ int zx_LEN_SO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x )
   int len = sizeof("<is:Select")-1 + 1 + sizeof("</is:Select>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->multiple, sizeof("multiple")-1, &pop_seen);
   len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
@@ -1189,15 +1253,25 @@ int zx_LEN_SO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Help(c, (struct zx_is_Help_s*)se);
-  for (se = x->Hint; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Hint")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Label; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Label")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Value")-1, zx_ns_tab+zx_is_NS);
-  for (se = &x->Item->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Hint;
+    se && se->g.tok == zx_is_Hint_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Hint")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Label;
+    se && se->g.tok == zx_is_Label_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Label")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Value;
+    se && se->g.tok == zx_is_Value_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Value")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Item->gg;
+       se && se->g.tok == zx_is_Item_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Item(c, (struct zx_is_Item_s*)se);
 
 
@@ -1225,7 +1299,7 @@ char* zx_ENC_SO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x, char* p )
   ZX_OUT_TAG(p, "<is:Select");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1239,15 +1313,25 @@ char* zx_ENC_SO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Help(c, (struct zx_is_Help_s*)se, p);
-  for (se = x->Hint; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Hint", sizeof("is:Hint")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Label; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Label", sizeof("is:Label")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Value", sizeof("is:Value")-1, zx_ns_tab+zx_is_NS);
-  for (se = &x->Item->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Hint;
+       se && se->g.tok == zx_is_Hint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Hint", sizeof("is:Hint")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Label;
+       se && se->g.tok == zx_is_Label_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Label", sizeof("is:Label")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Value;
+       se && se->g.tok == zx_is_Value_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Value", sizeof("is:Value")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Item->gg;
+       se && se->g.tok == zx_is_Item_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Item(c, (struct zx_is_Item_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1328,7 +1412,7 @@ int zx_LEN_SO_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x )
   int len = sizeof("<is:Text")-1 + 1 + sizeof("</is:Text>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->format, sizeof("format")-1, &pop_seen);
   len += zx_attr_so_len(c, x->maxChars, sizeof("maxChars")-1, &pop_seen);
@@ -1340,14 +1424,22 @@ int zx_LEN_SO_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_is_Help(c, (struct zx_is_Help_s*)se);
-  for (se = x->Hint; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Hint")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Label; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Label")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Value")-1, zx_ns_tab+zx_is_NS);
+  for (se = x->Hint;
+    se && se->g.tok == zx_is_Hint_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Hint")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Label;
+    se && se->g.tok == zx_is_Label_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Label")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Value;
+    se && se->g.tok == zx_is_Value_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("is:Value")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1374,7 +1466,7 @@ char* zx_ENC_SO_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x, char* p )
   ZX_OUT_TAG(p, "<is:Text");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_is_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1390,14 +1482,22 @@ char* zx_ENC_SO_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_is_Help(c, (struct zx_is_Help_s*)se, p);
-  for (se = x->Hint; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Hint", sizeof("is:Hint")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Label; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Label", sizeof("is:Label")-1, zx_ns_tab+zx_is_NS);
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "is:Value", sizeof("is:Value")-1, zx_ns_tab+zx_is_NS);
+  for (se = x->Hint;
+       se && se->g.tok == zx_is_Hint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Hint", sizeof("is:Hint")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Label;
+       se && se->g.tok == zx_is_Label_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Label", sizeof("is:Label")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Value;
+       se && se->g.tok == zx_is_Value_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "is:Value", sizeof("is:Value")-1, zx_ns_tab+(zx_is_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   

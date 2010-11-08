@@ -106,7 +106,7 @@ struct zx_root_s* zxid_decode_redir_or_post(zxid_conf* cf, zxid_cgi* cgi, zxid_s
   DD("Msg_sans_ws(%.*s) start=%x end=%x", p2-m2+1, m2, *m2, *p2);
   
   if (!(chk_dup & 0x02) && cf->log_level > 1)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "W", "REDIRDEC", 0, "sid(%s) len=%d", STRNULLCHK(ses->sid), msglen);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "W", "REDIRDEC", 0, "sid(%s) len=%d", STRNULLCHK(ses->sid), msglen);
 
   if (*m2 == '<' && *p2 == '>') {  /* POST profiles do not compress the payload */
     len = p2 - m2 + 1;
@@ -121,7 +121,7 @@ struct zx_root_s* zxid_decode_redir_or_post(zxid_conf* cf, zxid_cgi* cgi, zxid_s
   r = zx_dec_zx_root(cf->ctx, len, p, "decode redir or post");
   if (!r) {
     ERR("Failed to parse redir buf(%.*s)", len, p);
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "BADXML", 0, "sid(%s) bad redir", STRNULLCHK(ses->sid));
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "C", "BADXML", 0, "sid(%s) bad redir", STRNULLCHK(ses->sid));
     return 0;
   }
 
@@ -142,7 +142,7 @@ log_msg:
       id_buf[27] = 0;
       id_ss.len = 27;
       id_ss.s = id_buf;
-      logpath = zxlog_path(cf, issuer->gg.content, &id_ss, ZXLOG_RELY_DIR, ZXLOG_WIR_KIND, 1);
+      logpath = zxlog_path(cf, ZX_GET_CONTENT(issuer), &id_ss, ZXLOG_RELY_DIR, ZXLOG_WIR_KIND, 1);
       if (logpath) {
 	if (chk_dup & 0x01) {
 	  if (zxlog_dup_check(cf, logpath, "Redirect or POST assertion (unsigned)")) {
@@ -160,9 +160,9 @@ log_msg:
     return r;
   }
 
-  meta = zxid_get_ent_ss(cf, issuer->gg.content);
+  meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(issuer));
   if (!meta) {
-    ERR("Unable to find metadata for Issuer(%.*s) in Redir or SimpleSign POST binding", issuer->gg.content->len, issuer->gg.content->s);
+    ERR("Unable to find metadata for Issuer(%.*s) in Redir or SimpleSign POST binding", ZX_GET_CONTENT_LEN(issuer), ZX_GET_CONTENT_S(issuer));
     cgi->sigval = "I";
     cgi->sigmsg = "Issuer unknown - metadata exchange may be needed (SimpleSign, Redir, POST).";
     ses->sigres = ZXSIG_NO_SIG;
@@ -238,7 +238,7 @@ log_msg:
     id_buf[27] = 0;
     id_ss.len = 27;
     id_ss.s = id_buf;
-    logpath = zxlog_path(cf, issuer->gg.content, &id_ss, ZXLOG_RELY_DIR, ZXLOG_WIR_KIND, 1);
+    logpath = zxlog_path(cf, ZX_GET_CONTENT(issuer), &id_ss, ZXLOG_RELY_DIR, ZXLOG_WIR_KIND, 1);
     if (logpath) {
       if (zxlog_dup_check(cf, logpath, "Redirect or POST assertion")) {
 	if (cf->dup_msg_fatal) {

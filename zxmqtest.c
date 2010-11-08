@@ -98,7 +98,7 @@ void test_ibm_cert_problem()
   
   req = r->Envelope->Body->LogoutRequest;
   req->NameID = zxid_decrypt_nameid(cf, req->NameID, req->EncryptedID);
-  printf("r1 nid(%.*s)\n", req->NameID->gg.content->len, req->NameID->gg.content->s);
+  printf("r1 nid(%.*s)\n", ZX_GET_CONTENT_LEN(req->NameID), ZX_GET_CONTENT_S(req->NameID));
 }
 
 /* Called by:  opt */
@@ -111,11 +111,11 @@ void test_ibm_cert_problem_enc_dec()
 
   cf = zxid_new_conf("/var/zxid/");
 
-  nameid = zx_NEW_sa_NameID(cf->ctx);
-  nameid->Format = zx_ref_str(cf->ctx, "persistent");
-  nameid->NameQualifier = zx_ref_str(cf->ctx, "ibmidp");
-  /*nameid->SPNameQualifier = zx_ref_str(cf->ctx, spqual);*/
-  nameid->gg.content = zx_ref_str(cf->ctx, "a-persistent-nid");
+  nameid = zx_NEW_sa_NameID(cf->ctx,0);
+  nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, "persistent");
+  nameid->NameQualifier = zx_ref_attr(cf->ctx, zx_NameQualifier_ATTR, "ibmidp");
+  /*nameid->SPNameQualifier = zx_ref_attr(cf->ctx, zx_SPNameQualifier_ATTR, spqual);*/
+  zx_add_content(c, &nameid->gg, zx_ref_str(cf->ctx, "a-persistent-nid"));
 
 #if 0
   cf->enc_pkey = zxid_read_private_key(cf, "sym-idp-enc.pem");
@@ -126,7 +126,7 @@ void test_ibm_cert_problem_enc_dec()
   
   req = zxid_mk_logout(cf, nameid, 0, idp_meta);  
   req->NameID = zxid_decrypt_nameid(cf, req->NameID, req->EncryptedID);
-  printf("r2 nid(%.*s) should be(a-persistent-nid)\n", req->NameID->gg.content->len, req->NameID->gg.content->s);
+  printf("r2 nid(%.*s) should be(a-persistent-nid)\n", ZX_GET_CONTENT_LEN(req->NameID), ZX_GET_CONTENT_S(req->NameID));
 }
 
 int afr_buf_size = 0;

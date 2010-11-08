@@ -263,7 +263,7 @@ int main(int argc, char** argv)
 
 #if 0
     env = ZXID_RESP_ENV(cf, "idhrxml:QueryResponse", "OK", "Fine");
-    env->Body->idhrxml_QueryResponse->Data = zx_NEW_idhrxml_Data(cf->ctx);
+    env->Body->idhrxml_QueryResponse->Data = zx_NEW_idhrxml_Data(cf->ctx,0);
     env->Body->idhrxml_QueryResponse->Data->Candidate = r->Candidate;
     ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
 #else

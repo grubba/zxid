@@ -64,11 +64,15 @@ void zx_FREE_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa_X
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Response->gg; e; e = en) {
+  for (e = &x->Response->gg;
+       e && e->g.tok == zx_xac_Response_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xac_Response(c, (struct zx_xac_Response_s*)e, free_strs);
   }
-  for (e = &x->Request->gg; e; e = en) {
+  for (e = &x->Request->gg;
+       e && e->g.tok == zx_xac_Request_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xac_Request(c, (struct zx_xac_Request_s*)e, free_strs);
   }
@@ -108,9 +112,13 @@ void zx_DUP_STRS_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xa
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_xac_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xac_Response(c, (struct zx_xac_Response_s*)se);
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_xac_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xac_Request(c, (struct zx_xac_Request_s*)se);
 
 }
@@ -131,7 +139,9 @@ struct zx_xasa_XACMLAuthzDecisionStatement_s* zx_DEEP_CLONE_xasa_XACMLAuthzDecis
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Response->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Response->gg;
+       e && e->g.tok == zx_xac_Response_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xac_Response(c,(struct zx_xac_Response_s*)e,dup_strs);
   	  if (!enn)
   	      x->Response = (struct zx_xac_Response_s*)en;
@@ -139,7 +149,9 @@ struct zx_xasa_XACMLAuthzDecisionStatement_s* zx_DEEP_CLONE_xasa_XACMLAuthzDecis
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Request->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Request->gg;
+       e && e->g.tok == zx_xac_Request_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xac_Request(c,(struct zx_xac_Request_s*)e,dup_strs);
   	  if (!enn)
   	      x->Request = (struct zx_xac_Request_s*)en;
@@ -170,12 +182,16 @@ int zx_WALK_SO_xasa_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xasa
   if (ret)
     return ret;
 
-  for (e = &x->Response->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Response->gg;
+       e && e->g.tok == zx_xac_Response_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xac_Response(c, (struct zx_xac_Response_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Request->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Request->gg;
+       e && e->g.tok == zx_xac_Request_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xac_Request(c, (struct zx_xac_Request_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -232,11 +248,15 @@ void zx_FREE_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLPol
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Policy->gg; e; e = en) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_xa_Policy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_Policy(c, (struct zx_xa_Policy_s*)e, free_strs);
   }
-  for (e = &x->PolicySet->gg; e; e = en) {
+  for (e = &x->PolicySet->gg;
+       e && e->g.tok == zx_xa_PolicySet_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)e, free_strs);
   }
@@ -276,9 +296,13 @@ void zx_DUP_STRS_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACM
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_xa_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_Policy(c, (struct zx_xa_Policy_s*)se);
-  for (se = &x->PolicySet->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySet->gg;
+       se && se->g.tok == zx_xa_PolicySet_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)se);
 
 }
@@ -299,7 +323,9 @@ struct zx_xasa_XACMLPolicyStatement_s* zx_DEEP_CLONE_xasa_XACMLPolicyStatement(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Policy->gg;
+       e && e->g.tok == zx_xa_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_Policy(c,(struct zx_xa_Policy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Policy = (struct zx_xa_Policy_s*)en;
@@ -307,7 +333,9 @@ struct zx_xasa_XACMLPolicyStatement_s* zx_DEEP_CLONE_xasa_XACMLPolicyStatement(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicySet->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicySet->gg;
+       e && e->g.tok == zx_xa_PolicySet_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xa_PolicySet(c,(struct zx_xa_PolicySet_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicySet = (struct zx_xa_PolicySet_s*)en;
@@ -338,12 +366,16 @@ int zx_WALK_SO_xasa_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasa_XACMLP
   if (ret)
     return ret;
 
-  for (e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_xa_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_Policy(c, (struct zx_xa_Policy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicySet->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicySet->gg;
+       e && e->g.tok == zx_xa_PolicySet_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)e, ctx, callback);
     if (ret)
       return ret;

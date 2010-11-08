@@ -210,8 +210,16 @@ static int sig_validate(int len, char* p)
     ERR("Failed to parse buf(%.*s)", len, p);
     return 2;
   }
-  resp = r->Response;
-  if (!resp) {
+
+
+  if (r->Response)
+    resp = r->Response;
+  else if (r->Envelope && r->Envelope->Body) {
+    if (r->Envelope->Body->Response)
+      resp = r->Envelope->Body->Response;
+    else if (r->Envelope->Body->ArtifactResponse && r->Envelope->Body->ArtifactResponse->Response)
+      resp = r->Envelope->Body->ArtifactResponse->Response;
+  } else {
     a7n = zxid_dec_a7n(cf, r->Assertion, r->EncryptedAssertion);
     if (a7n) {
       INFO("Bare Assertion without Response wrapper detected %p", r->Assertion);

@@ -116,7 +116,7 @@ char* zxid_simple_ab_pep(zxid_conf* cf, zxid_ses* ses, int* res_len, int auto_fl
   }
   if (zx_debug & ZXID_INOUT) INFO("LDIF(%.*s)", ss?ss->len:1, ss?ss->s:"-");
   if (cf->log_level > 0)
-    zxlog(cf, 0,0,0,0,0,0, ses->nameid?ses->nameid->gg.content:0, "N", "K", "SHOWPC", ses->sid, 0);
+    zxlog(cf, 0,0,0,0,0,0, ZX_GET_CONTENT(ses->nameid), "N", "K", "SHOWPC", ses->sid, 0);
   res = ss->s;
   if (res_len)
     *res_len = ss->len;

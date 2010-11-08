@@ -25,7 +25,11 @@
 #include "zxid.h"
 #include "zxidconf.h"
 #include "saml2.h"
+#include "c/zx-const.h"
 #include "c/zx-paos-data.h"
+
+#define zx_e_actor_ATTR (zx_e_NS|zx_actor_ATTR)
+#define zx_e_mustUnderstand_ATTR (zx_e_NS|zx_mustUnderstand_ATTR)
 
 extern char **environ;
 
@@ -36,12 +40,12 @@ extern char **environ;
 /* Called by:  zxid_lecp_check */
 struct zx_paos_Request_s* zxid_mk_paos_Request_hdr(zxid_conf* cf)
 {
-  struct zx_paos_Request_s* hdr= zx_NEW_paos_Request(cf->ctx);
+  struct zx_paos_Request_s* hdr= zx_NEW_paos_Request(cf->ctx,0);
   /*hdr->messageID = zx_ref_str(cf->ctx, "1"); OPTIONAL */
-  hdr->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-  hdr->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  hdr->service = zx_ref_str(cf->ctx, SAML2_SSO_ECP);
-  hdr->responseConsumerURL = zx_strf(cf->ctx, "%s?o=P", cf->url);
+  hdr->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  hdr->service = zx_ref_attr(cf->ctx, zx_service_ATTR, SAML2_SSO_ECP);
+  hdr->responseConsumerURL = zx_attrf(cf->ctx, zx_responseConsumerURL_ATTR, "%s?o=P", cf->url);
   return hdr;
 }
 
@@ -65,7 +69,7 @@ struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
   if (!idp)
     return 0;
   
-  idp_list = zx_NEW_sp_IDPList(cf->ctx);
+  idp_list = zx_NEW_sp_IDPList(cf->ctx,0);
   for (; idp; idp = idp->n) {
     D("IDPList consider idp(%s)", idp->eid);
     if (!idp->ed->IDPSSODescriptor)
@@ -80,12 +84,10 @@ struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
       continue;  /* Not eligible IdP, next one please. */
     }
     
-    idp_entry = zx_NEW_sp_IDPEntry(cf->ctx);
-    idp_entry->ProviderID = zx_ref_str(cf->ctx, idp->eid);
-    idp_entry->Name = zx_ref_str(cf->ctx, idp->dpy_name);
+    idp_list->IDPEntry = idp_entry = zx_NEW_sp_IDPEntry(cf->ctx,idp_list);
+    idp_entry->ProviderID = zx_ref_attr(cf->ctx, zx_ProviderID_ATTR, idp->eid);
+    idp_entry->Name = zx_ref_attr(cf->ctx, zx_Name_ATTR, idp->dpy_name);
     idp_entry->Loc = sso_svc->Location;
-    idp_entry->gg.g.n = &idp_list->IDPEntry->gg.g; /* zx_sp_IDPList_PUSH_IDPEntry(idp_list, idp_entry); */
-    idp_list->IDPEntry = idp_entry;
   }
   return idp_list;
 }
@@ -97,12 +99,12 @@ struct zx_sp_IDPList_s* zxid_mk_idp_list(zxid_conf* cf, char* binding)
 /* Called by:  zxid_lecp_check */
 struct zx_ecp_Request_s* zxid_mk_ecp_Request_hdr(zxid_conf* cf)
 {
-  struct zx_ecp_Request_s* hdr= zx_NEW_ecp_Request(cf->ctx);
-  hdr->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
-  hdr->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
-  /*hdr->IsPassive = zx_ref_str(cf->ctx, ZXID_TRUE);  OPTIONAL, default=? */
-  hdr->ProviderName = zxid_my_entity_id(cf);  /* *** Friendly name? */
-  hdr->Issuer = zxid_my_issuer(cf);
+  struct zx_ecp_Request_s* hdr= zx_NEW_ecp_Request(cf->ctx,0);
+  hdr->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
+  hdr->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
+  /*hdr->IsPassive = zx_ref_attr(cf->ctx, zx_IsPassive_ATTR, ZXID_TRUE);  OPTIONAL, default=? */
+  hdr->ProviderName = zxid_my_entity_id_attr(cf, zx_ProviderName_ATTR);  /* *** Friendly name? */
+  hdr->Issuer = zxid_my_issuer_attr(cf, zx_Issuer_ATTR);
   hdr->IDPList = zxid_mk_idp_list(cf, SAML2_SOAP);
   return hdr;
 }
@@ -148,10 +150,10 @@ struct zx_str* zxid_lecp_check(zxid_conf* cf, zxid_cgi* cgi)
     
   /* SAML 2.0 ECP: Create PAOS request to be sent in HTTP response. */
     
-  se = zx_NEW_e_Envelope(cf->ctx);
-  se->Body = zx_NEW_e_Body(cf->ctx);
+  se = zx_NEW_e_Envelope(cf->ctx,0);
+  se->Body = zx_NEW_e_Body(cf->ctx,se);
   se->Body->AuthnRequest = zxid_mk_authn_req(cf, cgi);
-  se->Header = zx_NEW_e_Header(cf->ctx);
+  se->Header = zx_NEW_e_Header(cf->ctx,se);
   se->Header->Request = zxid_mk_paos_Request_hdr(cf);
   se->Header->ecp_Request = zxid_mk_ecp_Request_hdr(cf);
   env = zx_EASY_ENC_SO_e_Envelope(cf->ctx, se);

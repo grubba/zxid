@@ -341,72 +341,59 @@ int zx_str_ends_in(struct zx_str* ss, int len, const char* suffix)
   return !memcmp(ss->s + ss->len - len, suffix, len);
 }
 
+/*() Add non-XML content to the kids list. These essentially appear as DATA items. */
+
+void zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont)
+{
+  cont->tok = ZX_TOK_DATA;
+  cont->n = &x->kids->g;
+  x->kids = (struct zx_elems_s)cont;
+}
 /*() Construct new simple element from zx_str by referencing, not copying, it. */
 
 /* Called by:  main, zx_dup_len_simple_elem, zx_ref_len_simple_elem, zxenc_pubkey_enc, zxenc_symkey_enc, zxid_mk_a7n, zxid_mk_logout, zxid_mk_mni x4, zxid_mk_xacml_simple_at, zxsig_sign */
-struct zx_elem_s* zx_new_simple_elem(struct zx_ctx* c, struct zx_str* ss)
+struct zx_elem_s* zx_new_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, struct zx_str* ss)
 {
   struct zx_elem_s* el;
   el = ZX_ZALLOC(c, struct zx_elem_s);
-  el->content = ss;
+  el->g.tok = tok;
+  if (father) {
+    x->gg.g.n = &father->kids.g;
+    father->kids = x;
+  }
+  zx_add_content(c, el, ss);
   return el;
 }
 
 /*() Construct new simple element by referencing, not copying, raw string data of given length. */
 
 /* Called by:  zx_ref_simple_elem, zxid_as_call_ses, zxid_key_desc, zxid_key_info */
-struct zx_elem_s* zx_ref_len_simple_elem(struct zx_ctx* c, int len, const char* s)
+struct zx_elem_s* zx_ref_len_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, int len, const char* s)
 {
-  return zx_new_simple_elem(c, zx_ref_len_str(c, len, s));
+  return zx_new_simple_elem(c, father, tok, zx_ref_len_str(c, len, s));
 }
 
 /*() Construct new simple element by referencing, not copying, C string. */
 
 /* Called by:  main, zxid_contact_desc x6, zxid_idp_sso_desc x2, zxid_mk_Status, zxid_mk_art_deref, zxid_mk_authn_req, zxid_mk_dap_query_item x4, zxid_mk_dap_resquery x4, zxid_mk_dap_select x2, zxid_mk_dap_subscription x2, zxid_mk_dap_testop x2, zxid_mk_di_req_svc x6, zxid_mk_xacml_resp, zxid_sp_sso_desc x2 */
-struct zx_elem_s* zx_ref_simple_elem(struct zx_ctx* c, const char* s)
+struct zx_elem_s* zx_ref_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, const char* s)
 {
-  return zx_ref_len_simple_elem(c, strlen(s), s);
+  return zx_ref_len_simple_elem(c, father, tok, strlen(s), s);
 }
 
 /* Called by:  zx_dup_simple_elem */
-struct zx_elem_s* zx_dup_len_simple_elem(struct zx_ctx* c, int len, const char* s)
+struct zx_elem_s* zx_dup_len_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, int len, const char* s)
 {
-  return zx_new_simple_elem(c, zx_dup_len_str(c, len, s));
+  return zx_new_simple_elem(c, father, tok, zx_dup_len_str(c, len, s));
 }
 
 /* Called by:  zxid_add_fed_tok_to_epr, zxid_mk_an_stmt, zxid_mk_fault x3, zxid_new_epr x3 */
-struct zx_elem_s* zx_dup_simple_elem(struct zx_ctx* c, const char* s)
+struct zx_elem_s* zx_dup_simple_elem(struct zx_ctx* c, struct zx_elem_s* father, int tok, const char* s)
 {
-  return zx_dup_len_simple_elem(c, strlen(s), s);
+  return zx_dup_len_simple_elem(c, father, tok, strlen(s), s);
 }
 
 /* ------------- Common Subexpression Elimination for generated code ------------- */
-
-/*() Render the unknown attributes list. CSE for almost all tags. */
-
-/* Called by:  TXLEN_SO_ELNAME */
-int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp)
-{
-  int len = 0;
-  struct zx_str* ss;
-  struct zx_attr_s* aa;
-  struct zx_elem_s* ae;
-  
-  for (aa = x->attr; aa; aa = (struct zx_attr_s*)aa->g.n) {  /* attributes */
-    if (aa->ns && aa->ns->prefix_len)
-      len += aa->ns->prefix_len + 1;
-    len += 1 + aa->name_len + 1 + 1 + aa->g.len + 1;  /* attr="val" */
-    len += zx_len_xmlns_if_not_seen(c, aa->ns, pop_seenp);
-  }
-
-  for (ae = x->kids; ae; ae = (struct zx_elem_s*)ae->g.n)    /* elements */
-    len += zx_LEN_SO_simple_elem(c, ae, ae->g.len, ae->ns);
-  
-  for (ss = x->content; ss; ss = ss->n)             /* content */
-    len += ss->len;
-  
-  return len;
-}
 
 /*() Compute length of an element (and its subelements). The XML attributes
  * and elements are processed in wire order and no assumptions
@@ -568,12 +555,12 @@ struct zx_str* zx_easy_enc_common(struct zx_ctx* c, char* p, char* buf, int len)
 /* Called by: */
 int zx_attr_so_len(struct zx_ctx* c, struct zx_attr_s* attr, int name_len, struct zx_ns_s** pop_seenp)
 {
-  int len = 0;
-  if (attr)
-    len += zx_len_xmlns_if_not_seen(c, attr->ns, pop_seenp);
-  /* In legal XML there should really be just one attribute, but we accommodate multioccurances. */
-  for (; attr; attr = (struct zx_attr_s*)attr->g.n)
-    len += 1 + name_len + 1 + 1 + attr->g.len + 1;
+  int len;
+  if (!attr)
+    return 0;
+  len = zx_len_xmlns_if_not_seen(c, attr->ns, pop_seenp);
+  /*     SP  attr       =   "   val           " */
+  len += 1 + name_len + 1 + 1 + attr->g.len + 1;
   return len;
 }
 
@@ -582,60 +569,79 @@ int zx_attr_so_len(struct zx_ctx* c, struct zx_attr_s* attr, int name_len, struc
 /* Called by: */
 char* zx_attr_so_enc(char* p, struct zx_attr_s* attr, char* name, int name_len)
 {
-  ZX_OUT_MEM(p, name, name_len);
+  if (!attr)
+    return p;
+  ZX_OUT_MEM(p, name, name_len);           /*    name=" id=\"" */
   ZX_OUT_MEM(p, attr->g.s, attr->g.len);
   ZX_OUT_CH(p, '"');
   return p;
 }
 
+/*() Render the unknown attributes list. CSE for almost all tags. */
+
+/* Called by:  TXLEN_SO_ELNAME */
+int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop_seenp)
+{
+  int len = 0;
+  struct zx_attr_s* aa;
+  struct zx_elem_s* ae;
+  
+  for (aa = x->attr; aa; aa = (struct zx_attr_s*)aa->g.n) {  /* attributes */
+    /*if (aa->g.tok != ZX_TOK_ATTR_NOT_FOUND)      continue; *** all attributes are trated same */
+    if (aa->ns && aa->ns->prefix_len)
+      len += aa->ns->prefix_len + 1;
+    len += 1 + aa->name_len + 1 + 1 + aa->g.len + 1;  /* attr="val" */
+    len += zx_len_xmlns_if_not_seen(c, aa->ns, pop_seenp);
+  }
+
+  for (ae = x->kids; ae; ae = (struct zx_elem_s*)ae->g.n)    /* elements */
+    switch (ae->g.tok) {
+    case ZX_TOK_DATA:
+      len += ae->g.len;
+      break;
+    case ZX_TOK_AND_NS_NOT_FOUND:
+      len += zx_LEN_SO_simple_elem(c, ae, ae->g.len, ae->ns);
+      break;
+    default: /* All known elements are already handled by SO encoder. */
+    }
+  return len;
+}
+
 /* Called by:  TXENC_SO_ELNAME */
 char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_elem_s* x)
 {
-  struct zx_str* ss;
+  struct zx_attr_s* aa;
   struct zx_elem_s* ae;
-  
+
+#if 0
+  /* see enc-templ.c for loop where all attributes are treated the same */
+  for (aa = x->attr; aa; aa = (struct zx_attr_s*)aa->g.n) {  /* attributes */
+    if (aa->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      continue;
+    p = zx_attr_so_enc(p, aa, aa->name, aa->name_len);
+  }
+#endif
+
   for (ae = x->kids; ae; ae = (struct zx_elem_s*)ae->g.n)
-    p = zx_ENC_SO_simple_elem(c, ae, p, x->g.s, x->g.len, x->ns);
-  
-  for (ss = x->content; ss; ss = ss->n)
-    ZX_OUT_MEM(p, ss->s, ss->len);
-  
+    switch (ae->g.tok) {
+    case ZX_TOK_DATA:
+      ZX_OUT_MEM(p, ae->g.s, ae->g.len);
+      break;
+    case ZX_TOK_AND_NS_NOT_FOUND:
+      p = zx_ENC_SO_simple_elem(c, ae, p, x->g.s, x->g.len, x->ns);
+      break;
+    default: /* All known elements are already handled by SO encoder. */
+    }
   return p;
 }
 
 /* ----------- F r e e ----------- */
 
 /* Called by: */
-void zx_free_attr(struct zx_ctx* c, struct zx_attr_s* attr, int free_strs)
+void zx_free_attr(struct zx_ctx* c, struct zx_attr_s* aa, int free_strs)
 {
-  struct zx_attr_s* attrn;
-  for (; attr; attr = attrn) {
-    attrn = (struct zx_attr_s*)attr->g.n;
-    if (free_strs && attr->g.s)
-	ZX_FREE(c, attr->g.s);
-    ZX_FREE(c, attr);
-  }
-}
-
-/*() Free elements.
- * *** In reality this function is challenging of it has to handle both WO and SO cases. */
-
-/* Called by:  TXFREE_ELNAME */
-void zx_free_elem_common(struct zx_ctx* c, struct zx_elem_s* x, int free_strs)
-{
-  struct zx_str* ss;
-  struct zx_attr_s* aa;
-  struct zx_elem_s* ae;
-  struct zx_str* ssn;
   struct zx_attr_s* aan;
-  struct zx_elem_s* aen;
-  
-  if (x->g.tok == ZX_TOK_NOT_FOUND && free_strs) {
-    ae = x;
-    if (ae->g.s)
-      ZX_FREE(c, ae->g.s);
-  }
-  for (aa = x->attr; aa; aa = aan) {      /* attributes */
+  for (; aa; aa = aan) {      /* attributes */
     aan = (struct zx_attr_s*)aa->g.n;
     if (free_strs && aa->name)
       ZX_FREE(c, aa->name);
@@ -643,29 +649,43 @@ void zx_free_elem_common(struct zx_ctx* c, struct zx_elem_s* x, int free_strs)
       ZX_FREE(c, aa->g.s);
     ZX_FREE(c, aa);
   }
-  for (ae = x->kids; ae; ae = aen) {      /* elements */
-    aen = (struct zx_elem_s*)ae->g.n;
-    if (ae->g.tok == ZX_TOK_DATA)
-      zx_str_free(c, &ae->g);
-    else
-      zx_FREE_simple_elem(c, ae, free_strs);
-  }
-  for (ss = x->content; ss; ss = ssn) {   /* content */
-    ssn = ss->n;
-    if (free_strs && ss->s)
-      ZX_FREE(c, ss->s);
-  }
-  ZX_FREE(c, x);
 }
 
-/* Called by: */
-void zx_free_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, int free_strs)
+/*() Free element and its attributes, child elements, and content.
+ * Depth first traversal of data structure to free it and its subelements. Simple
+ * strings are handled as a special case according to the free_strs flag. This
+ * is useful if the strings point to underlying data from the wire that was
+ * allocated differently. */
+
+/* Called by:  TXFREE_ELNAME */
+void zx_free_elem(struct zx_ctx* c, struct zx_elem_s* x, int free_strs)
 {
-  struct zx_elem_s* sen;
-  for (; se; se = sen) {
-    sen = (struct zx_elem_s*)se->g.n;
-    zx_FREE_simple_elem(c, se, free_strs);
+  struct zx_attr_s* aa;
+  struct zx_elem_s* ae;
+  struct zx_elem_s* aen;
+  
+  if (x->g.tok == ZX_TOK_NOT_FOUND && free_strs) {
+    ae = x;
+    if (ae->g.s)
+      ZX_FREE(c, ae->g.s);
   }
+  zx_free_attr(c, x->attr, free_strs);
+
+  for (ae = x->kids; ae; ae = aen) {      /* elements */
+    aen = (struct zx_elem_s*)ae->g.n;
+    switch (ae->g.tok) {
+    case ZX_TOK_DATA:
+      if (free_strs)
+	zx_str_free(c, &ae->g);
+      else
+	ZX_FREE(c, ae);
+      break;
+    default:
+      zx_free_elem(c, ae, free_strs);
+      //zx_FREE_simple_elem(c, ae, free_strs);
+    }
+  }
+  ZX_FREE(c, x);
 }
 
 #ifdef ZX_ENA_AUX
@@ -710,13 +730,10 @@ struct zx_str* zx_clone_attr(struct zx_ctx* c, struct zx_str* attr)
 /* Called by:  TXDEEP_CLONE_ELNAME */
 struct zx_elem_s* zx_clone_elem_common(struct zx_ctx* c, struct zx_elem_s* x, int size, int dup_strs)
 {
-  struct zx_str* ss;
   struct zx_attr_s* aa;
   struct zx_elem_s* ae;
-  struct zx_str* ssn;
   struct zx_attr_s* aan;
   struct zx_elem_s* aen;
-  struct zx_str* ssnn;
   struct zx_attr_s* aann;
   struct zx_elem_s* aenn;
   char* p;
@@ -737,7 +754,7 @@ struct zx_elem_s* zx_clone_elem_common(struct zx_ctx* c, struct zx_elem_s* x, in
   
   /* *** deal with xmlns specifications in exc c14n way */
   
-  for (aann = 0, aa = x->any_attr; aa; aa = (struct zx_attr_s*)aa->ss.g.n) {  /* unknown attributes */
+  for (aann = 0, aa = x->attr; aa; aa = (struct zx_attr_s*)aa->ss.g.n) {  /* unknown attributes */
     ZX_DUPALLOC(c, struct zx_attr_s, aan, aa);
     if (!aann)
       x->any_attr = aan;
@@ -757,36 +774,31 @@ struct zx_elem_s* zx_clone_elem_common(struct zx_ctx* c, struct zx_elem_s* x, in
     }
   }
   
-  for (aenn = 0, ae = x->any_elem; ae; ae = (struct zx_elem_s*)ae->gg.g.n) {  /* unknown elements */
-    aen = (struct zx_elem_s*)zx_DEEP_CLONE_simple_elem(c, &ae->gg, dup_strs);
+  for (aenn = 0, ae = x->kids; ae; ae = (struct zx_elem_s*)ae->gg.g.n) {  /* unknown elements */
+    switch (ae->g.tok) {
+    case ZX_TOK_DATA:
+      ZX_DUPALLOC(c, struct zx_str, aen, ae);
+      if (aen->g.s) {
+	p = ZX_ALLOC(c, aen->g.len);
+	memcpy(p, aen->g.s, aen->g.len);
+	aen->s = p;
+      }
+      break;
+    default:
+      aen = (struct zx_elem_s*)zx_DEEP_CLONE_simple_elem(c, &ae->gg, dup_strs);
+    }
     if (!aenn)
-      x->any_elem = aen;
+      x->kids = aen;
     else
       aenn->gg.g.n = &aen->gg.g;
     aenn = aen;
   }
-  
-  for (ssnn = 0, ss = x->content; ss; ss = (struct zx_str*)ss->g.n) {   /* content */
-    ZX_DUPALLOC(c, struct zx_str, ssn, ss);
-    if (!ssnn)
-      x->content = ssn;
-    else
-      ssnn->g.n = &ssn->g;
-    ssnn = ssn;
-    if (ssn->s) {
-      p = ZX_ALLOC(c, ssn->len);
-      memcpy(p, ssn->s, ssn->len);
-      ssn->s = p;
-    }
-  }
-  
   return x;
 }
 
 /* Called by:  TXDUP_STRS_ELNAME */
 void zx_dup_strs_common(struct zx_ctx* c, struct zx_elem_s* x)
 {
-  struct zx_str* ss;
   struct zx_attr_s* aa;
   struct zx_elem_s* ae;
   char* p;
@@ -800,7 +812,7 @@ void zx_dup_strs_common(struct zx_ctx* c, struct zx_elem_s* x)
   
   /* *** deal with xmlns specifications in exc c14n way */
 
-  for (aa = x->any_attr; aa; aa = (struct zx_attr_s*)aa->ss.g.n) {  /* unknown attributes */
+  for (aa = x->attr; aa; aa = (struct zx_attr_s*)aa->ss.g.n) {  /* unknown attributes */
     if (aa->name) {
       p = ZX_ALLOC(c, aa->name_len);
       memcpy(p, aa->name, aa->name_len);
@@ -813,14 +825,17 @@ void zx_dup_strs_common(struct zx_ctx* c, struct zx_elem_s* x)
     }
   }
 
-  for (ae = x->any_elem; ae; ae = (struct zx_elem_s*)ae->gg.g.n)   /* unknown elements */
-    zx_DUP_STRS_simple_elem(c, &ae->gg);
-
-  for (ss = x->content; ss; ss = (struct zx_str*)ss->g.n)    /* content */
-    if (ss->s) {
-      p = ZX_ALLOC(c, ss->len);
-      memcpy(p, ss->s, ss->len);
-      ss->s = p;
+  for (ae = x->kids; ae; ae = (struct zx_elem_s*)ae->gg.g.n)   /* unknown elements */
+    switch (ae->g.tok) {
+    case ZX_TOK_DATA:
+      if (ae->g.s) {
+	p = ZX_ALLOC(c, ae->g.len);
+	memcpy(p, ae->g.s, ae->g.len);
+	ss->s = p;
+      }
+      break;
+    default:
+      zx_DUP_STRS_simple_elem(c, &ae->gg);
     }
 }
 
@@ -829,7 +844,7 @@ int zx_walk_so_unknown_attributes(struct zx_ctx* c, struct zx_elem_s* x, void* c
   struct zx_attr_s* aa;
   int ret;
   
-  for (aa = x->any_attr; aa; aa = (struct zx_attr_s*)aa->ss.g.n) {  /* unknown attributes */
+  for (aa = x->attr; aa; aa = (struct zx_attr_s*)aa->ss.g.n) {  /* unknown attributes */
     ret = callback(&aa->ss.g, ctx);
     if (ret)
       return ret;
@@ -839,18 +854,17 @@ int zx_walk_so_unknown_attributes(struct zx_ctx* c, struct zx_elem_s* x, void* c
 
 int zx_walk_so_unknown_elems_and_content(struct zx_ctx* c, struct zx_elem_s* x, void* ctx, int (*callback)(struct zx_node_s* node, void* ctx))
 {
-  struct zx_str* ss;
   struct zx_elem_s* ae;
   int ret;
   
-  for (ae = x->any_elem; ae; ae = (struct zx_elem_s*)ae->gg.g.n) {  /* unknown elements */
-    ret = zx_WALK_SO_simple_elem(c, &ae->gg, ctx, callback);
-    if (ret)
-      return ret;
-  }
-  
-  for (ss = x->content; ss; ss = (struct zx_str*)ss->g.n) {   /* content */
-    ret = callback(&ss->g, ctx);
+  for (ae = x->kids; ae; ae = (struct zx_elem_s*)ae->gg.g.n) {  /* unknown elements */
+    switch (ae->g.tok) {
+    case ZX_TOK_DATA:
+      ret = callback(ae, ctx);
+      break;
+    default:
+      ret = zx_WALK_SO_simple_elem(c, ae, ctx, callback);
+    }
     if (ret)
       return ret;
   }
@@ -911,7 +925,7 @@ int zx_len_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, int siz)
 /* Called by: */
 char* zx_enc_so_simple_elems(struct zx_ctx* c, struct zx_elem_s* se, char* p, char* name, int len)
 {
-  for (; se; se = (struct zx_elem_s*)se->g.n)
+  for (; se; se = (struct zx_el_em_s*)se->g.n)
     p = zx_ENC_SO_simple_elem(c, se, p, name, len, se->ns);
   return p;
 }

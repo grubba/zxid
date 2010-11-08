@@ -86,8 +86,8 @@ int zx_LEN_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
 
@@ -96,13 +96,21 @@ int zx_LEN_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se);
-  for (se = &x->CreateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreateItem->gg;
+       se && se->g.tok == zx_idhrxml_CreateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_CreateItem(c, (struct zx_idhrxml_CreateItem_s*)se);
-  for (se = &x->ResultQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResultQuery->gg;
+       se && se->g.tok == zx_idhrxml_ResultQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_ResultQuery(c, (struct zx_idhrxml_ResultQuery_s*)se);
 
 
@@ -131,8 +139,8 @@ char* zx_ENC_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x, 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -145,13 +153,21 @@ char* zx_ENC_SO_idhrxml_Create(struct zx_ctx* c, struct zx_idhrxml_Create_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se, p);
-  for (se = &x->CreateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreateItem->gg;
+       se && se->g.tok == zx_idhrxml_CreateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_CreateItem(c, (struct zx_idhrxml_CreateItem_s*)se, p);
-  for (se = &x->ResultQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResultQuery->gg;
+       se && se->g.tok == zx_idhrxml_ResultQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_ResultQuery(c, (struct zx_idhrxml_ResultQuery_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -233,8 +249,8 @@ int zx_LEN_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
@@ -245,7 +261,9 @@ int zx_LEN_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateItem_
   int len = 0;
 #endif
   
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_idhrxml_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_NewData(c, (struct zx_idhrxml_NewData_s*)se);
 
 
@@ -274,8 +292,8 @@ char* zx_ENC_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateIte
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -290,7 +308,9 @@ char* zx_ENC_SO_idhrxml_CreateItem(struct zx_ctx* c, struct zx_idhrxml_CreateIte
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_idhrxml_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_NewData(c, (struct zx_idhrxml_NewData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -372,8 +392,8 @@ int zx_LEN_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateR
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
@@ -383,11 +403,17 @@ int zx_LEN_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_CreateR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_idhrxml_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_ItemData(c, (struct zx_idhrxml_ItemData_s*)se);
 
 
@@ -416,8 +442,8 @@ char* zx_ENC_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_Creat
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -431,11 +457,17 @@ char* zx_ENC_SO_idhrxml_CreateResponse(struct zx_ctx* c, struct zx_idhrxml_Creat
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_idhrxml_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_ItemData(c, (struct zx_idhrxml_ItemData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -517,8 +549,8 @@ int zx_LEN_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->changeFormat || x->itemIDRef)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->nextOffset, sizeof("nextOffset")-1, &pop_seen);
   len += zx_attr_so_len(c, x->notSorted, sizeof("notSorted")-1, &pop_seen);
@@ -532,9 +564,13 @@ int zx_LEN_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Candidate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Candidate->gg;
+       se && se->g.tok == zx_hrxml_Candidate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Candidate(c, (struct zx_hrxml_Candidate_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se);
 
 
@@ -563,8 +599,8 @@ char* zx_ENC_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x, char
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->changeFormat || x->itemIDRef)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -582,9 +618,13 @@ char* zx_ENC_SO_idhrxml_Data(struct zx_ctx* c, struct zx_idhrxml_Data_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Candidate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Candidate->gg;
+       se && se->g.tok == zx_hrxml_Candidate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Candidate(c, (struct zx_hrxml_Candidate_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -666,8 +706,8 @@ int zx_LEN_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
 
@@ -676,9 +716,13 @@ int zx_LEN_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->DeleteItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteItem->gg;
+       se && se->g.tok == zx_idhrxml_DeleteItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_DeleteItem(c, (struct zx_idhrxml_DeleteItem_s*)se);
 
 
@@ -707,8 +751,8 @@ char* zx_ENC_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x, 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -721,9 +765,13 @@ char* zx_ENC_SO_idhrxml_Delete(struct zx_ctx* c, struct zx_idhrxml_Delete_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
-  for (se = &x->DeleteItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteItem->gg;
+       se && se->g.tok == zx_idhrxml_DeleteItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_DeleteItem(c, (struct zx_idhrxml_DeleteItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -805,8 +853,8 @@ int zx_LEN_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType || x->predefined)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->notChangedSince, sizeof("notChangedSince")-1, &pop_seen);
@@ -819,8 +867,10 @@ int zx_LEN_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteItem_
   int len = 0;
 #endif
   
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Select")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->Select;
+    se && se->g.tok == zx_idhrxml_Select_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Select")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -848,8 +898,8 @@ char* zx_ENC_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteIte
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType || x->predefined)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -866,8 +916,10 @@ char* zx_ENC_SO_idhrxml_DeleteItem(struct zx_ctx* c, struct zx_idhrxml_DeleteIte
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Select", sizeof("idhrxml:Select")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->Select;
+       se && se->g.tok == zx_idhrxml_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Select", sizeof("idhrxml:Select")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -947,7 +999,7 @@ int zx_LEN_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteR
   int len = sizeof("<idhrxml:DeleteResponse")-1 + 1 + sizeof("</idhrxml:DeleteResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
@@ -956,9 +1008,13 @@ int zx_LEN_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_DeleteR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
 
 
@@ -986,7 +1042,7 @@ char* zx_ENC_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_Delet
   ZX_OUT_TAG(p, "<idhrxml:DeleteResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -999,9 +1055,13 @@ char* zx_ENC_SO_idhrxml_DeleteResponse(struct zx_ctx* c, struct zx_idhrxml_Delet
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1083,8 +1143,8 @@ int zx_LEN_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->changeFormat || x->itemIDRef)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->notSorted, sizeof("notSorted")-1, &pop_seen);
   len += zx_attr_so_len(c, x->changeFormat, sizeof("dst:changeFormat")-1, &pop_seen);
@@ -1095,9 +1155,13 @@ int zx_LEN_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Candidate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Candidate->gg;
+       se && se->g.tok == zx_hrxml_Candidate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Candidate(c, (struct zx_hrxml_Candidate_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se);
 
 
@@ -1126,8 +1190,8 @@ char* zx_ENC_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s*
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->changeFormat || x->itemIDRef)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1142,9 +1206,13 @@ char* zx_ENC_SO_idhrxml_ItemData(struct zx_ctx* c, struct zx_idhrxml_ItemData_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Candidate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Candidate->gg;
+       se && se->g.tok == zx_hrxml_Candidate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Candidate(c, (struct zx_hrxml_Candidate_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1226,8 +1294,8 @@ int zx_LEN_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
 
@@ -1236,13 +1304,21 @@ int zx_LEN_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se);
-  for (se = &x->ModifyItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ModifyItem->gg;
+       se && se->g.tok == zx_idhrxml_ModifyItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_ModifyItem(c, (struct zx_idhrxml_ModifyItem_s*)se);
-  for (se = &x->ResultQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResultQuery->gg;
+       se && se->g.tok == zx_idhrxml_ResultQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_ResultQuery(c, (struct zx_idhrxml_ResultQuery_s*)se);
 
 
@@ -1271,8 +1347,8 @@ char* zx_ENC_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x, 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1285,13 +1361,21 @@ char* zx_ENC_SO_idhrxml_Modify(struct zx_ctx* c, struct zx_idhrxml_Modify_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se, p);
-  for (se = &x->ModifyItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ModifyItem->gg;
+       se && se->g.tok == zx_idhrxml_ModifyItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_ModifyItem(c, (struct zx_idhrxml_ModifyItem_s*)se, p);
-  for (se = &x->ResultQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResultQuery->gg;
+       se && se->g.tok == zx_idhrxml_ResultQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_ResultQuery(c, (struct zx_idhrxml_ResultQuery_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1373,8 +1457,8 @@ int zx_LEN_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType || x->predefined)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->notChangedSince, sizeof("notChangedSince")-1, &pop_seen);
@@ -1388,9 +1472,13 @@ int zx_LEN_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyItem_
   int len = 0;
 #endif
   
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Select")-1, zx_ns_tab+zx_idhrxml_NS);
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Select;
+    se && se->g.tok == zx_idhrxml_Select_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Select")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_idhrxml_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_NewData(c, (struct zx_idhrxml_NewData_s*)se);
 
 
@@ -1419,8 +1507,8 @@ char* zx_ENC_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyIte
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType || x->predefined)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1438,9 +1526,13 @@ char* zx_ENC_SO_idhrxml_ModifyItem(struct zx_ctx* c, struct zx_idhrxml_ModifyIte
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Select", sizeof("idhrxml:Select")-1, zx_ns_tab+zx_idhrxml_NS);
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Select;
+       se && se->g.tok == zx_idhrxml_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Select", sizeof("idhrxml:Select")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_idhrxml_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_NewData(c, (struct zx_idhrxml_NewData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1522,8 +1614,8 @@ int zx_LEN_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyR
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
@@ -1533,11 +1625,17 @@ int zx_LEN_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_ModifyR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_idhrxml_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_ItemData(c, (struct zx_idhrxml_ItemData_s*)se);
 
 
@@ -1566,8 +1664,8 @@ char* zx_ENC_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_Modif
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1581,11 +1679,17 @@ char* zx_ENC_SO_idhrxml_ModifyResponse(struct zx_ctx* c, struct zx_idhrxml_Modif
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_idhrxml_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_ItemData(c, (struct zx_idhrxml_ItemData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1666,7 +1770,7 @@ int zx_LEN_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x )
   int len = sizeof("<idhrxml:NewData")-1 + 1 + sizeof("</idhrxml:NewData>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1674,9 +1778,13 @@ int zx_LEN_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Candidate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Candidate->gg;
+       se && se->g.tok == zx_hrxml_Candidate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Candidate(c, (struct zx_hrxml_Candidate_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se);
 
 
@@ -1704,7 +1812,7 @@ char* zx_ENC_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x
   ZX_OUT_TAG(p, "<idhrxml:NewData");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1716,9 +1824,13 @@ char* zx_ENC_SO_idhrxml_NewData(struct zx_ctx* c, struct zx_idhrxml_NewData_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Candidate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Candidate->gg;
+       se && se->g.tok == zx_hrxml_Candidate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Candidate(c, (struct zx_hrxml_Candidate_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1799,7 +1911,7 @@ int zx_LEN_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notificat
   int len = sizeof("<idhrxml:Notification")-1 + 1 + sizeof("</idhrxml:Notification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->endReason, sizeof("endReason")-1, &pop_seen);
   len += zx_attr_so_len(c, x->expires, sizeof("expires")-1, &pop_seen);
@@ -1811,9 +1923,13 @@ int zx_LEN_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notificat
   int len = 0;
 #endif
   
-  for (se = &x->TestResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestResult->gg;
+       se && se->g.tok == zx_lu_TestResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_TestResult(c, (struct zx_lu_TestResult_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_idhrxml_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_ItemData(c, (struct zx_idhrxml_ItemData_s*)se);
 
 
@@ -1841,7 +1957,7 @@ char* zx_ENC_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notific
   ZX_OUT_TAG(p, "<idhrxml:Notification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1857,9 +1973,13 @@ char* zx_ENC_SO_idhrxml_Notification(struct zx_ctx* c, struct zx_idhrxml_Notific
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->TestResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestResult->gg;
+       se && se->g.tok == zx_lu_TestResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_TestResult(c, (struct zx_lu_TestResult_s*)se, p);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_idhrxml_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_ItemData(c, (struct zx_idhrxml_ItemData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1941,8 +2061,8 @@ int zx_LEN_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
@@ -1952,9 +2072,13 @@ int zx_LEN_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->Notification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notification->gg;
+       se && se->g.tok == zx_idhrxml_Notification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Notification(c, (struct zx_idhrxml_Notification_s*)se);
 
 
@@ -1983,8 +2107,8 @@ char* zx_ENC_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x, 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1998,9 +2122,13 @@ char* zx_ENC_SO_idhrxml_Notify(struct zx_ctx* c, struct zx_idhrxml_Notify_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
-  for (se = &x->Notification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notification->gg;
+       se && se->g.tok == zx_idhrxml_Notification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Notification(c, (struct zx_idhrxml_Notification_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2081,7 +2209,7 @@ int zx_LEN_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyR
   int len = sizeof("<idhrxml:NotifyResponse")-1 + 1 + sizeof("</idhrxml:NotifyResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
@@ -2090,9 +2218,13 @@ int zx_LEN_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_NotifyR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
 
 
@@ -2120,7 +2252,7 @@ char* zx_ENC_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_Notif
   ZX_OUT_TAG(p, "<idhrxml:NotifyResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2133,9 +2265,13 @@ char* zx_ENC_SO_idhrxml_NotifyResponse(struct zx_ctx* c, struct zx_idhrxml_Notif
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2217,8 +2353,8 @@ int zx_LEN_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
 
@@ -2227,13 +2363,21 @@ int zx_LEN_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->TestItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestItem->gg;
+       se && se->g.tok == zx_idhrxml_TestItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_TestItem(c, (struct zx_idhrxml_TestItem_s*)se);
-  for (se = &x->QueryItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryItem->gg;
+       se && se->g.tok == zx_idhrxml_QueryItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_QueryItem(c, (struct zx_idhrxml_QueryItem_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se);
 
 
@@ -2262,8 +2406,8 @@ char* zx_ENC_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x, ch
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2276,13 +2420,21 @@ char* zx_ENC_SO_idhrxml_Query(struct zx_ctx* c, struct zx_idhrxml_Query_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
-  for (se = &x->TestItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestItem->gg;
+       se && se->g.tok == zx_idhrxml_TestItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_TestItem(c, (struct zx_idhrxml_TestItem_s*)se, p);
-  for (se = &x->QueryItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryItem->gg;
+       se && se->g.tok == zx_idhrxml_QueryItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_QueryItem(c, (struct zx_idhrxml_QueryItem_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_idhrxml_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Subscription(c, (struct zx_idhrxml_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2364,8 +2516,8 @@ int zx_LEN_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s*
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID || x->itemIDRef || x->objectType || x->predefined)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->changedSince, sizeof("changedSince")-1, &pop_seen);
   len += zx_attr_so_len(c, x->contingency, sizeof("contingency")-1, &pop_seen);
@@ -2384,12 +2536,18 @@ int zx_LEN_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_s*
   int len = 0;
 #endif
   
-  for (se = x->ChangeFormat; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("dst:ChangeFormat")-1, zx_ns_tab+zx_dst_NS);
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Select")-1, zx_ns_tab+zx_idhrxml_NS);
-  for (se = x->Sort; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Sort")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->ChangeFormat;
+    se && se->g.tok == zx_dst_ChangeFormat_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("dst:ChangeFormat")-1, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Select;
+    se && se->g.tok == zx_idhrxml_Select_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Select")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Sort;
+    se && se->g.tok == zx_idhrxml_Sort_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Sort")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2417,8 +2575,8 @@ char* zx_ENC_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->itemIDRef || x->objectType || x->predefined)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2441,12 +2599,18 @@ char* zx_ENC_SO_idhrxml_QueryItem(struct zx_ctx* c, struct zx_idhrxml_QueryItem_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ChangeFormat; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "dst:ChangeFormat", sizeof("dst:ChangeFormat")-1, zx_ns_tab+zx_dst_NS);
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Select", sizeof("idhrxml:Select")-1, zx_ns_tab+zx_idhrxml_NS);
-  for (se = x->Sort; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Sort", sizeof("idhrxml:Sort")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->ChangeFormat;
+       se && se->g.tok == zx_dst_ChangeFormat_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "dst:ChangeFormat", sizeof("dst:ChangeFormat")-1, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Select;
+       se && se->g.tok == zx_idhrxml_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Select", sizeof("idhrxml:Select")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Sort;
+       se && se->g.tok == zx_idhrxml_Sort_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Sort", sizeof("idhrxml:Sort")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2527,8 +2691,8 @@ int zx_LEN_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryRes
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemIDRef, sizeof("dst:itemIDRef")-1, &pop_seen);
@@ -2538,13 +2702,21 @@ int zx_LEN_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryRes
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->TestResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestResult->gg;
+       se && se->g.tok == zx_dst_TestResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dst_TestResult(c, (struct zx_dst_TestResult_s*)se);
-  for (se = &x->Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Data->gg;
+       se && se->g.tok == zx_idhrxml_Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Data(c, (struct zx_idhrxml_Data_s*)se);
 
 
@@ -2573,8 +2745,8 @@ char* zx_ENC_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryR
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemIDRef)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2588,13 +2760,21 @@ char* zx_ENC_SO_idhrxml_QueryResponse(struct zx_ctx* c, struct zx_idhrxml_QueryR
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
-  for (se = &x->TestResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestResult->gg;
+       se && se->g.tok == zx_dst_TestResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dst_TestResult(c, (struct zx_dst_TestResult_s*)se, p);
-  for (se = &x->Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Data->gg;
+       se && se->g.tok == zx_idhrxml_Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Data(c, (struct zx_idhrxml_Data_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2676,8 +2856,8 @@ int zx_LEN_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuer
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID || x->itemIDRef || x->objectType || x->predefined)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->changedSince, sizeof("changedSince")-1, &pop_seen);
   len += zx_attr_so_len(c, x->contingency, sizeof("contingency")-1, &pop_seen);
@@ -2692,12 +2872,18 @@ int zx_LEN_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQuer
   int len = 0;
 #endif
   
-  for (se = x->ChangeFormat; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("dst:ChangeFormat")-1, zx_ns_tab+zx_dst_NS);
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Select")-1, zx_ns_tab+zx_idhrxml_NS);
-  for (se = x->Sort; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Sort")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->ChangeFormat;
+    se && se->g.tok == zx_dst_ChangeFormat_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("dst:ChangeFormat")-1, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Select;
+    se && se->g.tok == zx_idhrxml_Select_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Select")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Sort;
+    se && se->g.tok == zx_idhrxml_Sort_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Sort")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2725,8 +2911,8 @@ char* zx_ENC_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQu
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->itemIDRef || x->objectType || x->predefined)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2745,12 +2931,18 @@ char* zx_ENC_SO_idhrxml_ResultQuery(struct zx_ctx* c, struct zx_idhrxml_ResultQu
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ChangeFormat; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "dst:ChangeFormat", sizeof("dst:ChangeFormat")-1, zx_ns_tab+zx_dst_NS);
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Select", sizeof("idhrxml:Select")-1, zx_ns_tab+zx_idhrxml_NS);
-  for (se = x->Sort; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Sort", sizeof("idhrxml:Sort")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->ChangeFormat;
+       se && se->g.tok == zx_dst_ChangeFormat_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "dst:ChangeFormat", sizeof("dst:ChangeFormat")-1, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Select;
+       se && se->g.tok == zx_idhrxml_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Select", sizeof("idhrxml:Select")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Sort;
+       se && se->g.tok == zx_idhrxml_Sort_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Sort", sizeof("idhrxml:Sort")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2830,7 +3022,7 @@ int zx_LEN_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscript
   int len = sizeof("<idhrxml:Subscription")-1 + 1 + sizeof("</idhrxml:Subscription>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->adminNotifyToRef, sizeof("adminNotifyToRef")-1, &pop_seen);
   len += zx_attr_so_len(c, x->expires, sizeof("expires")-1, &pop_seen);
@@ -2845,16 +3037,26 @@ int zx_LEN_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscript
   int len = 0;
 #endif
   
-  for (se = &x->RefItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RefItem->gg;
+       se && se->g.tok == zx_subs_RefItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_subs_RefItem(c, (struct zx_subs_RefItem_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->ResultQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResultQuery->gg;
+       se && se->g.tok == zx_idhrxml_ResultQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_ResultQuery(c, (struct zx_idhrxml_ResultQuery_s*)se);
-  for (se = x->Aggregation; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Aggregation")-1, zx_ns_tab+zx_idhrxml_NS);
-  for (se = x->Trigger; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Trigger")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->Aggregation;
+    se && se->g.tok == zx_idhrxml_Aggregation_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Aggregation")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Trigger;
+    se && se->g.tok == zx_idhrxml_Trigger_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:Trigger")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2881,7 +3083,7 @@ char* zx_ENC_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscri
   ZX_OUT_TAG(p, "<idhrxml:Subscription");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2900,16 +3102,26 @@ char* zx_ENC_SO_idhrxml_Subscription(struct zx_ctx* c, struct zx_idhrxml_Subscri
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->RefItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RefItem->gg;
+       se && se->g.tok == zx_subs_RefItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_subs_RefItem(c, (struct zx_subs_RefItem_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
-  for (se = &x->ResultQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResultQuery->gg;
+       se && se->g.tok == zx_idhrxml_ResultQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_ResultQuery(c, (struct zx_idhrxml_ResultQuery_s*)se, p);
-  for (se = x->Aggregation; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Aggregation", sizeof("idhrxml:Aggregation")-1, zx_ns_tab+zx_idhrxml_NS);
-  for (se = x->Trigger; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Trigger", sizeof("idhrxml:Trigger")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->Aggregation;
+       se && se->g.tok == zx_idhrxml_Aggregation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Aggregation", sizeof("idhrxml:Aggregation")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Trigger;
+       se && se->g.tok == zx_idhrxml_Trigger_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:Trigger", sizeof("idhrxml:Trigger")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2990,8 +3202,8 @@ int zx_LEN_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType || x->predefined)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemID, sizeof("dst:itemID")-1, &pop_seen);
@@ -3003,8 +3215,10 @@ int zx_LEN_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s* x
   int len = 0;
 #endif
   
-  for (se = x->TestOp; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:TestOp")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->TestOp;
+    se && se->g.tok == zx_idhrxml_TestOp_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("idhrxml:TestOp")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3032,8 +3246,8 @@ char* zx_ENC_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s*
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->itemID || x->objectType || x->predefined)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_dst_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idhrxml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dst_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3049,8 +3263,10 @@ char* zx_ENC_SO_idhrxml_TestItem(struct zx_ctx* c, struct zx_idhrxml_TestItem_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TestOp; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:TestOp", sizeof("idhrxml:TestOp")-1, zx_ns_tab+zx_idhrxml_NS);
+  for (se = x->TestOp;
+       se && se->g.tok == zx_idhrxml_TestOp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "idhrxml:TestOp", sizeof("idhrxml:TestOp")-1, zx_ns_tab+(zx_idhrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   

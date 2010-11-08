@@ -85,7 +85,7 @@ int zx_LEN_SO_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_idpdisc_Disc
   int len = sizeof("<idpdisc:DiscoveryResponse")-1 + 1 + sizeof("</idpdisc:DiscoveryResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_idpdisc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_idpdisc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -124,7 +124,7 @@ char* zx_ENC_SO_idpdisc_DiscoveryResponse(struct zx_ctx* c, struct zx_idpdisc_Di
   ZX_OUT_TAG(p, "<idpdisc:DiscoveryResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_idpdisc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_idpdisc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 

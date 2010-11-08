@@ -314,7 +314,7 @@ int main(int argc, char** argv, char** env)
     if (r->Envelope && r->Envelope->Body) {
       if (r->Envelope->Body->ArtifactResponse) {
 	if (r->Envelope->Body->ArtifactResponse->Signature) {
-	  eid = r->Envelope->Body->ArtifactResponse->Issuer->gg.content;
+	  eid = ZX_GET_CONTENT(r->Envelope->Body->ArtifactResponse->Issuer);
 	  D("Found sig in Envelope/Body/ArtifactResponse eid(%.*s)", eid->len, eid->s);
 	  ent = zxid_get_ent_from_cache(cf, eid);
 	  ZERO(&refs, sizeof(refs));
@@ -332,7 +332,7 @@ int main(int argc, char** argv, char** env)
 	if (r->Envelope->Body->ArtifactResponse->Response) {
 	  if (r->Envelope->Body->ArtifactResponse->Response->Assertion) {
 	    if (r->Envelope->Body->ArtifactResponse->Response->Assertion->Signature) {
-	      eid = r->Envelope->Body->ArtifactResponse->Response->Assertion->Issuer->gg.content;
+	      eid = ZX_GET_CONTENT(r->Envelope->Body->ArtifactResponse->Response->Assertion->Issuer);
 	      D("Found sig in Envelope/Body/ArtifactResponse/Response/Assertion eid(%.*s)", eid->len, eid->s);
 	      ent = zxid_get_ent_from_cache(cf, eid);
 	      refs.sref = r->Envelope->Body->ArtifactResponse->Response->Assertion->Signature->SignedInfo->Reference;
@@ -351,7 +351,7 @@ int main(int argc, char** argv, char** env)
       }
     } else if (r->Assertion) {
       if (r->Assertion->Signature) {
-	eid = r->Assertion->Issuer->gg.content;
+	eid = ZX_GET_CONTENT(r->Assertion->Issuer);
 	D("Found sig in (bare) Assertion eid(%.*s)", eid->len, eid->s);
 	ent = zxid_get_ent_from_cache(cf, eid);
 	refs.sref = r->Assertion->Signature->SignedInfo->Reference;
@@ -368,7 +368,7 @@ int main(int argc, char** argv, char** env)
     } else if (r->Response) {
 
       if (r->Response->Signature) {
-	eid = r->Response->Issuer->gg.content;
+	eid = ZX_GET_CONTENT(r->Response->Issuer);
 	D("Found sig in Response eid(%.*s)", eid->len, eid->s);
 	ent = zxid_get_ent_from_cache(cf, eid);
 	refs.sref = r->Response->Signature->SignedInfo->Reference;
@@ -385,7 +385,7 @@ int main(int argc, char** argv, char** env)
 
       if (r->Response->Assertion) {
 	if (r->Response->Assertion->Signature) {
-	  eid = r->Response->Assertion->Issuer->gg.content;
+	  eid = ZX_GET_CONTENT(r->Response->Assertion->Issuer);
 	  D("Found sig in Response/Assertion eid(%.*s)", eid->len, eid->s);
 	  ent = zxid_get_ent_from_cache(cf, eid);
 	  refs.sref = r->Response->Assertion->Signature->SignedInfo->Reference;

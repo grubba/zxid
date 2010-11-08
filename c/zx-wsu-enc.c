@@ -86,7 +86,7 @@ int zx_LEN_SO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -124,7 +124,7 @@ char* zx_ENC_SO_wsu_Created(struct zx_ctx* c, struct zx_wsu_Created_s* x, char* 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -219,7 +219,7 @@ int zx_LEN_SO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -257,7 +257,7 @@ char* zx_ENC_SO_wsu_Expires(struct zx_ctx* c, struct zx_wsu_Expires_s* x, char* 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -352,7 +352,7 @@ int zx_LEN_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -363,9 +363,13 @@ int zx_LEN_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Created->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Created->gg;
+       se && se->g.tok == zx_wsu_Created_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsu_Created(c, (struct zx_wsu_Created_s*)se);
-  for (se = &x->Expires->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Expires->gg;
+       se && se->g.tok == zx_wsu_Expires_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsu_Expires(c, (struct zx_wsu_Expires_s*)se);
 
 
@@ -394,7 +398,7 @@ char* zx_ENC_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x, ch
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -409,9 +413,13 @@ char* zx_ENC_SO_wsu_Timestamp(struct zx_ctx* c, struct zx_wsu_Timestamp_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Created->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Created->gg;
+       se && se->g.tok == zx_wsu_Created_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsu_Created(c, (struct zx_wsu_Created_s*)se, p);
-  for (se = &x->Expires->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Expires->gg;
+       se && se->g.tok == zx_wsu_Expires_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsu_Expires(c, (struct zx_wsu_Expires_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

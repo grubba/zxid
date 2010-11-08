@@ -85,7 +85,7 @@ int zx_LEN_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_Addit
   int len = sizeof("<md:AdditionalMetadataLocation")-1 + 1 + sizeof("</md:AdditionalMetadataLocation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->namespace_is_cxx_keyword, sizeof("namespace")-1, &pop_seen);
 
@@ -120,7 +120,7 @@ char* zx_ENC_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_Add
   ZX_OUT_TAG(p, "<md:AdditionalMetadataLocation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -212,7 +212,7 @@ int zx_LEN_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_Affiliatio
   int len = sizeof("<md:AffiliationDescriptor")-1 + 1 + sizeof("</md:AffiliationDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->affiliationOwnerID, sizeof("affiliationOwnerID")-1, &pop_seen);
@@ -224,14 +224,22 @@ int zx_LEN_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_Affiliatio
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = x->AffiliateMember; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:AffiliateMember")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AffiliateMember;
+    se && se->g.tok == zx_md_AffiliateMember_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:AffiliateMember")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se);
 
 
@@ -259,7 +267,7 @@ char* zx_ENC_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_Affiliat
   ZX_OUT_TAG(p, "<md:AffiliationDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -275,14 +283,22 @@ char* zx_ENC_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_Affiliat
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = x->AffiliateMember; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:AffiliateMember", sizeof("md:AffiliateMember")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AffiliateMember;
+       se && se->g.tok == zx_md_AffiliateMember_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:AffiliateMember", sizeof("md:AffiliateMember")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -363,7 +379,7 @@ int zx_LEN_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_Artifa
   int len = sizeof("<md:ArtifactResolutionService")-1 + 1 + sizeof("</md:ArtifactResolutionService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -402,7 +418,7 @@ char* zx_ENC_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_Arti
   ZX_OUT_TAG(p, "<md:ArtifactResolutionService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -498,7 +514,7 @@ int zx_LEN_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_Asserti
   int len = sizeof("<md:AssertionConsumerService")-1 + 1 + sizeof("</md:AssertionConsumerService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -537,7 +553,7 @@ char* zx_ENC_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_Asser
   ZX_OUT_TAG(p, "<md:AssertionConsumerService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -633,7 +649,7 @@ int zx_LEN_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_Assert
   int len = sizeof("<md:AssertionIDRequestService")-1 + 1 + sizeof("</md:AssertionIDRequestService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -672,7 +688,7 @@ char* zx_ENC_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_Asse
   ZX_OUT_TAG(p, "<md:AssertionIDRequestService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -768,7 +784,7 @@ int zx_LEN_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_Att
   int len = sizeof("<md:AttributeAuthorityDescriptor")-1 + 1 + sizeof("</md:AttributeAuthorityDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->cacheDuration, sizeof("cacheDuration")-1, &pop_seen);
@@ -781,26 +797,46 @@ int zx_LEN_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_Att
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Organization(c, (struct zx_md_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se);
-  for (se = &x->AttributeService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeService->gg;
+       se && se->g.tok == zx_md_AttributeService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AttributeService(c, (struct zx_md_AttributeService_s*)se);
-  for (se = &x->AssertionIDRequestService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequestService->gg;
+       se && se->g.tok == zx_md_AssertionIDRequestService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AssertionIDRequestService(c, (struct zx_md_AssertionIDRequestService_s*)se);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->AttributeProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:AttributeProfile")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->Attribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->NameIDFormat;
+    se && se->g.tok == zx_md_NameIDFormat_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AttributeProfile;
+    se && se->g.tok == zx_md_AttributeProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:AttributeProfile")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Attribute->gg;
+       se && se->g.tok == zx_sa_Attribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_Attribute(c, (struct zx_sa_Attribute_s*)se);
 
 
@@ -828,7 +864,7 @@ char* zx_ENC_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_A
   ZX_OUT_TAG(p, "<md:AttributeAuthorityDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -845,26 +881,46 @@ char* zx_ENC_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_A
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se, p);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Organization(c, (struct zx_md_Organization_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se, p);
-  for (se = &x->AttributeService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeService->gg;
+       se && se->g.tok == zx_md_AttributeService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AttributeService(c, (struct zx_md_AttributeService_s*)se, p);
-  for (se = &x->AssertionIDRequestService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequestService->gg;
+       se && se->g.tok == zx_md_AssertionIDRequestService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AssertionIDRequestService(c, (struct zx_md_AssertionIDRequestService_s*)se, p);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->AttributeProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:AttributeProfile", sizeof("md:AttributeProfile")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->Attribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->NameIDFormat;
+       se && se->g.tok == zx_md_NameIDFormat_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AttributeProfile;
+       se && se->g.tok == zx_md_AttributeProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:AttributeProfile", sizeof("md:AttributeProfile")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Attribute->gg;
+       se && se->g.tok == zx_sa_Attribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_Attribute(c, (struct zx_sa_Attribute_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -945,7 +1001,7 @@ int zx_LEN_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_Attrib
   int len = sizeof("<md:AttributeConsumingService")-1 + 1 + sizeof("</md:AttributeConsumingService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->index, sizeof("index")-1, &pop_seen);
   len += zx_attr_so_len(c, x->isDefault, sizeof("isDefault")-1, &pop_seen);
@@ -955,11 +1011,17 @@ int zx_LEN_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_Attrib
   int len = 0;
 #endif
   
-  for (se = &x->ServiceName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceName->gg;
+       se && se->g.tok == zx_md_ServiceName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ServiceName(c, (struct zx_md_ServiceName_s*)se);
-  for (se = &x->ServiceDescription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceDescription->gg;
+       se && se->g.tok == zx_md_ServiceDescription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ServiceDescription(c, (struct zx_md_ServiceDescription_s*)se);
-  for (se = &x->RequestedAttribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedAttribute->gg;
+       se && se->g.tok == zx_md_RequestedAttribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_RequestedAttribute(c, (struct zx_md_RequestedAttribute_s*)se);
 
 
@@ -987,7 +1049,7 @@ char* zx_ENC_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_Attr
   ZX_OUT_TAG(p, "<md:AttributeConsumingService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1001,11 +1063,17 @@ char* zx_ENC_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_Attr
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ServiceName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceName->gg;
+       se && se->g.tok == zx_md_ServiceName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ServiceName(c, (struct zx_md_ServiceName_s*)se, p);
-  for (se = &x->ServiceDescription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceDescription->gg;
+       se && se->g.tok == zx_md_ServiceDescription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ServiceDescription(c, (struct zx_md_ServiceDescription_s*)se, p);
-  for (se = &x->RequestedAttribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedAttribute->gg;
+       se && se->g.tok == zx_md_RequestedAttribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_RequestedAttribute(c, (struct zx_md_RequestedAttribute_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1086,7 +1154,7 @@ int zx_LEN_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeServic
   int len = sizeof("<md:AttributeService")-1 + 1 + sizeof("</md:AttributeService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -1125,7 +1193,7 @@ char* zx_ENC_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeServ
   ZX_OUT_TAG(p, "<md:AttributeService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1221,7 +1289,7 @@ int zx_LEN_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAu
   int len = sizeof("<md:AuthnAuthorityDescriptor")-1 + 1 + sizeof("</md:AuthnAuthorityDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->cacheDuration, sizeof("cacheDuration")-1, &pop_seen);
@@ -1234,23 +1302,39 @@ int zx_LEN_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_AuthnAu
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Organization(c, (struct zx_md_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se);
-  for (se = &x->AuthnQueryService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnQueryService->gg;
+       se && se->g.tok == zx_md_AuthnQueryService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AuthnQueryService(c, (struct zx_md_AuthnQueryService_s*)se);
-  for (se = &x->AssertionIDRequestService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequestService->gg;
+       se && se->g.tok == zx_md_AssertionIDRequestService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AssertionIDRequestService(c, (struct zx_md_AssertionIDRequestService_s*)se);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
+  for (se = x->NameIDFormat;
+    se && se->g.tok == zx_md_NameIDFormat_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1277,7 +1361,7 @@ char* zx_ENC_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_Authn
   ZX_OUT_TAG(p, "<md:AuthnAuthorityDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1294,23 +1378,39 @@ char* zx_ENC_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_Authn
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se, p);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Organization(c, (struct zx_md_Organization_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se, p);
-  for (se = &x->AuthnQueryService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnQueryService->gg;
+       se && se->g.tok == zx_md_AuthnQueryService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AuthnQueryService(c, (struct zx_md_AuthnQueryService_s*)se, p);
-  for (se = &x->AssertionIDRequestService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequestService->gg;
+       se && se->g.tok == zx_md_AssertionIDRequestService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AssertionIDRequestService(c, (struct zx_md_AssertionIDRequestService_s*)se, p);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
+  for (se = x->NameIDFormat;
+       se && se->g.tok == zx_md_NameIDFormat_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1390,7 +1490,7 @@ int zx_LEN_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQueryServ
   int len = sizeof("<md:AuthnQueryService")-1 + 1 + sizeof("</md:AuthnQueryService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -1429,7 +1529,7 @@ char* zx_ENC_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQuerySe
   ZX_OUT_TAG(p, "<md:AuthnQueryService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1525,7 +1625,7 @@ int zx_LEN_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x )
   int len = sizeof("<md:AuthzService")-1 + 1 + sizeof("</md:AuthzService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -1564,7 +1664,7 @@ char* zx_ENC_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x
   ZX_OUT_TAG(p, "<md:AuthzService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1660,7 +1760,7 @@ int zx_LEN_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x
   int len = sizeof("<md:ContactPerson")-1 + 1 + sizeof("</md:ContactPerson>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->contactType, sizeof("contactType")-1, &pop_seen);
 
@@ -1669,18 +1769,30 @@ int zx_LEN_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = x->Company; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:Company")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:GivenName")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->SurName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:SurName")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->EmailAddress; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:EmailAddress")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->TelephoneNumber; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:TelephoneNumber")-1, zx_ns_tab+zx_md_NS);
+  for (se = x->Company;
+    se && se->g.tok == zx_md_Company_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:Company")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+    se && se->g.tok == zx_md_GivenName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:GivenName")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SurName;
+    se && se->g.tok == zx_md_SurName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:SurName")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EmailAddress;
+    se && se->g.tok == zx_md_EmailAddress_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:EmailAddress")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->TelephoneNumber;
+    se && se->g.tok == zx_md_TelephoneNumber_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:TelephoneNumber")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1707,7 +1819,7 @@ char* zx_ENC_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s*
   ZX_OUT_TAG(p, "<md:ContactPerson");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1720,18 +1832,30 @@ char* zx_ENC_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = x->Company; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:Company", sizeof("md:Company")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:GivenName", sizeof("md:GivenName")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->SurName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:SurName", sizeof("md:SurName")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->EmailAddress; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:EmailAddress", sizeof("md:EmailAddress")-1, zx_ns_tab+zx_md_NS);
-  for (se = x->TelephoneNumber; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:TelephoneNumber", sizeof("md:TelephoneNumber")-1, zx_ns_tab+zx_md_NS);
+  for (se = x->Company;
+       se && se->g.tok == zx_md_Company_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:Company", sizeof("md:Company")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+       se && se->g.tok == zx_md_GivenName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:GivenName", sizeof("md:GivenName")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SurName;
+       se && se->g.tok == zx_md_SurName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:SurName", sizeof("md:SurName")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EmailAddress;
+       se && se->g.tok == zx_md_EmailAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:EmailAddress", sizeof("md:EmailAddress")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->TelephoneNumber;
+       se && se->g.tok == zx_md_TelephoneNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:TelephoneNumber", sizeof("md:TelephoneNumber")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1811,7 +1935,7 @@ int zx_LEN_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMetho
   int len = sizeof("<md:EncryptionMethod")-1 + 1 + sizeof("</md:EncryptionMethod>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Algorithm, sizeof("Algorithm")-1, &pop_seen);
 
@@ -1820,10 +1944,14 @@ int zx_LEN_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMetho
   int len = 0;
 #endif
   
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:KeySize")-1, zx_ns_tab+zx_xenc_NS);
-  for (se = x->OAEPparams; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:OAEPparams")-1, zx_ns_tab+zx_xenc_NS);
+  for (se = x->KeySize;
+    se && se->g.tok == zx_xenc_KeySize_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:KeySize")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OAEPparams;
+    se && se->g.tok == zx_xenc_OAEPparams_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:OAEPparams")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1850,7 +1978,7 @@ char* zx_ENC_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMet
   ZX_OUT_TAG(p, "<md:EncryptionMethod");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1863,10 +1991,14 @@ char* zx_ENC_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMet
   /* root node has no begin tag */
 #endif
   
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:KeySize", sizeof("xenc:KeySize")-1, zx_ns_tab+zx_xenc_NS);
-  for (se = x->OAEPparams; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:OAEPparams", sizeof("xenc:OAEPparams")-1, zx_ns_tab+zx_xenc_NS);
+  for (se = x->KeySize;
+       se && se->g.tok == zx_xenc_KeySize_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:KeySize", sizeof("xenc:KeySize")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OAEPparams;
+       se && se->g.tok == zx_xenc_OAEPparams_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:OAEPparams", sizeof("xenc:OAEPparams")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1946,7 +2078,7 @@ int zx_LEN_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescr
   int len = sizeof("<md:EntitiesDescriptor")-1 + 1 + sizeof("</md:EntitiesDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Name, sizeof("Name")-1, &pop_seen);
@@ -1958,14 +2090,22 @@ int zx_LEN_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDescr
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = &x->EntityDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EntityDescriptor->gg;
+       se && se->g.tok == zx_md_EntityDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_EntityDescriptor(c, (struct zx_md_EntityDescriptor_s*)se);
-  for (se = &x->EntitiesDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EntitiesDescriptor->gg;
+       se && se->g.tok == zx_md_EntitiesDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_EntitiesDescriptor(c, (struct zx_md_EntitiesDescriptor_s*)se);
 
 
@@ -1993,7 +2133,7 @@ char* zx_ENC_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDes
   ZX_OUT_TAG(p, "<md:EntitiesDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2009,14 +2149,22 @@ char* zx_ENC_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDes
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = &x->EntityDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EntityDescriptor->gg;
+       se && se->g.tok == zx_md_EntityDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_EntityDescriptor(c, (struct zx_md_EntityDescriptor_s*)se, p);
-  for (se = &x->EntitiesDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EntitiesDescriptor->gg;
+       se && se->g.tok == zx_md_EntitiesDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_EntitiesDescriptor(c, (struct zx_md_EntitiesDescriptor_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2097,7 +2245,7 @@ int zx_LEN_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescripto
   int len = sizeof("<md:EntityDescriptor")-1 + 1 + sizeof("</md:EntityDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->cacheDuration, sizeof("cacheDuration")-1, &pop_seen);
@@ -2109,30 +2257,54 @@ int zx_LEN_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescripto
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = &x->RoleDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RoleDescriptor->gg;
+       se && se->g.tok == zx_md_RoleDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_RoleDescriptor(c, (struct zx_md_RoleDescriptor_s*)se);
-  for (se = &x->IDPSSODescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPSSODescriptor->gg;
+       se && se->g.tok == zx_md_IDPSSODescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_IDPSSODescriptor(c, (struct zx_md_IDPSSODescriptor_s*)se);
-  for (se = &x->SPSSODescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPSSODescriptor->gg;
+       se && se->g.tok == zx_md_SPSSODescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_SPSSODescriptor(c, (struct zx_md_SPSSODescriptor_s*)se);
-  for (se = &x->AuthnAuthorityDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnAuthorityDescriptor->gg;
+       se && se->g.tok == zx_md_AuthnAuthorityDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AuthnAuthorityDescriptor(c, (struct zx_md_AuthnAuthorityDescriptor_s*)se);
-  for (se = &x->AttributeAuthorityDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeAuthorityDescriptor->gg;
+       se && se->g.tok == zx_md_AttributeAuthorityDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AttributeAuthorityDescriptor(c, (struct zx_md_AttributeAuthorityDescriptor_s*)se);
-  for (se = &x->PDPDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PDPDescriptor->gg;
+       se && se->g.tok == zx_md_PDPDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_PDPDescriptor(c, (struct zx_md_PDPDescriptor_s*)se);
-  for (se = &x->AffiliationDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AffiliationDescriptor->gg;
+       se && se->g.tok == zx_md_AffiliationDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AffiliationDescriptor(c, (struct zx_md_AffiliationDescriptor_s*)se);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Organization(c, (struct zx_md_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se);
-  for (se = &x->AdditionalMetadataLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalMetadataLocation->gg;
+       se && se->g.tok == zx_md_AdditionalMetadataLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AdditionalMetadataLocation(c, (struct zx_md_AdditionalMetadataLocation_s*)se);
 
 
@@ -2160,7 +2332,7 @@ char* zx_ENC_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescrip
   ZX_OUT_TAG(p, "<md:EntityDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2176,30 +2348,54 @@ char* zx_ENC_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescrip
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = &x->RoleDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RoleDescriptor->gg;
+       se && se->g.tok == zx_md_RoleDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_RoleDescriptor(c, (struct zx_md_RoleDescriptor_s*)se, p);
-  for (se = &x->IDPSSODescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPSSODescriptor->gg;
+       se && se->g.tok == zx_md_IDPSSODescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_IDPSSODescriptor(c, (struct zx_md_IDPSSODescriptor_s*)se, p);
-  for (se = &x->SPSSODescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPSSODescriptor->gg;
+       se && se->g.tok == zx_md_SPSSODescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_SPSSODescriptor(c, (struct zx_md_SPSSODescriptor_s*)se, p);
-  for (se = &x->AuthnAuthorityDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnAuthorityDescriptor->gg;
+       se && se->g.tok == zx_md_AuthnAuthorityDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AuthnAuthorityDescriptor(c, (struct zx_md_AuthnAuthorityDescriptor_s*)se, p);
-  for (se = &x->AttributeAuthorityDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeAuthorityDescriptor->gg;
+       se && se->g.tok == zx_md_AttributeAuthorityDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AttributeAuthorityDescriptor(c, (struct zx_md_AttributeAuthorityDescriptor_s*)se, p);
-  for (se = &x->PDPDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PDPDescriptor->gg;
+       se && se->g.tok == zx_md_PDPDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_PDPDescriptor(c, (struct zx_md_PDPDescriptor_s*)se, p);
-  for (se = &x->AffiliationDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AffiliationDescriptor->gg;
+       se && se->g.tok == zx_md_AffiliationDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AffiliationDescriptor(c, (struct zx_md_AffiliationDescriptor_s*)se, p);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Organization(c, (struct zx_md_Organization_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se, p);
-  for (se = &x->AdditionalMetadataLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalMetadataLocation->gg;
+       se && se->g.tok == zx_md_AdditionalMetadataLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AdditionalMetadataLocation(c, (struct zx_md_AdditionalMetadataLocation_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2280,7 +2476,7 @@ int zx_LEN_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x )
   int len = sizeof("<md:Extensions")-1 + 1 + sizeof("</md:Extensions>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2288,11 +2484,17 @@ int zx_LEN_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Scope->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Scope->gg;
+       se && se->g.tok == zx_shibmd_Scope_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shibmd_Scope(c, (struct zx_shibmd_Scope_s*)se);
-  for (se = &x->KeyAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyAuthority->gg;
+       se && se->g.tok == zx_shibmd_KeyAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shibmd_KeyAuthority(c, (struct zx_shibmd_KeyAuthority_s*)se);
-  for (se = &x->DiscoveryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DiscoveryResponse->gg;
+       se && se->g.tok == zx_idpdisc_DiscoveryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idpdisc_DiscoveryResponse(c, (struct zx_idpdisc_DiscoveryResponse_s*)se);
 
 
@@ -2320,7 +2522,7 @@ char* zx_ENC_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, ch
   ZX_OUT_TAG(p, "<md:Extensions");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2332,11 +2534,17 @@ char* zx_ENC_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Scope->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Scope->gg;
+       se && se->g.tok == zx_shibmd_Scope_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shibmd_Scope(c, (struct zx_shibmd_Scope_s*)se, p);
-  for (se = &x->KeyAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyAuthority->gg;
+       se && se->g.tok == zx_shibmd_KeyAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shibmd_KeyAuthority(c, (struct zx_shibmd_KeyAuthority_s*)se, p);
-  for (se = &x->DiscoveryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DiscoveryResponse->gg;
+       se && se->g.tok == zx_idpdisc_DiscoveryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idpdisc_DiscoveryResponse(c, (struct zx_idpdisc_DiscoveryResponse_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2417,7 +2625,7 @@ int zx_LEN_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescripto
   int len = sizeof("<md:IDPSSODescriptor")-1 + 1 + sizeof("</md:IDPSSODescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->WantAuthnRequestsSigned, sizeof("WantAuthnRequestsSigned")-1, &pop_seen);
@@ -2431,34 +2639,62 @@ int zx_LEN_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescripto
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Organization(c, (struct zx_md_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se);
-  for (se = &x->ArtifactResolutionService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ArtifactResolutionService->gg;
+       se && se->g.tok == zx_md_ArtifactResolutionService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ArtifactResolutionService(c, (struct zx_md_ArtifactResolutionService_s*)se);
-  for (se = &x->SingleLogoutService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SingleLogoutService->gg;
+       se && se->g.tok == zx_md_SingleLogoutService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_SingleLogoutService(c, (struct zx_md_SingleLogoutService_s*)se);
-  for (se = &x->ManageNameIDService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ManageNameIDService->gg;
+       se && se->g.tok == zx_md_ManageNameIDService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ManageNameIDService(c, (struct zx_md_ManageNameIDService_s*)se);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->SingleSignOnService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->NameIDFormat;
+    se && se->g.tok == zx_md_NameIDFormat_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SingleSignOnService->gg;
+       se && se->g.tok == zx_md_SingleSignOnService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_SingleSignOnService(c, (struct zx_md_SingleSignOnService_s*)se);
-  for (se = &x->NameIDMappingService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIDMappingService->gg;
+       se && se->g.tok == zx_md_NameIDMappingService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_NameIDMappingService(c, (struct zx_md_NameIDMappingService_s*)se);
-  for (se = &x->AssertionIDRequestService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequestService->gg;
+       se && se->g.tok == zx_md_AssertionIDRequestService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AssertionIDRequestService(c, (struct zx_md_AssertionIDRequestService_s*)se);
-  for (se = x->AttributeProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:AttributeProfile")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->Attribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AttributeProfile;
+    se && se->g.tok == zx_md_AttributeProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:AttributeProfile")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Attribute->gg;
+       se && se->g.tok == zx_sa_Attribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_Attribute(c, (struct zx_sa_Attribute_s*)se);
 
 
@@ -2486,7 +2722,7 @@ char* zx_ENC_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescrip
   ZX_OUT_TAG(p, "<md:IDPSSODescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2504,34 +2740,62 @@ char* zx_ENC_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescrip
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se, p);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Organization(c, (struct zx_md_Organization_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se, p);
-  for (se = &x->ArtifactResolutionService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ArtifactResolutionService->gg;
+       se && se->g.tok == zx_md_ArtifactResolutionService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ArtifactResolutionService(c, (struct zx_md_ArtifactResolutionService_s*)se, p);
-  for (se = &x->SingleLogoutService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SingleLogoutService->gg;
+       se && se->g.tok == zx_md_SingleLogoutService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_SingleLogoutService(c, (struct zx_md_SingleLogoutService_s*)se, p);
-  for (se = &x->ManageNameIDService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ManageNameIDService->gg;
+       se && se->g.tok == zx_md_ManageNameIDService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ManageNameIDService(c, (struct zx_md_ManageNameIDService_s*)se, p);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->SingleSignOnService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->NameIDFormat;
+       se && se->g.tok == zx_md_NameIDFormat_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SingleSignOnService->gg;
+       se && se->g.tok == zx_md_SingleSignOnService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_SingleSignOnService(c, (struct zx_md_SingleSignOnService_s*)se, p);
-  for (se = &x->NameIDMappingService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIDMappingService->gg;
+       se && se->g.tok == zx_md_NameIDMappingService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_NameIDMappingService(c, (struct zx_md_NameIDMappingService_s*)se, p);
-  for (se = &x->AssertionIDRequestService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequestService->gg;
+       se && se->g.tok == zx_md_AssertionIDRequestService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AssertionIDRequestService(c, (struct zx_md_AssertionIDRequestService_s*)se, p);
-  for (se = x->AttributeProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:AttributeProfile", sizeof("md:AttributeProfile")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->Attribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AttributeProfile;
+       se && se->g.tok == zx_md_AttributeProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:AttributeProfile", sizeof("md:AttributeProfile")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Attribute->gg;
+       se && se->g.tok == zx_sa_Attribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_Attribute(c, (struct zx_sa_Attribute_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2612,7 +2876,7 @@ int zx_LEN_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x
   int len = sizeof("<md:KeyDescriptor")-1 + 1 + sizeof("</md:KeyDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->use, sizeof("use")-1, &pop_seen);
 
@@ -2621,9 +2885,13 @@ int zx_LEN_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s* x
   int len = 0;
 #endif
   
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
-  for (se = &x->EncryptionMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionMethod->gg;
+       se && se->g.tok == zx_md_EncryptionMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_EncryptionMethod(c, (struct zx_md_EncryptionMethod_s*)se);
 
 
@@ -2651,7 +2919,7 @@ char* zx_ENC_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s*
   ZX_OUT_TAG(p, "<md:KeyDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2664,9 +2932,13 @@ char* zx_ENC_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se, p);
-  for (se = &x->EncryptionMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionMethod->gg;
+       se && se->g.tok == zx_md_EncryptionMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_EncryptionMethod(c, (struct zx_md_EncryptionMethod_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2747,7 +3019,7 @@ int zx_LEN_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageNameID
   int len = sizeof("<md:ManageNameIDService")-1 + 1 + sizeof("</md:ManageNameIDService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -2786,7 +3058,7 @@ char* zx_ENC_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageName
   ZX_OUT_TAG(p, "<md:ManageNameIDService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2882,7 +3154,7 @@ int zx_LEN_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMappi
   int len = sizeof("<md:NameIDMappingService")-1 + 1 + sizeof("</md:NameIDMappingService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -2921,7 +3193,7 @@ char* zx_ENC_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMap
   ZX_OUT_TAG(p, "<md:NameIDMappingService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3017,7 +3289,7 @@ int zx_LEN_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x )
   int len = sizeof("<md:Organization")-1 + 1 + sizeof("</md:Organization>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3025,13 +3297,21 @@ int zx_LEN_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = &x->OrganizationName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationName->gg;
+       se && se->g.tok == zx_md_OrganizationName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_OrganizationName(c, (struct zx_md_OrganizationName_s*)se);
-  for (se = &x->OrganizationDisplayName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationDisplayName->gg;
+       se && se->g.tok == zx_md_OrganizationDisplayName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_OrganizationDisplayName(c, (struct zx_md_OrganizationDisplayName_s*)se);
-  for (se = &x->OrganizationURL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationURL->gg;
+       se && se->g.tok == zx_md_OrganizationURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_OrganizationURL(c, (struct zx_md_OrganizationURL_s*)se);
 
 
@@ -3059,7 +3339,7 @@ char* zx_ENC_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x
   ZX_OUT_TAG(p, "<md:Organization");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3071,13 +3351,21 @@ char* zx_ENC_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = &x->OrganizationName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationName->gg;
+       se && se->g.tok == zx_md_OrganizationName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_OrganizationName(c, (struct zx_md_OrganizationName_s*)se, p);
-  for (se = &x->OrganizationDisplayName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationDisplayName->gg;
+       se && se->g.tok == zx_md_OrganizationDisplayName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_OrganizationDisplayName(c, (struct zx_md_OrganizationDisplayName_s*)se, p);
-  for (se = &x->OrganizationURL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationURL->gg;
+       se && se->g.tok == zx_md_OrganizationURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_OrganizationURL(c, (struct zx_md_OrganizationURL_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3158,9 +3446,9 @@ int zx_LEN_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_Organiza
   int len = sizeof("<md:OrganizationDisplayName")-1 + 1 + sizeof("</md:OrganizationDisplayName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -3195,9 +3483,9 @@ char* zx_ENC_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_Organi
   ZX_OUT_TAG(p, "<md:OrganizationDisplayName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3289,9 +3577,9 @@ int zx_LEN_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationNam
   int len = sizeof("<md:OrganizationName")-1 + 1 + sizeof("</md:OrganizationName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -3326,9 +3614,9 @@ char* zx_ENC_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationN
   ZX_OUT_TAG(p, "<md:OrganizationName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3420,9 +3708,9 @@ int zx_LEN_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationURL_
   int len = sizeof("<md:OrganizationURL")-1 + 1 + sizeof("</md:OrganizationURL>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -3457,9 +3745,9 @@ char* zx_ENC_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationUR
   ZX_OUT_TAG(p, "<md:OrganizationURL");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3551,7 +3839,7 @@ int zx_LEN_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x
   int len = sizeof("<md:PDPDescriptor")-1 + 1 + sizeof("</md:PDPDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->cacheDuration, sizeof("cacheDuration")-1, &pop_seen);
@@ -3564,23 +3852,39 @@ int zx_LEN_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Organization(c, (struct zx_md_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se);
-  for (se = &x->AuthzService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthzService->gg;
+       se && se->g.tok == zx_md_AuthzService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AuthzService(c, (struct zx_md_AuthzService_s*)se);
-  for (se = &x->AssertionIDRequestService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequestService->gg;
+       se && se->g.tok == zx_md_AssertionIDRequestService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AssertionIDRequestService(c, (struct zx_md_AssertionIDRequestService_s*)se);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
+  for (se = x->NameIDFormat;
+    se && se->g.tok == zx_md_NameIDFormat_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3607,7 +3911,7 @@ char* zx_ENC_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s*
   ZX_OUT_TAG(p, "<md:PDPDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3624,23 +3928,39 @@ char* zx_ENC_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se, p);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Organization(c, (struct zx_md_Organization_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se, p);
-  for (se = &x->AuthzService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthzService->gg;
+       se && se->g.tok == zx_md_AuthzService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AuthzService(c, (struct zx_md_AuthzService_s*)se, p);
-  for (se = &x->AssertionIDRequestService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequestService->gg;
+       se && se->g.tok == zx_md_AssertionIDRequestService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AssertionIDRequestService(c, (struct zx_md_AssertionIDRequestService_s*)se, p);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
+  for (se = x->NameIDFormat;
+       se && se->g.tok == zx_md_NameIDFormat_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3720,7 +4040,7 @@ int zx_LEN_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttr
   int len = sizeof("<md:RequestedAttribute")-1 + 1 + sizeof("</md:RequestedAttribute>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->FriendlyName, sizeof("FriendlyName")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Name, sizeof("Name")-1, &pop_seen);
@@ -3732,7 +4052,9 @@ int zx_LEN_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAttr
   int len = 0;
 #endif
   
-  for (se = &x->AttributeValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeValue->gg;
+       se && se->g.tok == zx_sa_AttributeValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_AttributeValue(c, (struct zx_sa_AttributeValue_s*)se);
 
 
@@ -3760,7 +4082,7 @@ char* zx_ENC_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAt
   ZX_OUT_TAG(p, "<md:RequestedAttribute");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3776,7 +4098,9 @@ char* zx_ENC_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAt
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->AttributeValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeValue->gg;
+       se && se->g.tok == zx_sa_AttributeValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_AttributeValue(c, (struct zx_sa_AttributeValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3857,7 +4181,7 @@ int zx_LEN_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s*
   int len = sizeof("<md:RoleDescriptor")-1 + 1 + sizeof("</md:RoleDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->cacheDuration, sizeof("cacheDuration")-1, &pop_seen);
@@ -3870,16 +4194,26 @@ int zx_LEN_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_s*
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Organization(c, (struct zx_md_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se);
 
 
@@ -3907,7 +4241,7 @@ char* zx_ENC_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_
   ZX_OUT_TAG(p, "<md:RoleDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3924,16 +4258,26 @@ char* zx_ENC_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se, p);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Organization(c, (struct zx_md_Organization_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4014,7 +4358,7 @@ int zx_LEN_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_
   int len = sizeof("<md:SPSSODescriptor")-1 + 1 + sizeof("</md:SPSSODescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->AuthnRequestsSigned, sizeof("AuthnRequestsSigned")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
@@ -4029,28 +4373,50 @@ int zx_LEN_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescriptor_
   int len = 0;
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_Organization(c, (struct zx_md_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se);
-  for (se = &x->ArtifactResolutionService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ArtifactResolutionService->gg;
+       se && se->g.tok == zx_md_ArtifactResolutionService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ArtifactResolutionService(c, (struct zx_md_ArtifactResolutionService_s*)se);
-  for (se = &x->SingleLogoutService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SingleLogoutService->gg;
+       se && se->g.tok == zx_md_SingleLogoutService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_SingleLogoutService(c, (struct zx_md_SingleLogoutService_s*)se);
-  for (se = &x->ManageNameIDService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ManageNameIDService->gg;
+       se && se->g.tok == zx_md_ManageNameIDService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_ManageNameIDService(c, (struct zx_md_ManageNameIDService_s*)se);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->AssertionConsumerService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->NameIDFormat;
+    se && se->g.tok == zx_md_NameIDFormat_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AssertionConsumerService->gg;
+       se && se->g.tok == zx_md_AssertionConsumerService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AssertionConsumerService(c, (struct zx_md_AssertionConsumerService_s*)se);
-  for (se = &x->AttributeConsumingService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeConsumingService->gg;
+       se && se->g.tok == zx_md_AttributeConsumingService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_md_AttributeConsumingService(c, (struct zx_md_AttributeConsumingService_s*)se);
 
 
@@ -4078,7 +4444,7 @@ char* zx_ENC_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescripto
   ZX_OUT_TAG(p, "<md:SPSSODescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4097,28 +4463,50 @@ char* zx_ENC_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescripto
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_md_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Extensions(c, (struct zx_md_Extensions_s*)se, p);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se, p);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_md_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_Organization(c, (struct zx_md_Organization_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_md_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ContactPerson(c, (struct zx_md_ContactPerson_s*)se, p);
-  for (se = &x->ArtifactResolutionService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ArtifactResolutionService->gg;
+       se && se->g.tok == zx_md_ArtifactResolutionService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ArtifactResolutionService(c, (struct zx_md_ArtifactResolutionService_s*)se, p);
-  for (se = &x->SingleLogoutService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SingleLogoutService->gg;
+       se && se->g.tok == zx_md_SingleLogoutService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_SingleLogoutService(c, (struct zx_md_SingleLogoutService_s*)se, p);
-  for (se = &x->ManageNameIDService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ManageNameIDService->gg;
+       se && se->g.tok == zx_md_ManageNameIDService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_ManageNameIDService(c, (struct zx_md_ManageNameIDService_s*)se, p);
-  for (se = x->NameIDFormat; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+zx_md_NS);
-  for (se = &x->AssertionConsumerService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->NameIDFormat;
+       se && se->g.tok == zx_md_NameIDFormat_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "md:NameIDFormat", sizeof("md:NameIDFormat")-1, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AssertionConsumerService->gg;
+       se && se->g.tok == zx_md_AssertionConsumerService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AssertionConsumerService(c, (struct zx_md_AssertionConsumerService_s*)se, p);
-  for (se = &x->AttributeConsumingService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeConsumingService->gg;
+       se && se->g.tok == zx_md_AttributeConsumingService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_md_AttributeConsumingService(c, (struct zx_md_AttributeConsumingService_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4199,9 +4587,9 @@ int zx_LEN_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDescri
   int len = sizeof("<md:ServiceDescription")-1 + 1 + sizeof("</md:ServiceDescription>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -4236,9 +4624,9 @@ char* zx_ENC_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDesc
   ZX_OUT_TAG(p, "<md:ServiceDescription");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4330,9 +4718,9 @@ int zx_LEN_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x )
   int len = sizeof("<md:ServiceName")-1 + 1 + sizeof("</md:ServiceName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -4367,9 +4755,9 @@ char* zx_ENC_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, 
   ZX_OUT_TAG(p, "<md:ServiceName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4461,7 +4849,7 @@ int zx_LEN_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogout
   int len = sizeof("<md:SingleLogoutService")-1 + 1 + sizeof("</md:SingleLogoutService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -4500,7 +4888,7 @@ char* zx_ENC_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogo
   ZX_OUT_TAG(p, "<md:SingleLogoutService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4596,7 +4984,7 @@ int zx_LEN_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSignOn
   int len = sizeof("<md:SingleSignOnService")-1 + 1 + sizeof("</md:SingleSignOnService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Binding, sizeof("Binding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Location, sizeof("Location")-1, &pop_seen);
@@ -4635,7 +5023,7 @@ char* zx_ENC_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSign
   ZX_OUT_TAG(p, "<md:SingleSignOnService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_md_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_md_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 

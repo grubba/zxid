@@ -61,14 +61,14 @@ int zxid_anoint_a7n(zxid_conf* cf, int sign, zxid_a7n* a7n, struct zx_str* issue
 
   if (cf->loguser)
     zxlogusr(cf, uid, &ourts, &ourts, 0, issued_to, 0, &a7n->ID->g,
-	     (a7n->Subject->NameID && a7n->Subject->NameID->gg.content
-	      ?a7n->Subject->NameID->gg.content
+	     (ZX_GET_CONTENT(a7n->Subject->NameID)
+	      ?ZX_GET_CONTENT(a7n->Subject->NameID)
 	      :(zx_dup_str(cf->ctx, (a7n->Subject->EncryptedID?"ENC":"-")))),
 	     sign?"U":"N", "K", lk, "-", 0);
 
   zxlog(cf, &ourts, &ourts, 0, issued_to, 0, &a7n->ID->g,
-	(a7n->Subject->NameID && a7n->Subject->NameID->gg.content
-	 ?a7n->Subject->NameID->gg.content
+	(ZX_GET_CONTENT(a7n->Subject->NameID)
+	 ?ZX_GET_CONTENT(a7n->Subject->NameID)
 	 :(zx_dup_str(cf->ctx, (a7n->Subject->EncryptedID?"ENC":"-")))),
 	sign?"U":"N", "K", lk, "-", 0);
   
@@ -123,17 +123,17 @@ struct zx_str* zxid_anoint_sso_resp(zxid_conf* cf, int sign, struct zx_sp_Respon
   /* Log the issued Response */
   
   a7n = resp->Assertion;
-  zxlog(cf, &ourts, &ourts, 0, ar->Issuer->gg.content, &resp->ID->g,
+  zxlog(cf, &ourts, &ourts, 0, ZX_GET_CONTENT(ar->Issuer), &resp->ID->g,
 	a7n&&a7n->ID?&a7n->ID->g:zx_dup_str(cf->ctx, "-"),
 	(a7n
-	 ?(a7n->Subject->NameID && a7n->Subject->NameID->gg.content
-	   ?a7n->Subject->NameID->gg.content
+	 ?(ZX_GET_CONTENT(a7n->Subject->NameID)
+	   ?ZX_GET_CONTENT(a7n->Subject->NameID)
 	   :(zx_dup_str(cf->ctx, (a7n->Subject->EncryptedID?"ENC":"-"))))
 	 :zx_dup_str(cf->ctx,"-")),
 	sign?"U":"N", "K", "SSORESP", "-", 0);
 
   if (cf->log_issue_msg) {
-    logpath = zxlog_path(cf, ar->Issuer->gg.content, &resp->ID->g, ZXLOG_ISSUE_DIR, ZXLOG_MSG_KIND,1);
+    logpath = zxlog_path(cf, ZX_GET_CONTENT(ar->Issuer), &resp->ID->g, ZXLOG_ISSUE_DIR, ZXLOG_MSG_KIND,1);
     if (logpath) {
       ss = zx_EASY_ENC_SO_sp_Response(cf->ctx, resp);
       if (zxlog_dup_check(cf, logpath, "IdP POST Response")) {
@@ -252,15 +252,14 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
     epr = r->EndpointReference;
     ZX_FREE(cf->ctx, r);
 
-    if (!epr || !epr->Metadata || !epr->Metadata->ServiceType
-	|| !epr->Metadata->ServiceType->content || !epr->Metadata->ServiceType->content->s) {
+    if (!epr || !epr->Metadata || !ZX_SIMPLE_ELEM_CHK(epr->Metadata->ServiceType)) {
       ERR("No EPR, corrupt EPR, or missing <Metadata> %p or <ServiceType>. epr_buf(%.*s) file(%s)", epr->Metadata, epr_len, epr_buf, de->d_name);
       ZX_FREE(cf->ctx, epr_buf);
       continue;
     }
-    is_di = !memcmp(epr->Metadata->ServiceType->content->s, XMLNS_DISCO_2_0,
-		    epr->Metadata->ServiceType->content->len);
-    D("FOUND BOOTSTRAP url(%.*s) is_di=%d", epr->Address->gg.content->len, epr->Address->gg.content->s, is_di);
+    is_di = !memcmp(ZX_GET_CONTENT_S(epr->Metadata->ServiceType), XMLNS_DISCO_2_0,
+		    ZX_GET_CONTENT_LEN(epr->Metadata->ServiceType));
+    D("FOUND BOOTSTRAP url(%.*s) is_di=%d", ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address), is_di);
     
     if (is_di) {
       logop = zxid_add_fed_tok_to_epr(cf, epr, uid, 0); /* recurse, di tail */
@@ -274,7 +273,7 @@ struct zx_sa_Attribute_s* zxid_gen_boots(zxid_conf* cf, const char* uid, char* p
     if (!logop)
       goto next_file;
     
-    D("ADD BOOTSTRAP url(%.*s) is_di=%d", epr->Address->gg.content->len, epr->Address->gg.content->s, is_di);
+    D("ADD BOOTSTRAP url(%.*s) is_di=%d", ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address), is_di);
     at = zxid_mk_attribute(cf, WSF20_DI_RO, 0);
     at->AttributeValue->EndpointReference = epr;
     ZX_NEXT(at) = (void*)bootstraps;
@@ -314,11 +313,11 @@ zxid_a7n* zxid_mk_user_a7n_to_sp(zxid_conf* cf, zxid_ses* ses, const char* uid, 
 
   subj = zxid_mk_subj(cf, sp_meta, nameid);
   an_stmt = ses ? zxid_mk_an_stmt(cf, ses, sp_meta->eid) : 0;
-  at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx);
+  at_stmt = zx_NEW_sa_AttributeStatement(cf->ctx,0);
   at_stmt->Attribute = zxid_mk_attribute(cf, "zxididp", ZXID_REL " " ZXID_COMPILE_DATE);
 
   if (cf->fedusername_suffix && cf->fedusername_suffix[0]) {
-    snprintf(dir, sizeof(dir), "%.*s@%s", nameid->gg.content->len, nameid->gg.content->s, cf->fedusername_suffix);
+    snprintf(dir, sizeof(dir), "%.*s@%s", ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid), cf->fedusername_suffix);
     dir[sizeof(dir)-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
     at = zxid_mk_attribute(cf, "fedusername", zx_dup_cstr(cf->ctx, dir));
     ZX_NEXT(at) = (void*)at_stmt->Attribute;
@@ -386,11 +385,11 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
       }
       
       nid = zxid_mk_id(cf, "F", ZXID_ID_BITS);
-      nameid = zx_NEW_sa_NameID(cf->ctx);
+      nameid = zx_NEW_sa_NameID(cf->ctx,0);
       nameid->Format = zx_ref_attr(cf->ctx, zx_Format_ATTR, SAML2_PERSISTENT_NID_FMT);
       nameid->NameQualifier = idp_eid = zxid_my_entity_id_attr(cf, zx_NameQualifier_ATTR);
       nameid->SPNameQualifier = zx_ref_len_attr(cf->ctx, zx_SPNameQualifier_ATTR, affil->len, affil->s);
-      nameid->gg.content = nid;
+      zx_add_content(c, &nameid->gg, nid);
 
       if (!write_all_path_fmt("put_fed", ZXID_MAX_USER, buf,
 			      "%s%s", dir, "/.mni",
@@ -432,7 +431,7 @@ zxid_nid* zxid_check_fed(zxid_conf* cf, struct zx_str* affil, const char* uid, c
   } else {
     buf[got] = 0;
     nameid = zxid_parse_mni(cf, buf, 0);
-    D("Old fed uid(%s) affil(%.*s) nid(%.*s)", uid, affil->len, affil->s, nameid->gg.content->len, nameid->gg.content->s);
+    D("Old fed uid(%s) affil(%.*s) nid(%.*s)", uid, affil->len, affil->s, ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
   }
 
   if (!nameid) {
@@ -453,7 +452,7 @@ void zxid_mk_transient_nid(zxid_conf* cf, zxid_nid* nameid, const char* sp_name_
 
   D_INDENT("mk_trans: ");
   nameid->Format = zx_dup_attr(cf->ctx, zx_Format_ATTR, SAML2_TRANSIENT_NID_FMT);
-  nameid->gg.content = nid = zxid_mk_id(cf, "T", ZXID_ID_BITS);
+  zx_add_content(c, &nameid->gg, (nid = zxid_mk_id(cf, "T", ZXID_ID_BITS)));
   
   /* Create entry for reverse mapping from pseudonym nid to uid */
   
@@ -488,12 +487,13 @@ char* zxid_add_fed_tok_to_epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int
   zxid_nid* nameid;
   zxid_a7n* a7n;
   zxid_entity* sp_meta;
+  struct zx_str* prvid;
   struct zx_str* affil;
   char sp_name_buf[1024];
   char* logop;
 
-  if (epr->Metadata->ProviderID) {
-    sp_meta = zxid_get_ent_ss(cf, epr->Metadata->ProviderID->content);
+  if (prvid = ZX_GET_CONTENT(epr->Metadata->ProviderID)) {
+    sp_meta = zxid_get_ent_ss(cf, prvid);
     if (!sp_meta) {
       ERR("The metadata for provider could not be found or fetched. Reject. %d", 0);
       return 0;
@@ -508,14 +508,12 @@ char* zxid_add_fed_tok_to_epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int
       && affil->s && affil->len)
     ; /* affil is good */
   else
-    affil = epr->Metadata->ProviderID->content;
+    affil = prvid;
   
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
-  D("sp_name_buf(%s) ProviderID(%.*s) di_allow_create=%d", sp_name_buf, epr->Metadata->ProviderID->content->len, epr->Metadata->ProviderID->content->s, cf->di_allow_create);
+  D("sp_name_buf(%s) ProviderID(%.*s) di_allow_create=%d", sp_name_buf, prvid->len, prvid->s, cf->di_allow_create);
   
-  nameid = zxid_check_fed(cf, affil, uid, cf->di_allow_create, &srcts,
-			  epr->Metadata->ProviderID->content, 0 /*ID*/, sp_name_buf);
-  
+  nameid = zxid_check_fed(cf, affil, uid, cf->di_allow_create, &srcts, prvid, 0/*ID*/,sp_name_buf);
   if (nameid) {
     if (cf->di_nid_fmt == 't') {
       zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
@@ -524,7 +522,7 @@ char* zxid_add_fed_tok_to_epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int
       logop = "FEDDI";
   } else {
     D("No nameid (because of no federation), using transient %d", 0);
-    nameid = zx_NEW_sa_NameID(cf->ctx);
+    nameid = zx_NEW_sa_NameID(cf->ctx,0);
     zxid_mk_transient_nid(cf, nameid, sp_name_buf, uid);
     logop = "TMPDI";
   }
@@ -533,23 +531,22 @@ char* zxid_add_fed_tok_to_epr(zxid_conf* cf, zxid_epr* epr, const char* uid, int
   
   a7n = zxid_mk_user_a7n_to_sp(cf, 0, uid, nameid, sp_meta, sp_name_buf, bs_lvl);
   
-  if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n,
-		       epr->Metadata->ProviderID->content, "DIA7N", uid)) {
+  if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, prvid, "DIA7N", uid)) {
     ERR("Failed to sign the assertion %d", 0);
     return 0;
   }
   
   if (!epr->Metadata->SecurityContext) {
-    epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx);
+    epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx, &epr->Metadata->gg);
   }
 
   if (!epr->Metadata->SecurityContext->SecurityMechID) {
     epr->Metadata->SecurityContext->SecurityMechID
-      = zx_dup_simple_elem(cf->ctx, WSF20_SEC_MECH_TLS_BEARER);
+      = zx_dup_simple_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, WSF20_SEC_MECH_TLS_BEARER);
   }
 
   if (!epr->Metadata->SecurityContext->Token) {
-    epr->Metadata->SecurityContext->Token = zx_NEW_sec_Token(cf->ctx);
+    epr->Metadata->SecurityContext->Token = zx_NEW_sec_Token(cf->ctx, &epr->Metadata->SecurityContext->gg);
   }
   
   if (cf->di_a7n_enc) {
@@ -588,11 +585,11 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
 
   /* Check for federation. */
   
-  affil = nidpol && nidpol->SPNameQualifier ? &nidpol->SPNameQualifier->g : ar->Issuer->gg.content;
+  affil = nidpol && nidpol->SPNameQualifier ? &nidpol->SPNameQualifier->g : ZX_GET_CONTENT(ar->Issuer);
   zxid_nice_sha1(cf, sp_name_buf, sizeof(sp_name_buf), affil, affil, 7);
   D("sp_name_buf(%s)  allow_create=%d", sp_name_buf, cgi->allow_create);
   *nameid = zxid_check_fed(cf, affil, ses->uid, cgi->allow_create,
-			  srcts, ar->Issuer->gg.content, &ar->ID->g, sp_name_buf);
+			  srcts, ZX_GET_CONTENT(ar->Issuer), &ar->ID->g, sp_name_buf);
 
   if (*nameid) {
     if (cgi->nid_fmt && !strcmp(cgi->nid_fmt, "trnsnt")) {
@@ -603,7 +600,7 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
       if (logop) *logop = "IFSSO";
   } else {
     D("No nameid (because of no federation), using transient %d", 0);
-    *nameid = zx_NEW_sa_NameID(cf->ctx);
+    *nameid = zx_NEW_sa_NameID(cf->ctx,0);
     zxid_mk_transient_nid(cf, *nameid, sp_name_buf, ses->uid);
     if (logop) *logop = "ITSSO";
   }
@@ -614,9 +611,9 @@ zxid_a7n* zxid_sso_issue_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct
    * saml-core-2.0-os.pdf ll.653-657 says <SubjectConfirmation> [Zero or More]. The
    * profile seems to make it mandatory. See profiles ll.554-560. */
 
-  a7n->Subject->SubjectConfirmation = zx_NEW_sa_SubjectConfirmation(cf->ctx);
+  a7n->Subject->SubjectConfirmation = zx_NEW_sa_SubjectConfirmation(cf->ctx, &a7n->Subject->gg);
   a7n->Subject->SubjectConfirmation->Method = zx_dup_attr(cf->ctx, zx_Method_ATTR, SAML2_BEARER);
-  a7n->Subject->SubjectConfirmation->SubjectConfirmationData = zx_NEW_sa_SubjectConfirmationData(cf->ctx);
+  a7n->Subject->SubjectConfirmation->SubjectConfirmationData = zx_NEW_sa_SubjectConfirmationData(cf->ctx, &a7n->Subject->SubjectConfirmation->gg);
   if (acsurl)
     a7n->Subject->SubjectConfirmation->SubjectConfirmationData->Recipient = zx_ref_len_attr(cf->ctx, zx_Recipient_ATTR, acsurl->len, acsurl->s);
   a7n->Subject->SubjectConfirmation->SubjectConfirmationData->NotOnOrAfter = a7n->Conditions->NotOnOrAfter;
@@ -647,12 +644,12 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   char* p;
   char* logop;
 
-  if (!ar || !ar->Issuer || !ar->Issuer->gg.content) {
+  if (!ar || !ZX_GET_CONTENT(ar->Issuer)) {
     ERR("No Issuer found in AuthnRequest %p", ar);
     return zx_dup_str(cf->ctx, "* ERR");
   }
 
-  sp_meta = zxid_get_ent_ss(cf, ar->Issuer->gg.content);
+  sp_meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(ar->Issuer));
   if (!sp_meta) {
     ERR("The metadata for Issuer of the AuthnRequest could not be found or fetched %d", 0);
     return zx_dup_str(cf->ctx, "* ERR");
@@ -726,20 +723,20 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
 
     /* Generate SOAP envelope with ECP header */
 
-    e = zx_NEW_e_Envelope(cf->ctx);
+    e = zx_NEW_e_Envelope(cf->ctx,0);
 
-    e->Header = zx_NEW_e_Header(cf->ctx);
-    e->Header->ecp_Response = zx_NEW_ecp_Response(cf->ctx);
+    e->Header = zx_NEW_e_Header(cf->ctx, &e->gg);
+    e->Header->ecp_Response = zx_NEW_ecp_Response(cf->ctx, &e->Header->gg);
     e->Header->ecp_Response->mustUnderstand = zx_dup_attr(cf->ctx, zx_e_mustUnderstand_ATTR, "1");
     e->Header->ecp_Response->actor = zx_dup_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
     e->Header->ecp_Response->AssertionConsumerServiceURL = zx_ref_len_attr(cf->ctx, zx_AssertionConsumerServiceURL_ATTR, acsurl->len, acsurl->s);
 
-    e->Body = zx_NEW_e_Body(cf->ctx);
+    e->Body = zx_NEW_e_Body(cf->ctx, &e->gg);
     e->Body->Response = resp;
     
     ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, e);
 
-    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, ses->uid, "PAOS2");
+    zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses->uid, "PAOS2");
 
 
     /* *** Check what HTTP level headers PAOS needs */
@@ -751,7 +748,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   case 'q':
     D("SAML2 BRWS-POST-SIMPLE-SIGN ep(%.*s)", acsurl->len, acsurl->s);
 
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N_SIMPLE, a7n, ar->Issuer->gg.content, "SSOA7N", ses->uid))
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N_SIMPLE, a7n, ZX_GET_CONTENT(ar->Issuer), "SSOA7N", ses->uid))
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf);
     if (cf->post_a7n_enc) {
@@ -767,7 +764,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     if (!ss)
       return zx_dup_str(cf->ctx, "* ERR");
 
-    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, ses->uid, "SIMPSIG");
+    zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses->uid, "SIMPSIG");
 
     return zx_strf(cf->ctx, "Content-type: text/html\r\nContent-Length: %d\r\n%s%s%s\r\n%.*s",
 		   ss->len,
@@ -777,7 +774,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
   case 'p':
     D("SAML2 BRWS-POST ep(%.*s)", acsurl->len, acsurl->s);
 
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ar->Issuer->gg.content, "SSOA7N", ses->uid))
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ZX_GET_CONTENT(ar->Issuer), "SSOA7N", ses->uid))
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf);
     if (cf->post_a7n_enc) {
@@ -798,7 +795,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     if (!ss)
       return zx_dup_str(cf->ctx, "* ERR");
     
-    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, ses->uid, "BRWS-POST");
+    zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses->uid, "BRWS-POST");
     
     return zx_strf(cf->ctx, "Content-type: text/html\r\nContent-Length: %d\r\n%s%s%s\r\n%.*s",
 		   ss->len,
@@ -812,7 +809,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
       INFO("LOG_ISSUE_A7N must be turned on in IdP configuration for artifact profile to work. Turning on now automatically. %d", 0);
       cf->log_issue_a7n = 1;
     }
-    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ar->Issuer->gg.content, "SSOA7N", ses->uid))
+    if (!zxid_anoint_a7n(cf, cf->sso_sign & ZXID_SSO_SIGN_A7N, a7n, ZX_GET_CONTENT(ar->Issuer), "SSOA7N", ses->uid))
       return zx_dup_str(cf->ctx, "* ERR");
     resp = zxid_mk_saml_resp(cf);
     if (0) {
@@ -828,7 +825,7 @@ struct zx_str* zxid_idp_sso(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct 
     zx_str_free(cf->ctx, payload);
     /* *** Do artifact processing */
 
-    zxlog(cf, 0, &srcts, 0, ar->Issuer->gg.content, 0, &a7n->ID->g, nameid->gg.content, "N", "K", logop, ses->uid, "BRWS-ART");
+    zxlog(cf, 0, &srcts, 0, ZX_GET_CONTENT(ar->Issuer), 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", logop, ses->uid, "BRWS-ART");
 
 
   default:
@@ -850,7 +847,7 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
 {
   zxid_cgi cgi;
   zxid_ses ses;
-  struct zx_as_SASLResponse_s* res = zx_NEW_as_SASLResponse(cf->ctx);
+  struct zx_as_SASLResponse_s* res = zx_NEW_as_SASLResponse(cf->ctx,0);
   struct zx_sa_Attribute_s* at;
   char* q;
   char* u;
@@ -861,11 +858,11 @@ struct zx_as_SASLResponse_s* zxid_idp_as_do(zxid_conf* cf, struct zx_as_SASLRequ
   ZERO(&cgi, sizeof(cgi));
   ZERO(&ses, sizeof(ses));
 
-  if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(req->Data->content->len) >= sizeof(buf)-1) {
-    ERR("Too long username and password data %d", req->Data->content->len);
+  if (SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(ZX_GET_CONTENT_LEN(req->Data)) >= sizeof(buf)-1) {
+    ERR("Too long username and password data %d", ZX_GET_CONTENT(req->Data));
     res->Status = zxid_mk_lu_Status(cf, "ERR", 0, 0, 0);
   }
-  q = unbase64_raw(req->Data->content->s, req->Data->content->s + req->Data->content->len, buf, zx_std_index_64);
+  q = unbase64_raw(ZX_GET_CONTENT_S(req->Data), ZX_GET_CONTENT_S(req->Data) + ZX_GET_CONTENT_LEN(req->Data), buf, zx_std_index_64);
   *q = 0;
   for (u = buf; *u && u < q; ++u) ;  /* skip initial */
   for (p = ++u; *p && p < q; ++p) ;

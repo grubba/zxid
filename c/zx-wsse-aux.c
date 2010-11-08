@@ -886,35 +886,51 @@ void zx_FREE_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x, int f
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
-  for (e = &x->Assertion->gg; e; e = en) {
+  for (e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa_Assertion_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa_Assertion(c, (struct zx_sa_Assertion_s*)e, free_strs);
   }
-  for (e = &x->EncryptedAssertion->gg; e; e = en) {
+  for (e = &x->EncryptedAssertion->gg;
+       e && e->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)e, free_strs);
   }
-  for (e = &x->sa11_Assertion->gg; e; e = en) {
+  for (e = &x->sa11_Assertion->gg;
+       e && e->g.tok == zx_sa11_Assertion_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)e, free_strs);
   }
-  for (e = &x->ff12_Assertion->gg; e; e = en) {
+  for (e = &x->ff12_Assertion->gg;
+       e && e->g.tok == zx_ff12_Assertion_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)e, free_strs);
   }
-  for (e = &x->BinarySecurityToken->gg; e; e = en) {
+  for (e = &x->BinarySecurityToken->gg;
+       e && e->g.tok == zx_wsse_BinarySecurityToken_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsse_BinarySecurityToken(c, (struct zx_wsse_BinarySecurityToken_s*)e, free_strs);
   }
-  for (e = &x->SecurityTokenReference->gg; e; e = en) {
+  for (e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)e, free_strs);
   }
-  for (e = &x->Timestamp->gg; e; e = en) {
+  for (e = &x->Timestamp->gg;
+       e && e->g.tok == zx_wsu_Timestamp_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsu_Timestamp(c, (struct zx_wsu_Timestamp_s*)e, free_strs);
   }
@@ -957,21 +973,37 @@ void zx_DUP_STRS_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x)
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa_Assertion(c, (struct zx_sa_Assertion_s*)se);
-  for (se = &x->EncryptedAssertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedAssertion->gg;
+       se && se->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)se);
-  for (se = &x->sa11_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->sa11_Assertion->gg;
+       se && se->g.tok == zx_sa11_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)se);
-  for (se = &x->ff12_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ff12_Assertion->gg;
+       se && se->g.tok == zx_ff12_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)se);
-  for (se = &x->BinarySecurityToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BinarySecurityToken->gg;
+       se && se->g.tok == zx_wsse_BinarySecurityToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsse_BinarySecurityToken(c, (struct zx_wsse_BinarySecurityToken_s*)se);
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se);
-  for (se = &x->Timestamp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Timestamp->gg;
+       se && se->g.tok == zx_wsu_Timestamp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsu_Timestamp(c, (struct zx_wsu_Timestamp_s*)se);
 
 }
@@ -995,7 +1027,9 @@ struct zx_wsse_Security_s* zx_DEEP_CLONE_wsse_Security(struct zx_ctx* c, struct 
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -1003,7 +1037,9 @@ struct zx_wsse_Security_s* zx_DEEP_CLONE_wsse_Security(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa_Assertion(c,(struct zx_sa_Assertion_s*)e,dup_strs);
   	  if (!enn)
   	      x->Assertion = (struct zx_sa_Assertion_s*)en;
@@ -1011,7 +1047,9 @@ struct zx_wsse_Security_s* zx_DEEP_CLONE_wsse_Security(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedAssertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedAssertion->gg;
+       e && e->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa_EncryptedAssertion(c,(struct zx_sa_EncryptedAssertion_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedAssertion = (struct zx_sa_EncryptedAssertion_s*)en;
@@ -1019,7 +1057,9 @@ struct zx_wsse_Security_s* zx_DEEP_CLONE_wsse_Security(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->sa11_Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->sa11_Assertion->gg;
+       e && e->g.tok == zx_sa11_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa11_Assertion(c,(struct zx_sa11_Assertion_s*)e,dup_strs);
   	  if (!enn)
   	      x->sa11_Assertion = (struct zx_sa11_Assertion_s*)en;
@@ -1027,7 +1067,9 @@ struct zx_wsse_Security_s* zx_DEEP_CLONE_wsse_Security(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ff12_Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ff12_Assertion->gg;
+       e && e->g.tok == zx_ff12_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ff12_Assertion(c,(struct zx_ff12_Assertion_s*)e,dup_strs);
   	  if (!enn)
   	      x->ff12_Assertion = (struct zx_ff12_Assertion_s*)en;
@@ -1035,7 +1077,9 @@ struct zx_wsse_Security_s* zx_DEEP_CLONE_wsse_Security(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->BinarySecurityToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->BinarySecurityToken->gg;
+       e && e->g.tok == zx_wsse_BinarySecurityToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsse_BinarySecurityToken(c,(struct zx_wsse_BinarySecurityToken_s*)e,dup_strs);
   	  if (!enn)
   	      x->BinarySecurityToken = (struct zx_wsse_BinarySecurityToken_s*)en;
@@ -1043,7 +1087,9 @@ struct zx_wsse_Security_s* zx_DEEP_CLONE_wsse_Security(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SecurityTokenReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsse_SecurityTokenReference(c,(struct zx_wsse_SecurityTokenReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->SecurityTokenReference = (struct zx_wsse_SecurityTokenReference_s*)en;
@@ -1051,7 +1097,9 @@ struct zx_wsse_Security_s* zx_DEEP_CLONE_wsse_Security(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Timestamp->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Timestamp->gg;
+       e && e->g.tok == zx_wsu_Timestamp_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsu_Timestamp(c,(struct zx_wsu_Timestamp_s*)e,dup_strs);
   	  if (!enn)
   	      x->Timestamp = (struct zx_wsu_Timestamp_s*)en;
@@ -1082,42 +1130,58 @@ int zx_WALK_SO_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedAssertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedAssertion->gg;
+       e && e->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->sa11_Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->sa11_Assertion->gg;
+       e && e->g.tok == zx_sa11_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ff12_Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ff12_Assertion->gg;
+       e && e->g.tok == zx_ff12_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->BinarySecurityToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->BinarySecurityToken->gg;
+       e && e->g.tok == zx_wsse_BinarySecurityToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsse_BinarySecurityToken(c, (struct zx_wsse_BinarySecurityToken_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SecurityTokenReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Timestamp->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Timestamp->gg;
+       e && e->g.tok == zx_wsu_Timestamp_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsu_Timestamp(c, (struct zx_wsu_Timestamp_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1176,7 +1240,9 @@ void zx_FREE_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_Securi
   zx_free_attr(c, x->Usage, free_strs);
   zx_free_attr(c, x->Id, free_strs);
 
-  for (e = &x->KeyIdentifier->gg; e; e = en) {
+  for (e = &x->KeyIdentifier->gg;
+       e && e->g.tok == zx_wsse_KeyIdentifier_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsse_KeyIdentifier(c, (struct zx_wsse_KeyIdentifier_s*)e, free_strs);
   }
@@ -1218,7 +1284,9 @@ void zx_DUP_STRS_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_Se
   zx_dup_attr(c, x->Usage);
   zx_dup_attr(c, x->Id);
 
-  for (se = &x->KeyIdentifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyIdentifier->gg;
+       se && se->g.tok == zx_wsse_KeyIdentifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsse_KeyIdentifier(c, (struct zx_wsse_KeyIdentifier_s*)se);
 
 }
@@ -1241,7 +1309,9 @@ struct zx_wsse_SecurityTokenReference_s* zx_DEEP_CLONE_wsse_SecurityTokenReferen
   x->Usage = zx_clone_attr(c, x->Usage);
   x->Id = zx_clone_attr(c, x->Id);
 
-  for (enn = 0, e = &x->KeyIdentifier->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyIdentifier->gg;
+       e && e->g.tok == zx_wsse_KeyIdentifier_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsse_KeyIdentifier(c,(struct zx_wsse_KeyIdentifier_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyIdentifier = (struct zx_wsse_KeyIdentifier_s*)en;
@@ -1272,7 +1342,9 @@ int zx_WALK_SO_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_Secu
   if (ret)
     return ret;
 
-  for (e = &x->KeyIdentifier->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyIdentifier->gg;
+       e && e->g.tok == zx_wsse_KeyIdentifier_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsse_KeyIdentifier(c, (struct zx_wsse_KeyIdentifier_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1593,7 +1665,9 @@ void zx_FREE_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken_s
 
   zx_free_attr(c, x->Id, free_strs);
 
-  for (e = &x->Username->gg; e; e = en) {
+  for (e = &x->Username->gg;
+       e && e->g.tok == zx_wsse_Username_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsse_Username(c, (struct zx_wsse_Username_s*)e, free_strs);
   }
@@ -1634,7 +1708,9 @@ void zx_DUP_STRS_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameTok
 
   zx_dup_attr(c, x->Id);
 
-  for (se = &x->Username->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Username->gg;
+       se && se->g.tok == zx_wsse_Username_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsse_Username(c, (struct zx_wsse_Username_s*)se);
 
 }
@@ -1656,7 +1732,9 @@ struct zx_wsse_UsernameToken_s* zx_DEEP_CLONE_wsse_UsernameToken(struct zx_ctx* 
 
   x->Id = zx_clone_attr(c, x->Id);
 
-  for (enn = 0, e = &x->Username->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Username->gg;
+       e && e->g.tok == zx_wsse_Username_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsse_Username(c,(struct zx_wsse_Username_s*)e,dup_strs);
   	  if (!enn)
   	      x->Username = (struct zx_wsse_Username_s*)en;
@@ -1687,7 +1765,9 @@ int zx_WALK_SO_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToken
   if (ret)
     return ret;
 
-  for (e = &x->Username->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Username->gg;
+       e && e->g.tok == zx_wsse_Username_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsse_Username(c, (struct zx_wsse_Username_s*)e, ctx, callback);
     if (ret)
       return ret;

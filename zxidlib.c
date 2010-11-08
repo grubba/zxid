@@ -176,7 +176,7 @@ struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, str
 {
   struct zx_root_s* r;
   struct zx_str* ss;
-  struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx);
+  struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
   env->Header = hdr;
   env->Body = body;
   ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
@@ -199,7 +199,7 @@ struct zx_root_s* zxid_soap_call_hdr_body(zxid_conf* cf, struct zx_str* url, str
 /* Called by:  zxid_as_call_ses, zxid_idp_soap, zxid_sp_deref_art, zxid_sp_soap */
 struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct zx_e_Body_s* body)
 {
-  /*return zxid_soap_call_hdr_body(cf, url, zx_NEW_e_Header(cf->ctx), body);*/
+  /*return zxid_soap_call_hdr_body(cf, url, zx_NEW_e_Header(cf->ctx,0), body);*/
   return zxid_soap_call_hdr_body(cf, url, 0, body);
 }
 
@@ -214,11 +214,11 @@ struct zx_root_s* zxid_soap_call_body(zxid_conf* cf, struct zx_str* url, struct 
 /* Called by:  zxid_idp_soap_dispatch x2, zxid_sp_soap_dispatch x6 */
 int zxid_soap_cgi_resp_body(zxid_conf* cf, struct zx_e_Body_s* body, struct zx_str* entid)
 {
-  struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx);
+  struct zx_e_Envelope_s* env = zx_NEW_e_Envelope(cf->ctx,0);
   struct zx_str* ss;
   struct zx_str* logpath;
   
-  env->Header = zx_NEW_e_Header(cf->ctx);
+  env->Header = zx_NEW_e_Header(cf->ctx, &env->gg);
   env->Body = body;
   ss = zx_EASY_ENC_SO_e_Envelope(cf->ctx, env);
 
@@ -617,7 +617,7 @@ int zxid_saml_ok(zxid_conf* cf, zxid_cgi* cgi, struct zx_sp_Status_s* st, char* 
       zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "K", "SAMLOK", what, 0);
     return 1;
   }
-  if (st->StatusMessage && (m = st->StatusMessage->content))
+  if (st->StatusMessage && (m = ZX_GET_CONTENT(st->StatusMessage)))
     ERR("SAML Fail what(%s) msg(%.*s)", what, m->len, m->s);
   if (sc1 = &sc->Value->g)
     ERR("SAML Fail what(%s) SC1(%.*s)", what, sc1->len, sc1->s);
@@ -702,7 +702,7 @@ struct zx_str* zxid_decrypt_newnym(zxid_conf* cf, struct zx_str* newnym, struct 
       ERR("Failed to parse NewEncryptedID buf(%.*s)", ss->len, ss->s);
       return 0;
     }
-    return r->NewID->content;
+    return ZX_GET_CONTENT(r->NewID);
   }
   ERR("Neither NewNameID nor NewEncryptedID available %d", 0);
   return 0;
@@ -752,7 +752,7 @@ int zxid_chk_sig(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_elem_s* 
     goto erro;
   }
 
-  if (!issue_ent || !(issuer = issue_ent->gg.content) || !issuer->len || !issuer->s[0]) {
+  if (!issue_ent || !(issuer = ZX_GET_CONTENT(issue_ent)) || !issuer->len || !issuer->s[0]) {
     ERR("Issuer of %s is empty although %s was signed. %p", lk, lk, issuer);
     cgi->sigval = "I";
     cgi->sigmsg = "Issuer of signed Response missing.";

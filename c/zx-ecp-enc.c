@@ -86,8 +86,8 @@ int zx_LEN_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ecp_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ecp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->actor, sizeof("e:actor")-1, &pop_seen);
   len += zx_attr_so_len(c, x->mustUnderstand, sizeof("e:mustUnderstand")-1, &pop_seen);
@@ -124,8 +124,8 @@ char* zx_ENC_SO_ecp_RelayState(struct zx_ctx* c, struct zx_ecp_RelayState_s* x, 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ecp_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ecp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -219,8 +219,8 @@ int zx_LEN_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ecp_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ecp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->IsPassive, sizeof("IsPassive")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ProviderName, sizeof("ProviderName")-1, &pop_seen);
@@ -232,9 +232,13 @@ int zx_LEN_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_sa_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_Issuer(c, (struct zx_sa_Issuer_s*)se);
-  for (se = &x->IDPList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPList->gg;
+       se && se->g.tok == zx_sp_IDPList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_IDPList(c, (struct zx_sp_IDPList_s*)se);
 
 
@@ -263,8 +267,8 @@ char* zx_ENC_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, char* 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ecp_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ecp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -280,9 +284,13 @@ char* zx_ENC_SO_ecp_Request(struct zx_ctx* c, struct zx_ecp_Request_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_sa_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_Issuer(c, (struct zx_sa_Issuer_s*)se, p);
-  for (se = &x->IDPList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPList->gg;
+       se && se->g.tok == zx_sp_IDPList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_IDPList(c, (struct zx_sp_IDPList_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -364,8 +372,8 @@ int zx_LEN_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ecp_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ecp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->AssertionConsumerServiceURL, sizeof("AssertionConsumerServiceURL")-1, &pop_seen);
   len += zx_attr_so_len(c, x->actor, sizeof("e:actor")-1, &pop_seen);
@@ -403,8 +411,8 @@ char* zx_ENC_SO_ecp_Response(struct zx_ctx* c, struct zx_ecp_Response_s* x, char
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ecp_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ecp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 

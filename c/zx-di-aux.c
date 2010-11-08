@@ -65,7 +65,9 @@ void zx_FREE_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointContext_s
 
 
   zx_free_simple_elems(c, x->Address, free_strs);
-  for (e = &x->Framework->gg; e; e = en) {
+  for (e = &x->Framework->gg;
+       e && e->g.tok == zx_sbf_Framework_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sbf_Framework(c, (struct zx_sbf_Framework_s*)e, free_strs);
   }
@@ -108,7 +110,9 @@ void zx_DUP_STRS_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointConte
 
 
   zx_dup_strs_simple_elems(c, x->Address);
-  for (se = &x->Framework->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Framework->gg;
+       se && se->g.tok == zx_sbf_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sbf_Framework(c, (struct zx_sbf_Framework_s*)se);
   zx_dup_strs_simple_elems(c, x->SecurityMechID);
   zx_dup_strs_simple_elems(c, x->Action);
@@ -132,7 +136,9 @@ struct zx_di_EndpointContext_s* zx_DEEP_CLONE_di_EndpointContext(struct zx_ctx* 
 
 
   x->Address = zx_deep_clone_simple_elems(c,x->Address, dup_strs);
-  for (enn = 0, e = &x->Framework->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Framework->gg;
+       e && e->g.tok == zx_sbf_Framework_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sbf_Framework(c,(struct zx_sbf_Framework_s*)e,dup_strs);
   	  if (!enn)
   	      x->Framework = (struct zx_sbf_Framework_s*)en;
@@ -168,7 +174,9 @@ int zx_WALK_SO_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointContext
   ret = zx_walk_so_simple_elems(c, x->Address, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Framework->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Framework->gg;
+       e && e->g.tok == zx_sbf_Framework_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -373,7 +381,9 @@ void zx_FREE_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x, int free_strs)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->KeyDescriptor->gg; e; e = en) {
+  for (e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_md_KeyDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)e, free_strs);
   }
@@ -413,7 +423,9 @@ void zx_DUP_STRS_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_md_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)se);
 
 }
@@ -434,7 +446,9 @@ struct zx_di_Keys_s* zx_DEEP_CLONE_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->KeyDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_md_KeyDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_md_KeyDescriptor(c,(struct zx_md_KeyDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyDescriptor = (struct zx_md_KeyDescriptor_s*)en;
@@ -465,7 +479,9 @@ int zx_WALK_SO_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x, void* ctx, int 
   if (ret)
     return ret;
 
-  for (e = &x->KeyDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_md_KeyDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_md_KeyDescriptor(c, (struct zx_md_KeyDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -658,7 +674,9 @@ void zx_FREE_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x, int free_strs)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RequestedService->gg; e; e = en) {
+  for (e = &x->RequestedService->gg;
+       e && e->g.tok == zx_di_RequestedService_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_RequestedService(c, (struct zx_di_RequestedService_s*)e, free_strs);
   }
@@ -698,7 +716,9 @@ void zx_DUP_STRS_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RequestedService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedService->gg;
+       se && se->g.tok == zx_di_RequestedService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_RequestedService(c, (struct zx_di_RequestedService_s*)se);
 
 }
@@ -719,7 +739,9 @@ struct zx_di_Query_s* zx_DEEP_CLONE_di_Query(struct zx_ctx* c, struct zx_di_Quer
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RequestedService->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestedService->gg;
+       e && e->g.tok == zx_di_RequestedService_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_RequestedService(c,(struct zx_di_RequestedService_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestedService = (struct zx_di_RequestedService_s*)en;
@@ -750,7 +772,9 @@ int zx_WALK_SO_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x, void* ctx, in
   if (ret)
     return ret;
 
-  for (e = &x->RequestedService->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestedService->gg;
+       e && e->g.tok == zx_di_RequestedService_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_RequestedService(c, (struct zx_di_RequestedService_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -807,11 +831,15 @@ void zx_FREE_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->EndpointReference->gg; e; e = en) {
+  for (e = &x->EndpointReference->gg;
+       e && e->g.tok == zx_a_EndpointReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)e, free_strs);
   }
@@ -851,9 +879,13 @@ void zx_DUP_STRS_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se);
 
 }
@@ -874,7 +906,9 @@ struct zx_di_QueryResponse_s* zx_DEEP_CLONE_di_QueryResponse(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -882,7 +916,9 @@ struct zx_di_QueryResponse_s* zx_DEEP_CLONE_di_QueryResponse(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndpointReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndpointReference->gg;
+       e && e->g.tok == zx_a_EndpointReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_EndpointReference(c,(struct zx_a_EndpointReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndpointReference = (struct zx_a_EndpointReference_s*)en;
@@ -913,12 +949,16 @@ int zx_WALK_SO_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s* 
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndpointReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndpointReference->gg;
+       e && e->g.tok == zx_a_EndpointReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -979,12 +1019,16 @@ void zx_FREE_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedService
 
   zx_free_simple_elems(c, x->ServiceType, free_strs);
   zx_free_simple_elems(c, x->ProviderID, free_strs);
-  for (e = &x->Options->gg; e; e = en) {
+  for (e = &x->Options->gg;
+       e && e->g.tok == zx_di_Options_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_Options(c, (struct zx_di_Options_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->SecurityMechID, free_strs);
-  for (e = &x->Framework->gg; e; e = en) {
+  for (e = &x->Framework->gg;
+       e && e->g.tok == zx_di_Framework_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_Framework(c, (struct zx_di_Framework_s*)e, free_strs);
   }
@@ -1029,10 +1073,14 @@ void zx_DUP_STRS_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedSer
 
   zx_dup_strs_simple_elems(c, x->ServiceType);
   zx_dup_strs_simple_elems(c, x->ProviderID);
-  for (se = &x->Options->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Options->gg;
+       se && se->g.tok == zx_di_Options_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_Options(c, (struct zx_di_Options_s*)se);
   zx_dup_strs_simple_elems(c, x->SecurityMechID);
-  for (se = &x->Framework->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Framework->gg;
+       se && se->g.tok == zx_di_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_Framework(c, (struct zx_di_Framework_s*)se);
   zx_dup_strs_simple_elems(c, x->Action);
 
@@ -1058,7 +1106,9 @@ struct zx_di_RequestedService_s* zx_DEEP_CLONE_di_RequestedService(struct zx_ctx
 
   x->ServiceType = zx_deep_clone_simple_elems(c,x->ServiceType, dup_strs);
   x->ProviderID = zx_deep_clone_simple_elems(c,x->ProviderID, dup_strs);
-  for (enn = 0, e = &x->Options->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Options->gg;
+       e && e->g.tok == zx_di_Options_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_Options(c,(struct zx_di_Options_s*)e,dup_strs);
   	  if (!enn)
   	      x->Options = (struct zx_di_Options_s*)en;
@@ -1067,7 +1117,9 @@ struct zx_di_RequestedService_s* zx_DEEP_CLONE_di_RequestedService(struct zx_ctx
   	  enn = en;
   }
   x->SecurityMechID = zx_deep_clone_simple_elems(c,x->SecurityMechID, dup_strs);
-  for (enn = 0, e = &x->Framework->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Framework->gg;
+       e && e->g.tok == zx_di_Framework_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_Framework(c,(struct zx_di_Framework_s*)e,dup_strs);
   	  if (!enn)
   	      x->Framework = (struct zx_di_Framework_s*)en;
@@ -1105,7 +1157,9 @@ int zx_WALK_SO_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedServi
   ret = zx_walk_so_simple_elems(c, x->ProviderID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Options->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Options->gg;
+       e && e->g.tok == zx_di_Options_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_Options(c, (struct zx_di_Options_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1113,7 +1167,9 @@ int zx_WALK_SO_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedServi
   ret = zx_walk_so_simple_elems(c, x->SecurityMechID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Framework->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Framework->gg;
+       e && e->g.tok == zx_di_Framework_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_Framework(c, (struct zx_di_Framework_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1174,7 +1230,9 @@ void zx_FREE_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityContext_s
 
 
   zx_free_simple_elems(c, x->SecurityMechID, free_strs);
-  for (e = &x->Token->gg; e; e = en) {
+  for (e = &x->Token->gg;
+       e && e->g.tok == zx_sec_Token_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sec_Token(c, (struct zx_sec_Token_s*)e, free_strs);
   }
@@ -1215,7 +1273,9 @@ void zx_DUP_STRS_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityConte
 
 
   zx_dup_strs_simple_elems(c, x->SecurityMechID);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sec_Token(c, (struct zx_sec_Token_s*)se);
 
 }
@@ -1237,7 +1297,9 @@ struct zx_di_SecurityContext_s* zx_DEEP_CLONE_di_SecurityContext(struct zx_ctx* 
 
 
   x->SecurityMechID = zx_deep_clone_simple_elems(c,x->SecurityMechID, dup_strs);
-  for (enn = 0, e = &x->Token->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Token->gg;
+       e && e->g.tok == zx_sec_Token_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sec_Token(c,(struct zx_sec_Token_s*)e,dup_strs);
   	  if (!enn)
   	      x->Token = (struct zx_sec_Token_s*)en;
@@ -1271,7 +1333,9 @@ int zx_WALK_SO_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityContext
   ret = zx_walk_so_simple_elems(c, x->SecurityMechID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Token->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Token->gg;
+       e && e->g.tok == zx_sec_Token_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sec_Token(c, (struct zx_sec_Token_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1329,11 +1393,15 @@ void zx_FREE_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext_s* 
 
 
   zx_free_simple_elems(c, x->ServiceType, free_strs);
-  for (e = &x->Options->gg; e; e = en) {
+  for (e = &x->Options->gg;
+       e && e->g.tok == zx_di_Options_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_Options(c, (struct zx_di_Options_s*)e, free_strs);
   }
-  for (e = &x->EndpointContext->gg; e; e = en) {
+  for (e = &x->EndpointContext->gg;
+       e && e->g.tok == zx_di_EndpointContext_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_EndpointContext(c, (struct zx_di_EndpointContext_s*)e, free_strs);
   }
@@ -1374,9 +1442,13 @@ void zx_DUP_STRS_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext
 
 
   zx_dup_strs_simple_elems(c, x->ServiceType);
-  for (se = &x->Options->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Options->gg;
+       se && se->g.tok == zx_di_Options_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_Options(c, (struct zx_di_Options_s*)se);
-  for (se = &x->EndpointContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointContext->gg;
+       se && se->g.tok == zx_di_EndpointContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_EndpointContext(c, (struct zx_di_EndpointContext_s*)se);
 
 }
@@ -1398,7 +1470,9 @@ struct zx_di_ServiceContext_s* zx_DEEP_CLONE_di_ServiceContext(struct zx_ctx* c,
 
 
   x->ServiceType = zx_deep_clone_simple_elems(c,x->ServiceType, dup_strs);
-  for (enn = 0, e = &x->Options->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Options->gg;
+       e && e->g.tok == zx_di_Options_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_Options(c,(struct zx_di_Options_s*)e,dup_strs);
   	  if (!enn)
   	      x->Options = (struct zx_di_Options_s*)en;
@@ -1406,7 +1480,9 @@ struct zx_di_ServiceContext_s* zx_DEEP_CLONE_di_ServiceContext(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndpointContext->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndpointContext->gg;
+       e && e->g.tok == zx_di_EndpointContext_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_EndpointContext(c,(struct zx_di_EndpointContext_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndpointContext = (struct zx_di_EndpointContext_s*)en;
@@ -1440,12 +1516,16 @@ int zx_WALK_SO_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext_s
   ret = zx_walk_so_simple_elems(c, x->ServiceType, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Options->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Options->gg;
+       e && e->g.tok == zx_di_Options_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_Options(c, (struct zx_di_Options_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndpointContext->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndpointContext->gg;
+       e && e->g.tok == zx_di_EndpointContext_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_EndpointContext(c, (struct zx_di_EndpointContext_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1505,7 +1585,9 @@ void zx_FREE_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x, int free_strs)
 
   zx_free_simple_elems(c, x->Abstract, free_strs);
   zx_free_simple_elems(c, x->ProviderID, free_strs);
-  for (e = &x->ServiceContext->gg; e; e = en) {
+  for (e = &x->ServiceContext->gg;
+       e && e->g.tok == zx_di_ServiceContext_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_ServiceContext(c, (struct zx_di_ServiceContext_s*)e, free_strs);
   }
@@ -1548,7 +1630,9 @@ void zx_DUP_STRS_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x)
 
   zx_dup_strs_simple_elems(c, x->Abstract);
   zx_dup_strs_simple_elems(c, x->ProviderID);
-  for (se = &x->ServiceContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceContext->gg;
+       se && se->g.tok == zx_di_ServiceContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_ServiceContext(c, (struct zx_di_ServiceContext_s*)se);
 
 }
@@ -1572,7 +1656,9 @@ struct zx_di_SvcMD_s* zx_DEEP_CLONE_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcM
 
   x->Abstract = zx_deep_clone_simple_elems(c,x->Abstract, dup_strs);
   x->ProviderID = zx_deep_clone_simple_elems(c,x->ProviderID, dup_strs);
-  for (enn = 0, e = &x->ServiceContext->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ServiceContext->gg;
+       e && e->g.tok == zx_di_ServiceContext_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_ServiceContext(c,(struct zx_di_ServiceContext_s*)e,dup_strs);
   	  if (!enn)
   	      x->ServiceContext = (struct zx_di_ServiceContext_s*)en;
@@ -1609,7 +1695,9 @@ int zx_WALK_SO_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x, void* ctx, in
   ret = zx_walk_so_simple_elems(c, x->ProviderID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ServiceContext->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ServiceContext->gg;
+       e && e->g.tok == zx_di_ServiceContext_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_ServiceContext(c, (struct zx_di_ServiceContext_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1802,7 +1890,9 @@ void zx_FREE_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_SvcMD
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -1842,7 +1932,9 @@ void zx_DUP_STRS_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_S
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -1863,7 +1955,9 @@ struct zx_di_SvcMDAssociationAddResponse_s* zx_DEEP_CLONE_di_SvcMDAssociationAdd
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -1894,7 +1988,9 @@ int zx_WALK_SO_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_Svc
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2087,7 +2183,9 @@ void zx_FREE_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_di_Sv
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -2127,7 +2225,9 @@ void zx_DUP_STRS_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_d
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -2148,7 +2248,9 @@ struct zx_di_SvcMDAssociationDeleteResponse_s* zx_DEEP_CLONE_di_SvcMDAssociation
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -2179,7 +2281,9 @@ int zx_WALK_SO_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_di_
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2372,7 +2476,9 @@ void zx_FREE_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di_Svc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -2413,7 +2519,9 @@ void zx_DUP_STRS_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
   zx_dup_strs_simple_elems(c, x->SvcMDID);
 
@@ -2435,7 +2543,9 @@ struct zx_di_SvcMDAssociationQueryResponse_s* zx_DEEP_CLONE_di_SvcMDAssociationQ
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -2467,7 +2577,9 @@ int zx_WALK_SO_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di_S
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2663,7 +2775,9 @@ void zx_FREE_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDeleteRe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -2703,7 +2817,9 @@ void zx_DUP_STRS_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDele
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -2724,7 +2840,9 @@ struct zx_di_SvcMDDeleteResponse_s* zx_DEEP_CLONE_di_SvcMDDeleteResponse(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -2755,7 +2873,9 @@ int zx_WALK_SO_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDelete
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2948,11 +3068,15 @@ void zx_FREE_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQueryResp
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->SvcMD->gg; e; e = en) {
+  for (e = &x->SvcMD->gg;
+       e && e->g.tok == zx_di_SvcMD_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_SvcMD(c, (struct zx_di_SvcMD_s*)e, free_strs);
   }
@@ -2992,9 +3116,13 @@ void zx_DUP_STRS_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQuery
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->SvcMD->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMD->gg;
+       se && se->g.tok == zx_di_SvcMD_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_SvcMD(c, (struct zx_di_SvcMD_s*)se);
 
 }
@@ -3015,7 +3143,9 @@ struct zx_di_SvcMDQueryResponse_s* zx_DEEP_CLONE_di_SvcMDQueryResponse(struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -3023,7 +3153,9 @@ struct zx_di_SvcMDQueryResponse_s* zx_DEEP_CLONE_di_SvcMDQueryResponse(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SvcMD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SvcMD->gg;
+       e && e->g.tok == zx_di_SvcMD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_SvcMD(c,(struct zx_di_SvcMD_s*)e,dup_strs);
   	  if (!enn)
   	      x->SvcMD = (struct zx_di_SvcMD_s*)en;
@@ -3054,12 +3186,16 @@ int zx_WALK_SO_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQueryRe
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SvcMD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SvcMD->gg;
+       e && e->g.tok == zx_di_SvcMD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_SvcMD(c, (struct zx_di_SvcMD_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3116,7 +3252,9 @@ void zx_FREE_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SvcMD->gg; e; e = en) {
+  for (e = &x->SvcMD->gg;
+       e && e->g.tok == zx_di_SvcMD_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_SvcMD(c, (struct zx_di_SvcMD_s*)e, free_strs);
   }
@@ -3156,7 +3294,9 @@ void zx_DUP_STRS_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SvcMD->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMD->gg;
+       se && se->g.tok == zx_di_SvcMD_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_SvcMD(c, (struct zx_di_SvcMD_s*)se);
 
 }
@@ -3177,7 +3317,9 @@ struct zx_di_SvcMDRegister_s* zx_DEEP_CLONE_di_SvcMDRegister(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SvcMD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SvcMD->gg;
+       e && e->g.tok == zx_di_SvcMD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_SvcMD(c,(struct zx_di_SvcMD_s*)e,dup_strs);
   	  if (!enn)
   	      x->SvcMD = (struct zx_di_SvcMD_s*)en;
@@ -3208,7 +3350,9 @@ int zx_WALK_SO_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s* 
   if (ret)
     return ret;
 
-  for (e = &x->SvcMD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SvcMD->gg;
+       e && e->g.tok == zx_di_SvcMD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_SvcMD(c, (struct zx_di_SvcMD_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3265,12 +3409,16 @@ void zx_FREE_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRegist
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->SvcMDID, free_strs);
-  for (e = &x->Keys->gg; e; e = en) {
+  for (e = &x->Keys->gg;
+       e && e->g.tok == zx_di_Keys_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_Keys(c, (struct zx_di_Keys_s*)e, free_strs);
   }
@@ -3310,10 +3458,14 @@ void zx_DUP_STRS_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
   zx_dup_strs_simple_elems(c, x->SvcMDID);
-  for (se = &x->Keys->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Keys->gg;
+       se && se->g.tok == zx_di_Keys_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_Keys(c, (struct zx_di_Keys_s*)se);
 
 }
@@ -3334,7 +3486,9 @@ struct zx_di_SvcMDRegisterResponse_s* zx_DEEP_CLONE_di_SvcMDRegisterResponse(str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -3343,7 +3497,9 @@ struct zx_di_SvcMDRegisterResponse_s* zx_DEEP_CLONE_di_SvcMDRegisterResponse(str
   	  enn = en;
   }
   x->SvcMDID = zx_deep_clone_simple_elems(c,x->SvcMDID, dup_strs);
-  for (enn = 0, e = &x->Keys->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Keys->gg;
+       e && e->g.tok == zx_di_Keys_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_Keys(c,(struct zx_di_Keys_s*)e,dup_strs);
   	  if (!enn)
   	      x->Keys = (struct zx_di_Keys_s*)en;
@@ -3374,7 +3530,9 @@ int zx_WALK_SO_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRegi
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3382,7 +3540,9 @@ int zx_WALK_SO_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDRegi
   ret = zx_walk_so_simple_elems(c, x->SvcMDID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Keys->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Keys->gg;
+       e && e->g.tok == zx_di_Keys_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_Keys(c, (struct zx_di_Keys_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3439,7 +3599,9 @@ void zx_FREE_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* x, i
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SvcMD->gg; e; e = en) {
+  for (e = &x->SvcMD->gg;
+       e && e->g.tok == zx_di_SvcMD_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_SvcMD(c, (struct zx_di_SvcMD_s*)e, free_strs);
   }
@@ -3479,7 +3641,9 @@ void zx_DUP_STRS_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SvcMD->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMD->gg;
+       se && se->g.tok == zx_di_SvcMD_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_SvcMD(c, (struct zx_di_SvcMD_s*)se);
 
 }
@@ -3500,7 +3664,9 @@ struct zx_di_SvcMDReplace_s* zx_DEEP_CLONE_di_SvcMDReplace(struct zx_ctx* c, str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SvcMD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SvcMD->gg;
+       e && e->g.tok == zx_di_SvcMD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_SvcMD(c,(struct zx_di_SvcMD_s*)e,dup_strs);
   	  if (!enn)
   	      x->SvcMD = (struct zx_di_SvcMD_s*)en;
@@ -3531,7 +3697,9 @@ int zx_WALK_SO_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->SvcMD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SvcMD->gg;
+       e && e->g.tok == zx_di_SvcMD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_SvcMD(c, (struct zx_di_SvcMD_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3588,7 +3756,9 @@ void zx_FREE_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDReplace
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
@@ -3628,7 +3798,9 @@ void zx_DUP_STRS_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDRep
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 }
@@ -3649,7 +3821,9 @@ struct zx_di_SvcMDReplaceResponse_s* zx_DEEP_CLONE_di_SvcMDReplaceResponse(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -3680,7 +3854,9 @@ int zx_WALK_SO_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDRepla
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;

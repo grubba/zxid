@@ -85,7 +85,7 @@ int zx_LEN_SO_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_di12_Authen
   int len = sizeof("<di12:AuthenticateRequester")-1 + 1 + sizeof("</di12:AuthenticateRequester>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->descriptionIDRefs, sizeof("descriptionIDRefs")-1, &pop_seen);
 
@@ -120,7 +120,7 @@ char* zx_ENC_SO_di12_AuthenticateRequester(struct zx_ctx* c, struct zx_di12_Auth
   ZX_OUT_TAG(p, "<di12:AuthenticateRequester");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -212,7 +212,7 @@ int zx_LEN_SO_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_di12_A
   int len = sizeof("<di12:AuthenticateSessionContext")-1 + 1 + sizeof("</di12:AuthenticateSessionContext>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->descriptionIDRefs, sizeof("descriptionIDRefs")-1, &pop_seen);
 
@@ -247,7 +247,7 @@ char* zx_ENC_SO_di12_AuthenticateSessionContext(struct zx_ctx* c, struct zx_di12
   ZX_OUT_TAG(p, "<di12:AuthenticateSessionContext");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -339,7 +339,7 @@ int zx_LEN_SO_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_di12_Authorize
   int len = sizeof("<di12:AuthorizeRequester")-1 + 1 + sizeof("</di12:AuthorizeRequester>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->descriptionIDRefs, sizeof("descriptionIDRefs")-1, &pop_seen);
 
@@ -374,7 +374,7 @@ char* zx_ENC_SO_di12_AuthorizeRequester(struct zx_ctx* c, struct zx_di12_Authori
   ZX_OUT_TAG(p, "<di12:AuthorizeRequester");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -466,7 +466,7 @@ int zx_LEN_SO_di12_Credentials(struct zx_ctx* c, struct zx_di12_Credentials_s* x
   int len = sizeof("<di12:Credentials")-1 + 1 + sizeof("</di12:Credentials>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -500,7 +500,7 @@ char* zx_ENC_SO_di12_Credentials(struct zx_ctx* c, struct zx_di12_Credentials_s*
   ZX_OUT_TAG(p, "<di12:Credentials");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -591,7 +591,7 @@ int zx_LEN_SO_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s* x
   int len = sizeof("<di12:Description")-1 + 1 + sizeof("</di12:Description>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -600,18 +600,30 @@ int zx_LEN_SO_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s* x
   int len = 0;
 #endif
   
-  for (se = x->SecurityMechID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:SecurityMechID")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->CredentialRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:CredentialRef")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->WsdlURI; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:WsdlURI")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->ServiceNameRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:ServiceNameRef")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->Endpoint; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:Endpoint")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->SoapAction; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:SoapAction")-1, zx_ns_tab+zx_di12_NS);
+  for (se = x->SecurityMechID;
+    se && se->g.tok == zx_di12_SecurityMechID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:SecurityMechID")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CredentialRef;
+    se && se->g.tok == zx_di12_CredentialRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:CredentialRef")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->WsdlURI;
+    se && se->g.tok == zx_di12_WsdlURI_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:WsdlURI")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ServiceNameRef;
+    se && se->g.tok == zx_di12_ServiceNameRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:ServiceNameRef")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Endpoint;
+    se && se->g.tok == zx_di12_Endpoint_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:Endpoint")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SoapAction;
+    se && se->g.tok == zx_di12_SoapAction_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:SoapAction")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -638,7 +650,7 @@ char* zx_ENC_SO_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s*
   ZX_OUT_TAG(p, "<di12:Description");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -651,18 +663,30 @@ char* zx_ENC_SO_di12_Description(struct zx_ctx* c, struct zx_di12_Description_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->SecurityMechID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:SecurityMechID", sizeof("di12:SecurityMechID")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->CredentialRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:CredentialRef", sizeof("di12:CredentialRef")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->WsdlURI; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:WsdlURI", sizeof("di12:WsdlURI")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->ServiceNameRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:ServiceNameRef", sizeof("di12:ServiceNameRef")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->Endpoint; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:Endpoint", sizeof("di12:Endpoint")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->SoapAction; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:SoapAction", sizeof("di12:SoapAction")-1, zx_ns_tab+zx_di12_NS);
+  for (se = x->SecurityMechID;
+       se && se->g.tok == zx_di12_SecurityMechID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:SecurityMechID", sizeof("di12:SecurityMechID")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CredentialRef;
+       se && se->g.tok == zx_di12_CredentialRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:CredentialRef", sizeof("di12:CredentialRef")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->WsdlURI;
+       se && se->g.tok == zx_di12_WsdlURI_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:WsdlURI", sizeof("di12:WsdlURI")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ServiceNameRef;
+       se && se->g.tok == zx_di12_ServiceNameRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:ServiceNameRef", sizeof("di12:ServiceNameRef")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Endpoint;
+       se && se->g.tok == zx_di12_Endpoint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:Endpoint", sizeof("di12:Endpoint")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SoapAction;
+       se && se->g.tok == zx_di12_SoapAction_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:SoapAction", sizeof("di12:SoapAction")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -742,7 +766,7 @@ int zx_LEN_SO_di12_EncryptResourceID(struct zx_ctx* c, struct zx_di12_EncryptRes
   int len = sizeof("<di12:EncryptResourceID")-1 + 1 + sizeof("</di12:EncryptResourceID>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->descriptionIDRefs, sizeof("descriptionIDRefs")-1, &pop_seen);
 
@@ -777,7 +801,7 @@ char* zx_ENC_SO_di12_EncryptResourceID(struct zx_ctx* c, struct zx_di12_EncryptR
   ZX_OUT_TAG(p, "<di12:EncryptResourceID");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -869,7 +893,7 @@ int zx_LEN_SO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_Encrypte
   int len = sizeof("<di12:EncryptedResourceID")-1 + 1 + sizeof("</di12:EncryptedResourceID>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -877,9 +901,13 @@ int zx_LEN_SO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_Encrypte
   int len = 0;
 #endif
   
-  for (se = &x->EncryptedData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedData->gg;
+       se && se->g.tok == zx_xenc_EncryptedData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)se);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se);
 
 
@@ -907,7 +935,7 @@ char* zx_ENC_SO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_Encryp
   ZX_OUT_TAG(p, "<di12:EncryptedResourceID");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -919,9 +947,13 @@ char* zx_ENC_SO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_Encryp
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EncryptedData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedData->gg;
+       se && se->g.tok == zx_xenc_EncryptedData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)se, p);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1002,7 +1034,7 @@ int zx_LEN_SO_di12_Extension(struct zx_ctx* c, struct zx_di12_Extension_s* x )
   int len = sizeof("<di12:Extension")-1 + 1 + sizeof("</di12:Extension>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1036,7 +1068,7 @@ char* zx_ENC_SO_di12_Extension(struct zx_ctx* c, struct zx_di12_Extension_s* x, 
   ZX_OUT_TAG(p, "<di12:Extension");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1127,7 +1159,7 @@ int zx_LEN_SO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* x
   int len = sizeof("<di12:InsertEntry")-1 + 1 + sizeof("</di12:InsertEntry>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1135,7 +1167,9 @@ int zx_LEN_SO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* x
   int len = 0;
 #endif
   
-  for (se = &x->ResourceOffering->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceOffering->gg;
+       se && se->g.tok == zx_di12_ResourceOffering_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)se);
 
 
@@ -1163,7 +1197,7 @@ char* zx_ENC_SO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s*
   ZX_OUT_TAG(p, "<di12:InsertEntry");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1175,7 +1209,9 @@ char* zx_ENC_SO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResourceOffering->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceOffering->gg;
+       se && se->g.tok == zx_di12_ResourceOffering_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1256,7 +1292,7 @@ int zx_LEN_SO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x )
   int len = sizeof("<di12:Modify")-1 + 1 + sizeof("</di12:Modify>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -1265,13 +1301,21 @@ int zx_LEN_SO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_di12_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)se);
-  for (se = &x->InsertEntry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InsertEntry->gg;
+       se && se->g.tok == zx_di12_InsertEntry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_InsertEntry(c, (struct zx_di12_InsertEntry_s*)se);
-  for (se = &x->RemoveEntry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveEntry->gg;
+       se && se->g.tok == zx_di12_RemoveEntry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_RemoveEntry(c, (struct zx_di12_RemoveEntry_s*)se);
 
 
@@ -1299,7 +1343,7 @@ char* zx_ENC_SO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x, char* 
   ZX_OUT_TAG(p, "<di12:Modify");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1312,13 +1356,21 @@ char* zx_ENC_SO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_di12_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)se, p);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)se, p);
-  for (se = &x->InsertEntry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InsertEntry->gg;
+       se && se->g.tok == zx_di12_InsertEntry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_InsertEntry(c, (struct zx_di12_InsertEntry_s*)se, p);
-  for (se = &x->RemoveEntry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveEntry->gg;
+       se && se->g.tok == zx_di12_RemoveEntry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_RemoveEntry(c, (struct zx_di12_RemoveEntry_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1399,7 +1451,7 @@ int zx_LEN_SO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyRespons
   int len = sizeof("<di12:ModifyResponse")-1 + 1 + sizeof("</di12:ModifyResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->newEntryIDs, sizeof("newEntryIDs")-1, &pop_seen);
@@ -1409,9 +1461,13 @@ int zx_LEN_SO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyRespons
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_di12_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Status(c, (struct zx_di12_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_di12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Extension(c, (struct zx_di12_Extension_s*)se);
 
 
@@ -1439,7 +1495,7 @@ char* zx_ENC_SO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyRespo
   ZX_OUT_TAG(p, "<di12:ModifyResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1453,9 +1509,13 @@ char* zx_ENC_SO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyRespo
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_di12_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Status(c, (struct zx_di12_Status_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_di12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Extension(c, (struct zx_di12_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1536,7 +1596,7 @@ int zx_LEN_SO_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x )
   int len = sizeof("<di12:Options")-1 + 1 + sizeof("</di12:Options>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1544,8 +1604,10 @@ int zx_LEN_SO_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Option; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:Option")-1, zx_ns_tab+zx_di12_NS);
+  for (se = x->Option;
+    se && se->g.tok == zx_di12_Option_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:Option")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1572,7 +1634,7 @@ char* zx_ENC_SO_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x, char
   ZX_OUT_TAG(p, "<di12:Options");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1584,8 +1646,10 @@ char* zx_ENC_SO_di12_Options(struct zx_ctx* c, struct zx_di12_Options_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Option; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:Option", sizeof("di12:Option")-1, zx_ns_tab+zx_di12_NS);
+  for (se = x->Option;
+       se && se->g.tok == zx_di12_Option_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:Option", sizeof("di12:Option")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1665,7 +1729,7 @@ int zx_LEN_SO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x )
   int len = sizeof("<di12:Query")-1 + 1 + sizeof("</di12:Query>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -1674,11 +1738,17 @@ int zx_LEN_SO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_di12_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)se);
-  for (se = &x->RequestedServiceType->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedServiceType->gg;
+       se && se->g.tok == zx_di12_RequestedServiceType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_RequestedServiceType(c, (struct zx_di12_RequestedServiceType_s*)se);
 
 
@@ -1706,7 +1776,7 @@ char* zx_ENC_SO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x, char* p 
   ZX_OUT_TAG(p, "<di12:Query");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1719,11 +1789,17 @@ char* zx_ENC_SO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_di12_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)se, p);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)se, p);
-  for (se = &x->RequestedServiceType->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedServiceType->gg;
+       se && se->g.tok == zx_di12_RequestedServiceType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_RequestedServiceType(c, (struct zx_di12_RequestedServiceType_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1804,7 +1880,7 @@ int zx_LEN_SO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse_
   int len = sizeof("<di12:QueryResponse")-1 + 1 + sizeof("</di12:QueryResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -1813,11 +1889,17 @@ int zx_LEN_SO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse_
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_di12_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Status(c, (struct zx_di12_Status_s*)se);
-  for (se = &x->ResourceOffering->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceOffering->gg;
+       se && se->g.tok == zx_di12_ResourceOffering_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)se);
-  for (se = &x->Credentials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Credentials->gg;
+       se && se->g.tok == zx_di12_Credentials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Credentials(c, (struct zx_di12_Credentials_s*)se);
 
 
@@ -1845,7 +1927,7 @@ char* zx_ENC_SO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryRespons
   ZX_OUT_TAG(p, "<di12:QueryResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1858,11 +1940,17 @@ char* zx_ENC_SO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryRespons
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_di12_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Status(c, (struct zx_di12_Status_s*)se, p);
-  for (se = &x->ResourceOffering->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceOffering->gg;
+       se && se->g.tok == zx_di12_ResourceOffering_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)se, p);
-  for (se = &x->Credentials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Credentials->gg;
+       se && se->g.tok == zx_di12_Credentials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Credentials(c, (struct zx_di12_Credentials_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1943,7 +2031,7 @@ int zx_LEN_SO_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_RemoveEntry_s* x
   int len = sizeof("<di12:RemoveEntry")-1 + 1 + sizeof("</di12:RemoveEntry>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->entryID, sizeof("entryID")-1, &pop_seen);
 
@@ -1978,7 +2066,7 @@ char* zx_ENC_SO_di12_RemoveEntry(struct zx_ctx* c, struct zx_di12_RemoveEntry_s*
   ZX_OUT_TAG(p, "<di12:RemoveEntry");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2070,7 +2158,7 @@ int zx_LEN_SO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_Request
   int len = sizeof("<di12:RequestedServiceType")-1 + 1 + sizeof("</di12:RequestedServiceType>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2078,9 +2166,13 @@ int zx_LEN_SO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_Request
   int len = 0;
 #endif
   
-  for (se = x->ServiceType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:ServiceType")-1, zx_ns_tab+zx_di12_NS);
-  for (se = &x->Options->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceType;
+    se && se->g.tok == zx_di12_ServiceType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:ServiceType")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Options->gg;
+       se && se->g.tok == zx_di12_Options_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Options(c, (struct zx_di12_Options_s*)se);
 
 
@@ -2108,7 +2200,7 @@ char* zx_ENC_SO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_Reque
   ZX_OUT_TAG(p, "<di12:RequestedServiceType");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2120,9 +2212,13 @@ char* zx_ENC_SO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_Reque
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:ServiceType", sizeof("di12:ServiceType")-1, zx_ns_tab+zx_di12_NS);
-  for (se = &x->Options->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceType;
+       se && se->g.tok == zx_di12_ServiceType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:ServiceType", sizeof("di12:ServiceType")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Options->gg;
+       se && se->g.tok == zx_di12_Options_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Options(c, (struct zx_di12_Options_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2203,7 +2299,7 @@ int zx_LEN_SO_di12_ResourceID(struct zx_ctx* c, struct zx_di12_ResourceID_s* x )
   int len = sizeof("<di12:ResourceID")-1 + 1 + sizeof("</di12:ResourceID>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -2238,7 +2334,7 @@ char* zx_ENC_SO_di12_ResourceID(struct zx_ctx* c, struct zx_di12_ResourceID_s* x
   ZX_OUT_TAG(p, "<di12:ResourceID");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2330,7 +2426,7 @@ int zx_LEN_SO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOff
   int len = sizeof("<di12:ResourceOffering")-1 + 1 + sizeof("</di12:ResourceOffering>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->entryID, sizeof("entryID")-1, &pop_seen);
 
@@ -2339,16 +2435,26 @@ int zx_LEN_SO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOff
   int len = 0;
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_di12_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)se);
-  for (se = &x->ServiceInstance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceInstance->gg;
+       se && se->g.tok == zx_di12_ServiceInstance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_ServiceInstance(c, (struct zx_di12_ServiceInstance_s*)se);
-  for (se = &x->Options->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Options->gg;
+       se && se->g.tok == zx_di12_Options_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Options(c, (struct zx_di12_Options_s*)se);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:Abstract")-1, zx_ns_tab+zx_di12_NS);
+  for (se = x->Abstract;
+    se && se->g.tok == zx_di12_Abstract_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:Abstract")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2375,7 +2481,7 @@ char* zx_ENC_SO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceO
   ZX_OUT_TAG(p, "<di12:ResourceOffering");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2388,16 +2494,26 @@ char* zx_ENC_SO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceO
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_di12_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)se, p);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)se, p);
-  for (se = &x->ServiceInstance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceInstance->gg;
+       se && se->g.tok == zx_di12_ServiceInstance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_ServiceInstance(c, (struct zx_di12_ServiceInstance_s*)se, p);
-  for (se = &x->Options->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Options->gg;
+       se && se->g.tok == zx_di12_Options_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Options(c, (struct zx_di12_Options_s*)se, p);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:Abstract", sizeof("di12:Abstract")-1, zx_ns_tab+zx_di12_NS);
+  for (se = x->Abstract;
+       se && se->g.tok == zx_di12_Abstract_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:Abstract", sizeof("di12:Abstract")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2477,7 +2593,7 @@ int zx_LEN_SO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInsta
   int len = sizeof("<di12:ServiceInstance")-1 + 1 + sizeof("</di12:ServiceInstance>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2485,11 +2601,17 @@ int zx_LEN_SO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInsta
   int len = 0;
 #endif
   
-  for (se = x->ServiceType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:ServiceType")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:ProviderID")-1, zx_ns_tab+zx_di12_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceType;
+    se && se->g.tok == zx_di12_ServiceType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:ServiceType")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ProviderID;
+    se && se->g.tok == zx_di12_ProviderID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di12:ProviderID")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_di12_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Description(c, (struct zx_di12_Description_s*)se);
 
 
@@ -2517,7 +2639,7 @@ char* zx_ENC_SO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceIns
   ZX_OUT_TAG(p, "<di12:ServiceInstance");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2529,11 +2651,17 @@ char* zx_ENC_SO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceIns
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:ServiceType", sizeof("di12:ServiceType")-1, zx_ns_tab+zx_di12_NS);
-  for (se = x->ProviderID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di12:ProviderID", sizeof("di12:ProviderID")-1, zx_ns_tab+zx_di12_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceType;
+       se && se->g.tok == zx_di12_ServiceType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:ServiceType", sizeof("di12:ServiceType")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ProviderID;
+       se && se->g.tok == zx_di12_ProviderID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di12:ProviderID", sizeof("di12:ProviderID")-1, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_di12_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Description(c, (struct zx_di12_Description_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2614,7 +2742,7 @@ int zx_LEN_SO_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x )
   int len = sizeof("<di12:Status")-1 + 1 + sizeof("</di12:Status>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->code, sizeof("code")-1, &pop_seen);
   len += zx_attr_so_len(c, x->comment, sizeof("comment")-1, &pop_seen);
@@ -2625,7 +2753,9 @@ int zx_LEN_SO_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_di12_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Status(c, (struct zx_di12_Status_s*)se);
 
 
@@ -2653,7 +2783,7 @@ char* zx_ENC_SO_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x, char* 
   ZX_OUT_TAG(p, "<di12:Status");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_di12_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_di12_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2668,7 +2798,9 @@ char* zx_ENC_SO_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_di12_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Status(c, (struct zx_di12_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

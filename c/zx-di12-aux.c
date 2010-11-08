@@ -895,11 +895,15 @@ void zx_FREE_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_Encrypted
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->EncryptedData->gg; e; e = en) {
+  for (e = &x->EncryptedData->gg;
+       e && e->g.tok == zx_xenc_EncryptedData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)e, free_strs);
   }
-  for (e = &x->EncryptedKey->gg; e; e = en) {
+  for (e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, free_strs);
   }
@@ -939,9 +943,13 @@ void zx_DUP_STRS_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_Encry
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->EncryptedData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedData->gg;
+       se && se->g.tok == zx_xenc_EncryptedData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)se);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se);
 
 }
@@ -962,7 +970,9 @@ struct zx_di12_EncryptedResourceID_s* zx_DEEP_CLONE_di12_EncryptedResourceID(str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->EncryptedData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedData->gg;
+       e && e->g.tok == zx_xenc_EncryptedData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptedData(c,(struct zx_xenc_EncryptedData_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedData = (struct zx_xenc_EncryptedData_s*)en;
@@ -970,7 +980,9 @@ struct zx_di12_EncryptedResourceID_s* zx_DEEP_CLONE_di12_EncryptedResourceID(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptedKey(c,(struct zx_xenc_EncryptedKey_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)en;
@@ -1001,12 +1013,16 @@ int zx_WALK_SO_di12_EncryptedResourceID(struct zx_ctx* c, struct zx_di12_Encrypt
   if (ret)
     return ret;
 
-  for (e = &x->EncryptedData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedData->gg;
+       e && e->g.tok == zx_xenc_EncryptedData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1193,7 +1209,9 @@ void zx_FREE_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ResourceOffering->gg; e; e = en) {
+  for (e = &x->ResourceOffering->gg;
+       e && e->g.tok == zx_di12_ResourceOffering_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)e, free_strs);
   }
@@ -1233,7 +1251,9 @@ void zx_DUP_STRS_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ResourceOffering->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceOffering->gg;
+       se && se->g.tok == zx_di12_ResourceOffering_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)se);
 
 }
@@ -1254,7 +1274,9 @@ struct zx_di12_InsertEntry_s* zx_DEEP_CLONE_di12_InsertEntry(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ResourceOffering->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceOffering->gg;
+       e && e->g.tok == zx_di12_ResourceOffering_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_ResourceOffering(c,(struct zx_di12_ResourceOffering_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceOffering = (struct zx_di12_ResourceOffering_s*)en;
@@ -1285,7 +1307,9 @@ int zx_WALK_SO_di12_InsertEntry(struct zx_ctx* c, struct zx_di12_InsertEntry_s* 
   if (ret)
     return ret;
 
-  for (e = &x->ResourceOffering->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceOffering->gg;
+       e && e->g.tok == zx_di12_ResourceOffering_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1343,19 +1367,27 @@ void zx_FREE_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x, int free_
 
   zx_free_attr(c, x->id, free_strs);
 
-  for (e = &x->ResourceID->gg; e; e = en) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_di12_ResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)e, free_strs);
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = en) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)e, free_strs);
   }
-  for (e = &x->InsertEntry->gg; e; e = en) {
+  for (e = &x->InsertEntry->gg;
+       e && e->g.tok == zx_di12_InsertEntry_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_InsertEntry(c, (struct zx_di12_InsertEntry_s*)e, free_strs);
   }
-  for (e = &x->RemoveEntry->gg; e; e = en) {
+  for (e = &x->RemoveEntry->gg;
+       e && e->g.tok == zx_di12_RemoveEntry_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_RemoveEntry(c, (struct zx_di12_RemoveEntry_s*)e, free_strs);
   }
@@ -1396,13 +1428,21 @@ void zx_DUP_STRS_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x)
 
   zx_dup_attr(c, x->id);
 
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_di12_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)se);
-  for (se = &x->InsertEntry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InsertEntry->gg;
+       se && se->g.tok == zx_di12_InsertEntry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_InsertEntry(c, (struct zx_di12_InsertEntry_s*)se);
-  for (se = &x->RemoveEntry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveEntry->gg;
+       se && se->g.tok == zx_di12_RemoveEntry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_RemoveEntry(c, (struct zx_di12_RemoveEntry_s*)se);
 
 }
@@ -1424,7 +1464,9 @@ struct zx_di12_Modify_s* zx_DEEP_CLONE_di12_Modify(struct zx_ctx* c, struct zx_d
 
   x->id = zx_clone_attr(c, x->id);
 
-  for (enn = 0, e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceID->gg;
+       e && e->g.tok == zx_di12_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_ResourceID(c,(struct zx_di12_ResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceID = (struct zx_di12_ResourceID_s*)en;
@@ -1432,7 +1474,9 @@ struct zx_di12_Modify_s* zx_DEEP_CLONE_di12_Modify(struct zx_ctx* c, struct zx_d
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_EncryptedResourceID(c,(struct zx_di12_EncryptedResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedResourceID = (struct zx_di12_EncryptedResourceID_s*)en;
@@ -1440,7 +1484,9 @@ struct zx_di12_Modify_s* zx_DEEP_CLONE_di12_Modify(struct zx_ctx* c, struct zx_d
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->InsertEntry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->InsertEntry->gg;
+       e && e->g.tok == zx_di12_InsertEntry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_InsertEntry(c,(struct zx_di12_InsertEntry_s*)e,dup_strs);
   	  if (!enn)
   	      x->InsertEntry = (struct zx_di12_InsertEntry_s*)en;
@@ -1448,7 +1494,9 @@ struct zx_di12_Modify_s* zx_DEEP_CLONE_di12_Modify(struct zx_ctx* c, struct zx_d
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RemoveEntry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RemoveEntry->gg;
+       e && e->g.tok == zx_di12_RemoveEntry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_RemoveEntry(c,(struct zx_di12_RemoveEntry_s*)e,dup_strs);
   	  if (!enn)
   	      x->RemoveEntry = (struct zx_di12_RemoveEntry_s*)en;
@@ -1479,22 +1527,30 @@ int zx_WALK_SO_di12_Modify(struct zx_ctx* c, struct zx_di12_Modify_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_di12_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->InsertEntry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->InsertEntry->gg;
+       e && e->g.tok == zx_di12_InsertEntry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_InsertEntry(c, (struct zx_di12_InsertEntry_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RemoveEntry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RemoveEntry->gg;
+       e && e->g.tok == zx_di12_RemoveEntry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_RemoveEntry(c, (struct zx_di12_RemoveEntry_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1553,11 +1609,15 @@ void zx_FREE_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyResponse
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->newEntryIDs, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_di12_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_Status(c, (struct zx_di12_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_di12_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_Extension(c, (struct zx_di12_Extension_s*)e, free_strs);
   }
@@ -1599,9 +1659,13 @@ void zx_DUP_STRS_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyResp
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->newEntryIDs);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_di12_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_Status(c, (struct zx_di12_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_di12_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_Extension(c, (struct zx_di12_Extension_s*)se);
 
 }
@@ -1624,7 +1688,9 @@ struct zx_di12_ModifyResponse_s* zx_DEEP_CLONE_di12_ModifyResponse(struct zx_ctx
   x->id = zx_clone_attr(c, x->id);
   x->newEntryIDs = zx_clone_attr(c, x->newEntryIDs);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_di12_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_Status(c,(struct zx_di12_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_di12_Status_s*)en;
@@ -1632,7 +1698,9 @@ struct zx_di12_ModifyResponse_s* zx_DEEP_CLONE_di12_ModifyResponse(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_di12_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_Extension(c,(struct zx_di12_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_di12_Extension_s*)en;
@@ -1663,12 +1731,16 @@ int zx_WALK_SO_di12_ModifyResponse(struct zx_ctx* c, struct zx_di12_ModifyRespon
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_di12_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_Status(c, (struct zx_di12_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_di12_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_Extension(c, (struct zx_di12_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1862,15 +1934,21 @@ void zx_FREE_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x, int free_st
 
   zx_free_attr(c, x->id, free_strs);
 
-  for (e = &x->ResourceID->gg; e; e = en) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_di12_ResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)e, free_strs);
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = en) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)e, free_strs);
   }
-  for (e = &x->RequestedServiceType->gg; e; e = en) {
+  for (e = &x->RequestedServiceType->gg;
+       e && e->g.tok == zx_di12_RequestedServiceType_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_RequestedServiceType(c, (struct zx_di12_RequestedServiceType_s*)e, free_strs);
   }
@@ -1911,11 +1989,17 @@ void zx_DUP_STRS_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x)
 
   zx_dup_attr(c, x->id);
 
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_di12_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)se);
-  for (se = &x->RequestedServiceType->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedServiceType->gg;
+       se && se->g.tok == zx_di12_RequestedServiceType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_RequestedServiceType(c, (struct zx_di12_RequestedServiceType_s*)se);
 
 }
@@ -1937,7 +2021,9 @@ struct zx_di12_Query_s* zx_DEEP_CLONE_di12_Query(struct zx_ctx* c, struct zx_di1
 
   x->id = zx_clone_attr(c, x->id);
 
-  for (enn = 0, e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceID->gg;
+       e && e->g.tok == zx_di12_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_ResourceID(c,(struct zx_di12_ResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceID = (struct zx_di12_ResourceID_s*)en;
@@ -1945,7 +2031,9 @@ struct zx_di12_Query_s* zx_DEEP_CLONE_di12_Query(struct zx_ctx* c, struct zx_di1
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_EncryptedResourceID(c,(struct zx_di12_EncryptedResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedResourceID = (struct zx_di12_EncryptedResourceID_s*)en;
@@ -1953,7 +2041,9 @@ struct zx_di12_Query_s* zx_DEEP_CLONE_di12_Query(struct zx_ctx* c, struct zx_di1
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RequestedServiceType->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestedServiceType->gg;
+       e && e->g.tok == zx_di12_RequestedServiceType_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_RequestedServiceType(c,(struct zx_di12_RequestedServiceType_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestedServiceType = (struct zx_di12_RequestedServiceType_s*)en;
@@ -1984,17 +2074,23 @@ int zx_WALK_SO_di12_Query(struct zx_ctx* c, struct zx_di12_Query_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_di12_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RequestedServiceType->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestedServiceType->gg;
+       e && e->g.tok == zx_di12_RequestedServiceType_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_RequestedServiceType(c, (struct zx_di12_RequestedServiceType_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2052,15 +2148,21 @@ void zx_FREE_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse_s
 
   zx_free_attr(c, x->id, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_di12_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_Status(c, (struct zx_di12_Status_s*)e, free_strs);
   }
-  for (e = &x->ResourceOffering->gg; e; e = en) {
+  for (e = &x->ResourceOffering->gg;
+       e && e->g.tok == zx_di12_ResourceOffering_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)e, free_strs);
   }
-  for (e = &x->Credentials->gg; e; e = en) {
+  for (e = &x->Credentials->gg;
+       e && e->g.tok == zx_di12_Credentials_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_Credentials(c, (struct zx_di12_Credentials_s*)e, free_strs);
   }
@@ -2101,11 +2203,17 @@ void zx_DUP_STRS_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryRespon
 
   zx_dup_attr(c, x->id);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_di12_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_Status(c, (struct zx_di12_Status_s*)se);
-  for (se = &x->ResourceOffering->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceOffering->gg;
+       se && se->g.tok == zx_di12_ResourceOffering_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)se);
-  for (se = &x->Credentials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Credentials->gg;
+       se && se->g.tok == zx_di12_Credentials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_Credentials(c, (struct zx_di12_Credentials_s*)se);
 
 }
@@ -2127,7 +2235,9 @@ struct zx_di12_QueryResponse_s* zx_DEEP_CLONE_di12_QueryResponse(struct zx_ctx* 
 
   x->id = zx_clone_attr(c, x->id);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_di12_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_Status(c,(struct zx_di12_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_di12_Status_s*)en;
@@ -2135,7 +2245,9 @@ struct zx_di12_QueryResponse_s* zx_DEEP_CLONE_di12_QueryResponse(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ResourceOffering->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceOffering->gg;
+       e && e->g.tok == zx_di12_ResourceOffering_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_ResourceOffering(c,(struct zx_di12_ResourceOffering_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceOffering = (struct zx_di12_ResourceOffering_s*)en;
@@ -2143,7 +2255,9 @@ struct zx_di12_QueryResponse_s* zx_DEEP_CLONE_di12_QueryResponse(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Credentials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Credentials->gg;
+       e && e->g.tok == zx_di12_Credentials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_Credentials(c,(struct zx_di12_Credentials_s*)e,dup_strs);
   	  if (!enn)
   	      x->Credentials = (struct zx_di12_Credentials_s*)en;
@@ -2174,17 +2288,23 @@ int zx_WALK_SO_di12_QueryResponse(struct zx_ctx* c, struct zx_di12_QueryResponse
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_di12_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_Status(c, (struct zx_di12_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ResourceOffering->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceOffering->gg;
+       e && e->g.tok == zx_di12_ResourceOffering_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_ResourceOffering(c, (struct zx_di12_ResourceOffering_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Credentials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Credentials->gg;
+       e && e->g.tok == zx_di12_Credentials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_Credentials(c, (struct zx_di12_Credentials_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2375,7 +2495,9 @@ void zx_FREE_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_Requeste
 
 
   zx_free_simple_elems(c, x->ServiceType, free_strs);
-  for (e = &x->Options->gg; e; e = en) {
+  for (e = &x->Options->gg;
+       e && e->g.tok == zx_di12_Options_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_Options(c, (struct zx_di12_Options_s*)e, free_strs);
   }
@@ -2416,7 +2538,9 @@ void zx_DUP_STRS_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_Requ
 
 
   zx_dup_strs_simple_elems(c, x->ServiceType);
-  for (se = &x->Options->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Options->gg;
+       se && se->g.tok == zx_di12_Options_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_Options(c, (struct zx_di12_Options_s*)se);
 
 }
@@ -2438,7 +2562,9 @@ struct zx_di12_RequestedServiceType_s* zx_DEEP_CLONE_di12_RequestedServiceType(s
 
 
   x->ServiceType = zx_deep_clone_simple_elems(c,x->ServiceType, dup_strs);
-  for (enn = 0, e = &x->Options->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Options->gg;
+       e && e->g.tok == zx_di12_Options_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_Options(c,(struct zx_di12_Options_s*)e,dup_strs);
   	  if (!enn)
   	      x->Options = (struct zx_di12_Options_s*)en;
@@ -2472,7 +2598,9 @@ int zx_WALK_SO_di12_RequestedServiceType(struct zx_ctx* c, struct zx_di12_Reques
   ret = zx_walk_so_simple_elems(c, x->ServiceType, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Options->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Options->gg;
+       e && e->g.tok == zx_di12_Options_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_Options(c, (struct zx_di12_Options_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2663,19 +2791,27 @@ void zx_FREE_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOffe
 
   zx_free_attr(c, x->entryID, free_strs);
 
-  for (e = &x->ResourceID->gg; e; e = en) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_di12_ResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)e, free_strs);
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = en) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)e, free_strs);
   }
-  for (e = &x->ServiceInstance->gg; e; e = en) {
+  for (e = &x->ServiceInstance->gg;
+       e && e->g.tok == zx_di12_ServiceInstance_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_ServiceInstance(c, (struct zx_di12_ServiceInstance_s*)e, free_strs);
   }
-  for (e = &x->Options->gg; e; e = en) {
+  for (e = &x->Options->gg;
+       e && e->g.tok == zx_di12_Options_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_Options(c, (struct zx_di12_Options_s*)e, free_strs);
   }
@@ -2717,13 +2853,21 @@ void zx_DUP_STRS_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_Resource
 
   zx_dup_attr(c, x->entryID);
 
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_di12_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)se);
-  for (se = &x->ServiceInstance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceInstance->gg;
+       se && se->g.tok == zx_di12_ServiceInstance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_ServiceInstance(c, (struct zx_di12_ServiceInstance_s*)se);
-  for (se = &x->Options->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Options->gg;
+       se && se->g.tok == zx_di12_Options_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_Options(c, (struct zx_di12_Options_s*)se);
   zx_dup_strs_simple_elems(c, x->Abstract);
 
@@ -2746,7 +2890,9 @@ struct zx_di12_ResourceOffering_s* zx_DEEP_CLONE_di12_ResourceOffering(struct zx
 
   x->entryID = zx_clone_attr(c, x->entryID);
 
-  for (enn = 0, e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceID->gg;
+       e && e->g.tok == zx_di12_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_ResourceID(c,(struct zx_di12_ResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceID = (struct zx_di12_ResourceID_s*)en;
@@ -2754,7 +2900,9 @@ struct zx_di12_ResourceOffering_s* zx_DEEP_CLONE_di12_ResourceOffering(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_EncryptedResourceID(c,(struct zx_di12_EncryptedResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedResourceID = (struct zx_di12_EncryptedResourceID_s*)en;
@@ -2762,7 +2910,9 @@ struct zx_di12_ResourceOffering_s* zx_DEEP_CLONE_di12_ResourceOffering(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ServiceInstance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ServiceInstance->gg;
+       e && e->g.tok == zx_di12_ServiceInstance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_ServiceInstance(c,(struct zx_di12_ServiceInstance_s*)e,dup_strs);
   	  if (!enn)
   	      x->ServiceInstance = (struct zx_di12_ServiceInstance_s*)en;
@@ -2770,7 +2920,9 @@ struct zx_di12_ResourceOffering_s* zx_DEEP_CLONE_di12_ResourceOffering(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Options->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Options->gg;
+       e && e->g.tok == zx_di12_Options_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_Options(c,(struct zx_di12_Options_s*)e,dup_strs);
   	  if (!enn)
   	      x->Options = (struct zx_di12_Options_s*)en;
@@ -2802,22 +2954,30 @@ int zx_WALK_SO_di12_ResourceOffering(struct zx_ctx* c, struct zx_di12_ResourceOf
   if (ret)
     return ret;
 
-  for (e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_di12_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_ResourceID(c, (struct zx_di12_ResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_di12_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_EncryptedResourceID(c, (struct zx_di12_EncryptedResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ServiceInstance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ServiceInstance->gg;
+       e && e->g.tok == zx_di12_ServiceInstance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_ServiceInstance(c, (struct zx_di12_ServiceInstance_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Options->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Options->gg;
+       e && e->g.tok == zx_di12_Options_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_Options(c, (struct zx_di12_Options_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2879,7 +3039,9 @@ void zx_FREE_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInstan
 
   zx_free_simple_elems(c, x->ServiceType, free_strs);
   zx_free_simple_elems(c, x->ProviderID, free_strs);
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_di12_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_Description(c, (struct zx_di12_Description_s*)e, free_strs);
   }
@@ -2921,7 +3083,9 @@ void zx_DUP_STRS_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceIn
 
   zx_dup_strs_simple_elems(c, x->ServiceType);
   zx_dup_strs_simple_elems(c, x->ProviderID);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_di12_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_Description(c, (struct zx_di12_Description_s*)se);
 
 }
@@ -2944,7 +3108,9 @@ struct zx_di12_ServiceInstance_s* zx_DEEP_CLONE_di12_ServiceInstance(struct zx_c
 
   x->ServiceType = zx_deep_clone_simple_elems(c,x->ServiceType, dup_strs);
   x->ProviderID = zx_deep_clone_simple_elems(c,x->ProviderID, dup_strs);
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_di12_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_Description(c,(struct zx_di12_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_di12_Description_s*)en;
@@ -2981,7 +3147,9 @@ int zx_WALK_SO_di12_ServiceInstance(struct zx_ctx* c, struct zx_di12_ServiceInst
   ret = zx_walk_so_simple_elems(c, x->ProviderID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_di12_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_Description(c, (struct zx_di12_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3041,7 +3209,9 @@ void zx_FREE_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x, int free_
   zx_free_attr(c, x->comment, free_strs);
   zx_free_attr(c, x->ref, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_di12_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di12_Status(c, (struct zx_di12_Status_s*)e, free_strs);
   }
@@ -3084,7 +3254,9 @@ void zx_DUP_STRS_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x)
   zx_dup_attr(c, x->comment);
   zx_dup_attr(c, x->ref);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_di12_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di12_Status(c, (struct zx_di12_Status_s*)se);
 
 }
@@ -3108,7 +3280,9 @@ struct zx_di12_Status_s* zx_DEEP_CLONE_di12_Status(struct zx_ctx* c, struct zx_d
   x->comment = zx_clone_attr(c, x->comment);
   x->ref = zx_clone_attr(c, x->ref);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_di12_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di12_Status(c,(struct zx_di12_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_di12_Status_s*)en;
@@ -3139,7 +3313,9 @@ int zx_WALK_SO_di12_Status(struct zx_ctx* c, struct zx_di12_Status_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_di12_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di12_Status(c, (struct zx_di12_Status_s*)e, ctx, callback);
     if (ret)
       return ret;

@@ -198,11 +198,15 @@ void zx_FREE_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s* 
 
 
   zx_free_simple_elems(c, x->Date, free_strs);
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
-  for (e = &x->IssuingAuthority->gg; e; e = en) {
+  for (e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)e, free_strs);
   }
@@ -243,9 +247,13 @@ void zx_DUP_STRS_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement
 
 
   zx_dup_strs_simple_elems(c, x->Date);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se);
 
 }
@@ -267,7 +275,9 @@ struct zx_hrxml_Achievement_s* zx_DEEP_CLONE_hrxml_Achievement(struct zx_ctx* c,
 
 
   x->Date = zx_deep_clone_simple_elems(c,x->Date, dup_strs);
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -275,7 +285,9 @@ struct zx_hrxml_Achievement_s* zx_DEEP_CLONE_hrxml_Achievement(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->IssuingAuthority->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IssuingAuthority(c,(struct zx_hrxml_IssuingAuthority_s*)e,dup_strs);
   	  if (!enn)
   	      x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)en;
@@ -309,12 +321,16 @@ int zx_WALK_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s
   ret = zx_walk_so_simple_elems(c, x->Date, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->IssuingAuthority->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -371,7 +387,9 @@ void zx_FREE_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Achievement->gg; e; e = en) {
+  for (e = &x->Achievement->gg;
+       e && e->g.tok == zx_hrxml_Achievement_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Achievement(c, (struct zx_hrxml_Achievement_s*)e, free_strs);
   }
@@ -411,7 +429,9 @@ void zx_DUP_STRS_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievemen
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Achievement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Achievement->gg;
+       se && se->g.tok == zx_hrxml_Achievement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Achievement(c, (struct zx_hrxml_Achievement_s*)se);
 
 }
@@ -432,7 +452,9 @@ struct zx_hrxml_Achievements_s* zx_DEEP_CLONE_hrxml_Achievements(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Achievement->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Achievement->gg;
+       e && e->g.tok == zx_hrxml_Achievement_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Achievement(c,(struct zx_hrxml_Achievement_s*)e,dup_strs);
   	  if (!enn)
   	      x->Achievement = (struct zx_hrxml_Achievement_s*)en;
@@ -463,7 +485,9 @@ int zx_WALK_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements
   if (ret)
     return ret;
 
-  for (e = &x->Achievement->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Achievement->gg;
+       e && e->g.tok == zx_hrxml_Achievement_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Achievement(c, (struct zx_hrxml_Achievement_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -523,7 +547,9 @@ void zx_FREE_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_h
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -566,7 +592,9 @@ void zx_DUP_STRS_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct 
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -590,7 +618,9 @@ struct zx_hrxml_AffirmativeActionPlanJobGroupId_s* zx_DEEP_CLONE_hrxml_Affirmati
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -621,7 +651,9 @@ int zx_WALK_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -817,11 +849,15 @@ void zx_FREE_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateSc
   zx_free_simple_elems(c, x->GivenName, free_strs);
   zx_free_simple_elems(c, x->PreferredGivenName, free_strs);
   zx_free_simple_elems(c, x->MiddleName, free_strs);
-  for (e = &x->FamilyName->gg; e; e = en) {
+  for (e = &x->FamilyName->gg;
+       e && e->g.tok == zx_hrxml_FamilyName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)e, free_strs);
   }
-  for (e = &x->Affix->gg; e; e = en) {
+  for (e = &x->Affix->gg;
+       e && e->g.tok == zx_hrxml_Affix_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)e, free_strs);
   }
@@ -867,9 +903,13 @@ void zx_DUP_STRS_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_Alterna
   zx_dup_strs_simple_elems(c, x->GivenName);
   zx_dup_strs_simple_elems(c, x->PreferredGivenName);
   zx_dup_strs_simple_elems(c, x->MiddleName);
-  for (se = &x->FamilyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FamilyName->gg;
+       se && se->g.tok == zx_hrxml_FamilyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)se);
-  for (se = &x->Affix->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Affix->gg;
+       se && se->g.tok == zx_hrxml_Affix_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)se);
 
 }
@@ -896,7 +936,9 @@ struct zx_hrxml_AlternateScript_s* zx_DEEP_CLONE_hrxml_AlternateScript(struct zx
   x->GivenName = zx_deep_clone_simple_elems(c,x->GivenName, dup_strs);
   x->PreferredGivenName = zx_deep_clone_simple_elems(c,x->PreferredGivenName, dup_strs);
   x->MiddleName = zx_deep_clone_simple_elems(c,x->MiddleName, dup_strs);
-  for (enn = 0, e = &x->FamilyName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->FamilyName->gg;
+       e && e->g.tok == zx_hrxml_FamilyName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_FamilyName(c,(struct zx_hrxml_FamilyName_s*)e,dup_strs);
   	  if (!enn)
   	      x->FamilyName = (struct zx_hrxml_FamilyName_s*)en;
@@ -904,7 +946,9 @@ struct zx_hrxml_AlternateScript_s* zx_DEEP_CLONE_hrxml_AlternateScript(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Affix->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Affix->gg;
+       e && e->g.tok == zx_hrxml_Affix_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Affix(c,(struct zx_hrxml_Affix_s*)e,dup_strs);
   	  if (!enn)
   	      x->Affix = (struct zx_hrxml_Affix_s*)en;
@@ -950,12 +994,16 @@ int zx_WALK_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_Alternate
   ret = zx_walk_so_simple_elems(c, x->MiddleName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->FamilyName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->FamilyName->gg;
+       e && e->g.tok == zx_hrxml_FamilyName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Affix->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Affix->gg;
+       e && e->g.tok == zx_hrxml_Affix_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1014,7 +1062,9 @@ void zx_FREE_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, int free_st
   zx_free_attr(c, x->type, free_strs);
 
   zx_free_simple_elems(c, x->Value, free_strs);
-  for (e = &x->Area->gg; e; e = en) {
+  for (e = &x->Area->gg;
+       e && e->g.tok == zx_hrxml_Area_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Area(c, (struct zx_hrxml_Area_s*)e, free_strs);
   }
@@ -1056,7 +1106,9 @@ void zx_DUP_STRS_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x)
   zx_dup_attr(c, x->type);
 
   zx_dup_strs_simple_elems(c, x->Value);
-  for (se = &x->Area->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Area->gg;
+       se && se->g.tok == zx_hrxml_Area_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Area(c, (struct zx_hrxml_Area_s*)se);
 
 }
@@ -1079,7 +1131,9 @@ struct zx_hrxml_Area_s* zx_DEEP_CLONE_hrxml_Area(struct zx_ctx* c, struct zx_hrx
   x->type = zx_clone_attr(c, x->type);
 
   x->Value = zx_deep_clone_simple_elems(c,x->Value, dup_strs);
-  for (enn = 0, e = &x->Area->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Area->gg;
+       e && e->g.tok == zx_hrxml_Area_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Area(c,(struct zx_hrxml_Area_s*)e,dup_strs);
   	  if (!enn)
   	      x->Area = (struct zx_hrxml_Area_s*)en;
@@ -1113,7 +1167,9 @@ int zx_WALK_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, void* ctx
   ret = zx_walk_so_simple_elems(c, x->Value, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Area->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Area->gg;
+       e && e->g.tok == zx_hrxml_Area_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Area(c, (struct zx_hrxml_Area_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1172,13 +1228,17 @@ void zx_FREE_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, int f
 
   zx_free_simple_elems(c, x->Title, free_strs);
   zx_free_simple_elems(c, x->Name, free_strs);
-  for (e = &x->PublicationDate->gg; e; e = en) {
+  for (e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Link, free_strs);
   zx_free_simple_elems(c, x->Abstract, free_strs);
-  for (e = &x->Copyright->gg; e; e = en) {
+  for (e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)e, free_strs);
   }
@@ -1188,7 +1248,9 @@ void zx_FREE_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, int f
   zx_free_simple_elems(c, x->Volume, free_strs);
   zx_free_simple_elems(c, x->Issue, free_strs);
   zx_free_simple_elems(c, x->PageNumber, free_strs);
-  for (e = &x->PublicationLanguage->gg; e; e = en) {
+  for (e = &x->PublicationLanguage->gg;
+       e && e->g.tok == zx_hrxml_PublicationLanguage_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PublicationLanguage(c, (struct zx_hrxml_PublicationLanguage_s*)e, free_strs);
   }
@@ -1230,11 +1292,15 @@ void zx_DUP_STRS_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x)
 
   zx_dup_strs_simple_elems(c, x->Title);
   zx_dup_strs_simple_elems(c, x->Name);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se);
   zx_dup_strs_simple_elems(c, x->Link);
   zx_dup_strs_simple_elems(c, x->Abstract);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
   zx_dup_strs_simple_elems(c, x->JournalOrSerialName);
@@ -1242,7 +1308,9 @@ void zx_DUP_STRS_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x)
   zx_dup_strs_simple_elems(c, x->Volume);
   zx_dup_strs_simple_elems(c, x->Issue);
   zx_dup_strs_simple_elems(c, x->PageNumber);
-  for (se = &x->PublicationLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PublicationLanguage->gg;
+       se && se->g.tok == zx_hrxml_PublicationLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PublicationLanguage(c, (struct zx_hrxml_PublicationLanguage_s*)se);
 
 }
@@ -1265,7 +1333,9 @@ struct zx_hrxml_Article_s* zx_DEEP_CLONE_hrxml_Article(struct zx_ctx* c, struct 
 
   x->Title = zx_deep_clone_simple_elems(c,x->Title, dup_strs);
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
-  for (enn = 0, e = &x->PublicationDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PublicationDate(c,(struct zx_hrxml_PublicationDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)en;
@@ -1275,7 +1345,9 @@ struct zx_hrxml_Article_s* zx_DEEP_CLONE_hrxml_Article(struct zx_ctx* c, struct 
   }
   x->Link = zx_deep_clone_simple_elems(c,x->Link, dup_strs);
   x->Abstract = zx_deep_clone_simple_elems(c,x->Abstract, dup_strs);
-  for (enn = 0, e = &x->Copyright->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Copyright(c,(struct zx_hrxml_Copyright_s*)e,dup_strs);
   	  if (!enn)
   	      x->Copyright = (struct zx_hrxml_Copyright_s*)en;
@@ -1289,7 +1361,9 @@ struct zx_hrxml_Article_s* zx_DEEP_CLONE_hrxml_Article(struct zx_ctx* c, struct 
   x->Volume = zx_deep_clone_simple_elems(c,x->Volume, dup_strs);
   x->Issue = zx_deep_clone_simple_elems(c,x->Issue, dup_strs);
   x->PageNumber = zx_deep_clone_simple_elems(c,x->PageNumber, dup_strs);
-  for (enn = 0, e = &x->PublicationLanguage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PublicationLanguage->gg;
+       e && e->g.tok == zx_hrxml_PublicationLanguage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PublicationLanguage(c,(struct zx_hrxml_PublicationLanguage_s*)e,dup_strs);
   	  if (!enn)
   	      x->PublicationLanguage = (struct zx_hrxml_PublicationLanguage_s*)en;
@@ -1326,7 +1400,9 @@ int zx_WALK_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->Name, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PublicationDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1337,7 +1413,9 @@ int zx_WALK_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->Abstract, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Copyright->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1360,7 +1438,9 @@ int zx_WALK_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->PageNumber, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PublicationLanguage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PublicationLanguage->gg;
+       e && e->g.tok == zx_hrxml_PublicationLanguage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PublicationLanguage(c, (struct zx_hrxml_PublicationLanguage_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1419,16 +1499,22 @@ void zx_FREE_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s* 
   zx_free_attr(c, x->type, free_strs);
 
   zx_free_simple_elems(c, x->Name, free_strs);
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Link, free_strs);
-  for (e = &x->StartDate->gg; e; e = en) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, free_strs);
   }
-  for (e = &x->EndDate->gg; e; e = en) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, free_strs);
   }
@@ -1472,12 +1558,18 @@ void zx_DUP_STRS_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association
   zx_dup_attr(c, x->type);
 
   zx_dup_strs_simple_elems(c, x->Name);
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
   zx_dup_strs_simple_elems(c, x->Link);
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
   zx_dup_strs_simple_elems(c, x->Role);
   zx_dup_strs_simple_elems(c, x->Comments);
@@ -1502,7 +1594,9 @@ struct zx_hrxml_Association_s* zx_DEEP_CLONE_hrxml_Association(struct zx_ctx* c,
   x->type = zx_clone_attr(c, x->type);
 
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -1511,7 +1605,9 @@ struct zx_hrxml_Association_s* zx_DEEP_CLONE_hrxml_Association(struct zx_ctx* c,
   	  enn = en;
   }
   x->Link = zx_deep_clone_simple_elems(c,x->Link, dup_strs);
-  for (enn = 0, e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StartDate(c,(struct zx_hrxml_StartDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->StartDate = (struct zx_hrxml_StartDate_s*)en;
@@ -1519,7 +1615,9 @@ struct zx_hrxml_Association_s* zx_DEEP_CLONE_hrxml_Association(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EndDate(c,(struct zx_hrxml_EndDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndDate = (struct zx_hrxml_EndDate_s*)en;
@@ -1555,7 +1653,9 @@ int zx_WALK_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s
   ret = zx_walk_so_simple_elems(c, x->Name, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1563,12 +1663,16 @@ int zx_WALK_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s
   ret = zx_walk_so_simple_elems(c, x->Link, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1631,7 +1735,9 @@ void zx_FREE_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Association->gg; e; e = en) {
+  for (e = &x->Association->gg;
+       e && e->g.tok == zx_hrxml_Association_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Association(c, (struct zx_hrxml_Association_s*)e, free_strs);
   }
@@ -1671,7 +1777,9 @@ void zx_DUP_STRS_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associatio
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Association->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Association->gg;
+       se && se->g.tok == zx_hrxml_Association_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Association(c, (struct zx_hrxml_Association_s*)se);
 
 }
@@ -1692,7 +1800,9 @@ struct zx_hrxml_Associations_s* zx_DEEP_CLONE_hrxml_Associations(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Association->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Association->gg;
+       e && e->g.tok == zx_hrxml_Association_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Association(c,(struct zx_hrxml_Association_s*)e,dup_strs);
   	  if (!enn)
   	      x->Association = (struct zx_hrxml_Association_s*)en;
@@ -1723,7 +1833,9 @@ int zx_WALK_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations
   if (ret)
     return ret;
 
-  for (e = &x->Association->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Association->gg;
+       e && e->g.tok == zx_hrxml_Association_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Association(c, (struct zx_hrxml_Association_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1916,11 +2028,15 @@ void zx_FREE_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Availabil
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->StartDate->gg; e; e = en) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, free_strs);
   }
-  for (e = &x->EndDate->gg; e; e = en) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, free_strs);
   }
@@ -1960,9 +2076,13 @@ void zx_DUP_STRS_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Avail
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
 
 }
@@ -1983,7 +2103,9 @@ struct zx_hrxml_AvailabilityDates_s* zx_DEEP_CLONE_hrxml_AvailabilityDates(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StartDate(c,(struct zx_hrxml_StartDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->StartDate = (struct zx_hrxml_StartDate_s*)en;
@@ -1991,7 +2113,9 @@ struct zx_hrxml_AvailabilityDates_s* zx_DEEP_CLONE_hrxml_AvailabilityDates(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EndDate(c,(struct zx_hrxml_EndDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndDate = (struct zx_hrxml_EndDate_s*)en;
@@ -2022,12 +2146,16 @@ int zx_WALK_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Availab
   if (ret)
     return ret;
 
-  for (e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2084,11 +2212,15 @@ void zx_FREE_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availabili
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->AvailabilityDates->gg; e; e = en) {
+  for (e = &x->AvailabilityDates->gg;
+       e && e->g.tok == zx_hrxml_AvailabilityDates_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_AvailabilityDates(c, (struct zx_hrxml_AvailabilityDates_s*)e, free_strs);
   }
-  for (e = &x->TermOfNotice->gg; e; e = en) {
+  for (e = &x->TermOfNotice->gg;
+       e && e->g.tok == zx_hrxml_TermOfNotice_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TermOfNotice(c, (struct zx_hrxml_TermOfNotice_s*)e, free_strs);
   }
@@ -2128,9 +2260,13 @@ void zx_DUP_STRS_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availa
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->AvailabilityDates->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AvailabilityDates->gg;
+       se && se->g.tok == zx_hrxml_AvailabilityDates_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_AvailabilityDates(c, (struct zx_hrxml_AvailabilityDates_s*)se);
-  for (se = &x->TermOfNotice->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TermOfNotice->gg;
+       se && se->g.tok == zx_hrxml_TermOfNotice_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TermOfNotice(c, (struct zx_hrxml_TermOfNotice_s*)se);
 
 }
@@ -2151,7 +2287,9 @@ struct zx_hrxml_AvailabilityInfo_s* zx_DEEP_CLONE_hrxml_AvailabilityInfo(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->AvailabilityDates->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AvailabilityDates->gg;
+       e && e->g.tok == zx_hrxml_AvailabilityDates_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_AvailabilityDates(c,(struct zx_hrxml_AvailabilityDates_s*)e,dup_strs);
   	  if (!enn)
   	      x->AvailabilityDates = (struct zx_hrxml_AvailabilityDates_s*)en;
@@ -2159,7 +2297,9 @@ struct zx_hrxml_AvailabilityInfo_s* zx_DEEP_CLONE_hrxml_AvailabilityInfo(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TermOfNotice->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TermOfNotice->gg;
+       e && e->g.tok == zx_hrxml_TermOfNotice_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TermOfNotice(c,(struct zx_hrxml_TermOfNotice_s*)e,dup_strs);
   	  if (!enn)
   	      x->TermOfNotice = (struct zx_hrxml_TermOfNotice_s*)en;
@@ -2190,12 +2330,16 @@ int zx_WALK_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availabi
   if (ret)
     return ret;
 
-  for (e = &x->AvailabilityDates->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AvailabilityDates->gg;
+       e && e->g.tok == zx_hrxml_AvailabilityDates_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_AvailabilityDates(c, (struct zx_hrxml_AvailabilityDates_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TermOfNotice->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TermOfNotice->gg;
+       e && e->g.tok == zx_hrxml_TermOfNotice_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TermOfNotice(c, (struct zx_hrxml_TermOfNotice_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2252,7 +2396,9 @@ void zx_FREE_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClassi
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->BKZId->gg; e; e = en) {
+  for (e = &x->BKZId->gg;
+       e && e->g.tok == zx_hrxml_BKZId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_BKZId(c, (struct zx_hrxml_BKZId_s*)e, free_strs);
   }
@@ -2293,7 +2439,9 @@ void zx_DUP_STRS_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZCl
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->BKZId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BKZId->gg;
+       se && se->g.tok == zx_hrxml_BKZId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_BKZId(c, (struct zx_hrxml_BKZId_s*)se);
   zx_dup_strs_simple_elems(c, x->BKZName);
 
@@ -2315,7 +2463,9 @@ struct zx_hrxml_BKZClassification_s* zx_DEEP_CLONE_hrxml_BKZClassification(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->BKZId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->BKZId->gg;
+       e && e->g.tok == zx_hrxml_BKZId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_BKZId(c,(struct zx_hrxml_BKZId_s*)e,dup_strs);
   	  if (!enn)
   	      x->BKZId = (struct zx_hrxml_BKZId_s*)en;
@@ -2347,7 +2497,9 @@ int zx_WALK_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClas
   if (ret)
     return ret;
 
-  for (e = &x->BKZId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->BKZId->gg;
+       e && e->g.tok == zx_hrxml_BKZId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_BKZId(c, (struct zx_hrxml_BKZId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2410,7 +2562,9 @@ void zx_FREE_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, int free_
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -2453,7 +2607,9 @@ void zx_DUP_STRS_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x)
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -2477,7 +2633,9 @@ struct zx_hrxml_BKZId_s* zx_DEEP_CLONE_hrxml_BKZId(struct zx_ctx* c, struct zx_h
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -2508,7 +2666,9 @@ int zx_WALK_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2713,29 +2873,41 @@ void zx_FREE_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, int
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Insurance->gg; e; e = en) {
+  for (e = &x->Insurance->gg;
+       e && e->g.tok == zx_hrxml_Insurance_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Insurance(c, (struct zx_hrxml_Insurance_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->RetirementOrSavingsPlan, free_strs);
-  for (e = &x->CompanyVehicle->gg; e; e = en) {
+  for (e = &x->CompanyVehicle->gg;
+       e && e->g.tok == zx_hrxml_CompanyVehicle_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_CompanyVehicle(c, (struct zx_hrxml_CompanyVehicle_s*)e, free_strs);
   }
-  for (e = &x->RelocationAssistance->gg; e; e = en) {
+  for (e = &x->RelocationAssistance->gg;
+       e && e->g.tok == zx_hrxml_RelocationAssistance_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RelocationAssistance(c, (struct zx_hrxml_RelocationAssistance_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->VisaSponsorship, free_strs);
-  for (e = &x->TimeOffAllowance->gg; e; e = en) {
+  for (e = &x->TimeOffAllowance->gg;
+       e && e->g.tok == zx_hrxml_TimeOffAllowance_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TimeOffAllowance(c, (struct zx_hrxml_TimeOffAllowance_s*)e, free_strs);
   }
-  for (e = &x->ExpatriateBenefits->gg; e; e = en) {
+  for (e = &x->ExpatriateBenefits->gg;
+       e && e->g.tok == zx_hrxml_ExpatriateBenefits_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ExpatriateBenefits(c, (struct zx_hrxml_ExpatriateBenefits_s*)e, free_strs);
   }
-  for (e = &x->OtherBenefits->gg; e; e = en) {
+  for (e = &x->OtherBenefits->gg;
+       e && e->g.tok == zx_hrxml_OtherBenefits_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OtherBenefits(c, (struct zx_hrxml_OtherBenefits_s*)e, free_strs);
   }
@@ -2776,19 +2948,31 @@ void zx_DUP_STRS_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Insurance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Insurance->gg;
+       se && se->g.tok == zx_hrxml_Insurance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Insurance(c, (struct zx_hrxml_Insurance_s*)se);
   zx_dup_strs_simple_elems(c, x->RetirementOrSavingsPlan);
-  for (se = &x->CompanyVehicle->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompanyVehicle->gg;
+       se && se->g.tok == zx_hrxml_CompanyVehicle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_CompanyVehicle(c, (struct zx_hrxml_CompanyVehicle_s*)se);
-  for (se = &x->RelocationAssistance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelocationAssistance->gg;
+       se && se->g.tok == zx_hrxml_RelocationAssistance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RelocationAssistance(c, (struct zx_hrxml_RelocationAssistance_s*)se);
   zx_dup_strs_simple_elems(c, x->VisaSponsorship);
-  for (se = &x->TimeOffAllowance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TimeOffAllowance->gg;
+       se && se->g.tok == zx_hrxml_TimeOffAllowance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TimeOffAllowance(c, (struct zx_hrxml_TimeOffAllowance_s*)se);
-  for (se = &x->ExpatriateBenefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExpatriateBenefits->gg;
+       se && se->g.tok == zx_hrxml_ExpatriateBenefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ExpatriateBenefits(c, (struct zx_hrxml_ExpatriateBenefits_s*)se);
-  for (se = &x->OtherBenefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherBenefits->gg;
+       se && se->g.tok == zx_hrxml_OtherBenefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OtherBenefits(c, (struct zx_hrxml_OtherBenefits_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
 
@@ -2810,7 +2994,9 @@ struct zx_hrxml_Benefits_s* zx_DEEP_CLONE_hrxml_Benefits(struct zx_ctx* c, struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Insurance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Insurance->gg;
+       e && e->g.tok == zx_hrxml_Insurance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Insurance(c,(struct zx_hrxml_Insurance_s*)e,dup_strs);
   	  if (!enn)
   	      x->Insurance = (struct zx_hrxml_Insurance_s*)en;
@@ -2819,7 +3005,9 @@ struct zx_hrxml_Benefits_s* zx_DEEP_CLONE_hrxml_Benefits(struct zx_ctx* c, struc
   	  enn = en;
   }
   x->RetirementOrSavingsPlan = zx_deep_clone_simple_elems(c,x->RetirementOrSavingsPlan, dup_strs);
-  for (enn = 0, e = &x->CompanyVehicle->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CompanyVehicle->gg;
+       e && e->g.tok == zx_hrxml_CompanyVehicle_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_CompanyVehicle(c,(struct zx_hrxml_CompanyVehicle_s*)e,dup_strs);
   	  if (!enn)
   	      x->CompanyVehicle = (struct zx_hrxml_CompanyVehicle_s*)en;
@@ -2827,7 +3015,9 @@ struct zx_hrxml_Benefits_s* zx_DEEP_CLONE_hrxml_Benefits(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RelocationAssistance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RelocationAssistance->gg;
+       e && e->g.tok == zx_hrxml_RelocationAssistance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RelocationAssistance(c,(struct zx_hrxml_RelocationAssistance_s*)e,dup_strs);
   	  if (!enn)
   	      x->RelocationAssistance = (struct zx_hrxml_RelocationAssistance_s*)en;
@@ -2836,7 +3026,9 @@ struct zx_hrxml_Benefits_s* zx_DEEP_CLONE_hrxml_Benefits(struct zx_ctx* c, struc
   	  enn = en;
   }
   x->VisaSponsorship = zx_deep_clone_simple_elems(c,x->VisaSponsorship, dup_strs);
-  for (enn = 0, e = &x->TimeOffAllowance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TimeOffAllowance->gg;
+       e && e->g.tok == zx_hrxml_TimeOffAllowance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TimeOffAllowance(c,(struct zx_hrxml_TimeOffAllowance_s*)e,dup_strs);
   	  if (!enn)
   	      x->TimeOffAllowance = (struct zx_hrxml_TimeOffAllowance_s*)en;
@@ -2844,7 +3036,9 @@ struct zx_hrxml_Benefits_s* zx_DEEP_CLONE_hrxml_Benefits(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ExpatriateBenefits->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ExpatriateBenefits->gg;
+       e && e->g.tok == zx_hrxml_ExpatriateBenefits_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ExpatriateBenefits(c,(struct zx_hrxml_ExpatriateBenefits_s*)e,dup_strs);
   	  if (!enn)
   	      x->ExpatriateBenefits = (struct zx_hrxml_ExpatriateBenefits_s*)en;
@@ -2852,7 +3046,9 @@ struct zx_hrxml_Benefits_s* zx_DEEP_CLONE_hrxml_Benefits(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OtherBenefits->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OtherBenefits->gg;
+       e && e->g.tok == zx_hrxml_OtherBenefits_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OtherBenefits(c,(struct zx_hrxml_OtherBenefits_s*)e,dup_strs);
   	  if (!enn)
   	      x->OtherBenefits = (struct zx_hrxml_OtherBenefits_s*)en;
@@ -2884,7 +3080,9 @@ int zx_WALK_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->Insurance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Insurance->gg;
+       e && e->g.tok == zx_hrxml_Insurance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Insurance(c, (struct zx_hrxml_Insurance_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2892,12 +3090,16 @@ int zx_WALK_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, v
   ret = zx_walk_so_simple_elems(c, x->RetirementOrSavingsPlan, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->CompanyVehicle->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CompanyVehicle->gg;
+       e && e->g.tok == zx_hrxml_CompanyVehicle_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_CompanyVehicle(c, (struct zx_hrxml_CompanyVehicle_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RelocationAssistance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RelocationAssistance->gg;
+       e && e->g.tok == zx_hrxml_RelocationAssistance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RelocationAssistance(c, (struct zx_hrxml_RelocationAssistance_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2905,17 +3107,23 @@ int zx_WALK_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, v
   ret = zx_walk_so_simple_elems(c, x->VisaSponsorship, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->TimeOffAllowance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TimeOffAllowance->gg;
+       e && e->g.tok == zx_hrxml_TimeOffAllowance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TimeOffAllowance(c, (struct zx_hrxml_TimeOffAllowance_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ExpatriateBenefits->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ExpatriateBenefits->gg;
+       e && e->g.tok == zx_hrxml_ExpatriateBenefits_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ExpatriateBenefits(c, (struct zx_hrxml_ExpatriateBenefits_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OtherBenefits->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OtherBenefits->gg;
+       e && e->g.tok == zx_hrxml_OtherBenefits_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OtherBenefits(c, (struct zx_hrxml_OtherBenefits_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2981,20 +3189,28 @@ void zx_FREE_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Biolo
   zx_free_simple_elems(c, x->GenderCode, free_strs);
   zx_free_simple_elems(c, x->EyeColor, free_strs);
   zx_free_simple_elems(c, x->HairColor, free_strs);
-  for (e = &x->Height->gg; e; e = en) {
+  for (e = &x->Height->gg;
+       e && e->g.tok == zx_hrxml_Height_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Height(c, (struct zx_hrxml_Height_s*)e, free_strs);
   }
-  for (e = &x->Weight->gg; e; e = en) {
+  for (e = &x->Weight->gg;
+       e && e->g.tok == zx_hrxml_Weight_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->IdentifyingMarks, free_strs);
-  for (e = &x->DisabilityInfo->gg; e; e = en) {
+  for (e = &x->DisabilityInfo->gg;
+       e && e->g.tok == zx_hrxml_DisabilityInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DisabilityInfo(c, (struct zx_hrxml_DisabilityInfo_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -3040,14 +3256,22 @@ void zx_DUP_STRS_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_B
   zx_dup_strs_simple_elems(c, x->GenderCode);
   zx_dup_strs_simple_elems(c, x->EyeColor);
   zx_dup_strs_simple_elems(c, x->HairColor);
-  for (se = &x->Height->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Height->gg;
+       se && se->g.tok == zx_hrxml_Height_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Height(c, (struct zx_hrxml_Height_s*)se);
-  for (se = &x->Weight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Weight->gg;
+       se && se->g.tok == zx_hrxml_Weight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)se);
   zx_dup_strs_simple_elems(c, x->IdentifyingMarks);
-  for (se = &x->DisabilityInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DisabilityInfo->gg;
+       se && se->g.tok == zx_hrxml_DisabilityInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DisabilityInfo(c, (struct zx_hrxml_DisabilityInfo_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -3074,7 +3298,9 @@ struct zx_hrxml_BiologicalDescriptors_s* zx_DEEP_CLONE_hrxml_BiologicalDescripto
   x->GenderCode = zx_deep_clone_simple_elems(c,x->GenderCode, dup_strs);
   x->EyeColor = zx_deep_clone_simple_elems(c,x->EyeColor, dup_strs);
   x->HairColor = zx_deep_clone_simple_elems(c,x->HairColor, dup_strs);
-  for (enn = 0, e = &x->Height->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Height->gg;
+       e && e->g.tok == zx_hrxml_Height_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Height(c,(struct zx_hrxml_Height_s*)e,dup_strs);
   	  if (!enn)
   	      x->Height = (struct zx_hrxml_Height_s*)en;
@@ -3082,7 +3308,9 @@ struct zx_hrxml_BiologicalDescriptors_s* zx_DEEP_CLONE_hrxml_BiologicalDescripto
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Weight->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Weight->gg;
+       e && e->g.tok == zx_hrxml_Weight_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Weight(c,(struct zx_hrxml_Weight_s*)e,dup_strs);
   	  if (!enn)
   	      x->Weight = (struct zx_hrxml_Weight_s*)en;
@@ -3091,7 +3319,9 @@ struct zx_hrxml_BiologicalDescriptors_s* zx_DEEP_CLONE_hrxml_BiologicalDescripto
   	  enn = en;
   }
   x->IdentifyingMarks = zx_deep_clone_simple_elems(c,x->IdentifyingMarks, dup_strs);
-  for (enn = 0, e = &x->DisabilityInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DisabilityInfo->gg;
+       e && e->g.tok == zx_hrxml_DisabilityInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DisabilityInfo(c,(struct zx_hrxml_DisabilityInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->DisabilityInfo = (struct zx_hrxml_DisabilityInfo_s*)en;
@@ -3099,7 +3329,9 @@ struct zx_hrxml_BiologicalDescriptors_s* zx_DEEP_CLONE_hrxml_BiologicalDescripto
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -3148,12 +3380,16 @@ int zx_WALK_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Bio
   ret = zx_walk_so_simple_elems(c, x->HairColor, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Height->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Height->gg;
+       e && e->g.tok == zx_hrxml_Height_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Height(c, (struct zx_hrxml_Height_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Weight->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Weight->gg;
+       e && e->g.tok == zx_hrxml_Weight_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3161,12 +3397,16 @@ int zx_WALK_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Bio
   ret = zx_walk_so_simple_elems(c, x->IdentifyingMarks, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->DisabilityInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DisabilityInfo->gg;
+       e && e->g.tok == zx_hrxml_DisabilityInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DisabilityInfo(c, (struct zx_hrxml_DisabilityInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3225,13 +3465,17 @@ void zx_FREE_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, int free_st
 
   zx_free_simple_elems(c, x->Title, free_strs);
   zx_free_simple_elems(c, x->Name, free_strs);
-  for (e = &x->PublicationDate->gg; e; e = en) {
+  for (e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Link, free_strs);
   zx_free_simple_elems(c, x->Abstract, free_strs);
-  for (e = &x->Copyright->gg; e; e = en) {
+  for (e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)e, free_strs);
   }
@@ -3281,11 +3525,15 @@ void zx_DUP_STRS_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x)
 
   zx_dup_strs_simple_elems(c, x->Title);
   zx_dup_strs_simple_elems(c, x->Name);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se);
   zx_dup_strs_simple_elems(c, x->Link);
   zx_dup_strs_simple_elems(c, x->Abstract);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
   zx_dup_strs_simple_elems(c, x->Edition);
@@ -3316,7 +3564,9 @@ struct zx_hrxml_Book_s* zx_DEEP_CLONE_hrxml_Book(struct zx_ctx* c, struct zx_hrx
 
   x->Title = zx_deep_clone_simple_elems(c,x->Title, dup_strs);
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
-  for (enn = 0, e = &x->PublicationDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PublicationDate(c,(struct zx_hrxml_PublicationDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)en;
@@ -3326,7 +3576,9 @@ struct zx_hrxml_Book_s* zx_DEEP_CLONE_hrxml_Book(struct zx_ctx* c, struct zx_hrx
   }
   x->Link = zx_deep_clone_simple_elems(c,x->Link, dup_strs);
   x->Abstract = zx_deep_clone_simple_elems(c,x->Abstract, dup_strs);
-  for (enn = 0, e = &x->Copyright->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Copyright(c,(struct zx_hrxml_Copyright_s*)e,dup_strs);
   	  if (!enn)
   	      x->Copyright = (struct zx_hrxml_Copyright_s*)en;
@@ -3371,7 +3623,9 @@ int zx_WALK_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, void* ctx
   ret = zx_walk_so_simple_elems(c, x->Name, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PublicationDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3382,7 +3636,9 @@ int zx_WALK_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, void* ctx
   ret = zx_walk_so_simple_elems(c, x->Abstract, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Copyright->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3464,28 +3720,40 @@ void zx_FREE_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x, i
 
   zx_free_attr(c, x->lang, free_strs);
 
-  for (e = &x->CandidateRecordInfo->gg; e; e = en) {
+  for (e = &x->CandidateRecordInfo->gg;
+       e && e->g.tok == zx_hrxml_CandidateRecordInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_CandidateRecordInfo(c, (struct zx_hrxml_CandidateRecordInfo_s*)e, free_strs);
   }
-  for (e = &x->RelatedPositionPostings->gg; e; e = en) {
+  for (e = &x->RelatedPositionPostings->gg;
+       e && e->g.tok == zx_hrxml_RelatedPositionPostings_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RelatedPositionPostings(c, (struct zx_hrxml_RelatedPositionPostings_s*)e, free_strs);
   }
-  for (e = &x->CandidateSupplier->gg; e; e = en) {
+  for (e = &x->CandidateSupplier->gg;
+       e && e->g.tok == zx_hrxml_CandidateSupplier_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_CandidateSupplier(c, (struct zx_hrxml_CandidateSupplier_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->DistributionGuidelines, free_strs);
-  for (e = &x->CandidateProfile->gg; e; e = en) {
+  for (e = &x->CandidateProfile->gg;
+       e && e->g.tok == zx_hrxml_CandidateProfile_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_CandidateProfile(c, (struct zx_hrxml_CandidateProfile_s*)e, free_strs);
   }
-  for (e = &x->Resume->gg; e; e = en) {
+  for (e = &x->Resume->gg;
+       e && e->g.tok == zx_hrxml_Resume_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Resume(c, (struct zx_hrxml_Resume_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -3526,18 +3794,30 @@ void zx_DUP_STRS_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* 
 
   zx_dup_attr(c, x->lang);
 
-  for (se = &x->CandidateRecordInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CandidateRecordInfo->gg;
+       se && se->g.tok == zx_hrxml_CandidateRecordInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_CandidateRecordInfo(c, (struct zx_hrxml_CandidateRecordInfo_s*)se);
-  for (se = &x->RelatedPositionPostings->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedPositionPostings->gg;
+       se && se->g.tok == zx_hrxml_RelatedPositionPostings_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RelatedPositionPostings(c, (struct zx_hrxml_RelatedPositionPostings_s*)se);
-  for (se = &x->CandidateSupplier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CandidateSupplier->gg;
+       se && se->g.tok == zx_hrxml_CandidateSupplier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_CandidateSupplier(c, (struct zx_hrxml_CandidateSupplier_s*)se);
   zx_dup_strs_simple_elems(c, x->DistributionGuidelines);
-  for (se = &x->CandidateProfile->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CandidateProfile->gg;
+       se && se->g.tok == zx_hrxml_CandidateProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_CandidateProfile(c, (struct zx_hrxml_CandidateProfile_s*)se);
-  for (se = &x->Resume->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Resume->gg;
+       se && se->g.tok == zx_hrxml_Resume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Resume(c, (struct zx_hrxml_Resume_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -3559,7 +3839,9 @@ struct zx_hrxml_Candidate_s* zx_DEEP_CLONE_hrxml_Candidate(struct zx_ctx* c, str
 
   x->lang = zx_clone_attr(c, x->lang);
 
-  for (enn = 0, e = &x->CandidateRecordInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CandidateRecordInfo->gg;
+       e && e->g.tok == zx_hrxml_CandidateRecordInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_CandidateRecordInfo(c,(struct zx_hrxml_CandidateRecordInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->CandidateRecordInfo = (struct zx_hrxml_CandidateRecordInfo_s*)en;
@@ -3567,7 +3849,9 @@ struct zx_hrxml_Candidate_s* zx_DEEP_CLONE_hrxml_Candidate(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RelatedPositionPostings->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RelatedPositionPostings->gg;
+       e && e->g.tok == zx_hrxml_RelatedPositionPostings_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RelatedPositionPostings(c,(struct zx_hrxml_RelatedPositionPostings_s*)e,dup_strs);
   	  if (!enn)
   	      x->RelatedPositionPostings = (struct zx_hrxml_RelatedPositionPostings_s*)en;
@@ -3575,7 +3859,9 @@ struct zx_hrxml_Candidate_s* zx_DEEP_CLONE_hrxml_Candidate(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CandidateSupplier->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CandidateSupplier->gg;
+       e && e->g.tok == zx_hrxml_CandidateSupplier_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_CandidateSupplier(c,(struct zx_hrxml_CandidateSupplier_s*)e,dup_strs);
   	  if (!enn)
   	      x->CandidateSupplier = (struct zx_hrxml_CandidateSupplier_s*)en;
@@ -3584,7 +3870,9 @@ struct zx_hrxml_Candidate_s* zx_DEEP_CLONE_hrxml_Candidate(struct zx_ctx* c, str
   	  enn = en;
   }
   x->DistributionGuidelines = zx_deep_clone_simple_elems(c,x->DistributionGuidelines, dup_strs);
-  for (enn = 0, e = &x->CandidateProfile->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CandidateProfile->gg;
+       e && e->g.tok == zx_hrxml_CandidateProfile_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_CandidateProfile(c,(struct zx_hrxml_CandidateProfile_s*)e,dup_strs);
   	  if (!enn)
   	      x->CandidateProfile = (struct zx_hrxml_CandidateProfile_s*)en;
@@ -3592,7 +3880,9 @@ struct zx_hrxml_Candidate_s* zx_DEEP_CLONE_hrxml_Candidate(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Resume->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Resume->gg;
+       e && e->g.tok == zx_hrxml_Resume_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Resume(c,(struct zx_hrxml_Resume_s*)e,dup_strs);
   	  if (!enn)
   	      x->Resume = (struct zx_hrxml_Resume_s*)en;
@@ -3600,7 +3890,9 @@ struct zx_hrxml_Candidate_s* zx_DEEP_CLONE_hrxml_Candidate(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -3631,17 +3923,23 @@ int zx_WALK_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->CandidateRecordInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CandidateRecordInfo->gg;
+       e && e->g.tok == zx_hrxml_CandidateRecordInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_CandidateRecordInfo(c, (struct zx_hrxml_CandidateRecordInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RelatedPositionPostings->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RelatedPositionPostings->gg;
+       e && e->g.tok == zx_hrxml_RelatedPositionPostings_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RelatedPositionPostings(c, (struct zx_hrxml_RelatedPositionPostings_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CandidateSupplier->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CandidateSupplier->gg;
+       e && e->g.tok == zx_hrxml_CandidateSupplier_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_CandidateSupplier(c, (struct zx_hrxml_CandidateSupplier_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3649,17 +3947,23 @@ int zx_WALK_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x,
   ret = zx_walk_so_simple_elems(c, x->DistributionGuidelines, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->CandidateProfile->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CandidateProfile->gg;
+       e && e->g.tok == zx_hrxml_CandidateProfile_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_CandidateProfile(c, (struct zx_hrxml_CandidateProfile_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Resume->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Resume->gg;
+       e && e->g.tok == zx_hrxml_Resume_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Resume(c, (struct zx_hrxml_Resume_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3717,45 +4021,65 @@ void zx_FREE_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_CandidateP
 
   zx_free_attr(c, x->lang, free_strs);
 
-  for (e = &x->ProfileId->gg; e; e = en) {
+  for (e = &x->ProfileId->gg;
+       e && e->g.tok == zx_hrxml_ProfileId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ProfileId(c, (struct zx_hrxml_ProfileId_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->ProfileName, free_strs);
-  for (e = &x->AvailabilityInfo->gg; e; e = en) {
+  for (e = &x->AvailabilityInfo->gg;
+       e && e->g.tok == zx_hrxml_AvailabilityInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_AvailabilityInfo(c, (struct zx_hrxml_AvailabilityInfo_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->DistributionGuidelines, free_strs);
-  for (e = &x->PersonalData->gg; e; e = en) {
+  for (e = &x->PersonalData->gg;
+       e && e->g.tok == zx_hrxml_PersonalData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonalData(c, (struct zx_hrxml_PersonalData_s*)e, free_strs);
   }
-  for (e = &x->PreferredPosition->gg; e; e = en) {
+  for (e = &x->PreferredPosition->gg;
+       e && e->g.tok == zx_hrxml_PreferredPosition_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PreferredPosition(c, (struct zx_hrxml_PreferredPosition_s*)e, free_strs);
   }
-  for (e = &x->EmploymentHistory->gg; e; e = en) {
+  for (e = &x->EmploymentHistory->gg;
+       e && e->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)e, free_strs);
   }
-  for (e = &x->EducationHistory->gg; e; e = en) {
+  for (e = &x->EducationHistory->gg;
+       e && e->g.tok == zx_hrxml_EducationHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)e, free_strs);
   }
-  for (e = &x->MilitaryHistory->gg; e; e = en) {
+  for (e = &x->MilitaryHistory->gg;
+       e && e->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)e, free_strs);
   }
-  for (e = &x->Associations->gg; e; e = en) {
+  for (e = &x->Associations->gg;
+       e && e->g.tok == zx_hrxml_Associations_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)e, free_strs);
   }
-  for (e = &x->SupportingMaterials->gg; e; e = en) {
+  for (e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -3796,27 +4120,47 @@ void zx_DUP_STRS_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candid
 
   zx_dup_attr(c, x->lang);
 
-  for (se = &x->ProfileId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProfileId->gg;
+       se && se->g.tok == zx_hrxml_ProfileId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ProfileId(c, (struct zx_hrxml_ProfileId_s*)se);
   zx_dup_strs_simple_elems(c, x->ProfileName);
-  for (se = &x->AvailabilityInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AvailabilityInfo->gg;
+       se && se->g.tok == zx_hrxml_AvailabilityInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_AvailabilityInfo(c, (struct zx_hrxml_AvailabilityInfo_s*)se);
   zx_dup_strs_simple_elems(c, x->DistributionGuidelines);
-  for (se = &x->PersonalData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonalData->gg;
+       se && se->g.tok == zx_hrxml_PersonalData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonalData(c, (struct zx_hrxml_PersonalData_s*)se);
-  for (se = &x->PreferredPosition->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredPosition->gg;
+       se && se->g.tok == zx_hrxml_PreferredPosition_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PreferredPosition(c, (struct zx_hrxml_PreferredPosition_s*)se);
-  for (se = &x->EmploymentHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EmploymentHistory->gg;
+       se && se->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)se);
-  for (se = &x->EducationHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EducationHistory->gg;
+       se && se->g.tok == zx_hrxml_EducationHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)se);
-  for (se = &x->MilitaryHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MilitaryHistory->gg;
+       se && se->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)se);
-  for (se = &x->Associations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Associations->gg;
+       se && se->g.tok == zx_hrxml_Associations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)se);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -3838,7 +4182,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
 
   x->lang = zx_clone_attr(c, x->lang);
 
-  for (enn = 0, e = &x->ProfileId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ProfileId->gg;
+       e && e->g.tok == zx_hrxml_ProfileId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ProfileId(c,(struct zx_hrxml_ProfileId_s*)e,dup_strs);
   	  if (!enn)
   	      x->ProfileId = (struct zx_hrxml_ProfileId_s*)en;
@@ -3847,7 +4193,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
   	  enn = en;
   }
   x->ProfileName = zx_deep_clone_simple_elems(c,x->ProfileName, dup_strs);
-  for (enn = 0, e = &x->AvailabilityInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AvailabilityInfo->gg;
+       e && e->g.tok == zx_hrxml_AvailabilityInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_AvailabilityInfo(c,(struct zx_hrxml_AvailabilityInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->AvailabilityInfo = (struct zx_hrxml_AvailabilityInfo_s*)en;
@@ -3856,7 +4204,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
   	  enn = en;
   }
   x->DistributionGuidelines = zx_deep_clone_simple_elems(c,x->DistributionGuidelines, dup_strs);
-  for (enn = 0, e = &x->PersonalData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonalData->gg;
+       e && e->g.tok == zx_hrxml_PersonalData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonalData(c,(struct zx_hrxml_PersonalData_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonalData = (struct zx_hrxml_PersonalData_s*)en;
@@ -3864,7 +4214,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PreferredPosition->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PreferredPosition->gg;
+       e && e->g.tok == zx_hrxml_PreferredPosition_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PreferredPosition(c,(struct zx_hrxml_PreferredPosition_s*)e,dup_strs);
   	  if (!enn)
   	      x->PreferredPosition = (struct zx_hrxml_PreferredPosition_s*)en;
@@ -3872,7 +4224,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EmploymentHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EmploymentHistory->gg;
+       e && e->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EmploymentHistory(c,(struct zx_hrxml_EmploymentHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->EmploymentHistory = (struct zx_hrxml_EmploymentHistory_s*)en;
@@ -3880,7 +4234,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EducationHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EducationHistory->gg;
+       e && e->g.tok == zx_hrxml_EducationHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EducationHistory(c,(struct zx_hrxml_EducationHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->EducationHistory = (struct zx_hrxml_EducationHistory_s*)en;
@@ -3888,7 +4244,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MilitaryHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MilitaryHistory->gg;
+       e && e->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_MilitaryHistory(c,(struct zx_hrxml_MilitaryHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->MilitaryHistory = (struct zx_hrxml_MilitaryHistory_s*)en;
@@ -3896,7 +4254,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Associations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Associations->gg;
+       e && e->g.tok == zx_hrxml_Associations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Associations(c,(struct zx_hrxml_Associations_s*)e,dup_strs);
   	  if (!enn)
   	      x->Associations = (struct zx_hrxml_Associations_s*)en;
@@ -3904,7 +4264,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SupportingMaterials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SupportingMaterials(c,(struct zx_hrxml_SupportingMaterials_s*)e,dup_strs);
   	  if (!enn)
   	      x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)en;
@@ -3912,7 +4274,9 @@ struct zx_hrxml_CandidateProfile_s* zx_DEEP_CLONE_hrxml_CandidateProfile(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -3943,7 +4307,9 @@ int zx_WALK_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candidat
   if (ret)
     return ret;
 
-  for (e = &x->ProfileId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ProfileId->gg;
+       e && e->g.tok == zx_hrxml_ProfileId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ProfileId(c, (struct zx_hrxml_ProfileId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3951,7 +4317,9 @@ int zx_WALK_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candidat
   ret = zx_walk_so_simple_elems(c, x->ProfileName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->AvailabilityInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AvailabilityInfo->gg;
+       e && e->g.tok == zx_hrxml_AvailabilityInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_AvailabilityInfo(c, (struct zx_hrxml_AvailabilityInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3959,42 +4327,58 @@ int zx_WALK_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candidat
   ret = zx_walk_so_simple_elems(c, x->DistributionGuidelines, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PersonalData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonalData->gg;
+       e && e->g.tok == zx_hrxml_PersonalData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonalData(c, (struct zx_hrxml_PersonalData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PreferredPosition->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PreferredPosition->gg;
+       e && e->g.tok == zx_hrxml_PreferredPosition_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PreferredPosition(c, (struct zx_hrxml_PreferredPosition_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EmploymentHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EmploymentHistory->gg;
+       e && e->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EducationHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EducationHistory->gg;
+       e && e->g.tok == zx_hrxml_EducationHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MilitaryHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MilitaryHistory->gg;
+       e && e->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Associations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Associations->gg;
+       e && e->g.tok == zx_hrxml_Associations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SupportingMaterials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4051,11 +4435,15 @@ void zx_FREE_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Candida
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_hrxml_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Status(c, (struct zx_hrxml_Status_s*)e, free_strs);
   }
@@ -4095,9 +4483,13 @@ void zx_DUP_STRS_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Can
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_hrxml_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Status(c, (struct zx_hrxml_Status_s*)se);
 
 }
@@ -4118,7 +4510,9 @@ struct zx_hrxml_CandidateRecordInfo_s* zx_DEEP_CLONE_hrxml_CandidateRecordInfo(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -4126,7 +4520,9 @@ struct zx_hrxml_CandidateRecordInfo_s* zx_DEEP_CLONE_hrxml_CandidateRecordInfo(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_hrxml_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Status(c,(struct zx_hrxml_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_hrxml_Status_s*)en;
@@ -4157,12 +4553,16 @@ int zx_WALK_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Candi
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_hrxml_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Status(c, (struct zx_hrxml_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4220,20 +4620,28 @@ void zx_FREE_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candidate
 
   zx_free_attr(c, x->relationship, free_strs);
 
-  for (e = &x->SupplierId->gg; e; e = en) {
+  for (e = &x->SupplierId->gg;
+       e && e->g.tok == zx_hrxml_SupplierId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SupplierId(c, (struct zx_hrxml_SupplierId_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->EntityName, free_strs);
-  for (e = &x->ContactName->gg; e; e = en) {
+  for (e = &x->ContactName->gg;
+       e && e->g.tok == zx_hrxml_ContactName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactName(c, (struct zx_hrxml_ContactName_s*)e, free_strs);
   }
-  for (e = &x->ContactMethod->gg; e; e = en) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, free_strs);
   }
-  for (e = &x->SourceType->gg; e; e = en) {
+  for (e = &x->SourceType->gg;
+       e && e->g.tok == zx_hrxml_SourceType_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SourceType(c, (struct zx_hrxml_SourceType_s*)e, free_strs);
   }
@@ -4274,14 +4682,22 @@ void zx_DUP_STRS_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candi
 
   zx_dup_attr(c, x->relationship);
 
-  for (se = &x->SupplierId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupplierId->gg;
+       se && se->g.tok == zx_hrxml_SupplierId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SupplierId(c, (struct zx_hrxml_SupplierId_s*)se);
   zx_dup_strs_simple_elems(c, x->EntityName);
-  for (se = &x->ContactName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactName->gg;
+       se && se->g.tok == zx_hrxml_ContactName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactName(c, (struct zx_hrxml_ContactName_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
-  for (se = &x->SourceType->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SourceType->gg;
+       se && se->g.tok == zx_hrxml_SourceType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SourceType(c, (struct zx_hrxml_SourceType_s*)se);
 
 }
@@ -4303,7 +4719,9 @@ struct zx_hrxml_CandidateSupplier_s* zx_DEEP_CLONE_hrxml_CandidateSupplier(struc
 
   x->relationship = zx_clone_attr(c, x->relationship);
 
-  for (enn = 0, e = &x->SupplierId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SupplierId->gg;
+       e && e->g.tok == zx_hrxml_SupplierId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SupplierId(c,(struct zx_hrxml_SupplierId_s*)e,dup_strs);
   	  if (!enn)
   	      x->SupplierId = (struct zx_hrxml_SupplierId_s*)en;
@@ -4312,7 +4730,9 @@ struct zx_hrxml_CandidateSupplier_s* zx_DEEP_CLONE_hrxml_CandidateSupplier(struc
   	  enn = en;
   }
   x->EntityName = zx_deep_clone_simple_elems(c,x->EntityName, dup_strs);
-  for (enn = 0, e = &x->ContactName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactName->gg;
+       e && e->g.tok == zx_hrxml_ContactName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactName(c,(struct zx_hrxml_ContactName_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactName = (struct zx_hrxml_ContactName_s*)en;
@@ -4320,7 +4740,9 @@ struct zx_hrxml_CandidateSupplier_s* zx_DEEP_CLONE_hrxml_CandidateSupplier(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactMethod(c,(struct zx_hrxml_ContactMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)en;
@@ -4328,7 +4750,9 @@ struct zx_hrxml_CandidateSupplier_s* zx_DEEP_CLONE_hrxml_CandidateSupplier(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SourceType->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SourceType->gg;
+       e && e->g.tok == zx_hrxml_SourceType_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SourceType(c,(struct zx_hrxml_SourceType_s*)e,dup_strs);
   	  if (!enn)
   	      x->SourceType = (struct zx_hrxml_SourceType_s*)en;
@@ -4359,7 +4783,9 @@ int zx_WALK_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candida
   if (ret)
     return ret;
 
-  for (e = &x->SupplierId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SupplierId->gg;
+       e && e->g.tok == zx_hrxml_SupplierId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SupplierId(c, (struct zx_hrxml_SupplierId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4367,17 +4793,23 @@ int zx_WALK_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candida
   ret = zx_walk_so_simple_elems(c, x->EntityName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ContactName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactName->gg;
+       e && e->g.tok == zx_hrxml_ContactName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactName(c, (struct zx_hrxml_ContactName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SourceType->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SourceType->gg;
+       e && e->g.tok == zx_hrxml_SourceType_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SourceType(c, (struct zx_hrxml_SourceType_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4709,11 +5141,15 @@ void zx_FREE_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, int f
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->TimeMax->gg; e; e = en) {
+  for (e = &x->TimeMax->gg;
+       e && e->g.tok == zx_hrxml_TimeMax_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TimeMax(c, (struct zx_hrxml_TimeMax_s*)e, free_strs);
   }
-  for (e = &x->DistanceMax->gg; e; e = en) {
+  for (e = &x->DistanceMax->gg;
+       e && e->g.tok == zx_hrxml_DistanceMax_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DistanceMax(c, (struct zx_hrxml_DistanceMax_s*)e, free_strs);
   }
@@ -4754,9 +5190,13 @@ void zx_DUP_STRS_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->TimeMax->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TimeMax->gg;
+       se && se->g.tok == zx_hrxml_TimeMax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TimeMax(c, (struct zx_hrxml_TimeMax_s*)se);
-  for (se = &x->DistanceMax->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DistanceMax->gg;
+       se && se->g.tok == zx_hrxml_DistanceMax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DistanceMax(c, (struct zx_hrxml_DistanceMax_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
 
@@ -4778,7 +5218,9 @@ struct zx_hrxml_Commute_s* zx_DEEP_CLONE_hrxml_Commute(struct zx_ctx* c, struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->TimeMax->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TimeMax->gg;
+       e && e->g.tok == zx_hrxml_TimeMax_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TimeMax(c,(struct zx_hrxml_TimeMax_s*)e,dup_strs);
   	  if (!enn)
   	      x->TimeMax = (struct zx_hrxml_TimeMax_s*)en;
@@ -4786,7 +5228,9 @@ struct zx_hrxml_Commute_s* zx_DEEP_CLONE_hrxml_Commute(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DistanceMax->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DistanceMax->gg;
+       e && e->g.tok == zx_hrxml_DistanceMax_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DistanceMax(c,(struct zx_hrxml_DistanceMax_s*)e,dup_strs);
   	  if (!enn)
   	      x->DistanceMax = (struct zx_hrxml_DistanceMax_s*)en;
@@ -4818,12 +5262,16 @@ int zx_WALK_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->TimeMax->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TimeMax->gg;
+       e && e->g.tok == zx_hrxml_TimeMax_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TimeMax(c, (struct zx_hrxml_TimeMax_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DistanceMax->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DistanceMax->gg;
+       e && e->g.tok == zx_hrxml_DistanceMax_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DistanceMax(c, (struct zx_hrxml_DistanceMax_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4883,7 +5331,9 @@ void zx_FREE_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, int f
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
@@ -4924,7 +5374,9 @@ void zx_DUP_STRS_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
   zx_dup_strs_simple_elems(c, x->Name);
 
@@ -4946,7 +5398,9 @@ struct zx_hrxml_Company_s* zx_DEEP_CLONE_hrxml_Company(struct zx_ctx* c, struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -4978,7 +5432,9 @@ int zx_WALK_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5039,7 +5495,9 @@ void zx_FREE_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehic
 
   zx_free_attr(c, x->companyOffered, free_strs);
 
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
@@ -5080,7 +5538,9 @@ void zx_DUP_STRS_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyV
 
   zx_dup_attr(c, x->companyOffered);
 
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 }
@@ -5102,7 +5562,9 @@ struct zx_hrxml_CompanyVehicle_s* zx_DEEP_CLONE_hrxml_CompanyVehicle(struct zx_c
 
   x->companyOffered = zx_clone_attr(c, x->companyOffered);
 
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -5133,7 +5595,9 @@ int zx_WALK_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVeh
   if (ret)
     return ret;
 
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5190,16 +5654,22 @@ void zx_FREE_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->StartingCompensation->gg; e; e = en) {
+  for (e = &x->StartingCompensation->gg;
+       e && e->g.tok == zx_hrxml_StartingCompensation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StartingCompensation(c, (struct zx_hrxml_StartingCompensation_s*)e, free_strs);
   }
-  for (e = &x->EndingCompensation->gg; e; e = en) {
+  for (e = &x->EndingCompensation->gg;
+       e && e->g.tok == zx_hrxml_EndingCompensation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EndingCompensation(c, (struct zx_hrxml_EndingCompensation_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Comments, free_strs);
-  for (e = &x->OtherCompensation->gg; e; e = en) {
+  for (e = &x->OtherCompensation->gg;
+       e && e->g.tok == zx_hrxml_OtherCompensation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OtherCompensation(c, (struct zx_hrxml_OtherCompensation_s*)e, free_strs);
   }
@@ -5239,12 +5709,18 @@ void zx_DUP_STRS_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensati
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->StartingCompensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartingCompensation->gg;
+       se && se->g.tok == zx_hrxml_StartingCompensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StartingCompensation(c, (struct zx_hrxml_StartingCompensation_s*)se);
-  for (se = &x->EndingCompensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndingCompensation->gg;
+       se && se->g.tok == zx_hrxml_EndingCompensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EndingCompensation(c, (struct zx_hrxml_EndingCompensation_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
-  for (se = &x->OtherCompensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherCompensation->gg;
+       se && se->g.tok == zx_hrxml_OtherCompensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OtherCompensation(c, (struct zx_hrxml_OtherCompensation_s*)se);
 
 }
@@ -5265,7 +5741,9 @@ struct zx_hrxml_Compensation_s* zx_DEEP_CLONE_hrxml_Compensation(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->StartingCompensation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StartingCompensation->gg;
+       e && e->g.tok == zx_hrxml_StartingCompensation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StartingCompensation(c,(struct zx_hrxml_StartingCompensation_s*)e,dup_strs);
   	  if (!enn)
   	      x->StartingCompensation = (struct zx_hrxml_StartingCompensation_s*)en;
@@ -5273,7 +5751,9 @@ struct zx_hrxml_Compensation_s* zx_DEEP_CLONE_hrxml_Compensation(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndingCompensation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndingCompensation->gg;
+       e && e->g.tok == zx_hrxml_EndingCompensation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EndingCompensation(c,(struct zx_hrxml_EndingCompensation_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndingCompensation = (struct zx_hrxml_EndingCompensation_s*)en;
@@ -5282,7 +5762,9 @@ struct zx_hrxml_Compensation_s* zx_DEEP_CLONE_hrxml_Compensation(struct zx_ctx* 
   	  enn = en;
   }
   x->Comments = zx_deep_clone_simple_elems(c,x->Comments, dup_strs);
-  for (enn = 0, e = &x->OtherCompensation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OtherCompensation->gg;
+       e && e->g.tok == zx_hrxml_OtherCompensation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OtherCompensation(c,(struct zx_hrxml_OtherCompensation_s*)e,dup_strs);
   	  if (!enn)
   	      x->OtherCompensation = (struct zx_hrxml_OtherCompensation_s*)en;
@@ -5313,12 +5795,16 @@ int zx_WALK_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation
   if (ret)
     return ret;
 
-  for (e = &x->StartingCompensation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StartingCompensation->gg;
+       e && e->g.tok == zx_hrxml_StartingCompensation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StartingCompensation(c, (struct zx_hrxml_StartingCompensation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndingCompensation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndingCompensation->gg;
+       e && e->g.tok == zx_hrxml_EndingCompensation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EndingCompensation(c, (struct zx_hrxml_EndingCompensation_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5326,7 +5812,9 @@ int zx_WALK_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation
   ret = zx_walk_so_simple_elems(c, x->Comments, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->OtherCompensation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OtherCompensation->gg;
+       e && e->g.tok == zx_hrxml_OtherCompensation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OtherCompensation(c, (struct zx_hrxml_OtherCompensation_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5386,27 +5874,39 @@ void zx_FREE_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x,
   zx_free_attr(c, x->name, free_strs);
   zx_free_attr(c, x->required, free_strs);
 
-  for (e = &x->CompetencyId->gg; e; e = en) {
+  for (e = &x->CompetencyId->gg;
+       e && e->g.tok == zx_hrxml_CompetencyId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)e, free_strs);
   }
-  for (e = &x->TaxonomyId->gg; e; e = en) {
+  for (e = &x->TaxonomyId->gg;
+       e && e->g.tok == zx_hrxml_TaxonomyId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TaxonomyId(c, (struct zx_hrxml_TaxonomyId_s*)e, free_strs);
   }
-  for (e = &x->CompetencyEvidence->gg; e; e = en) {
+  for (e = &x->CompetencyEvidence->gg;
+       e && e->g.tok == zx_hrxml_CompetencyEvidence_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_CompetencyEvidence(c, (struct zx_hrxml_CompetencyEvidence_s*)e, free_strs);
   }
-  for (e = &x->CompetencyWeight->gg; e; e = en) {
+  for (e = &x->CompetencyWeight->gg;
+       e && e->g.tok == zx_hrxml_CompetencyWeight_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_CompetencyWeight(c, (struct zx_hrxml_CompetencyWeight_s*)e, free_strs);
   }
-  for (e = &x->Competency->gg; e; e = en) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -5449,17 +5949,29 @@ void zx_DUP_STRS_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s
   zx_dup_attr(c, x->name);
   zx_dup_attr(c, x->required);
 
-  for (se = &x->CompetencyId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyId->gg;
+       se && se->g.tok == zx_hrxml_CompetencyId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)se);
-  for (se = &x->TaxonomyId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TaxonomyId->gg;
+       se && se->g.tok == zx_hrxml_TaxonomyId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TaxonomyId(c, (struct zx_hrxml_TaxonomyId_s*)se);
-  for (se = &x->CompetencyEvidence->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyEvidence->gg;
+       se && se->g.tok == zx_hrxml_CompetencyEvidence_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_CompetencyEvidence(c, (struct zx_hrxml_CompetencyEvidence_s*)se);
-  for (se = &x->CompetencyWeight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyWeight->gg;
+       se && se->g.tok == zx_hrxml_CompetencyWeight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_CompetencyWeight(c, (struct zx_hrxml_CompetencyWeight_s*)se);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -5483,7 +5995,9 @@ struct zx_hrxml_Competency_s* zx_DEEP_CLONE_hrxml_Competency(struct zx_ctx* c, s
   x->name = zx_clone_attr(c, x->name);
   x->required = zx_clone_attr(c, x->required);
 
-  for (enn = 0, e = &x->CompetencyId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CompetencyId->gg;
+       e && e->g.tok == zx_hrxml_CompetencyId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_CompetencyId(c,(struct zx_hrxml_CompetencyId_s*)e,dup_strs);
   	  if (!enn)
   	      x->CompetencyId = (struct zx_hrxml_CompetencyId_s*)en;
@@ -5491,7 +6005,9 @@ struct zx_hrxml_Competency_s* zx_DEEP_CLONE_hrxml_Competency(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TaxonomyId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TaxonomyId->gg;
+       e && e->g.tok == zx_hrxml_TaxonomyId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TaxonomyId(c,(struct zx_hrxml_TaxonomyId_s*)e,dup_strs);
   	  if (!enn)
   	      x->TaxonomyId = (struct zx_hrxml_TaxonomyId_s*)en;
@@ -5499,7 +6015,9 @@ struct zx_hrxml_Competency_s* zx_DEEP_CLONE_hrxml_Competency(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CompetencyEvidence->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CompetencyEvidence->gg;
+       e && e->g.tok == zx_hrxml_CompetencyEvidence_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_CompetencyEvidence(c,(struct zx_hrxml_CompetencyEvidence_s*)e,dup_strs);
   	  if (!enn)
   	      x->CompetencyEvidence = (struct zx_hrxml_CompetencyEvidence_s*)en;
@@ -5507,7 +6025,9 @@ struct zx_hrxml_Competency_s* zx_DEEP_CLONE_hrxml_Competency(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CompetencyWeight->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CompetencyWeight->gg;
+       e && e->g.tok == zx_hrxml_CompetencyWeight_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_CompetencyWeight(c,(struct zx_hrxml_CompetencyWeight_s*)e,dup_strs);
   	  if (!enn)
   	      x->CompetencyWeight = (struct zx_hrxml_CompetencyWeight_s*)en;
@@ -5515,7 +6035,9 @@ struct zx_hrxml_Competency_s* zx_DEEP_CLONE_hrxml_Competency(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Competency(c,(struct zx_hrxml_Competency_s*)e,dup_strs);
   	  if (!enn)
   	      x->Competency = (struct zx_hrxml_Competency_s*)en;
@@ -5523,7 +6045,9 @@ struct zx_hrxml_Competency_s* zx_DEEP_CLONE_hrxml_Competency(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -5554,32 +6078,44 @@ int zx_WALK_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* 
   if (ret)
     return ret;
 
-  for (e = &x->CompetencyId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CompetencyId->gg;
+       e && e->g.tok == zx_hrxml_CompetencyId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TaxonomyId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TaxonomyId->gg;
+       e && e->g.tok == zx_hrxml_TaxonomyId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TaxonomyId(c, (struct zx_hrxml_TaxonomyId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CompetencyEvidence->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CompetencyEvidence->gg;
+       e && e->g.tok == zx_hrxml_CompetencyEvidence_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_CompetencyEvidence(c, (struct zx_hrxml_CompetencyEvidence_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CompetencyWeight->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CompetencyWeight->gg;
+       e && e->g.tok == zx_hrxml_CompetencyWeight_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_CompetencyWeight(c, (struct zx_hrxml_CompetencyWeight_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5643,15 +6179,21 @@ void zx_FREE_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Competen
   zx_free_attr(c, x->typeDescription, free_strs);
   zx_free_attr(c, x->typeId, free_strs);
 
-  for (e = &x->EvidenceId->gg; e; e = en) {
+  for (e = &x->EvidenceId->gg;
+       e && e->g.tok == zx_hrxml_EvidenceId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EvidenceId(c, (struct zx_hrxml_EvidenceId_s*)e, free_strs);
   }
-  for (e = &x->NumericValue->gg; e; e = en) {
+  for (e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)e, free_strs);
   }
-  for (e = &x->StringValue->gg; e; e = en) {
+  for (e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)e, free_strs);
   }
@@ -5699,11 +6241,17 @@ void zx_DUP_STRS_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Comp
   zx_dup_attr(c, x->typeDescription);
   zx_dup_attr(c, x->typeId);
 
-  for (se = &x->EvidenceId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EvidenceId->gg;
+       se && se->g.tok == zx_hrxml_EvidenceId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EvidenceId(c, (struct zx_hrxml_EvidenceId_s*)se);
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se);
   zx_dup_strs_simple_elems(c, x->SupportingInformation);
 
@@ -5732,7 +6280,9 @@ struct zx_hrxml_CompetencyEvidence_s* zx_DEEP_CLONE_hrxml_CompetencyEvidence(str
   x->typeDescription = zx_clone_attr(c, x->typeDescription);
   x->typeId = zx_clone_attr(c, x->typeId);
 
-  for (enn = 0, e = &x->EvidenceId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EvidenceId->gg;
+       e && e->g.tok == zx_hrxml_EvidenceId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EvidenceId(c,(struct zx_hrxml_EvidenceId_s*)e,dup_strs);
   	  if (!enn)
   	      x->EvidenceId = (struct zx_hrxml_EvidenceId_s*)en;
@@ -5740,7 +6290,9 @@ struct zx_hrxml_CompetencyEvidence_s* zx_DEEP_CLONE_hrxml_CompetencyEvidence(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->NumericValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_NumericValue(c,(struct zx_hrxml_NumericValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->NumericValue = (struct zx_hrxml_NumericValue_s*)en;
@@ -5748,7 +6300,9 @@ struct zx_hrxml_CompetencyEvidence_s* zx_DEEP_CLONE_hrxml_CompetencyEvidence(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->StringValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StringValue(c,(struct zx_hrxml_StringValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->StringValue = (struct zx_hrxml_StringValue_s*)en;
@@ -5780,17 +6334,23 @@ int zx_WALK_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Compet
   if (ret)
     return ret;
 
-  for (e = &x->EvidenceId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EvidenceId->gg;
+       e && e->g.tok == zx_hrxml_EvidenceId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EvidenceId(c, (struct zx_hrxml_EvidenceId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->NumericValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->StringValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5853,7 +6413,9 @@ void zx_FREE_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_s
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -5896,7 +6458,9 @@ void zx_DUP_STRS_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_Competency
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -5920,7 +6484,9 @@ struct zx_hrxml_CompetencyId_s* zx_DEEP_CLONE_hrxml_CompetencyId(struct zx_ctx* 
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -5951,7 +6517,9 @@ int zx_WALK_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6009,11 +6577,15 @@ void zx_FREE_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Competency
 
   zx_free_attr(c, x->type, free_strs);
 
-  for (e = &x->NumericValue->gg; e; e = en) {
+  for (e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)e, free_strs);
   }
-  for (e = &x->StringValue->gg; e; e = en) {
+  for (e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)e, free_strs);
   }
@@ -6055,9 +6627,13 @@ void zx_DUP_STRS_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Compet
 
   zx_dup_attr(c, x->type);
 
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se);
   zx_dup_strs_simple_elems(c, x->SupportingInformation);
 
@@ -6080,7 +6656,9 @@ struct zx_hrxml_CompetencyWeight_s* zx_DEEP_CLONE_hrxml_CompetencyWeight(struct 
 
   x->type = zx_clone_attr(c, x->type);
 
-  for (enn = 0, e = &x->NumericValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_NumericValue(c,(struct zx_hrxml_NumericValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->NumericValue = (struct zx_hrxml_NumericValue_s*)en;
@@ -6088,7 +6666,9 @@ struct zx_hrxml_CompetencyWeight_s* zx_DEEP_CLONE_hrxml_CompetencyWeight(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->StringValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StringValue(c,(struct zx_hrxml_StringValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->StringValue = (struct zx_hrxml_StringValue_s*)en;
@@ -6120,12 +6700,16 @@ int zx_WALK_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Competen
   if (ret)
     return ret;
 
-  for (e = &x->NumericValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->StringValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6350,19 +6934,25 @@ void zx_FREE_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_ConferenceP
 
   zx_free_simple_elems(c, x->Title, free_strs);
   zx_free_simple_elems(c, x->Name, free_strs);
-  for (e = &x->PublicationDate->gg; e; e = en) {
+  for (e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Link, free_strs);
   zx_free_simple_elems(c, x->Abstract, free_strs);
-  for (e = &x->Copyright->gg; e; e = en) {
+  for (e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Comments, free_strs);
   zx_free_simple_elems(c, x->EventName, free_strs);
-  for (e = &x->ConferenceDate->gg; e; e = en) {
+  for (e = &x->ConferenceDate->gg;
+       e && e->g.tok == zx_hrxml_ConferenceDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ConferenceDate(c, (struct zx_hrxml_ConferenceDate_s*)e, free_strs);
   }
@@ -6405,15 +6995,21 @@ void zx_DUP_STRS_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Confere
 
   zx_dup_strs_simple_elems(c, x->Title);
   zx_dup_strs_simple_elems(c, x->Name);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se);
   zx_dup_strs_simple_elems(c, x->Link);
   zx_dup_strs_simple_elems(c, x->Abstract);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
   zx_dup_strs_simple_elems(c, x->EventName);
-  for (se = &x->ConferenceDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ConferenceDate->gg;
+       se && se->g.tok == zx_hrxml_ConferenceDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ConferenceDate(c, (struct zx_hrxml_ConferenceDate_s*)se);
   zx_dup_strs_simple_elems(c, x->ConferenceLocation);
 
@@ -6437,7 +7033,9 @@ struct zx_hrxml_ConferencePaper_s* zx_DEEP_CLONE_hrxml_ConferencePaper(struct zx
 
   x->Title = zx_deep_clone_simple_elems(c,x->Title, dup_strs);
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
-  for (enn = 0, e = &x->PublicationDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PublicationDate(c,(struct zx_hrxml_PublicationDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)en;
@@ -6447,7 +7045,9 @@ struct zx_hrxml_ConferencePaper_s* zx_DEEP_CLONE_hrxml_ConferencePaper(struct zx
   }
   x->Link = zx_deep_clone_simple_elems(c,x->Link, dup_strs);
   x->Abstract = zx_deep_clone_simple_elems(c,x->Abstract, dup_strs);
-  for (enn = 0, e = &x->Copyright->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Copyright(c,(struct zx_hrxml_Copyright_s*)e,dup_strs);
   	  if (!enn)
   	      x->Copyright = (struct zx_hrxml_Copyright_s*)en;
@@ -6457,7 +7057,9 @@ struct zx_hrxml_ConferencePaper_s* zx_DEEP_CLONE_hrxml_ConferencePaper(struct zx
   }
   x->Comments = zx_deep_clone_simple_elems(c,x->Comments, dup_strs);
   x->EventName = zx_deep_clone_simple_elems(c,x->EventName, dup_strs);
-  for (enn = 0, e = &x->ConferenceDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ConferenceDate->gg;
+       e && e->g.tok == zx_hrxml_ConferenceDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ConferenceDate(c,(struct zx_hrxml_ConferenceDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->ConferenceDate = (struct zx_hrxml_ConferenceDate_s*)en;
@@ -6495,7 +7097,9 @@ int zx_WALK_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conferenc
   ret = zx_walk_so_simple_elems(c, x->Name, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PublicationDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6506,7 +7110,9 @@ int zx_WALK_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conferenc
   ret = zx_walk_so_simple_elems(c, x->Abstract, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Copyright->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6517,7 +7123,9 @@ int zx_WALK_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conferenc
   ret = zx_walk_so_simple_elems(c, x->EventName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ConferenceDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ConferenceDate->gg;
+       e && e->g.tok == zx_hrxml_ConferenceDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ConferenceDate(c, (struct zx_hrxml_ConferenceDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6580,15 +7188,21 @@ void zx_FREE_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Consideratio
 
   zx_free_simple_elems(c, x->General, free_strs);
   zx_free_simple_elems(c, x->Physical, free_strs);
-  for (e = &x->SafetyEquipment->gg; e; e = en) {
+  for (e = &x->SafetyEquipment->gg;
+       e && e->g.tok == zx_hrxml_SafetyEquipment_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SafetyEquipment(c, (struct zx_hrxml_SafetyEquipment_s*)e, free_strs);
   }
-  for (e = &x->DressCode->gg; e; e = en) {
+  for (e = &x->DressCode->gg;
+       e && e->g.tok == zx_hrxml_DressCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -6631,11 +7245,17 @@ void zx_DUP_STRS_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Consider
 
   zx_dup_strs_simple_elems(c, x->General);
   zx_dup_strs_simple_elems(c, x->Physical);
-  for (se = &x->SafetyEquipment->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SafetyEquipment->gg;
+       se && se->g.tok == zx_hrxml_SafetyEquipment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SafetyEquipment(c, (struct zx_hrxml_SafetyEquipment_s*)se);
-  for (se = &x->DressCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DressCode->gg;
+       se && se->g.tok == zx_hrxml_DressCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -6659,7 +7279,9 @@ struct zx_hrxml_Considerations_s* zx_DEEP_CLONE_hrxml_Considerations(struct zx_c
 
   x->General = zx_deep_clone_simple_elems(c,x->General, dup_strs);
   x->Physical = zx_deep_clone_simple_elems(c,x->Physical, dup_strs);
-  for (enn = 0, e = &x->SafetyEquipment->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SafetyEquipment->gg;
+       e && e->g.tok == zx_hrxml_SafetyEquipment_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SafetyEquipment(c,(struct zx_hrxml_SafetyEquipment_s*)e,dup_strs);
   	  if (!enn)
   	      x->SafetyEquipment = (struct zx_hrxml_SafetyEquipment_s*)en;
@@ -6667,7 +7289,9 @@ struct zx_hrxml_Considerations_s* zx_DEEP_CLONE_hrxml_Considerations(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DressCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DressCode->gg;
+       e && e->g.tok == zx_hrxml_DressCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DressCode(c,(struct zx_hrxml_DressCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->DressCode = (struct zx_hrxml_DressCode_s*)en;
@@ -6675,7 +7299,9 @@ struct zx_hrxml_Considerations_s* zx_DEEP_CLONE_hrxml_Considerations(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -6712,17 +7338,23 @@ int zx_WALK_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerat
   ret = zx_walk_so_simple_elems(c, x->Physical, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SafetyEquipment->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SafetyEquipment->gg;
+       e && e->g.tok == zx_hrxml_SafetyEquipment_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SafetyEquipment(c, (struct zx_hrxml_SafetyEquipment_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DressCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DressCode->gg;
+       e && e->g.tok == zx_hrxml_DressCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6782,7 +7414,9 @@ void zx_FREE_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x, i
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -6825,7 +7459,9 @@ void zx_DUP_STRS_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* 
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -6849,7 +7485,9 @@ struct zx_hrxml_ContactId_s* zx_DEEP_CLONE_hrxml_ContactId(struct zx_ctx* c, str
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -6880,7 +7518,9 @@ int zx_WALK_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6937,11 +7577,15 @@ void zx_FREE_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PersonName->gg; e; e = en) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, free_strs);
   }
-  for (e = &x->ContactMethod->gg; e; e = en) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, free_strs);
   }
@@ -6981,9 +7625,13 @@ void zx_DUP_STRS_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
 
 }
@@ -7004,7 +7652,9 @@ struct zx_hrxml_ContactInfo_s* zx_DEEP_CLONE_hrxml_ContactInfo(struct zx_ctx* c,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonName(c,(struct zx_hrxml_PersonName_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonName = (struct zx_hrxml_PersonName_s*)en;
@@ -7012,7 +7662,9 @@ struct zx_hrxml_ContactInfo_s* zx_DEEP_CLONE_hrxml_ContactInfo(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactMethod(c,(struct zx_hrxml_ContactMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)en;
@@ -7043,12 +7695,16 @@ int zx_WALK_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s
   if (ret)
     return ret;
 
-  for (e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7108,29 +7764,41 @@ void zx_FREE_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMethod
   zx_free_simple_elems(c, x->Use, free_strs);
   zx_free_simple_elems(c, x->Location, free_strs);
   zx_free_simple_elems(c, x->WhenAvailable, free_strs);
-  for (e = &x->Telephone->gg; e; e = en) {
+  for (e = &x->Telephone->gg;
+       e && e->g.tok == zx_hrxml_Telephone_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Telephone(c, (struct zx_hrxml_Telephone_s*)e, free_strs);
   }
-  for (e = &x->Mobile->gg; e; e = en) {
+  for (e = &x->Mobile->gg;
+       e && e->g.tok == zx_hrxml_Mobile_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Mobile(c, (struct zx_hrxml_Mobile_s*)e, free_strs);
   }
-  for (e = &x->Fax->gg; e; e = en) {
+  for (e = &x->Fax->gg;
+       e && e->g.tok == zx_hrxml_Fax_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Fax(c, (struct zx_hrxml_Fax_s*)e, free_strs);
   }
-  for (e = &x->Pager->gg; e; e = en) {
+  for (e = &x->Pager->gg;
+       e && e->g.tok == zx_hrxml_Pager_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Pager(c, (struct zx_hrxml_Pager_s*)e, free_strs);
   }
-  for (e = &x->TTYTDD->gg; e; e = en) {
+  for (e = &x->TTYTDD->gg;
+       e && e->g.tok == zx_hrxml_TTYTDD_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TTYTDD(c, (struct zx_hrxml_TTYTDD_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->InternetEmailAddress, free_strs);
   zx_free_simple_elems(c, x->InternetWebAddress, free_strs);
-  for (e = &x->PostalAddress->gg; e; e = en) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, free_strs);
   }
@@ -7173,19 +7841,31 @@ void zx_DUP_STRS_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMe
   zx_dup_strs_simple_elems(c, x->Use);
   zx_dup_strs_simple_elems(c, x->Location);
   zx_dup_strs_simple_elems(c, x->WhenAvailable);
-  for (se = &x->Telephone->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Telephone->gg;
+       se && se->g.tok == zx_hrxml_Telephone_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Telephone(c, (struct zx_hrxml_Telephone_s*)se);
-  for (se = &x->Mobile->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Mobile->gg;
+       se && se->g.tok == zx_hrxml_Mobile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Mobile(c, (struct zx_hrxml_Mobile_s*)se);
-  for (se = &x->Fax->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Fax->gg;
+       se && se->g.tok == zx_hrxml_Fax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Fax(c, (struct zx_hrxml_Fax_s*)se);
-  for (se = &x->Pager->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Pager->gg;
+       se && se->g.tok == zx_hrxml_Pager_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Pager(c, (struct zx_hrxml_Pager_s*)se);
-  for (se = &x->TTYTDD->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TTYTDD->gg;
+       se && se->g.tok == zx_hrxml_TTYTDD_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TTYTDD(c, (struct zx_hrxml_TTYTDD_s*)se);
   zx_dup_strs_simple_elems(c, x->InternetEmailAddress);
   zx_dup_strs_simple_elems(c, x->InternetWebAddress);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
 
 }
@@ -7209,7 +7889,9 @@ struct zx_hrxml_ContactMethod_s* zx_DEEP_CLONE_hrxml_ContactMethod(struct zx_ctx
   x->Use = zx_deep_clone_simple_elems(c,x->Use, dup_strs);
   x->Location = zx_deep_clone_simple_elems(c,x->Location, dup_strs);
   x->WhenAvailable = zx_deep_clone_simple_elems(c,x->WhenAvailable, dup_strs);
-  for (enn = 0, e = &x->Telephone->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Telephone->gg;
+       e && e->g.tok == zx_hrxml_Telephone_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Telephone(c,(struct zx_hrxml_Telephone_s*)e,dup_strs);
   	  if (!enn)
   	      x->Telephone = (struct zx_hrxml_Telephone_s*)en;
@@ -7217,7 +7899,9 @@ struct zx_hrxml_ContactMethod_s* zx_DEEP_CLONE_hrxml_ContactMethod(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Mobile->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Mobile->gg;
+       e && e->g.tok == zx_hrxml_Mobile_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Mobile(c,(struct zx_hrxml_Mobile_s*)e,dup_strs);
   	  if (!enn)
   	      x->Mobile = (struct zx_hrxml_Mobile_s*)en;
@@ -7225,7 +7909,9 @@ struct zx_hrxml_ContactMethod_s* zx_DEEP_CLONE_hrxml_ContactMethod(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Fax->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Fax->gg;
+       e && e->g.tok == zx_hrxml_Fax_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Fax(c,(struct zx_hrxml_Fax_s*)e,dup_strs);
   	  if (!enn)
   	      x->Fax = (struct zx_hrxml_Fax_s*)en;
@@ -7233,7 +7919,9 @@ struct zx_hrxml_ContactMethod_s* zx_DEEP_CLONE_hrxml_ContactMethod(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Pager->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Pager->gg;
+       e && e->g.tok == zx_hrxml_Pager_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Pager(c,(struct zx_hrxml_Pager_s*)e,dup_strs);
   	  if (!enn)
   	      x->Pager = (struct zx_hrxml_Pager_s*)en;
@@ -7241,7 +7929,9 @@ struct zx_hrxml_ContactMethod_s* zx_DEEP_CLONE_hrxml_ContactMethod(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TTYTDD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TTYTDD->gg;
+       e && e->g.tok == zx_hrxml_TTYTDD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TTYTDD(c,(struct zx_hrxml_TTYTDD_s*)e,dup_strs);
   	  if (!enn)
   	      x->TTYTDD = (struct zx_hrxml_TTYTDD_s*)en;
@@ -7251,7 +7941,9 @@ struct zx_hrxml_ContactMethod_s* zx_DEEP_CLONE_hrxml_ContactMethod(struct zx_ctx
   }
   x->InternetEmailAddress = zx_deep_clone_simple_elems(c,x->InternetEmailAddress, dup_strs);
   x->InternetWebAddress = zx_deep_clone_simple_elems(c,x->InternetWebAddress, dup_strs);
-  for (enn = 0, e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PostalAddress(c,(struct zx_hrxml_PostalAddress_s*)e,dup_strs);
   	  if (!enn)
   	      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)en;
@@ -7291,27 +7983,37 @@ int zx_WALK_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMeth
   ret = zx_walk_so_simple_elems(c, x->WhenAvailable, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Telephone->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Telephone->gg;
+       e && e->g.tok == zx_hrxml_Telephone_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Telephone(c, (struct zx_hrxml_Telephone_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Mobile->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Mobile->gg;
+       e && e->g.tok == zx_hrxml_Mobile_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Mobile(c, (struct zx_hrxml_Mobile_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Fax->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Fax->gg;
+       e && e->g.tok == zx_hrxml_Fax_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Fax(c, (struct zx_hrxml_Fax_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Pager->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Pager->gg;
+       e && e->g.tok == zx_hrxml_Pager_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Pager(c, (struct zx_hrxml_Pager_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TTYTDD->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TTYTDD->gg;
+       e && e->g.tok == zx_hrxml_TTYTDD_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TTYTDD(c, (struct zx_hrxml_TTYTDD_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7322,7 +8024,9 @@ int zx_WALK_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMeth
   ret = zx_walk_so_simple_elems(c, x->InternetWebAddress, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7385,15 +8089,21 @@ void zx_FREE_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s* 
   zx_free_simple_elems(c, x->GivenName, free_strs);
   zx_free_simple_elems(c, x->PreferredGivenName, free_strs);
   zx_free_simple_elems(c, x->MiddleName, free_strs);
-  for (e = &x->FamilyName->gg; e; e = en) {
+  for (e = &x->FamilyName->gg;
+       e && e->g.tok == zx_hrxml_FamilyName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)e, free_strs);
   }
-  for (e = &x->Affix->gg; e; e = en) {
+  for (e = &x->Affix->gg;
+       e && e->g.tok == zx_hrxml_Affix_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)e, free_strs);
   }
-  for (e = &x->AlternateScript->gg; e; e = en) {
+  for (e = &x->AlternateScript->gg;
+       e && e->g.tok == zx_hrxml_AlternateScript_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)e, free_strs);
   }
@@ -7439,11 +8149,17 @@ void zx_DUP_STRS_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName
   zx_dup_strs_simple_elems(c, x->GivenName);
   zx_dup_strs_simple_elems(c, x->PreferredGivenName);
   zx_dup_strs_simple_elems(c, x->MiddleName);
-  for (se = &x->FamilyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FamilyName->gg;
+       se && se->g.tok == zx_hrxml_FamilyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)se);
-  for (se = &x->Affix->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Affix->gg;
+       se && se->g.tok == zx_hrxml_Affix_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)se);
-  for (se = &x->AlternateScript->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AlternateScript->gg;
+       se && se->g.tok == zx_hrxml_AlternateScript_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)se);
 
 }
@@ -7470,7 +8186,9 @@ struct zx_hrxml_ContactName_s* zx_DEEP_CLONE_hrxml_ContactName(struct zx_ctx* c,
   x->GivenName = zx_deep_clone_simple_elems(c,x->GivenName, dup_strs);
   x->PreferredGivenName = zx_deep_clone_simple_elems(c,x->PreferredGivenName, dup_strs);
   x->MiddleName = zx_deep_clone_simple_elems(c,x->MiddleName, dup_strs);
-  for (enn = 0, e = &x->FamilyName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->FamilyName->gg;
+       e && e->g.tok == zx_hrxml_FamilyName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_FamilyName(c,(struct zx_hrxml_FamilyName_s*)e,dup_strs);
   	  if (!enn)
   	      x->FamilyName = (struct zx_hrxml_FamilyName_s*)en;
@@ -7478,7 +8196,9 @@ struct zx_hrxml_ContactName_s* zx_DEEP_CLONE_hrxml_ContactName(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Affix->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Affix->gg;
+       e && e->g.tok == zx_hrxml_Affix_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Affix(c,(struct zx_hrxml_Affix_s*)e,dup_strs);
   	  if (!enn)
   	      x->Affix = (struct zx_hrxml_Affix_s*)en;
@@ -7486,7 +8206,9 @@ struct zx_hrxml_ContactName_s* zx_DEEP_CLONE_hrxml_ContactName(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AlternateScript->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AlternateScript->gg;
+       e && e->g.tok == zx_hrxml_AlternateScript_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_AlternateScript(c,(struct zx_hrxml_AlternateScript_s*)e,dup_strs);
   	  if (!enn)
   	      x->AlternateScript = (struct zx_hrxml_AlternateScript_s*)en;
@@ -7532,17 +8254,23 @@ int zx_WALK_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s
   ret = zx_walk_so_simple_elems(c, x->MiddleName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->FamilyName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->FamilyName->gg;
+       e && e->g.tok == zx_hrxml_FamilyName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Affix->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Affix->gg;
+       e && e->g.tok == zx_hrxml_Affix_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AlternateScript->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AlternateScript->gg;
+       e && e->g.tok == zx_hrxml_AlternateScript_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7599,7 +8327,9 @@ void zx_FREE_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x, i
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->CopyrightDates->gg; e; e = en) {
+  for (e = &x->CopyrightDates->gg;
+       e && e->g.tok == zx_hrxml_CopyrightDates_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_CopyrightDates(c, (struct zx_hrxml_CopyrightDates_s*)e, free_strs);
   }
@@ -7640,7 +8370,9 @@ void zx_DUP_STRS_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->CopyrightDates->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CopyrightDates->gg;
+       se && se->g.tok == zx_hrxml_CopyrightDates_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_CopyrightDates(c, (struct zx_hrxml_CopyrightDates_s*)se);
   zx_dup_strs_simple_elems(c, x->CopyrightText);
 
@@ -7662,7 +8394,9 @@ struct zx_hrxml_Copyright_s* zx_DEEP_CLONE_hrxml_Copyright(struct zx_ctx* c, str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->CopyrightDates->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CopyrightDates->gg;
+       e && e->g.tok == zx_hrxml_CopyrightDates_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_CopyrightDates(c,(struct zx_hrxml_CopyrightDates_s*)e,dup_strs);
   	  if (!enn)
   	      x->CopyrightDates = (struct zx_hrxml_CopyrightDates_s*)en;
@@ -7694,7 +8428,9 @@ int zx_WALK_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->CopyrightDates->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CopyrightDates->gg;
+       e && e->g.tok == zx_hrxml_CopyrightDates_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_CopyrightDates(c, (struct zx_hrxml_CopyrightDates_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7754,11 +8490,15 @@ void zx_FREE_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDat
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->OriginalDate->gg; e; e = en) {
+  for (e = &x->OriginalDate->gg;
+       e && e->g.tok == zx_hrxml_OriginalDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OriginalDate(c, (struct zx_hrxml_OriginalDate_s*)e, free_strs);
   }
-  for (e = &x->MostRecentDate->gg; e; e = en) {
+  for (e = &x->MostRecentDate->gg;
+       e && e->g.tok == zx_hrxml_MostRecentDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_MostRecentDate(c, (struct zx_hrxml_MostRecentDate_s*)e, free_strs);
   }
@@ -7798,9 +8538,13 @@ void zx_DUP_STRS_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_Copyrigh
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->OriginalDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OriginalDate->gg;
+       se && se->g.tok == zx_hrxml_OriginalDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OriginalDate(c, (struct zx_hrxml_OriginalDate_s*)se);
-  for (se = &x->MostRecentDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MostRecentDate->gg;
+       se && se->g.tok == zx_hrxml_MostRecentDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_MostRecentDate(c, (struct zx_hrxml_MostRecentDate_s*)se);
 
 }
@@ -7821,7 +8565,9 @@ struct zx_hrxml_CopyrightDates_s* zx_DEEP_CLONE_hrxml_CopyrightDates(struct zx_c
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->OriginalDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OriginalDate->gg;
+       e && e->g.tok == zx_hrxml_OriginalDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OriginalDate(c,(struct zx_hrxml_OriginalDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->OriginalDate = (struct zx_hrxml_OriginalDate_s*)en;
@@ -7829,7 +8575,9 @@ struct zx_hrxml_CopyrightDates_s* zx_DEEP_CLONE_hrxml_CopyrightDates(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MostRecentDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MostRecentDate->gg;
+       e && e->g.tok == zx_hrxml_MostRecentDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_MostRecentDate(c,(struct zx_hrxml_MostRecentDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->MostRecentDate = (struct zx_hrxml_MostRecentDate_s*)en;
@@ -7860,12 +8608,16 @@ int zx_WALK_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightD
   if (ret)
     return ret;
 
-  for (e = &x->OriginalDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OriginalDate->gg;
+       e && e->g.tok == zx_hrxml_OriginalDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OriginalDate(c, (struct zx_hrxml_OriginalDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MostRecentDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MostRecentDate->gg;
+       e && e->g.tok == zx_hrxml_MostRecentDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_MostRecentDate(c, (struct zx_hrxml_MostRecentDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7925,11 +8677,15 @@ void zx_FREE_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfAt
   zx_free_attr(c, x->enrollmentStatus, free_strs);
   zx_free_attr(c, x->studentInGoodStanding, free_strs);
 
-  for (e = &x->StartDate->gg; e; e = en) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, free_strs);
   }
-  for (e = &x->EndDate->gg; e; e = en) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, free_strs);
   }
@@ -7972,9 +8728,13 @@ void zx_DUP_STRS_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_Dates
   zx_dup_attr(c, x->enrollmentStatus);
   zx_dup_attr(c, x->studentInGoodStanding);
 
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
 
 }
@@ -7998,7 +8758,9 @@ struct zx_hrxml_DatesOfAttendance_s* zx_DEEP_CLONE_hrxml_DatesOfAttendance(struc
   x->enrollmentStatus = zx_clone_attr(c, x->enrollmentStatus);
   x->studentInGoodStanding = zx_clone_attr(c, x->studentInGoodStanding);
 
-  for (enn = 0, e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StartDate(c,(struct zx_hrxml_StartDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->StartDate = (struct zx_hrxml_StartDate_s*)en;
@@ -8006,7 +8768,9 @@ struct zx_hrxml_DatesOfAttendance_s* zx_DEEP_CLONE_hrxml_DatesOfAttendance(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EndDate(c,(struct zx_hrxml_EndDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndDate = (struct zx_hrxml_EndDate_s*)en;
@@ -8037,12 +8801,16 @@ int zx_WALK_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOf
   if (ret)
     return ret;
 
-  for (e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8099,11 +8867,15 @@ void zx_FREE_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfServi
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->StartDate->gg; e; e = en) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, free_strs);
   }
-  for (e = &x->EndDate->gg; e; e = en) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, free_strs);
   }
@@ -8143,9 +8915,13 @@ void zx_DUP_STRS_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfS
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
 
 }
@@ -8166,7 +8942,9 @@ struct zx_hrxml_DatesOfService_s* zx_DEEP_CLONE_hrxml_DatesOfService(struct zx_c
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StartDate(c,(struct zx_hrxml_StartDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->StartDate = (struct zx_hrxml_StartDate_s*)en;
@@ -8174,7 +8952,9 @@ struct zx_hrxml_DatesOfService_s* zx_DEEP_CLONE_hrxml_DatesOfService(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EndDate(c,(struct zx_hrxml_EndDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndDate = (struct zx_hrxml_EndDate_s*)en;
@@ -8205,12 +8985,16 @@ int zx_WALK_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfSer
   if (ret)
     return ret;
 
-  for (e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8270,40 +9054,58 @@ void zx_FREE_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, int fre
   zx_free_attr(c, x->examPassed, free_strs);
   zx_free_attr(c, x->graduatingDegree, free_strs);
 
-  for (e = &x->DegreeName->gg; e; e = en) {
+  for (e = &x->DegreeName->gg;
+       e && e->g.tok == zx_hrxml_DegreeName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DegreeName(c, (struct zx_hrxml_DegreeName_s*)e, free_strs);
   }
-  for (e = &x->DegreeDate->gg; e; e = en) {
+  for (e = &x->DegreeDate->gg;
+       e && e->g.tok == zx_hrxml_DegreeDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DegreeDate(c, (struct zx_hrxml_DegreeDate_s*)e, free_strs);
   }
-  for (e = &x->OtherHonors->gg; e; e = en) {
+  for (e = &x->OtherHonors->gg;
+       e && e->g.tok == zx_hrxml_OtherHonors_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OtherHonors(c, (struct zx_hrxml_OtherHonors_s*)e, free_strs);
   }
-  for (e = &x->DegreeMajor->gg; e; e = en) {
+  for (e = &x->DegreeMajor->gg;
+       e && e->g.tok == zx_hrxml_DegreeMajor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DegreeMajor(c, (struct zx_hrxml_DegreeMajor_s*)e, free_strs);
   }
-  for (e = &x->DegreeMinor->gg; e; e = en) {
+  for (e = &x->DegreeMinor->gg;
+       e && e->g.tok == zx_hrxml_DegreeMinor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DegreeMinor(c, (struct zx_hrxml_DegreeMinor_s*)e, free_strs);
   }
-  for (e = &x->DegreeMeasure->gg; e; e = en) {
+  for (e = &x->DegreeMeasure->gg;
+       e && e->g.tok == zx_hrxml_DegreeMeasure_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DegreeMeasure(c, (struct zx_hrxml_DegreeMeasure_s*)e, free_strs);
   }
-  for (e = &x->DatesOfAttendance->gg; e; e = en) {
+  for (e = &x->DatesOfAttendance->gg;
+       e && e->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Comments, free_strs);
-  for (e = &x->DegreeClassification->gg; e; e = en) {
+  for (e = &x->DegreeClassification->gg;
+       e && e->g.tok == zx_hrxml_DegreeClassification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DegreeClassification(c, (struct zx_hrxml_DegreeClassification_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -8346,24 +9148,42 @@ void zx_DUP_STRS_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x)
   zx_dup_attr(c, x->examPassed);
   zx_dup_attr(c, x->graduatingDegree);
 
-  for (se = &x->DegreeName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeName->gg;
+       se && se->g.tok == zx_hrxml_DegreeName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DegreeName(c, (struct zx_hrxml_DegreeName_s*)se);
-  for (se = &x->DegreeDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeDate->gg;
+       se && se->g.tok == zx_hrxml_DegreeDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DegreeDate(c, (struct zx_hrxml_DegreeDate_s*)se);
-  for (se = &x->OtherHonors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherHonors->gg;
+       se && se->g.tok == zx_hrxml_OtherHonors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OtherHonors(c, (struct zx_hrxml_OtherHonors_s*)se);
-  for (se = &x->DegreeMajor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeMajor->gg;
+       se && se->g.tok == zx_hrxml_DegreeMajor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DegreeMajor(c, (struct zx_hrxml_DegreeMajor_s*)se);
-  for (se = &x->DegreeMinor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeMinor->gg;
+       se && se->g.tok == zx_hrxml_DegreeMinor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DegreeMinor(c, (struct zx_hrxml_DegreeMinor_s*)se);
-  for (se = &x->DegreeMeasure->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeMeasure->gg;
+       se && se->g.tok == zx_hrxml_DegreeMeasure_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DegreeMeasure(c, (struct zx_hrxml_DegreeMeasure_s*)se);
-  for (se = &x->DatesOfAttendance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DatesOfAttendance->gg;
+       se && se->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
-  for (se = &x->DegreeClassification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeClassification->gg;
+       se && se->g.tok == zx_hrxml_DegreeClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DegreeClassification(c, (struct zx_hrxml_DegreeClassification_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -8387,7 +9207,9 @@ struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx
   x->examPassed = zx_clone_attr(c, x->examPassed);
   x->graduatingDegree = zx_clone_attr(c, x->graduatingDegree);
 
-  for (enn = 0, e = &x->DegreeName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DegreeName->gg;
+       e && e->g.tok == zx_hrxml_DegreeName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DegreeName(c,(struct zx_hrxml_DegreeName_s*)e,dup_strs);
   	  if (!enn)
   	      x->DegreeName = (struct zx_hrxml_DegreeName_s*)en;
@@ -8395,7 +9217,9 @@ struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DegreeDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DegreeDate->gg;
+       e && e->g.tok == zx_hrxml_DegreeDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DegreeDate(c,(struct zx_hrxml_DegreeDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->DegreeDate = (struct zx_hrxml_DegreeDate_s*)en;
@@ -8403,7 +9227,9 @@ struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OtherHonors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OtherHonors->gg;
+       e && e->g.tok == zx_hrxml_OtherHonors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OtherHonors(c,(struct zx_hrxml_OtherHonors_s*)e,dup_strs);
   	  if (!enn)
   	      x->OtherHonors = (struct zx_hrxml_OtherHonors_s*)en;
@@ -8411,7 +9237,9 @@ struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DegreeMajor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DegreeMajor->gg;
+       e && e->g.tok == zx_hrxml_DegreeMajor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DegreeMajor(c,(struct zx_hrxml_DegreeMajor_s*)e,dup_strs);
   	  if (!enn)
   	      x->DegreeMajor = (struct zx_hrxml_DegreeMajor_s*)en;
@@ -8419,7 +9247,9 @@ struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DegreeMinor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DegreeMinor->gg;
+       e && e->g.tok == zx_hrxml_DegreeMinor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DegreeMinor(c,(struct zx_hrxml_DegreeMinor_s*)e,dup_strs);
   	  if (!enn)
   	      x->DegreeMinor = (struct zx_hrxml_DegreeMinor_s*)en;
@@ -8427,7 +9257,9 @@ struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DegreeMeasure->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DegreeMeasure->gg;
+       e && e->g.tok == zx_hrxml_DegreeMeasure_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DegreeMeasure(c,(struct zx_hrxml_DegreeMeasure_s*)e,dup_strs);
   	  if (!enn)
   	      x->DegreeMeasure = (struct zx_hrxml_DegreeMeasure_s*)en;
@@ -8435,7 +9267,9 @@ struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DatesOfAttendance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DatesOfAttendance->gg;
+       e && e->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DatesOfAttendance(c,(struct zx_hrxml_DatesOfAttendance_s*)e,dup_strs);
   	  if (!enn)
   	      x->DatesOfAttendance = (struct zx_hrxml_DatesOfAttendance_s*)en;
@@ -8444,7 +9278,9 @@ struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx
   	  enn = en;
   }
   x->Comments = zx_deep_clone_simple_elems(c,x->Comments, dup_strs);
-  for (enn = 0, e = &x->DegreeClassification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DegreeClassification->gg;
+       e && e->g.tok == zx_hrxml_DegreeClassification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DegreeClassification(c,(struct zx_hrxml_DegreeClassification_s*)e,dup_strs);
   	  if (!enn)
   	      x->DegreeClassification = (struct zx_hrxml_DegreeClassification_s*)en;
@@ -8452,7 +9288,9 @@ struct zx_hrxml_Degree_s* zx_DEEP_CLONE_hrxml_Degree(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -8483,37 +9321,51 @@ int zx_WALK_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->DegreeName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DegreeName->gg;
+       e && e->g.tok == zx_hrxml_DegreeName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DegreeName(c, (struct zx_hrxml_DegreeName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DegreeDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DegreeDate->gg;
+       e && e->g.tok == zx_hrxml_DegreeDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DegreeDate(c, (struct zx_hrxml_DegreeDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OtherHonors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OtherHonors->gg;
+       e && e->g.tok == zx_hrxml_OtherHonors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OtherHonors(c, (struct zx_hrxml_OtherHonors_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DegreeMajor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DegreeMajor->gg;
+       e && e->g.tok == zx_hrxml_DegreeMajor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DegreeMajor(c, (struct zx_hrxml_DegreeMajor_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DegreeMinor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DegreeMinor->gg;
+       e && e->g.tok == zx_hrxml_DegreeMinor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DegreeMinor(c, (struct zx_hrxml_DegreeMinor_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DegreeMeasure->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DegreeMeasure->gg;
+       e && e->g.tok == zx_hrxml_DegreeMeasure_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DegreeMeasure(c, (struct zx_hrxml_DegreeMeasure_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DatesOfAttendance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DatesOfAttendance->gg;
+       e && e->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8521,12 +9373,16 @@ int zx_WALK_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->Comments, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->DegreeClassification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DegreeClassification->gg;
+       e && e->g.tok == zx_hrxml_DegreeClassification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DegreeClassification(c, (struct zx_hrxml_DegreeClassification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8583,11 +9439,15 @@ void zx_FREE_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_Degree
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
@@ -8627,9 +9487,13 @@ void zx_DUP_STRS_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_De
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 }
@@ -8650,7 +9514,9 @@ struct zx_hrxml_DegreeClassification_s* zx_DEEP_CLONE_hrxml_DegreeClassification
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -8658,7 +9524,9 @@ struct zx_hrxml_DegreeClassification_s* zx_DEEP_CLONE_hrxml_DegreeClassification
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -8689,12 +9557,16 @@ int zx_WALK_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_Degr
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8914,7 +9786,9 @@ void zx_FREE_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ProgramId->gg; e; e = en) {
+  for (e = &x->ProgramId->gg;
+       e && e->g.tok == zx_hrxml_ProgramId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)e, free_strs);
   }
@@ -8957,7 +9831,9 @@ void zx_DUP_STRS_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ProgramId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProgramId->gg;
+       se && se->g.tok == zx_hrxml_ProgramId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)se);
   zx_dup_strs_simple_elems(c, x->DegreeConcentration);
   zx_dup_strs_simple_elems(c, x->Name);
@@ -8981,7 +9857,9 @@ struct zx_hrxml_DegreeMajor_s* zx_DEEP_CLONE_hrxml_DegreeMajor(struct zx_ctx* c,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ProgramId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ProgramId->gg;
+       e && e->g.tok == zx_hrxml_ProgramId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ProgramId(c,(struct zx_hrxml_ProgramId_s*)e,dup_strs);
   	  if (!enn)
   	      x->ProgramId = (struct zx_hrxml_ProgramId_s*)en;
@@ -9015,7 +9893,9 @@ int zx_WALK_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s
   if (ret)
     return ret;
 
-  for (e = &x->ProgramId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ProgramId->gg;
+       e && e->g.tok == zx_hrxml_ProgramId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9082,7 +9962,9 @@ void zx_FREE_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure
 
   zx_free_attr(c, x->measureType, free_strs);
 
-  for (e = &x->EducationalMeasure->gg; e; e = en) {
+  for (e = &x->EducationalMeasure->gg;
+       e && e->g.tok == zx_hrxml_EducationalMeasure_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EducationalMeasure(c, (struct zx_hrxml_EducationalMeasure_s*)e, free_strs);
   }
@@ -9092,7 +9974,9 @@ void zx_FREE_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasure
   zx_free_simple_elems(c, x->AcademicCreditHoursIncluded, free_strs);
   zx_free_simple_elems(c, x->AcademicCreditHoursAttempted, free_strs);
   zx_free_simple_elems(c, x->AcademicCreditHoursEarned, free_strs);
-  for (e = &x->ClassRank->gg; e; e = en) {
+  for (e = &x->ClassRank->gg;
+       e && e->g.tok == zx_hrxml_ClassRank_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ClassRank(c, (struct zx_hrxml_ClassRank_s*)e, free_strs);
   }
@@ -9133,7 +10017,9 @@ void zx_DUP_STRS_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMea
 
   zx_dup_attr(c, x->measureType);
 
-  for (se = &x->EducationalMeasure->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EducationalMeasure->gg;
+       se && se->g.tok == zx_hrxml_EducationalMeasure_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EducationalMeasure(c, (struct zx_hrxml_EducationalMeasure_s*)se);
   zx_dup_strs_simple_elems(c, x->AcademicCreditCode);
   zx_dup_strs_simple_elems(c, x->CourseLevelCode);
@@ -9141,7 +10027,9 @@ void zx_DUP_STRS_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMea
   zx_dup_strs_simple_elems(c, x->AcademicCreditHoursIncluded);
   zx_dup_strs_simple_elems(c, x->AcademicCreditHoursAttempted);
   zx_dup_strs_simple_elems(c, x->AcademicCreditHoursEarned);
-  for (se = &x->ClassRank->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ClassRank->gg;
+       se && se->g.tok == zx_hrxml_ClassRank_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ClassRank(c, (struct zx_hrxml_ClassRank_s*)se);
 
 }
@@ -9163,7 +10051,9 @@ struct zx_hrxml_DegreeMeasure_s* zx_DEEP_CLONE_hrxml_DegreeMeasure(struct zx_ctx
 
   x->measureType = zx_clone_attr(c, x->measureType);
 
-  for (enn = 0, e = &x->EducationalMeasure->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EducationalMeasure->gg;
+       e && e->g.tok == zx_hrxml_EducationalMeasure_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EducationalMeasure(c,(struct zx_hrxml_EducationalMeasure_s*)e,dup_strs);
   	  if (!enn)
   	      x->EducationalMeasure = (struct zx_hrxml_EducationalMeasure_s*)en;
@@ -9177,7 +10067,9 @@ struct zx_hrxml_DegreeMeasure_s* zx_DEEP_CLONE_hrxml_DegreeMeasure(struct zx_ctx
   x->AcademicCreditHoursIncluded = zx_deep_clone_simple_elems(c,x->AcademicCreditHoursIncluded, dup_strs);
   x->AcademicCreditHoursAttempted = zx_deep_clone_simple_elems(c,x->AcademicCreditHoursAttempted, dup_strs);
   x->AcademicCreditHoursEarned = zx_deep_clone_simple_elems(c,x->AcademicCreditHoursEarned, dup_strs);
-  for (enn = 0, e = &x->ClassRank->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ClassRank->gg;
+       e && e->g.tok == zx_hrxml_ClassRank_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ClassRank(c,(struct zx_hrxml_ClassRank_s*)e,dup_strs);
   	  if (!enn)
   	      x->ClassRank = (struct zx_hrxml_ClassRank_s*)en;
@@ -9208,7 +10100,9 @@ int zx_WALK_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasu
   if (ret)
     return ret;
 
-  for (e = &x->EducationalMeasure->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EducationalMeasure->gg;
+       e && e->g.tok == zx_hrxml_EducationalMeasure_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EducationalMeasure(c, (struct zx_hrxml_EducationalMeasure_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9231,7 +10125,9 @@ int zx_WALK_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasu
   ret = zx_walk_so_simple_elems(c, x->AcademicCreditHoursEarned, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ClassRank->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ClassRank->gg;
+       e && e->g.tok == zx_hrxml_ClassRank_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ClassRank(c, (struct zx_hrxml_ClassRank_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9288,7 +10184,9 @@ void zx_FREE_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ProgramId->gg; e; e = en) {
+  for (e = &x->ProgramId->gg;
+       e && e->g.tok == zx_hrxml_ProgramId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)e, free_strs);
   }
@@ -9329,7 +10227,9 @@ void zx_DUP_STRS_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ProgramId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProgramId->gg;
+       se && se->g.tok == zx_hrxml_ProgramId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)se);
   zx_dup_strs_simple_elems(c, x->Name);
 
@@ -9351,7 +10251,9 @@ struct zx_hrxml_DegreeMinor_s* zx_DEEP_CLONE_hrxml_DegreeMinor(struct zx_ctx* c,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ProgramId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ProgramId->gg;
+       e && e->g.tok == zx_hrxml_ProgramId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ProgramId(c,(struct zx_hrxml_ProgramId_s*)e,dup_strs);
   	  if (!enn)
   	      x->ProgramId = (struct zx_hrxml_ProgramId_s*)en;
@@ -9383,7 +10285,9 @@ int zx_WALK_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s
   if (ret)
     return ret;
 
-  for (e = &x->ProgramId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ProgramId->gg;
+       e && e->g.tok == zx_hrxml_ProgramId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9742,18 +10646,24 @@ void zx_FREE_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_Demo
   zx_free_simple_elems(c, x->Race, free_strs);
   zx_free_simple_elems(c, x->Ethnicity, free_strs);
   zx_free_simple_elems(c, x->Nationality, free_strs);
-  for (e = &x->PrimaryLanguage->gg; e; e = en) {
+  for (e = &x->PrimaryLanguage->gg;
+       e && e->g.tok == zx_hrxml_PrimaryLanguage_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PrimaryLanguage(c, (struct zx_hrxml_PrimaryLanguage_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->BirthPlace, free_strs);
   zx_free_simple_elems(c, x->Religion, free_strs);
   zx_free_simple_elems(c, x->MaritalStatus, free_strs);
-  for (e = &x->ChildrenInfo->gg; e; e = en) {
+  for (e = &x->ChildrenInfo->gg;
+       e && e->g.tok == zx_hrxml_ChildrenInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ChildrenInfo(c, (struct zx_hrxml_ChildrenInfo_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -9796,14 +10706,20 @@ void zx_DUP_STRS_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_
   zx_dup_strs_simple_elems(c, x->Race);
   zx_dup_strs_simple_elems(c, x->Ethnicity);
   zx_dup_strs_simple_elems(c, x->Nationality);
-  for (se = &x->PrimaryLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PrimaryLanguage->gg;
+       se && se->g.tok == zx_hrxml_PrimaryLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PrimaryLanguage(c, (struct zx_hrxml_PrimaryLanguage_s*)se);
   zx_dup_strs_simple_elems(c, x->BirthPlace);
   zx_dup_strs_simple_elems(c, x->Religion);
   zx_dup_strs_simple_elems(c, x->MaritalStatus);
-  for (se = &x->ChildrenInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ChildrenInfo->gg;
+       se && se->g.tok == zx_hrxml_ChildrenInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ChildrenInfo(c, (struct zx_hrxml_ChildrenInfo_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -9827,7 +10743,9 @@ struct zx_hrxml_DemographicDescriptors_s* zx_DEEP_CLONE_hrxml_DemographicDescrip
   x->Race = zx_deep_clone_simple_elems(c,x->Race, dup_strs);
   x->Ethnicity = zx_deep_clone_simple_elems(c,x->Ethnicity, dup_strs);
   x->Nationality = zx_deep_clone_simple_elems(c,x->Nationality, dup_strs);
-  for (enn = 0, e = &x->PrimaryLanguage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PrimaryLanguage->gg;
+       e && e->g.tok == zx_hrxml_PrimaryLanguage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PrimaryLanguage(c,(struct zx_hrxml_PrimaryLanguage_s*)e,dup_strs);
   	  if (!enn)
   	      x->PrimaryLanguage = (struct zx_hrxml_PrimaryLanguage_s*)en;
@@ -9838,7 +10756,9 @@ struct zx_hrxml_DemographicDescriptors_s* zx_DEEP_CLONE_hrxml_DemographicDescrip
   x->BirthPlace = zx_deep_clone_simple_elems(c,x->BirthPlace, dup_strs);
   x->Religion = zx_deep_clone_simple_elems(c,x->Religion, dup_strs);
   x->MaritalStatus = zx_deep_clone_simple_elems(c,x->MaritalStatus, dup_strs);
-  for (enn = 0, e = &x->ChildrenInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ChildrenInfo->gg;
+       e && e->g.tok == zx_hrxml_ChildrenInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ChildrenInfo(c,(struct zx_hrxml_ChildrenInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->ChildrenInfo = (struct zx_hrxml_ChildrenInfo_s*)en;
@@ -9846,7 +10766,9 @@ struct zx_hrxml_DemographicDescriptors_s* zx_DEEP_CLONE_hrxml_DemographicDescrip
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -9886,7 +10808,9 @@ int zx_WALK_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_De
   ret = zx_walk_so_simple_elems(c, x->Nationality, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PrimaryLanguage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PrimaryLanguage->gg;
+       e && e->g.tok == zx_hrxml_PrimaryLanguage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PrimaryLanguage(c, (struct zx_hrxml_PrimaryLanguage_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9900,12 +10824,16 @@ int zx_WALK_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_De
   ret = zx_walk_so_simple_elems(c, x->MaritalStatus, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ChildrenInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ChildrenInfo->gg;
+       e && e->g.tok == zx_hrxml_ChildrenInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ChildrenInfo(c, (struct zx_hrxml_ChildrenInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -10518,7 +11446,9 @@ void zx_FREE_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ContactMethod->gg; e; e = en) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, free_strs);
   }
@@ -10558,7 +11488,9 @@ void zx_DUP_STRS_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_Distribute
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
 
 }
@@ -10579,7 +11511,9 @@ struct zx_hrxml_DistributeTo_s* zx_DEEP_CLONE_hrxml_DistributeTo(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactMethod(c,(struct zx_hrxml_ContactMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)en;
@@ -10610,7 +11544,9 @@ int zx_WALK_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo
   if (ret)
     return ret;
 
-  for (e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -11208,7 +12144,9 @@ void zx_FREE_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_EducationH
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SchoolOrInstitution->gg; e; e = en) {
+  for (e = &x->SchoolOrInstitution->gg;
+       e && e->g.tok == zx_hrxml_SchoolOrInstitution_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SchoolOrInstitution(c, (struct zx_hrxml_SchoolOrInstitution_s*)e, free_strs);
   }
@@ -11248,7 +12186,9 @@ void zx_DUP_STRS_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_Educat
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SchoolOrInstitution->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SchoolOrInstitution->gg;
+       se && se->g.tok == zx_hrxml_SchoolOrInstitution_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SchoolOrInstitution(c, (struct zx_hrxml_SchoolOrInstitution_s*)se);
 
 }
@@ -11269,7 +12209,9 @@ struct zx_hrxml_EducationHistory_s* zx_DEEP_CLONE_hrxml_EducationHistory(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SchoolOrInstitution->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SchoolOrInstitution->gg;
+       e && e->g.tok == zx_hrxml_SchoolOrInstitution_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SchoolOrInstitution(c,(struct zx_hrxml_SchoolOrInstitution_s*)e,dup_strs);
   	  if (!enn)
   	      x->SchoolOrInstitution = (struct zx_hrxml_SchoolOrInstitution_s*)en;
@@ -11300,7 +12242,9 @@ int zx_WALK_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_Educatio
   if (ret)
     return ret;
 
-  for (e = &x->SchoolOrInstitution->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SchoolOrInstitution->gg;
+       e && e->g.tok == zx_hrxml_SchoolOrInstitution_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SchoolOrInstitution(c, (struct zx_hrxml_SchoolOrInstitution_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -11359,11 +12303,15 @@ void zx_FREE_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educatio
 
   zx_free_simple_elems(c, x->MeasureSystem, free_strs);
   zx_free_simple_elems(c, x->MeasureValue, free_strs);
-  for (e = &x->LowestPossibleValue->gg; e; e = en) {
+  for (e = &x->LowestPossibleValue->gg;
+       e && e->g.tok == zx_hrxml_LowestPossibleValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LowestPossibleValue(c, (struct zx_hrxml_LowestPossibleValue_s*)e, free_strs);
   }
-  for (e = &x->HighestPossibleValue->gg; e; e = en) {
+  for (e = &x->HighestPossibleValue->gg;
+       e && e->g.tok == zx_hrxml_HighestPossibleValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_HighestPossibleValue(c, (struct zx_hrxml_HighestPossibleValue_s*)e, free_strs);
   }
@@ -11407,9 +12355,13 @@ void zx_DUP_STRS_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educ
 
   zx_dup_strs_simple_elems(c, x->MeasureSystem);
   zx_dup_strs_simple_elems(c, x->MeasureValue);
-  for (se = &x->LowestPossibleValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LowestPossibleValue->gg;
+       se && se->g.tok == zx_hrxml_LowestPossibleValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LowestPossibleValue(c, (struct zx_hrxml_LowestPossibleValue_s*)se);
-  for (se = &x->HighestPossibleValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->HighestPossibleValue->gg;
+       se && se->g.tok == zx_hrxml_HighestPossibleValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_HighestPossibleValue(c, (struct zx_hrxml_HighestPossibleValue_s*)se);
   zx_dup_strs_simple_elems(c, x->ExcessiveValueIndicator);
   zx_dup_strs_simple_elems(c, x->GoodStudentIndicator);
@@ -11434,7 +12386,9 @@ struct zx_hrxml_EducationalMeasure_s* zx_DEEP_CLONE_hrxml_EducationalMeasure(str
 
   x->MeasureSystem = zx_deep_clone_simple_elems(c,x->MeasureSystem, dup_strs);
   x->MeasureValue = zx_deep_clone_simple_elems(c,x->MeasureValue, dup_strs);
-  for (enn = 0, e = &x->LowestPossibleValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LowestPossibleValue->gg;
+       e && e->g.tok == zx_hrxml_LowestPossibleValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LowestPossibleValue(c,(struct zx_hrxml_LowestPossibleValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->LowestPossibleValue = (struct zx_hrxml_LowestPossibleValue_s*)en;
@@ -11442,7 +12396,9 @@ struct zx_hrxml_EducationalMeasure_s* zx_DEEP_CLONE_hrxml_EducationalMeasure(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->HighestPossibleValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->HighestPossibleValue->gg;
+       e && e->g.tok == zx_hrxml_HighestPossibleValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_HighestPossibleValue(c,(struct zx_hrxml_HighestPossibleValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->HighestPossibleValue = (struct zx_hrxml_HighestPossibleValue_s*)en;
@@ -11481,12 +12437,16 @@ int zx_WALK_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educat
   ret = zx_walk_so_simple_elems(c, x->MeasureValue, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->LowestPossibleValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LowestPossibleValue->gg;
+       e && e->g.tok == zx_hrxml_LowestPossibleValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LowestPossibleValue(c, (struct zx_hrxml_LowestPossibleValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->HighestPossibleValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->HighestPossibleValue->gg;
+       e && e->g.tok == zx_hrxml_HighestPossibleValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_HighestPossibleValue(c, (struct zx_hrxml_HighestPossibleValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -11549,11 +12509,15 @@ void zx_FREE_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDate
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->StartDate->gg; e; e = en) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, free_strs);
   }
-  for (e = &x->EndDate->gg; e; e = en) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, free_strs);
   }
@@ -11593,9 +12557,13 @@ void zx_DUP_STRS_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_Effective
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
 
 }
@@ -11616,7 +12584,9 @@ struct zx_hrxml_EffectiveDate_s* zx_DEEP_CLONE_hrxml_EffectiveDate(struct zx_ctx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StartDate(c,(struct zx_hrxml_StartDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->StartDate = (struct zx_hrxml_StartDate_s*)en;
@@ -11624,7 +12594,9 @@ struct zx_hrxml_EffectiveDate_s* zx_DEEP_CLONE_hrxml_EffectiveDate(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EndDate(c,(struct zx_hrxml_EndDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndDate = (struct zx_hrxml_EndDate_s*)en;
@@ -11655,12 +12627,16 @@ int zx_WALK_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDa
   if (ret)
     return ret;
 
-  for (e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -11718,19 +12694,27 @@ void zx_FREE_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Employe
 
   zx_free_attr(c, x->contactType, free_strs);
 
-  for (e = &x->PersonName->gg; e; e = en) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, free_strs);
   }
-  for (e = &x->ContactMethod->gg; e; e = en) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, free_strs);
   }
-  for (e = &x->LocationSummary->gg; e; e = en) {
+  for (e = &x->LocationSummary->gg;
+       e && e->g.tok == zx_hrxml_LocationSummary_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)e, free_strs);
   }
-  for (e = &x->InternetDomainName->gg; e; e = en) {
+  for (e = &x->InternetDomainName->gg;
+       e && e->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)e, free_strs);
   }
@@ -11771,13 +12755,21 @@ void zx_DUP_STRS_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Emp
 
   zx_dup_attr(c, x->contactType);
 
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
-  for (se = &x->LocationSummary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LocationSummary->gg;
+       se && se->g.tok == zx_hrxml_LocationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)se);
-  for (se = &x->InternetDomainName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InternetDomainName->gg;
+       se && se->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)se);
 
 }
@@ -11799,7 +12791,9 @@ struct zx_hrxml_EmployerContactInfo_s* zx_DEEP_CLONE_hrxml_EmployerContactInfo(s
 
   x->contactType = zx_clone_attr(c, x->contactType);
 
-  for (enn = 0, e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonName(c,(struct zx_hrxml_PersonName_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonName = (struct zx_hrxml_PersonName_s*)en;
@@ -11807,7 +12801,9 @@ struct zx_hrxml_EmployerContactInfo_s* zx_DEEP_CLONE_hrxml_EmployerContactInfo(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactMethod(c,(struct zx_hrxml_ContactMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)en;
@@ -11815,7 +12811,9 @@ struct zx_hrxml_EmployerContactInfo_s* zx_DEEP_CLONE_hrxml_EmployerContactInfo(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LocationSummary->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LocationSummary->gg;
+       e && e->g.tok == zx_hrxml_LocationSummary_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LocationSummary(c,(struct zx_hrxml_LocationSummary_s*)e,dup_strs);
   	  if (!enn)
   	      x->LocationSummary = (struct zx_hrxml_LocationSummary_s*)en;
@@ -11823,7 +12821,9 @@ struct zx_hrxml_EmployerContactInfo_s* zx_DEEP_CLONE_hrxml_EmployerContactInfo(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->InternetDomainName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->InternetDomainName->gg;
+       e && e->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_InternetDomainName(c,(struct zx_hrxml_InternetDomainName_s*)e,dup_strs);
   	  if (!enn)
   	      x->InternetDomainName = (struct zx_hrxml_InternetDomainName_s*)en;
@@ -11854,22 +12854,30 @@ int zx_WALK_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Emplo
   if (ret)
     return ret;
 
-  for (e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LocationSummary->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LocationSummary->gg;
+       e && e->g.tok == zx_hrxml_LocationSummary_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->InternetDomainName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->InternetDomainName->gg;
+       e && e->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -11928,15 +12936,21 @@ void zx_FREE_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s* 
   zx_free_attr(c, x->employerOrgType, free_strs);
 
   zx_free_simple_elems(c, x->EmployerOrgName, free_strs);
-  for (e = &x->EmployerContactInfo->gg; e; e = en) {
+  for (e = &x->EmployerContactInfo->gg;
+       e && e->g.tok == zx_hrxml_EmployerContactInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EmployerContactInfo(c, (struct zx_hrxml_EmployerContactInfo_s*)e, free_strs);
   }
-  for (e = &x->PositionHistory->gg; e; e = en) {
+  for (e = &x->PositionHistory->gg;
+       e && e->g.tok == zx_hrxml_PositionHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PositionHistory(c, (struct zx_hrxml_PositionHistory_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -11978,11 +12992,17 @@ void zx_DUP_STRS_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg
   zx_dup_attr(c, x->employerOrgType);
 
   zx_dup_strs_simple_elems(c, x->EmployerOrgName);
-  for (se = &x->EmployerContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EmployerContactInfo->gg;
+       se && se->g.tok == zx_hrxml_EmployerContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EmployerContactInfo(c, (struct zx_hrxml_EmployerContactInfo_s*)se);
-  for (se = &x->PositionHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionHistory->gg;
+       se && se->g.tok == zx_hrxml_PositionHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PositionHistory(c, (struct zx_hrxml_PositionHistory_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -12005,7 +13025,9 @@ struct zx_hrxml_EmployerOrg_s* zx_DEEP_CLONE_hrxml_EmployerOrg(struct zx_ctx* c,
   x->employerOrgType = zx_clone_attr(c, x->employerOrgType);
 
   x->EmployerOrgName = zx_deep_clone_simple_elems(c,x->EmployerOrgName, dup_strs);
-  for (enn = 0, e = &x->EmployerContactInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EmployerContactInfo->gg;
+       e && e->g.tok == zx_hrxml_EmployerContactInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EmployerContactInfo(c,(struct zx_hrxml_EmployerContactInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->EmployerContactInfo = (struct zx_hrxml_EmployerContactInfo_s*)en;
@@ -12013,7 +13035,9 @@ struct zx_hrxml_EmployerOrg_s* zx_DEEP_CLONE_hrxml_EmployerOrg(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PositionHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PositionHistory->gg;
+       e && e->g.tok == zx_hrxml_PositionHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PositionHistory(c,(struct zx_hrxml_PositionHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->PositionHistory = (struct zx_hrxml_PositionHistory_s*)en;
@@ -12021,7 +13045,9 @@ struct zx_hrxml_EmployerOrg_s* zx_DEEP_CLONE_hrxml_EmployerOrg(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -12055,17 +13081,23 @@ int zx_WALK_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s
   ret = zx_walk_so_simple_elems(c, x->EmployerOrgName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->EmployerContactInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EmployerContactInfo->gg;
+       e && e->g.tok == zx_hrxml_EmployerContactInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EmployerContactInfo(c, (struct zx_hrxml_EmployerContactInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PositionHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PositionHistory->gg;
+       e && e->g.tok == zx_hrxml_PositionHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PositionHistory(c, (struct zx_hrxml_PositionHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -12122,7 +13154,9 @@ void zx_FREE_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Employmen
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->EmployerOrg->gg; e; e = en) {
+  for (e = &x->EmployerOrg->gg;
+       e && e->g.tok == zx_hrxml_EmployerOrg_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EmployerOrg(c, (struct zx_hrxml_EmployerOrg_s*)e, free_strs);
   }
@@ -12162,7 +13196,9 @@ void zx_DUP_STRS_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Emplo
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->EmployerOrg->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EmployerOrg->gg;
+       se && se->g.tok == zx_hrxml_EmployerOrg_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EmployerOrg(c, (struct zx_hrxml_EmployerOrg_s*)se);
 
 }
@@ -12183,7 +13219,9 @@ struct zx_hrxml_EmploymentHistory_s* zx_DEEP_CLONE_hrxml_EmploymentHistory(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->EmployerOrg->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EmployerOrg->gg;
+       e && e->g.tok == zx_hrxml_EmployerOrg_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EmployerOrg(c,(struct zx_hrxml_EmployerOrg_s*)e,dup_strs);
   	  if (!enn)
   	      x->EmployerOrg = (struct zx_hrxml_EmployerOrg_s*)en;
@@ -12214,7 +13252,9 @@ int zx_WALK_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Employm
   if (ret)
     return ret;
 
-  for (e = &x->EmployerOrg->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EmployerOrg->gg;
+       e && e->g.tok == zx_hrxml_EmployerOrg_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EmployerOrg(c, (struct zx_hrxml_EmployerOrg_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -12579,7 +13619,9 @@ void zx_FREE_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentId
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -12622,7 +13664,9 @@ void zx_DUP_STRS_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_Environme
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -12646,7 +13690,9 @@ struct zx_hrxml_EnvironmentId_s* zx_DEEP_CLONE_hrxml_EnvironmentId(struct zx_ctx
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -12677,7 +13723,9 @@ int zx_WALK_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_Environment
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -13716,11 +14764,15 @@ void zx_FREE_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Highes
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->NumericValue->gg; e; e = en) {
+  for (e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)e, free_strs);
   }
-  for (e = &x->StringValue->gg; e; e = en) {
+  for (e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)e, free_strs);
   }
@@ -13760,9 +14812,13 @@ void zx_DUP_STRS_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Hi
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se);
 
 }
@@ -13783,7 +14839,9 @@ struct zx_hrxml_HighestPossibleValue_s* zx_DEEP_CLONE_hrxml_HighestPossibleValue
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->NumericValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_NumericValue(c,(struct zx_hrxml_NumericValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->NumericValue = (struct zx_hrxml_NumericValue_s*)en;
@@ -13791,7 +14849,9 @@ struct zx_hrxml_HighestPossibleValue_s* zx_DEEP_CLONE_hrxml_HighestPossibleValue
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->StringValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StringValue(c,(struct zx_hrxml_StringValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->StringValue = (struct zx_hrxml_StringValue_s*)en;
@@ -13822,12 +14882,16 @@ int zx_WALK_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_High
   if (ret)
     return ret;
 
-  for (e = &x->NumericValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->StringValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -14017,7 +15081,9 @@ void zx_FREE_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, int free_strs)
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -14060,7 +15126,9 @@ void zx_DUP_STRS_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x)
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -14084,7 +15152,9 @@ struct zx_hrxml_Id_s* zx_DEEP_CLONE_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_I
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -14115,7 +15185,9 @@ int zx_WALK_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, void* ctx, in
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -14976,14 +16048,18 @@ void zx_FREE_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->TaxonomyName->gg; e; e = en) {
+  for (e = &x->TaxonomyName->gg;
+       e && e->g.tok == zx_hrxml_TaxonomyName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TaxonomyName(c, (struct zx_hrxml_TaxonomyName_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->CategoryCode, free_strs);
   zx_free_simple_elems(c, x->CategoryDescription, free_strs);
   zx_free_simple_elems(c, x->Comments, free_strs);
-  for (e = &x->JobCategory->gg; e; e = en) {
+  for (e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)e, free_strs);
   }
@@ -15023,12 +16099,16 @@ void zx_DUP_STRS_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->TaxonomyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TaxonomyName->gg;
+       se && se->g.tok == zx_hrxml_TaxonomyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TaxonomyName(c, (struct zx_hrxml_TaxonomyName_s*)se);
   zx_dup_strs_simple_elems(c, x->CategoryCode);
   zx_dup_strs_simple_elems(c, x->CategoryDescription);
   zx_dup_strs_simple_elems(c, x->Comments);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se);
 
 }
@@ -15049,7 +16129,9 @@ struct zx_hrxml_JobCategory_s* zx_DEEP_CLONE_hrxml_JobCategory(struct zx_ctx* c,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->TaxonomyName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TaxonomyName->gg;
+       e && e->g.tok == zx_hrxml_TaxonomyName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TaxonomyName(c,(struct zx_hrxml_TaxonomyName_s*)e,dup_strs);
   	  if (!enn)
   	      x->TaxonomyName = (struct zx_hrxml_TaxonomyName_s*)en;
@@ -15060,7 +16142,9 @@ struct zx_hrxml_JobCategory_s* zx_DEEP_CLONE_hrxml_JobCategory(struct zx_ctx* c,
   x->CategoryCode = zx_deep_clone_simple_elems(c,x->CategoryCode, dup_strs);
   x->CategoryDescription = zx_deep_clone_simple_elems(c,x->CategoryDescription, dup_strs);
   x->Comments = zx_deep_clone_simple_elems(c,x->Comments, dup_strs);
-  for (enn = 0, e = &x->JobCategory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_JobCategory(c,(struct zx_hrxml_JobCategory_s*)e,dup_strs);
   	  if (!enn)
   	      x->JobCategory = (struct zx_hrxml_JobCategory_s*)en;
@@ -15091,7 +16175,9 @@ int zx_WALK_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s
   if (ret)
     return ret;
 
-  for (e = &x->TaxonomyName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TaxonomyName->gg;
+       e && e->g.tok == zx_hrxml_TaxonomyName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TaxonomyName(c, (struct zx_hrxml_TaxonomyName_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -15105,7 +16191,9 @@ int zx_WALK_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s
   ret = zx_walk_so_simple_elems(c, x->Comments, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->JobCategory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -15316,7 +16404,9 @@ void zx_FREE_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, int
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->LanguageCode->gg; e; e = en) {
+  for (e = &x->LanguageCode->gg;
+       e && e->g.tok == zx_hrxml_LanguageCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LanguageCode(c, (struct zx_hrxml_LanguageCode_s*)e, free_strs);
   }
@@ -15360,7 +16450,9 @@ void zx_DUP_STRS_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->LanguageCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LanguageCode->gg;
+       se && se->g.tok == zx_hrxml_LanguageCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LanguageCode(c, (struct zx_hrxml_LanguageCode_s*)se);
   zx_dup_strs_simple_elems(c, x->Read);
   zx_dup_strs_simple_elems(c, x->Write);
@@ -15385,7 +16477,9 @@ struct zx_hrxml_Language_s* zx_DEEP_CLONE_hrxml_Language(struct zx_ctx* c, struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->LanguageCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LanguageCode->gg;
+       e && e->g.tok == zx_hrxml_LanguageCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LanguageCode(c,(struct zx_hrxml_LanguageCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->LanguageCode = (struct zx_hrxml_LanguageCode_s*)en;
@@ -15420,7 +16514,9 @@ int zx_WALK_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->LanguageCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LanguageCode->gg;
+       e && e->g.tok == zx_hrxml_LanguageCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LanguageCode(c, (struct zx_hrxml_LanguageCode_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -15619,7 +16715,9 @@ void zx_FREE_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x, i
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Language->gg; e; e = en) {
+  for (e = &x->Language->gg;
+       e && e->g.tok == zx_hrxml_Language_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Language(c, (struct zx_hrxml_Language_s*)e, free_strs);
   }
@@ -15659,7 +16757,9 @@ void zx_DUP_STRS_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Language->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Language->gg;
+       se && se->g.tok == zx_hrxml_Language_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Language(c, (struct zx_hrxml_Language_s*)se);
 
 }
@@ -15680,7 +16780,9 @@ struct zx_hrxml_Languages_s* zx_DEEP_CLONE_hrxml_Languages(struct zx_ctx* c, str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Language->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Language->gg;
+       e && e->g.tok == zx_hrxml_Language_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Language(c,(struct zx_hrxml_Language_s*)e,dup_strs);
   	  if (!enn)
   	      x->Language = (struct zx_hrxml_Language_s*)en;
@@ -15711,7 +16813,9 @@ int zx_WALK_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->Language->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Language->gg;
+       e && e->g.tok == zx_hrxml_Language_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Language(c, (struct zx_hrxml_Language_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -16037,7 +17141,9 @@ void zx_FREE_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, int f
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -16080,7 +17186,9 @@ void zx_DUP_STRS_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x)
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -16104,7 +17212,9 @@ struct zx_hrxml_LegalId_s* zx_DEEP_CLONE_hrxml_LegalId(struct zx_ctx* c, struct 
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -16135,7 +17245,9 @@ int zx_WALK_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -16192,21 +17304,29 @@ void zx_FREE_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIdent
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PersonLegalId->gg; e; e = en) {
+  for (e = &x->PersonLegalId->gg;
+       e && e->g.tok == zx_hrxml_PersonLegalId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonLegalId(c, (struct zx_hrxml_PersonLegalId_s*)e, free_strs);
   }
-  for (e = &x->MilitaryStatus->gg; e; e = en) {
+  for (e = &x->MilitaryStatus->gg;
+       e && e->g.tok == zx_hrxml_MilitaryStatus_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_MilitaryStatus(c, (struct zx_hrxml_MilitaryStatus_s*)e, free_strs);
   }
-  for (e = &x->VisaStatus->gg; e; e = en) {
+  for (e = &x->VisaStatus->gg;
+       e && e->g.tok == zx_hrxml_VisaStatus_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_VisaStatus(c, (struct zx_hrxml_VisaStatus_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Citizenship, free_strs);
   zx_free_simple_elems(c, x->Residency, free_strs);
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -16246,15 +17366,23 @@ void zx_DUP_STRS_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalI
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PersonLegalId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonLegalId->gg;
+       se && se->g.tok == zx_hrxml_PersonLegalId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonLegalId(c, (struct zx_hrxml_PersonLegalId_s*)se);
-  for (se = &x->MilitaryStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MilitaryStatus->gg;
+       se && se->g.tok == zx_hrxml_MilitaryStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_MilitaryStatus(c, (struct zx_hrxml_MilitaryStatus_s*)se);
-  for (se = &x->VisaStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VisaStatus->gg;
+       se && se->g.tok == zx_hrxml_VisaStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_VisaStatus(c, (struct zx_hrxml_VisaStatus_s*)se);
   zx_dup_strs_simple_elems(c, x->Citizenship);
   zx_dup_strs_simple_elems(c, x->Residency);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -16275,7 +17403,9 @@ struct zx_hrxml_LegalIdentifiers_s* zx_DEEP_CLONE_hrxml_LegalIdentifiers(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PersonLegalId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonLegalId->gg;
+       e && e->g.tok == zx_hrxml_PersonLegalId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonLegalId(c,(struct zx_hrxml_PersonLegalId_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonLegalId = (struct zx_hrxml_PersonLegalId_s*)en;
@@ -16283,7 +17413,9 @@ struct zx_hrxml_LegalIdentifiers_s* zx_DEEP_CLONE_hrxml_LegalIdentifiers(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MilitaryStatus->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MilitaryStatus->gg;
+       e && e->g.tok == zx_hrxml_MilitaryStatus_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_MilitaryStatus(c,(struct zx_hrxml_MilitaryStatus_s*)e,dup_strs);
   	  if (!enn)
   	      x->MilitaryStatus = (struct zx_hrxml_MilitaryStatus_s*)en;
@@ -16291,7 +17423,9 @@ struct zx_hrxml_LegalIdentifiers_s* zx_DEEP_CLONE_hrxml_LegalIdentifiers(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->VisaStatus->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->VisaStatus->gg;
+       e && e->g.tok == zx_hrxml_VisaStatus_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_VisaStatus(c,(struct zx_hrxml_VisaStatus_s*)e,dup_strs);
   	  if (!enn)
   	      x->VisaStatus = (struct zx_hrxml_VisaStatus_s*)en;
@@ -16301,7 +17435,9 @@ struct zx_hrxml_LegalIdentifiers_s* zx_DEEP_CLONE_hrxml_LegalIdentifiers(struct 
   }
   x->Citizenship = zx_deep_clone_simple_elems(c,x->Citizenship, dup_strs);
   x->Residency = zx_deep_clone_simple_elems(c,x->Residency, dup_strs);
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -16332,17 +17468,23 @@ int zx_WALK_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIde
   if (ret)
     return ret;
 
-  for (e = &x->PersonLegalId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonLegalId->gg;
+       e && e->g.tok == zx_hrxml_PersonLegalId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonLegalId(c, (struct zx_hrxml_PersonLegalId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MilitaryStatus->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MilitaryStatus->gg;
+       e && e->g.tok == zx_hrxml_MilitaryStatus_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_MilitaryStatus(c, (struct zx_hrxml_MilitaryStatus_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->VisaStatus->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->VisaStatus->gg;
+       e && e->g.tok == zx_hrxml_VisaStatus_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_VisaStatus(c, (struct zx_hrxml_VisaStatus_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -16353,7 +17495,9 @@ int zx_WALK_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIde
   ret = zx_walk_so_simple_elems(c, x->Residency, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -16411,19 +17555,27 @@ void zx_FREE_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_Lice
 
 
   zx_free_simple_elems(c, x->Name, free_strs);
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
-  for (e = &x->IssuingAuthority->gg; e; e = en) {
+  for (e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
-  for (e = &x->EffectiveDate->gg; e; e = en) {
+  for (e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)e, free_strs);
   }
@@ -16464,13 +17616,21 @@ void zx_DUP_STRS_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_
 
 
   zx_dup_strs_simple_elems(c, x->Name);
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se);
 
 }
@@ -16492,7 +17652,9 @@ struct zx_hrxml_LicenseOrCertification_s* zx_DEEP_CLONE_hrxml_LicenseOrCertifica
 
 
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -16500,7 +17662,9 @@ struct zx_hrxml_LicenseOrCertification_s* zx_DEEP_CLONE_hrxml_LicenseOrCertifica
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->IssuingAuthority->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IssuingAuthority(c,(struct zx_hrxml_IssuingAuthority_s*)e,dup_strs);
   	  if (!enn)
   	      x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)en;
@@ -16508,7 +17672,9 @@ struct zx_hrxml_LicenseOrCertification_s* zx_DEEP_CLONE_hrxml_LicenseOrCertifica
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -16516,7 +17682,9 @@ struct zx_hrxml_LicenseOrCertification_s* zx_DEEP_CLONE_hrxml_LicenseOrCertifica
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EffectiveDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EffectiveDate(c,(struct zx_hrxml_EffectiveDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)en;
@@ -16550,22 +17718,30 @@ int zx_WALK_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_Li
   ret = zx_walk_so_simple_elems(c, x->Name, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->IssuingAuthority->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EffectiveDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -16622,7 +17798,9 @@ void zx_FREE_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_L
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->LicenseOrCertification->gg; e; e = en) {
+  for (e = &x->LicenseOrCertification->gg;
+       e && e->g.tok == zx_hrxml_LicenseOrCertification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LicenseOrCertification(c, (struct zx_hrxml_LicenseOrCertification_s*)e, free_strs);
   }
@@ -16662,7 +17840,9 @@ void zx_DUP_STRS_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->LicenseOrCertification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LicenseOrCertification->gg;
+       se && se->g.tok == zx_hrxml_LicenseOrCertification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LicenseOrCertification(c, (struct zx_hrxml_LicenseOrCertification_s*)se);
 
 }
@@ -16683,7 +17863,9 @@ struct zx_hrxml_LicensesAndCertifications_s* zx_DEEP_CLONE_hrxml_LicensesAndCert
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->LicenseOrCertification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LicenseOrCertification->gg;
+       e && e->g.tok == zx_hrxml_LicenseOrCertification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LicenseOrCertification(c,(struct zx_hrxml_LicenseOrCertification_s*)e,dup_strs);
   	  if (!enn)
   	      x->LicenseOrCertification = (struct zx_hrxml_LicenseOrCertification_s*)en;
@@ -16714,7 +17896,9 @@ int zx_WALK_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml
   if (ret)
     return ret;
 
-  for (e = &x->LicenseOrCertification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LicenseOrCertification->gg;
+       e && e->g.tok == zx_hrxml_LicenseOrCertification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LicenseOrCertification(c, (struct zx_hrxml_LicenseOrCertification_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -16907,11 +18091,15 @@ void zx_FREE_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_hr
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
@@ -16951,9 +18139,13 @@ void zx_DUP_STRS_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct z
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 }
@@ -16974,7 +18166,9 @@ struct zx_hrxml_LocalInstitutionClassification_s* zx_DEEP_CLONE_hrxml_LocalInsti
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -16982,7 +18176,9 @@ struct zx_hrxml_LocalInstitutionClassification_s* zx_DEEP_CLONE_hrxml_LocalInsti
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -17013,12 +18209,16 @@ int zx_WALK_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -17359,11 +18559,15 @@ void zx_FREE_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_LowestP
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->NumericValue->gg; e; e = en) {
+  for (e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)e, free_strs);
   }
-  for (e = &x->StringValue->gg; e; e = en) {
+  for (e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)e, free_strs);
   }
@@ -17403,9 +18607,13 @@ void zx_DUP_STRS_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Low
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se);
 
 }
@@ -17426,7 +18634,9 @@ struct zx_hrxml_LowestPossibleValue_s* zx_DEEP_CLONE_hrxml_LowestPossibleValue(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->NumericValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_NumericValue(c,(struct zx_hrxml_NumericValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->NumericValue = (struct zx_hrxml_NumericValue_s*)en;
@@ -17434,7 +18644,9 @@ struct zx_hrxml_LowestPossibleValue_s* zx_DEEP_CLONE_hrxml_LowestPossibleValue(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->StringValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StringValue(c,(struct zx_hrxml_StringValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->StringValue = (struct zx_hrxml_StringValue_s*)en;
@@ -17465,12 +18677,16 @@ int zx_WALK_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Lowes
   if (ret)
     return ret;
 
-  for (e = &x->NumericValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NumericValue->gg;
+       e && e->g.tok == zx_hrxml_NumericValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->StringValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StringValue->gg;
+       e && e->g.tok == zx_hrxml_StringValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -17530,7 +18746,9 @@ void zx_FREE_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObje
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -17573,7 +18791,9 @@ void zx_DUP_STRS_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_Matched
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -17597,7 +18817,9 @@ struct zx_hrxml_MatchedObjectId_s* zx_DEEP_CLONE_hrxml_MatchedObjectId(struct zx
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -17628,7 +18850,9 @@ int zx_WALK_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedOb
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -17831,17 +19055,23 @@ void zx_FREE_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHis
 
 
   zx_free_simple_elems(c, x->CountryServed, free_strs);
-  for (e = &x->ServiceNumber->gg; e; e = en) {
+  for (e = &x->ServiceNumber->gg;
+       e && e->g.tok == zx_hrxml_ServiceNumber_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ServiceNumber(c, (struct zx_hrxml_ServiceNumber_s*)e, free_strs);
   }
-  for (e = &x->ServiceDetail->gg; e; e = en) {
+  for (e = &x->ServiceDetail->gg;
+       e && e->g.tok == zx_hrxml_ServiceDetail_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ServiceDetail(c, (struct zx_hrxml_ServiceDetail_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->ServiceStatus, free_strs);
   zx_free_simple_elems(c, x->Comments, free_strs);
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -17882,13 +19112,19 @@ void zx_DUP_STRS_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_Militar
 
 
   zx_dup_strs_simple_elems(c, x->CountryServed);
-  for (se = &x->ServiceNumber->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceNumber->gg;
+       se && se->g.tok == zx_hrxml_ServiceNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ServiceNumber(c, (struct zx_hrxml_ServiceNumber_s*)se);
-  for (se = &x->ServiceDetail->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceDetail->gg;
+       se && se->g.tok == zx_hrxml_ServiceDetail_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ServiceDetail(c, (struct zx_hrxml_ServiceDetail_s*)se);
   zx_dup_strs_simple_elems(c, x->ServiceStatus);
   zx_dup_strs_simple_elems(c, x->Comments);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -17910,7 +19146,9 @@ struct zx_hrxml_MilitaryHistory_s* zx_DEEP_CLONE_hrxml_MilitaryHistory(struct zx
 
 
   x->CountryServed = zx_deep_clone_simple_elems(c,x->CountryServed, dup_strs);
-  for (enn = 0, e = &x->ServiceNumber->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ServiceNumber->gg;
+       e && e->g.tok == zx_hrxml_ServiceNumber_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ServiceNumber(c,(struct zx_hrxml_ServiceNumber_s*)e,dup_strs);
   	  if (!enn)
   	      x->ServiceNumber = (struct zx_hrxml_ServiceNumber_s*)en;
@@ -17918,7 +19156,9 @@ struct zx_hrxml_MilitaryHistory_s* zx_DEEP_CLONE_hrxml_MilitaryHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ServiceDetail->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ServiceDetail->gg;
+       e && e->g.tok == zx_hrxml_ServiceDetail_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ServiceDetail(c,(struct zx_hrxml_ServiceDetail_s*)e,dup_strs);
   	  if (!enn)
   	      x->ServiceDetail = (struct zx_hrxml_ServiceDetail_s*)en;
@@ -17928,7 +19168,9 @@ struct zx_hrxml_MilitaryHistory_s* zx_DEEP_CLONE_hrxml_MilitaryHistory(struct zx
   }
   x->ServiceStatus = zx_deep_clone_simple_elems(c,x->ServiceStatus, dup_strs);
   x->Comments = zx_deep_clone_simple_elems(c,x->Comments, dup_strs);
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -17962,12 +19204,16 @@ int zx_WALK_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryH
   ret = zx_walk_so_simple_elems(c, x->CountryServed, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ServiceNumber->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ServiceNumber->gg;
+       e && e->g.tok == zx_hrxml_ServiceNumber_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ServiceNumber(c, (struct zx_hrxml_ServiceNumber_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ServiceDetail->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ServiceDetail->gg;
+       e && e->g.tok == zx_hrxml_ServiceDetail_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ServiceDetail(c, (struct zx_hrxml_ServiceDetail_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -17978,7 +19224,9 @@ int zx_WALK_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryH
   ret = zx_walk_so_simple_elems(c, x->Comments, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -18472,7 +19720,9 @@ void zx_FREE_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_s
 
   zx_free_simple_elems(c, x->TextResume, free_strs);
   zx_free_simple_elems(c, x->LinkToResume, free_strs);
-  for (e = &x->SupportingMaterials->gg; e; e = en) {
+  for (e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)e, free_strs);
   }
@@ -18516,7 +19766,9 @@ void zx_DUP_STRS_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResu
 
   zx_dup_strs_simple_elems(c, x->TextResume);
   zx_dup_strs_simple_elems(c, x->LinkToResume);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
   zx_dup_strs_simple_elems(c, x->RevisionDate);
@@ -18541,7 +19793,9 @@ struct zx_hrxml_NonXMLResume_s* zx_DEEP_CLONE_hrxml_NonXMLResume(struct zx_ctx* 
 
   x->TextResume = zx_deep_clone_simple_elems(c,x->TextResume, dup_strs);
   x->LinkToResume = zx_deep_clone_simple_elems(c,x->LinkToResume, dup_strs);
-  for (enn = 0, e = &x->SupportingMaterials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SupportingMaterials(c,(struct zx_hrxml_SupportingMaterials_s*)e,dup_strs);
   	  if (!enn)
   	      x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)en;
@@ -18580,7 +19834,9 @@ int zx_WALK_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume
   ret = zx_walk_so_simple_elems(c, x->LinkToResume, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SupportingMaterials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -18787,7 +20043,9 @@ void zx_FREE_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s* 
   zx_free_attr(c, x->primaryIndicator, free_strs);
 
   zx_free_simple_elems(c, x->IndustryDescription, free_strs);
-  for (e = &x->IndustryCode->gg; e; e = en) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, free_strs);
   }
@@ -18829,7 +20087,9 @@ void zx_DUP_STRS_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry
   zx_dup_attr(c, x->primaryIndicator);
 
   zx_dup_strs_simple_elems(c, x->IndustryDescription);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
 
 }
@@ -18852,7 +20112,9 @@ struct zx_hrxml_OrgIndustry_s* zx_DEEP_CLONE_hrxml_OrgIndustry(struct zx_ctx* c,
   x->primaryIndicator = zx_clone_attr(c, x->primaryIndicator);
 
   x->IndustryDescription = zx_deep_clone_simple_elems(c,x->IndustryDescription, dup_strs);
-  for (enn = 0, e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IndustryCode(c,(struct zx_hrxml_IndustryCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)en;
@@ -18886,7 +20148,9 @@ int zx_WALK_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s
   ret = zx_walk_so_simple_elems(c, x->IndustryDescription, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -18943,12 +20207,16 @@ void zx_FREE_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, int f
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PositionLocation->gg; e; e = en) {
+  for (e = &x->PositionLocation->gg;
+       e && e->g.tok == zx_hrxml_PositionLocation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PositionLocation(c, (struct zx_hrxml_PositionLocation_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->WebSite, free_strs);
-  for (e = &x->LocationSummary->gg; e; e = en) {
+  for (e = &x->LocationSummary->gg;
+       e && e->g.tok == zx_hrxml_LocationSummary_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)e, free_strs);
   }
@@ -18988,10 +20256,14 @@ void zx_DUP_STRS_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PositionLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionLocation->gg;
+       se && se->g.tok == zx_hrxml_PositionLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PositionLocation(c, (struct zx_hrxml_PositionLocation_s*)se);
   zx_dup_strs_simple_elems(c, x->WebSite);
-  for (se = &x->LocationSummary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LocationSummary->gg;
+       se && se->g.tok == zx_hrxml_LocationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)se);
 
 }
@@ -19012,7 +20284,9 @@ struct zx_hrxml_OrgInfo_s* zx_DEEP_CLONE_hrxml_OrgInfo(struct zx_ctx* c, struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PositionLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PositionLocation->gg;
+       e && e->g.tok == zx_hrxml_PositionLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PositionLocation(c,(struct zx_hrxml_PositionLocation_s*)e,dup_strs);
   	  if (!enn)
   	      x->PositionLocation = (struct zx_hrxml_PositionLocation_s*)en;
@@ -19021,7 +20295,9 @@ struct zx_hrxml_OrgInfo_s* zx_DEEP_CLONE_hrxml_OrgInfo(struct zx_ctx* c, struct 
   	  enn = en;
   }
   x->WebSite = zx_deep_clone_simple_elems(c,x->WebSite, dup_strs);
-  for (enn = 0, e = &x->LocationSummary->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LocationSummary->gg;
+       e && e->g.tok == zx_hrxml_LocationSummary_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LocationSummary(c,(struct zx_hrxml_LocationSummary_s*)e,dup_strs);
   	  if (!enn)
   	      x->LocationSummary = (struct zx_hrxml_LocationSummary_s*)en;
@@ -19052,7 +20328,9 @@ int zx_WALK_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->PositionLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PositionLocation->gg;
+       e && e->g.tok == zx_hrxml_PositionLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PositionLocation(c, (struct zx_hrxml_PositionLocation_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -19060,7 +20338,9 @@ int zx_WALK_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->WebSite, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->LocationSummary->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LocationSummary->gg;
+       e && e->g.tok == zx_hrxml_LocationSummary_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -19119,7 +20399,9 @@ void zx_FREE_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, int f
   zx_free_attr(c, x->organizationType, free_strs);
 
   zx_free_simple_elems(c, x->OrganizationName, free_strs);
-  for (e = &x->OrgName->gg; e; e = en) {
+  for (e = &x->OrgName->gg;
+       e && e->g.tok == zx_hrxml_OrgName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)e, free_strs);
   }
@@ -19161,7 +20443,9 @@ void zx_DUP_STRS_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x)
   zx_dup_attr(c, x->organizationType);
 
   zx_dup_strs_simple_elems(c, x->OrganizationName);
-  for (se = &x->OrgName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrgName->gg;
+       se && se->g.tok == zx_hrxml_OrgName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)se);
 
 }
@@ -19184,7 +20468,9 @@ struct zx_hrxml_OrgName_s* zx_DEEP_CLONE_hrxml_OrgName(struct zx_ctx* c, struct 
   x->organizationType = zx_clone_attr(c, x->organizationType);
 
   x->OrganizationName = zx_deep_clone_simple_elems(c,x->OrganizationName, dup_strs);
-  for (enn = 0, e = &x->OrgName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrgName->gg;
+       e && e->g.tok == zx_hrxml_OrgName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrgName(c,(struct zx_hrxml_OrgName_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrgName = (struct zx_hrxml_OrgName_s*)en;
@@ -19218,7 +20504,9 @@ int zx_WALK_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->OrganizationName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->OrgName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrgName->gg;
+       e && e->g.tok == zx_hrxml_OrgName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -19408,7 +20696,9 @@ void zx_FREE_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organization
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -19451,7 +20741,9 @@ void zx_DUP_STRS_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organiza
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -19475,7 +20767,9 @@ struct zx_hrxml_OrganizationId_s* zx_DEEP_CLONE_hrxml_OrganizationId(struct zx_c
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -19506,7 +20800,9 @@ int zx_WALK_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organizati
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -19702,39 +20998,57 @@ void zx_FREE_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Organiza
   zx_free_attr(c, x->typeOfGroup, free_strs);
 
   zx_free_simple_elems(c, x->OrganizationalUnitName, free_strs);
-  for (e = &x->OrganizationalUnitId->gg; e; e = en) {
+  for (e = &x->OrganizationalUnitId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)e, free_strs);
   }
-  for (e = &x->OrganizationId->gg; e; e = en) {
+  for (e = &x->OrganizationId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
-  for (e = &x->IndustryCode->gg; e; e = en) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, free_strs);
   }
-  for (e = &x->AccountingCode->gg; e; e = en) {
+  for (e = &x->AccountingCode->gg;
+       e && e->g.tok == zx_hrxml_AccountingCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)e, free_strs);
   }
-  for (e = &x->WorkSite->gg; e; e = en) {
+  for (e = &x->WorkSite->gg;
+       e && e->g.tok == zx_hrxml_WorkSite_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)e, free_strs);
   }
-  for (e = &x->RelatedOrganizationalUnit->gg; e; e = en) {
+  for (e = &x->RelatedOrganizationalUnit->gg;
+       e && e->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)e, free_strs);
   }
-  for (e = &x->PersonMember->gg; e; e = en) {
+  for (e = &x->PersonMember->gg;
+       e && e->g.tok == zx_hrxml_PersonMember_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -19777,23 +21091,41 @@ void zx_DUP_STRS_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Orga
   zx_dup_attr(c, x->typeOfGroup);
 
   zx_dup_strs_simple_elems(c, x->OrganizationalUnitName);
-  for (se = &x->OrganizationalUnitId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationalUnitId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)se);
-  for (se = &x->OrganizationId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
-  for (se = &x->AccountingCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AccountingCode->gg;
+       se && se->g.tok == zx_hrxml_AccountingCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)se);
-  for (se = &x->WorkSite->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSite->gg;
+       se && se->g.tok == zx_hrxml_WorkSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)se);
-  for (se = &x->RelatedOrganizationalUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedOrganizationalUnit->gg;
+       se && se->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)se);
-  for (se = &x->PersonMember->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonMember->gg;
+       se && se->g.tok == zx_hrxml_PersonMember_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -19817,7 +21149,9 @@ struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(str
   x->typeOfGroup = zx_clone_attr(c, x->typeOfGroup);
 
   x->OrganizationalUnitName = zx_deep_clone_simple_elems(c,x->OrganizationalUnitName, dup_strs);
-  for (enn = 0, e = &x->OrganizationalUnitId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationalUnitId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrganizationalUnitId(c,(struct zx_hrxml_OrganizationalUnitId_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationalUnitId = (struct zx_hrxml_OrganizationalUnitId_s*)en;
@@ -19825,7 +21159,9 @@ struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OrganizationId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrganizationId(c,(struct zx_hrxml_OrganizationId_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationId = (struct zx_hrxml_OrganizationId_s*)en;
@@ -19833,7 +21169,9 @@ struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -19841,7 +21179,9 @@ struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IndustryCode(c,(struct zx_hrxml_IndustryCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)en;
@@ -19849,7 +21189,9 @@ struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AccountingCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AccountingCode->gg;
+       e && e->g.tok == zx_hrxml_AccountingCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_AccountingCode(c,(struct zx_hrxml_AccountingCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->AccountingCode = (struct zx_hrxml_AccountingCode_s*)en;
@@ -19857,7 +21199,9 @@ struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->WorkSite->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->WorkSite->gg;
+       e && e->g.tok == zx_hrxml_WorkSite_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_WorkSite(c,(struct zx_hrxml_WorkSite_s*)e,dup_strs);
   	  if (!enn)
   	      x->WorkSite = (struct zx_hrxml_WorkSite_s*)en;
@@ -19865,7 +21209,9 @@ struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RelatedOrganizationalUnit->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RelatedOrganizationalUnit->gg;
+       e && e->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RelatedOrganizationalUnit(c,(struct zx_hrxml_RelatedOrganizationalUnit_s*)e,dup_strs);
   	  if (!enn)
   	      x->RelatedOrganizationalUnit = (struct zx_hrxml_RelatedOrganizationalUnit_s*)en;
@@ -19873,7 +21219,9 @@ struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PersonMember->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonMember->gg;
+       e && e->g.tok == zx_hrxml_PersonMember_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonMember(c,(struct zx_hrxml_PersonMember_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonMember = (struct zx_hrxml_PersonMember_s*)en;
@@ -19881,7 +21229,9 @@ struct zx_hrxml_OrganizationalUnit_s* zx_DEEP_CLONE_hrxml_OrganizationalUnit(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -19915,47 +21265,65 @@ int zx_WALK_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Organi
   ret = zx_walk_so_simple_elems(c, x->OrganizationalUnitName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->OrganizationalUnitId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationalUnitId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OrganizationId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AccountingCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AccountingCode->gg;
+       e && e->g.tok == zx_hrxml_AccountingCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->WorkSite->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->WorkSite->gg;
+       e && e->g.tok == zx_hrxml_WorkSite_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RelatedOrganizationalUnit->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RelatedOrganizationalUnit->gg;
+       e && e->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PersonMember->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonMember->gg;
+       e && e->g.tok == zx_hrxml_PersonMember_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -20015,7 +21383,9 @@ void zx_FREE_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Organi
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -20058,7 +21428,9 @@ void zx_DUP_STRS_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Or
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -20082,7 +21454,9 @@ struct zx_hrxml_OrganizationalUnitId_s* zx_DEEP_CLONE_hrxml_OrganizationalUnitId
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -20113,7 +21487,9 @@ int zx_WALK_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Orga
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -20608,7 +21984,9 @@ void zx_FREE_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDescr
   zx_free_simple_elems(c, x->Name, free_strs);
   zx_free_simple_elems(c, x->Applicable, free_strs);
   zx_free_simple_elems(c, x->Value, free_strs);
-  for (e = &x->List->gg; e; e = en) {
+  for (e = &x->List->gg;
+       e && e->g.tok == zx_hrxml_List_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_List(c, (struct zx_hrxml_List_s*)e, free_strs);
   }
@@ -20651,7 +22029,9 @@ void zx_DUP_STRS_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherD
   zx_dup_strs_simple_elems(c, x->Name);
   zx_dup_strs_simple_elems(c, x->Applicable);
   zx_dup_strs_simple_elems(c, x->Value);
-  for (se = &x->List->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->List->gg;
+       se && se->g.tok == zx_hrxml_List_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_List(c, (struct zx_hrxml_List_s*)se);
 
 }
@@ -20675,7 +22055,9 @@ struct zx_hrxml_OtherDescriptors_s* zx_DEEP_CLONE_hrxml_OtherDescriptors(struct 
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
   x->Applicable = zx_deep_clone_simple_elems(c,x->Applicable, dup_strs);
   x->Value = zx_deep_clone_simple_elems(c,x->Value, dup_strs);
-  for (enn = 0, e = &x->List->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->List->gg;
+       e && e->g.tok == zx_hrxml_List_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_List(c,(struct zx_hrxml_List_s*)e,dup_strs);
   	  if (!enn)
   	      x->List = (struct zx_hrxml_List_s*)en;
@@ -20715,7 +22097,9 @@ int zx_WALK_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDes
   ret = zx_walk_so_simple_elems(c, x->Value, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->List->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->List->gg;
+       e && e->g.tok == zx_hrxml_List_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_List(c, (struct zx_hrxml_List_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -21071,13 +22455,17 @@ void zx_FREE_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPubli
 
   zx_free_simple_elems(c, x->Title, free_strs);
   zx_free_simple_elems(c, x->Name, free_strs);
-  for (e = &x->PublicationDate->gg; e; e = en) {
+  for (e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Link, free_strs);
   zx_free_simple_elems(c, x->Abstract, free_strs);
-  for (e = &x->Copyright->gg; e; e = en) {
+  for (e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)e, free_strs);
   }
@@ -21126,11 +22514,15 @@ void zx_DUP_STRS_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherP
 
   zx_dup_strs_simple_elems(c, x->Title);
   zx_dup_strs_simple_elems(c, x->Name);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se);
   zx_dup_strs_simple_elems(c, x->Link);
   zx_dup_strs_simple_elems(c, x->Abstract);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
   zx_dup_strs_simple_elems(c, x->ISSN);
@@ -21160,7 +22552,9 @@ struct zx_hrxml_OtherPublication_s* zx_DEEP_CLONE_hrxml_OtherPublication(struct 
 
   x->Title = zx_deep_clone_simple_elems(c,x->Title, dup_strs);
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
-  for (enn = 0, e = &x->PublicationDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PublicationDate(c,(struct zx_hrxml_PublicationDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->PublicationDate = (struct zx_hrxml_PublicationDate_s*)en;
@@ -21170,7 +22564,9 @@ struct zx_hrxml_OtherPublication_s* zx_DEEP_CLONE_hrxml_OtherPublication(struct 
   }
   x->Link = zx_deep_clone_simple_elems(c,x->Link, dup_strs);
   x->Abstract = zx_deep_clone_simple_elems(c,x->Abstract, dup_strs);
-  for (enn = 0, e = &x->Copyright->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Copyright(c,(struct zx_hrxml_Copyright_s*)e,dup_strs);
   	  if (!enn)
   	      x->Copyright = (struct zx_hrxml_Copyright_s*)en;
@@ -21213,7 +22609,9 @@ int zx_WALK_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPub
   ret = zx_walk_so_simple_elems(c, x->Name, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PublicationDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PublicationDate->gg;
+       e && e->g.tok == zx_hrxml_PublicationDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -21224,7 +22622,9 @@ int zx_WALK_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPub
   ret = zx_walk_so_simple_elems(c, x->Abstract, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Copyright->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Copyright->gg;
+       e && e->g.tok == zx_hrxml_Copyright_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -21569,15 +22969,21 @@ void zx_FREE_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, int fre
 
 
   zx_free_simple_elems(c, x->PatentTitle, free_strs);
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
-  for (e = &x->Inventors->gg; e; e = en) {
+  for (e = &x->Inventors->gg;
+       e && e->g.tok == zx_hrxml_Inventors_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Inventors(c, (struct zx_hrxml_Inventors_s*)e, free_strs);
   }
-  for (e = &x->PatentDetail->gg; e; e = en) {
+  for (e = &x->PatentDetail->gg;
+       e && e->g.tok == zx_hrxml_PatentDetail_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PatentDetail(c, (struct zx_hrxml_PatentDetail_s*)e, free_strs);
   }
@@ -21619,11 +23025,17 @@ void zx_DUP_STRS_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->PatentTitle);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->Inventors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Inventors->gg;
+       se && se->g.tok == zx_hrxml_Inventors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Inventors(c, (struct zx_hrxml_Inventors_s*)se);
-  for (se = &x->PatentDetail->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PatentDetail->gg;
+       se && se->g.tok == zx_hrxml_PatentDetail_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PatentDetail(c, (struct zx_hrxml_PatentDetail_s*)se);
   zx_dup_strs_simple_elems(c, x->Link);
 
@@ -21646,7 +23058,9 @@ struct zx_hrxml_Patent_s* zx_DEEP_CLONE_hrxml_Patent(struct zx_ctx* c, struct zx
 
 
   x->PatentTitle = zx_deep_clone_simple_elems(c,x->PatentTitle, dup_strs);
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -21654,7 +23068,9 @@ struct zx_hrxml_Patent_s* zx_DEEP_CLONE_hrxml_Patent(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Inventors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Inventors->gg;
+       e && e->g.tok == zx_hrxml_Inventors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Inventors(c,(struct zx_hrxml_Inventors_s*)e,dup_strs);
   	  if (!enn)
   	      x->Inventors = (struct zx_hrxml_Inventors_s*)en;
@@ -21662,7 +23078,9 @@ struct zx_hrxml_Patent_s* zx_DEEP_CLONE_hrxml_Patent(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PatentDetail->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PatentDetail->gg;
+       e && e->g.tok == zx_hrxml_PatentDetail_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PatentDetail(c,(struct zx_hrxml_PatentDetail_s*)e,dup_strs);
   	  if (!enn)
   	      x->PatentDetail = (struct zx_hrxml_PatentDetail_s*)en;
@@ -21697,17 +23115,23 @@ int zx_WALK_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->PatentTitle, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Inventors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Inventors->gg;
+       e && e->g.tok == zx_hrxml_Inventors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Inventors(c, (struct zx_hrxml_Inventors_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PatentDetail->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PatentDetail->gg;
+       e && e->g.tok == zx_hrxml_PatentDetail_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PatentDetail(c, (struct zx_hrxml_PatentDetail_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -21767,11 +23191,15 @@ void zx_FREE_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->IssuingAuthority->gg; e; e = en) {
+  for (e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)e, free_strs);
   }
-  for (e = &x->PatentMilestone->gg; e; e = en) {
+  for (e = &x->PatentMilestone->gg;
+       e && e->g.tok == zx_hrxml_PatentMilestone_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PatentMilestone(c, (struct zx_hrxml_PatentMilestone_s*)e, free_strs);
   }
@@ -21811,9 +23239,13 @@ void zx_DUP_STRS_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDeta
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se);
-  for (se = &x->PatentMilestone->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PatentMilestone->gg;
+       se && se->g.tok == zx_hrxml_PatentMilestone_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PatentMilestone(c, (struct zx_hrxml_PatentMilestone_s*)se);
 
 }
@@ -21834,7 +23266,9 @@ struct zx_hrxml_PatentDetail_s* zx_DEEP_CLONE_hrxml_PatentDetail(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->IssuingAuthority->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IssuingAuthority(c,(struct zx_hrxml_IssuingAuthority_s*)e,dup_strs);
   	  if (!enn)
   	      x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)en;
@@ -21842,7 +23276,9 @@ struct zx_hrxml_PatentDetail_s* zx_DEEP_CLONE_hrxml_PatentDetail(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PatentMilestone->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PatentMilestone->gg;
+       e && e->g.tok == zx_hrxml_PatentMilestone_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PatentMilestone(c,(struct zx_hrxml_PatentMilestone_s*)e,dup_strs);
   	  if (!enn)
   	      x->PatentMilestone = (struct zx_hrxml_PatentMilestone_s*)en;
@@ -21873,12 +23309,16 @@ int zx_WALK_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail
   if (ret)
     return ret;
 
-  for (e = &x->IssuingAuthority->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PatentMilestone->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PatentMilestone->gg;
+       e && e->g.tok == zx_hrxml_PatentMilestone_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PatentMilestone(c, (struct zx_hrxml_PatentMilestone_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -21935,7 +23375,9 @@ void zx_FREE_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistory
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Patent->gg; e; e = en) {
+  for (e = &x->Patent->gg;
+       e && e->g.tok == zx_hrxml_Patent_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Patent(c, (struct zx_hrxml_Patent_s*)e, free_strs);
   }
@@ -21975,7 +23417,9 @@ void zx_DUP_STRS_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHis
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Patent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Patent->gg;
+       se && se->g.tok == zx_hrxml_Patent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Patent(c, (struct zx_hrxml_Patent_s*)se);
 
 }
@@ -21996,7 +23440,9 @@ struct zx_hrxml_PatentHistory_s* zx_DEEP_CLONE_hrxml_PatentHistory(struct zx_ctx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Patent->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Patent->gg;
+       e && e->g.tok == zx_hrxml_Patent_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Patent(c,(struct zx_hrxml_Patent_s*)e,dup_strs);
   	  if (!enn)
   	      x->Patent = (struct zx_hrxml_Patent_s*)en;
@@ -22027,7 +23473,9 @@ int zx_WALK_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHisto
   if (ret)
     return ret;
 
-  for (e = &x->Patent->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Patent->gg;
+       e && e->g.tok == zx_hrxml_Patent_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Patent(c, (struct zx_hrxml_Patent_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -22084,11 +23532,15 @@ void zx_FREE_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMiles
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_hrxml_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Status(c, (struct zx_hrxml_Status_s*)e, free_strs);
   }
@@ -22129,9 +23581,13 @@ void zx_DUP_STRS_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentM
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_hrxml_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Status(c, (struct zx_hrxml_Status_s*)se);
   zx_dup_strs_simple_elems(c, x->Date);
 
@@ -22153,7 +23609,9 @@ struct zx_hrxml_PatentMilestone_s* zx_DEEP_CLONE_hrxml_PatentMilestone(struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -22161,7 +23619,9 @@ struct zx_hrxml_PatentMilestone_s* zx_DEEP_CLONE_hrxml_PatentMilestone(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_hrxml_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Status(c,(struct zx_hrxml_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_hrxml_Status_s*)en;
@@ -22193,12 +23653,16 @@ int zx_WALK_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMil
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_hrxml_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Status(c, (struct zx_hrxml_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -22258,27 +23722,39 @@ void zx_FREE_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDes
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->LegalIdentifiers->gg; e; e = en) {
+  for (e = &x->LegalIdentifiers->gg;
+       e && e->g.tok == zx_hrxml_LegalIdentifiers_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LegalIdentifiers(c, (struct zx_hrxml_LegalIdentifiers_s*)e, free_strs);
   }
-  for (e = &x->DemographicDescriptors->gg; e; e = en) {
+  for (e = &x->DemographicDescriptors->gg;
+       e && e->g.tok == zx_hrxml_DemographicDescriptors_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DemographicDescriptors(c, (struct zx_hrxml_DemographicDescriptors_s*)e, free_strs);
   }
-  for (e = &x->BiologicalDescriptors->gg; e; e = en) {
+  for (e = &x->BiologicalDescriptors->gg;
+       e && e->g.tok == zx_hrxml_BiologicalDescriptors_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_BiologicalDescriptors(c, (struct zx_hrxml_BiologicalDescriptors_s*)e, free_strs);
   }
-  for (e = &x->SupportingMaterials->gg; e; e = en) {
+  for (e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)e, free_strs);
   }
-  for (e = &x->OtherDescriptors->gg; e; e = en) {
+  for (e = &x->OtherDescriptors->gg;
+       e && e->g.tok == zx_hrxml_OtherDescriptors_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OtherDescriptors(c, (struct zx_hrxml_OtherDescriptors_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -22318,17 +23794,29 @@ void zx_DUP_STRS_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_Perso
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->LegalIdentifiers->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LegalIdentifiers->gg;
+       se && se->g.tok == zx_hrxml_LegalIdentifiers_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LegalIdentifiers(c, (struct zx_hrxml_LegalIdentifiers_s*)se);
-  for (se = &x->DemographicDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DemographicDescriptors->gg;
+       se && se->g.tok == zx_hrxml_DemographicDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DemographicDescriptors(c, (struct zx_hrxml_DemographicDescriptors_s*)se);
-  for (se = &x->BiologicalDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BiologicalDescriptors->gg;
+       se && se->g.tok == zx_hrxml_BiologicalDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_BiologicalDescriptors(c, (struct zx_hrxml_BiologicalDescriptors_s*)se);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se);
-  for (se = &x->OtherDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherDescriptors->gg;
+       se && se->g.tok == zx_hrxml_OtherDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OtherDescriptors(c, (struct zx_hrxml_OtherDescriptors_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -22349,7 +23837,9 @@ struct zx_hrxml_PersonDescriptors_s* zx_DEEP_CLONE_hrxml_PersonDescriptors(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->LegalIdentifiers->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LegalIdentifiers->gg;
+       e && e->g.tok == zx_hrxml_LegalIdentifiers_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LegalIdentifiers(c,(struct zx_hrxml_LegalIdentifiers_s*)e,dup_strs);
   	  if (!enn)
   	      x->LegalIdentifiers = (struct zx_hrxml_LegalIdentifiers_s*)en;
@@ -22357,7 +23847,9 @@ struct zx_hrxml_PersonDescriptors_s* zx_DEEP_CLONE_hrxml_PersonDescriptors(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DemographicDescriptors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DemographicDescriptors->gg;
+       e && e->g.tok == zx_hrxml_DemographicDescriptors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DemographicDescriptors(c,(struct zx_hrxml_DemographicDescriptors_s*)e,dup_strs);
   	  if (!enn)
   	      x->DemographicDescriptors = (struct zx_hrxml_DemographicDescriptors_s*)en;
@@ -22365,7 +23857,9 @@ struct zx_hrxml_PersonDescriptors_s* zx_DEEP_CLONE_hrxml_PersonDescriptors(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->BiologicalDescriptors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->BiologicalDescriptors->gg;
+       e && e->g.tok == zx_hrxml_BiologicalDescriptors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_BiologicalDescriptors(c,(struct zx_hrxml_BiologicalDescriptors_s*)e,dup_strs);
   	  if (!enn)
   	      x->BiologicalDescriptors = (struct zx_hrxml_BiologicalDescriptors_s*)en;
@@ -22373,7 +23867,9 @@ struct zx_hrxml_PersonDescriptors_s* zx_DEEP_CLONE_hrxml_PersonDescriptors(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SupportingMaterials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SupportingMaterials(c,(struct zx_hrxml_SupportingMaterials_s*)e,dup_strs);
   	  if (!enn)
   	      x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)en;
@@ -22381,7 +23877,9 @@ struct zx_hrxml_PersonDescriptors_s* zx_DEEP_CLONE_hrxml_PersonDescriptors(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OtherDescriptors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OtherDescriptors->gg;
+       e && e->g.tok == zx_hrxml_OtherDescriptors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OtherDescriptors(c,(struct zx_hrxml_OtherDescriptors_s*)e,dup_strs);
   	  if (!enn)
   	      x->OtherDescriptors = (struct zx_hrxml_OtherDescriptors_s*)en;
@@ -22389,7 +23887,9 @@ struct zx_hrxml_PersonDescriptors_s* zx_DEEP_CLONE_hrxml_PersonDescriptors(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -22420,32 +23920,44 @@ int zx_WALK_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonD
   if (ret)
     return ret;
 
-  for (e = &x->LegalIdentifiers->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LegalIdentifiers->gg;
+       e && e->g.tok == zx_hrxml_LegalIdentifiers_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LegalIdentifiers(c, (struct zx_hrxml_LegalIdentifiers_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DemographicDescriptors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DemographicDescriptors->gg;
+       e && e->g.tok == zx_hrxml_DemographicDescriptors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DemographicDescriptors(c, (struct zx_hrxml_DemographicDescriptors_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->BiologicalDescriptors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->BiologicalDescriptors->gg;
+       e && e->g.tok == zx_hrxml_BiologicalDescriptors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_BiologicalDescriptors(c, (struct zx_hrxml_BiologicalDescriptors_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SupportingMaterials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OtherDescriptors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OtherDescriptors->gg;
+       e && e->g.tok == zx_hrxml_OtherDescriptors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OtherDescriptors(c, (struct zx_hrxml_OtherDescriptors_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -22505,7 +24017,9 @@ void zx_FREE_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, int
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -22548,7 +24062,9 @@ void zx_DUP_STRS_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x)
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -22572,7 +24088,9 @@ struct zx_hrxml_PersonId_s* zx_DEEP_CLONE_hrxml_PersonId(struct zx_ctx* c, struc
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -22603,7 +24121,9 @@ int zx_WALK_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -22668,7 +24188,9 @@ void zx_FREE_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalId
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -22716,7 +24238,9 @@ void zx_DUP_STRS_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLeg
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -22745,7 +24269,9 @@ struct zx_hrxml_PersonLegalId_s* zx_DEEP_CLONE_hrxml_PersonLegalId(struct zx_ctx
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -22776,7 +24302,9 @@ int zx_WALK_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegal
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -22833,19 +24361,27 @@ void zx_FREE_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PersonName->gg; e; e = en) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, free_strs);
   }
-  for (e = &x->PersonId->gg; e; e = en) {
+  for (e = &x->PersonId->gg;
+       e && e->g.tok == zx_hrxml_PersonId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)e, free_strs);
   }
-  for (e = &x->PersonRole->gg; e; e = en) {
+  for (e = &x->PersonRole->gg;
+       e && e->g.tok == zx_hrxml_PersonRole_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonRole(c, (struct zx_hrxml_PersonRole_s*)e, free_strs);
   }
-  for (e = &x->ContactMethod->gg; e; e = en) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, free_strs);
   }
@@ -22885,13 +24421,21 @@ void zx_DUP_STRS_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMemb
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = &x->PersonId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonId->gg;
+       se && se->g.tok == zx_hrxml_PersonId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)se);
-  for (se = &x->PersonRole->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonRole->gg;
+       se && se->g.tok == zx_hrxml_PersonRole_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonRole(c, (struct zx_hrxml_PersonRole_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
 
 }
@@ -22912,7 +24456,9 @@ struct zx_hrxml_PersonMember_s* zx_DEEP_CLONE_hrxml_PersonMember(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonName(c,(struct zx_hrxml_PersonName_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonName = (struct zx_hrxml_PersonName_s*)en;
@@ -22920,7 +24466,9 @@ struct zx_hrxml_PersonMember_s* zx_DEEP_CLONE_hrxml_PersonMember(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PersonId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonId->gg;
+       e && e->g.tok == zx_hrxml_PersonId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonId(c,(struct zx_hrxml_PersonId_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonId = (struct zx_hrxml_PersonId_s*)en;
@@ -22928,7 +24476,9 @@ struct zx_hrxml_PersonMember_s* zx_DEEP_CLONE_hrxml_PersonMember(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PersonRole->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonRole->gg;
+       e && e->g.tok == zx_hrxml_PersonRole_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonRole(c,(struct zx_hrxml_PersonRole_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonRole = (struct zx_hrxml_PersonRole_s*)en;
@@ -22936,7 +24486,9 @@ struct zx_hrxml_PersonMember_s* zx_DEEP_CLONE_hrxml_PersonMember(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactMethod(c,(struct zx_hrxml_ContactMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)en;
@@ -22967,22 +24519,30 @@ int zx_WALK_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember
   if (ret)
     return ret;
 
-  for (e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PersonId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonId->gg;
+       e && e->g.tok == zx_hrxml_PersonId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PersonRole->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonRole->gg;
+       e && e->g.tok == zx_hrxml_PersonRole_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonRole(c, (struct zx_hrxml_PersonRole_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -23045,15 +24605,21 @@ void zx_FREE_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x,
   zx_free_simple_elems(c, x->GivenName, free_strs);
   zx_free_simple_elems(c, x->PreferredGivenName, free_strs);
   zx_free_simple_elems(c, x->MiddleName, free_strs);
-  for (e = &x->FamilyName->gg; e; e = en) {
+  for (e = &x->FamilyName->gg;
+       e && e->g.tok == zx_hrxml_FamilyName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)e, free_strs);
   }
-  for (e = &x->Affix->gg; e; e = en) {
+  for (e = &x->Affix->gg;
+       e && e->g.tok == zx_hrxml_Affix_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)e, free_strs);
   }
-  for (e = &x->AlternateScript->gg; e; e = en) {
+  for (e = &x->AlternateScript->gg;
+       e && e->g.tok == zx_hrxml_AlternateScript_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)e, free_strs);
   }
@@ -23099,11 +24665,17 @@ void zx_DUP_STRS_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s
   zx_dup_strs_simple_elems(c, x->GivenName);
   zx_dup_strs_simple_elems(c, x->PreferredGivenName);
   zx_dup_strs_simple_elems(c, x->MiddleName);
-  for (se = &x->FamilyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FamilyName->gg;
+       se && se->g.tok == zx_hrxml_FamilyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)se);
-  for (se = &x->Affix->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Affix->gg;
+       se && se->g.tok == zx_hrxml_Affix_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)se);
-  for (se = &x->AlternateScript->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AlternateScript->gg;
+       se && se->g.tok == zx_hrxml_AlternateScript_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)se);
 
 }
@@ -23130,7 +24702,9 @@ struct zx_hrxml_PersonName_s* zx_DEEP_CLONE_hrxml_PersonName(struct zx_ctx* c, s
   x->GivenName = zx_deep_clone_simple_elems(c,x->GivenName, dup_strs);
   x->PreferredGivenName = zx_deep_clone_simple_elems(c,x->PreferredGivenName, dup_strs);
   x->MiddleName = zx_deep_clone_simple_elems(c,x->MiddleName, dup_strs);
-  for (enn = 0, e = &x->FamilyName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->FamilyName->gg;
+       e && e->g.tok == zx_hrxml_FamilyName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_FamilyName(c,(struct zx_hrxml_FamilyName_s*)e,dup_strs);
   	  if (!enn)
   	      x->FamilyName = (struct zx_hrxml_FamilyName_s*)en;
@@ -23138,7 +24712,9 @@ struct zx_hrxml_PersonName_s* zx_DEEP_CLONE_hrxml_PersonName(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Affix->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Affix->gg;
+       e && e->g.tok == zx_hrxml_Affix_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Affix(c,(struct zx_hrxml_Affix_s*)e,dup_strs);
   	  if (!enn)
   	      x->Affix = (struct zx_hrxml_Affix_s*)en;
@@ -23146,7 +24722,9 @@ struct zx_hrxml_PersonName_s* zx_DEEP_CLONE_hrxml_PersonName(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AlternateScript->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AlternateScript->gg;
+       e && e->g.tok == zx_hrxml_AlternateScript_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_AlternateScript(c,(struct zx_hrxml_AlternateScript_s*)e,dup_strs);
   	  if (!enn)
   	      x->AlternateScript = (struct zx_hrxml_AlternateScript_s*)en;
@@ -23192,17 +24770,23 @@ int zx_WALK_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* 
   ret = zx_walk_so_simple_elems(c, x->MiddleName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->FamilyName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->FamilyName->gg;
+       e && e->g.tok == zx_hrxml_FamilyName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Affix->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Affix->gg;
+       e && e->g.tok == zx_hrxml_Affix_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AlternateScript->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AlternateScript->gg;
+       e && e->g.tok == zx_hrxml_AlternateScript_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -23261,11 +24845,15 @@ void zx_FREE_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x,
   zx_free_attr(c, x->leader, free_strs);
 
   zx_free_simple_elems(c, x->RoleName, free_strs);
-  for (e = &x->RoleId->gg; e; e = en) {
+  for (e = &x->RoleId->gg;
+       e && e->g.tok == zx_hrxml_RoleId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RoleId(c, (struct zx_hrxml_RoleId_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
@@ -23307,9 +24895,13 @@ void zx_DUP_STRS_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s
   zx_dup_attr(c, x->leader);
 
   zx_dup_strs_simple_elems(c, x->RoleName);
-  for (se = &x->RoleId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RoleId->gg;
+       se && se->g.tok == zx_hrxml_RoleId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RoleId(c, (struct zx_hrxml_RoleId_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 }
@@ -23332,7 +24924,9 @@ struct zx_hrxml_PersonRole_s* zx_DEEP_CLONE_hrxml_PersonRole(struct zx_ctx* c, s
   x->leader = zx_clone_attr(c, x->leader);
 
   x->RoleName = zx_deep_clone_simple_elems(c,x->RoleName, dup_strs);
-  for (enn = 0, e = &x->RoleId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RoleId->gg;
+       e && e->g.tok == zx_hrxml_RoleId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RoleId(c,(struct zx_hrxml_RoleId_s*)e,dup_strs);
   	  if (!enn)
   	      x->RoleId = (struct zx_hrxml_RoleId_s*)en;
@@ -23340,7 +24934,9 @@ struct zx_hrxml_PersonRole_s* zx_DEEP_CLONE_hrxml_PersonRole(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -23374,12 +24970,16 @@ int zx_WALK_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* 
   ret = zx_walk_so_simple_elems(c, x->RoleName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->RoleId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RoleId->gg;
+       e && e->g.tok == zx_hrxml_RoleId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RoleId(c, (struct zx_hrxml_RoleId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -23436,23 +25036,33 @@ void zx_FREE_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PersonId->gg; e; e = en) {
+  for (e = &x->PersonId->gg;
+       e && e->g.tok == zx_hrxml_PersonId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)e, free_strs);
   }
-  for (e = &x->PersonName->gg; e; e = en) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, free_strs);
   }
-  for (e = &x->ContactMethod->gg; e; e = en) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, free_strs);
   }
-  for (e = &x->PersonDescriptors->gg; e; e = en) {
+  for (e = &x->PersonDescriptors->gg;
+       e && e->g.tok == zx_hrxml_PersonDescriptors_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonDescriptors(c, (struct zx_hrxml_PersonDescriptors_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -23492,15 +25102,25 @@ void zx_DUP_STRS_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalDa
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PersonId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonId->gg;
+       se && se->g.tok == zx_hrxml_PersonId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)se);
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
-  for (se = &x->PersonDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonDescriptors->gg;
+       se && se->g.tok == zx_hrxml_PersonDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonDescriptors(c, (struct zx_hrxml_PersonDescriptors_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -23521,7 +25141,9 @@ struct zx_hrxml_PersonalData_s* zx_DEEP_CLONE_hrxml_PersonalData(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PersonId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonId->gg;
+       e && e->g.tok == zx_hrxml_PersonId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonId(c,(struct zx_hrxml_PersonId_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonId = (struct zx_hrxml_PersonId_s*)en;
@@ -23529,7 +25151,9 @@ struct zx_hrxml_PersonalData_s* zx_DEEP_CLONE_hrxml_PersonalData(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonName(c,(struct zx_hrxml_PersonName_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonName = (struct zx_hrxml_PersonName_s*)en;
@@ -23537,7 +25161,9 @@ struct zx_hrxml_PersonalData_s* zx_DEEP_CLONE_hrxml_PersonalData(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactMethod(c,(struct zx_hrxml_ContactMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)en;
@@ -23545,7 +25171,9 @@ struct zx_hrxml_PersonalData_s* zx_DEEP_CLONE_hrxml_PersonalData(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PersonDescriptors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonDescriptors->gg;
+       e && e->g.tok == zx_hrxml_PersonDescriptors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonDescriptors(c,(struct zx_hrxml_PersonDescriptors_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonDescriptors = (struct zx_hrxml_PersonDescriptors_s*)en;
@@ -23553,7 +25181,9 @@ struct zx_hrxml_PersonalData_s* zx_DEEP_CLONE_hrxml_PersonalData(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -23584,27 +25214,37 @@ int zx_WALK_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData
   if (ret)
     return ret;
 
-  for (e = &x->PersonId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonId->gg;
+       e && e->g.tok == zx_hrxml_PersonId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PersonDescriptors->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonDescriptors->gg;
+       e && e->g.tok == zx_hrxml_PersonDescriptors_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonDescriptors(c, (struct zx_hrxml_PersonDescriptors_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -23661,28 +25301,40 @@ void zx_FREE_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalLo
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Name, free_strs);
-  for (e = &x->EffectiveDate->gg; e; e = en) {
+  for (e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)e, free_strs);
   }
-  for (e = &x->SpatialLocation->gg; e; e = en) {
+  for (e = &x->SpatialLocation->gg;
+       e && e->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)e, free_strs);
   }
-  for (e = &x->TravelDirections->gg; e; e = en) {
+  for (e = &x->TravelDirections->gg;
+       e && e->g.tok == zx_hrxml_TravelDirections_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)e, free_strs);
   }
-  for (e = &x->PostalAddress->gg; e; e = en) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, free_strs);
   }
-  for (e = &x->Area->gg; e; e = en) {
+  for (e = &x->Area->gg;
+       e && e->g.tok == zx_hrxml_Area_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Area(c, (struct zx_hrxml_Area_s*)e, free_strs);
   }
@@ -23723,18 +25375,30 @@ void zx_DUP_STRS_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_Physic
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
   zx_dup_strs_simple_elems(c, x->Name);
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se);
-  for (se = &x->SpatialLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpatialLocation->gg;
+       se && se->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)se);
-  for (se = &x->TravelDirections->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TravelDirections->gg;
+       se && se->g.tok == zx_hrxml_TravelDirections_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)se);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
-  for (se = &x->Area->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Area->gg;
+       se && se->g.tok == zx_hrxml_Area_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Area(c, (struct zx_hrxml_Area_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
 
@@ -23756,7 +25420,9 @@ struct zx_hrxml_PhysicalLocation_s* zx_DEEP_CLONE_hrxml_PhysicalLocation(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -23765,7 +25431,9 @@ struct zx_hrxml_PhysicalLocation_s* zx_DEEP_CLONE_hrxml_PhysicalLocation(struct 
   	  enn = en;
   }
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
-  for (enn = 0, e = &x->EffectiveDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EffectiveDate(c,(struct zx_hrxml_EffectiveDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)en;
@@ -23773,7 +25441,9 @@ struct zx_hrxml_PhysicalLocation_s* zx_DEEP_CLONE_hrxml_PhysicalLocation(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SpatialLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SpatialLocation->gg;
+       e && e->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SpatialLocation(c,(struct zx_hrxml_SpatialLocation_s*)e,dup_strs);
   	  if (!enn)
   	      x->SpatialLocation = (struct zx_hrxml_SpatialLocation_s*)en;
@@ -23781,7 +25451,9 @@ struct zx_hrxml_PhysicalLocation_s* zx_DEEP_CLONE_hrxml_PhysicalLocation(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TravelDirections->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TravelDirections->gg;
+       e && e->g.tok == zx_hrxml_TravelDirections_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TravelDirections(c,(struct zx_hrxml_TravelDirections_s*)e,dup_strs);
   	  if (!enn)
   	      x->TravelDirections = (struct zx_hrxml_TravelDirections_s*)en;
@@ -23789,7 +25461,9 @@ struct zx_hrxml_PhysicalLocation_s* zx_DEEP_CLONE_hrxml_PhysicalLocation(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PostalAddress(c,(struct zx_hrxml_PostalAddress_s*)e,dup_strs);
   	  if (!enn)
   	      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)en;
@@ -23797,7 +25471,9 @@ struct zx_hrxml_PhysicalLocation_s* zx_DEEP_CLONE_hrxml_PhysicalLocation(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Area->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Area->gg;
+       e && e->g.tok == zx_hrxml_Area_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Area(c,(struct zx_hrxml_Area_s*)e,dup_strs);
   	  if (!enn)
   	      x->Area = (struct zx_hrxml_Area_s*)en;
@@ -23829,7 +25505,9 @@ int zx_WALK_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_Physical
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -23837,27 +25515,37 @@ int zx_WALK_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_Physical
   ret = zx_walk_so_simple_elems(c, x->Name, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->EffectiveDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SpatialLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SpatialLocation->gg;
+       e && e->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TravelDirections->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TravelDirections->gg;
+       e && e->g.tok == zx_hrxml_TravelDirections_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Area->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Area->gg;
+       e && e->g.tok == zx_hrxml_Area_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Area(c, (struct zx_hrxml_Area_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -23920,53 +25608,77 @@ void zx_FREE_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHis
   zx_free_attr(c, x->positionType, free_strs);
 
   zx_free_simple_elems(c, x->Title, free_strs);
-  for (e = &x->OrgName->gg; e; e = en) {
+  for (e = &x->OrgName->gg;
+       e && e->g.tok == zx_hrxml_OrgName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)e, free_strs);
   }
-  for (e = &x->OrgInfo->gg; e; e = en) {
+  for (e = &x->OrgInfo->gg;
+       e && e->g.tok == zx_hrxml_OrgInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrgInfo(c, (struct zx_hrxml_OrgInfo_s*)e, free_strs);
   }
-  for (e = &x->OrgIndustry->gg; e; e = en) {
+  for (e = &x->OrgIndustry->gg;
+       e && e->g.tok == zx_hrxml_OrgIndustry_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrgIndustry(c, (struct zx_hrxml_OrgIndustry_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->OrgSize, free_strs);
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
-  for (e = &x->StartDate->gg; e; e = en) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, free_strs);
   }
-  for (e = &x->EndDate->gg; e; e = en) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, free_strs);
   }
-  for (e = &x->Compensation->gg; e; e = en) {
+  for (e = &x->Compensation->gg;
+       e && e->g.tok == zx_hrxml_Compensation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Compensation(c, (struct zx_hrxml_Compensation_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Comments, free_strs);
-  for (e = &x->Verification->gg; e; e = en) {
+  for (e = &x->Verification->gg;
+       e && e->g.tok == zx_hrxml_Verification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Verification(c, (struct zx_hrxml_Verification_s*)e, free_strs);
   }
-  for (e = &x->JobLevelInfo->gg; e; e = en) {
+  for (e = &x->JobLevelInfo->gg;
+       e && e->g.tok == zx_hrxml_JobLevelInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_JobLevelInfo(c, (struct zx_hrxml_JobLevelInfo_s*)e, free_strs);
   }
-  for (e = &x->JobCategory->gg; e; e = en) {
+  for (e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)e, free_strs);
   }
-  for (e = &x->Competency->gg; e; e = en) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -24009,31 +25721,55 @@ void zx_DUP_STRS_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_Positio
   zx_dup_attr(c, x->positionType);
 
   zx_dup_strs_simple_elems(c, x->Title);
-  for (se = &x->OrgName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrgName->gg;
+       se && se->g.tok == zx_hrxml_OrgName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)se);
-  for (se = &x->OrgInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrgInfo->gg;
+       se && se->g.tok == zx_hrxml_OrgInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrgInfo(c, (struct zx_hrxml_OrgInfo_s*)se);
-  for (se = &x->OrgIndustry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrgIndustry->gg;
+       se && se->g.tok == zx_hrxml_OrgIndustry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrgIndustry(c, (struct zx_hrxml_OrgIndustry_s*)se);
   zx_dup_strs_simple_elems(c, x->OrgSize);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
-  for (se = &x->Compensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Compensation->gg;
+       se && se->g.tok == zx_hrxml_Compensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Compensation(c, (struct zx_hrxml_Compensation_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
-  for (se = &x->Verification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Verification->gg;
+       se && se->g.tok == zx_hrxml_Verification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Verification(c, (struct zx_hrxml_Verification_s*)se);
-  for (se = &x->JobLevelInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobLevelInfo->gg;
+       se && se->g.tok == zx_hrxml_JobLevelInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_JobLevelInfo(c, (struct zx_hrxml_JobLevelInfo_s*)se);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -24057,7 +25793,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   x->positionType = zx_clone_attr(c, x->positionType);
 
   x->Title = zx_deep_clone_simple_elems(c,x->Title, dup_strs);
-  for (enn = 0, e = &x->OrgName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrgName->gg;
+       e && e->g.tok == zx_hrxml_OrgName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrgName(c,(struct zx_hrxml_OrgName_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrgName = (struct zx_hrxml_OrgName_s*)en;
@@ -24065,7 +25803,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OrgInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrgInfo->gg;
+       e && e->g.tok == zx_hrxml_OrgInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrgInfo(c,(struct zx_hrxml_OrgInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrgInfo = (struct zx_hrxml_OrgInfo_s*)en;
@@ -24073,7 +25813,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OrgIndustry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrgIndustry->gg;
+       e && e->g.tok == zx_hrxml_OrgIndustry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrgIndustry(c,(struct zx_hrxml_OrgIndustry_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrgIndustry = (struct zx_hrxml_OrgIndustry_s*)en;
@@ -24082,7 +25824,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	  enn = en;
   }
   x->OrgSize = zx_deep_clone_simple_elems(c,x->OrgSize, dup_strs);
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -24090,7 +25834,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StartDate(c,(struct zx_hrxml_StartDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->StartDate = (struct zx_hrxml_StartDate_s*)en;
@@ -24098,7 +25844,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EndDate(c,(struct zx_hrxml_EndDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndDate = (struct zx_hrxml_EndDate_s*)en;
@@ -24106,7 +25854,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Compensation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Compensation->gg;
+       e && e->g.tok == zx_hrxml_Compensation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Compensation(c,(struct zx_hrxml_Compensation_s*)e,dup_strs);
   	  if (!enn)
   	      x->Compensation = (struct zx_hrxml_Compensation_s*)en;
@@ -24115,7 +25865,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	  enn = en;
   }
   x->Comments = zx_deep_clone_simple_elems(c,x->Comments, dup_strs);
-  for (enn = 0, e = &x->Verification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Verification->gg;
+       e && e->g.tok == zx_hrxml_Verification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Verification(c,(struct zx_hrxml_Verification_s*)e,dup_strs);
   	  if (!enn)
   	      x->Verification = (struct zx_hrxml_Verification_s*)en;
@@ -24123,7 +25875,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->JobLevelInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->JobLevelInfo->gg;
+       e && e->g.tok == zx_hrxml_JobLevelInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_JobLevelInfo(c,(struct zx_hrxml_JobLevelInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->JobLevelInfo = (struct zx_hrxml_JobLevelInfo_s*)en;
@@ -24131,7 +25885,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->JobCategory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_JobCategory(c,(struct zx_hrxml_JobCategory_s*)e,dup_strs);
   	  if (!enn)
   	      x->JobCategory = (struct zx_hrxml_JobCategory_s*)en;
@@ -24139,7 +25895,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Competency(c,(struct zx_hrxml_Competency_s*)e,dup_strs);
   	  if (!enn)
   	      x->Competency = (struct zx_hrxml_Competency_s*)en;
@@ -24147,7 +25905,9 @@ struct zx_hrxml_PositionHistory_s* zx_DEEP_CLONE_hrxml_PositionHistory(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -24181,17 +25941,23 @@ int zx_WALK_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionH
   ret = zx_walk_so_simple_elems(c, x->Title, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->OrgName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrgName->gg;
+       e && e->g.tok == zx_hrxml_OrgName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OrgInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrgInfo->gg;
+       e && e->g.tok == zx_hrxml_OrgInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrgInfo(c, (struct zx_hrxml_OrgInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OrgIndustry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrgIndustry->gg;
+       e && e->g.tok == zx_hrxml_OrgIndustry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrgIndustry(c, (struct zx_hrxml_OrgIndustry_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -24199,22 +25965,30 @@ int zx_WALK_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionH
   ret = zx_walk_so_simple_elems(c, x->OrgSize, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Compensation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Compensation->gg;
+       e && e->g.tok == zx_hrxml_Compensation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Compensation(c, (struct zx_hrxml_Compensation_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -24222,27 +25996,37 @@ int zx_WALK_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionH
   ret = zx_walk_so_simple_elems(c, x->Comments, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Verification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Verification->gg;
+       e && e->g.tok == zx_hrxml_Verification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Verification(c, (struct zx_hrxml_Verification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->JobLevelInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->JobLevelInfo->gg;
+       e && e->g.tok == zx_hrxml_JobLevelInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_JobLevelInfo(c, (struct zx_hrxml_JobLevelInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->JobCategory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -24304,11 +26088,15 @@ void zx_FREE_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionLo
   zx_free_simple_elems(c, x->PostalCode, free_strs);
   zx_free_simple_elems(c, x->Region, free_strs);
   zx_free_simple_elems(c, x->Municipality, free_strs);
-  for (e = &x->DeliveryAddress->gg; e; e = en) {
+  for (e = &x->DeliveryAddress->gg;
+       e && e->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)e, free_strs);
   }
-  for (e = &x->Recipient->gg; e; e = en) {
+  for (e = &x->Recipient->gg;
+       e && e->g.tok == zx_hrxml_Recipient_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)e, free_strs);
   }
@@ -24353,9 +26141,13 @@ void zx_DUP_STRS_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_Positi
   zx_dup_strs_simple_elems(c, x->PostalCode);
   zx_dup_strs_simple_elems(c, x->Region);
   zx_dup_strs_simple_elems(c, x->Municipality);
-  for (se = &x->DeliveryAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliveryAddress->gg;
+       se && se->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)se);
-  for (se = &x->Recipient->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipient->gg;
+       se && se->g.tok == zx_hrxml_Recipient_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)se);
 
 }
@@ -24381,7 +26173,9 @@ struct zx_hrxml_PositionLocation_s* zx_DEEP_CLONE_hrxml_PositionLocation(struct 
   x->PostalCode = zx_deep_clone_simple_elems(c,x->PostalCode, dup_strs);
   x->Region = zx_deep_clone_simple_elems(c,x->Region, dup_strs);
   x->Municipality = zx_deep_clone_simple_elems(c,x->Municipality, dup_strs);
-  for (enn = 0, e = &x->DeliveryAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DeliveryAddress->gg;
+       e && e->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DeliveryAddress(c,(struct zx_hrxml_DeliveryAddress_s*)e,dup_strs);
   	  if (!enn)
   	      x->DeliveryAddress = (struct zx_hrxml_DeliveryAddress_s*)en;
@@ -24389,7 +26183,9 @@ struct zx_hrxml_PositionLocation_s* zx_DEEP_CLONE_hrxml_PositionLocation(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Recipient->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Recipient->gg;
+       e && e->g.tok == zx_hrxml_Recipient_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Recipient(c,(struct zx_hrxml_Recipient_s*)e,dup_strs);
   	  if (!enn)
   	      x->Recipient = (struct zx_hrxml_Recipient_s*)en;
@@ -24432,12 +26228,16 @@ int zx_WALK_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_Position
   ret = zx_walk_so_simple_elems(c, x->Municipality, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->DeliveryAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DeliveryAddress->gg;
+       e && e->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Recipient->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Recipient->gg;
+       e && e->g.tok == zx_hrxml_Recipient_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -24494,59 +26294,85 @@ void zx_FREE_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionMa
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Company->gg; e; e = en) {
+  for (e = &x->Company->gg;
+       e && e->g.tok == zx_hrxml_Company_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Company(c, (struct zx_hrxml_Company_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->CompanyScale, free_strs);
-  for (e = &x->IndustryCode->gg; e; e = en) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, free_strs);
   }
-  for (e = &x->PhysicalLocation->gg; e; e = en) {
+  for (e = &x->PhysicalLocation->gg;
+       e && e->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)e, free_strs);
   }
-  for (e = &x->JobCategory->gg; e; e = en) {
+  for (e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->PositionTitle, free_strs);
   zx_free_simple_elems(c, x->PositionClassification, free_strs);
-  for (e = &x->PositionSchedule->gg; e; e = en) {
+  for (e = &x->PositionSchedule->gg;
+       e && e->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)e, free_strs);
   }
-  for (e = &x->Shift->gg; e; e = en) {
+  for (e = &x->Shift->gg;
+       e && e->g.tok == zx_hrxml_Shift_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)e, free_strs);
   }
-  for (e = &x->Competency->gg; e; e = en) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, free_strs);
   }
-  for (e = &x->RemunerationPackage->gg; e; e = en) {
+  for (e = &x->RemunerationPackage->gg;
+       e && e->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->WorkStyle, free_strs);
-  for (e = &x->DressCode->gg; e; e = en) {
+  for (e = &x->DressCode->gg;
+       e && e->g.tok == zx_hrxml_DressCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)e, free_strs);
   }
-  for (e = &x->Travel->gg; e; e = en) {
+  for (e = &x->Travel->gg;
+       e && e->g.tok == zx_hrxml_Travel_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)e, free_strs);
   }
-  for (e = &x->Relocation->gg; e; e = en) {
+  for (e = &x->Relocation->gg;
+       e && e->g.tok == zx_hrxml_Relocation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)e, free_strs);
   }
-  for (e = &x->PreferredLanguage->gg; e; e = en) {
+  for (e = &x->PreferredLanguage->gg;
+       e && e->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -24586,35 +26412,61 @@ void zx_DUP_STRS_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_Positi
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Company->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Company->gg;
+       se && se->g.tok == zx_hrxml_Company_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Company(c, (struct zx_hrxml_Company_s*)se);
   zx_dup_strs_simple_elems(c, x->CompanyScale);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
-  for (se = &x->PhysicalLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PhysicalLocation->gg;
+       se && se->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)se);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se);
   zx_dup_strs_simple_elems(c, x->PositionTitle);
   zx_dup_strs_simple_elems(c, x->PositionClassification);
-  for (se = &x->PositionSchedule->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionSchedule->gg;
+       se && se->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)se);
-  for (se = &x->Shift->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Shift->gg;
+       se && se->g.tok == zx_hrxml_Shift_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)se);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
-  for (se = &x->RemunerationPackage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemunerationPackage->gg;
+       se && se->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)se);
   zx_dup_strs_simple_elems(c, x->WorkStyle);
-  for (se = &x->DressCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DressCode->gg;
+       se && se->g.tok == zx_hrxml_DressCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)se);
-  for (se = &x->Travel->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Travel->gg;
+       se && se->g.tok == zx_hrxml_Travel_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)se);
-  for (se = &x->Relocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Relocation->gg;
+       se && se->g.tok == zx_hrxml_Relocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)se);
-  for (se = &x->PreferredLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredLanguage->gg;
+       se && se->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -24635,7 +26487,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Company->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Company->gg;
+       e && e->g.tok == zx_hrxml_Company_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Company(c,(struct zx_hrxml_Company_s*)e,dup_strs);
   	  if (!enn)
   	      x->Company = (struct zx_hrxml_Company_s*)en;
@@ -24644,7 +26498,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	  enn = en;
   }
   x->CompanyScale = zx_deep_clone_simple_elems(c,x->CompanyScale, dup_strs);
-  for (enn = 0, e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IndustryCode(c,(struct zx_hrxml_IndustryCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)en;
@@ -24652,7 +26508,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PhysicalLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PhysicalLocation->gg;
+       e && e->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PhysicalLocation(c,(struct zx_hrxml_PhysicalLocation_s*)e,dup_strs);
   	  if (!enn)
   	      x->PhysicalLocation = (struct zx_hrxml_PhysicalLocation_s*)en;
@@ -24660,7 +26518,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->JobCategory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_JobCategory(c,(struct zx_hrxml_JobCategory_s*)e,dup_strs);
   	  if (!enn)
   	      x->JobCategory = (struct zx_hrxml_JobCategory_s*)en;
@@ -24670,7 +26530,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   }
   x->PositionTitle = zx_deep_clone_simple_elems(c,x->PositionTitle, dup_strs);
   x->PositionClassification = zx_deep_clone_simple_elems(c,x->PositionClassification, dup_strs);
-  for (enn = 0, e = &x->PositionSchedule->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PositionSchedule->gg;
+       e && e->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PositionSchedule(c,(struct zx_hrxml_PositionSchedule_s*)e,dup_strs);
   	  if (!enn)
   	      x->PositionSchedule = (struct zx_hrxml_PositionSchedule_s*)en;
@@ -24678,7 +26540,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Shift->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Shift->gg;
+       e && e->g.tok == zx_hrxml_Shift_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Shift(c,(struct zx_hrxml_Shift_s*)e,dup_strs);
   	  if (!enn)
   	      x->Shift = (struct zx_hrxml_Shift_s*)en;
@@ -24686,7 +26550,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Competency(c,(struct zx_hrxml_Competency_s*)e,dup_strs);
   	  if (!enn)
   	      x->Competency = (struct zx_hrxml_Competency_s*)en;
@@ -24694,7 +26560,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RemunerationPackage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RemunerationPackage->gg;
+       e && e->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RemunerationPackage(c,(struct zx_hrxml_RemunerationPackage_s*)e,dup_strs);
   	  if (!enn)
   	      x->RemunerationPackage = (struct zx_hrxml_RemunerationPackage_s*)en;
@@ -24703,7 +26571,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	  enn = en;
   }
   x->WorkStyle = zx_deep_clone_simple_elems(c,x->WorkStyle, dup_strs);
-  for (enn = 0, e = &x->DressCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DressCode->gg;
+       e && e->g.tok == zx_hrxml_DressCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DressCode(c,(struct zx_hrxml_DressCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->DressCode = (struct zx_hrxml_DressCode_s*)en;
@@ -24711,7 +26581,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Travel->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Travel->gg;
+       e && e->g.tok == zx_hrxml_Travel_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Travel(c,(struct zx_hrxml_Travel_s*)e,dup_strs);
   	  if (!enn)
   	      x->Travel = (struct zx_hrxml_Travel_s*)en;
@@ -24719,7 +26591,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Relocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Relocation->gg;
+       e && e->g.tok == zx_hrxml_Relocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Relocation(c,(struct zx_hrxml_Relocation_s*)e,dup_strs);
   	  if (!enn)
   	      x->Relocation = (struct zx_hrxml_Relocation_s*)en;
@@ -24727,7 +26601,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PreferredLanguage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PreferredLanguage->gg;
+       e && e->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PreferredLanguage(c,(struct zx_hrxml_PreferredLanguage_s*)e,dup_strs);
   	  if (!enn)
   	      x->PreferredLanguage = (struct zx_hrxml_PreferredLanguage_s*)en;
@@ -24735,7 +26611,9 @@ struct zx_hrxml_PositionMatching_s* zx_DEEP_CLONE_hrxml_PositionMatching(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -24766,7 +26644,9 @@ int zx_WALK_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_Position
   if (ret)
     return ret;
 
-  for (e = &x->Company->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Company->gg;
+       e && e->g.tok == zx_hrxml_Company_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Company(c, (struct zx_hrxml_Company_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -24774,17 +26654,23 @@ int zx_WALK_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_Position
   ret = zx_walk_so_simple_elems(c, x->CompanyScale, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PhysicalLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PhysicalLocation->gg;
+       e && e->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->JobCategory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -24795,22 +26681,30 @@ int zx_WALK_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_Position
   ret = zx_walk_so_simple_elems(c, x->PositionClassification, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PositionSchedule->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PositionSchedule->gg;
+       e && e->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Shift->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Shift->gg;
+       e && e->g.tok == zx_hrxml_Shift_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RemunerationPackage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RemunerationPackage->gg;
+       e && e->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -24818,27 +26712,37 @@ int zx_WALK_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_Position
   ret = zx_walk_so_simple_elems(c, x->WorkStyle, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->DressCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DressCode->gg;
+       e && e->g.tok == zx_hrxml_DressCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Travel->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Travel->gg;
+       e && e->g.tok == zx_hrxml_Travel_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Relocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Relocation->gg;
+       e && e->g.tok == zx_hrxml_Relocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PreferredLanguage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PreferredLanguage->gg;
+       e && e->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -24895,17 +26799,23 @@ void zx_FREE_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPos
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Title, free_strs);
   zx_free_simple_elems(c, x->Link, free_strs);
-  for (e = &x->SearchCriteria->gg; e; e = en) {
+  for (e = &x->SearchCriteria->gg;
+       e && e->g.tok == zx_hrxml_SearchCriteria_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SearchCriteria(c, (struct zx_hrxml_SearchCriteria_s*)e, free_strs);
   }
-  for (e = &x->SearchResult->gg; e; e = en) {
+  for (e = &x->SearchResult->gg;
+       e && e->g.tok == zx_hrxml_SearchResult_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SearchResult(c, (struct zx_hrxml_SearchResult_s*)e, free_strs);
   }
@@ -24945,13 +26855,19 @@ void zx_DUP_STRS_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_Positio
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
   zx_dup_strs_simple_elems(c, x->Title);
   zx_dup_strs_simple_elems(c, x->Link);
-  for (se = &x->SearchCriteria->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchCriteria->gg;
+       se && se->g.tok == zx_hrxml_SearchCriteria_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SearchCriteria(c, (struct zx_hrxml_SearchCriteria_s*)se);
-  for (se = &x->SearchResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchResult->gg;
+       se && se->g.tok == zx_hrxml_SearchResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SearchResult(c, (struct zx_hrxml_SearchResult_s*)se);
 
 }
@@ -24972,7 +26888,9 @@ struct zx_hrxml_PositionPosting_s* zx_DEEP_CLONE_hrxml_PositionPosting(struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -24982,7 +26900,9 @@ struct zx_hrxml_PositionPosting_s* zx_DEEP_CLONE_hrxml_PositionPosting(struct zx
   }
   x->Title = zx_deep_clone_simple_elems(c,x->Title, dup_strs);
   x->Link = zx_deep_clone_simple_elems(c,x->Link, dup_strs);
-  for (enn = 0, e = &x->SearchCriteria->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SearchCriteria->gg;
+       e && e->g.tok == zx_hrxml_SearchCriteria_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SearchCriteria(c,(struct zx_hrxml_SearchCriteria_s*)e,dup_strs);
   	  if (!enn)
   	      x->SearchCriteria = (struct zx_hrxml_SearchCriteria_s*)en;
@@ -24990,7 +26910,9 @@ struct zx_hrxml_PositionPosting_s* zx_DEEP_CLONE_hrxml_PositionPosting(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SearchResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SearchResult->gg;
+       e && e->g.tok == zx_hrxml_SearchResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SearchResult(c,(struct zx_hrxml_SearchResult_s*)e,dup_strs);
   	  if (!enn)
   	      x->SearchResult = (struct zx_hrxml_SearchResult_s*)en;
@@ -25021,7 +26943,9 @@ int zx_WALK_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionP
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -25032,12 +26956,16 @@ int zx_WALK_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionP
   ret = zx_walk_so_simple_elems(c, x->Link, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SearchCriteria->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SearchCriteria->gg;
+       e && e->g.tok == zx_hrxml_SearchCriteria_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SearchCriteria(c, (struct zx_hrxml_SearchCriteria_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SearchResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SearchResult->gg;
+       e && e->g.tok == zx_hrxml_SearchResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SearchResult(c, (struct zx_hrxml_SearchResult_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -25232,11 +27160,15 @@ void zx_FREE_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddress
   zx_free_simple_elems(c, x->PostalCode, free_strs);
   zx_free_simple_elems(c, x->Region, free_strs);
   zx_free_simple_elems(c, x->Municipality, free_strs);
-  for (e = &x->DeliveryAddress->gg; e; e = en) {
+  for (e = &x->DeliveryAddress->gg;
+       e && e->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)e, free_strs);
   }
-  for (e = &x->Recipient->gg; e; e = en) {
+  for (e = &x->Recipient->gg;
+       e && e->g.tok == zx_hrxml_Recipient_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)e, free_strs);
   }
@@ -25281,9 +27213,13 @@ void zx_DUP_STRS_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAdd
   zx_dup_strs_simple_elems(c, x->PostalCode);
   zx_dup_strs_simple_elems(c, x->Region);
   zx_dup_strs_simple_elems(c, x->Municipality);
-  for (se = &x->DeliveryAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliveryAddress->gg;
+       se && se->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)se);
-  for (se = &x->Recipient->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipient->gg;
+       se && se->g.tok == zx_hrxml_Recipient_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)se);
 
 }
@@ -25309,7 +27245,9 @@ struct zx_hrxml_PostalAddress_s* zx_DEEP_CLONE_hrxml_PostalAddress(struct zx_ctx
   x->PostalCode = zx_deep_clone_simple_elems(c,x->PostalCode, dup_strs);
   x->Region = zx_deep_clone_simple_elems(c,x->Region, dup_strs);
   x->Municipality = zx_deep_clone_simple_elems(c,x->Municipality, dup_strs);
-  for (enn = 0, e = &x->DeliveryAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DeliveryAddress->gg;
+       e && e->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DeliveryAddress(c,(struct zx_hrxml_DeliveryAddress_s*)e,dup_strs);
   	  if (!enn)
   	      x->DeliveryAddress = (struct zx_hrxml_DeliveryAddress_s*)en;
@@ -25317,7 +27255,9 @@ struct zx_hrxml_PostalAddress_s* zx_DEEP_CLONE_hrxml_PostalAddress(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Recipient->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Recipient->gg;
+       e && e->g.tok == zx_hrxml_Recipient_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Recipient(c,(struct zx_hrxml_Recipient_s*)e,dup_strs);
   	  if (!enn)
   	      x->Recipient = (struct zx_hrxml_Recipient_s*)en;
@@ -25360,12 +27300,16 @@ int zx_WALK_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddre
   ret = zx_walk_so_simple_elems(c, x->Municipality, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->DeliveryAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DeliveryAddress->gg;
+       e && e->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Recipient->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Recipient->gg;
+       e && e->g.tok == zx_hrxml_Recipient_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -25552,63 +27496,91 @@ void zx_FREE_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Preferred
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Company->gg; e; e = en) {
+  for (e = &x->Company->gg;
+       e && e->g.tok == zx_hrxml_Company_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Company(c, (struct zx_hrxml_Company_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->CompanyScale, free_strs);
-  for (e = &x->IndustryCode->gg; e; e = en) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, free_strs);
   }
-  for (e = &x->PhysicalLocation->gg; e; e = en) {
+  for (e = &x->PhysicalLocation->gg;
+       e && e->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)e, free_strs);
   }
-  for (e = &x->JobCategory->gg; e; e = en) {
+  for (e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->PositionTitle, free_strs);
   zx_free_simple_elems(c, x->PositionClassification, free_strs);
-  for (e = &x->PositionSchedule->gg; e; e = en) {
+  for (e = &x->PositionSchedule->gg;
+       e && e->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)e, free_strs);
   }
-  for (e = &x->Shift->gg; e; e = en) {
+  for (e = &x->Shift->gg;
+       e && e->g.tok == zx_hrxml_Shift_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)e, free_strs);
   }
-  for (e = &x->Competency->gg; e; e = en) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, free_strs);
   }
-  for (e = &x->RemunerationPackage->gg; e; e = en) {
+  for (e = &x->RemunerationPackage->gg;
+       e && e->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->WorkStyle, free_strs);
-  for (e = &x->DressCode->gg; e; e = en) {
+  for (e = &x->DressCode->gg;
+       e && e->g.tok == zx_hrxml_DressCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)e, free_strs);
   }
-  for (e = &x->Travel->gg; e; e = en) {
+  for (e = &x->Travel->gg;
+       e && e->g.tok == zx_hrxml_Travel_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)e, free_strs);
   }
-  for (e = &x->Relocation->gg; e; e = en) {
+  for (e = &x->Relocation->gg;
+       e && e->g.tok == zx_hrxml_Relocation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)e, free_strs);
   }
-  for (e = &x->PreferredLanguage->gg; e; e = en) {
+  for (e = &x->PreferredLanguage->gg;
+       e && e->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
-  for (e = &x->Commute->gg; e; e = en) {
+  for (e = &x->Commute->gg;
+       e && e->g.tok == zx_hrxml_Commute_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Commute(c, (struct zx_hrxml_Commute_s*)e, free_strs);
   }
@@ -25648,37 +27620,65 @@ void zx_DUP_STRS_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Prefe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Company->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Company->gg;
+       se && se->g.tok == zx_hrxml_Company_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Company(c, (struct zx_hrxml_Company_s*)se);
   zx_dup_strs_simple_elems(c, x->CompanyScale);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
-  for (se = &x->PhysicalLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PhysicalLocation->gg;
+       se && se->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)se);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se);
   zx_dup_strs_simple_elems(c, x->PositionTitle);
   zx_dup_strs_simple_elems(c, x->PositionClassification);
-  for (se = &x->PositionSchedule->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionSchedule->gg;
+       se && se->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)se);
-  for (se = &x->Shift->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Shift->gg;
+       se && se->g.tok == zx_hrxml_Shift_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)se);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
-  for (se = &x->RemunerationPackage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemunerationPackage->gg;
+       se && se->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)se);
   zx_dup_strs_simple_elems(c, x->WorkStyle);
-  for (se = &x->DressCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DressCode->gg;
+       se && se->g.tok == zx_hrxml_DressCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)se);
-  for (se = &x->Travel->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Travel->gg;
+       se && se->g.tok == zx_hrxml_Travel_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)se);
-  for (se = &x->Relocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Relocation->gg;
+       se && se->g.tok == zx_hrxml_Relocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)se);
-  for (se = &x->PreferredLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredLanguage->gg;
+       se && se->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
-  for (se = &x->Commute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Commute->gg;
+       se && se->g.tok == zx_hrxml_Commute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Commute(c, (struct zx_hrxml_Commute_s*)se);
 
 }
@@ -25699,7 +27699,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Company->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Company->gg;
+       e && e->g.tok == zx_hrxml_Company_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Company(c,(struct zx_hrxml_Company_s*)e,dup_strs);
   	  if (!enn)
   	      x->Company = (struct zx_hrxml_Company_s*)en;
@@ -25708,7 +27710,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	  enn = en;
   }
   x->CompanyScale = zx_deep_clone_simple_elems(c,x->CompanyScale, dup_strs);
-  for (enn = 0, e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IndustryCode(c,(struct zx_hrxml_IndustryCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)en;
@@ -25716,7 +27720,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PhysicalLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PhysicalLocation->gg;
+       e && e->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PhysicalLocation(c,(struct zx_hrxml_PhysicalLocation_s*)e,dup_strs);
   	  if (!enn)
   	      x->PhysicalLocation = (struct zx_hrxml_PhysicalLocation_s*)en;
@@ -25724,7 +27730,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->JobCategory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_JobCategory(c,(struct zx_hrxml_JobCategory_s*)e,dup_strs);
   	  if (!enn)
   	      x->JobCategory = (struct zx_hrxml_JobCategory_s*)en;
@@ -25734,7 +27742,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   }
   x->PositionTitle = zx_deep_clone_simple_elems(c,x->PositionTitle, dup_strs);
   x->PositionClassification = zx_deep_clone_simple_elems(c,x->PositionClassification, dup_strs);
-  for (enn = 0, e = &x->PositionSchedule->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PositionSchedule->gg;
+       e && e->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PositionSchedule(c,(struct zx_hrxml_PositionSchedule_s*)e,dup_strs);
   	  if (!enn)
   	      x->PositionSchedule = (struct zx_hrxml_PositionSchedule_s*)en;
@@ -25742,7 +27752,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Shift->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Shift->gg;
+       e && e->g.tok == zx_hrxml_Shift_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Shift(c,(struct zx_hrxml_Shift_s*)e,dup_strs);
   	  if (!enn)
   	      x->Shift = (struct zx_hrxml_Shift_s*)en;
@@ -25750,7 +27762,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Competency(c,(struct zx_hrxml_Competency_s*)e,dup_strs);
   	  if (!enn)
   	      x->Competency = (struct zx_hrxml_Competency_s*)en;
@@ -25758,7 +27772,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RemunerationPackage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RemunerationPackage->gg;
+       e && e->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RemunerationPackage(c,(struct zx_hrxml_RemunerationPackage_s*)e,dup_strs);
   	  if (!enn)
   	      x->RemunerationPackage = (struct zx_hrxml_RemunerationPackage_s*)en;
@@ -25767,7 +27783,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	  enn = en;
   }
   x->WorkStyle = zx_deep_clone_simple_elems(c,x->WorkStyle, dup_strs);
-  for (enn = 0, e = &x->DressCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DressCode->gg;
+       e && e->g.tok == zx_hrxml_DressCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DressCode(c,(struct zx_hrxml_DressCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->DressCode = (struct zx_hrxml_DressCode_s*)en;
@@ -25775,7 +27793,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Travel->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Travel->gg;
+       e && e->g.tok == zx_hrxml_Travel_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Travel(c,(struct zx_hrxml_Travel_s*)e,dup_strs);
   	  if (!enn)
   	      x->Travel = (struct zx_hrxml_Travel_s*)en;
@@ -25783,7 +27803,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Relocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Relocation->gg;
+       e && e->g.tok == zx_hrxml_Relocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Relocation(c,(struct zx_hrxml_Relocation_s*)e,dup_strs);
   	  if (!enn)
   	      x->Relocation = (struct zx_hrxml_Relocation_s*)en;
@@ -25791,7 +27813,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PreferredLanguage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PreferredLanguage->gg;
+       e && e->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PreferredLanguage(c,(struct zx_hrxml_PreferredLanguage_s*)e,dup_strs);
   	  if (!enn)
   	      x->PreferredLanguage = (struct zx_hrxml_PreferredLanguage_s*)en;
@@ -25799,7 +27823,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -25807,7 +27833,9 @@ struct zx_hrxml_PreferredPosition_s* zx_DEEP_CLONE_hrxml_PreferredPosition(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Commute->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Commute->gg;
+       e && e->g.tok == zx_hrxml_Commute_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Commute(c,(struct zx_hrxml_Commute_s*)e,dup_strs);
   	  if (!enn)
   	      x->Commute = (struct zx_hrxml_Commute_s*)en;
@@ -25838,7 +27866,9 @@ int zx_WALK_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Preferr
   if (ret)
     return ret;
 
-  for (e = &x->Company->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Company->gg;
+       e && e->g.tok == zx_hrxml_Company_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Company(c, (struct zx_hrxml_Company_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -25846,17 +27876,23 @@ int zx_WALK_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Preferr
   ret = zx_walk_so_simple_elems(c, x->CompanyScale, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PhysicalLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PhysicalLocation->gg;
+       e && e->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->JobCategory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->JobCategory->gg;
+       e && e->g.tok == zx_hrxml_JobCategory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -25867,22 +27903,30 @@ int zx_WALK_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Preferr
   ret = zx_walk_so_simple_elems(c, x->PositionClassification, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->PositionSchedule->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PositionSchedule->gg;
+       e && e->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Shift->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Shift->gg;
+       e && e->g.tok == zx_hrxml_Shift_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RemunerationPackage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RemunerationPackage->gg;
+       e && e->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -25890,32 +27934,44 @@ int zx_WALK_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Preferr
   ret = zx_walk_so_simple_elems(c, x->WorkStyle, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->DressCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DressCode->gg;
+       e && e->g.tok == zx_hrxml_DressCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Travel->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Travel->gg;
+       e && e->g.tok == zx_hrxml_Travel_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Relocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Relocation->gg;
+       e && e->g.tok == zx_hrxml_Relocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PreferredLanguage->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PreferredLanguage->gg;
+       e && e->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Commute->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Commute->gg;
+       e && e->g.tok == zx_hrxml_Commute_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Commute(c, (struct zx_hrxml_Commute_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -25972,19 +28028,27 @@ void zx_FREE_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Prehire
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->BasePay->gg; e; e = en) {
+  for (e = &x->BasePay->gg;
+       e && e->g.tok == zx_hrxml_BasePay_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)e, free_strs);
   }
-  for (e = &x->OtherPay->gg; e; e = en) {
+  for (e = &x->OtherPay->gg;
+       e && e->g.tok == zx_hrxml_OtherPay_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)e, free_strs);
   }
-  for (e = &x->Benefits->gg; e; e = en) {
+  for (e = &x->Benefits->gg;
+       e && e->g.tok == zx_hrxml_Benefits_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -26024,13 +28088,21 @@ void zx_DUP_STRS_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Pre
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->BasePay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BasePay->gg;
+       se && se->g.tok == zx_hrxml_BasePay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)se);
-  for (se = &x->OtherPay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherPay->gg;
+       se && se->g.tok == zx_hrxml_OtherPay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)se);
-  for (se = &x->Benefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Benefits->gg;
+       se && se->g.tok == zx_hrxml_Benefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -26051,7 +28123,9 @@ struct zx_hrxml_PrehireRemuneration_s* zx_DEEP_CLONE_hrxml_PrehireRemuneration(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->BasePay->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->BasePay->gg;
+       e && e->g.tok == zx_hrxml_BasePay_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_BasePay(c,(struct zx_hrxml_BasePay_s*)e,dup_strs);
   	  if (!enn)
   	      x->BasePay = (struct zx_hrxml_BasePay_s*)en;
@@ -26059,7 +28133,9 @@ struct zx_hrxml_PrehireRemuneration_s* zx_DEEP_CLONE_hrxml_PrehireRemuneration(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OtherPay->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OtherPay->gg;
+       e && e->g.tok == zx_hrxml_OtherPay_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OtherPay(c,(struct zx_hrxml_OtherPay_s*)e,dup_strs);
   	  if (!enn)
   	      x->OtherPay = (struct zx_hrxml_OtherPay_s*)en;
@@ -26067,7 +28143,9 @@ struct zx_hrxml_PrehireRemuneration_s* zx_DEEP_CLONE_hrxml_PrehireRemuneration(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Benefits->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Benefits->gg;
+       e && e->g.tok == zx_hrxml_Benefits_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Benefits(c,(struct zx_hrxml_Benefits_s*)e,dup_strs);
   	  if (!enn)
   	      x->Benefits = (struct zx_hrxml_Benefits_s*)en;
@@ -26075,7 +28153,9 @@ struct zx_hrxml_PrehireRemuneration_s* zx_DEEP_CLONE_hrxml_PrehireRemuneration(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -26106,22 +28186,30 @@ int zx_WALK_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Prehi
   if (ret)
     return ret;
 
-  for (e = &x->BasePay->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->BasePay->gg;
+       e && e->g.tok == zx_hrxml_BasePay_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OtherPay->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OtherPay->gg;
+       e && e->g.tok == zx_hrxml_OtherPay_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Benefits->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Benefits->gg;
+       e && e->g.tok == zx_hrxml_Benefits_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -26308,7 +28396,9 @@ void zx_FREE_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_Pr
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Association->gg; e; e = en) {
+  for (e = &x->Association->gg;
+       e && e->g.tok == zx_hrxml_Association_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Association(c, (struct zx_hrxml_Association_s*)e, free_strs);
   }
@@ -26348,7 +28438,9 @@ void zx_DUP_STRS_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxm
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Association->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Association->gg;
+       se && se->g.tok == zx_hrxml_Association_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Association(c, (struct zx_hrxml_Association_s*)se);
 
 }
@@ -26369,7 +28461,9 @@ struct zx_hrxml_ProfessionalAssociations_s* zx_DEEP_CLONE_hrxml_ProfessionalAsso
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Association->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Association->gg;
+       e && e->g.tok == zx_hrxml_Association_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Association(c,(struct zx_hrxml_Association_s*)e,dup_strs);
   	  if (!enn)
   	      x->Association = (struct zx_hrxml_Association_s*)en;
@@ -26400,7 +28494,9 @@ int zx_WALK_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_
   if (ret)
     return ret;
 
-  for (e = &x->Association->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Association->gg;
+       e && e->g.tok == zx_hrxml_Association_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Association(c, (struct zx_hrxml_Association_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -26460,7 +28556,9 @@ void zx_FREE_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x, i
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -26503,7 +28601,9 @@ void zx_DUP_STRS_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* 
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -26527,7 +28627,9 @@ struct zx_hrxml_ProfileId_s* zx_DEEP_CLONE_hrxml_ProfileId(struct zx_ctx* c, str
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -26558,7 +28660,9 @@ int zx_WALK_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -26618,7 +28722,9 @@ void zx_FREE_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x, i
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -26661,7 +28767,9 @@ void zx_DUP_STRS_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* 
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -26685,7 +28793,9 @@ struct zx_hrxml_ProgramId_s* zx_DEEP_CLONE_hrxml_ProgramId(struct zx_ctx* c, str
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -26716,7 +28826,9 @@ int zx_WALK_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -26936,23 +29048,33 @@ void zx_FREE_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Publicat
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->FormattedPublicationDescription->gg; e; e = en) {
+  for (e = &x->FormattedPublicationDescription->gg;
+       e && e->g.tok == zx_hrxml_FormattedPublicationDescription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_FormattedPublicationDescription(c, (struct zx_hrxml_FormattedPublicationDescription_s*)e, free_strs);
   }
-  for (e = &x->Article->gg; e; e = en) {
+  for (e = &x->Article->gg;
+       e && e->g.tok == zx_hrxml_Article_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Article(c, (struct zx_hrxml_Article_s*)e, free_strs);
   }
-  for (e = &x->Book->gg; e; e = en) {
+  for (e = &x->Book->gg;
+       e && e->g.tok == zx_hrxml_Book_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Book(c, (struct zx_hrxml_Book_s*)e, free_strs);
   }
-  for (e = &x->ConferencePaper->gg; e; e = en) {
+  for (e = &x->ConferencePaper->gg;
+       e && e->g.tok == zx_hrxml_ConferencePaper_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ConferencePaper(c, (struct zx_hrxml_ConferencePaper_s*)e, free_strs);
   }
-  for (e = &x->OtherPublication->gg; e; e = en) {
+  for (e = &x->OtherPublication->gg;
+       e && e->g.tok == zx_hrxml_OtherPublication_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OtherPublication(c, (struct zx_hrxml_OtherPublication_s*)e, free_strs);
   }
@@ -26992,15 +29114,25 @@ void zx_DUP_STRS_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Publ
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->FormattedPublicationDescription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FormattedPublicationDescription->gg;
+       se && se->g.tok == zx_hrxml_FormattedPublicationDescription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_FormattedPublicationDescription(c, (struct zx_hrxml_FormattedPublicationDescription_s*)se);
-  for (se = &x->Article->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Article->gg;
+       se && se->g.tok == zx_hrxml_Article_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Article(c, (struct zx_hrxml_Article_s*)se);
-  for (se = &x->Book->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Book->gg;
+       se && se->g.tok == zx_hrxml_Book_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Book(c, (struct zx_hrxml_Book_s*)se);
-  for (se = &x->ConferencePaper->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ConferencePaper->gg;
+       se && se->g.tok == zx_hrxml_ConferencePaper_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ConferencePaper(c, (struct zx_hrxml_ConferencePaper_s*)se);
-  for (se = &x->OtherPublication->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherPublication->gg;
+       se && se->g.tok == zx_hrxml_OtherPublication_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OtherPublication(c, (struct zx_hrxml_OtherPublication_s*)se);
 
 }
@@ -27021,7 +29153,9 @@ struct zx_hrxml_PublicationHistory_s* zx_DEEP_CLONE_hrxml_PublicationHistory(str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->FormattedPublicationDescription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->FormattedPublicationDescription->gg;
+       e && e->g.tok == zx_hrxml_FormattedPublicationDescription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_FormattedPublicationDescription(c,(struct zx_hrxml_FormattedPublicationDescription_s*)e,dup_strs);
   	  if (!enn)
   	      x->FormattedPublicationDescription = (struct zx_hrxml_FormattedPublicationDescription_s*)en;
@@ -27029,7 +29163,9 @@ struct zx_hrxml_PublicationHistory_s* zx_DEEP_CLONE_hrxml_PublicationHistory(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Article->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Article->gg;
+       e && e->g.tok == zx_hrxml_Article_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Article(c,(struct zx_hrxml_Article_s*)e,dup_strs);
   	  if (!enn)
   	      x->Article = (struct zx_hrxml_Article_s*)en;
@@ -27037,7 +29173,9 @@ struct zx_hrxml_PublicationHistory_s* zx_DEEP_CLONE_hrxml_PublicationHistory(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Book->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Book->gg;
+       e && e->g.tok == zx_hrxml_Book_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Book(c,(struct zx_hrxml_Book_s*)e,dup_strs);
   	  if (!enn)
   	      x->Book = (struct zx_hrxml_Book_s*)en;
@@ -27045,7 +29183,9 @@ struct zx_hrxml_PublicationHistory_s* zx_DEEP_CLONE_hrxml_PublicationHistory(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ConferencePaper->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ConferencePaper->gg;
+       e && e->g.tok == zx_hrxml_ConferencePaper_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ConferencePaper(c,(struct zx_hrxml_ConferencePaper_s*)e,dup_strs);
   	  if (!enn)
   	      x->ConferencePaper = (struct zx_hrxml_ConferencePaper_s*)en;
@@ -27053,7 +29193,9 @@ struct zx_hrxml_PublicationHistory_s* zx_DEEP_CLONE_hrxml_PublicationHistory(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OtherPublication->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OtherPublication->gg;
+       e && e->g.tok == zx_hrxml_OtherPublication_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OtherPublication(c,(struct zx_hrxml_OtherPublication_s*)e,dup_strs);
   	  if (!enn)
   	      x->OtherPublication = (struct zx_hrxml_OtherPublication_s*)en;
@@ -27084,27 +29226,37 @@ int zx_WALK_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Public
   if (ret)
     return ret;
 
-  for (e = &x->FormattedPublicationDescription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->FormattedPublicationDescription->gg;
+       e && e->g.tok == zx_hrxml_FormattedPublicationDescription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_FormattedPublicationDescription(c, (struct zx_hrxml_FormattedPublicationDescription_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Article->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Article->gg;
+       e && e->g.tok == zx_hrxml_Article_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Article(c, (struct zx_hrxml_Article_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Book->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Book->gg;
+       e && e->g.tok == zx_hrxml_Book_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Book(c, (struct zx_hrxml_Book_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ConferencePaper->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ConferencePaper->gg;
+       e && e->g.tok == zx_hrxml_ConferencePaper_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ConferencePaper(c, (struct zx_hrxml_ConferencePaper_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OtherPublication->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OtherPublication->gg;
+       e && e->g.tok == zx_hrxml_OtherPublication_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OtherPublication(c, (struct zx_hrxml_OtherPublication_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -27292,7 +29444,9 @@ void zx_FREE_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualificatio
 
 
   zx_free_simple_elems(c, x->QualificationSummary, free_strs);
-  for (e = &x->Competency->gg; e; e = en) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, free_strs);
   }
@@ -27333,7 +29487,9 @@ void zx_DUP_STRS_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualific
 
 
   zx_dup_strs_simple_elems(c, x->QualificationSummary);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
 
 }
@@ -27355,7 +29511,9 @@ struct zx_hrxml_Qualifications_s* zx_DEEP_CLONE_hrxml_Qualifications(struct zx_c
 
 
   x->QualificationSummary = zx_deep_clone_simple_elems(c,x->QualificationSummary, dup_strs);
-  for (enn = 0, e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Competency(c,(struct zx_hrxml_Competency_s*)e,dup_strs);
   	  if (!enn)
   	      x->Competency = (struct zx_hrxml_Competency_s*)en;
@@ -27389,7 +29547,9 @@ int zx_WALK_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualificat
   ret = zx_walk_so_simple_elems(c, x->QualificationSummary, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Competency->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Competency->gg;
+       e && e->g.tok == zx_hrxml_Competency_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -27591,19 +29751,27 @@ void zx_FREE_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_s
   zx_free_simple_elems(c, x->CriterionName, free_strs);
   zx_free_simple_elems(c, x->Requested, free_strs);
   zx_free_simple_elems(c, x->Offered, free_strs);
-  for (e = &x->Score->gg; e; e = en) {
+  for (e = &x->Score->gg;
+       e && e->g.tok == zx_hrxml_Score_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Score(c, (struct zx_hrxml_Score_s*)e, free_strs);
   }
-  for (e = &x->Weight->gg; e; e = en) {
+  for (e = &x->Weight->gg;
+       e && e->g.tok == zx_hrxml_Weight_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
-  for (e = &x->RankedResult->gg; e; e = en) {
+  for (e = &x->RankedResult->gg;
+       e && e->g.tok == zx_hrxml_RankedResult_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)e, free_strs);
   }
@@ -27646,13 +29814,21 @@ void zx_DUP_STRS_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResu
   zx_dup_strs_simple_elems(c, x->CriterionName);
   zx_dup_strs_simple_elems(c, x->Requested);
   zx_dup_strs_simple_elems(c, x->Offered);
-  for (se = &x->Score->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Score->gg;
+       se && se->g.tok == zx_hrxml_Score_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Score(c, (struct zx_hrxml_Score_s*)se);
-  for (se = &x->Weight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Weight->gg;
+       se && se->g.tok == zx_hrxml_Weight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
-  for (se = &x->RankedResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RankedResult->gg;
+       se && se->g.tok == zx_hrxml_RankedResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)se);
 
 }
@@ -27676,7 +29852,9 @@ struct zx_hrxml_RankedResult_s* zx_DEEP_CLONE_hrxml_RankedResult(struct zx_ctx* 
   x->CriterionName = zx_deep_clone_simple_elems(c,x->CriterionName, dup_strs);
   x->Requested = zx_deep_clone_simple_elems(c,x->Requested, dup_strs);
   x->Offered = zx_deep_clone_simple_elems(c,x->Offered, dup_strs);
-  for (enn = 0, e = &x->Score->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Score->gg;
+       e && e->g.tok == zx_hrxml_Score_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Score(c,(struct zx_hrxml_Score_s*)e,dup_strs);
   	  if (!enn)
   	      x->Score = (struct zx_hrxml_Score_s*)en;
@@ -27684,7 +29862,9 @@ struct zx_hrxml_RankedResult_s* zx_DEEP_CLONE_hrxml_RankedResult(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Weight->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Weight->gg;
+       e && e->g.tok == zx_hrxml_Weight_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Weight(c,(struct zx_hrxml_Weight_s*)e,dup_strs);
   	  if (!enn)
   	      x->Weight = (struct zx_hrxml_Weight_s*)en;
@@ -27692,7 +29872,9 @@ struct zx_hrxml_RankedResult_s* zx_DEEP_CLONE_hrxml_RankedResult(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -27700,7 +29882,9 @@ struct zx_hrxml_RankedResult_s* zx_DEEP_CLONE_hrxml_RankedResult(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RankedResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RankedResult->gg;
+       e && e->g.tok == zx_hrxml_RankedResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RankedResult(c,(struct zx_hrxml_RankedResult_s*)e,dup_strs);
   	  if (!enn)
   	      x->RankedResult = (struct zx_hrxml_RankedResult_s*)en;
@@ -27740,22 +29924,30 @@ int zx_WALK_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult
   ret = zx_walk_so_simple_elems(c, x->Offered, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Score->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Score->gg;
+       e && e->g.tok == zx_hrxml_Score_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Score(c, (struct zx_hrxml_Score_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Weight->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Weight->gg;
+       e && e->g.tok == zx_hrxml_Weight_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RankedResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RankedResult->gg;
+       e && e->g.tok == zx_hrxml_RankedResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -27812,7 +30004,9 @@ void zx_FREE_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_RankedS
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RankedResult->gg; e; e = en) {
+  for (e = &x->RankedResult->gg;
+       e && e->g.tok == zx_hrxml_RankedResult_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)e, free_strs);
   }
@@ -27852,7 +30046,9 @@ void zx_DUP_STRS_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_Ran
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RankedResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RankedResult->gg;
+       se && se->g.tok == zx_hrxml_RankedResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)se);
 
 }
@@ -27873,7 +30069,9 @@ struct zx_hrxml_RankedSearchResults_s* zx_DEEP_CLONE_hrxml_RankedSearchResults(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RankedResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RankedResult->gg;
+       e && e->g.tok == zx_hrxml_RankedResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RankedResult(c,(struct zx_hrxml_RankedResult_s*)e,dup_strs);
   	  if (!enn)
   	      x->RankedResult = (struct zx_hrxml_RankedResult_s*)en;
@@ -27904,7 +30102,9 @@ int zx_WALK_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_Ranke
   if (ret)
     return ret;
 
-  for (e = &x->RankedResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RankedResult->gg;
+       e && e->g.tok == zx_hrxml_RankedResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -27961,12 +30161,16 @@ void zx_FREE_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x, i
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PersonName->gg; e; e = en) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->AdditionalText, free_strs);
-  for (e = &x->Organization->gg; e; e = en) {
+  for (e = &x->Organization->gg;
+       e && e->g.tok == zx_hrxml_Organization_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Organization(c, (struct zx_hrxml_Organization_s*)e, free_strs);
   }
@@ -28007,10 +30211,14 @@ void zx_DUP_STRS_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
   zx_dup_strs_simple_elems(c, x->AdditionalText);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_hrxml_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Organization(c, (struct zx_hrxml_Organization_s*)se);
   zx_dup_strs_simple_elems(c, x->OrganizationName);
 
@@ -28032,7 +30240,9 @@ struct zx_hrxml_Recipient_s* zx_DEEP_CLONE_hrxml_Recipient(struct zx_ctx* c, str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonName(c,(struct zx_hrxml_PersonName_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonName = (struct zx_hrxml_PersonName_s*)en;
@@ -28041,7 +30251,9 @@ struct zx_hrxml_Recipient_s* zx_DEEP_CLONE_hrxml_Recipient(struct zx_ctx* c, str
   	  enn = en;
   }
   x->AdditionalText = zx_deep_clone_simple_elems(c,x->AdditionalText, dup_strs);
-  for (enn = 0, e = &x->Organization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Organization->gg;
+       e && e->g.tok == zx_hrxml_Organization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Organization(c,(struct zx_hrxml_Organization_s*)e,dup_strs);
   	  if (!enn)
   	      x->Organization = (struct zx_hrxml_Organization_s*)en;
@@ -28073,7 +30285,9 @@ int zx_WALK_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -28081,7 +30295,9 @@ int zx_WALK_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x,
   ret = zx_walk_so_simple_elems(c, x->AdditionalText, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Organization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Organization->gg;
+       e && e->g.tok == zx_hrxml_Organization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Organization(c, (struct zx_hrxml_Organization_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -28142,12 +30358,16 @@ void zx_FREE_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x, i
 
   zx_free_attr(c, x->type, free_strs);
 
-  for (e = &x->PersonName->gg; e; e = en) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->PositionTitle, free_strs);
-  for (e = &x->ContactMethod->gg; e; e = en) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, free_strs);
   }
@@ -28189,10 +30409,14 @@ void zx_DUP_STRS_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* 
 
   zx_dup_attr(c, x->type);
 
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
   zx_dup_strs_simple_elems(c, x->PositionTitle);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
 
@@ -28215,7 +30439,9 @@ struct zx_hrxml_Reference_s* zx_DEEP_CLONE_hrxml_Reference(struct zx_ctx* c, str
 
   x->type = zx_clone_attr(c, x->type);
 
-  for (enn = 0, e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonName(c,(struct zx_hrxml_PersonName_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonName = (struct zx_hrxml_PersonName_s*)en;
@@ -28224,7 +30450,9 @@ struct zx_hrxml_Reference_s* zx_DEEP_CLONE_hrxml_Reference(struct zx_ctx* c, str
   	  enn = en;
   }
   x->PositionTitle = zx_deep_clone_simple_elems(c,x->PositionTitle, dup_strs);
-  for (enn = 0, e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactMethod(c,(struct zx_hrxml_ContactMethod_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactMethod = (struct zx_hrxml_ContactMethod_s*)en;
@@ -28256,7 +30484,9 @@ int zx_WALK_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->PersonName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonName->gg;
+       e && e->g.tok == zx_hrxml_PersonName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -28264,7 +30494,9 @@ int zx_WALK_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x,
   ret = zx_walk_so_simple_elems(c, x->PositionTitle, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ContactMethod->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactMethod->gg;
+       e && e->g.tok == zx_hrxml_ContactMethod_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -28324,7 +30556,9 @@ void zx_FREE_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Reference->gg; e; e = en) {
+  for (e = &x->Reference->gg;
+       e && e->g.tok == zx_hrxml_Reference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Reference(c, (struct zx_hrxml_Reference_s*)e, free_strs);
   }
@@ -28364,7 +30598,9 @@ void zx_DUP_STRS_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Reference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Reference->gg;
+       se && se->g.tok == zx_hrxml_Reference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Reference(c, (struct zx_hrxml_Reference_s*)se);
 
 }
@@ -28385,7 +30621,9 @@ struct zx_hrxml_References_s* zx_DEEP_CLONE_hrxml_References(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Reference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Reference->gg;
+       e && e->g.tok == zx_hrxml_Reference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Reference(c,(struct zx_hrxml_Reference_s*)e,dup_strs);
   	  if (!enn)
   	      x->Reference = (struct zx_hrxml_Reference_s*)en;
@@ -28416,7 +30654,9 @@ int zx_WALK_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* 
   if (ret)
     return ret;
 
-  for (e = &x->Reference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Reference->gg;
+       e && e->g.tok == zx_hrxml_Reference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Reference(c, (struct zx_hrxml_Reference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -28475,67 +30715,97 @@ void zx_FREE_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Related
   zx_free_attr(c, x->relationship, free_strs);
 
   zx_free_simple_elems(c, x->OrganizationName, free_strs);
-  for (e = &x->OrganizationId->gg; e; e = en) {
+  for (e = &x->OrganizationId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)e, free_strs);
   }
-  for (e = &x->TaxId->gg; e; e = en) {
+  for (e = &x->TaxId->gg;
+       e && e->g.tok == zx_hrxml_TaxId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TaxId(c, (struct zx_hrxml_TaxId_s*)e, free_strs);
   }
-  for (e = &x->LegalId->gg; e; e = en) {
+  for (e = &x->LegalId->gg;
+       e && e->g.tok == zx_hrxml_LegalId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LegalId(c, (struct zx_hrxml_LegalId_s*)e, free_strs);
   }
-  for (e = &x->DunsNumber->gg; e; e = en) {
+  for (e = &x->DunsNumber->gg;
+       e && e->g.tok == zx_hrxml_DunsNumber_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DunsNumber(c, (struct zx_hrxml_DunsNumber_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->IsPublicCompany, free_strs);
-  for (e = &x->Stock->gg; e; e = en) {
+  for (e = &x->Stock->gg;
+       e && e->g.tok == zx_hrxml_Stock_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Stock(c, (struct zx_hrxml_Stock_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->MissionStatement, free_strs);
   zx_free_simple_elems(c, x->ValueStatement, free_strs);
-  for (e = &x->InternetDomainName->gg; e; e = en) {
+  for (e = &x->InternetDomainName->gg;
+       e && e->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)e, free_strs);
   }
-  for (e = &x->DoingBusinessAs->gg; e; e = en) {
+  for (e = &x->DoingBusinessAs->gg;
+       e && e->g.tok == zx_hrxml_DoingBusinessAs_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DoingBusinessAs(c, (struct zx_hrxml_DoingBusinessAs_s*)e, free_strs);
   }
-  for (e = &x->LegalClassification->gg; e; e = en) {
+  for (e = &x->LegalClassification->gg;
+       e && e->g.tok == zx_hrxml_LegalClassification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LegalClassification(c, (struct zx_hrxml_LegalClassification_s*)e, free_strs);
   }
-  for (e = &x->IndustryCode->gg; e; e = en) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Headcount, free_strs);
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
-  for (e = &x->WorkSite->gg; e; e = en) {
+  for (e = &x->WorkSite->gg;
+       e && e->g.tok == zx_hrxml_WorkSite_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)e, free_strs);
   }
-  for (e = &x->ContactInfo->gg; e; e = en) {
+  for (e = &x->ContactInfo->gg;
+       e && e->g.tok == zx_hrxml_ContactInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)e, free_strs);
   }
-  for (e = &x->RelatedOrganization->gg; e; e = en) {
+  for (e = &x->RelatedOrganization->gg;
+       e && e->g.tok == zx_hrxml_RelatedOrganization_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RelatedOrganization(c, (struct zx_hrxml_RelatedOrganization_s*)e, free_strs);
   }
-  for (e = &x->OrganizationalUnit->gg; e; e = en) {
+  for (e = &x->OrganizationalUnit->gg;
+       e && e->g.tok == zx_hrxml_OrganizationalUnit_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrganizationalUnit(c, (struct zx_hrxml_OrganizationalUnit_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -28577,39 +30847,69 @@ void zx_DUP_STRS_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Rel
   zx_dup_attr(c, x->relationship);
 
   zx_dup_strs_simple_elems(c, x->OrganizationName);
-  for (se = &x->OrganizationId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)se);
-  for (se = &x->TaxId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TaxId->gg;
+       se && se->g.tok == zx_hrxml_TaxId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TaxId(c, (struct zx_hrxml_TaxId_s*)se);
-  for (se = &x->LegalId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LegalId->gg;
+       se && se->g.tok == zx_hrxml_LegalId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LegalId(c, (struct zx_hrxml_LegalId_s*)se);
-  for (se = &x->DunsNumber->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DunsNumber->gg;
+       se && se->g.tok == zx_hrxml_DunsNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DunsNumber(c, (struct zx_hrxml_DunsNumber_s*)se);
   zx_dup_strs_simple_elems(c, x->IsPublicCompany);
-  for (se = &x->Stock->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Stock->gg;
+       se && se->g.tok == zx_hrxml_Stock_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Stock(c, (struct zx_hrxml_Stock_s*)se);
   zx_dup_strs_simple_elems(c, x->MissionStatement);
   zx_dup_strs_simple_elems(c, x->ValueStatement);
-  for (se = &x->InternetDomainName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InternetDomainName->gg;
+       se && se->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)se);
-  for (se = &x->DoingBusinessAs->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DoingBusinessAs->gg;
+       se && se->g.tok == zx_hrxml_DoingBusinessAs_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DoingBusinessAs(c, (struct zx_hrxml_DoingBusinessAs_s*)se);
-  for (se = &x->LegalClassification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LegalClassification->gg;
+       se && se->g.tok == zx_hrxml_LegalClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LegalClassification(c, (struct zx_hrxml_LegalClassification_s*)se);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
   zx_dup_strs_simple_elems(c, x->Headcount);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->WorkSite->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSite->gg;
+       se && se->g.tok == zx_hrxml_WorkSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)se);
-  for (se = &x->ContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactInfo->gg;
+       se && se->g.tok == zx_hrxml_ContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)se);
-  for (se = &x->RelatedOrganization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedOrganization->gg;
+       se && se->g.tok == zx_hrxml_RelatedOrganization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RelatedOrganization(c, (struct zx_hrxml_RelatedOrganization_s*)se);
-  for (se = &x->OrganizationalUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationalUnit->gg;
+       se && se->g.tok == zx_hrxml_OrganizationalUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrganizationalUnit(c, (struct zx_hrxml_OrganizationalUnit_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -28632,7 +30932,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   x->relationship = zx_clone_attr(c, x->relationship);
 
   x->OrganizationName = zx_deep_clone_simple_elems(c,x->OrganizationName, dup_strs);
-  for (enn = 0, e = &x->OrganizationId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrganizationId(c,(struct zx_hrxml_OrganizationId_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationId = (struct zx_hrxml_OrganizationId_s*)en;
@@ -28640,7 +30942,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TaxId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TaxId->gg;
+       e && e->g.tok == zx_hrxml_TaxId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TaxId(c,(struct zx_hrxml_TaxId_s*)e,dup_strs);
   	  if (!enn)
   	      x->TaxId = (struct zx_hrxml_TaxId_s*)en;
@@ -28648,7 +30952,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LegalId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LegalId->gg;
+       e && e->g.tok == zx_hrxml_LegalId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LegalId(c,(struct zx_hrxml_LegalId_s*)e,dup_strs);
   	  if (!enn)
   	      x->LegalId = (struct zx_hrxml_LegalId_s*)en;
@@ -28656,7 +30962,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DunsNumber->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DunsNumber->gg;
+       e && e->g.tok == zx_hrxml_DunsNumber_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DunsNumber(c,(struct zx_hrxml_DunsNumber_s*)e,dup_strs);
   	  if (!enn)
   	      x->DunsNumber = (struct zx_hrxml_DunsNumber_s*)en;
@@ -28665,7 +30973,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	  enn = en;
   }
   x->IsPublicCompany = zx_deep_clone_simple_elems(c,x->IsPublicCompany, dup_strs);
-  for (enn = 0, e = &x->Stock->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Stock->gg;
+       e && e->g.tok == zx_hrxml_Stock_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Stock(c,(struct zx_hrxml_Stock_s*)e,dup_strs);
   	  if (!enn)
   	      x->Stock = (struct zx_hrxml_Stock_s*)en;
@@ -28675,7 +30985,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   }
   x->MissionStatement = zx_deep_clone_simple_elems(c,x->MissionStatement, dup_strs);
   x->ValueStatement = zx_deep_clone_simple_elems(c,x->ValueStatement, dup_strs);
-  for (enn = 0, e = &x->InternetDomainName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->InternetDomainName->gg;
+       e && e->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_InternetDomainName(c,(struct zx_hrxml_InternetDomainName_s*)e,dup_strs);
   	  if (!enn)
   	      x->InternetDomainName = (struct zx_hrxml_InternetDomainName_s*)en;
@@ -28683,7 +30995,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DoingBusinessAs->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DoingBusinessAs->gg;
+       e && e->g.tok == zx_hrxml_DoingBusinessAs_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DoingBusinessAs(c,(struct zx_hrxml_DoingBusinessAs_s*)e,dup_strs);
   	  if (!enn)
   	      x->DoingBusinessAs = (struct zx_hrxml_DoingBusinessAs_s*)en;
@@ -28691,7 +31005,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LegalClassification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LegalClassification->gg;
+       e && e->g.tok == zx_hrxml_LegalClassification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LegalClassification(c,(struct zx_hrxml_LegalClassification_s*)e,dup_strs);
   	  if (!enn)
   	      x->LegalClassification = (struct zx_hrxml_LegalClassification_s*)en;
@@ -28699,7 +31015,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IndustryCode(c,(struct zx_hrxml_IndustryCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)en;
@@ -28708,7 +31026,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	  enn = en;
   }
   x->Headcount = zx_deep_clone_simple_elems(c,x->Headcount, dup_strs);
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -28716,7 +31036,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->WorkSite->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->WorkSite->gg;
+       e && e->g.tok == zx_hrxml_WorkSite_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_WorkSite(c,(struct zx_hrxml_WorkSite_s*)e,dup_strs);
   	  if (!enn)
   	      x->WorkSite = (struct zx_hrxml_WorkSite_s*)en;
@@ -28724,7 +31046,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ContactInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactInfo->gg;
+       e && e->g.tok == zx_hrxml_ContactInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactInfo(c,(struct zx_hrxml_ContactInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactInfo = (struct zx_hrxml_ContactInfo_s*)en;
@@ -28732,7 +31056,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RelatedOrganization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RelatedOrganization->gg;
+       e && e->g.tok == zx_hrxml_RelatedOrganization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RelatedOrganization(c,(struct zx_hrxml_RelatedOrganization_s*)e,dup_strs);
   	  if (!enn)
   	      x->RelatedOrganization = (struct zx_hrxml_RelatedOrganization_s*)en;
@@ -28740,7 +31066,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OrganizationalUnit->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationalUnit->gg;
+       e && e->g.tok == zx_hrxml_OrganizationalUnit_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrganizationalUnit(c,(struct zx_hrxml_OrganizationalUnit_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationalUnit = (struct zx_hrxml_OrganizationalUnit_s*)en;
@@ -28748,7 +31076,9 @@ struct zx_hrxml_RelatedOrganization_s* zx_DEEP_CLONE_hrxml_RelatedOrganization(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -28782,22 +31112,30 @@ int zx_WALK_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Relat
   ret = zx_walk_so_simple_elems(c, x->OrganizationName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->OrganizationId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TaxId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TaxId->gg;
+       e && e->g.tok == zx_hrxml_TaxId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TaxId(c, (struct zx_hrxml_TaxId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LegalId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LegalId->gg;
+       e && e->g.tok == zx_hrxml_LegalId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LegalId(c, (struct zx_hrxml_LegalId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DunsNumber->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DunsNumber->gg;
+       e && e->g.tok == zx_hrxml_DunsNumber_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DunsNumber(c, (struct zx_hrxml_DunsNumber_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -28805,7 +31143,9 @@ int zx_WALK_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Relat
   ret = zx_walk_so_simple_elems(c, x->IsPublicCompany, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Stock->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Stock->gg;
+       e && e->g.tok == zx_hrxml_Stock_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Stock(c, (struct zx_hrxml_Stock_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -28816,22 +31156,30 @@ int zx_WALK_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Relat
   ret = zx_walk_so_simple_elems(c, x->ValueStatement, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->InternetDomainName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->InternetDomainName->gg;
+       e && e->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DoingBusinessAs->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DoingBusinessAs->gg;
+       e && e->g.tok == zx_hrxml_DoingBusinessAs_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DoingBusinessAs(c, (struct zx_hrxml_DoingBusinessAs_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LegalClassification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LegalClassification->gg;
+       e && e->g.tok == zx_hrxml_LegalClassification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LegalClassification(c, (struct zx_hrxml_LegalClassification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -28839,32 +31187,44 @@ int zx_WALK_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Relat
   ret = zx_walk_so_simple_elems(c, x->Headcount, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->WorkSite->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->WorkSite->gg;
+       e && e->g.tok == zx_hrxml_WorkSite_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ContactInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactInfo->gg;
+       e && e->g.tok == zx_hrxml_ContactInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RelatedOrganization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RelatedOrganization->gg;
+       e && e->g.tok == zx_hrxml_RelatedOrganization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RelatedOrganization(c, (struct zx_hrxml_RelatedOrganization_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OrganizationalUnit->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationalUnit->gg;
+       e && e->g.tok == zx_hrxml_OrganizationalUnit_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrganizationalUnit(c, (struct zx_hrxml_OrganizationalUnit_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -28926,39 +31286,57 @@ void zx_FREE_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_R
   zx_free_attr(c, x->typeOfGroup, free_strs);
 
   zx_free_simple_elems(c, x->OrganizationalUnitName, free_strs);
-  for (e = &x->OrganizationalUnitId->gg; e; e = en) {
+  for (e = &x->OrganizationalUnitId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)e, free_strs);
   }
-  for (e = &x->OrganizationId->gg; e; e = en) {
+  for (e = &x->OrganizationId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
-  for (e = &x->IndustryCode->gg; e; e = en) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, free_strs);
   }
-  for (e = &x->AccountingCode->gg; e; e = en) {
+  for (e = &x->AccountingCode->gg;
+       e && e->g.tok == zx_hrxml_AccountingCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)e, free_strs);
   }
-  for (e = &x->WorkSite->gg; e; e = en) {
+  for (e = &x->WorkSite->gg;
+       e && e->g.tok == zx_hrxml_WorkSite_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)e, free_strs);
   }
-  for (e = &x->RelatedOrganizationalUnit->gg; e; e = en) {
+  for (e = &x->RelatedOrganizationalUnit->gg;
+       e && e->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)e, free_strs);
   }
-  for (e = &x->PersonMember->gg; e; e = en) {
+  for (e = &x->PersonMember->gg;
+       e && e->g.tok == zx_hrxml_PersonMember_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -29003,23 +31381,41 @@ void zx_DUP_STRS_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrx
   zx_dup_attr(c, x->typeOfGroup);
 
   zx_dup_strs_simple_elems(c, x->OrganizationalUnitName);
-  for (se = &x->OrganizationalUnitId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationalUnitId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)se);
-  for (se = &x->OrganizationId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
-  for (se = &x->AccountingCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AccountingCode->gg;
+       se && se->g.tok == zx_hrxml_AccountingCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)se);
-  for (se = &x->WorkSite->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSite->gg;
+       se && se->g.tok == zx_hrxml_WorkSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)se);
-  for (se = &x->RelatedOrganizationalUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedOrganizationalUnit->gg;
+       se && se->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)se);
-  for (se = &x->PersonMember->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonMember->gg;
+       se && se->g.tok == zx_hrxml_PersonMember_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -29045,7 +31441,9 @@ struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganiza
   x->typeOfGroup = zx_clone_attr(c, x->typeOfGroup);
 
   x->OrganizationalUnitName = zx_deep_clone_simple_elems(c,x->OrganizationalUnitName, dup_strs);
-  for (enn = 0, e = &x->OrganizationalUnitId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationalUnitId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrganizationalUnitId(c,(struct zx_hrxml_OrganizationalUnitId_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationalUnitId = (struct zx_hrxml_OrganizationalUnitId_s*)en;
@@ -29053,7 +31451,9 @@ struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganiza
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OrganizationId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrganizationId(c,(struct zx_hrxml_OrganizationId_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationId = (struct zx_hrxml_OrganizationId_s*)en;
@@ -29061,7 +31461,9 @@ struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganiza
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -29069,7 +31471,9 @@ struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganiza
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IndustryCode(c,(struct zx_hrxml_IndustryCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->IndustryCode = (struct zx_hrxml_IndustryCode_s*)en;
@@ -29077,7 +31481,9 @@ struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganiza
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AccountingCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AccountingCode->gg;
+       e && e->g.tok == zx_hrxml_AccountingCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_AccountingCode(c,(struct zx_hrxml_AccountingCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->AccountingCode = (struct zx_hrxml_AccountingCode_s*)en;
@@ -29085,7 +31491,9 @@ struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganiza
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->WorkSite->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->WorkSite->gg;
+       e && e->g.tok == zx_hrxml_WorkSite_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_WorkSite(c,(struct zx_hrxml_WorkSite_s*)e,dup_strs);
   	  if (!enn)
   	      x->WorkSite = (struct zx_hrxml_WorkSite_s*)en;
@@ -29093,7 +31501,9 @@ struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganiza
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RelatedOrganizationalUnit->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RelatedOrganizationalUnit->gg;
+       e && e->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RelatedOrganizationalUnit(c,(struct zx_hrxml_RelatedOrganizationalUnit_s*)e,dup_strs);
   	  if (!enn)
   	      x->RelatedOrganizationalUnit = (struct zx_hrxml_RelatedOrganizationalUnit_s*)en;
@@ -29101,7 +31511,9 @@ struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganiza
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PersonMember->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PersonMember->gg;
+       e && e->g.tok == zx_hrxml_PersonMember_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PersonMember(c,(struct zx_hrxml_PersonMember_s*)e,dup_strs);
   	  if (!enn)
   	      x->PersonMember = (struct zx_hrxml_PersonMember_s*)en;
@@ -29109,7 +31521,9 @@ struct zx_hrxml_RelatedOrganizationalUnit_s* zx_DEEP_CLONE_hrxml_RelatedOrganiza
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -29143,47 +31557,65 @@ int zx_WALK_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml
   ret = zx_walk_so_simple_elems(c, x->OrganizationalUnitName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->OrganizationalUnitId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationalUnitId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OrganizationId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationId->gg;
+       e && e->g.tok == zx_hrxml_OrganizationId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->IndustryCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IndustryCode->gg;
+       e && e->g.tok == zx_hrxml_IndustryCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AccountingCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AccountingCode->gg;
+       e && e->g.tok == zx_hrxml_AccountingCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->WorkSite->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->WorkSite->gg;
+       e && e->g.tok == zx_hrxml_WorkSite_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RelatedOrganizationalUnit->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RelatedOrganizationalUnit->gg;
+       e && e->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PersonMember->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PersonMember->gg;
+       e && e->g.tok == zx_hrxml_PersonMember_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -29240,7 +31672,9 @@ void zx_FREE_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_Rel
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->PositionPosting->gg; e; e = en) {
+  for (e = &x->PositionPosting->gg;
+       e && e->g.tok == zx_hrxml_PositionPosting_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PositionPosting(c, (struct zx_hrxml_PositionPosting_s*)e, free_strs);
   }
@@ -29280,7 +31714,9 @@ void zx_DUP_STRS_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->PositionPosting->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionPosting->gg;
+       se && se->g.tok == zx_hrxml_PositionPosting_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PositionPosting(c, (struct zx_hrxml_PositionPosting_s*)se);
 
 }
@@ -29301,7 +31737,9 @@ struct zx_hrxml_RelatedPositionPostings_s* zx_DEEP_CLONE_hrxml_RelatedPositionPo
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->PositionPosting->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PositionPosting->gg;
+       e && e->g.tok == zx_hrxml_PositionPosting_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PositionPosting(c,(struct zx_hrxml_PositionPosting_s*)e,dup_strs);
   	  if (!enn)
   	      x->PositionPosting = (struct zx_hrxml_PositionPosting_s*)en;
@@ -29332,7 +31770,9 @@ int zx_WALK_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_R
   if (ret)
     return ret;
 
-  for (e = &x->PositionPosting->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PositionPosting->gg;
+       e && e->g.tok == zx_hrxml_PositionPosting_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PositionPosting(c, (struct zx_hrxml_PositionPosting_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -29529,7 +31969,9 @@ void zx_FREE_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Reloca
 
   zx_free_attr(c, x->companyOffered, free_strs);
 
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
@@ -29570,7 +32012,9 @@ void zx_DUP_STRS_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Re
 
   zx_dup_attr(c, x->companyOffered);
 
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 }
@@ -29592,7 +32036,9 @@ struct zx_hrxml_RelocationAssistance_s* zx_DEEP_CLONE_hrxml_RelocationAssistance
 
   x->companyOffered = zx_clone_attr(c, x->companyOffered);
 
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -29623,7 +32069,9 @@ int zx_WALK_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Relo
   if (ret)
     return ret;
 
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -29680,19 +32128,27 @@ void zx_FREE_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Remuner
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->BasePay->gg; e; e = en) {
+  for (e = &x->BasePay->gg;
+       e && e->g.tok == zx_hrxml_BasePay_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)e, free_strs);
   }
-  for (e = &x->OtherPay->gg; e; e = en) {
+  for (e = &x->OtherPay->gg;
+       e && e->g.tok == zx_hrxml_OtherPay_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)e, free_strs);
   }
-  for (e = &x->Benefits->gg; e; e = en) {
+  for (e = &x->Benefits->gg;
+       e && e->g.tok == zx_hrxml_Benefits_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -29732,13 +32188,21 @@ void zx_DUP_STRS_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Rem
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->BasePay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BasePay->gg;
+       se && se->g.tok == zx_hrxml_BasePay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)se);
-  for (se = &x->OtherPay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherPay->gg;
+       se && se->g.tok == zx_hrxml_OtherPay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)se);
-  for (se = &x->Benefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Benefits->gg;
+       se && se->g.tok == zx_hrxml_Benefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -29759,7 +32223,9 @@ struct zx_hrxml_RemunerationPackage_s* zx_DEEP_CLONE_hrxml_RemunerationPackage(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->BasePay->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->BasePay->gg;
+       e && e->g.tok == zx_hrxml_BasePay_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_BasePay(c,(struct zx_hrxml_BasePay_s*)e,dup_strs);
   	  if (!enn)
   	      x->BasePay = (struct zx_hrxml_BasePay_s*)en;
@@ -29767,7 +32233,9 @@ struct zx_hrxml_RemunerationPackage_s* zx_DEEP_CLONE_hrxml_RemunerationPackage(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OtherPay->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OtherPay->gg;
+       e && e->g.tok == zx_hrxml_OtherPay_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OtherPay(c,(struct zx_hrxml_OtherPay_s*)e,dup_strs);
   	  if (!enn)
   	      x->OtherPay = (struct zx_hrxml_OtherPay_s*)en;
@@ -29775,7 +32243,9 @@ struct zx_hrxml_RemunerationPackage_s* zx_DEEP_CLONE_hrxml_RemunerationPackage(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Benefits->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Benefits->gg;
+       e && e->g.tok == zx_hrxml_Benefits_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Benefits(c,(struct zx_hrxml_Benefits_s*)e,dup_strs);
   	  if (!enn)
   	      x->Benefits = (struct zx_hrxml_Benefits_s*)en;
@@ -29783,7 +32253,9 @@ struct zx_hrxml_RemunerationPackage_s* zx_DEEP_CLONE_hrxml_RemunerationPackage(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -29814,22 +32286,30 @@ int zx_WALK_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Remun
   if (ret)
     return ret;
 
-  for (e = &x->BasePay->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->BasePay->gg;
+       e && e->g.tok == zx_hrxml_BasePay_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OtherPay->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OtherPay->gg;
+       e && e->g.tok == zx_hrxml_OtherPay_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Benefits->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Benefits->gg;
+       e && e->g.tok == zx_hrxml_Benefits_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -29889,15 +32369,21 @@ void zx_FREE_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, int fre
 
   zx_free_simple_elems(c, x->ResumeId, free_strs);
   zx_free_simple_elems(c, x->DistributionGuidelines, free_strs);
-  for (e = &x->StructuredXMLResume->gg; e; e = en) {
+  for (e = &x->StructuredXMLResume->gg;
+       e && e->g.tok == zx_hrxml_StructuredXMLResume_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StructuredXMLResume(c, (struct zx_hrxml_StructuredXMLResume_s*)e, free_strs);
   }
-  for (e = &x->NonXMLResume->gg; e; e = en) {
+  for (e = &x->NonXMLResume->gg;
+       e && e->g.tok == zx_hrxml_NonXMLResume_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_NonXMLResume(c, (struct zx_hrxml_NonXMLResume_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -29940,11 +32426,17 @@ void zx_DUP_STRS_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x)
 
   zx_dup_strs_simple_elems(c, x->ResumeId);
   zx_dup_strs_simple_elems(c, x->DistributionGuidelines);
-  for (se = &x->StructuredXMLResume->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StructuredXMLResume->gg;
+       se && se->g.tok == zx_hrxml_StructuredXMLResume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StructuredXMLResume(c, (struct zx_hrxml_StructuredXMLResume_s*)se);
-  for (se = &x->NonXMLResume->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NonXMLResume->gg;
+       se && se->g.tok == zx_hrxml_NonXMLResume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_NonXMLResume(c, (struct zx_hrxml_NonXMLResume_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -29968,7 +32460,9 @@ struct zx_hrxml_Resume_s* zx_DEEP_CLONE_hrxml_Resume(struct zx_ctx* c, struct zx
 
   x->ResumeId = zx_deep_clone_simple_elems(c,x->ResumeId, dup_strs);
   x->DistributionGuidelines = zx_deep_clone_simple_elems(c,x->DistributionGuidelines, dup_strs);
-  for (enn = 0, e = &x->StructuredXMLResume->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StructuredXMLResume->gg;
+       e && e->g.tok == zx_hrxml_StructuredXMLResume_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StructuredXMLResume(c,(struct zx_hrxml_StructuredXMLResume_s*)e,dup_strs);
   	  if (!enn)
   	      x->StructuredXMLResume = (struct zx_hrxml_StructuredXMLResume_s*)en;
@@ -29976,7 +32470,9 @@ struct zx_hrxml_Resume_s* zx_DEEP_CLONE_hrxml_Resume(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->NonXMLResume->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NonXMLResume->gg;
+       e && e->g.tok == zx_hrxml_NonXMLResume_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_NonXMLResume(c,(struct zx_hrxml_NonXMLResume_s*)e,dup_strs);
   	  if (!enn)
   	      x->NonXMLResume = (struct zx_hrxml_NonXMLResume_s*)en;
@@ -29984,7 +32480,9 @@ struct zx_hrxml_Resume_s* zx_DEEP_CLONE_hrxml_Resume(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -30021,17 +32519,23 @@ int zx_WALK_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->DistributionGuidelines, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->StructuredXMLResume->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StructuredXMLResume->gg;
+       e && e->g.tok == zx_hrxml_StructuredXMLResume_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StructuredXMLResume(c, (struct zx_hrxml_StructuredXMLResume_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->NonXMLResume->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NonXMLResume->gg;
+       e && e->g.tok == zx_hrxml_NonXMLResume_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_NonXMLResume(c, (struct zx_hrxml_NonXMLResume_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -30089,11 +32593,15 @@ void zx_FREE_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Resume
 
   zx_free_attr(c, x->type, free_strs);
 
-  for (e = &x->EffectiveDate->gg; e; e = en) {
+  for (e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
@@ -30134,9 +32642,13 @@ void zx_DUP_STRS_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Re
 
   zx_dup_attr(c, x->type);
 
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 }
@@ -30158,7 +32670,9 @@ struct zx_hrxml_ResumeAdditionalItem_s* zx_DEEP_CLONE_hrxml_ResumeAdditionalItem
 
   x->type = zx_clone_attr(c, x->type);
 
-  for (enn = 0, e = &x->EffectiveDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EffectiveDate(c,(struct zx_hrxml_EffectiveDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)en;
@@ -30166,7 +32680,9 @@ struct zx_hrxml_ResumeAdditionalItem_s* zx_DEEP_CLONE_hrxml_ResumeAdditionalItem
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -30197,12 +32713,16 @@ int zx_WALK_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Resu
   if (ret)
     return ret;
 
-  for (e = &x->EffectiveDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -30259,7 +32779,9 @@ void zx_FREE_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_Resum
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ResumeAdditionalItem->gg; e; e = en) {
+  for (e = &x->ResumeAdditionalItem->gg;
+       e && e->g.tok == zx_hrxml_ResumeAdditionalItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ResumeAdditionalItem(c, (struct zx_hrxml_ResumeAdditionalItem_s*)e, free_strs);
   }
@@ -30299,7 +32821,9 @@ void zx_DUP_STRS_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_R
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ResumeAdditionalItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResumeAdditionalItem->gg;
+       se && se->g.tok == zx_hrxml_ResumeAdditionalItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ResumeAdditionalItem(c, (struct zx_hrxml_ResumeAdditionalItem_s*)se);
 
 }
@@ -30320,7 +32844,9 @@ struct zx_hrxml_ResumeAdditionalItems_s* zx_DEEP_CLONE_hrxml_ResumeAdditionalIte
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ResumeAdditionalItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResumeAdditionalItem->gg;
+       e && e->g.tok == zx_hrxml_ResumeAdditionalItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ResumeAdditionalItem(c,(struct zx_hrxml_ResumeAdditionalItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResumeAdditionalItem = (struct zx_hrxml_ResumeAdditionalItem_s*)en;
@@ -30351,7 +32877,9 @@ int zx_WALK_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_Res
   if (ret)
     return ret;
 
-  for (e = &x->ResumeAdditionalItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResumeAdditionalItem->gg;
+       e && e->g.tok == zx_hrxml_ResumeAdditionalItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ResumeAdditionalItem(c, (struct zx_hrxml_ResumeAdditionalItem_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -30411,7 +32939,9 @@ void zx_FREE_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, int fre
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -30454,7 +32984,9 @@ void zx_DUP_STRS_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x)
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -30478,7 +33010,9 @@ struct zx_hrxml_RoleId_s* zx_DEEP_CLONE_hrxml_RoleId(struct zx_ctx* c, struct zx
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -30509,7 +33043,9 @@ int zx_WALK_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -30566,24 +33102,34 @@ void zx_FREE_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhys
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Name, free_strs);
-  for (e = &x->SpatialLocation->gg; e; e = en) {
+  for (e = &x->SpatialLocation->gg;
+       e && e->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)e, free_strs);
   }
-  for (e = &x->TravelDirections->gg; e; e = en) {
+  for (e = &x->TravelDirections->gg;
+       e && e->g.tok == zx_hrxml_TravelDirections_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)e, free_strs);
   }
-  for (e = &x->Area->gg; e; e = en) {
+  for (e = &x->Area->gg;
+       e && e->g.tok == zx_hrxml_Area_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Area(c, (struct zx_hrxml_Area_s*)e, free_strs);
   }
-  for (e = &x->PostalAddress->gg; e; e = en) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, free_strs);
   }
@@ -30624,16 +33170,26 @@ void zx_DUP_STRS_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEP
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
   zx_dup_strs_simple_elems(c, x->Name);
-  for (se = &x->SpatialLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpatialLocation->gg;
+       se && se->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)se);
-  for (se = &x->TravelDirections->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TravelDirections->gg;
+       se && se->g.tok == zx_hrxml_TravelDirections_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)se);
-  for (se = &x->Area->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Area->gg;
+       se && se->g.tok == zx_hrxml_Area_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Area(c, (struct zx_hrxml_Area_s*)se);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
 
@@ -30655,7 +33211,9 @@ struct zx_hrxml_SEPPhysicalLocation_s* zx_DEEP_CLONE_hrxml_SEPPhysicalLocation(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -30664,7 +33222,9 @@ struct zx_hrxml_SEPPhysicalLocation_s* zx_DEEP_CLONE_hrxml_SEPPhysicalLocation(s
   	  enn = en;
   }
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
-  for (enn = 0, e = &x->SpatialLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SpatialLocation->gg;
+       e && e->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SpatialLocation(c,(struct zx_hrxml_SpatialLocation_s*)e,dup_strs);
   	  if (!enn)
   	      x->SpatialLocation = (struct zx_hrxml_SpatialLocation_s*)en;
@@ -30672,7 +33232,9 @@ struct zx_hrxml_SEPPhysicalLocation_s* zx_DEEP_CLONE_hrxml_SEPPhysicalLocation(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TravelDirections->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TravelDirections->gg;
+       e && e->g.tok == zx_hrxml_TravelDirections_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TravelDirections(c,(struct zx_hrxml_TravelDirections_s*)e,dup_strs);
   	  if (!enn)
   	      x->TravelDirections = (struct zx_hrxml_TravelDirections_s*)en;
@@ -30680,7 +33242,9 @@ struct zx_hrxml_SEPPhysicalLocation_s* zx_DEEP_CLONE_hrxml_SEPPhysicalLocation(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Area->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Area->gg;
+       e && e->g.tok == zx_hrxml_Area_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Area(c,(struct zx_hrxml_Area_s*)e,dup_strs);
   	  if (!enn)
   	      x->Area = (struct zx_hrxml_Area_s*)en;
@@ -30688,7 +33252,9 @@ struct zx_hrxml_SEPPhysicalLocation_s* zx_DEEP_CLONE_hrxml_SEPPhysicalLocation(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PostalAddress(c,(struct zx_hrxml_PostalAddress_s*)e,dup_strs);
   	  if (!enn)
   	      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)en;
@@ -30720,7 +33286,9 @@ int zx_WALK_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPh
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -30728,22 +33296,30 @@ int zx_WALK_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPh
   ret = zx_walk_so_simple_elems(c, x->Name, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SpatialLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SpatialLocation->gg;
+       e && e->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TravelDirections->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TravelDirections->gg;
+       e && e->g.tok == zx_hrxml_TravelDirections_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Area->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Area->gg;
+       e && e->g.tok == zx_hrxml_Area_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Area(c, (struct zx_hrxml_Area_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -30937,11 +33513,15 @@ void zx_FREE_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, int fre
 
   zx_free_attr(c, x->type, free_strs);
 
-  for (e = &x->InternetDomainName->gg; e; e = en) {
+  for (e = &x->InternetDomainName->gg;
+       e && e->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)e, free_strs);
   }
-  for (e = &x->SchoolId->gg; e; e = en) {
+  for (e = &x->SchoolId->gg;
+       e && e->g.tok == zx_hrxml_SchoolId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SchoolId(c, (struct zx_hrxml_SchoolId_s*)e, free_strs);
   }
@@ -30983,9 +33563,13 @@ void zx_DUP_STRS_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x)
 
   zx_dup_attr(c, x->type);
 
-  for (se = &x->InternetDomainName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InternetDomainName->gg;
+       se && se->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)se);
-  for (se = &x->SchoolId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SchoolId->gg;
+       se && se->g.tok == zx_hrxml_SchoolId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SchoolId(c, (struct zx_hrxml_SchoolId_s*)se);
   zx_dup_strs_simple_elems(c, x->SchoolName);
 
@@ -31008,7 +33592,9 @@ struct zx_hrxml_School_s* zx_DEEP_CLONE_hrxml_School(struct zx_ctx* c, struct zx
 
   x->type = zx_clone_attr(c, x->type);
 
-  for (enn = 0, e = &x->InternetDomainName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->InternetDomainName->gg;
+       e && e->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_InternetDomainName(c,(struct zx_hrxml_InternetDomainName_s*)e,dup_strs);
   	  if (!enn)
   	      x->InternetDomainName = (struct zx_hrxml_InternetDomainName_s*)en;
@@ -31016,7 +33602,9 @@ struct zx_hrxml_School_s* zx_DEEP_CLONE_hrxml_School(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SchoolId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SchoolId->gg;
+       e && e->g.tok == zx_hrxml_SchoolId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SchoolId(c,(struct zx_hrxml_SchoolId_s*)e,dup_strs);
   	  if (!enn)
   	      x->SchoolId = (struct zx_hrxml_SchoolId_s*)en;
@@ -31048,12 +33636,16 @@ int zx_WALK_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->InternetDomainName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->InternetDomainName->gg;
+       e && e->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SchoolId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SchoolId->gg;
+       e && e->g.tok == zx_hrxml_SchoolId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SchoolId(c, (struct zx_hrxml_SchoolId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -31116,7 +33708,9 @@ void zx_FREE_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, int
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -31159,7 +33753,9 @@ void zx_DUP_STRS_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x)
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -31183,7 +33779,9 @@ struct zx_hrxml_SchoolId_s* zx_DEEP_CLONE_hrxml_SchoolId(struct zx_ctx* c, struc
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -31214,7 +33812,9 @@ int zx_WALK_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -31273,43 +33873,61 @@ void zx_FREE_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_SchoolO
   zx_free_attr(c, x->schoolType, free_strs);
 
   zx_free_simple_elems(c, x->SchoolName, free_strs);
-  for (e = &x->School->gg; e; e = en) {
+  for (e = &x->School->gg;
+       e && e->g.tok == zx_hrxml_School_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_School(c, (struct zx_hrxml_School_s*)e, free_strs);
   }
-  for (e = &x->LocationSummary->gg; e; e = en) {
+  for (e = &x->LocationSummary->gg;
+       e && e->g.tok == zx_hrxml_LocationSummary_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)e, free_strs);
   }
-  for (e = &x->PostalAddress->gg; e; e = en) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, free_strs);
   }
-  for (e = &x->OrganizationUnit->gg; e; e = en) {
+  for (e = &x->OrganizationUnit->gg;
+       e && e->g.tok == zx_hrxml_OrganizationUnit_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_OrganizationUnit(c, (struct zx_hrxml_OrganizationUnit_s*)e, free_strs);
   }
-  for (e = &x->Degree->gg; e; e = en) {
+  for (e = &x->Degree->gg;
+       e && e->g.tok == zx_hrxml_Degree_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Degree(c, (struct zx_hrxml_Degree_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Major, free_strs);
   zx_free_simple_elems(c, x->Minor, free_strs);
-  for (e = &x->Measure->gg; e; e = en) {
+  for (e = &x->Measure->gg;
+       e && e->g.tok == zx_hrxml_Measure_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Measure(c, (struct zx_hrxml_Measure_s*)e, free_strs);
   }
-  for (e = &x->DatesOfAttendance->gg; e; e = en) {
+  for (e = &x->DatesOfAttendance->gg;
+       e && e->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Comments, free_strs);
   zx_free_simple_elems(c, x->ISCEDInstitutionClassification, free_strs);
-  for (e = &x->LocalInstitutionClassification->gg; e; e = en) {
+  for (e = &x->LocalInstitutionClassification->gg;
+       e && e->g.tok == zx_hrxml_LocalInstitutionClassification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LocalInstitutionClassification(c, (struct zx_hrxml_LocalInstitutionClassification_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -31351,27 +33969,45 @@ void zx_DUP_STRS_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_Sch
   zx_dup_attr(c, x->schoolType);
 
   zx_dup_strs_simple_elems(c, x->SchoolName);
-  for (se = &x->School->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->School->gg;
+       se && se->g.tok == zx_hrxml_School_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_School(c, (struct zx_hrxml_School_s*)se);
-  for (se = &x->LocationSummary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LocationSummary->gg;
+       se && se->g.tok == zx_hrxml_LocationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)se);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
-  for (se = &x->OrganizationUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationUnit->gg;
+       se && se->g.tok == zx_hrxml_OrganizationUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_OrganizationUnit(c, (struct zx_hrxml_OrganizationUnit_s*)se);
-  for (se = &x->Degree->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Degree->gg;
+       se && se->g.tok == zx_hrxml_Degree_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Degree(c, (struct zx_hrxml_Degree_s*)se);
   zx_dup_strs_simple_elems(c, x->Major);
   zx_dup_strs_simple_elems(c, x->Minor);
-  for (se = &x->Measure->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Measure->gg;
+       se && se->g.tok == zx_hrxml_Measure_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Measure(c, (struct zx_hrxml_Measure_s*)se);
-  for (se = &x->DatesOfAttendance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DatesOfAttendance->gg;
+       se && se->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
   zx_dup_strs_simple_elems(c, x->ISCEDInstitutionClassification);
-  for (se = &x->LocalInstitutionClassification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LocalInstitutionClassification->gg;
+       se && se->g.tok == zx_hrxml_LocalInstitutionClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LocalInstitutionClassification(c, (struct zx_hrxml_LocalInstitutionClassification_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -31394,7 +34030,9 @@ struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(s
   x->schoolType = zx_clone_attr(c, x->schoolType);
 
   x->SchoolName = zx_deep_clone_simple_elems(c,x->SchoolName, dup_strs);
-  for (enn = 0, e = &x->School->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->School->gg;
+       e && e->g.tok == zx_hrxml_School_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_School(c,(struct zx_hrxml_School_s*)e,dup_strs);
   	  if (!enn)
   	      x->School = (struct zx_hrxml_School_s*)en;
@@ -31402,7 +34040,9 @@ struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LocationSummary->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LocationSummary->gg;
+       e && e->g.tok == zx_hrxml_LocationSummary_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LocationSummary(c,(struct zx_hrxml_LocationSummary_s*)e,dup_strs);
   	  if (!enn)
   	      x->LocationSummary = (struct zx_hrxml_LocationSummary_s*)en;
@@ -31410,7 +34050,9 @@ struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PostalAddress(c,(struct zx_hrxml_PostalAddress_s*)e,dup_strs);
   	  if (!enn)
   	      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)en;
@@ -31418,7 +34060,9 @@ struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OrganizationUnit->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationUnit->gg;
+       e && e->g.tok == zx_hrxml_OrganizationUnit_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_OrganizationUnit(c,(struct zx_hrxml_OrganizationUnit_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationUnit = (struct zx_hrxml_OrganizationUnit_s*)en;
@@ -31426,7 +34070,9 @@ struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Degree->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Degree->gg;
+       e && e->g.tok == zx_hrxml_Degree_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Degree(c,(struct zx_hrxml_Degree_s*)e,dup_strs);
   	  if (!enn)
   	      x->Degree = (struct zx_hrxml_Degree_s*)en;
@@ -31436,7 +34082,9 @@ struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(s
   }
   x->Major = zx_deep_clone_simple_elems(c,x->Major, dup_strs);
   x->Minor = zx_deep_clone_simple_elems(c,x->Minor, dup_strs);
-  for (enn = 0, e = &x->Measure->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Measure->gg;
+       e && e->g.tok == zx_hrxml_Measure_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Measure(c,(struct zx_hrxml_Measure_s*)e,dup_strs);
   	  if (!enn)
   	      x->Measure = (struct zx_hrxml_Measure_s*)en;
@@ -31444,7 +34092,9 @@ struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DatesOfAttendance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DatesOfAttendance->gg;
+       e && e->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DatesOfAttendance(c,(struct zx_hrxml_DatesOfAttendance_s*)e,dup_strs);
   	  if (!enn)
   	      x->DatesOfAttendance = (struct zx_hrxml_DatesOfAttendance_s*)en;
@@ -31454,7 +34104,9 @@ struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(s
   }
   x->Comments = zx_deep_clone_simple_elems(c,x->Comments, dup_strs);
   x->ISCEDInstitutionClassification = zx_deep_clone_simple_elems(c,x->ISCEDInstitutionClassification, dup_strs);
-  for (enn = 0, e = &x->LocalInstitutionClassification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LocalInstitutionClassification->gg;
+       e && e->g.tok == zx_hrxml_LocalInstitutionClassification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LocalInstitutionClassification(c,(struct zx_hrxml_LocalInstitutionClassification_s*)e,dup_strs);
   	  if (!enn)
   	      x->LocalInstitutionClassification = (struct zx_hrxml_LocalInstitutionClassification_s*)en;
@@ -31462,7 +34114,9 @@ struct zx_hrxml_SchoolOrInstitution_s* zx_DEEP_CLONE_hrxml_SchoolOrInstitution(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -31496,27 +34150,37 @@ int zx_WALK_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_Schoo
   ret = zx_walk_so_simple_elems(c, x->SchoolName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->School->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->School->gg;
+       e && e->g.tok == zx_hrxml_School_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_School(c, (struct zx_hrxml_School_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LocationSummary->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LocationSummary->gg;
+       e && e->g.tok == zx_hrxml_LocationSummary_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OrganizationUnit->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationUnit->gg;
+       e && e->g.tok == zx_hrxml_OrganizationUnit_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_OrganizationUnit(c, (struct zx_hrxml_OrganizationUnit_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Degree->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Degree->gg;
+       e && e->g.tok == zx_hrxml_Degree_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Degree(c, (struct zx_hrxml_Degree_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -31527,12 +34191,16 @@ int zx_WALK_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_Schoo
   ret = zx_walk_so_simple_elems(c, x->Minor, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Measure->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Measure->gg;
+       e && e->g.tok == zx_hrxml_Measure_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Measure(c, (struct zx_hrxml_Measure_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DatesOfAttendance->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DatesOfAttendance->gg;
+       e && e->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -31543,12 +34211,16 @@ int zx_WALK_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_Schoo
   ret = zx_walk_so_simple_elems(c, x->ISCEDInstitutionClassification, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->LocalInstitutionClassification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LocalInstitutionClassification->gg;
+       e && e->g.tok == zx_hrxml_LocalInstitutionClassification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LocalInstitutionClassification(c, (struct zx_hrxml_LocalInstitutionClassification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -31738,22 +34410,30 @@ void zx_FREE_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCriter
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SearchCriteriaId->gg; e; e = en) {
+  for (e = &x->SearchCriteriaId->gg;
+       e && e->g.tok == zx_hrxml_SearchCriteriaId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SearchCriteriaId(c, (struct zx_hrxml_SearchCriteriaId_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->SearchTarget, free_strs);
-  for (e = &x->UserId->gg; e; e = en) {
+  for (e = &x->UserId->gg;
+       e && e->g.tok == zx_hrxml_UserId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->SearchTimeStamp, free_strs);
   zx_free_simple_elems(c, x->SearchString, free_strs);
-  for (e = &x->SearchCriterion->gg; e; e = en) {
+  for (e = &x->SearchCriterion->gg;
+       e && e->g.tok == zx_hrxml_SearchCriterion_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SearchCriterion(c, (struct zx_hrxml_SearchCriterion_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -31793,16 +34473,24 @@ void zx_DUP_STRS_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCr
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SearchCriteriaId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchCriteriaId->gg;
+       se && se->g.tok == zx_hrxml_SearchCriteriaId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SearchCriteriaId(c, (struct zx_hrxml_SearchCriteriaId_s*)se);
   zx_dup_strs_simple_elems(c, x->SearchTarget);
-  for (se = &x->UserId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserId->gg;
+       se && se->g.tok == zx_hrxml_UserId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)se);
   zx_dup_strs_simple_elems(c, x->SearchTimeStamp);
   zx_dup_strs_simple_elems(c, x->SearchString);
-  for (se = &x->SearchCriterion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchCriterion->gg;
+       se && se->g.tok == zx_hrxml_SearchCriterion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SearchCriterion(c, (struct zx_hrxml_SearchCriterion_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -31823,7 +34511,9 @@ struct zx_hrxml_SearchCriteria_s* zx_DEEP_CLONE_hrxml_SearchCriteria(struct zx_c
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SearchCriteriaId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SearchCriteriaId->gg;
+       e && e->g.tok == zx_hrxml_SearchCriteriaId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SearchCriteriaId(c,(struct zx_hrxml_SearchCriteriaId_s*)e,dup_strs);
   	  if (!enn)
   	      x->SearchCriteriaId = (struct zx_hrxml_SearchCriteriaId_s*)en;
@@ -31832,7 +34522,9 @@ struct zx_hrxml_SearchCriteria_s* zx_DEEP_CLONE_hrxml_SearchCriteria(struct zx_c
   	  enn = en;
   }
   x->SearchTarget = zx_deep_clone_simple_elems(c,x->SearchTarget, dup_strs);
-  for (enn = 0, e = &x->UserId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserId->gg;
+       e && e->g.tok == zx_hrxml_UserId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserId(c,(struct zx_hrxml_UserId_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserId = (struct zx_hrxml_UserId_s*)en;
@@ -31842,7 +34534,9 @@ struct zx_hrxml_SearchCriteria_s* zx_DEEP_CLONE_hrxml_SearchCriteria(struct zx_c
   }
   x->SearchTimeStamp = zx_deep_clone_simple_elems(c,x->SearchTimeStamp, dup_strs);
   x->SearchString = zx_deep_clone_simple_elems(c,x->SearchString, dup_strs);
-  for (enn = 0, e = &x->SearchCriterion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SearchCriterion->gg;
+       e && e->g.tok == zx_hrxml_SearchCriterion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SearchCriterion(c,(struct zx_hrxml_SearchCriterion_s*)e,dup_strs);
   	  if (!enn)
   	      x->SearchCriterion = (struct zx_hrxml_SearchCriterion_s*)en;
@@ -31850,7 +34544,9 @@ struct zx_hrxml_SearchCriteria_s* zx_DEEP_CLONE_hrxml_SearchCriteria(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -31881,7 +34577,9 @@ int zx_WALK_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCrit
   if (ret)
     return ret;
 
-  for (e = &x->SearchCriteriaId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SearchCriteriaId->gg;
+       e && e->g.tok == zx_hrxml_SearchCriteriaId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SearchCriteriaId(c, (struct zx_hrxml_SearchCriteriaId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -31889,7 +34587,9 @@ int zx_WALK_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCrit
   ret = zx_walk_so_simple_elems(c, x->SearchTarget, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->UserId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserId->gg;
+       e && e->g.tok == zx_hrxml_UserId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -31900,12 +34600,16 @@ int zx_WALK_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCrit
   ret = zx_walk_so_simple_elems(c, x->SearchString, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SearchCriterion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SearchCriterion->gg;
+       e && e->g.tok == zx_hrxml_SearchCriterion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SearchCriterion(c, (struct zx_hrxml_SearchCriterion_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -31965,7 +34669,9 @@ void zx_FREE_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCrit
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -32008,7 +34714,9 @@ void zx_DUP_STRS_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_Search
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -32032,7 +34740,9 @@ struct zx_hrxml_SearchCriteriaId_s* zx_DEEP_CLONE_hrxml_SearchCriteriaId(struct 
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -32063,7 +34773,9 @@ int zx_WALK_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCr
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -32122,7 +34834,9 @@ void zx_FREE_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCrite
 
   zx_free_simple_elems(c, x->CriterionName, free_strs);
   zx_free_simple_elems(c, x->CriterionValue, free_strs);
-  for (e = &x->Weight->gg; e; e = en) {
+  for (e = &x->Weight->gg;
+       e && e->g.tok == zx_hrxml_Weight_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)e, free_strs);
   }
@@ -32164,7 +34878,9 @@ void zx_DUP_STRS_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchC
 
   zx_dup_strs_simple_elems(c, x->CriterionName);
   zx_dup_strs_simple_elems(c, x->CriterionValue);
-  for (se = &x->Weight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Weight->gg;
+       se && se->g.tok == zx_hrxml_Weight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)se);
 
 }
@@ -32187,7 +34903,9 @@ struct zx_hrxml_SearchCriterion_s* zx_DEEP_CLONE_hrxml_SearchCriterion(struct zx
 
   x->CriterionName = zx_deep_clone_simple_elems(c,x->CriterionName, dup_strs);
   x->CriterionValue = zx_deep_clone_simple_elems(c,x->CriterionValue, dup_strs);
-  for (enn = 0, e = &x->Weight->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Weight->gg;
+       e && e->g.tok == zx_hrxml_Weight_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Weight(c,(struct zx_hrxml_Weight_s*)e,dup_strs);
   	  if (!enn)
   	      x->Weight = (struct zx_hrxml_Weight_s*)en;
@@ -32224,7 +34942,9 @@ int zx_WALK_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCri
   ret = zx_walk_so_simple_elems(c, x->CriterionValue, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Weight->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Weight->gg;
+       e && e->g.tok == zx_hrxml_Weight_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -32414,31 +35134,43 @@ void zx_FREE_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SearchResultId->gg; e; e = en) {
+  for (e = &x->SearchResultId->gg;
+       e && e->g.tok == zx_hrxml_SearchResultId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SearchResultId(c, (struct zx_hrxml_SearchResultId_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->SearchTarget, free_strs);
-  for (e = &x->UserId->gg; e; e = en) {
+  for (e = &x->UserId->gg;
+       e && e->g.tok == zx_hrxml_UserId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->SearchTimeStamp, free_strs);
-  for (e = &x->MatchedObjectId->gg; e; e = en) {
+  for (e = &x->MatchedObjectId->gg;
+       e && e->g.tok == zx_hrxml_MatchedObjectId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_MatchedObjectId(c, (struct zx_hrxml_MatchedObjectId_s*)e, free_strs);
   }
-  for (e = &x->SearchRelevanceScore->gg; e; e = en) {
+  for (e = &x->SearchRelevanceScore->gg;
+       e && e->g.tok == zx_hrxml_SearchRelevanceScore_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SearchRelevanceScore(c, (struct zx_hrxml_SearchRelevanceScore_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->SearchRelevanceRank, free_strs);
   zx_free_simple_elems(c, x->SearchResultCount, free_strs);
-  for (e = &x->RankedSearchResults->gg; e; e = en) {
+  for (e = &x->RankedSearchResults->gg;
+       e && e->g.tok == zx_hrxml_RankedSearchResults_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RankedSearchResults(c, (struct zx_hrxml_RankedSearchResults_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -32478,21 +35210,33 @@ void zx_DUP_STRS_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResu
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SearchResultId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchResultId->gg;
+       se && se->g.tok == zx_hrxml_SearchResultId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SearchResultId(c, (struct zx_hrxml_SearchResultId_s*)se);
   zx_dup_strs_simple_elems(c, x->SearchTarget);
-  for (se = &x->UserId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserId->gg;
+       se && se->g.tok == zx_hrxml_UserId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)se);
   zx_dup_strs_simple_elems(c, x->SearchTimeStamp);
-  for (se = &x->MatchedObjectId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MatchedObjectId->gg;
+       se && se->g.tok == zx_hrxml_MatchedObjectId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_MatchedObjectId(c, (struct zx_hrxml_MatchedObjectId_s*)se);
-  for (se = &x->SearchRelevanceScore->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchRelevanceScore->gg;
+       se && se->g.tok == zx_hrxml_SearchRelevanceScore_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SearchRelevanceScore(c, (struct zx_hrxml_SearchRelevanceScore_s*)se);
   zx_dup_strs_simple_elems(c, x->SearchRelevanceRank);
   zx_dup_strs_simple_elems(c, x->SearchResultCount);
-  for (se = &x->RankedSearchResults->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RankedSearchResults->gg;
+       se && se->g.tok == zx_hrxml_RankedSearchResults_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RankedSearchResults(c, (struct zx_hrxml_RankedSearchResults_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -32513,7 +35257,9 @@ struct zx_hrxml_SearchResult_s* zx_DEEP_CLONE_hrxml_SearchResult(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SearchResultId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SearchResultId->gg;
+       e && e->g.tok == zx_hrxml_SearchResultId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SearchResultId(c,(struct zx_hrxml_SearchResultId_s*)e,dup_strs);
   	  if (!enn)
   	      x->SearchResultId = (struct zx_hrxml_SearchResultId_s*)en;
@@ -32522,7 +35268,9 @@ struct zx_hrxml_SearchResult_s* zx_DEEP_CLONE_hrxml_SearchResult(struct zx_ctx* 
   	  enn = en;
   }
   x->SearchTarget = zx_deep_clone_simple_elems(c,x->SearchTarget, dup_strs);
-  for (enn = 0, e = &x->UserId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserId->gg;
+       e && e->g.tok == zx_hrxml_UserId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserId(c,(struct zx_hrxml_UserId_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserId = (struct zx_hrxml_UserId_s*)en;
@@ -32531,7 +35279,9 @@ struct zx_hrxml_SearchResult_s* zx_DEEP_CLONE_hrxml_SearchResult(struct zx_ctx* 
   	  enn = en;
   }
   x->SearchTimeStamp = zx_deep_clone_simple_elems(c,x->SearchTimeStamp, dup_strs);
-  for (enn = 0, e = &x->MatchedObjectId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MatchedObjectId->gg;
+       e && e->g.tok == zx_hrxml_MatchedObjectId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_MatchedObjectId(c,(struct zx_hrxml_MatchedObjectId_s*)e,dup_strs);
   	  if (!enn)
   	      x->MatchedObjectId = (struct zx_hrxml_MatchedObjectId_s*)en;
@@ -32539,7 +35289,9 @@ struct zx_hrxml_SearchResult_s* zx_DEEP_CLONE_hrxml_SearchResult(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SearchRelevanceScore->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SearchRelevanceScore->gg;
+       e && e->g.tok == zx_hrxml_SearchRelevanceScore_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SearchRelevanceScore(c,(struct zx_hrxml_SearchRelevanceScore_s*)e,dup_strs);
   	  if (!enn)
   	      x->SearchRelevanceScore = (struct zx_hrxml_SearchRelevanceScore_s*)en;
@@ -32549,7 +35301,9 @@ struct zx_hrxml_SearchResult_s* zx_DEEP_CLONE_hrxml_SearchResult(struct zx_ctx* 
   }
   x->SearchRelevanceRank = zx_deep_clone_simple_elems(c,x->SearchRelevanceRank, dup_strs);
   x->SearchResultCount = zx_deep_clone_simple_elems(c,x->SearchResultCount, dup_strs);
-  for (enn = 0, e = &x->RankedSearchResults->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RankedSearchResults->gg;
+       e && e->g.tok == zx_hrxml_RankedSearchResults_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RankedSearchResults(c,(struct zx_hrxml_RankedSearchResults_s*)e,dup_strs);
   	  if (!enn)
   	      x->RankedSearchResults = (struct zx_hrxml_RankedSearchResults_s*)en;
@@ -32557,7 +35311,9 @@ struct zx_hrxml_SearchResult_s* zx_DEEP_CLONE_hrxml_SearchResult(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -32588,7 +35344,9 @@ int zx_WALK_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult
   if (ret)
     return ret;
 
-  for (e = &x->SearchResultId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SearchResultId->gg;
+       e && e->g.tok == zx_hrxml_SearchResultId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SearchResultId(c, (struct zx_hrxml_SearchResultId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -32596,7 +35354,9 @@ int zx_WALK_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult
   ret = zx_walk_so_simple_elems(c, x->SearchTarget, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->UserId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserId->gg;
+       e && e->g.tok == zx_hrxml_UserId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -32604,12 +35364,16 @@ int zx_WALK_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult
   ret = zx_walk_so_simple_elems(c, x->SearchTimeStamp, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->MatchedObjectId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MatchedObjectId->gg;
+       e && e->g.tok == zx_hrxml_MatchedObjectId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_MatchedObjectId(c, (struct zx_hrxml_MatchedObjectId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SearchRelevanceScore->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SearchRelevanceScore->gg;
+       e && e->g.tok == zx_hrxml_SearchRelevanceScore_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SearchRelevanceScore(c, (struct zx_hrxml_SearchRelevanceScore_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -32620,12 +35384,16 @@ int zx_WALK_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult
   ret = zx_walk_so_simple_elems(c, x->SearchResultCount, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->RankedSearchResults->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RankedSearchResults->gg;
+       e && e->g.tok == zx_hrxml_RankedSearchResults_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RankedSearchResults(c, (struct zx_hrxml_RankedSearchResults_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -32685,7 +35453,9 @@ void zx_FREE_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResult
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -32728,7 +35498,9 @@ void zx_DUP_STRS_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchRe
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -32752,7 +35524,9 @@ struct zx_hrxml_SearchResultId_s* zx_DEEP_CLONE_hrxml_SearchResultId(struct zx_c
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -32783,7 +35557,9 @@ int zx_WALK_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResu
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -32841,19 +35617,27 @@ void zx_FREE_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Security
 
 
   zx_free_simple_elems(c, x->Name, free_strs);
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
-  for (e = &x->IssuingAuthority->gg; e; e = en) {
+  for (e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
-  for (e = &x->EffectiveDate->gg; e; e = en) {
+  for (e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)e, free_strs);
   }
@@ -32894,13 +35678,21 @@ void zx_DUP_STRS_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Secu
 
 
   zx_dup_strs_simple_elems(c, x->Name);
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se);
 
 }
@@ -32922,7 +35714,9 @@ struct zx_hrxml_SecurityCredential_s* zx_DEEP_CLONE_hrxml_SecurityCredential(str
 
 
   x->Name = zx_deep_clone_simple_elems(c,x->Name, dup_strs);
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -32930,7 +35724,9 @@ struct zx_hrxml_SecurityCredential_s* zx_DEEP_CLONE_hrxml_SecurityCredential(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->IssuingAuthority->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IssuingAuthority(c,(struct zx_hrxml_IssuingAuthority_s*)e,dup_strs);
   	  if (!enn)
   	      x->IssuingAuthority = (struct zx_hrxml_IssuingAuthority_s*)en;
@@ -32938,7 +35734,9 @@ struct zx_hrxml_SecurityCredential_s* zx_DEEP_CLONE_hrxml_SecurityCredential(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -32946,7 +35744,9 @@ struct zx_hrxml_SecurityCredential_s* zx_DEEP_CLONE_hrxml_SecurityCredential(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EffectiveDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EffectiveDate(c,(struct zx_hrxml_EffectiveDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EffectiveDate = (struct zx_hrxml_EffectiveDate_s*)en;
@@ -32980,22 +35780,30 @@ int zx_WALK_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Securi
   ret = zx_walk_so_simple_elems(c, x->Name, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->IssuingAuthority->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IssuingAuthority->gg;
+       e && e->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EffectiveDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EffectiveDate->gg;
+       e && e->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -33052,7 +35860,9 @@ void zx_FREE_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Securit
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SecurityCredential->gg; e; e = en) {
+  for (e = &x->SecurityCredential->gg;
+       e && e->g.tok == zx_hrxml_SecurityCredential_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SecurityCredential(c, (struct zx_hrxml_SecurityCredential_s*)e, free_strs);
   }
@@ -33092,7 +35902,9 @@ void zx_DUP_STRS_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Sec
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SecurityCredential->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityCredential->gg;
+       se && se->g.tok == zx_hrxml_SecurityCredential_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SecurityCredential(c, (struct zx_hrxml_SecurityCredential_s*)se);
 
 }
@@ -33113,7 +35925,9 @@ struct zx_hrxml_SecurityCredentials_s* zx_DEEP_CLONE_hrxml_SecurityCredentials(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SecurityCredential->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SecurityCredential->gg;
+       e && e->g.tok == zx_hrxml_SecurityCredential_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SecurityCredential(c,(struct zx_hrxml_SecurityCredential_s*)e,dup_strs);
   	  if (!enn)
   	      x->SecurityCredential = (struct zx_hrxml_SecurityCredential_s*)en;
@@ -33144,7 +35958,9 @@ int zx_WALK_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Secur
   if (ret)
     return ret;
 
-  for (e = &x->SecurityCredential->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SecurityCredential->gg;
+       e && e->g.tok == zx_hrxml_SecurityCredential_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SecurityCredential(c, (struct zx_hrxml_SecurityCredential_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -33203,11 +36019,15 @@ void zx_FREE_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail
   zx_free_attr(c, x->branch, free_strs);
 
   zx_free_simple_elems(c, x->UnitOrDivision, free_strs);
-  for (e = &x->RankAchieved->gg; e; e = en) {
+  for (e = &x->RankAchieved->gg;
+       e && e->g.tok == zx_hrxml_RankAchieved_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_RankAchieved(c, (struct zx_hrxml_RankAchieved_s*)e, free_strs);
   }
-  for (e = &x->DatesOfService->gg; e; e = en) {
+  for (e = &x->DatesOfService->gg;
+       e && e->g.tok == zx_hrxml_DatesOfService_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_DatesOfService(c, (struct zx_hrxml_DatesOfService_s*)e, free_strs);
   }
@@ -33216,7 +36036,9 @@ void zx_FREE_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetail
   zx_free_simple_elems(c, x->RecognitionAchieved, free_strs);
   zx_free_simple_elems(c, x->DisciplinaryAction, free_strs);
   zx_free_simple_elems(c, x->DischargeStatus, free_strs);
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -33258,16 +36080,22 @@ void zx_DUP_STRS_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDe
   zx_dup_attr(c, x->branch);
 
   zx_dup_strs_simple_elems(c, x->UnitOrDivision);
-  for (se = &x->RankAchieved->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RankAchieved->gg;
+       se && se->g.tok == zx_hrxml_RankAchieved_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_RankAchieved(c, (struct zx_hrxml_RankAchieved_s*)se);
-  for (se = &x->DatesOfService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DatesOfService->gg;
+       se && se->g.tok == zx_hrxml_DatesOfService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_DatesOfService(c, (struct zx_hrxml_DatesOfService_s*)se);
   zx_dup_strs_simple_elems(c, x->Campaign);
   zx_dup_strs_simple_elems(c, x->AreaOfExpertise);
   zx_dup_strs_simple_elems(c, x->RecognitionAchieved);
   zx_dup_strs_simple_elems(c, x->DisciplinaryAction);
   zx_dup_strs_simple_elems(c, x->DischargeStatus);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -33290,7 +36118,9 @@ struct zx_hrxml_ServiceDetail_s* zx_DEEP_CLONE_hrxml_ServiceDetail(struct zx_ctx
   x->branch = zx_clone_attr(c, x->branch);
 
   x->UnitOrDivision = zx_deep_clone_simple_elems(c,x->UnitOrDivision, dup_strs);
-  for (enn = 0, e = &x->RankAchieved->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RankAchieved->gg;
+       e && e->g.tok == zx_hrxml_RankAchieved_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_RankAchieved(c,(struct zx_hrxml_RankAchieved_s*)e,dup_strs);
   	  if (!enn)
   	      x->RankAchieved = (struct zx_hrxml_RankAchieved_s*)en;
@@ -33298,7 +36128,9 @@ struct zx_hrxml_ServiceDetail_s* zx_DEEP_CLONE_hrxml_ServiceDetail(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DatesOfService->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DatesOfService->gg;
+       e && e->g.tok == zx_hrxml_DatesOfService_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_DatesOfService(c,(struct zx_hrxml_DatesOfService_s*)e,dup_strs);
   	  if (!enn)
   	      x->DatesOfService = (struct zx_hrxml_DatesOfService_s*)en;
@@ -33311,7 +36143,9 @@ struct zx_hrxml_ServiceDetail_s* zx_DEEP_CLONE_hrxml_ServiceDetail(struct zx_ctx
   x->RecognitionAchieved = zx_deep_clone_simple_elems(c,x->RecognitionAchieved, dup_strs);
   x->DisciplinaryAction = zx_deep_clone_simple_elems(c,x->DisciplinaryAction, dup_strs);
   x->DischargeStatus = zx_deep_clone_simple_elems(c,x->DischargeStatus, dup_strs);
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -33345,12 +36179,16 @@ int zx_WALK_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDeta
   ret = zx_walk_so_simple_elems(c, x->UnitOrDivision, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->RankAchieved->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RankAchieved->gg;
+       e && e->g.tok == zx_hrxml_RankAchieved_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_RankAchieved(c, (struct zx_hrxml_RankAchieved_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DatesOfService->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DatesOfService->gg;
+       e && e->g.tok == zx_hrxml_DatesOfService_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_DatesOfService(c, (struct zx_hrxml_DatesOfService_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -33370,7 +36208,9 @@ int zx_WALK_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDeta
   ret = zx_walk_so_simple_elems(c, x->DischargeStatus, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -33430,7 +36270,9 @@ void zx_FREE_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumber
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -33473,7 +36315,9 @@ void zx_DUP_STRS_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNu
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -33497,7 +36341,9 @@ struct zx_hrxml_ServiceNumber_s* zx_DEEP_CLONE_hrxml_ServiceNumber(struct zx_ctx
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -33528,7 +36374,9 @@ int zx_WALK_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumb
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -33586,7 +36434,9 @@ void zx_FREE_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, int free_
 
   zx_free_attr(c, x->shiftPeriod, free_strs);
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
@@ -33633,7 +36483,9 @@ void zx_DUP_STRS_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x)
 
   zx_dup_attr(c, x->shiftPeriod);
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
   zx_dup_strs_simple_elems(c, x->Name);
   zx_dup_strs_simple_elems(c, x->Hours);
@@ -33661,7 +36513,9 @@ struct zx_hrxml_Shift_s* zx_DEEP_CLONE_hrxml_Shift(struct zx_ctx* c, struct zx_h
 
   x->shiftPeriod = zx_clone_attr(c, x->shiftPeriod);
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -33698,7 +36552,9 @@ int zx_WALK_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -33915,21 +36771,29 @@ void zx_FREE_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLoca
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Latitude->gg; e; e = en) {
+  for (e = &x->Latitude->gg;
+       e && e->g.tok == zx_hrxml_Latitude_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Latitude(c, (struct zx_hrxml_Latitude_s*)e, free_strs);
   }
-  for (e = &x->Longitude->gg; e; e = en) {
+  for (e = &x->Longitude->gg;
+       e && e->g.tok == zx_hrxml_Longitude_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Longitude(c, (struct zx_hrxml_Longitude_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Altitude, free_strs);
   zx_free_simple_elems(c, x->AltitudeMeanSeaLevel, free_strs);
-  for (e = &x->HorizontalAccuracy->gg; e; e = en) {
+  for (e = &x->HorizontalAccuracy->gg;
+       e && e->g.tok == zx_hrxml_HorizontalAccuracy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_HorizontalAccuracy(c, (struct zx_hrxml_HorizontalAccuracy_s*)e, free_strs);
   }
-  for (e = &x->VerticalAccuracy->gg; e; e = en) {
+  for (e = &x->VerticalAccuracy->gg;
+       e && e->g.tok == zx_hrxml_VerticalAccuracy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_VerticalAccuracy(c, (struct zx_hrxml_VerticalAccuracy_s*)e, free_strs);
   }
@@ -33969,15 +36833,23 @@ void zx_DUP_STRS_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_Spatial
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Latitude->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Latitude->gg;
+       se && se->g.tok == zx_hrxml_Latitude_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Latitude(c, (struct zx_hrxml_Latitude_s*)se);
-  for (se = &x->Longitude->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Longitude->gg;
+       se && se->g.tok == zx_hrxml_Longitude_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Longitude(c, (struct zx_hrxml_Longitude_s*)se);
   zx_dup_strs_simple_elems(c, x->Altitude);
   zx_dup_strs_simple_elems(c, x->AltitudeMeanSeaLevel);
-  for (se = &x->HorizontalAccuracy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->HorizontalAccuracy->gg;
+       se && se->g.tok == zx_hrxml_HorizontalAccuracy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_HorizontalAccuracy(c, (struct zx_hrxml_HorizontalAccuracy_s*)se);
-  for (se = &x->VerticalAccuracy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VerticalAccuracy->gg;
+       se && se->g.tok == zx_hrxml_VerticalAccuracy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_VerticalAccuracy(c, (struct zx_hrxml_VerticalAccuracy_s*)se);
 
 }
@@ -33998,7 +36870,9 @@ struct zx_hrxml_SpatialLocation_s* zx_DEEP_CLONE_hrxml_SpatialLocation(struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Latitude->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Latitude->gg;
+       e && e->g.tok == zx_hrxml_Latitude_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Latitude(c,(struct zx_hrxml_Latitude_s*)e,dup_strs);
   	  if (!enn)
   	      x->Latitude = (struct zx_hrxml_Latitude_s*)en;
@@ -34006,7 +36880,9 @@ struct zx_hrxml_SpatialLocation_s* zx_DEEP_CLONE_hrxml_SpatialLocation(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Longitude->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Longitude->gg;
+       e && e->g.tok == zx_hrxml_Longitude_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Longitude(c,(struct zx_hrxml_Longitude_s*)e,dup_strs);
   	  if (!enn)
   	      x->Longitude = (struct zx_hrxml_Longitude_s*)en;
@@ -34016,7 +36892,9 @@ struct zx_hrxml_SpatialLocation_s* zx_DEEP_CLONE_hrxml_SpatialLocation(struct zx
   }
   x->Altitude = zx_deep_clone_simple_elems(c,x->Altitude, dup_strs);
   x->AltitudeMeanSeaLevel = zx_deep_clone_simple_elems(c,x->AltitudeMeanSeaLevel, dup_strs);
-  for (enn = 0, e = &x->HorizontalAccuracy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->HorizontalAccuracy->gg;
+       e && e->g.tok == zx_hrxml_HorizontalAccuracy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_HorizontalAccuracy(c,(struct zx_hrxml_HorizontalAccuracy_s*)e,dup_strs);
   	  if (!enn)
   	      x->HorizontalAccuracy = (struct zx_hrxml_HorizontalAccuracy_s*)en;
@@ -34024,7 +36902,9 @@ struct zx_hrxml_SpatialLocation_s* zx_DEEP_CLONE_hrxml_SpatialLocation(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->VerticalAccuracy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->VerticalAccuracy->gg;
+       e && e->g.tok == zx_hrxml_VerticalAccuracy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_VerticalAccuracy(c,(struct zx_hrxml_VerticalAccuracy_s*)e,dup_strs);
   	  if (!enn)
   	      x->VerticalAccuracy = (struct zx_hrxml_VerticalAccuracy_s*)en;
@@ -34055,12 +36935,16 @@ int zx_WALK_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLo
   if (ret)
     return ret;
 
-  for (e = &x->Latitude->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Latitude->gg;
+       e && e->g.tok == zx_hrxml_Latitude_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Latitude(c, (struct zx_hrxml_Latitude_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Longitude->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Longitude->gg;
+       e && e->g.tok == zx_hrxml_Longitude_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Longitude(c, (struct zx_hrxml_Longitude_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -34071,12 +36955,16 @@ int zx_WALK_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLo
   ret = zx_walk_so_simple_elems(c, x->AltitudeMeanSeaLevel, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->HorizontalAccuracy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->HorizontalAccuracy->gg;
+       e && e->g.tok == zx_hrxml_HorizontalAccuracy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_HorizontalAccuracy(c, (struct zx_hrxml_HorizontalAccuracy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->VerticalAccuracy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->VerticalAccuracy->gg;
+       e && e->g.tok == zx_hrxml_VerticalAccuracy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_VerticalAccuracy(c, (struct zx_hrxml_VerticalAccuracy_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -34136,18 +37024,24 @@ void zx_FREE_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEvent
 
   zx_free_simple_elems(c, x->Title, free_strs);
   zx_free_simple_elems(c, x->Role, free_strs);
-  for (e = &x->StartDate->gg; e; e = en) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, free_strs);
   }
-  for (e = &x->EndDate->gg; e; e = en) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->EventName, free_strs);
   zx_free_simple_elems(c, x->EventType, free_strs);
   zx_free_simple_elems(c, x->Location, free_strs);
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
@@ -34192,14 +37086,20 @@ void zx_DUP_STRS_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingE
 
   zx_dup_strs_simple_elems(c, x->Title);
   zx_dup_strs_simple_elems(c, x->Role);
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
   zx_dup_strs_simple_elems(c, x->EventName);
   zx_dup_strs_simple_elems(c, x->EventType);
   zx_dup_strs_simple_elems(c, x->Location);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
   zx_dup_strs_simple_elems(c, x->AffiliatedOrganization);
   zx_dup_strs_simple_elems(c, x->Link);
@@ -34225,7 +37125,9 @@ struct zx_hrxml_SpeakingEvent_s* zx_DEEP_CLONE_hrxml_SpeakingEvent(struct zx_ctx
 
   x->Title = zx_deep_clone_simple_elems(c,x->Title, dup_strs);
   x->Role = zx_deep_clone_simple_elems(c,x->Role, dup_strs);
-  for (enn = 0, e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_StartDate(c,(struct zx_hrxml_StartDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->StartDate = (struct zx_hrxml_StartDate_s*)en;
@@ -34233,7 +37135,9 @@ struct zx_hrxml_SpeakingEvent_s* zx_DEEP_CLONE_hrxml_SpeakingEvent(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EndDate(c,(struct zx_hrxml_EndDate_s*)e,dup_strs);
   	  if (!enn)
   	      x->EndDate = (struct zx_hrxml_EndDate_s*)en;
@@ -34244,7 +37148,9 @@ struct zx_hrxml_SpeakingEvent_s* zx_DEEP_CLONE_hrxml_SpeakingEvent(struct zx_ctx
   x->EventName = zx_deep_clone_simple_elems(c,x->EventName, dup_strs);
   x->EventType = zx_deep_clone_simple_elems(c,x->EventType, dup_strs);
   x->Location = zx_deep_clone_simple_elems(c,x->Location, dup_strs);
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -34283,12 +37189,16 @@ int zx_WALK_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEve
   ret = zx_walk_so_simple_elems(c, x->Role, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->StartDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StartDate->gg;
+       e && e->g.tok == zx_hrxml_StartDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EndDate->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EndDate->gg;
+       e && e->g.tok == zx_hrxml_EndDate_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -34302,7 +37212,9 @@ int zx_WALK_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEve
   ret = zx_walk_so_simple_elems(c, x->Location, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -34365,7 +37277,9 @@ void zx_FREE_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_Speak
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SpeakingEvent->gg; e; e = en) {
+  for (e = &x->SpeakingEvent->gg;
+       e && e->g.tok == zx_hrxml_SpeakingEvent_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SpeakingEvent(c, (struct zx_hrxml_SpeakingEvent_s*)e, free_strs);
   }
@@ -34405,7 +37319,9 @@ void zx_DUP_STRS_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_S
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SpeakingEvent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpeakingEvent->gg;
+       se && se->g.tok == zx_hrxml_SpeakingEvent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SpeakingEvent(c, (struct zx_hrxml_SpeakingEvent_s*)se);
 
 }
@@ -34426,7 +37342,9 @@ struct zx_hrxml_SpeakingEventsHistory_s* zx_DEEP_CLONE_hrxml_SpeakingEventsHisto
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SpeakingEvent->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SpeakingEvent->gg;
+       e && e->g.tok == zx_hrxml_SpeakingEvent_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SpeakingEvent(c,(struct zx_hrxml_SpeakingEvent_s*)e,dup_strs);
   	  if (!enn)
   	      x->SpeakingEvent = (struct zx_hrxml_SpeakingEvent_s*)en;
@@ -34457,7 +37375,9 @@ int zx_WALK_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_Spe
   if (ret)
     return ret;
 
-  for (e = &x->SpeakingEvent->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SpeakingEvent->gg;
+       e && e->g.tok == zx_hrxml_SpeakingEvent_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SpeakingEvent(c, (struct zx_hrxml_SpeakingEvent_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -34514,7 +37434,9 @@ void zx_FREE_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrxm
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->CompetencyId->gg; e; e = en) {
+  for (e = &x->CompetencyId->gg;
+       e && e->g.tok == zx_hrxml_CompetencyId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)e, free_strs);
   }
@@ -34555,7 +37477,9 @@ void zx_DUP_STRS_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->CompetencyId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyId->gg;
+       se && se->g.tok == zx_hrxml_CompetencyId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)se);
   zx_dup_strs_simple_elems(c, x->ProficencyLevel);
 
@@ -34577,7 +37501,9 @@ struct zx_hrxml_SpecifiedCompetencyReference_s* zx_DEEP_CLONE_hrxml_SpecifiedCom
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->CompetencyId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CompetencyId->gg;
+       e && e->g.tok == zx_hrxml_CompetencyId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_CompetencyId(c,(struct zx_hrxml_CompetencyId_s*)e,dup_strs);
   	  if (!enn)
   	      x->CompetencyId = (struct zx_hrxml_CompetencyId_s*)en;
@@ -34609,7 +37535,9 @@ int zx_WALK_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hr
   if (ret)
     return ret;
 
-  for (e = &x->CompetencyId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CompetencyId->gg;
+       e && e->g.tok == zx_hrxml_CompetencyId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -35110,7 +38038,9 @@ void zx_FREE_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, int free_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Id->gg; e; e = en) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, free_strs);
   }
@@ -35152,7 +38082,9 @@ void zx_DUP_STRS_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
   zx_dup_strs_simple_elems(c, x->Symbol);
   zx_dup_strs_simple_elems(c, x->Exchange);
@@ -35175,7 +38107,9 @@ struct zx_hrxml_Stock_s* zx_DEEP_CLONE_hrxml_Stock(struct zx_ctx* c, struct zx_h
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Id(c,(struct zx_hrxml_Id_s*)e,dup_strs);
   	  if (!enn)
   	      x->Id = (struct zx_hrxml_Id_s*)en;
@@ -35208,7 +38142,9 @@ int zx_WALK_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->Id->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Id->gg;
+       e && e->g.tok == zx_hrxml_Id_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -35410,73 +38346,107 @@ void zx_FREE_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Structu
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ContactInfo->gg; e; e = en) {
+  for (e = &x->ContactInfo->gg;
+       e && e->g.tok == zx_hrxml_ContactInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->ExecutiveSummary, free_strs);
   zx_free_simple_elems(c, x->Objective, free_strs);
-  for (e = &x->EmploymentHistory->gg; e; e = en) {
+  for (e = &x->EmploymentHistory->gg;
+       e && e->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)e, free_strs);
   }
-  for (e = &x->EducationHistory->gg; e; e = en) {
+  for (e = &x->EducationHistory->gg;
+       e && e->g.tok == zx_hrxml_EducationHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)e, free_strs);
   }
-  for (e = &x->LicensesAndCertifications->gg; e; e = en) {
+  for (e = &x->LicensesAndCertifications->gg;
+       e && e->g.tok == zx_hrxml_LicensesAndCertifications_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_LicensesAndCertifications(c, (struct zx_hrxml_LicensesAndCertifications_s*)e, free_strs);
   }
-  for (e = &x->MilitaryHistory->gg; e; e = en) {
+  for (e = &x->MilitaryHistory->gg;
+       e && e->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)e, free_strs);
   }
-  for (e = &x->PatentHistory->gg; e; e = en) {
+  for (e = &x->PatentHistory->gg;
+       e && e->g.tok == zx_hrxml_PatentHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PatentHistory(c, (struct zx_hrxml_PatentHistory_s*)e, free_strs);
   }
-  for (e = &x->PublicationHistory->gg; e; e = en) {
+  for (e = &x->PublicationHistory->gg;
+       e && e->g.tok == zx_hrxml_PublicationHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PublicationHistory(c, (struct zx_hrxml_PublicationHistory_s*)e, free_strs);
   }
-  for (e = &x->SpeakingEventsHistory->gg; e; e = en) {
+  for (e = &x->SpeakingEventsHistory->gg;
+       e && e->g.tok == zx_hrxml_SpeakingEventsHistory_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SpeakingEventsHistory(c, (struct zx_hrxml_SpeakingEventsHistory_s*)e, free_strs);
   }
-  for (e = &x->Qualifications->gg; e; e = en) {
+  for (e = &x->Qualifications->gg;
+       e && e->g.tok == zx_hrxml_Qualifications_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Qualifications(c, (struct zx_hrxml_Qualifications_s*)e, free_strs);
   }
-  for (e = &x->Languages->gg; e; e = en) {
+  for (e = &x->Languages->gg;
+       e && e->g.tok == zx_hrxml_Languages_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Languages(c, (struct zx_hrxml_Languages_s*)e, free_strs);
   }
-  for (e = &x->Achievements->gg; e; e = en) {
+  for (e = &x->Achievements->gg;
+       e && e->g.tok == zx_hrxml_Achievements_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Achievements(c, (struct zx_hrxml_Achievements_s*)e, free_strs);
   }
-  for (e = &x->Associations->gg; e; e = en) {
+  for (e = &x->Associations->gg;
+       e && e->g.tok == zx_hrxml_Associations_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)e, free_strs);
   }
-  for (e = &x->References->gg; e; e = en) {
+  for (e = &x->References->gg;
+       e && e->g.tok == zx_hrxml_References_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_References(c, (struct zx_hrxml_References_s*)e, free_strs);
   }
-  for (e = &x->SecurityCredentials->gg; e; e = en) {
+  for (e = &x->SecurityCredentials->gg;
+       e && e->g.tok == zx_hrxml_SecurityCredentials_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SecurityCredentials(c, (struct zx_hrxml_SecurityCredentials_s*)e, free_strs);
   }
-  for (e = &x->ResumeAdditionalItems->gg; e; e = en) {
+  for (e = &x->ResumeAdditionalItems->gg;
+       e && e->g.tok == zx_hrxml_ResumeAdditionalItems_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ResumeAdditionalItems(c, (struct zx_hrxml_ResumeAdditionalItems_s*)e, free_strs);
   }
-  for (e = &x->SupportingMaterials->gg; e; e = en) {
+  for (e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)e, free_strs);
   }
-  for (e = &x->ProfessionalAssociations->gg; e; e = en) {
+  for (e = &x->ProfessionalAssociations->gg;
+       e && e->g.tok == zx_hrxml_ProfessionalAssociations_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ProfessionalAssociations(c, (struct zx_hrxml_ProfessionalAssociations_s*)e, free_strs);
   }
@@ -35518,41 +38488,75 @@ void zx_DUP_STRS_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Str
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactInfo->gg;
+       se && se->g.tok == zx_hrxml_ContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)se);
   zx_dup_strs_simple_elems(c, x->ExecutiveSummary);
   zx_dup_strs_simple_elems(c, x->Objective);
-  for (se = &x->EmploymentHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EmploymentHistory->gg;
+       se && se->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)se);
-  for (se = &x->EducationHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EducationHistory->gg;
+       se && se->g.tok == zx_hrxml_EducationHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)se);
-  for (se = &x->LicensesAndCertifications->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LicensesAndCertifications->gg;
+       se && se->g.tok == zx_hrxml_LicensesAndCertifications_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_LicensesAndCertifications(c, (struct zx_hrxml_LicensesAndCertifications_s*)se);
-  for (se = &x->MilitaryHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MilitaryHistory->gg;
+       se && se->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)se);
-  for (se = &x->PatentHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PatentHistory->gg;
+       se && se->g.tok == zx_hrxml_PatentHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PatentHistory(c, (struct zx_hrxml_PatentHistory_s*)se);
-  for (se = &x->PublicationHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PublicationHistory->gg;
+       se && se->g.tok == zx_hrxml_PublicationHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PublicationHistory(c, (struct zx_hrxml_PublicationHistory_s*)se);
-  for (se = &x->SpeakingEventsHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpeakingEventsHistory->gg;
+       se && se->g.tok == zx_hrxml_SpeakingEventsHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SpeakingEventsHistory(c, (struct zx_hrxml_SpeakingEventsHistory_s*)se);
-  for (se = &x->Qualifications->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Qualifications->gg;
+       se && se->g.tok == zx_hrxml_Qualifications_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Qualifications(c, (struct zx_hrxml_Qualifications_s*)se);
-  for (se = &x->Languages->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Languages->gg;
+       se && se->g.tok == zx_hrxml_Languages_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Languages(c, (struct zx_hrxml_Languages_s*)se);
-  for (se = &x->Achievements->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Achievements->gg;
+       se && se->g.tok == zx_hrxml_Achievements_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Achievements(c, (struct zx_hrxml_Achievements_s*)se);
-  for (se = &x->Associations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Associations->gg;
+       se && se->g.tok == zx_hrxml_Associations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)se);
-  for (se = &x->References->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->References->gg;
+       se && se->g.tok == zx_hrxml_References_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_References(c, (struct zx_hrxml_References_s*)se);
-  for (se = &x->SecurityCredentials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityCredentials->gg;
+       se && se->g.tok == zx_hrxml_SecurityCredentials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SecurityCredentials(c, (struct zx_hrxml_SecurityCredentials_s*)se);
-  for (se = &x->ResumeAdditionalItems->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResumeAdditionalItems->gg;
+       se && se->g.tok == zx_hrxml_ResumeAdditionalItems_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ResumeAdditionalItems(c, (struct zx_hrxml_ResumeAdditionalItems_s*)se);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se);
-  for (se = &x->ProfessionalAssociations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProfessionalAssociations->gg;
+       se && se->g.tok == zx_hrxml_ProfessionalAssociations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ProfessionalAssociations(c, (struct zx_hrxml_ProfessionalAssociations_s*)se);
   zx_dup_strs_simple_elems(c, x->Comments);
   zx_dup_strs_simple_elems(c, x->RevisionDate);
@@ -35575,7 +38579,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ContactInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactInfo->gg;
+       e && e->g.tok == zx_hrxml_ContactInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactInfo(c,(struct zx_hrxml_ContactInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactInfo = (struct zx_hrxml_ContactInfo_s*)en;
@@ -35585,7 +38591,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   }
   x->ExecutiveSummary = zx_deep_clone_simple_elems(c,x->ExecutiveSummary, dup_strs);
   x->Objective = zx_deep_clone_simple_elems(c,x->Objective, dup_strs);
-  for (enn = 0, e = &x->EmploymentHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EmploymentHistory->gg;
+       e && e->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EmploymentHistory(c,(struct zx_hrxml_EmploymentHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->EmploymentHistory = (struct zx_hrxml_EmploymentHistory_s*)en;
@@ -35593,7 +38601,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EducationHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EducationHistory->gg;
+       e && e->g.tok == zx_hrxml_EducationHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EducationHistory(c,(struct zx_hrxml_EducationHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->EducationHistory = (struct zx_hrxml_EducationHistory_s*)en;
@@ -35601,7 +38611,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LicensesAndCertifications->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LicensesAndCertifications->gg;
+       e && e->g.tok == zx_hrxml_LicensesAndCertifications_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_LicensesAndCertifications(c,(struct zx_hrxml_LicensesAndCertifications_s*)e,dup_strs);
   	  if (!enn)
   	      x->LicensesAndCertifications = (struct zx_hrxml_LicensesAndCertifications_s*)en;
@@ -35609,7 +38621,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MilitaryHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MilitaryHistory->gg;
+       e && e->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_MilitaryHistory(c,(struct zx_hrxml_MilitaryHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->MilitaryHistory = (struct zx_hrxml_MilitaryHistory_s*)en;
@@ -35617,7 +38631,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PatentHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PatentHistory->gg;
+       e && e->g.tok == zx_hrxml_PatentHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PatentHistory(c,(struct zx_hrxml_PatentHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->PatentHistory = (struct zx_hrxml_PatentHistory_s*)en;
@@ -35625,7 +38641,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PublicationHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PublicationHistory->gg;
+       e && e->g.tok == zx_hrxml_PublicationHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PublicationHistory(c,(struct zx_hrxml_PublicationHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->PublicationHistory = (struct zx_hrxml_PublicationHistory_s*)en;
@@ -35633,7 +38651,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SpeakingEventsHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SpeakingEventsHistory->gg;
+       e && e->g.tok == zx_hrxml_SpeakingEventsHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SpeakingEventsHistory(c,(struct zx_hrxml_SpeakingEventsHistory_s*)e,dup_strs);
   	  if (!enn)
   	      x->SpeakingEventsHistory = (struct zx_hrxml_SpeakingEventsHistory_s*)en;
@@ -35641,7 +38661,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Qualifications->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Qualifications->gg;
+       e && e->g.tok == zx_hrxml_Qualifications_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Qualifications(c,(struct zx_hrxml_Qualifications_s*)e,dup_strs);
   	  if (!enn)
   	      x->Qualifications = (struct zx_hrxml_Qualifications_s*)en;
@@ -35649,7 +38671,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Languages->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Languages->gg;
+       e && e->g.tok == zx_hrxml_Languages_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Languages(c,(struct zx_hrxml_Languages_s*)e,dup_strs);
   	  if (!enn)
   	      x->Languages = (struct zx_hrxml_Languages_s*)en;
@@ -35657,7 +38681,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Achievements->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Achievements->gg;
+       e && e->g.tok == zx_hrxml_Achievements_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Achievements(c,(struct zx_hrxml_Achievements_s*)e,dup_strs);
   	  if (!enn)
   	      x->Achievements = (struct zx_hrxml_Achievements_s*)en;
@@ -35665,7 +38691,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Associations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Associations->gg;
+       e && e->g.tok == zx_hrxml_Associations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Associations(c,(struct zx_hrxml_Associations_s*)e,dup_strs);
   	  if (!enn)
   	      x->Associations = (struct zx_hrxml_Associations_s*)en;
@@ -35673,7 +38701,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->References->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->References->gg;
+       e && e->g.tok == zx_hrxml_References_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_References(c,(struct zx_hrxml_References_s*)e,dup_strs);
   	  if (!enn)
   	      x->References = (struct zx_hrxml_References_s*)en;
@@ -35681,7 +38711,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SecurityCredentials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SecurityCredentials->gg;
+       e && e->g.tok == zx_hrxml_SecurityCredentials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SecurityCredentials(c,(struct zx_hrxml_SecurityCredentials_s*)e,dup_strs);
   	  if (!enn)
   	      x->SecurityCredentials = (struct zx_hrxml_SecurityCredentials_s*)en;
@@ -35689,7 +38721,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ResumeAdditionalItems->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResumeAdditionalItems->gg;
+       e && e->g.tok == zx_hrxml_ResumeAdditionalItems_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ResumeAdditionalItems(c,(struct zx_hrxml_ResumeAdditionalItems_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResumeAdditionalItems = (struct zx_hrxml_ResumeAdditionalItems_s*)en;
@@ -35697,7 +38731,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SupportingMaterials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_SupportingMaterials(c,(struct zx_hrxml_SupportingMaterials_s*)e,dup_strs);
   	  if (!enn)
   	      x->SupportingMaterials = (struct zx_hrxml_SupportingMaterials_s*)en;
@@ -35705,7 +38741,9 @@ struct zx_hrxml_StructuredXMLResume_s* zx_DEEP_CLONE_hrxml_StructuredXMLResume(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ProfessionalAssociations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ProfessionalAssociations->gg;
+       e && e->g.tok == zx_hrxml_ProfessionalAssociations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ProfessionalAssociations(c,(struct zx_hrxml_ProfessionalAssociations_s*)e,dup_strs);
   	  if (!enn)
   	      x->ProfessionalAssociations = (struct zx_hrxml_ProfessionalAssociations_s*)en;
@@ -35738,7 +38776,9 @@ int zx_WALK_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Struc
   if (ret)
     return ret;
 
-  for (e = &x->ContactInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactInfo->gg;
+       e && e->g.tok == zx_hrxml_ContactInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -35749,82 +38789,114 @@ int zx_WALK_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Struc
   ret = zx_walk_so_simple_elems(c, x->Objective, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->EmploymentHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EmploymentHistory->gg;
+       e && e->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EducationHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EducationHistory->gg;
+       e && e->g.tok == zx_hrxml_EducationHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LicensesAndCertifications->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LicensesAndCertifications->gg;
+       e && e->g.tok == zx_hrxml_LicensesAndCertifications_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_LicensesAndCertifications(c, (struct zx_hrxml_LicensesAndCertifications_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MilitaryHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MilitaryHistory->gg;
+       e && e->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PatentHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PatentHistory->gg;
+       e && e->g.tok == zx_hrxml_PatentHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PatentHistory(c, (struct zx_hrxml_PatentHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PublicationHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PublicationHistory->gg;
+       e && e->g.tok == zx_hrxml_PublicationHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PublicationHistory(c, (struct zx_hrxml_PublicationHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SpeakingEventsHistory->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SpeakingEventsHistory->gg;
+       e && e->g.tok == zx_hrxml_SpeakingEventsHistory_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SpeakingEventsHistory(c, (struct zx_hrxml_SpeakingEventsHistory_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Qualifications->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Qualifications->gg;
+       e && e->g.tok == zx_hrxml_Qualifications_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Qualifications(c, (struct zx_hrxml_Qualifications_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Languages->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Languages->gg;
+       e && e->g.tok == zx_hrxml_Languages_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Languages(c, (struct zx_hrxml_Languages_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Achievements->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Achievements->gg;
+       e && e->g.tok == zx_hrxml_Achievements_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Achievements(c, (struct zx_hrxml_Achievements_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Associations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Associations->gg;
+       e && e->g.tok == zx_hrxml_Associations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->References->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->References->gg;
+       e && e->g.tok == zx_hrxml_References_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_References(c, (struct zx_hrxml_References_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SecurityCredentials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SecurityCredentials->gg;
+       e && e->g.tok == zx_hrxml_SecurityCredentials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SecurityCredentials(c, (struct zx_hrxml_SecurityCredentials_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ResumeAdditionalItems->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResumeAdditionalItems->gg;
+       e && e->g.tok == zx_hrxml_ResumeAdditionalItems_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ResumeAdditionalItems(c, (struct zx_hrxml_ResumeAdditionalItems_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SupportingMaterials->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SupportingMaterials->gg;
+       e && e->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ProfessionalAssociations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ProfessionalAssociations->gg;
+       e && e->g.tok == zx_hrxml_ProfessionalAssociations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ProfessionalAssociations(c, (struct zx_hrxml_ProfessionalAssociations_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -35890,7 +38962,9 @@ void zx_FREE_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x,
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -35933,7 +39007,9 @@ void zx_DUP_STRS_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -35957,7 +39033,9 @@ struct zx_hrxml_SupplierId_s* zx_DEEP_CLONE_hrxml_SupplierId(struct zx_ctx* c, s
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -35988,7 +39066,9 @@ int zx_WALK_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* 
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -36046,11 +39126,15 @@ void zx_FREE_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Support
 
 
   zx_free_simple_elems(c, x->Link, free_strs);
-  for (e = &x->AttachmentReference->gg; e; e = en) {
+  for (e = &x->AttachmentReference->gg;
+       e && e->g.tok == zx_hrxml_AttachmentReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_AttachmentReference(c, (struct zx_hrxml_AttachmentReference_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
@@ -36091,9 +39175,13 @@ void zx_DUP_STRS_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Sup
 
 
   zx_dup_strs_simple_elems(c, x->Link);
-  for (se = &x->AttachmentReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttachmentReference->gg;
+       se && se->g.tok == zx_hrxml_AttachmentReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_AttachmentReference(c, (struct zx_hrxml_AttachmentReference_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 }
@@ -36115,7 +39203,9 @@ struct zx_hrxml_SupportingMaterials_s* zx_DEEP_CLONE_hrxml_SupportingMaterials(s
 
 
   x->Link = zx_deep_clone_simple_elems(c,x->Link, dup_strs);
-  for (enn = 0, e = &x->AttachmentReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttachmentReference->gg;
+       e && e->g.tok == zx_hrxml_AttachmentReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_AttachmentReference(c,(struct zx_hrxml_AttachmentReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttachmentReference = (struct zx_hrxml_AttachmentReference_s*)en;
@@ -36123,7 +39213,9 @@ struct zx_hrxml_SupportingMaterials_s* zx_DEEP_CLONE_hrxml_SupportingMaterials(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -36157,12 +39249,16 @@ int zx_WALK_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Suppo
   ret = zx_walk_so_simple_elems(c, x->Link, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->AttachmentReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttachmentReference->gg;
+       e && e->g.tok == zx_hrxml_AttachmentReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_AttachmentReference(c, (struct zx_hrxml_AttachmentReference_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -36358,7 +39454,9 @@ void zx_FREE_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, int free_
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -36401,7 +39499,9 @@ void zx_DUP_STRS_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x)
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -36425,7 +39525,9 @@ struct zx_hrxml_TaxId_s* zx_DEEP_CLONE_hrxml_TaxId(struct zx_ctx* c, struct zx_h
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -36456,7 +39558,9 @@ int zx_WALK_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -37197,7 +40301,9 @@ void zx_FREE_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAll
 
   zx_free_attr(c, x->timeOffType, free_strs);
 
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
@@ -37238,7 +40344,9 @@ void zx_DUP_STRS_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOf
 
   zx_dup_attr(c, x->timeOffType);
 
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 }
@@ -37260,7 +40368,9 @@ struct zx_hrxml_TimeOffAllowance_s* zx_DEEP_CLONE_hrxml_TimeOffAllowance(struct 
 
   x->timeOffType = zx_clone_attr(c, x->timeOffType);
 
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -37291,7 +40401,9 @@ int zx_WALK_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffA
   if (ret)
     return ret;
 
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -37762,7 +40874,9 @@ void zx_FREE_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, int fre
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -37805,7 +40919,9 @@ void zx_DUP_STRS_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x)
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -37829,7 +40945,9 @@ struct zx_hrxml_UserId_s* zx_DEEP_CLONE_hrxml_UserId(struct zx_ctx* c, struct zx
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -37860,7 +40978,9 @@ int zx_WALK_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -38243,7 +41363,9 @@ void zx_FREE_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->ContactInfo->gg; e; e = en) {
+  for (e = &x->ContactInfo->gg;
+       e && e->g.tok == zx_hrxml_ContactInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)e, free_strs);
   }
@@ -38290,7 +41412,9 @@ void zx_DUP_STRS_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verificati
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->ContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactInfo->gg;
+       se && se->g.tok == zx_hrxml_ContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)se);
   zx_dup_strs_simple_elems(c, x->ReasonForLeaving);
   zx_dup_strs_simple_elems(c, x->PermissionToContact);
@@ -38318,7 +41442,9 @@ struct zx_hrxml_Verification_s* zx_DEEP_CLONE_hrxml_Verification(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->ContactInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactInfo->gg;
+       e && e->g.tok == zx_hrxml_ContactInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ContactInfo(c,(struct zx_hrxml_ContactInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactInfo = (struct zx_hrxml_ContactInfo_s*)en;
@@ -38356,7 +41482,9 @@ int zx_WALK_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification
   if (ret)
     return ret;
 
-  for (e = &x->ContactInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactInfo->gg;
+       e && e->g.tok == zx_hrxml_ContactInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -38846,31 +41974,45 @@ void zx_FREE_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, int
 
 
   zx_free_simple_elems(c, x->WorkSiteName, free_strs);
-  for (e = &x->WorkSiteId->gg; e; e = en) {
+  for (e = &x->WorkSiteId->gg;
+       e && e->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)e, free_strs);
   }
-  for (e = &x->Details->gg; e; e = en) {
+  for (e = &x->Details->gg;
+       e && e->g.tok == zx_hrxml_Details_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Details(c, (struct zx_hrxml_Details_s*)e, free_strs);
   }
-  for (e = &x->PostalAddress->gg; e; e = en) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, free_strs);
   }
-  for (e = &x->TravelDirections->gg; e; e = en) {
+  for (e = &x->TravelDirections->gg;
+       e && e->g.tok == zx_hrxml_TravelDirections_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)e, free_strs);
   }
-  for (e = &x->ParkingInstructions->gg; e; e = en) {
+  for (e = &x->ParkingInstructions->gg;
+       e && e->g.tok == zx_hrxml_ParkingInstructions_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_ParkingInstructions(c, (struct zx_hrxml_ParkingInstructions_s*)e, free_strs);
   }
-  for (e = &x->WorkSiteEnvironment->gg; e; e = en) {
+  for (e = &x->WorkSiteEnvironment->gg;
+       e && e->g.tok == zx_hrxml_WorkSiteEnvironment_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_WorkSiteEnvironment(c, (struct zx_hrxml_WorkSiteEnvironment_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -38911,19 +42053,33 @@ void zx_DUP_STRS_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->WorkSiteName);
-  for (se = &x->WorkSiteId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSiteId->gg;
+       se && se->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)se);
-  for (se = &x->Details->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Details->gg;
+       se && se->g.tok == zx_hrxml_Details_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Details(c, (struct zx_hrxml_Details_s*)se);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
-  for (se = &x->TravelDirections->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TravelDirections->gg;
+       se && se->g.tok == zx_hrxml_TravelDirections_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)se);
-  for (se = &x->ParkingInstructions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ParkingInstructions->gg;
+       se && se->g.tok == zx_hrxml_ParkingInstructions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_ParkingInstructions(c, (struct zx_hrxml_ParkingInstructions_s*)se);
-  for (se = &x->WorkSiteEnvironment->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSiteEnvironment->gg;
+       se && se->g.tok == zx_hrxml_WorkSiteEnvironment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_WorkSiteEnvironment(c, (struct zx_hrxml_WorkSiteEnvironment_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -38945,7 +42101,9 @@ struct zx_hrxml_WorkSite_s* zx_DEEP_CLONE_hrxml_WorkSite(struct zx_ctx* c, struc
 
 
   x->WorkSiteName = zx_deep_clone_simple_elems(c,x->WorkSiteName, dup_strs);
-  for (enn = 0, e = &x->WorkSiteId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->WorkSiteId->gg;
+       e && e->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_WorkSiteId(c,(struct zx_hrxml_WorkSiteId_s*)e,dup_strs);
   	  if (!enn)
   	      x->WorkSiteId = (struct zx_hrxml_WorkSiteId_s*)en;
@@ -38953,7 +42111,9 @@ struct zx_hrxml_WorkSite_s* zx_DEEP_CLONE_hrxml_WorkSite(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Details->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Details->gg;
+       e && e->g.tok == zx_hrxml_Details_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Details(c,(struct zx_hrxml_Details_s*)e,dup_strs);
   	  if (!enn)
   	      x->Details = (struct zx_hrxml_Details_s*)en;
@@ -38961,7 +42121,9 @@ struct zx_hrxml_WorkSite_s* zx_DEEP_CLONE_hrxml_WorkSite(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_PostalAddress(c,(struct zx_hrxml_PostalAddress_s*)e,dup_strs);
   	  if (!enn)
   	      x->PostalAddress = (struct zx_hrxml_PostalAddress_s*)en;
@@ -38969,7 +42131,9 @@ struct zx_hrxml_WorkSite_s* zx_DEEP_CLONE_hrxml_WorkSite(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TravelDirections->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TravelDirections->gg;
+       e && e->g.tok == zx_hrxml_TravelDirections_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_TravelDirections(c,(struct zx_hrxml_TravelDirections_s*)e,dup_strs);
   	  if (!enn)
   	      x->TravelDirections = (struct zx_hrxml_TravelDirections_s*)en;
@@ -38977,7 +42141,9 @@ struct zx_hrxml_WorkSite_s* zx_DEEP_CLONE_hrxml_WorkSite(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ParkingInstructions->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ParkingInstructions->gg;
+       e && e->g.tok == zx_hrxml_ParkingInstructions_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_ParkingInstructions(c,(struct zx_hrxml_ParkingInstructions_s*)e,dup_strs);
   	  if (!enn)
   	      x->ParkingInstructions = (struct zx_hrxml_ParkingInstructions_s*)en;
@@ -38985,7 +42151,9 @@ struct zx_hrxml_WorkSite_s* zx_DEEP_CLONE_hrxml_WorkSite(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->WorkSiteEnvironment->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->WorkSiteEnvironment->gg;
+       e && e->g.tok == zx_hrxml_WorkSiteEnvironment_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_WorkSiteEnvironment(c,(struct zx_hrxml_WorkSiteEnvironment_s*)e,dup_strs);
   	  if (!enn)
   	      x->WorkSiteEnvironment = (struct zx_hrxml_WorkSiteEnvironment_s*)en;
@@ -38993,7 +42161,9 @@ struct zx_hrxml_WorkSite_s* zx_DEEP_CLONE_hrxml_WorkSite(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -39027,37 +42197,51 @@ int zx_WALK_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, v
   ret = zx_walk_so_simple_elems(c, x->WorkSiteName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->WorkSiteId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->WorkSiteId->gg;
+       e && e->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Details->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Details->gg;
+       e && e->g.tok == zx_hrxml_Details_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Details(c, (struct zx_hrxml_Details_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PostalAddress->gg;
+       e && e->g.tok == zx_hrxml_PostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TravelDirections->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TravelDirections->gg;
+       e && e->g.tok == zx_hrxml_TravelDirections_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ParkingInstructions->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ParkingInstructions->gg;
+       e && e->g.tok == zx_hrxml_ParkingInstructions_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_ParkingInstructions(c, (struct zx_hrxml_ParkingInstructions_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->WorkSiteEnvironment->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->WorkSiteEnvironment->gg;
+       e && e->g.tok == zx_hrxml_WorkSiteEnvironment_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_WorkSiteEnvironment(c, (struct zx_hrxml_WorkSiteEnvironment_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -39115,23 +42299,33 @@ void zx_FREE_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSit
 
 
   zx_free_simple_elems(c, x->EnvironmentName, free_strs);
-  for (e = &x->EnvironmentId->gg; e; e = en) {
+  for (e = &x->EnvironmentId->gg;
+       e && e->g.tok == zx_hrxml_EnvironmentId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_EnvironmentId(c, (struct zx_hrxml_EnvironmentId_s*)e, free_strs);
   }
-  for (e = &x->WorkSiteId->gg; e; e = en) {
+  for (e = &x->WorkSiteId->gg;
+       e && e->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)e, free_strs);
   }
-  for (e = &x->Description->gg; e; e = en) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, free_strs);
   }
-  for (e = &x->Considerations->gg; e; e = en) {
+  for (e = &x->Considerations->gg;
+       e && e->g.tok == zx_hrxml_Considerations_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_Considerations(c, (struct zx_hrxml_Considerations_s*)e, free_strs);
   }
-  for (e = &x->UserArea->gg; e; e = en) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, free_strs);
   }
@@ -39172,15 +42366,25 @@ void zx_DUP_STRS_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_Wor
 
 
   zx_dup_strs_simple_elems(c, x->EnvironmentName);
-  for (se = &x->EnvironmentId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EnvironmentId->gg;
+       se && se->g.tok == zx_hrxml_EnvironmentId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_EnvironmentId(c, (struct zx_hrxml_EnvironmentId_s*)se);
-  for (se = &x->WorkSiteId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSiteId->gg;
+       se && se->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->Considerations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Considerations->gg;
+       se && se->g.tok == zx_hrxml_Considerations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_Considerations(c, (struct zx_hrxml_Considerations_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 }
@@ -39202,7 +42406,9 @@ struct zx_hrxml_WorkSiteEnvironment_s* zx_DEEP_CLONE_hrxml_WorkSiteEnvironment(s
 
 
   x->EnvironmentName = zx_deep_clone_simple_elems(c,x->EnvironmentName, dup_strs);
-  for (enn = 0, e = &x->EnvironmentId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EnvironmentId->gg;
+       e && e->g.tok == zx_hrxml_EnvironmentId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_EnvironmentId(c,(struct zx_hrxml_EnvironmentId_s*)e,dup_strs);
   	  if (!enn)
   	      x->EnvironmentId = (struct zx_hrxml_EnvironmentId_s*)en;
@@ -39210,7 +42416,9 @@ struct zx_hrxml_WorkSiteEnvironment_s* zx_DEEP_CLONE_hrxml_WorkSiteEnvironment(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->WorkSiteId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->WorkSiteId->gg;
+       e && e->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_WorkSiteId(c,(struct zx_hrxml_WorkSiteId_s*)e,dup_strs);
   	  if (!enn)
   	      x->WorkSiteId = (struct zx_hrxml_WorkSiteId_s*)en;
@@ -39218,7 +42426,9 @@ struct zx_hrxml_WorkSiteEnvironment_s* zx_DEEP_CLONE_hrxml_WorkSiteEnvironment(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Description(c,(struct zx_hrxml_Description_s*)e,dup_strs);
   	  if (!enn)
   	      x->Description = (struct zx_hrxml_Description_s*)en;
@@ -39226,7 +42436,9 @@ struct zx_hrxml_WorkSiteEnvironment_s* zx_DEEP_CLONE_hrxml_WorkSiteEnvironment(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Considerations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Considerations->gg;
+       e && e->g.tok == zx_hrxml_Considerations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_Considerations(c,(struct zx_hrxml_Considerations_s*)e,dup_strs);
   	  if (!enn)
   	      x->Considerations = (struct zx_hrxml_Considerations_s*)en;
@@ -39234,7 +42446,9 @@ struct zx_hrxml_WorkSiteEnvironment_s* zx_DEEP_CLONE_hrxml_WorkSiteEnvironment(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_UserArea(c,(struct zx_hrxml_UserArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserArea = (struct zx_hrxml_UserArea_s*)en;
@@ -39268,27 +42482,37 @@ int zx_WALK_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkS
   ret = zx_walk_so_simple_elems(c, x->EnvironmentName, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->EnvironmentId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EnvironmentId->gg;
+       e && e->g.tok == zx_hrxml_EnvironmentId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_EnvironmentId(c, (struct zx_hrxml_EnvironmentId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->WorkSiteId->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->WorkSiteId->gg;
+       e && e->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Description->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Description->gg;
+       e && e->g.tok == zx_hrxml_Description_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Considerations->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Considerations->gg;
+       e && e->g.tok == zx_hrxml_Considerations_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_Considerations(c, (struct zx_hrxml_Considerations_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UserArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserArea->gg;
+       e && e->g.tok == zx_hrxml_UserArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -39348,7 +42572,9 @@ void zx_FREE_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x,
   zx_free_attr(c, x->validFrom, free_strs);
   zx_free_attr(c, x->validTo, free_strs);
 
-  for (e = &x->IdValue->gg; e; e = en) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, free_strs);
   }
@@ -39391,7 +42617,9 @@ void zx_DUP_STRS_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s
   zx_dup_attr(c, x->validFrom);
   zx_dup_attr(c, x->validTo);
 
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 }
@@ -39415,7 +42643,9 @@ struct zx_hrxml_WorkSiteId_s* zx_DEEP_CLONE_hrxml_WorkSiteId(struct zx_ctx* c, s
   x->validFrom = zx_clone_attr(c, x->validFrom);
   x->validTo = zx_clone_attr(c, x->validTo);
 
-  for (enn = 0, e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_hrxml_IdValue(c,(struct zx_hrxml_IdValue_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdValue = (struct zx_hrxml_IdValue_s*)en;
@@ -39446,7 +42676,9 @@ int zx_WALK_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* 
   if (ret)
     return ret;
 
-  for (e = &x->IdValue->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdValue->gg;
+       e && e->g.tok == zx_hrxml_IdValue_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)e, ctx, callback);
     if (ret)
       return ret;

@@ -85,7 +85,7 @@ int zx_LEN_SO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x )
   int len = sizeof("<as:Extensions")-1 + 1 + sizeof("</as:Extensions>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -119,7 +119,7 @@ char* zx_ENC_SO_as_Extensions(struct zx_ctx* c, struct zx_as_Extensions_s* x, ch
   ZX_OUT_TAG(p, "<as:Extensions");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -210,7 +210,7 @@ int zx_LEN_SO_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x )
   int len = sizeof("<as:Parameter")-1 + 1 + sizeof("</as:Parameter>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
 
@@ -245,7 +245,7 @@ char* zx_ENC_SO_as_Parameter(struct zx_ctx* c, struct zx_as_Parameter_s* x, char
   ZX_OUT_TAG(p, "<as:Parameter");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -337,7 +337,7 @@ int zx_LEN_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTrans
   int len = sizeof("<as:PasswordTransforms")-1 + 1 + sizeof("</as:PasswordTransforms>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -345,7 +345,9 @@ int zx_LEN_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTrans
   int len = 0;
 #endif
   
-  for (se = &x->Transform->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Transform->gg;
+       se && se->g.tok == zx_as_Transform_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_as_Transform(c, (struct zx_as_Transform_s*)se);
 
 
@@ -373,7 +375,7 @@ char* zx_ENC_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTra
   ZX_OUT_TAG(p, "<as:PasswordTransforms");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -385,7 +387,9 @@ char* zx_ENC_SO_as_PasswordTransforms(struct zx_ctx* c, struct zx_as_PasswordTra
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Transform->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Transform->gg;
+       se && se->g.tok == zx_as_Transform_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_as_Transform(c, (struct zx_as_Transform_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -466,7 +470,7 @@ int zx_LEN_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x )
   int len = sizeof("<as:SASLRequest")-1 + 1 + sizeof("</as:SASLRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->advisoryAuthnID, sizeof("advisoryAuthnID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->authzID, sizeof("authzID")-1, &pop_seen);
@@ -477,11 +481,17 @@ int zx_LEN_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Data; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("as:Data")-1, zx_ns_tab+zx_as_NS);
-  for (se = &x->RequestedAuthnContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Data;
+    se && se->g.tok == zx_as_Data_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("as:Data")-1, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RequestedAuthnContext->gg;
+       se && se->g.tok == zx_sp_RequestedAuthnContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_RequestedAuthnContext(c, (struct zx_sp_RequestedAuthnContext_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_as_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_as_Extensions(c, (struct zx_as_Extensions_s*)se);
 
 
@@ -509,7 +519,7 @@ char* zx_ENC_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x, 
   ZX_OUT_TAG(p, "<as:SASLRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -524,11 +534,17 @@ char* zx_ENC_SO_as_SASLRequest(struct zx_ctx* c, struct zx_as_SASLRequest_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Data; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "as:Data", sizeof("as:Data")-1, zx_ns_tab+zx_as_NS);
-  for (se = &x->RequestedAuthnContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Data;
+       se && se->g.tok == zx_as_Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "as:Data", sizeof("as:Data")-1, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RequestedAuthnContext->gg;
+       se && se->g.tok == zx_sp_RequestedAuthnContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_RequestedAuthnContext(c, (struct zx_sp_RequestedAuthnContext_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_as_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_as_Extensions(c, (struct zx_as_Extensions_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -609,7 +625,7 @@ int zx_LEN_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x )
   int len = sizeof("<as:SASLResponse")-1 + 1 + sizeof("</as:SASLResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->serverMechanism, sizeof("serverMechanism")-1, &pop_seen);
 
@@ -618,13 +634,21 @@ int zx_LEN_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PasswordTransforms->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PasswordTransforms->gg;
+       se && se->g.tok == zx_as_PasswordTransforms_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_as_PasswordTransforms(c, (struct zx_as_PasswordTransforms_s*)se);
-  for (se = x->Data; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("as:Data")-1, zx_ns_tab+zx_as_NS);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Data;
+    se && se->g.tok == zx_as_Data_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("as:Data")-1, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se);
 
 
@@ -652,7 +676,7 @@ char* zx_ENC_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x
   ZX_OUT_TAG(p, "<as:SASLResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -665,13 +689,21 @@ char* zx_ENC_SO_as_SASLResponse(struct zx_ctx* c, struct zx_as_SASLResponse_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->PasswordTransforms->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PasswordTransforms->gg;
+       se && se->g.tok == zx_as_PasswordTransforms_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_as_PasswordTransforms(c, (struct zx_as_PasswordTransforms_s*)se, p);
-  for (se = x->Data; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "as:Data", sizeof("as:Data")-1, zx_ns_tab+zx_as_NS);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Data;
+       se && se->g.tok == zx_as_Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "as:Data", sizeof("as:Data")-1, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -752,7 +784,7 @@ int zx_LEN_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x )
   int len = sizeof("<as:Transform")-1 + 1 + sizeof("</as:Transform>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
 
@@ -761,7 +793,9 @@ int zx_LEN_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Parameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Parameter->gg;
+       se && se->g.tok == zx_as_Parameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_as_Parameter(c, (struct zx_as_Parameter_s*)se);
 
 
@@ -789,7 +823,7 @@ char* zx_ENC_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x, char
   ZX_OUT_TAG(p, "<as:Transform");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_as_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_as_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -802,7 +836,9 @@ char* zx_ENC_SO_as_Transform(struct zx_ctx* c, struct zx_as_Transform_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Parameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Parameter->gg;
+       se && se->g.tok == zx_as_Parameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_as_Parameter(c, (struct zx_as_Parameter_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

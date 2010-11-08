@@ -122,10 +122,10 @@ static struct zx_ns_s* zx_new_known_ns(struct zx_ctx* c, int prefix_len, const c
 {
   struct zx_ns_s* ns = ZX_ZALLOC(c, struct zx_ns_s);
   ns->prefix_len = prefix_len;
-  ns->url_len = known_ns->url_len;
-  ns->prefix = prefix;
-  ns->url = known_ns->url;
-  ns->master = known_ns;
+  ns->prefix     = prefix;
+  ns->url_len    = known_ns->url_len;
+  ns->url        = known_ns->url;
+  ns->master     = known_ns;
   return ns;
 }
 
@@ -136,10 +136,12 @@ static struct zx_ns_s* zx_new_unknown_ns(struct zx_ctx* c, int prefix_len, const
   ns->url_len = url_len;
   /* Reallocating these is necessary for unknown namespaces */
   ns->prefix = ZX_ALLOC(c, prefix_len+1);
-  memcpy((char*)ns->prefix, prefix, prefix_len);
+  if (prefix_len)
+    memcpy((char*)ns->prefix, prefix, prefix_len);
   *((char*)ns->prefix+prefix_len) = 0;
   ns->url = ZX_ALLOC(c, url_len+1);
-  memcpy((char*)ns->url, url, url_len);
+  if (url_len)
+    memcpy((char*)ns->url, url, url_len);
   *((char*)ns->url+url_len) = 0;
   return ns;
 }
@@ -194,7 +196,7 @@ struct zx_ns_s* zx_prefix_seen(struct zx_ctx* c, int len, const char* prefix)
 {
   struct zx_ns_s* ns;
   if (len == 3 && !memcmp(prefix, "xml", 3))
-      return zx_ns_tab + (zx_xml_NS >> 16);
+      return zx_ns_tab + (zx_xml_NS >> ZX_TOK_NS_SHIFT);
   for (ns = c->guard_seen_n.seen_n; ns->seen_n; ns = ns->seen_n)
     if (ns->prefix_len == len && (!len || !memcmp(ns->prefix, prefix, len)))
       return ns;

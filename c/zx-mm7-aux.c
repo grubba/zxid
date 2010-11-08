@@ -197,19 +197,27 @@ void zx_FREE_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x, int free_strs)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RFC2822Address->gg; e; e = en) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
   }
-  for (e = &x->Number->gg; e; e = en) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
   }
-  for (e = &x->ShortCode->gg; e; e = en) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -249,13 +257,21 @@ void zx_DUP_STRS_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RFC2822Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RFC2822Address->gg;
+       se && se->g.tok == zx_mm7_RFC2822Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)se);
-  for (se = &x->Number->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Number->gg;
+       se && se->g.tok == zx_mm7_Number_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Number(c, (struct zx_mm7_Number_s*)se);
-  for (se = &x->ShortCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ShortCode->gg;
+       se && se->g.tok == zx_mm7_ShortCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -276,7 +292,9 @@ struct zx_mm7_Bcc_s* zx_DEEP_CLONE_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_RFC2822Address(c,(struct zx_mm7_RFC2822Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->RFC2822Address = (struct zx_mm7_RFC2822Address_s*)en;
@@ -284,7 +302,9 @@ struct zx_mm7_Bcc_s* zx_DEEP_CLONE_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Number(c,(struct zx_mm7_Number_s*)e,dup_strs);
   	  if (!enn)
   	      x->Number = (struct zx_mm7_Number_s*)en;
@@ -292,7 +312,9 @@ struct zx_mm7_Bcc_s* zx_DEEP_CLONE_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ShortCode(c,(struct zx_mm7_ShortCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ShortCode = (struct zx_mm7_ShortCode_s*)en;
@@ -300,7 +322,9 @@ struct zx_mm7_Bcc_s* zx_DEEP_CLONE_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -331,22 +355,30 @@ int zx_WALK_SO_mm7_Bcc(struct zx_ctx* c, struct zx_mm7_Bcc_s* x, void* ctx, int 
   if (ret)
     return ret;
 
-  for (e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Number(c, (struct zx_mm7_Number_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -404,16 +436,22 @@ void zx_FREE_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x, int f
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->SenderIdentification->gg; e; e = en) {
+  for (e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->Recipients->gg; e; e = en) {
+  for (e = &x->Recipients->gg;
+       e && e->g.tok == zx_mm7_Recipients_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)e, free_strs);
   }
@@ -457,12 +495,18 @@ void zx_DUP_STRS_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->SenderIdentification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SenderIdentification->gg;
+       se && se->g.tok == zx_mm7_SenderIdentification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
   zx_dup_strs_simple_elems(c, x->MessageID);
-  for (se = &x->Recipients->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipients->gg;
+       se && se->g.tok == zx_mm7_Recipients_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)se);
   zx_dup_strs_simple_elems(c, x->ApplicID);
   zx_dup_strs_simple_elems(c, x->ReplyApplicID);
@@ -487,7 +531,9 @@ struct zx_mm7_CancelReq_s* zx_DEEP_CLONE_mm7_CancelReq(struct zx_ctx* c, struct 
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->SenderIdentification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_SenderIdentification(c,(struct zx_mm7_SenderIdentification_s*)e,dup_strs);
   	  if (!enn)
   	      x->SenderIdentification = (struct zx_mm7_SenderIdentification_s*)en;
@@ -495,7 +541,9 @@ struct zx_mm7_CancelReq_s* zx_DEEP_CLONE_mm7_CancelReq(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -504,7 +552,9 @@ struct zx_mm7_CancelReq_s* zx_DEEP_CLONE_mm7_CancelReq(struct zx_ctx* c, struct 
   	  enn = en;
   }
   x->MessageID = zx_deep_clone_simple_elems(c,x->MessageID, dup_strs);
-  for (enn = 0, e = &x->Recipients->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Recipients->gg;
+       e && e->g.tok == zx_mm7_Recipients_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Recipients(c,(struct zx_mm7_Recipients_s*)e,dup_strs);
   	  if (!enn)
   	      x->Recipients = (struct zx_mm7_Recipients_s*)en;
@@ -541,12 +591,16 @@ int zx_WALK_SO_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SenderIdentification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -554,7 +608,9 @@ int zx_WALK_SO_mm7_CancelReq(struct zx_ctx* c, struct zx_mm7_CancelReq_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->MessageID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Recipients->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Recipients->gg;
+       e && e->g.tok == zx_mm7_Recipients_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -621,11 +677,15 @@ void zx_FREE_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x, int f
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -666,9 +726,13 @@ void zx_DUP_STRS_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -690,7 +754,9 @@ struct zx_mm7_CancelRsp_s* zx_DEEP_CLONE_mm7_CancelRsp(struct zx_ctx* c, struct 
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -698,7 +764,9 @@ struct zx_mm7_CancelRsp_s* zx_DEEP_CLONE_mm7_CancelRsp(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -732,12 +800,16 @@ int zx_WALK_SO_mm7_CancelRsp(struct zx_ctx* c, struct zx_mm7_CancelRsp_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -794,19 +866,27 @@ void zx_FREE_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x, int free_strs)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RFC2822Address->gg; e; e = en) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
   }
-  for (e = &x->Number->gg; e; e = en) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
   }
-  for (e = &x->ShortCode->gg; e; e = en) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -846,13 +926,21 @@ void zx_DUP_STRS_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RFC2822Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RFC2822Address->gg;
+       se && se->g.tok == zx_mm7_RFC2822Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)se);
-  for (se = &x->Number->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Number->gg;
+       se && se->g.tok == zx_mm7_Number_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Number(c, (struct zx_mm7_Number_s*)se);
-  for (se = &x->ShortCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ShortCode->gg;
+       se && se->g.tok == zx_mm7_ShortCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -873,7 +961,9 @@ struct zx_mm7_Cc_s* zx_DEEP_CLONE_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_RFC2822Address(c,(struct zx_mm7_RFC2822Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->RFC2822Address = (struct zx_mm7_RFC2822Address_s*)en;
@@ -881,7 +971,9 @@ struct zx_mm7_Cc_s* zx_DEEP_CLONE_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Number(c,(struct zx_mm7_Number_s*)e,dup_strs);
   	  if (!enn)
   	      x->Number = (struct zx_mm7_Number_s*)en;
@@ -889,7 +981,9 @@ struct zx_mm7_Cc_s* zx_DEEP_CLONE_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ShortCode(c,(struct zx_mm7_ShortCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ShortCode = (struct zx_mm7_ShortCode_s*)en;
@@ -897,7 +991,9 @@ struct zx_mm7_Cc_s* zx_DEEP_CLONE_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -928,22 +1024,30 @@ int zx_WALK_SO_mm7_Cc(struct zx_ctx* c, struct zx_mm7_Cc_s* x, void* ctx, int (*
   if (ret)
     return ret;
 
-  for (e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Number(c, (struct zx_mm7_Number_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1274,26 +1378,36 @@ void zx_FREE_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x, int
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
   zx_free_simple_elems(c, x->MMSRelayServerID, free_strs);
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->VASPID, free_strs);
   zx_free_simple_elems(c, x->VASID, free_strs);
   zx_free_simple_elems(c, x->LinkedID, free_strs);
-  for (e = &x->Sender->gg; e; e = en) {
+  for (e = &x->Sender->gg;
+       e && e->g.tok == zx_mm7_Sender_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Sender(c, (struct zx_mm7_Sender_s*)e, free_strs);
   }
-  for (e = &x->Recipients->gg; e; e = en) {
+  for (e = &x->Recipients->gg;
+       e && e->g.tok == zx_mm7_Recipients_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)e, free_strs);
   }
-  for (e = &x->Previouslysentby->gg; e; e = en) {
+  for (e = &x->Previouslysentby->gg;
+       e && e->g.tok == zx_mm7_Previouslysentby_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Previouslysentby(c, (struct zx_mm7_Previouslysentby_s*)e, free_strs);
   }
-  for (e = &x->Previouslysentdateandtime->gg; e; e = en) {
+  for (e = &x->Previouslysentdateandtime->gg;
+       e && e->g.tok == zx_mm7_Previouslysentdateandtime_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Previouslysentdateandtime(c, (struct zx_mm7_Previouslysentdateandtime_s*)e, free_strs);
   }
@@ -1306,19 +1420,27 @@ void zx_FREE_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x, int
   zx_free_simple_elems(c, x->ApplicID, free_strs);
   zx_free_simple_elems(c, x->ReplyApplicID, free_strs);
   zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
-  for (e = &x->UACapabilities->gg; e; e = en) {
+  for (e = &x->UACapabilities->gg;
+       e && e->g.tok == zx_mm7_UACapabilities_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_UACapabilities(c, (struct zx_mm7_UACapabilities_s*)e, free_strs);
   }
-  for (e = &x->Content->gg; e; e = en) {
+  for (e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Content(c, (struct zx_mm7_Content_s*)e, free_strs);
   }
-  for (e = &x->AdditionalInformation->gg; e; e = en) {
+  for (e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, free_strs);
   }
-  for (e = &x->MessageExtraData->gg; e; e = en) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
   }
@@ -1360,18 +1482,28 @@ void zx_DUP_STRS_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x)
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
   zx_dup_strs_simple_elems(c, x->MMSRelayServerID);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
   zx_dup_strs_simple_elems(c, x->VASPID);
   zx_dup_strs_simple_elems(c, x->VASID);
   zx_dup_strs_simple_elems(c, x->LinkedID);
-  for (se = &x->Sender->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Sender->gg;
+       se && se->g.tok == zx_mm7_Sender_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Sender(c, (struct zx_mm7_Sender_s*)se);
-  for (se = &x->Recipients->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipients->gg;
+       se && se->g.tok == zx_mm7_Recipients_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)se);
-  for (se = &x->Previouslysentby->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Previouslysentby->gg;
+       se && se->g.tok == zx_mm7_Previouslysentby_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Previouslysentby(c, (struct zx_mm7_Previouslysentby_s*)se);
-  for (se = &x->Previouslysentdateandtime->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Previouslysentdateandtime->gg;
+       se && se->g.tok == zx_mm7_Previouslysentdateandtime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Previouslysentdateandtime(c, (struct zx_mm7_Previouslysentdateandtime_s*)se);
   zx_dup_strs_simple_elems(c, x->SenderSPI);
   zx_dup_strs_simple_elems(c, x->RecipientSPI);
@@ -1382,13 +1514,21 @@ void zx_DUP_STRS_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x)
   zx_dup_strs_simple_elems(c, x->ApplicID);
   zx_dup_strs_simple_elems(c, x->ReplyApplicID);
   zx_dup_strs_simple_elems(c, x->AuxApplicInfo);
-  for (se = &x->UACapabilities->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UACapabilities->gg;
+       se && se->g.tok == zx_mm7_UACapabilities_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_UACapabilities(c, (struct zx_mm7_UACapabilities_s*)se);
-  for (se = &x->Content->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Content->gg;
+       se && se->g.tok == zx_mm7_Content_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Content(c, (struct zx_mm7_Content_s*)se);
-  for (se = &x->AdditionalInformation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalInformation->gg;
+       se && se->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)se);
-  for (se = &x->MessageExtraData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MessageExtraData->gg;
+       se && se->g.tok == zx_mm7_MessageExtraData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)se);
 
 }
@@ -1411,7 +1551,9 @@ struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struc
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
   x->MMSRelayServerID = zx_deep_clone_simple_elems(c,x->MMSRelayServerID, dup_strs);
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -1422,7 +1564,9 @@ struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struc
   x->VASPID = zx_deep_clone_simple_elems(c,x->VASPID, dup_strs);
   x->VASID = zx_deep_clone_simple_elems(c,x->VASID, dup_strs);
   x->LinkedID = zx_deep_clone_simple_elems(c,x->LinkedID, dup_strs);
-  for (enn = 0, e = &x->Sender->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Sender->gg;
+       e && e->g.tok == zx_mm7_Sender_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Sender(c,(struct zx_mm7_Sender_s*)e,dup_strs);
   	  if (!enn)
   	      x->Sender = (struct zx_mm7_Sender_s*)en;
@@ -1430,7 +1574,9 @@ struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Recipients->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Recipients->gg;
+       e && e->g.tok == zx_mm7_Recipients_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Recipients(c,(struct zx_mm7_Recipients_s*)e,dup_strs);
   	  if (!enn)
   	      x->Recipients = (struct zx_mm7_Recipients_s*)en;
@@ -1438,7 +1584,9 @@ struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Previouslysentby->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Previouslysentby->gg;
+       e && e->g.tok == zx_mm7_Previouslysentby_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Previouslysentby(c,(struct zx_mm7_Previouslysentby_s*)e,dup_strs);
   	  if (!enn)
   	      x->Previouslysentby = (struct zx_mm7_Previouslysentby_s*)en;
@@ -1446,7 +1594,9 @@ struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Previouslysentdateandtime->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Previouslysentdateandtime->gg;
+       e && e->g.tok == zx_mm7_Previouslysentdateandtime_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Previouslysentdateandtime(c,(struct zx_mm7_Previouslysentdateandtime_s*)e,dup_strs);
   	  if (!enn)
   	      x->Previouslysentdateandtime = (struct zx_mm7_Previouslysentdateandtime_s*)en;
@@ -1463,7 +1613,9 @@ struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struc
   x->ApplicID = zx_deep_clone_simple_elems(c,x->ApplicID, dup_strs);
   x->ReplyApplicID = zx_deep_clone_simple_elems(c,x->ReplyApplicID, dup_strs);
   x->AuxApplicInfo = zx_deep_clone_simple_elems(c,x->AuxApplicInfo, dup_strs);
-  for (enn = 0, e = &x->UACapabilities->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UACapabilities->gg;
+       e && e->g.tok == zx_mm7_UACapabilities_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_UACapabilities(c,(struct zx_mm7_UACapabilities_s*)e,dup_strs);
   	  if (!enn)
   	      x->UACapabilities = (struct zx_mm7_UACapabilities_s*)en;
@@ -1471,7 +1623,9 @@ struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Content->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Content(c,(struct zx_mm7_Content_s*)e,dup_strs);
   	  if (!enn)
   	      x->Content = (struct zx_mm7_Content_s*)en;
@@ -1479,7 +1633,9 @@ struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AdditionalInformation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_AdditionalInformation(c,(struct zx_mm7_AdditionalInformation_s*)e,dup_strs);
   	  if (!enn)
   	      x->AdditionalInformation = (struct zx_mm7_AdditionalInformation_s*)en;
@@ -1487,7 +1643,9 @@ struct zx_mm7_DeliverReq_s* zx_DEEP_CLONE_mm7_DeliverReq(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_MessageExtraData(c,(struct zx_mm7_MessageExtraData_s*)e,dup_strs);
   	  if (!enn)
   	      x->MessageExtraData = (struct zx_mm7_MessageExtraData_s*)en;
@@ -1524,7 +1682,9 @@ int zx_WALK_SO_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x, v
   ret = zx_walk_so_simple_elems(c, x->MMSRelayServerID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1538,22 +1698,30 @@ int zx_WALK_SO_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x, v
   ret = zx_walk_so_simple_elems(c, x->LinkedID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Sender->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Sender->gg;
+       e && e->g.tok == zx_mm7_Sender_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Sender(c, (struct zx_mm7_Sender_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Recipients->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Recipients->gg;
+       e && e->g.tok == zx_mm7_Recipients_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Previouslysentby->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Previouslysentby->gg;
+       e && e->g.tok == zx_mm7_Previouslysentby_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Previouslysentby(c, (struct zx_mm7_Previouslysentby_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Previouslysentdateandtime->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Previouslysentdateandtime->gg;
+       e && e->g.tok == zx_mm7_Previouslysentdateandtime_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Previouslysentdateandtime(c, (struct zx_mm7_Previouslysentdateandtime_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1585,22 +1753,30 @@ int zx_WALK_SO_mm7_DeliverReq(struct zx_ctx* c, struct zx_mm7_DeliverReq_s* x, v
   ret = zx_walk_so_simple_elems(c, x->AuxApplicInfo, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->UACapabilities->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UACapabilities->gg;
+       e && e->g.tok == zx_mm7_UACapabilities_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_UACapabilities(c, (struct zx_mm7_UACapabilities_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Content->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Content(c, (struct zx_mm7_Content_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AdditionalInformation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1658,15 +1834,21 @@ void zx_FREE_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x, int
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
-  for (e = &x->ServiceCode->gg; e; e = en) {
+  for (e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, free_strs);
   }
@@ -1707,11 +1889,17 @@ void zx_DUP_STRS_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
-  for (se = &x->ServiceCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceCode->gg;
+       se && se->g.tok == zx_mm7_ServiceCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)se);
 
 }
@@ -1733,7 +1921,9 @@ struct zx_mm7_DeliverRsp_s* zx_DEEP_CLONE_mm7_DeliverRsp(struct zx_ctx* c, struc
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -1741,7 +1931,9 @@ struct zx_mm7_DeliverRsp_s* zx_DEEP_CLONE_mm7_DeliverRsp(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -1749,7 +1941,9 @@ struct zx_mm7_DeliverRsp_s* zx_DEEP_CLONE_mm7_DeliverRsp(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ServiceCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ServiceCode(c,(struct zx_mm7_ServiceCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ServiceCode = (struct zx_mm7_ServiceCode_s*)en;
@@ -1783,17 +1977,23 @@ int zx_WALK_SO_mm7_DeliverRsp(struct zx_ctx* c, struct zx_mm7_DeliverRsp_s* x, v
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ServiceCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1988,16 +2188,22 @@ void zx_FREE_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryRepor
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
   zx_free_simple_elems(c, x->MMSRelayServerID, free_strs);
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->Recipient->gg; e; e = en) {
+  for (e = &x->Recipient->gg;
+       e && e->g.tok == zx_mm7_Recipient_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Recipient(c, (struct zx_mm7_Recipient_s*)e, free_strs);
   }
-  for (e = &x->Sender->gg; e; e = en) {
+  for (e = &x->Sender->gg;
+       e && e->g.tok == zx_mm7_Sender_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Sender(c, (struct zx_mm7_Sender_s*)e, free_strs);
   }
@@ -2008,7 +2214,9 @@ void zx_FREE_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryRepor
   zx_free_simple_elems(c, x->ApplicID, free_strs);
   zx_free_simple_elems(c, x->ReplyApplicID, free_strs);
   zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
-  for (e = &x->UACapabilities->gg; e; e = en) {
+  for (e = &x->UACapabilities->gg;
+       e && e->g.tok == zx_mm7_UACapabilities_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_UACapabilities(c, (struct zx_mm7_UACapabilities_s*)e, free_strs);
   }
@@ -2050,12 +2258,18 @@ void zx_DUP_STRS_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryR
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
   zx_dup_strs_simple_elems(c, x->MMSRelayServerID);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
   zx_dup_strs_simple_elems(c, x->MessageID);
-  for (se = &x->Recipient->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipient->gg;
+       se && se->g.tok == zx_mm7_Recipient_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Recipient(c, (struct zx_mm7_Recipient_s*)se);
-  for (se = &x->Sender->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Sender->gg;
+       se && se->g.tok == zx_mm7_Sender_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Sender(c, (struct zx_mm7_Sender_s*)se);
   zx_dup_strs_simple_elems(c, x->Date);
   zx_dup_strs_simple_elems(c, x->MMStatus);
@@ -2064,7 +2278,9 @@ void zx_DUP_STRS_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryR
   zx_dup_strs_simple_elems(c, x->ApplicID);
   zx_dup_strs_simple_elems(c, x->ReplyApplicID);
   zx_dup_strs_simple_elems(c, x->AuxApplicInfo);
-  for (se = &x->UACapabilities->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UACapabilities->gg;
+       se && se->g.tok == zx_mm7_UACapabilities_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_UACapabilities(c, (struct zx_mm7_UACapabilities_s*)se);
 
 }
@@ -2087,7 +2303,9 @@ struct zx_mm7_DeliveryReportReq_s* zx_DEEP_CLONE_mm7_DeliveryReportReq(struct zx
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
   x->MMSRelayServerID = zx_deep_clone_simple_elems(c,x->MMSRelayServerID, dup_strs);
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -2096,7 +2314,9 @@ struct zx_mm7_DeliveryReportReq_s* zx_DEEP_CLONE_mm7_DeliveryReportReq(struct zx
   	  enn = en;
   }
   x->MessageID = zx_deep_clone_simple_elems(c,x->MessageID, dup_strs);
-  for (enn = 0, e = &x->Recipient->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Recipient->gg;
+       e && e->g.tok == zx_mm7_Recipient_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Recipient(c,(struct zx_mm7_Recipient_s*)e,dup_strs);
   	  if (!enn)
   	      x->Recipient = (struct zx_mm7_Recipient_s*)en;
@@ -2104,7 +2324,9 @@ struct zx_mm7_DeliveryReportReq_s* zx_DEEP_CLONE_mm7_DeliveryReportReq(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Sender->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Sender->gg;
+       e && e->g.tok == zx_mm7_Sender_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Sender(c,(struct zx_mm7_Sender_s*)e,dup_strs);
   	  if (!enn)
   	      x->Sender = (struct zx_mm7_Sender_s*)en;
@@ -2119,7 +2341,9 @@ struct zx_mm7_DeliveryReportReq_s* zx_DEEP_CLONE_mm7_DeliveryReportReq(struct zx
   x->ApplicID = zx_deep_clone_simple_elems(c,x->ApplicID, dup_strs);
   x->ReplyApplicID = zx_deep_clone_simple_elems(c,x->ReplyApplicID, dup_strs);
   x->AuxApplicInfo = zx_deep_clone_simple_elems(c,x->AuxApplicInfo, dup_strs);
-  for (enn = 0, e = &x->UACapabilities->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UACapabilities->gg;
+       e && e->g.tok == zx_mm7_UACapabilities_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_UACapabilities(c,(struct zx_mm7_UACapabilities_s*)e,dup_strs);
   	  if (!enn)
   	      x->UACapabilities = (struct zx_mm7_UACapabilities_s*)en;
@@ -2156,7 +2380,9 @@ int zx_WALK_SO_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryRep
   ret = zx_walk_so_simple_elems(c, x->MMSRelayServerID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2164,12 +2390,16 @@ int zx_WALK_SO_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryRep
   ret = zx_walk_so_simple_elems(c, x->MessageID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Recipient->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Recipient->gg;
+       e && e->g.tok == zx_mm7_Recipient_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Recipient(c, (struct zx_mm7_Recipient_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Sender->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Sender->gg;
+       e && e->g.tok == zx_mm7_Sender_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Sender(c, (struct zx_mm7_Sender_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2195,7 +2425,9 @@ int zx_WALK_SO_mm7_DeliveryReportReq(struct zx_ctx* c, struct zx_mm7_DeliveryRep
   ret = zx_walk_so_simple_elems(c, x->AuxApplicInfo, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->UACapabilities->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UACapabilities->gg;
+       e && e->g.tok == zx_mm7_UACapabilities_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_UACapabilities(c, (struct zx_mm7_UACapabilities_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2253,11 +2485,15 @@ void zx_FREE_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryRepor
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -2298,9 +2534,13 @@ void zx_DUP_STRS_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryR
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -2322,7 +2562,9 @@ struct zx_mm7_DeliveryReportRsp_s* zx_DEEP_CLONE_mm7_DeliveryReportRsp(struct zx
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -2330,7 +2572,9 @@ struct zx_mm7_DeliveryReportRsp_s* zx_DEEP_CLONE_mm7_DeliveryReportRsp(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -2364,12 +2608,16 @@ int zx_WALK_SO_mm7_DeliveryReportRsp(struct zx_ctx* c, struct zx_mm7_DeliveryRep
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2556,11 +2804,15 @@ void zx_FREE_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x, int f
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->IdentityAddressingToken->gg; e; e = en) {
+  for (e = &x->IdentityAddressingToken->gg;
+       e && e->g.tok == zx_mm7_IdentityAddressingToken_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_IdentityAddressingToken(c, (struct zx_mm7_IdentityAddressingToken_s*)e, free_strs);
   }
-  for (e = &x->MessageExtraData->gg; e; e = en) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
   }
@@ -2600,9 +2852,13 @@ void zx_DUP_STRS_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->IdentityAddressingToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdentityAddressingToken->gg;
+       se && se->g.tok == zx_mm7_IdentityAddressingToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_IdentityAddressingToken(c, (struct zx_mm7_IdentityAddressingToken_s*)se);
-  for (se = &x->MessageExtraData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MessageExtraData->gg;
+       se && se->g.tok == zx_mm7_MessageExtraData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)se);
 
 }
@@ -2623,7 +2879,9 @@ struct zx_mm7_Extension_s* zx_DEEP_CLONE_mm7_Extension(struct zx_ctx* c, struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->IdentityAddressingToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IdentityAddressingToken->gg;
+       e && e->g.tok == zx_mm7_IdentityAddressingToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_IdentityAddressingToken(c,(struct zx_mm7_IdentityAddressingToken_s*)e,dup_strs);
   	  if (!enn)
   	      x->IdentityAddressingToken = (struct zx_mm7_IdentityAddressingToken_s*)en;
@@ -2631,7 +2889,9 @@ struct zx_mm7_Extension_s* zx_DEEP_CLONE_mm7_Extension(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_MessageExtraData(c,(struct zx_mm7_MessageExtraData_s*)e,dup_strs);
   	  if (!enn)
   	      x->MessageExtraData = (struct zx_mm7_MessageExtraData_s*)en;
@@ -2662,12 +2922,16 @@ int zx_WALK_SO_mm7_Extension(struct zx_ctx* c, struct zx_mm7_Extension_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->IdentityAddressingToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IdentityAddressingToken->gg;
+       e && e->g.tok == zx_mm7_IdentityAddressingToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_IdentityAddressingToken(c, (struct zx_mm7_IdentityAddressingToken_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2860,7 +3124,9 @@ void zx_FREE_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtraDa
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->element->gg; e; e = en) {
+  for (e = &x->element->gg;
+       e && e->g.tok == zx_mm7_element_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_element(c, (struct zx_mm7_element_s*)e, free_strs);
   }
@@ -2900,7 +3166,9 @@ void zx_DUP_STRS_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExt
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->element->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->element->gg;
+       se && se->g.tok == zx_mm7_element_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_element(c, (struct zx_mm7_element_s*)se);
 
 }
@@ -2921,7 +3189,9 @@ struct zx_mm7_MessageExtraData_s* zx_DEEP_CLONE_mm7_MessageExtraData(struct zx_c
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->element->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->element->gg;
+       e && e->g.tok == zx_mm7_element_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_element(c,(struct zx_mm7_element_s*)e,dup_strs);
   	  if (!enn)
   	      x->element = (struct zx_mm7_element_s*)en;
@@ -2952,7 +3222,9 @@ int zx_WALK_SO_mm7_MessageExtraData(struct zx_ctx* c, struct zx_mm7_MessageExtra
   if (ret)
     return ret;
 
-  for (e = &x->element->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->element->gg;
+       e && e->g.tok == zx_mm7_element_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_element(c, (struct zx_mm7_element_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3284,7 +3556,9 @@ void zx_FREE_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslysent
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->UserAgent->gg; e; e = en) {
+  for (e = &x->UserAgent->gg;
+       e && e->g.tok == zx_mm7_UserAgent_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_UserAgent(c, (struct zx_mm7_UserAgent_s*)e, free_strs);
   }
@@ -3324,7 +3598,9 @@ void zx_DUP_STRS_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previously
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->UserAgent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserAgent->gg;
+       se && se->g.tok == zx_mm7_UserAgent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_UserAgent(c, (struct zx_mm7_UserAgent_s*)se);
 
 }
@@ -3345,7 +3621,9 @@ struct zx_mm7_Previouslysentby_s* zx_DEEP_CLONE_mm7_Previouslysentby(struct zx_c
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->UserAgent->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UserAgent->gg;
+       e && e->g.tok == zx_mm7_UserAgent_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_UserAgent(c,(struct zx_mm7_UserAgent_s*)e,dup_strs);
   	  if (!enn)
   	      x->UserAgent = (struct zx_mm7_UserAgent_s*)en;
@@ -3376,7 +3654,9 @@ int zx_WALK_SO_mm7_Previouslysentby(struct zx_ctx* c, struct zx_mm7_Previouslyse
   if (ret)
     return ret;
 
-  for (e = &x->UserAgent->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UserAgent->gg;
+       e && e->g.tok == zx_mm7_UserAgent_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_UserAgent(c, (struct zx_mm7_UserAgent_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3433,7 +3713,9 @@ void zx_FREE_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Previ
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->DateTime->gg; e; e = en) {
+  for (e = &x->DateTime->gg;
+       e && e->g.tok == zx_mm7_DateTime_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_DateTime(c, (struct zx_mm7_DateTime_s*)e, free_strs);
   }
@@ -3473,7 +3755,9 @@ void zx_DUP_STRS_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_P
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->DateTime->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DateTime->gg;
+       se && se->g.tok == zx_mm7_DateTime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_DateTime(c, (struct zx_mm7_DateTime_s*)se);
 
 }
@@ -3494,7 +3778,9 @@ struct zx_mm7_Previouslysentdateandtime_s* zx_DEEP_CLONE_mm7_Previouslysentdatea
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->DateTime->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DateTime->gg;
+       e && e->g.tok == zx_mm7_DateTime_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_DateTime(c,(struct zx_mm7_DateTime_s*)e,dup_strs);
   	  if (!enn)
   	      x->DateTime = (struct zx_mm7_DateTime_s*)en;
@@ -3525,7 +3811,9 @@ int zx_WALK_SO_mm7_Previouslysentdateandtime(struct zx_ctx* c, struct zx_mm7_Pre
   if (ret)
     return ret;
 
-  for (e = &x->DateTime->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DateTime->gg;
+       e && e->g.tok == zx_mm7_DateTime_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_DateTime(c, (struct zx_mm7_DateTime_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3582,7 +3870,9 @@ void zx_FREE_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->TransactionID->gg; e; e = en) {
+  for (e = &x->TransactionID->gg;
+       e && e->g.tok == zx_mm7_TransactionID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)e, free_strs);
   }
@@ -3627,7 +3917,9 @@ void zx_DUP_STRS_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusR
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->TransactionID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TransactionID->gg;
+       se && se->g.tok == zx_mm7_TransactionID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)se);
   zx_dup_strs_simple_elems(c, x->MessageType);
   zx_dup_strs_simple_elems(c, x->MM7Version);
@@ -3653,7 +3945,9 @@ struct zx_mm7_QueryStatusReq_s* zx_DEEP_CLONE_mm7_QueryStatusReq(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->TransactionID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TransactionID->gg;
+       e && e->g.tok == zx_mm7_TransactionID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_TransactionID(c,(struct zx_mm7_TransactionID_s*)e,dup_strs);
   	  if (!enn)
   	      x->TransactionID = (struct zx_mm7_TransactionID_s*)en;
@@ -3689,7 +3983,9 @@ int zx_WALK_SO_mm7_QueryStatusReq(struct zx_ctx* c, struct zx_mm7_QueryStatusReq
   if (ret)
     return ret;
 
-  for (e = &x->TransactionID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TransactionID->gg;
+       e && e->g.tok == zx_mm7_TransactionID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3761,7 +4057,9 @@ void zx_FREE_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->TransactionID->gg; e; e = en) {
+  for (e = &x->TransactionID->gg;
+       e && e->g.tok == zx_mm7_TransactionID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)e, free_strs);
   }
@@ -3769,7 +4067,9 @@ void zx_FREE_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp_s
   zx_free_simple_elems(c, x->MM7Version, free_strs);
   zx_free_simple_elems(c, x->StatusCode, free_strs);
   zx_free_simple_elems(c, x->StatusText, free_strs);
-  for (e = &x->Details->gg; e; e = en) {
+  for (e = &x->Details->gg;
+       e && e->g.tok == zx_mm7_Details_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Details(c, (struct zx_mm7_Details_s*)e, free_strs);
   }
@@ -3809,13 +4109,17 @@ void zx_DUP_STRS_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusR
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->TransactionID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TransactionID->gg;
+       se && se->g.tok == zx_mm7_TransactionID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)se);
   zx_dup_strs_simple_elems(c, x->MessageType);
   zx_dup_strs_simple_elems(c, x->MM7Version);
   zx_dup_strs_simple_elems(c, x->StatusCode);
   zx_dup_strs_simple_elems(c, x->StatusText);
-  for (se = &x->Details->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Details->gg;
+       se && se->g.tok == zx_mm7_Details_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Details(c, (struct zx_mm7_Details_s*)se);
 
 }
@@ -3836,7 +4140,9 @@ struct zx_mm7_QueryStatusRsp_s* zx_DEEP_CLONE_mm7_QueryStatusRsp(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->TransactionID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TransactionID->gg;
+       e && e->g.tok == zx_mm7_TransactionID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_TransactionID(c,(struct zx_mm7_TransactionID_s*)e,dup_strs);
   	  if (!enn)
   	      x->TransactionID = (struct zx_mm7_TransactionID_s*)en;
@@ -3848,7 +4154,9 @@ struct zx_mm7_QueryStatusRsp_s* zx_DEEP_CLONE_mm7_QueryStatusRsp(struct zx_ctx* 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
   x->StatusCode = zx_deep_clone_simple_elems(c,x->StatusCode, dup_strs);
   x->StatusText = zx_deep_clone_simple_elems(c,x->StatusText, dup_strs);
-  for (enn = 0, e = &x->Details->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Details->gg;
+       e && e->g.tok == zx_mm7_Details_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Details(c,(struct zx_mm7_Details_s*)e,dup_strs);
   	  if (!enn)
   	      x->Details = (struct zx_mm7_Details_s*)en;
@@ -3879,7 +4187,9 @@ int zx_WALK_SO_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp
   if (ret)
     return ret;
 
-  for (e = &x->TransactionID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TransactionID->gg;
+       e && e->g.tok == zx_mm7_TransactionID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3896,7 +4206,9 @@ int zx_WALK_SO_mm7_QueryStatusRsp(struct zx_ctx* c, struct zx_mm7_QueryStatusRsp
   ret = zx_walk_so_simple_elems(c, x->StatusText, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Details->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Details->gg;
+       e && e->g.tok == zx_mm7_Details_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Details(c, (struct zx_mm7_Details_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4093,11 +4405,15 @@ void zx_FREE_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x, int
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -4138,9 +4454,13 @@ void zx_DUP_STRS_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -4162,7 +4482,9 @@ struct zx_mm7_RSErrorRsp_s* zx_DEEP_CLONE_mm7_RSErrorRsp(struct zx_ctx* c, struc
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -4170,7 +4492,9 @@ struct zx_mm7_RSErrorRsp_s* zx_DEEP_CLONE_mm7_RSErrorRsp(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -4204,12 +4528,16 @@ int zx_WALK_SO_mm7_RSErrorRsp(struct zx_ctx* c, struct zx_mm7_RSErrorRsp_s* x, v
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4268,16 +4596,22 @@ void zx_FREE_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* x,
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
   zx_free_simple_elems(c, x->MMSRelayServerID, free_strs);
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->Recipient->gg; e; e = en) {
+  for (e = &x->Recipient->gg;
+       e && e->g.tok == zx_mm7_Recipient_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Recipient(c, (struct zx_mm7_Recipient_s*)e, free_strs);
   }
-  for (e = &x->Sender->gg; e; e = en) {
+  for (e = &x->Sender->gg;
+       e && e->g.tok == zx_mm7_Sender_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Sender(c, (struct zx_mm7_Sender_s*)e, free_strs);
   }
@@ -4325,12 +4659,18 @@ void zx_DUP_STRS_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
   zx_dup_strs_simple_elems(c, x->MMSRelayServerID);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
   zx_dup_strs_simple_elems(c, x->MessageID);
-  for (se = &x->Recipient->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipient->gg;
+       se && se->g.tok == zx_mm7_Recipient_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Recipient(c, (struct zx_mm7_Recipient_s*)se);
-  for (se = &x->Sender->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Sender->gg;
+       se && se->g.tok == zx_mm7_Sender_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Sender(c, (struct zx_mm7_Sender_s*)se);
   zx_dup_strs_simple_elems(c, x->TimeStamp);
   zx_dup_strs_simple_elems(c, x->MMStatus);
@@ -4359,7 +4699,9 @@ struct zx_mm7_ReadReplyReq_s* zx_DEEP_CLONE_mm7_ReadReplyReq(struct zx_ctx* c, s
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
   x->MMSRelayServerID = zx_deep_clone_simple_elems(c,x->MMSRelayServerID, dup_strs);
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -4368,7 +4710,9 @@ struct zx_mm7_ReadReplyReq_s* zx_DEEP_CLONE_mm7_ReadReplyReq(struct zx_ctx* c, s
   	  enn = en;
   }
   x->MessageID = zx_deep_clone_simple_elems(c,x->MessageID, dup_strs);
-  for (enn = 0, e = &x->Recipient->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Recipient->gg;
+       e && e->g.tok == zx_mm7_Recipient_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Recipient(c,(struct zx_mm7_Recipient_s*)e,dup_strs);
   	  if (!enn)
   	      x->Recipient = (struct zx_mm7_Recipient_s*)en;
@@ -4376,7 +4720,9 @@ struct zx_mm7_ReadReplyReq_s* zx_DEEP_CLONE_mm7_ReadReplyReq(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Sender->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Sender->gg;
+       e && e->g.tok == zx_mm7_Sender_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Sender(c,(struct zx_mm7_Sender_s*)e,dup_strs);
   	  if (!enn)
   	      x->Sender = (struct zx_mm7_Sender_s*)en;
@@ -4419,7 +4765,9 @@ int zx_WALK_SO_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* 
   ret = zx_walk_so_simple_elems(c, x->MMSRelayServerID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4427,12 +4775,16 @@ int zx_WALK_SO_mm7_ReadReplyReq(struct zx_ctx* c, struct zx_mm7_ReadReplyReq_s* 
   ret = zx_walk_so_simple_elems(c, x->MessageID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Recipient->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Recipient->gg;
+       e && e->g.tok == zx_mm7_Recipient_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Recipient(c, (struct zx_mm7_Recipient_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Sender->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Sender->gg;
+       e && e->g.tok == zx_mm7_Sender_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Sender(c, (struct zx_mm7_Sender_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4508,11 +4860,15 @@ void zx_FREE_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* x,
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -4553,9 +4909,13 @@ void zx_DUP_STRS_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -4577,7 +4937,9 @@ struct zx_mm7_ReadReplyRsp_s* zx_DEEP_CLONE_mm7_ReadReplyRsp(struct zx_ctx* c, s
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -4585,7 +4947,9 @@ struct zx_mm7_ReadReplyRsp_s* zx_DEEP_CLONE_mm7_ReadReplyRsp(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -4619,12 +4983,16 @@ int zx_WALK_SO_mm7_ReadReplyRsp(struct zx_ctx* c, struct zx_mm7_ReadReplyRsp_s* 
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4681,19 +5049,27 @@ void zx_FREE_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x, int f
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RFC2822Address->gg; e; e = en) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
   }
-  for (e = &x->Number->gg; e; e = en) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
   }
-  for (e = &x->ShortCode->gg; e; e = en) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -4733,13 +5109,21 @@ void zx_DUP_STRS_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RFC2822Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RFC2822Address->gg;
+       se && se->g.tok == zx_mm7_RFC2822Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)se);
-  for (se = &x->Number->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Number->gg;
+       se && se->g.tok == zx_mm7_Number_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Number(c, (struct zx_mm7_Number_s*)se);
-  for (se = &x->ShortCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ShortCode->gg;
+       se && se->g.tok == zx_mm7_ShortCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -4760,7 +5144,9 @@ struct zx_mm7_Recipient_s* zx_DEEP_CLONE_mm7_Recipient(struct zx_ctx* c, struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_RFC2822Address(c,(struct zx_mm7_RFC2822Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->RFC2822Address = (struct zx_mm7_RFC2822Address_s*)en;
@@ -4768,7 +5154,9 @@ struct zx_mm7_Recipient_s* zx_DEEP_CLONE_mm7_Recipient(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Number(c,(struct zx_mm7_Number_s*)e,dup_strs);
   	  if (!enn)
   	      x->Number = (struct zx_mm7_Number_s*)en;
@@ -4776,7 +5164,9 @@ struct zx_mm7_Recipient_s* zx_DEEP_CLONE_mm7_Recipient(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ShortCode(c,(struct zx_mm7_ShortCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ShortCode = (struct zx_mm7_ShortCode_s*)en;
@@ -4784,7 +5174,9 @@ struct zx_mm7_Recipient_s* zx_DEEP_CLONE_mm7_Recipient(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -4815,22 +5207,30 @@ int zx_WALK_SO_mm7_Recipient(struct zx_ctx* c, struct zx_mm7_Recipient_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Number(c, (struct zx_mm7_Number_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4887,15 +5287,21 @@ void zx_FREE_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x, int
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->To->gg; e; e = en) {
+  for (e = &x->To->gg;
+       e && e->g.tok == zx_mm7_To_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_To(c, (struct zx_mm7_To_s*)e, free_strs);
   }
-  for (e = &x->Cc->gg; e; e = en) {
+  for (e = &x->Cc->gg;
+       e && e->g.tok == zx_mm7_Cc_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Cc(c, (struct zx_mm7_Cc_s*)e, free_strs);
   }
-  for (e = &x->Bcc->gg; e; e = en) {
+  for (e = &x->Bcc->gg;
+       e && e->g.tok == zx_mm7_Bcc_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Bcc(c, (struct zx_mm7_Bcc_s*)e, free_strs);
   }
@@ -4935,11 +5341,17 @@ void zx_DUP_STRS_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->To->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->To->gg;
+       se && se->g.tok == zx_mm7_To_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_To(c, (struct zx_mm7_To_s*)se);
-  for (se = &x->Cc->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Cc->gg;
+       se && se->g.tok == zx_mm7_Cc_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Cc(c, (struct zx_mm7_Cc_s*)se);
-  for (se = &x->Bcc->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Bcc->gg;
+       se && se->g.tok == zx_mm7_Bcc_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Bcc(c, (struct zx_mm7_Bcc_s*)se);
 
 }
@@ -4960,7 +5372,9 @@ struct zx_mm7_Recipients_s* zx_DEEP_CLONE_mm7_Recipients(struct zx_ctx* c, struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->To->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->To->gg;
+       e && e->g.tok == zx_mm7_To_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_To(c,(struct zx_mm7_To_s*)e,dup_strs);
   	  if (!enn)
   	      x->To = (struct zx_mm7_To_s*)en;
@@ -4968,7 +5382,9 @@ struct zx_mm7_Recipients_s* zx_DEEP_CLONE_mm7_Recipients(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Cc->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Cc->gg;
+       e && e->g.tok == zx_mm7_Cc_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Cc(c,(struct zx_mm7_Cc_s*)e,dup_strs);
   	  if (!enn)
   	      x->Cc = (struct zx_mm7_Cc_s*)en;
@@ -4976,7 +5392,9 @@ struct zx_mm7_Recipients_s* zx_DEEP_CLONE_mm7_Recipients(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Bcc->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Bcc->gg;
+       e && e->g.tok == zx_mm7_Bcc_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Bcc(c,(struct zx_mm7_Bcc_s*)e,dup_strs);
   	  if (!enn)
   	      x->Bcc = (struct zx_mm7_Bcc_s*)en;
@@ -5007,17 +5425,23 @@ int zx_WALK_SO_mm7_Recipients(struct zx_ctx* c, struct zx_mm7_Recipients_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->To->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->To->gg;
+       e && e->g.tok == zx_mm7_To_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_To(c, (struct zx_mm7_To_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Cc->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Cc->gg;
+       e && e->g.tok == zx_mm7_Cc_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Cc(c, (struct zx_mm7_Cc_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Bcc->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Bcc->gg;
+       e && e->g.tok == zx_mm7_Bcc_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Bcc(c, (struct zx_mm7_Bcc_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5075,16 +5499,22 @@ void zx_FREE_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x, int
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->SenderIdentification->gg; e; e = en) {
+  for (e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->ServiceCode->gg; e; e = en) {
+  for (e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, free_strs);
   }
@@ -5097,15 +5527,21 @@ void zx_FREE_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x, int
   zx_free_simple_elems(c, x->ApplicID, free_strs);
   zx_free_simple_elems(c, x->ReplyApplicID, free_strs);
   zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
-  for (e = &x->Content->gg; e; e = en) {
+  for (e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Content(c, (struct zx_mm7_Content_s*)e, free_strs);
   }
-  for (e = &x->AdditionalInformation->gg; e; e = en) {
+  for (e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, free_strs);
   }
-  for (e = &x->MessageExtraData->gg; e; e = en) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
   }
@@ -5146,12 +5582,18 @@ void zx_DUP_STRS_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->SenderIdentification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SenderIdentification->gg;
+       se && se->g.tok == zx_mm7_SenderIdentification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
   zx_dup_strs_simple_elems(c, x->MessageID);
-  for (se = &x->ServiceCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceCode->gg;
+       se && se->g.tok == zx_mm7_ServiceCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)se);
   zx_dup_strs_simple_elems(c, x->TimeStamp);
   zx_dup_strs_simple_elems(c, x->ReadReply);
@@ -5162,11 +5604,17 @@ void zx_DUP_STRS_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x)
   zx_dup_strs_simple_elems(c, x->ApplicID);
   zx_dup_strs_simple_elems(c, x->ReplyApplicID);
   zx_dup_strs_simple_elems(c, x->AuxApplicInfo);
-  for (se = &x->Content->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Content->gg;
+       se && se->g.tok == zx_mm7_Content_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Content(c, (struct zx_mm7_Content_s*)se);
-  for (se = &x->AdditionalInformation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalInformation->gg;
+       se && se->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)se);
-  for (se = &x->MessageExtraData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MessageExtraData->gg;
+       se && se->g.tok == zx_mm7_MessageExtraData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)se);
 
 }
@@ -5188,7 +5636,9 @@ struct zx_mm7_ReplaceReq_s* zx_DEEP_CLONE_mm7_ReplaceReq(struct zx_ctx* c, struc
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->SenderIdentification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_SenderIdentification(c,(struct zx_mm7_SenderIdentification_s*)e,dup_strs);
   	  if (!enn)
   	      x->SenderIdentification = (struct zx_mm7_SenderIdentification_s*)en;
@@ -5196,7 +5646,9 @@ struct zx_mm7_ReplaceReq_s* zx_DEEP_CLONE_mm7_ReplaceReq(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -5205,7 +5657,9 @@ struct zx_mm7_ReplaceReq_s* zx_DEEP_CLONE_mm7_ReplaceReq(struct zx_ctx* c, struc
   	  enn = en;
   }
   x->MessageID = zx_deep_clone_simple_elems(c,x->MessageID, dup_strs);
-  for (enn = 0, e = &x->ServiceCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ServiceCode(c,(struct zx_mm7_ServiceCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ServiceCode = (struct zx_mm7_ServiceCode_s*)en;
@@ -5222,7 +5676,9 @@ struct zx_mm7_ReplaceReq_s* zx_DEEP_CLONE_mm7_ReplaceReq(struct zx_ctx* c, struc
   x->ApplicID = zx_deep_clone_simple_elems(c,x->ApplicID, dup_strs);
   x->ReplyApplicID = zx_deep_clone_simple_elems(c,x->ReplyApplicID, dup_strs);
   x->AuxApplicInfo = zx_deep_clone_simple_elems(c,x->AuxApplicInfo, dup_strs);
-  for (enn = 0, e = &x->Content->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Content(c,(struct zx_mm7_Content_s*)e,dup_strs);
   	  if (!enn)
   	      x->Content = (struct zx_mm7_Content_s*)en;
@@ -5230,7 +5686,9 @@ struct zx_mm7_ReplaceReq_s* zx_DEEP_CLONE_mm7_ReplaceReq(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AdditionalInformation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_AdditionalInformation(c,(struct zx_mm7_AdditionalInformation_s*)e,dup_strs);
   	  if (!enn)
   	      x->AdditionalInformation = (struct zx_mm7_AdditionalInformation_s*)en;
@@ -5238,7 +5696,9 @@ struct zx_mm7_ReplaceReq_s* zx_DEEP_CLONE_mm7_ReplaceReq(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_MessageExtraData(c,(struct zx_mm7_MessageExtraData_s*)e,dup_strs);
   	  if (!enn)
   	      x->MessageExtraData = (struct zx_mm7_MessageExtraData_s*)en;
@@ -5272,12 +5732,16 @@ int zx_WALK_SO_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x, v
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SenderIdentification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5285,7 +5749,9 @@ int zx_WALK_SO_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x, v
   ret = zx_walk_so_simple_elems(c, x->MessageID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ServiceCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5317,17 +5783,23 @@ int zx_WALK_SO_mm7_ReplaceReq(struct zx_ctx* c, struct zx_mm7_ReplaceReq_s* x, v
   ret = zx_walk_so_simple_elems(c, x->AuxApplicInfo, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Content->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Content(c, (struct zx_mm7_Content_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AdditionalInformation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5385,11 +5857,15 @@ void zx_FREE_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x, int
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -5430,9 +5906,13 @@ void zx_DUP_STRS_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -5454,7 +5934,9 @@ struct zx_mm7_ReplaceRsp_s* zx_DEEP_CLONE_mm7_ReplaceRsp(struct zx_ctx* c, struc
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -5462,7 +5944,9 @@ struct zx_mm7_ReplaceRsp_s* zx_DEEP_CLONE_mm7_ReplaceRsp(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -5496,12 +5980,16 @@ int zx_WALK_SO_mm7_ReplaceRsp(struct zx_ctx* c, struct zx_mm7_ReplaceRsp_s* x, v
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5694,19 +6182,27 @@ void zx_FREE_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x, int free_st
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RFC2822Address->gg; e; e = en) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
   }
-  for (e = &x->Number->gg; e; e = en) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
   }
-  for (e = &x->ShortCode->gg; e; e = en) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -5746,13 +6242,21 @@ void zx_DUP_STRS_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RFC2822Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RFC2822Address->gg;
+       se && se->g.tok == zx_mm7_RFC2822Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)se);
-  for (se = &x->Number->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Number->gg;
+       se && se->g.tok == zx_mm7_Number_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Number(c, (struct zx_mm7_Number_s*)se);
-  for (se = &x->ShortCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ShortCode->gg;
+       se && se->g.tok == zx_mm7_ShortCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -5773,7 +6277,9 @@ struct zx_mm7_Sender_s* zx_DEEP_CLONE_mm7_Sender(struct zx_ctx* c, struct zx_mm7
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_RFC2822Address(c,(struct zx_mm7_RFC2822Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->RFC2822Address = (struct zx_mm7_RFC2822Address_s*)en;
@@ -5781,7 +6287,9 @@ struct zx_mm7_Sender_s* zx_DEEP_CLONE_mm7_Sender(struct zx_ctx* c, struct zx_mm7
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Number(c,(struct zx_mm7_Number_s*)e,dup_strs);
   	  if (!enn)
   	      x->Number = (struct zx_mm7_Number_s*)en;
@@ -5789,7 +6297,9 @@ struct zx_mm7_Sender_s* zx_DEEP_CLONE_mm7_Sender(struct zx_ctx* c, struct zx_mm7
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ShortCode(c,(struct zx_mm7_ShortCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ShortCode = (struct zx_mm7_ShortCode_s*)en;
@@ -5797,7 +6307,9 @@ struct zx_mm7_Sender_s* zx_DEEP_CLONE_mm7_Sender(struct zx_ctx* c, struct zx_mm7
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -5828,22 +6340,30 @@ int zx_WALK_SO_mm7_Sender(struct zx_ctx* c, struct zx_mm7_Sender_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Number(c, (struct zx_mm7_Number_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5900,19 +6420,27 @@ void zx_FREE_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RFC2822Address->gg; e; e = en) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
   }
-  for (e = &x->Number->gg; e; e = en) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
   }
-  for (e = &x->ShortCode->gg; e; e = en) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -5952,13 +6480,21 @@ void zx_DUP_STRS_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RFC2822Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RFC2822Address->gg;
+       se && se->g.tok == zx_mm7_RFC2822Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)se);
-  for (se = &x->Number->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Number->gg;
+       se && se->g.tok == zx_mm7_Number_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Number(c, (struct zx_mm7_Number_s*)se);
-  for (se = &x->ShortCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ShortCode->gg;
+       se && se->g.tok == zx_mm7_ShortCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -5979,7 +6515,9 @@ struct zx_mm7_SenderAddress_s* zx_DEEP_CLONE_mm7_SenderAddress(struct zx_ctx* c,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_RFC2822Address(c,(struct zx_mm7_RFC2822Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->RFC2822Address = (struct zx_mm7_RFC2822Address_s*)en;
@@ -5987,7 +6525,9 @@ struct zx_mm7_SenderAddress_s* zx_DEEP_CLONE_mm7_SenderAddress(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Number(c,(struct zx_mm7_Number_s*)e,dup_strs);
   	  if (!enn)
   	      x->Number = (struct zx_mm7_Number_s*)en;
@@ -5995,7 +6535,9 @@ struct zx_mm7_SenderAddress_s* zx_DEEP_CLONE_mm7_SenderAddress(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ShortCode(c,(struct zx_mm7_ShortCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ShortCode = (struct zx_mm7_ShortCode_s*)en;
@@ -6003,7 +6545,9 @@ struct zx_mm7_SenderAddress_s* zx_DEEP_CLONE_mm7_SenderAddress(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -6034,22 +6578,30 @@ int zx_WALK_SO_mm7_SenderAddress(struct zx_ctx* c, struct zx_mm7_SenderAddress_s
   if (ret)
     return ret;
 
-  for (e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Number(c, (struct zx_mm7_Number_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6108,7 +6660,9 @@ void zx_FREE_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderIden
 
   zx_free_simple_elems(c, x->VASPID, free_strs);
   zx_free_simple_elems(c, x->VASID, free_strs);
-  for (e = &x->SenderAddress->gg; e; e = en) {
+  for (e = &x->SenderAddress->gg;
+       e && e->g.tok == zx_mm7_SenderAddress_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_SenderAddress(c, (struct zx_mm7_SenderAddress_s*)e, free_strs);
   }
@@ -6150,7 +6704,9 @@ void zx_DUP_STRS_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_Sender
 
   zx_dup_strs_simple_elems(c, x->VASPID);
   zx_dup_strs_simple_elems(c, x->VASID);
-  for (se = &x->SenderAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SenderAddress->gg;
+       se && se->g.tok == zx_mm7_SenderAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_SenderAddress(c, (struct zx_mm7_SenderAddress_s*)se);
 
 }
@@ -6173,7 +6729,9 @@ struct zx_mm7_SenderIdentification_s* zx_DEEP_CLONE_mm7_SenderIdentification(str
 
   x->VASPID = zx_deep_clone_simple_elems(c,x->VASPID, dup_strs);
   x->VASID = zx_deep_clone_simple_elems(c,x->VASID, dup_strs);
-  for (enn = 0, e = &x->SenderAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SenderAddress->gg;
+       e && e->g.tok == zx_mm7_SenderAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_SenderAddress(c,(struct zx_mm7_SenderAddress_s*)e,dup_strs);
   	  if (!enn)
   	      x->SenderAddress = (struct zx_mm7_SenderAddress_s*)en;
@@ -6210,7 +6768,9 @@ int zx_WALK_SO_mm7_SenderIdentification(struct zx_ctx* c, struct zx_mm7_SenderId
   ret = zx_walk_so_simple_elems(c, x->VASID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SenderAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SenderAddress->gg;
+       e && e->g.tok == zx_mm7_SenderAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_SenderAddress(c, (struct zx_mm7_SenderAddress_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6538,7 +7098,9 @@ void zx_FREE_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x, int free_st
 
   zx_free_simple_elems(c, x->StatusCode, free_strs);
   zx_free_simple_elems(c, x->StatusText, free_strs);
-  for (e = &x->Details->gg; e; e = en) {
+  for (e = &x->Details->gg;
+       e && e->g.tok == zx_mm7_Details_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Details(c, (struct zx_mm7_Details_s*)e, free_strs);
   }
@@ -6580,7 +7142,9 @@ void zx_DUP_STRS_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x)
 
   zx_dup_strs_simple_elems(c, x->StatusCode);
   zx_dup_strs_simple_elems(c, x->StatusText);
-  for (se = &x->Details->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Details->gg;
+       se && se->g.tok == zx_mm7_Details_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Details(c, (struct zx_mm7_Details_s*)se);
 
 }
@@ -6603,7 +7167,9 @@ struct zx_mm7_Status_s* zx_DEEP_CLONE_mm7_Status(struct zx_ctx* c, struct zx_mm7
 
   x->StatusCode = zx_deep_clone_simple_elems(c,x->StatusCode, dup_strs);
   x->StatusText = zx_deep_clone_simple_elems(c,x->StatusText, dup_strs);
-  for (enn = 0, e = &x->Details->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Details->gg;
+       e && e->g.tok == zx_mm7_Details_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Details(c,(struct zx_mm7_Details_s*)e,dup_strs);
   	  if (!enn)
   	      x->Details = (struct zx_mm7_Details_s*)en;
@@ -6640,7 +7206,9 @@ int zx_WALK_SO_mm7_Status(struct zx_ctx* c, struct zx_mm7_Status_s* x, void* ctx
   ret = zx_walk_so_simple_elems(c, x->StatusText, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Details->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Details->gg;
+       e && e->g.tok == zx_mm7_Details_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Details(c, (struct zx_mm7_Details_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6698,30 +7266,42 @@ void zx_FREE_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, int f
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->SenderIdentification->gg; e; e = en) {
+  for (e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
-  for (e = &x->Recipients->gg; e; e = en) {
+  for (e = &x->Recipients->gg;
+       e && e->g.tok == zx_mm7_Recipients_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)e, free_strs);
   }
-  for (e = &x->PreferredChannels->gg; e; e = en) {
+  for (e = &x->PreferredChannels->gg;
+       e && e->g.tok == zx_mm7_PreferredChannels_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_PreferredChannels(c, (struct zx_mm7_PreferredChannels_s*)e, free_strs);
   }
-  for (e = &x->ServiceCode->gg; e; e = en) {
+  for (e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->LinkedID, free_strs);
   zx_free_simple_elems(c, x->MessageClass, free_strs);
   zx_free_simple_elems(c, x->TimeStamp, free_strs);
-  for (e = &x->ReplyCharging->gg; e; e = en) {
+  for (e = &x->ReplyCharging->gg;
+       e && e->g.tok == zx_mm7_ReplyCharging_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ReplyCharging(c, (struct zx_mm7_ReplyCharging_s*)e, free_strs);
   }
@@ -6733,12 +7313,16 @@ void zx_FREE_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, int f
   zx_free_simple_elems(c, x->Subject, free_strs);
   zx_free_simple_elems(c, x->ChargedParty, free_strs);
   zx_free_simple_elems(c, x->ChargedPartyID, free_strs);
-  for (e = &x->ThirdPartyPayer->gg; e; e = en) {
+  for (e = &x->ThirdPartyPayer->gg;
+       e && e->g.tok == zx_mm7_ThirdPartyPayer_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ThirdPartyPayer(c, (struct zx_mm7_ThirdPartyPayer_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->DistributionIndicator, free_strs);
-  for (e = &x->DeliveryCondition->gg; e; e = en) {
+  for (e = &x->DeliveryCondition->gg;
+       e && e->g.tok == zx_mm7_DeliveryCondition_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_DeliveryCondition(c, (struct zx_mm7_DeliveryCondition_s*)e, free_strs);
   }
@@ -6747,15 +7331,21 @@ void zx_FREE_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, int f
   zx_free_simple_elems(c, x->AuxApplicInfo, free_strs);
   zx_free_simple_elems(c, x->ContentClass, free_strs);
   zx_free_simple_elems(c, x->DRMContent, free_strs);
-  for (e = &x->Content->gg; e; e = en) {
+  for (e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Content(c, (struct zx_mm7_Content_s*)e, free_strs);
   }
-  for (e = &x->AdditionalInformation->gg; e; e = en) {
+  for (e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, free_strs);
   }
-  for (e = &x->MessageExtraData->gg; e; e = en) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
   }
@@ -6796,20 +7386,32 @@ void zx_DUP_STRS_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->SenderIdentification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SenderIdentification->gg;
+       se && se->g.tok == zx_mm7_SenderIdentification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
-  for (se = &x->Recipients->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipients->gg;
+       se && se->g.tok == zx_mm7_Recipients_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)se);
-  for (se = &x->PreferredChannels->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredChannels->gg;
+       se && se->g.tok == zx_mm7_PreferredChannels_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_PreferredChannels(c, (struct zx_mm7_PreferredChannels_s*)se);
-  for (se = &x->ServiceCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceCode->gg;
+       se && se->g.tok == zx_mm7_ServiceCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)se);
   zx_dup_strs_simple_elems(c, x->LinkedID);
   zx_dup_strs_simple_elems(c, x->MessageClass);
   zx_dup_strs_simple_elems(c, x->TimeStamp);
-  for (se = &x->ReplyCharging->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReplyCharging->gg;
+       se && se->g.tok == zx_mm7_ReplyCharging_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ReplyCharging(c, (struct zx_mm7_ReplyCharging_s*)se);
   zx_dup_strs_simple_elems(c, x->EarliestDeliveryTime);
   zx_dup_strs_simple_elems(c, x->ExpiryDate);
@@ -6819,21 +7421,31 @@ void zx_DUP_STRS_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x)
   zx_dup_strs_simple_elems(c, x->Subject);
   zx_dup_strs_simple_elems(c, x->ChargedParty);
   zx_dup_strs_simple_elems(c, x->ChargedPartyID);
-  for (se = &x->ThirdPartyPayer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ThirdPartyPayer->gg;
+       se && se->g.tok == zx_mm7_ThirdPartyPayer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ThirdPartyPayer(c, (struct zx_mm7_ThirdPartyPayer_s*)se);
   zx_dup_strs_simple_elems(c, x->DistributionIndicator);
-  for (se = &x->DeliveryCondition->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliveryCondition->gg;
+       se && se->g.tok == zx_mm7_DeliveryCondition_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_DeliveryCondition(c, (struct zx_mm7_DeliveryCondition_s*)se);
   zx_dup_strs_simple_elems(c, x->ApplicID);
   zx_dup_strs_simple_elems(c, x->ReplyApplicID);
   zx_dup_strs_simple_elems(c, x->AuxApplicInfo);
   zx_dup_strs_simple_elems(c, x->ContentClass);
   zx_dup_strs_simple_elems(c, x->DRMContent);
-  for (se = &x->Content->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Content->gg;
+       se && se->g.tok == zx_mm7_Content_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Content(c, (struct zx_mm7_Content_s*)se);
-  for (se = &x->AdditionalInformation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalInformation->gg;
+       se && se->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)se);
-  for (se = &x->MessageExtraData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MessageExtraData->gg;
+       se && se->g.tok == zx_mm7_MessageExtraData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)se);
 
 }
@@ -6855,7 +7467,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->SenderIdentification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_SenderIdentification(c,(struct zx_mm7_SenderIdentification_s*)e,dup_strs);
   	  if (!enn)
   	      x->SenderIdentification = (struct zx_mm7_SenderIdentification_s*)en;
@@ -6863,7 +7477,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -6871,7 +7487,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Recipients->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Recipients->gg;
+       e && e->g.tok == zx_mm7_Recipients_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Recipients(c,(struct zx_mm7_Recipients_s*)e,dup_strs);
   	  if (!enn)
   	      x->Recipients = (struct zx_mm7_Recipients_s*)en;
@@ -6879,7 +7497,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PreferredChannels->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PreferredChannels->gg;
+       e && e->g.tok == zx_mm7_PreferredChannels_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_PreferredChannels(c,(struct zx_mm7_PreferredChannels_s*)e,dup_strs);
   	  if (!enn)
   	      x->PreferredChannels = (struct zx_mm7_PreferredChannels_s*)en;
@@ -6887,7 +7507,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ServiceCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ServiceCode(c,(struct zx_mm7_ServiceCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ServiceCode = (struct zx_mm7_ServiceCode_s*)en;
@@ -6898,7 +7520,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   x->LinkedID = zx_deep_clone_simple_elems(c,x->LinkedID, dup_strs);
   x->MessageClass = zx_deep_clone_simple_elems(c,x->MessageClass, dup_strs);
   x->TimeStamp = zx_deep_clone_simple_elems(c,x->TimeStamp, dup_strs);
-  for (enn = 0, e = &x->ReplyCharging->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ReplyCharging->gg;
+       e && e->g.tok == zx_mm7_ReplyCharging_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ReplyCharging(c,(struct zx_mm7_ReplyCharging_s*)e,dup_strs);
   	  if (!enn)
   	      x->ReplyCharging = (struct zx_mm7_ReplyCharging_s*)en;
@@ -6914,7 +7538,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   x->Subject = zx_deep_clone_simple_elems(c,x->Subject, dup_strs);
   x->ChargedParty = zx_deep_clone_simple_elems(c,x->ChargedParty, dup_strs);
   x->ChargedPartyID = zx_deep_clone_simple_elems(c,x->ChargedPartyID, dup_strs);
-  for (enn = 0, e = &x->ThirdPartyPayer->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ThirdPartyPayer->gg;
+       e && e->g.tok == zx_mm7_ThirdPartyPayer_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ThirdPartyPayer(c,(struct zx_mm7_ThirdPartyPayer_s*)e,dup_strs);
   	  if (!enn)
   	      x->ThirdPartyPayer = (struct zx_mm7_ThirdPartyPayer_s*)en;
@@ -6923,7 +7549,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   	  enn = en;
   }
   x->DistributionIndicator = zx_deep_clone_simple_elems(c,x->DistributionIndicator, dup_strs);
-  for (enn = 0, e = &x->DeliveryCondition->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DeliveryCondition->gg;
+       e && e->g.tok == zx_mm7_DeliveryCondition_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_DeliveryCondition(c,(struct zx_mm7_DeliveryCondition_s*)e,dup_strs);
   	  if (!enn)
   	      x->DeliveryCondition = (struct zx_mm7_DeliveryCondition_s*)en;
@@ -6936,7 +7564,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   x->AuxApplicInfo = zx_deep_clone_simple_elems(c,x->AuxApplicInfo, dup_strs);
   x->ContentClass = zx_deep_clone_simple_elems(c,x->ContentClass, dup_strs);
   x->DRMContent = zx_deep_clone_simple_elems(c,x->DRMContent, dup_strs);
-  for (enn = 0, e = &x->Content->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Content(c,(struct zx_mm7_Content_s*)e,dup_strs);
   	  if (!enn)
   	      x->Content = (struct zx_mm7_Content_s*)en;
@@ -6944,7 +7574,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AdditionalInformation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_AdditionalInformation(c,(struct zx_mm7_AdditionalInformation_s*)e,dup_strs);
   	  if (!enn)
   	      x->AdditionalInformation = (struct zx_mm7_AdditionalInformation_s*)en;
@@ -6952,7 +7584,9 @@ struct zx_mm7_SubmitReq_s* zx_DEEP_CLONE_mm7_SubmitReq(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_MessageExtraData(c,(struct zx_mm7_MessageExtraData_s*)e,dup_strs);
   	  if (!enn)
   	      x->MessageExtraData = (struct zx_mm7_MessageExtraData_s*)en;
@@ -6986,27 +7620,37 @@ int zx_WALK_SO_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SenderIdentification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Recipients->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Recipients->gg;
+       e && e->g.tok == zx_mm7_Recipients_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Recipients(c, (struct zx_mm7_Recipients_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PreferredChannels->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PreferredChannels->gg;
+       e && e->g.tok == zx_mm7_PreferredChannels_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_PreferredChannels(c, (struct zx_mm7_PreferredChannels_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ServiceCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7020,7 +7664,9 @@ int zx_WALK_SO_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->TimeStamp, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ReplyCharging->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ReplyCharging->gg;
+       e && e->g.tok == zx_mm7_ReplyCharging_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ReplyCharging(c, (struct zx_mm7_ReplyCharging_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7049,7 +7695,9 @@ int zx_WALK_SO_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->ChargedPartyID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ThirdPartyPayer->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ThirdPartyPayer->gg;
+       e && e->g.tok == zx_mm7_ThirdPartyPayer_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ThirdPartyPayer(c, (struct zx_mm7_ThirdPartyPayer_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7057,7 +7705,9 @@ int zx_WALK_SO_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->DistributionIndicator, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->DeliveryCondition->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DeliveryCondition->gg;
+       e && e->g.tok == zx_mm7_DeliveryCondition_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_DeliveryCondition(c, (struct zx_mm7_DeliveryCondition_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7077,17 +7727,23 @@ int zx_WALK_SO_mm7_SubmitReq(struct zx_ctx* c, struct zx_mm7_SubmitReq_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->DRMContent, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Content->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Content(c, (struct zx_mm7_Content_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AdditionalInformation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7145,11 +7801,15 @@ void zx_FREE_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x, int f
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -7191,9 +7851,13 @@ void zx_DUP_STRS_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
   zx_dup_strs_simple_elems(c, x->MessageID);
 
@@ -7216,7 +7880,9 @@ struct zx_mm7_SubmitRsp_s* zx_DEEP_CLONE_mm7_SubmitRsp(struct zx_ctx* c, struct 
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -7224,7 +7890,9 @@ struct zx_mm7_SubmitRsp_s* zx_DEEP_CLONE_mm7_SubmitRsp(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -7259,12 +7927,16 @@ int zx_WALK_SO_mm7_SubmitRsp(struct zx_ctx* c, struct zx_mm7_SubmitRsp_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7324,19 +7996,27 @@ void zx_FREE_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPayer
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RFC2822Address->gg; e; e = en) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
   }
-  for (e = &x->Number->gg; e; e = en) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
   }
-  for (e = &x->ShortCode->gg; e; e = en) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -7376,13 +8056,21 @@ void zx_DUP_STRS_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyP
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RFC2822Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RFC2822Address->gg;
+       se && se->g.tok == zx_mm7_RFC2822Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)se);
-  for (se = &x->Number->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Number->gg;
+       se && se->g.tok == zx_mm7_Number_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Number(c, (struct zx_mm7_Number_s*)se);
-  for (se = &x->ShortCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ShortCode->gg;
+       se && se->g.tok == zx_mm7_ShortCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -7403,7 +8091,9 @@ struct zx_mm7_ThirdPartyPayer_s* zx_DEEP_CLONE_mm7_ThirdPartyPayer(struct zx_ctx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_RFC2822Address(c,(struct zx_mm7_RFC2822Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->RFC2822Address = (struct zx_mm7_RFC2822Address_s*)en;
@@ -7411,7 +8101,9 @@ struct zx_mm7_ThirdPartyPayer_s* zx_DEEP_CLONE_mm7_ThirdPartyPayer(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Number(c,(struct zx_mm7_Number_s*)e,dup_strs);
   	  if (!enn)
   	      x->Number = (struct zx_mm7_Number_s*)en;
@@ -7419,7 +8111,9 @@ struct zx_mm7_ThirdPartyPayer_s* zx_DEEP_CLONE_mm7_ThirdPartyPayer(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ShortCode(c,(struct zx_mm7_ShortCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ShortCode = (struct zx_mm7_ShortCode_s*)en;
@@ -7427,7 +8121,9 @@ struct zx_mm7_ThirdPartyPayer_s* zx_DEEP_CLONE_mm7_ThirdPartyPayer(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -7458,22 +8154,30 @@ int zx_WALK_SO_mm7_ThirdPartyPayer(struct zx_ctx* c, struct zx_mm7_ThirdPartyPay
   if (ret)
     return ret;
 
-  for (e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Number(c, (struct zx_mm7_Number_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7530,19 +8234,27 @@ void zx_FREE_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x, int free_strs)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RFC2822Address->gg; e; e = en) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
   }
-  for (e = &x->Number->gg; e; e = en) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
   }
-  for (e = &x->ShortCode->gg; e; e = en) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -7582,13 +8294,21 @@ void zx_DUP_STRS_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RFC2822Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RFC2822Address->gg;
+       se && se->g.tok == zx_mm7_RFC2822Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)se);
-  for (se = &x->Number->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Number->gg;
+       se && se->g.tok == zx_mm7_Number_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Number(c, (struct zx_mm7_Number_s*)se);
-  for (se = &x->ShortCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ShortCode->gg;
+       se && se->g.tok == zx_mm7_ShortCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -7609,7 +8329,9 @@ struct zx_mm7_To_s* zx_DEEP_CLONE_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_RFC2822Address(c,(struct zx_mm7_RFC2822Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->RFC2822Address = (struct zx_mm7_RFC2822Address_s*)en;
@@ -7617,7 +8339,9 @@ struct zx_mm7_To_s* zx_DEEP_CLONE_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Number(c,(struct zx_mm7_Number_s*)e,dup_strs);
   	  if (!enn)
   	      x->Number = (struct zx_mm7_Number_s*)en;
@@ -7625,7 +8349,9 @@ struct zx_mm7_To_s* zx_DEEP_CLONE_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ShortCode(c,(struct zx_mm7_ShortCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ShortCode = (struct zx_mm7_ShortCode_s*)en;
@@ -7633,7 +8359,9 @@ struct zx_mm7_To_s* zx_DEEP_CLONE_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -7664,22 +8392,30 @@ int zx_WALK_SO_mm7_To(struct zx_ctx* c, struct zx_mm7_To_s* x, void* ctx, int (*
   if (ret)
     return ret;
 
-  for (e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Number(c, (struct zx_mm7_Number_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8012,19 +8748,27 @@ void zx_FREE_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x, int f
 
   zx_free_attr(c, x->sequence, free_strs);
 
-  for (e = &x->RFC2822Address->gg; e; e = en) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, free_strs);
   }
-  for (e = &x->Number->gg; e; e = en) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Number(c, (struct zx_mm7_Number_s*)e, free_strs);
   }
-  for (e = &x->ShortCode->gg; e; e = en) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -8065,13 +8809,21 @@ void zx_DUP_STRS_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x)
 
   zx_dup_attr(c, x->sequence);
 
-  for (se = &x->RFC2822Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RFC2822Address->gg;
+       se && se->g.tok == zx_mm7_RFC2822Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)se);
-  for (se = &x->Number->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Number->gg;
+       se && se->g.tok == zx_mm7_Number_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Number(c, (struct zx_mm7_Number_s*)se);
-  for (se = &x->ShortCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ShortCode->gg;
+       se && se->g.tok == zx_mm7_ShortCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -8093,7 +8845,9 @@ struct zx_mm7_UserAgent_s* zx_DEEP_CLONE_mm7_UserAgent(struct zx_ctx* c, struct 
 
   x->sequence = zx_clone_attr(c, x->sequence);
 
-  for (enn = 0, e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_RFC2822Address(c,(struct zx_mm7_RFC2822Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->RFC2822Address = (struct zx_mm7_RFC2822Address_s*)en;
@@ -8101,7 +8855,9 @@ struct zx_mm7_UserAgent_s* zx_DEEP_CLONE_mm7_UserAgent(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Number(c,(struct zx_mm7_Number_s*)e,dup_strs);
   	  if (!enn)
   	      x->Number = (struct zx_mm7_Number_s*)en;
@@ -8109,7 +8865,9 @@ struct zx_mm7_UserAgent_s* zx_DEEP_CLONE_mm7_UserAgent(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ShortCode(c,(struct zx_mm7_ShortCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ShortCode = (struct zx_mm7_ShortCode_s*)en;
@@ -8117,7 +8875,9 @@ struct zx_mm7_UserAgent_s* zx_DEEP_CLONE_mm7_UserAgent(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -8148,22 +8908,30 @@ int zx_WALK_SO_mm7_UserAgent(struct zx_ctx* c, struct zx_mm7_UserAgent_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->RFC2822Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RFC2822Address->gg;
+       e && e->g.tok == zx_mm7_RFC2822Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_RFC2822Address(c, (struct zx_mm7_RFC2822Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Number->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Number->gg;
+       e && e->g.tok == zx_mm7_Number_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Number(c, (struct zx_mm7_Number_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ShortCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ShortCode->gg;
+       e && e->g.tok == zx_mm7_ShortCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ShortCode(c, (struct zx_mm7_ShortCode_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8221,11 +8989,15 @@ void zx_FREE_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* x,
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -8266,9 +9038,13 @@ void zx_DUP_STRS_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
 
 }
@@ -8290,7 +9066,9 @@ struct zx_mm7_VASPErrorRsp_s* zx_DEEP_CLONE_mm7_VASPErrorRsp(struct zx_ctx* c, s
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -8298,7 +9076,9 @@ struct zx_mm7_VASPErrorRsp_s* zx_DEEP_CLONE_mm7_VASPErrorRsp(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -8332,12 +9112,16 @@ int zx_WALK_SO_mm7_VASPErrorRsp(struct zx_ctx* c, struct zx_mm7_VASPErrorRsp_s* 
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8537,11 +9321,15 @@ void zx_FREE_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCance
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->SenderIdentification->gg; e; e = en) {
+  for (e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, free_strs);
   }
@@ -8583,9 +9371,13 @@ void zx_DUP_STRS_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedC
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->SenderIdentification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SenderIdentification->gg;
+       se && se->g.tok == zx_mm7_SenderIdentification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_mm7_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Extension(c, (struct zx_mm7_Extension_s*)se);
   zx_dup_strs_simple_elems(c, x->CancelID);
 
@@ -8608,7 +9400,9 @@ struct zx_mm7_extendedCancelReq_s* zx_DEEP_CLONE_mm7_extendedCancelReq(struct zx
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->SenderIdentification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_SenderIdentification(c,(struct zx_mm7_SenderIdentification_s*)e,dup_strs);
   	  if (!enn)
   	      x->SenderIdentification = (struct zx_mm7_SenderIdentification_s*)en;
@@ -8616,7 +9410,9 @@ struct zx_mm7_extendedCancelReq_s* zx_DEEP_CLONE_mm7_extendedCancelReq(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Extension(c,(struct zx_mm7_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_mm7_Extension_s*)en;
@@ -8651,12 +9447,16 @@ int zx_WALK_SO_mm7_extendedCancelReq(struct zx_ctx* c, struct zx_mm7_extendedCan
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SenderIdentification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SenderIdentification->gg;
+       e && e->g.tok == zx_mm7_SenderIdentification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_SenderIdentification(c, (struct zx_mm7_SenderIdentification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_mm7_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Extension(c, (struct zx_mm7_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8717,7 +9517,9 @@ void zx_FREE_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCance
 
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
@@ -8758,7 +9560,9 @@ void zx_DUP_STRS_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedC
 
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
 
 }
@@ -8780,7 +9584,9 @@ struct zx_mm7_extendedCancelRsp_s* zx_DEEP_CLONE_mm7_extendedCancelRsp(struct zx
 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -8814,7 +9620,9 @@ int zx_WALK_SO_mm7_extendedCancelRsp(struct zx_ctx* c, struct zx_mm7_extendedCan
   ret = zx_walk_so_simple_elems(c, x->MM7Version, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8874,7 +9682,9 @@ void zx_FREE_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedRepl
   zx_free_simple_elems(c, x->MM7Version, free_strs);
   zx_free_simple_elems(c, x->VASPID, free_strs);
   zx_free_simple_elems(c, x->VASID, free_strs);
-  for (e = &x->ServiceCode->gg; e; e = en) {
+  for (e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, free_strs);
   }
@@ -8884,15 +9694,21 @@ void zx_FREE_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedRepl
   zx_free_simple_elems(c, x->ExpiryDate, free_strs);
   zx_free_simple_elems(c, x->ReadReply, free_strs);
   zx_free_simple_elems(c, x->DeliveryReport, free_strs);
-  for (e = &x->Content->gg; e; e = en) {
+  for (e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Content(c, (struct zx_mm7_Content_s*)e, free_strs);
   }
-  for (e = &x->AdditionalInformation->gg; e; e = en) {
+  for (e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, free_strs);
   }
-  for (e = &x->MessageExtraData->gg; e; e = en) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, free_strs);
   }
@@ -8935,7 +9751,9 @@ void zx_DUP_STRS_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extended
   zx_dup_strs_simple_elems(c, x->MM7Version);
   zx_dup_strs_simple_elems(c, x->VASPID);
   zx_dup_strs_simple_elems(c, x->VASID);
-  for (se = &x->ServiceCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceCode->gg;
+       se && se->g.tok == zx_mm7_ServiceCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)se);
   zx_dup_strs_simple_elems(c, x->ReplaceID);
   zx_dup_strs_simple_elems(c, x->TimeStamp);
@@ -8943,11 +9761,17 @@ void zx_DUP_STRS_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extended
   zx_dup_strs_simple_elems(c, x->ExpiryDate);
   zx_dup_strs_simple_elems(c, x->ReadReply);
   zx_dup_strs_simple_elems(c, x->DeliveryReport);
-  for (se = &x->Content->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Content->gg;
+       se && se->g.tok == zx_mm7_Content_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Content(c, (struct zx_mm7_Content_s*)se);
-  for (se = &x->AdditionalInformation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalInformation->gg;
+       se && se->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)se);
-  for (se = &x->MessageExtraData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MessageExtraData->gg;
+       se && se->g.tok == zx_mm7_MessageExtraData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)se);
 
 }
@@ -8971,7 +9795,9 @@ struct zx_mm7_extendedReplaceReq_s* zx_DEEP_CLONE_mm7_extendedReplaceReq(struct 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
   x->VASPID = zx_deep_clone_simple_elems(c,x->VASPID, dup_strs);
   x->VASID = zx_deep_clone_simple_elems(c,x->VASID, dup_strs);
-  for (enn = 0, e = &x->ServiceCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_ServiceCode(c,(struct zx_mm7_ServiceCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->ServiceCode = (struct zx_mm7_ServiceCode_s*)en;
@@ -8985,7 +9811,9 @@ struct zx_mm7_extendedReplaceReq_s* zx_DEEP_CLONE_mm7_extendedReplaceReq(struct 
   x->ExpiryDate = zx_deep_clone_simple_elems(c,x->ExpiryDate, dup_strs);
   x->ReadReply = zx_deep_clone_simple_elems(c,x->ReadReply, dup_strs);
   x->DeliveryReport = zx_deep_clone_simple_elems(c,x->DeliveryReport, dup_strs);
-  for (enn = 0, e = &x->Content->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Content(c,(struct zx_mm7_Content_s*)e,dup_strs);
   	  if (!enn)
   	      x->Content = (struct zx_mm7_Content_s*)en;
@@ -8993,7 +9821,9 @@ struct zx_mm7_extendedReplaceReq_s* zx_DEEP_CLONE_mm7_extendedReplaceReq(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AdditionalInformation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_AdditionalInformation(c,(struct zx_mm7_AdditionalInformation_s*)e,dup_strs);
   	  if (!enn)
   	      x->AdditionalInformation = (struct zx_mm7_AdditionalInformation_s*)en;
@@ -9001,7 +9831,9 @@ struct zx_mm7_extendedReplaceReq_s* zx_DEEP_CLONE_mm7_extendedReplaceReq(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_MessageExtraData(c,(struct zx_mm7_MessageExtraData_s*)e,dup_strs);
   	  if (!enn)
   	      x->MessageExtraData = (struct zx_mm7_MessageExtraData_s*)en;
@@ -9041,7 +9873,9 @@ int zx_WALK_SO_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedRe
   ret = zx_walk_so_simple_elems(c, x->VASID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ServiceCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ServiceCode->gg;
+       e && e->g.tok == zx_mm7_ServiceCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_ServiceCode(c, (struct zx_mm7_ServiceCode_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9064,17 +9898,23 @@ int zx_WALK_SO_mm7_extendedReplaceReq(struct zx_ctx* c, struct zx_mm7_extendedRe
   ret = zx_walk_so_simple_elems(c, x->DeliveryReport, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Content->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Content->gg;
+       e && e->g.tok == zx_mm7_Content_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Content(c, (struct zx_mm7_Content_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AdditionalInformation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AdditionalInformation->gg;
+       e && e->g.tok == zx_mm7_AdditionalInformation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_AdditionalInformation(c, (struct zx_mm7_AdditionalInformation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MessageExtraData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MessageExtraData->gg;
+       e && e->g.tok == zx_mm7_MessageExtraData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_MessageExtraData(c, (struct zx_mm7_MessageExtraData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9133,7 +9973,9 @@ void zx_FREE_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extendedRepl
 
   zx_free_simple_elems(c, x->MM7Version, free_strs);
   zx_free_simple_elems(c, x->MessageID, free_strs);
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_mm7_Status(c, (struct zx_mm7_Status_s*)e, free_strs);
   }
@@ -9175,7 +10017,9 @@ void zx_DUP_STRS_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extended
 
   zx_dup_strs_simple_elems(c, x->MM7Version);
   zx_dup_strs_simple_elems(c, x->MessageID);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_mm7_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_mm7_Status(c, (struct zx_mm7_Status_s*)se);
 
 }
@@ -9198,7 +10042,9 @@ struct zx_mm7_extendedReplaceRsp_s* zx_DEEP_CLONE_mm7_extendedReplaceRsp(struct 
 
   x->MM7Version = zx_deep_clone_simple_elems(c,x->MM7Version, dup_strs);
   x->MessageID = zx_deep_clone_simple_elems(c,x->MessageID, dup_strs);
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_mm7_Status(c,(struct zx_mm7_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_mm7_Status_s*)en;
@@ -9235,7 +10081,9 @@ int zx_WALK_SO_mm7_extendedReplaceRsp(struct zx_ctx* c, struct zx_mm7_extendedRe
   ret = zx_walk_so_simple_elems(c, x->MessageID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_mm7_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_mm7_Status(c, (struct zx_mm7_Status_s*)e, ctx, callback);
     if (ret)
       return ret;

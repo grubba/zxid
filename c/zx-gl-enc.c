@@ -85,7 +85,7 @@ int zx_LEN_SO_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s*
   int len = sizeof("<gl:AreaComparison")-1 + 1 + sizeof("</gl:AreaComparison>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->returnLocation, sizeof("returnLocation")-1, &pop_seen);
@@ -95,11 +95,17 @@ int zx_LEN_SO_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s*
   int len = 0;
 #endif
   
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)se);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_shape(c, (struct zx_gl_shape_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -127,7 +133,7 @@ char* zx_ENC_SO_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_
   ZX_OUT_TAG(p, "<gl:AreaComparison");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -141,11 +147,17 @@ char* zx_ENC_SO_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)se, p);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_shape(c, (struct zx_gl_shape_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -226,7 +238,7 @@ int zx_LEN_SO_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x )
   int len = sizeof("<gl:Box")-1 + 1 + sizeof("</gl:Box>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -236,7 +248,9 @@ int zx_LEN_SO_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_coord(c, (struct zx_gl_coord_s*)se);
 
 
@@ -264,7 +278,7 @@ char* zx_ENC_SO_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:Box");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -278,7 +292,9 @@ char* zx_ENC_SO_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_coord(c, (struct zx_gl_coord_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -359,7 +375,7 @@ int zx_LEN_SO_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x )
   int len = sizeof("<gl:ChangeArea")-1 + 1 + sizeof("</gl:ChangeArea>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->event, sizeof("event")-1, &pop_seen);
 
@@ -368,11 +384,17 @@ int zx_LEN_SO_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)se);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_shape(c, (struct zx_gl_shape_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -400,7 +422,7 @@ char* zx_ENC_SO_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x, ch
   ZX_OUT_TAG(p, "<gl:ChangeArea");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -413,11 +435,17 @@ char* zx_ENC_SO_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)se, p);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_shape(c, (struct zx_gl_shape_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -498,7 +526,7 @@ int zx_LEN_SO_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea_
   int len = sizeof("<gl:CircularArcArea")-1 + 1 + sizeof("</gl:CircularArcArea>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -508,20 +536,34 @@ int zx_LEN_SO_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea_
   int len = 0;
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_coord(c, (struct zx_gl_coord_s*)se);
-  for (se = x->inRadius; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:inRadius")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->outRadius; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:outRadius")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->startAngle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:startAngle")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->stopAngle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:stopAngle")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->angularUnit; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:angularUnit")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->distanceUnit; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:distanceUnit")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->inRadius;
+    se && se->g.tok == zx_gl_inRadius_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:inRadius")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->outRadius;
+    se && se->g.tok == zx_gl_outRadius_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:outRadius")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->startAngle;
+    se && se->g.tok == zx_gl_startAngle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:startAngle")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->stopAngle;
+    se && se->g.tok == zx_gl_stopAngle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:stopAngle")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->angularUnit;
+    se && se->g.tok == zx_gl_angularUnit_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:angularUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->distanceUnit;
+    se && se->g.tok == zx_gl_distanceUnit_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:distanceUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -548,7 +590,7 @@ char* zx_ENC_SO_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcAre
   ZX_OUT_TAG(p, "<gl:CircularArcArea");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -562,20 +604,34 @@ char* zx_ENC_SO_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcAre
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_coord(c, (struct zx_gl_coord_s*)se, p);
-  for (se = x->inRadius; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:inRadius", sizeof("gl:inRadius")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->outRadius; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:outRadius", sizeof("gl:outRadius")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->startAngle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:startAngle", sizeof("gl:startAngle")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->stopAngle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:stopAngle", sizeof("gl:stopAngle")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->angularUnit; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:angularUnit", sizeof("gl:angularUnit")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->distanceUnit; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:distanceUnit", sizeof("gl:distanceUnit")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->inRadius;
+       se && se->g.tok == zx_gl_inRadius_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:inRadius", sizeof("gl:inRadius")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->outRadius;
+       se && se->g.tok == zx_gl_outRadius_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:outRadius", sizeof("gl:outRadius")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->startAngle;
+       se && se->g.tok == zx_gl_startAngle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:startAngle", sizeof("gl:startAngle")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->stopAngle;
+       se && se->g.tok == zx_gl_stopAngle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:stopAngle", sizeof("gl:stopAngle")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->angularUnit;
+       se && se->g.tok == zx_gl_angularUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:angularUnit", sizeof("gl:angularUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->distanceUnit;
+       se && se->g.tok == zx_gl_distanceUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:distanceUnit", sizeof("gl:distanceUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -655,7 +711,7 @@ int zx_LEN_SO_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x )
   int len = sizeof("<gl:CircularArea")-1 + 1 + sizeof("</gl:CircularArea>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -665,12 +721,18 @@ int zx_LEN_SO_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_coord(c, (struct zx_gl_coord_s*)se);
-  for (se = x->radius; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:radius")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->distanceUnit; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:distanceUnit")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->radius;
+    se && se->g.tok == zx_gl_radius_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:radius")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->distanceUnit;
+    se && se->g.tok == zx_gl_distanceUnit_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:distanceUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -697,7 +759,7 @@ char* zx_ENC_SO_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x
   ZX_OUT_TAG(p, "<gl:CircularArea");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -711,12 +773,18 @@ char* zx_ENC_SO_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_coord(c, (struct zx_gl_coord_s*)se, p);
-  for (se = x->radius; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:radius", sizeof("gl:radius")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->distanceUnit; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:distanceUnit", sizeof("gl:distanceUnit")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->radius;
+       se && se->g.tok == zx_gl_radius_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:radius", sizeof("gl:radius")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->distanceUnit;
+       se && se->g.tok == zx_gl_distanceUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:distanceUnit", sizeof("gl:distanceUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -796,7 +864,7 @@ int zx_LEN_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x )
   int len = sizeof("<gl:CivilData")-1 + 1 + sizeof("</gl:CivilData>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -804,25 +872,45 @@ int zx_LEN_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x )
   int len = 0;
 #endif
   
-  for (se = x->PostalAddress; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:PostalAddress")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->LPostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PostalAddress;
+    se && se->g.tok == zx_gl_PostalAddress_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:PostalAddress")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LPostalAddress->gg;
+       se && se->g.tok == zx_gl_LPostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_LPostalAddress(c, (struct zx_gl_LPostalAddress_s*)se);
-  for (se = x->PostalCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:PostalCode")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->L; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:L")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->LL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PostalCode;
+    se && se->g.tok == zx_gl_PostalCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:PostalCode")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->L;
+    se && se->g.tok == zx_gl_L_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:L")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LL->gg;
+       se && se->g.tok == zx_gl_LL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_LL(c, (struct zx_gl_LL_s*)se);
-  for (se = x->St; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:St")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->LSt->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->St;
+    se && se->g.tok == zx_gl_St_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:St")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LSt->gg;
+       se && se->g.tok == zx_gl_LSt_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_LSt(c, (struct zx_gl_LSt_s*)se);
-  for (se = x->C; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:C")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->MNC; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:MNC")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->C;
+    se && se->g.tok == zx_gl_C_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:C")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MNC;
+    se && se->g.tok == zx_gl_MNC_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:MNC")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -850,7 +938,7 @@ char* zx_ENC_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, char
   ZX_OUT_TAG(p, "<gl:CivilData");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -862,25 +950,45 @@ char* zx_ENC_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PostalAddress; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:PostalAddress", sizeof("gl:PostalAddress")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->LPostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PostalAddress;
+       se && se->g.tok == zx_gl_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:PostalAddress", sizeof("gl:PostalAddress")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LPostalAddress->gg;
+       se && se->g.tok == zx_gl_LPostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_LPostalAddress(c, (struct zx_gl_LPostalAddress_s*)se, p);
-  for (se = x->PostalCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:PostalCode", sizeof("gl:PostalCode")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->L; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:L", sizeof("gl:L")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->LL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PostalCode;
+       se && se->g.tok == zx_gl_PostalCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:PostalCode", sizeof("gl:PostalCode")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->L;
+       se && se->g.tok == zx_gl_L_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:L", sizeof("gl:L")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LL->gg;
+       se && se->g.tok == zx_gl_LL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_LL(c, (struct zx_gl_LL_s*)se, p);
-  for (se = x->St; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:St", sizeof("gl:St")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->LSt->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->St;
+       se && se->g.tok == zx_gl_St_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:St", sizeof("gl:St")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LSt->gg;
+       se && se->g.tok == zx_gl_LSt_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_LSt(c, (struct zx_gl_LSt_s*)se, p);
-  for (se = x->C; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:C", sizeof("gl:C")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->MNC; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:MNC", sizeof("gl:MNC")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->C;
+       se && se->g.tok == zx_gl_C_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:C", sizeof("gl:C")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MNC;
+       se && se->g.tok == zx_gl_MNC_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:MNC", sizeof("gl:MNC")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -961,7 +1069,7 @@ int zx_LEN_SO_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonResul
   int len = sizeof("<gl:ComparisonResult")-1 + 1 + sizeof("</gl:ComparisonResult>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ItemIDRef, sizeof("ItemIDRef")-1, &pop_seen);
 
@@ -996,7 +1104,7 @@ char* zx_ENC_SO_gl_ComparisonResult(struct zx_ctx* c, struct zx_gl_ComparisonRes
   ZX_OUT_TAG(p, "<gl:ComparisonResult");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1088,7 +1196,7 @@ int zx_LEN_SO_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_Coordi
   int len = sizeof("<gl:CoordinateReferenceSystem")-1 + 1 + sizeof("</gl:CoordinateReferenceSystem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1096,7 +1204,9 @@ int zx_LEN_SO_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_Coordi
   int len = 0;
 #endif
   
-  for (se = &x->Identifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Identifier->gg;
+       se && se->g.tok == zx_gl_Identifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Identifier(c, (struct zx_gl_Identifier_s*)se);
 
 
@@ -1124,7 +1234,7 @@ char* zx_ENC_SO_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_Coor
   ZX_OUT_TAG(p, "<gl:CoordinateReferenceSystem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1136,7 +1246,9 @@ char* zx_ENC_SO_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_Coor
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Identifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Identifier->gg;
+       se && se->g.tok == zx_gl_Identifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Identifier(c, (struct zx_gl_Identifier_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1217,7 +1329,7 @@ int zx_LEN_SO_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x )
   int len = sizeof("<gl:Create")-1 + 1 + sizeof("</gl:Create>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -1226,17 +1338,29 @@ int zx_LEN_SO_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_gl_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Subscription(c, (struct zx_gl_Subscription_s*)se);
-  for (se = &x->CreateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreateItem->gg;
+       se && se->g.tok == zx_gl_CreateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CreateItem(c, (struct zx_gl_CreateItem_s*)se);
-  for (se = &x->ItemSelection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemSelection->gg;
+       se && se->g.tok == zx_gl_ItemSelection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -1264,7 +1388,7 @@ char* zx_ENC_SO_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:Create");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1277,17 +1401,29 @@ char* zx_ENC_SO_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se, p);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_gl_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Subscription(c, (struct zx_gl_Subscription_s*)se, p);
-  for (se = &x->CreateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreateItem->gg;
+       se && se->g.tok == zx_gl_CreateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CreateItem(c, (struct zx_gl_CreateItem_s*)se, p);
-  for (se = &x->ItemSelection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemSelection->gg;
+       se && se->g.tok == zx_gl_ItemSelection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1368,7 +1504,7 @@ int zx_LEN_SO_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x )
   int len = sizeof("<gl:CreateItem")-1 + 1 + sizeof("</gl:CreateItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
@@ -1379,7 +1515,9 @@ int zx_LEN_SO_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_gl_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_NewData(c, (struct zx_gl_NewData_s*)se);
 
 
@@ -1407,7 +1545,7 @@ char* zx_ENC_SO_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x, ch
   ZX_OUT_TAG(p, "<gl:CreateItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1422,7 +1560,9 @@ char* zx_ENC_SO_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_gl_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_NewData(c, (struct zx_gl_NewData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1503,7 +1643,7 @@ int zx_LEN_SO_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s*
   int len = sizeof("<gl:CreateResponse")-1 + 1 + sizeof("</gl:CreateResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
@@ -1513,11 +1653,17 @@ int zx_LEN_SO_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s*
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_gl_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ItemData(c, (struct zx_gl_ItemData_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -1545,7 +1691,7 @@ char* zx_ENC_SO_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_
   ZX_OUT_TAG(p, "<gl:CreateResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1559,11 +1705,17 @@ char* zx_ENC_SO_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Status(c, (struct zx_gl_Status_s*)se, p);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_gl_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ItemData(c, (struct zx_gl_ItemData_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1644,7 +1796,7 @@ int zx_LEN_SO_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x )
   int len = sizeof("<gl:Credential")-1 + 1 + sizeof("</gl:Credential>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->notOnOrAfter, sizeof("notOnOrAfter")-1, &pop_seen);
 
@@ -1653,7 +1805,9 @@ int zx_LEN_SO_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)se);
 
 
@@ -1681,7 +1835,7 @@ char* zx_ENC_SO_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x, ch
   ZX_OUT_TAG(p, "<gl:Credential");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1694,7 +1848,9 @@ char* zx_ENC_SO_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1776,7 +1932,7 @@ int zx_LEN_SO_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->changeFormat)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
@@ -1818,7 +1974,7 @@ char* zx_ENC_SO_gl_Data(struct zx_ctx* c, struct zx_gl_Data_s* x, char* p )
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->changeFormat)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1916,7 +2072,7 @@ int zx_LEN_SO_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x )
   int len = sizeof("<gl:Delete")-1 + 1 + sizeof("</gl:Delete>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -1925,13 +2081,21 @@ int zx_LEN_SO_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se);
-  for (se = &x->DeleteItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteItem->gg;
+       se && se->g.tok == zx_gl_DeleteItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_DeleteItem(c, (struct zx_gl_DeleteItem_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -1959,7 +2123,7 @@ char* zx_ENC_SO_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:Delete");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1972,13 +2136,21 @@ char* zx_ENC_SO_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se, p);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se, p);
-  for (se = &x->DeleteItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteItem->gg;
+       se && se->g.tok == zx_gl_DeleteItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_DeleteItem(c, (struct zx_gl_DeleteItem_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2059,7 +2231,7 @@ int zx_LEN_SO_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x )
   int len = sizeof("<gl:DeleteItem")-1 + 1 + sizeof("</gl:DeleteItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
@@ -2072,8 +2244,10 @@ int zx_LEN_SO_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Select")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->Select;
+    se && se->g.tok == zx_gl_Select_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Select")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2100,7 +2274,7 @@ char* zx_ENC_SO_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x, ch
   ZX_OUT_TAG(p, "<gl:DeleteItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2117,8 +2291,10 @@ char* zx_ENC_SO_gl_DeleteItem(struct zx_ctx* c, struct zx_gl_DeleteItem_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Select", sizeof("gl:Select")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->Select;
+       se && se->g.tok == zx_gl_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Select", sizeof("gl:Select")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2198,7 +2374,7 @@ int zx_LEN_SO_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s*
   int len = sizeof("<gl:DeleteResponse")-1 + 1 + sizeof("</gl:DeleteResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -2207,9 +2383,13 @@ int zx_LEN_SO_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s*
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -2237,7 +2417,7 @@ char* zx_ENC_SO_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_
   ZX_OUT_TAG(p, "<gl:DeleteResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2250,9 +2430,13 @@ char* zx_ENC_SO_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Status(c, (struct zx_gl_Status_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2333,7 +2517,7 @@ int zx_LEN_SO_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s*
   int len = sizeof("<gl:EllipticalArea")-1 + 1 + sizeof("</gl:EllipticalArea>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -2343,18 +2527,30 @@ int zx_LEN_SO_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s*
   int len = 0;
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_coord(c, (struct zx_gl_coord_s*)se);
-  for (se = x->angle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:angle")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->semiMajor; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:semiMajor")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->semiMinor; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:semiMinor")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->angularUnit; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:angularUnit")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->distanceUnit; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:distanceUnit")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->angle;
+    se && se->g.tok == zx_gl_angle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:angle")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->semiMajor;
+    se && se->g.tok == zx_gl_semiMajor_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:semiMajor")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->semiMinor;
+    se && se->g.tok == zx_gl_semiMinor_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:semiMinor")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->angularUnit;
+    se && se->g.tok == zx_gl_angularUnit_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:angularUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->distanceUnit;
+    se && se->g.tok == zx_gl_distanceUnit_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:distanceUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2381,7 +2577,7 @@ char* zx_ENC_SO_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_
   ZX_OUT_TAG(p, "<gl:EllipticalArea");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2395,18 +2591,30 @@ char* zx_ENC_SO_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_coord(c, (struct zx_gl_coord_s*)se, p);
-  for (se = x->angle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:angle", sizeof("gl:angle")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->semiMajor; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:semiMajor", sizeof("gl:semiMajor")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->semiMinor; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:semiMinor", sizeof("gl:semiMinor")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->angularUnit; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:angularUnit", sizeof("gl:angularUnit")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->distanceUnit; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:distanceUnit", sizeof("gl:distanceUnit")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->angle;
+       se && se->g.tok == zx_gl_angle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:angle", sizeof("gl:angle")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->semiMajor;
+       se && se->g.tok == zx_gl_semiMajor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:semiMajor", sizeof("gl:semiMajor")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->semiMinor;
+       se && se->g.tok == zx_gl_semiMinor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:semiMinor", sizeof("gl:semiMinor")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->angularUnit;
+       se && se->g.tok == zx_gl_angularUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:angularUnit", sizeof("gl:angularUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->distanceUnit;
+       se && se->g.tok == zx_gl_distanceUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:distanceUnit", sizeof("gl:distanceUnit")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2486,7 +2694,7 @@ int zx_LEN_SO_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedRes
   int len = sizeof("<gl:EncryptedResourceID")-1 + 1 + sizeof("</gl:EncryptedResourceID>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2494,9 +2702,13 @@ int zx_LEN_SO_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedRes
   int len = 0;
 #endif
   
-  for (se = &x->EncryptedData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedData->gg;
+       se && se->g.tok == zx_xenc_EncryptedData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)se);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se);
 
 
@@ -2524,7 +2736,7 @@ char* zx_ENC_SO_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedR
   ZX_OUT_TAG(p, "<gl:EncryptedResourceID");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2536,9 +2748,13 @@ char* zx_ENC_SO_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedR
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EncryptedData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedData->gg;
+       se && se->g.tok == zx_xenc_EncryptedData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)se, p);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2619,7 +2835,7 @@ int zx_LEN_SO_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x )
   int len = sizeof("<gl:Extension")-1 + 1 + sizeof("</gl:Extension>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2653,7 +2869,7 @@ char* zx_ENC_SO_gl_Extension(struct zx_ctx* c, struct zx_gl_Extension_s* x, char
   ZX_OUT_TAG(p, "<gl:Extension");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2744,7 +2960,7 @@ int zx_LEN_SO_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryColle
   int len = sizeof("<gl:GeometryCollection")-1 + 1 + sizeof("</gl:GeometryCollection>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -2754,7 +2970,9 @@ int zx_LEN_SO_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryColle
   int len = 0;
 #endif
   
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_shape(c, (struct zx_gl_shape_s*)se);
 
 
@@ -2782,7 +3000,7 @@ char* zx_ENC_SO_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCol
   ZX_OUT_TAG(p, "<gl:GeometryCollection");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2796,7 +3014,9 @@ char* zx_ENC_SO_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCol
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_shape(c, (struct zx_gl_shape_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2877,7 +3097,7 @@ int zx_LEN_SO_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x )
   int len = sizeof("<gl:Identifier")-1 + 1 + sizeof("</gl:Identifier>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2885,12 +3105,18 @@ int zx_LEN_SO_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x )
   int len = 0;
 #endif
   
-  for (se = x->code; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:code")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->codeSpace; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:codeSpace")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->edition; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:edition")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->code;
+    se && se->g.tok == zx_gl_code_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:code")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->codeSpace;
+    se && se->g.tok == zx_gl_codeSpace_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:codeSpace")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->edition;
+    se && se->g.tok == zx_gl_edition_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:edition")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2917,7 +3143,7 @@ char* zx_ENC_SO_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x, ch
   ZX_OUT_TAG(p, "<gl:Identifier");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2929,12 +3155,18 @@ char* zx_ENC_SO_gl_Identifier(struct zx_ctx* c, struct zx_gl_Identifier_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = x->code; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:code", sizeof("gl:code")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->codeSpace; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:codeSpace", sizeof("gl:codeSpace")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->edition; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:edition", sizeof("gl:edition")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->code;
+       se && se->g.tok == zx_gl_code_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:code", sizeof("gl:code")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->codeSpace;
+       se && se->g.tok == zx_gl_codeSpace_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:codeSpace", sizeof("gl:codeSpace")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->edition;
+       se && se->g.tok == zx_gl_edition_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:edition", sizeof("gl:edition")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3015,7 +3247,7 @@ int zx_LEN_SO_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->changeFormat)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
@@ -3054,7 +3286,7 @@ char* zx_ENC_SO_gl_ItemData(struct zx_ctx* c, struct zx_gl_ItemData_s* x, char* 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->changeFormat)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3149,7 +3381,7 @@ int zx_LEN_SO_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* x
   int len = sizeof("<gl:ItemSelection")-1 + 1 + sizeof("</gl:ItemSelection>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3157,17 +3389,29 @@ int zx_LEN_SO_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* x
   int len = 0;
 #endif
   
-  for (se = &x->AreaComparison->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AreaComparison->gg;
+       se && se->g.tok == zx_gl_AreaComparison_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)se);
-  for (se = &x->eqop->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->eqop->gg;
+       se && se->g.tok == zx_gl_eqop_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_eqop(c, (struct zx_gl_eqop_s*)se);
-  for (se = &x->geoinfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->geoinfo->gg;
+       se && se->g.tok == zx_gl_geoinfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)se);
-  for (se = &x->loc_type->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->loc_type->gg;
+       se && se->g.tok == zx_gl_loc_type_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_loc_type(c, (struct zx_gl_loc_type_s*)se);
-  for (se = &x->prio->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prio->gg;
+       se && se->g.tok == zx_gl_prio_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_prio(c, (struct zx_gl_prio_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -3195,7 +3439,7 @@ char* zx_ENC_SO_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s*
   ZX_OUT_TAG(p, "<gl:ItemSelection");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3207,17 +3451,29 @@ char* zx_ENC_SO_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->AreaComparison->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AreaComparison->gg;
+       se && se->g.tok == zx_gl_AreaComparison_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)se, p);
-  for (se = &x->eqop->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->eqop->gg;
+       se && se->g.tok == zx_gl_eqop_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_eqop(c, (struct zx_gl_eqop_s*)se, p);
-  for (se = &x->geoinfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->geoinfo->gg;
+       se && se->g.tok == zx_gl_geoinfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)se, p);
-  for (se = &x->loc_type->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->loc_type->gg;
+       se && se->g.tok == zx_gl_loc_type_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_loc_type(c, (struct zx_gl_loc_type_s*)se, p);
-  for (se = &x->prio->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prio->gg;
+       se && se->g.tok == zx_gl_prio_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_prio(c, (struct zx_gl_prio_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3299,9 +3555,9 @@ int zx_LEN_SO_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->script)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
   len += zx_attr_so_len(c, x->script, sizeof("gl:script")-1, &pop_seen);
@@ -3338,9 +3594,9 @@ char* zx_ENC_SO_gl_LL(struct zx_ctx* c, struct zx_gl_LL_s* x, char* p )
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->script)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3434,9 +3690,9 @@ int zx_LEN_SO_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_s*
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->script)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
   len += zx_attr_so_len(c, x->script, sizeof("gl:script")-1, &pop_seen);
@@ -3473,9 +3729,9 @@ char* zx_ENC_SO_gl_LPostalAddress(struct zx_ctx* c, struct zx_gl_LPostalAddress_
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->script)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3569,9 +3825,9 @@ int zx_LEN_SO_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->script)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
   len += zx_attr_so_len(c, x->script, sizeof("gl:script")-1, &pop_seen);
@@ -3608,9 +3864,9 @@ char* zx_ENC_SO_gl_LSt(struct zx_ctx* c, struct zx_gl_LSt_s* x, char* p )
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->script)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3703,7 +3959,7 @@ int zx_LEN_SO_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x )
   int len = sizeof("<gl:LineString")-1 + 1 + sizeof("</gl:LineString>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -3713,7 +3969,9 @@ int zx_LEN_SO_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_coord(c, (struct zx_gl_coord_s*)se);
 
 
@@ -3741,7 +3999,7 @@ char* zx_ENC_SO_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x, ch
   ZX_OUT_TAG(p, "<gl:LineString");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3755,7 +4013,9 @@ char* zx_ENC_SO_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_coord(c, (struct zx_gl_coord_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3836,7 +4096,7 @@ int zx_LEN_SO_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x )
   int len = sizeof("<gl:LinearRing")-1 + 1 + sizeof("</gl:LinearRing>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -3846,7 +4106,9 @@ int zx_LEN_SO_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_coord(c, (struct zx_gl_coord_s*)se);
 
 
@@ -3874,7 +4136,7 @@ char* zx_ENC_SO_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x, ch
   ZX_OUT_TAG(p, "<gl:LinearRing");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3888,7 +4150,9 @@ char* zx_ENC_SO_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_coord(c, (struct zx_gl_coord_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3969,7 +4233,7 @@ int zx_LEN_SO_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x )
   int len = sizeof("<gl:Modification")-1 + 1 + sizeof("</gl:Modification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
@@ -3982,9 +4246,13 @@ int zx_LEN_SO_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Select")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Select;
+    se && se->g.tok == zx_gl_Select_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Select")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_gl_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_NewData(c, (struct zx_gl_NewData_s*)se);
 
 
@@ -4012,7 +4280,7 @@ char* zx_ENC_SO_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x
   ZX_OUT_TAG(p, "<gl:Modification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4029,9 +4297,13 @@ char* zx_ENC_SO_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Select; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Select", sizeof("gl:Select")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Select;
+       se && se->g.tok == zx_gl_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Select", sizeof("gl:Select")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_gl_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_NewData(c, (struct zx_gl_NewData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4112,7 +4384,7 @@ int zx_LEN_SO_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x )
   int len = sizeof("<gl:Modify")-1 + 1 + sizeof("</gl:Modify>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -4121,17 +4393,29 @@ int zx_LEN_SO_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_gl_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Subscription(c, (struct zx_gl_Subscription_s*)se);
-  for (se = &x->Modification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Modification->gg;
+       se && se->g.tok == zx_gl_Modification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Modification(c, (struct zx_gl_Modification_s*)se);
-  for (se = &x->ItemSelection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemSelection->gg;
+       se && se->g.tok == zx_gl_ItemSelection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -4159,7 +4443,7 @@ char* zx_ENC_SO_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:Modify");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4172,17 +4456,29 @@ char* zx_ENC_SO_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se, p);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_gl_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Subscription(c, (struct zx_gl_Subscription_s*)se, p);
-  for (se = &x->Modification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Modification->gg;
+       se && se->g.tok == zx_gl_Modification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Modification(c, (struct zx_gl_Modification_s*)se, p);
-  for (se = &x->ItemSelection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemSelection->gg;
+       se && se->g.tok == zx_gl_ItemSelection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4263,7 +4559,7 @@ int zx_LEN_SO_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s*
   int len = sizeof("<gl:ModifyResponse")-1 + 1 + sizeof("</gl:ModifyResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
@@ -4273,11 +4569,17 @@ int zx_LEN_SO_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s*
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_gl_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ItemData(c, (struct zx_gl_ItemData_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -4305,7 +4607,7 @@ char* zx_ENC_SO_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_
   ZX_OUT_TAG(p, "<gl:ModifyResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4319,11 +4621,17 @@ char* zx_ENC_SO_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Status(c, (struct zx_gl_Status_s*)se, p);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_gl_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ItemData(c, (struct zx_gl_ItemData_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4404,7 +4712,7 @@ int zx_LEN_SO_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString_
   int len = sizeof("<gl:MultiLineString")-1 + 1 + sizeof("</gl:MultiLineString>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -4414,7 +4722,9 @@ int zx_LEN_SO_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString_
   int len = 0;
 #endif
   
-  for (se = &x->LineString->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LineString->gg;
+       se && se->g.tok == zx_gl_LineString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_LineString(c, (struct zx_gl_LineString_s*)se);
 
 
@@ -4442,7 +4752,7 @@ char* zx_ENC_SO_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineStrin
   ZX_OUT_TAG(p, "<gl:MultiLineString");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4456,7 +4766,9 @@ char* zx_ENC_SO_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineStrin
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->LineString->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LineString->gg;
+       se && se->g.tok == zx_gl_LineString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_LineString(c, (struct zx_gl_LineString_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4537,7 +4849,7 @@ int zx_LEN_SO_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x )
   int len = sizeof("<gl:MultiPoint")-1 + 1 + sizeof("</gl:MultiPoint>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -4547,7 +4859,9 @@ int zx_LEN_SO_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Point->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Point->gg;
+       se && se->g.tok == zx_gl_Point_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Point(c, (struct zx_gl_Point_s*)se);
 
 
@@ -4575,7 +4889,7 @@ char* zx_ENC_SO_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x, ch
   ZX_OUT_TAG(p, "<gl:MultiPoint");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4589,7 +4903,9 @@ char* zx_ENC_SO_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Point->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Point->gg;
+       se && se->g.tok == zx_gl_Point_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Point(c, (struct zx_gl_Point_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4670,7 +4986,7 @@ int zx_LEN_SO_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x )
   int len = sizeof("<gl:MultiPolygon")-1 + 1 + sizeof("</gl:MultiPolygon>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -4680,15 +4996,25 @@ int zx_LEN_SO_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Polygon->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Polygon->gg;
+       se && se->g.tok == zx_gl_Polygon_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Polygon(c, (struct zx_gl_Polygon_s*)se);
-  for (se = &x->Box->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Box->gg;
+       se && se->g.tok == zx_gl_Box_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Box(c, (struct zx_gl_Box_s*)se);
-  for (se = &x->CircularArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArea->gg;
+       se && se->g.tok == zx_gl_CircularArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)se);
-  for (se = &x->CircularArcArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArcArea->gg;
+       se && se->g.tok == zx_gl_CircularArcArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)se);
-  for (se = &x->EllipticalArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EllipticalArea->gg;
+       se && se->g.tok == zx_gl_EllipticalArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)se);
 
 
@@ -4716,7 +5042,7 @@ char* zx_ENC_SO_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x
   ZX_OUT_TAG(p, "<gl:MultiPolygon");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4730,15 +5056,25 @@ char* zx_ENC_SO_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Polygon->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Polygon->gg;
+       se && se->g.tok == zx_gl_Polygon_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Polygon(c, (struct zx_gl_Polygon_s*)se, p);
-  for (se = &x->Box->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Box->gg;
+       se && se->g.tok == zx_gl_Box_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Box(c, (struct zx_gl_Box_s*)se, p);
-  for (se = &x->CircularArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArea->gg;
+       se && se->g.tok == zx_gl_CircularArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)se, p);
-  for (se = &x->CircularArcArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArcArea->gg;
+       se && se->g.tok == zx_gl_CircularArcArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)se, p);
-  for (se = &x->EllipticalArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EllipticalArea->gg;
+       se && se->g.tok == zx_gl_EllipticalArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4819,7 +5155,7 @@ int zx_LEN_SO_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x )
   int len = sizeof("<gl:NewData")-1 + 1 + sizeof("</gl:NewData>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -4853,7 +5189,7 @@ char* zx_ENC_SO_gl_NewData(struct zx_ctx* c, struct zx_gl_NewData_s* x, char* p 
   ZX_OUT_TAG(p, "<gl:NewData");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4944,7 +5280,7 @@ int zx_LEN_SO_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x )
   int len = sizeof("<gl:Notification")-1 + 1 + sizeof("</gl:Notification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->endReason, sizeof("endReason")-1, &pop_seen);
   len += zx_attr_so_len(c, x->expires, sizeof("expires")-1, &pop_seen);
@@ -4956,7 +5292,9 @@ int zx_LEN_SO_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_gl_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ItemData(c, (struct zx_gl_ItemData_s*)se);
 
 
@@ -4984,7 +5322,7 @@ char* zx_ENC_SO_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x
   ZX_OUT_TAG(p, "<gl:Notification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5000,7 +5338,9 @@ char* zx_ENC_SO_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_gl_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ItemData(c, (struct zx_gl_ItemData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5081,7 +5421,7 @@ int zx_LEN_SO_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x )
   int len = sizeof("<gl:Notify")-1 + 1 + sizeof("</gl:Notify>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
@@ -5091,9 +5431,13 @@ int zx_LEN_SO_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Notification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notification->gg;
+       se && se->g.tok == zx_gl_Notification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Notification(c, (struct zx_gl_Notification_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -5121,7 +5465,7 @@ char* zx_ENC_SO_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:Notify");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5135,9 +5479,13 @@ char* zx_ENC_SO_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Notification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notification->gg;
+       se && se->g.tok == zx_gl_Notification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Notification(c, (struct zx_gl_Notification_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5218,7 +5566,7 @@ int zx_LEN_SO_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* x
   int len = sizeof("<gl:NotifyAdminTo")-1 + 1 + sizeof("</gl:NotifyAdminTo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -5227,12 +5575,18 @@ int zx_LEN_SO_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* x
   int len = 0;
 #endif
   
-  for (se = x->SecurityMechID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:SecurityMechID")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Credential->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SecurityMechID;
+    se && se->g.tok == zx_gl_SecurityMechID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:SecurityMechID")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Credential->gg;
+       se && se->g.tok == zx_gl_Credential_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Credential(c, (struct zx_gl_Credential_s*)se);
-  for (se = x->Endpoint; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Endpoint")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->Endpoint;
+    se && se->g.tok == zx_gl_Endpoint_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Endpoint")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -5259,7 +5613,7 @@ char* zx_ENC_SO_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s*
   ZX_OUT_TAG(p, "<gl:NotifyAdminTo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5272,12 +5626,18 @@ char* zx_ENC_SO_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->SecurityMechID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:SecurityMechID", sizeof("gl:SecurityMechID")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Credential->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SecurityMechID;
+       se && se->g.tok == zx_gl_SecurityMechID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:SecurityMechID", sizeof("gl:SecurityMechID")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Credential->gg;
+       se && se->g.tok == zx_gl_Credential_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Credential(c, (struct zx_gl_Credential_s*)se, p);
-  for (se = x->Endpoint; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Endpoint", sizeof("gl:Endpoint")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->Endpoint;
+       se && se->g.tok == zx_gl_Endpoint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Endpoint", sizeof("gl:Endpoint")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -5357,7 +5717,7 @@ int zx_LEN_SO_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s*
   int len = sizeof("<gl:NotifyResponse")-1 + 1 + sizeof("</gl:NotifyResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -5366,9 +5726,13 @@ int zx_LEN_SO_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s*
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -5396,7 +5760,7 @@ char* zx_ENC_SO_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_
   ZX_OUT_TAG(p, "<gl:NotifyResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5409,9 +5773,13 @@ char* zx_ENC_SO_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Status(c, (struct zx_gl_Status_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5492,7 +5860,7 @@ int zx_LEN_SO_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x )
   int len = sizeof("<gl:NotifyTo")-1 + 1 + sizeof("</gl:NotifyTo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -5501,12 +5869,18 @@ int zx_LEN_SO_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x )
   int len = 0;
 #endif
   
-  for (se = x->SecurityMechID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:SecurityMechID")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Credential->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SecurityMechID;
+    se && se->g.tok == zx_gl_SecurityMechID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:SecurityMechID")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Credential->gg;
+       se && se->g.tok == zx_gl_Credential_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Credential(c, (struct zx_gl_Credential_s*)se);
-  for (se = x->Endpoint; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Endpoint")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->Endpoint;
+    se && se->g.tok == zx_gl_Endpoint_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Endpoint")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -5533,7 +5907,7 @@ char* zx_ENC_SO_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x, char* 
   ZX_OUT_TAG(p, "<gl:NotifyTo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5546,12 +5920,18 @@ char* zx_ENC_SO_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->SecurityMechID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:SecurityMechID", sizeof("gl:SecurityMechID")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Credential->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SecurityMechID;
+       se && se->g.tok == zx_gl_SecurityMechID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:SecurityMechID", sizeof("gl:SecurityMechID")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Credential->gg;
+       se && se->g.tok == zx_gl_Credential_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Credential(c, (struct zx_gl_Credential_s*)se, p);
-  for (se = x->Endpoint; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Endpoint", sizeof("gl:Endpoint")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->Endpoint;
+       se && se->g.tok == zx_gl_Endpoint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Endpoint", sizeof("gl:Endpoint")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -5631,7 +6011,7 @@ int zx_LEN_SO_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x )
   int len = sizeof("<gl:Point")-1 + 1 + sizeof("</gl:Point>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -5641,7 +6021,9 @@ int zx_LEN_SO_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_coord(c, (struct zx_gl_coord_s*)se);
 
 
@@ -5669,7 +6051,7 @@ char* zx_ENC_SO_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:Point");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5683,7 +6065,9 @@ char* zx_ENC_SO_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_coord(c, (struct zx_gl_coord_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5764,7 +6148,7 @@ int zx_LEN_SO_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x )
   int len = sizeof("<gl:Polygon")-1 + 1 + sizeof("</gl:Polygon>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->gid, sizeof("gid")-1, &pop_seen);
   len += zx_attr_so_len(c, x->srsName, sizeof("srsName")-1, &pop_seen);
@@ -5774,9 +6158,13 @@ int zx_LEN_SO_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->outerBoundaryIs->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->outerBoundaryIs->gg;
+       se && se->g.tok == zx_gl_outerBoundaryIs_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_outerBoundaryIs(c, (struct zx_gl_outerBoundaryIs_s*)se);
-  for (se = &x->innerBoundaryIs->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->innerBoundaryIs->gg;
+       se && se->g.tok == zx_gl_innerBoundaryIs_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_innerBoundaryIs(c, (struct zx_gl_innerBoundaryIs_s*)se);
 
 
@@ -5804,7 +6192,7 @@ char* zx_ENC_SO_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x, char* p 
   ZX_OUT_TAG(p, "<gl:Polygon");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5818,9 +6206,13 @@ char* zx_ENC_SO_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->outerBoundaryIs->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->outerBoundaryIs->gg;
+       se && se->g.tok == zx_gl_outerBoundaryIs_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_outerBoundaryIs(c, (struct zx_gl_outerBoundaryIs_s*)se, p);
-  for (se = &x->innerBoundaryIs->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->innerBoundaryIs->gg;
+       se && se->g.tok == zx_gl_innerBoundaryIs_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_innerBoundaryIs(c, (struct zx_gl_innerBoundaryIs_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5901,7 +6293,7 @@ int zx_LEN_SO_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x )
   int len = sizeof("<gl:Query")-1 + 1 + sizeof("</gl:Query>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -5910,15 +6302,25 @@ int zx_LEN_SO_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_gl_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Subscription(c, (struct zx_gl_Subscription_s*)se);
-  for (se = &x->QueryItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryItem->gg;
+       se && se->g.tok == zx_gl_QueryItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_QueryItem(c, (struct zx_gl_QueryItem_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -5946,7 +6348,7 @@ char* zx_ENC_SO_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:Query");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5959,15 +6361,25 @@ char* zx_ENC_SO_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se, p);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_gl_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Subscription(c, (struct zx_gl_Subscription_s*)se, p);
-  for (se = &x->QueryItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryItem->gg;
+       se && se->g.tok == zx_gl_QueryItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_QueryItem(c, (struct zx_gl_QueryItem_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6048,7 +6460,7 @@ int zx_LEN_SO_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x )
   int len = sizeof("<gl:QueryItem")-1 + 1 + sizeof("</gl:QueryItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->count, sizeof("count")-1, &pop_seen);
   len += zx_attr_so_len(c, x->offset, sizeof("offset")-1, &pop_seen);
@@ -6060,17 +6472,29 @@ int zx_LEN_SO_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->AreaComparison->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AreaComparison->gg;
+       se && se->g.tok == zx_gl_AreaComparison_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)se);
-  for (se = &x->eqop->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->eqop->gg;
+       se && se->g.tok == zx_gl_eqop_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_eqop(c, (struct zx_gl_eqop_s*)se);
-  for (se = &x->geoinfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->geoinfo->gg;
+       se && se->g.tok == zx_gl_geoinfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)se);
-  for (se = &x->loc_type->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->loc_type->gg;
+       se && se->g.tok == zx_gl_loc_type_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_loc_type(c, (struct zx_gl_loc_type_s*)se);
-  for (se = &x->prio->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prio->gg;
+       se && se->g.tok == zx_gl_prio_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_prio(c, (struct zx_gl_prio_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -6098,7 +6522,7 @@ char* zx_ENC_SO_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x, char
   ZX_OUT_TAG(p, "<gl:QueryItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6114,17 +6538,29 @@ char* zx_ENC_SO_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->AreaComparison->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AreaComparison->gg;
+       se && se->g.tok == zx_gl_AreaComparison_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)se, p);
-  for (se = &x->eqop->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->eqop->gg;
+       se && se->g.tok == zx_gl_eqop_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_eqop(c, (struct zx_gl_eqop_s*)se, p);
-  for (se = &x->geoinfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->geoinfo->gg;
+       se && se->g.tok == zx_gl_geoinfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)se, p);
-  for (se = &x->loc_type->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->loc_type->gg;
+       se && se->g.tok == zx_gl_loc_type_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_loc_type(c, (struct zx_gl_loc_type_s*)se, p);
-  for (se = &x->prio->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prio->gg;
+       se && se->g.tok == zx_gl_prio_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_prio(c, (struct zx_gl_prio_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6205,7 +6641,7 @@ int zx_LEN_SO_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* x
   int len = sizeof("<gl:QueryResponse")-1 + 1 + sizeof("</gl:QueryResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
@@ -6216,11 +6652,17 @@ int zx_LEN_SO_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Data->gg;
+       se && se->g.tok == zx_gl_Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Data(c, (struct zx_gl_Data_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -6248,7 +6690,7 @@ char* zx_ENC_SO_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s*
   ZX_OUT_TAG(p, "<gl:QueryResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6263,11 +6705,17 @@ char* zx_ENC_SO_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Status(c, (struct zx_gl_Status_s*)se, p);
-  for (se = &x->Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Data->gg;
+       se && se->g.tok == zx_gl_Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Data(c, (struct zx_gl_Data_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6348,7 +6796,7 @@ int zx_LEN_SO_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x )
   int len = sizeof("<gl:RefItem")-1 + 1 + sizeof("</gl:RefItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ItemIDRef, sizeof("ItemIDRef")-1, &pop_seen);
   len += zx_attr_so_len(c, x->subscriptionID, sizeof("subscriptionID")-1, &pop_seen);
@@ -6384,7 +6832,7 @@ char* zx_ENC_SO_gl_RefItem(struct zx_ctx* c, struct zx_gl_RefItem_s* x, char* p 
   ZX_OUT_TAG(p, "<gl:RefItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6477,7 +6925,7 @@ int zx_LEN_SO_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x )
   int len = sizeof("<gl:ResourceID")-1 + 1 + sizeof("</gl:ResourceID>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -6512,7 +6960,7 @@ char* zx_ENC_SO_gl_ResourceID(struct zx_ctx* c, struct zx_gl_ResourceID_s* x, ch
   ZX_OUT_TAG(p, "<gl:ResourceID");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6604,7 +7052,7 @@ int zx_LEN_SO_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x )
   int len = sizeof("<gl:Status")-1 + 1 + sizeof("</gl:Status>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->code, sizeof("code")-1, &pop_seen);
   len += zx_attr_so_len(c, x->comment, sizeof("comment")-1, &pop_seen);
@@ -6615,7 +7063,9 @@ int zx_LEN_SO_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Status(c, (struct zx_gl_Status_s*)se);
 
 
@@ -6643,7 +7093,7 @@ char* zx_ENC_SO_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:Status");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6658,7 +7108,9 @@ char* zx_ENC_SO_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Status(c, (struct zx_gl_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6739,7 +7191,7 @@ int zx_LEN_SO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x )
   int len = sizeof("<gl:Subscription")-1 + 1 + sizeof("</gl:Subscription>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->expires, sizeof("expires")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -6752,19 +7204,33 @@ int zx_LEN_SO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ItemSelection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemSelection->gg;
+       se && se->g.tok == zx_gl_ItemSelection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)se);
-  for (se = &x->RefItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RefItem->gg;
+       se && se->g.tok == zx_gl_RefItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_RefItem(c, (struct zx_gl_RefItem_s*)se);
-  for (se = &x->NotifyTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NotifyTo->gg;
+       se && se->g.tok == zx_gl_NotifyTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_NotifyTo(c, (struct zx_gl_NotifyTo_s*)se);
-  for (se = &x->NotifyAdminTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NotifyAdminTo->gg;
+       se && se->g.tok == zx_gl_NotifyAdminTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_NotifyAdminTo(c, (struct zx_gl_NotifyAdminTo_s*)se);
-  for (se = x->Aggregation; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Aggregation")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Trigger->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Aggregation;
+    se && se->g.tok == zx_gl_Aggregation_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Aggregation")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Trigger->gg;
+       se && se->g.tok == zx_gl_Trigger_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Trigger(c, (struct zx_gl_Trigger_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -6792,7 +7258,7 @@ char* zx_ENC_SO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x
   ZX_OUT_TAG(p, "<gl:Subscription");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6809,19 +7275,33 @@ char* zx_ENC_SO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ItemSelection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemSelection->gg;
+       se && se->g.tok == zx_gl_ItemSelection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)se, p);
-  for (se = &x->RefItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RefItem->gg;
+       se && se->g.tok == zx_gl_RefItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_RefItem(c, (struct zx_gl_RefItem_s*)se, p);
-  for (se = &x->NotifyTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NotifyTo->gg;
+       se && se->g.tok == zx_gl_NotifyTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_NotifyTo(c, (struct zx_gl_NotifyTo_s*)se, p);
-  for (se = &x->NotifyAdminTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NotifyAdminTo->gg;
+       se && se->g.tok == zx_gl_NotifyAdminTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_NotifyAdminTo(c, (struct zx_gl_NotifyAdminTo_s*)se, p);
-  for (se = x->Aggregation; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Aggregation", sizeof("gl:Aggregation")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Trigger->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Aggregation;
+       se && se->g.tok == zx_gl_Aggregation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Aggregation", sizeof("gl:Aggregation")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Trigger->gg;
+       se && se->g.tok == zx_gl_Trigger_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Trigger(c, (struct zx_gl_Trigger_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6902,7 +7382,7 @@ int zx_LEN_SO_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x )
   int len = sizeof("<gl:Trigger")-1 + 1 + sizeof("</gl:Trigger>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -6910,15 +7390,25 @@ int zx_LEN_SO_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Granularity; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Granularity")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Interval; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Interval")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->ms_action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Granularity;
+    se && se->g.tok == zx_gl_Granularity_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Granularity")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Interval;
+    se && se->g.tok == zx_gl_Interval_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Interval")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ms_action->gg;
+       se && se->g.tok == zx_gl_ms_action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ms_action(c, (struct zx_gl_ms_action_s*)se);
-  for (se = &x->ChangeArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ChangeArea->gg;
+       se && se->g.tok == zx_gl_ChangeArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ChangeArea(c, (struct zx_gl_ChangeArea_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -6946,7 +7436,7 @@ char* zx_ENC_SO_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x, char* p 
   ZX_OUT_TAG(p, "<gl:Trigger");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6958,15 +7448,25 @@ char* zx_ENC_SO_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Granularity; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Granularity", sizeof("gl:Granularity")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Interval; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Interval", sizeof("gl:Interval")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->ms_action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Granularity;
+       se && se->g.tok == zx_gl_Granularity_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Granularity", sizeof("gl:Granularity")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Interval;
+       se && se->g.tok == zx_gl_Interval_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Interval", sizeof("gl:Interval")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ms_action->gg;
+       se && se->g.tok == zx_gl_ms_action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ms_action(c, (struct zx_gl_ms_action_s*)se, p);
-  for (se = &x->ChangeArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ChangeArea->gg;
+       se && se->g.tok == zx_gl_ChangeArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ChangeArea(c, (struct zx_gl_ChangeArea_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -7047,7 +7547,7 @@ int zx_LEN_SO_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x )
   int len = sizeof("<gl:coord")-1 + 1 + sizeof("</gl:coord>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -7055,12 +7555,18 @@ int zx_LEN_SO_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x )
   int len = 0;
 #endif
   
-  for (se = x->X; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:X")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Y; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Y")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Z; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Z")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->X;
+    se && se->g.tok == zx_gl_X_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:X")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Y;
+    se && se->g.tok == zx_gl_Y_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Y")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Z;
+    se && se->g.tok == zx_gl_Z_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Z")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -7087,7 +7593,7 @@ char* zx_ENC_SO_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:coord");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7099,12 +7605,18 @@ char* zx_ENC_SO_gl_coord(struct zx_ctx* c, struct zx_gl_coord_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = x->X; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:X", sizeof("gl:X")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Y; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Y", sizeof("gl:Y")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Z; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Z", sizeof("gl:Z")-1, zx_ns_tab+zx_gl_NS);
+  for (se = x->X;
+       se && se->g.tok == zx_gl_X_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:X", sizeof("gl:X")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Y;
+       se && se->g.tok == zx_gl_Y_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Y", sizeof("gl:Y")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Z;
+       se && se->g.tok == zx_gl_Z_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Z", sizeof("gl:Z")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -7184,7 +7696,7 @@ int zx_LEN_SO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x )
   int len = sizeof("<gl:eqop")-1 + 1 + sizeof("</gl:eqop>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -7192,17 +7704,29 @@ int zx_LEN_SO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->resp_req->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->resp_req->gg;
+       se && se->g.tok == zx_gl_resp_req_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_resp_req(c, (struct zx_gl_resp_req_s*)se);
-  for (se = x->ll_acc; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:ll_acc")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->hor_acc; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:hor_acc")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->alt_acc; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:alt_acc")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->max_loc_age; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:max_loc_age")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ll_acc;
+    se && se->g.tok == zx_gl_ll_acc_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:ll_acc")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->hor_acc;
+    se && se->g.tok == zx_gl_hor_acc_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:hor_acc")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->alt_acc;
+    se && se->g.tok == zx_gl_alt_acc_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:alt_acc")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->max_loc_age;
+    se && se->g.tok == zx_gl_max_loc_age_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:max_loc_age")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -7230,7 +7754,7 @@ char* zx_ENC_SO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:eqop");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7242,17 +7766,29 @@ char* zx_ENC_SO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->resp_req->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->resp_req->gg;
+       se && se->g.tok == zx_gl_resp_req_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_resp_req(c, (struct zx_gl_resp_req_s*)se, p);
-  for (se = x->ll_acc; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:ll_acc", sizeof("gl:ll_acc")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->hor_acc; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:hor_acc", sizeof("gl:hor_acc")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->alt_acc; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:alt_acc", sizeof("gl:alt_acc")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->max_loc_age; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:max_loc_age", sizeof("gl:max_loc_age")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ll_acc;
+       se && se->g.tok == zx_gl_ll_acc_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:ll_acc", sizeof("gl:ll_acc")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->hor_acc;
+       se && se->g.tok == zx_gl_hor_acc_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:hor_acc", sizeof("gl:hor_acc")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->alt_acc;
+       se && se->g.tok == zx_gl_alt_acc_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:alt_acc", sizeof("gl:alt_acc")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->max_loc_age;
+       se && se->g.tok == zx_gl_max_loc_age_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:max_loc_age", sizeof("gl:max_loc_age")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -7333,7 +7869,7 @@ int zx_LEN_SO_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x )
   int len = sizeof("<gl:esrd")-1 + 1 + sizeof("</gl:esrd>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -7368,7 +7904,7 @@ char* zx_ENC_SO_gl_esrd(struct zx_ctx* c, struct zx_gl_esrd_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:esrd");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7460,7 +7996,7 @@ int zx_LEN_SO_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x )
   int len = sizeof("<gl:esrk")-1 + 1 + sizeof("</gl:esrk>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -7495,7 +8031,7 @@ char* zx_ENC_SO_gl_esrk(struct zx_ctx* c, struct zx_gl_esrk_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:esrk");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7587,7 +8123,7 @@ int zx_LEN_SO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x )
   int len = sizeof("<gl:geoinfo")-1 + 1 + sizeof("</gl:geoinfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -7595,21 +8131,37 @@ int zx_LEN_SO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->CoordinateReferenceSystem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CoordinateReferenceSystem->gg;
+       se && se->g.tok == zx_gl_CoordinateReferenceSystem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CoordinateReferenceSystem(c, (struct zx_gl_CoordinateReferenceSystem_s*)se);
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)se);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_shape(c, (struct zx_gl_shape_s*)se);
-  for (se = x->speed; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:speed")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->alt; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:alt")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->direction; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:direction")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Heading; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Heading")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->speed;
+    se && se->g.tok == zx_gl_speed_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:speed")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->alt;
+    se && se->g.tok == zx_gl_alt_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:alt")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->direction;
+    se && se->g.tok == zx_gl_direction_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:direction")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Heading;
+    se && se->g.tok == zx_gl_Heading_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Heading")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -7637,7 +8189,7 @@ char* zx_ENC_SO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, char* p 
   ZX_OUT_TAG(p, "<gl:geoinfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7649,21 +8201,37 @@ char* zx_ENC_SO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->CoordinateReferenceSystem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CoordinateReferenceSystem->gg;
+       se && se->g.tok == zx_gl_CoordinateReferenceSystem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CoordinateReferenceSystem(c, (struct zx_gl_CoordinateReferenceSystem_s*)se, p);
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)se, p);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_shape(c, (struct zx_gl_shape_s*)se, p);
-  for (se = x->speed; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:speed", sizeof("gl:speed")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->alt; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:alt", sizeof("gl:alt")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->direction; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:direction", sizeof("gl:direction")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Heading; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Heading", sizeof("gl:Heading")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->speed;
+       se && se->g.tok == zx_gl_speed_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:speed", sizeof("gl:speed")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->alt;
+       se && se->g.tok == zx_gl_alt_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:alt", sizeof("gl:alt")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->direction;
+       se && se->g.tok == zx_gl_direction_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:direction", sizeof("gl:direction")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Heading;
+       se && se->g.tok == zx_gl_Heading_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Heading", sizeof("gl:Heading")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -7744,7 +8312,7 @@ int zx_LEN_SO_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs_
   int len = sizeof("<gl:innerBoundaryIs")-1 + 1 + sizeof("</gl:innerBoundaryIs>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -7752,7 +8320,9 @@ int zx_LEN_SO_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs_
   int len = 0;
 #endif
   
-  for (se = &x->LinearRing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LinearRing->gg;
+       se && se->g.tok == zx_gl_LinearRing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)se);
 
 
@@ -7780,7 +8350,7 @@ char* zx_ENC_SO_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryI
   ZX_OUT_TAG(p, "<gl:innerBoundaryIs");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7792,7 +8362,9 @@ char* zx_ENC_SO_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryI
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->LinearRing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LinearRing->gg;
+       se && se->g.tok == zx_gl_LinearRing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -7873,7 +8445,7 @@ int zx_LEN_SO_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x )
   int len = sizeof("<gl:loc_type")-1 + 1 + sizeof("</gl:loc_type>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -7908,7 +8480,7 @@ char* zx_ENC_SO_gl_loc_type(struct zx_ctx* c, struct zx_gl_loc_type_s* x, char* 
   ZX_OUT_TAG(p, "<gl:loc_type");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8000,7 +8572,7 @@ int zx_LEN_SO_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x )
   int len = sizeof("<gl:ms_action")-1 + 1 + sizeof("</gl:ms_action>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -8035,7 +8607,7 @@ char* zx_ENC_SO_gl_ms_action(struct zx_ctx* c, struct zx_gl_ms_action_s* x, char
   ZX_OUT_TAG(p, "<gl:ms_action");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8127,7 +8699,7 @@ int zx_LEN_SO_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs_
   int len = sizeof("<gl:outerBoundaryIs")-1 + 1 + sizeof("</gl:outerBoundaryIs>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -8135,7 +8707,9 @@ int zx_LEN_SO_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs_
   int len = 0;
 #endif
   
-  for (se = &x->LinearRing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LinearRing->gg;
+       se && se->g.tok == zx_gl_LinearRing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)se);
 
 
@@ -8163,7 +8737,7 @@ char* zx_ENC_SO_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryI
   ZX_OUT_TAG(p, "<gl:outerBoundaryIs");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8175,7 +8749,9 @@ char* zx_ENC_SO_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryI
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->LinearRing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LinearRing->gg;
+       se && se->g.tok == zx_gl_LinearRing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -8257,7 +8833,7 @@ int zx_LEN_SO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("gl:ACC")-1, &pop_seen);
 
@@ -8266,25 +8842,45 @@ int zx_LEN_SO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x )
   int len = 0;
 #endif
   
-  for (se = x->time; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:time")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->time;
+    se && se->g.tok == zx_gl_time_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:time")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)se);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_shape(c, (struct zx_gl_shape_s*)se);
-  for (se = x->alt; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:alt")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->alt_acc; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:alt_acc")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->speed; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:speed")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->direction; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:direction")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Heading; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Heading")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->lev_conf; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:lev_conf")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->alt;
+    se && se->g.tok == zx_gl_alt_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:alt")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->alt_acc;
+    se && se->g.tok == zx_gl_alt_acc_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:alt_acc")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->speed;
+    se && se->g.tok == zx_gl_speed_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:speed")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->direction;
+    se && se->g.tok == zx_gl_direction_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:direction")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Heading;
+    se && se->g.tok == zx_gl_Heading_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:Heading")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->lev_conf;
+    se && se->g.tok == zx_gl_lev_conf_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("gl:lev_conf")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -8313,7 +8909,7 @@ char* zx_ENC_SO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, char* p )
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8326,25 +8922,45 @@ char* zx_ENC_SO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = x->time; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:time", sizeof("gl:time")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->time;
+       se && se->g.tok == zx_gl_time_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:time", sizeof("gl:time")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)se, p);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_shape(c, (struct zx_gl_shape_s*)se, p);
-  for (se = x->alt; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:alt", sizeof("gl:alt")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->alt_acc; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:alt_acc", sizeof("gl:alt_acc")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->speed; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:speed", sizeof("gl:speed")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->direction; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:direction", sizeof("gl:direction")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->Heading; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Heading", sizeof("gl:Heading")-1, zx_ns_tab+zx_gl_NS);
-  for (se = x->lev_conf; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "gl:lev_conf", sizeof("gl:lev_conf")-1, zx_ns_tab+zx_gl_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->alt;
+       se && se->g.tok == zx_gl_alt_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:alt", sizeof("gl:alt")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->alt_acc;
+       se && se->g.tok == zx_gl_alt_acc_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:alt_acc", sizeof("gl:alt_acc")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->speed;
+       se && se->g.tok == zx_gl_speed_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:speed", sizeof("gl:speed")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->direction;
+       se && se->g.tok == zx_gl_direction_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:direction", sizeof("gl:direction")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Heading;
+       se && se->g.tok == zx_gl_Heading_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:Heading", sizeof("gl:Heading")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->lev_conf;
+       se && se->g.tok == zx_gl_lev_conf_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "gl:lev_conf", sizeof("gl:lev_conf")-1, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -8425,7 +9041,7 @@ int zx_LEN_SO_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x )
   int len = sizeof("<gl:prio")-1 + 1 + sizeof("</gl:prio>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -8460,7 +9076,7 @@ char* zx_ENC_SO_gl_prio(struct zx_ctx* c, struct zx_gl_prio_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:prio");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8552,7 +9168,7 @@ int zx_LEN_SO_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x )
   int len = sizeof("<gl:resp_req")-1 + 1 + sizeof("</gl:resp_req>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -8587,7 +9203,7 @@ char* zx_ENC_SO_gl_resp_req(struct zx_ctx* c, struct zx_gl_resp_req_s* x, char* 
   ZX_OUT_TAG(p, "<gl:resp_req");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8679,7 +9295,7 @@ int zx_LEN_SO_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x )
   int len = sizeof("<gl:shape")-1 + 1 + sizeof("</gl:shape>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -8687,29 +9303,53 @@ int zx_LEN_SO_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Point->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Point->gg;
+       se && se->g.tok == zx_gl_Point_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Point(c, (struct zx_gl_Point_s*)se);
-  for (se = &x->LineString->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LineString->gg;
+       se && se->g.tok == zx_gl_LineString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_LineString(c, (struct zx_gl_LineString_s*)se);
-  for (se = &x->Polygon->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Polygon->gg;
+       se && se->g.tok == zx_gl_Polygon_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Polygon(c, (struct zx_gl_Polygon_s*)se);
-  for (se = &x->Box->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Box->gg;
+       se && se->g.tok == zx_gl_Box_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Box(c, (struct zx_gl_Box_s*)se);
-  for (se = &x->CircularArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArea->gg;
+       se && se->g.tok == zx_gl_CircularArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)se);
-  for (se = &x->CircularArcArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArcArea->gg;
+       se && se->g.tok == zx_gl_CircularArcArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)se);
-  for (se = &x->EllipticalArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EllipticalArea->gg;
+       se && se->g.tok == zx_gl_EllipticalArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)se);
-  for (se = &x->GeometryCollection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GeometryCollection->gg;
+       se && se->g.tok == zx_gl_GeometryCollection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_GeometryCollection(c, (struct zx_gl_GeometryCollection_s*)se);
-  for (se = &x->MultiLineString->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MultiLineString->gg;
+       se && se->g.tok == zx_gl_MultiLineString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_MultiLineString(c, (struct zx_gl_MultiLineString_s*)se);
-  for (se = &x->MultiPoint->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MultiPoint->gg;
+       se && se->g.tok == zx_gl_MultiPoint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_MultiPoint(c, (struct zx_gl_MultiPoint_s*)se);
-  for (se = &x->MultiPolygon->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MultiPolygon->gg;
+       se && se->g.tok == zx_gl_MultiPolygon_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_MultiPolygon(c, (struct zx_gl_MultiPolygon_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 
@@ -8737,7 +9377,7 @@ char* zx_ENC_SO_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x, char* p )
   ZX_OUT_TAG(p, "<gl:shape");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_gl_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_gl_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8749,29 +9389,53 @@ char* zx_ENC_SO_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Point->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Point->gg;
+       se && se->g.tok == zx_gl_Point_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Point(c, (struct zx_gl_Point_s*)se, p);
-  for (se = &x->LineString->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LineString->gg;
+       se && se->g.tok == zx_gl_LineString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_LineString(c, (struct zx_gl_LineString_s*)se, p);
-  for (se = &x->Polygon->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Polygon->gg;
+       se && se->g.tok == zx_gl_Polygon_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Polygon(c, (struct zx_gl_Polygon_s*)se, p);
-  for (se = &x->Box->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Box->gg;
+       se && se->g.tok == zx_gl_Box_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Box(c, (struct zx_gl_Box_s*)se, p);
-  for (se = &x->CircularArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArea->gg;
+       se && se->g.tok == zx_gl_CircularArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)se, p);
-  for (se = &x->CircularArcArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArcArea->gg;
+       se && se->g.tok == zx_gl_CircularArcArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)se, p);
-  for (se = &x->EllipticalArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EllipticalArea->gg;
+       se && se->g.tok == zx_gl_EllipticalArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)se, p);
-  for (se = &x->GeometryCollection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GeometryCollection->gg;
+       se && se->g.tok == zx_gl_GeometryCollection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_GeometryCollection(c, (struct zx_gl_GeometryCollection_s*)se, p);
-  for (se = &x->MultiLineString->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MultiLineString->gg;
+       se && se->g.tok == zx_gl_MultiLineString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_MultiLineString(c, (struct zx_gl_MultiLineString_s*)se, p);
-  for (se = &x->MultiPoint->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MultiPoint->gg;
+       se && se->g.tok == zx_gl_MultiPoint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_MultiPoint(c, (struct zx_gl_MultiPoint_s*)se, p);
-  for (se = &x->MultiPolygon->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MultiPolygon->gg;
+       se && se->g.tok == zx_gl_MultiPolygon_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_MultiPolygon(c, (struct zx_gl_MultiPolygon_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Extension(c, (struct zx_gl_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

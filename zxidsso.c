@@ -245,7 +245,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   D_INDENT("deref: ");
   len = strlen(cgi->saml_art);
   if (cf->log_level > 0)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "W", "ART", cgi->saml_art, 0);
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "W", "ART", cgi->saml_art, 0);
   if (len-7 >= sizeof(buf)*4/3) {
     ERR("SAMLart(%s), %d chars, too long. Max(%d) chars.", cgi->saml_art, len, sizeof(buf)*4/3+6);
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "C", "ERR", cgi->saml_art, "Artifact too long");
@@ -302,7 +302,7 @@ int zxid_sp_deref_art(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
       return 0;
     }
     
-    body = zx_NEW_e_Body(cf->ctx);
+    body = zx_NEW_e_Body(cf->ctx,0);
     body->ArtifactResolve = zxid_mk_art_deref(cf, idp_meta, cgi->saml_art);
     r = zxid_soap_call_body(cf, &ar_svc->Location->g, body);
     len =  zxid_sp_soap_dispatch(cf, cgi, ses, r);
@@ -423,8 +423,8 @@ int zxid_validate_cond(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* a7
       for (aud = audr->Audience;
 	   aud && aud->g.tok == zx_sa_Audience_ELEM;
 	   aud = (struct zx_elem_s*)aud->g.n)
-	if (aud->content->len == myentid->len
-	    && !memcmp(aud->content->s, myentid->s, aud->content->len)) {
+	if (ZX_GET_CONTENT_LEN(aud) == myentid->len
+	    && !memcmp(ZX_GET_CONTENT_S(aud), myentid->s, ZX_GET_CONTENT_LEN(aud))) {
 	  D("Found audience. %d", 0);
 	  goto found_audience;
 	}
@@ -542,31 +542,24 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
     goto erro;
   }
   srcts.tv_sec = zx_date_time_to_secs(a7n->IssueInstant->g.s);
-  if (!a7n->Issuer || !a7n->Issuer->gg.content) {
+  if (!(issuer = ZX_GET_CONTENT(a7n->Issuer))) {
     ERR("SSO failed: assertion does not have Issuer. %p", a7n->Issuer);
     goto erro;
   }
   
   /* See zxid_wsp_validate() for similar code. *** consider factoring out commonality */
   
-  issuer = a7n->Issuer->gg.content;
-  if (!issuer || !issuer->len || !issuer->s[0]) {
-    ERR("SSO failed: Issuer of the assertion is empty. %d", issuer->len);
-    goto erro;
-  }
-
   if (!a7n->Subject) {
     ERR("SSO failed: assertion does not have Subject. %p", a7n);
     goto erro;
   }
 
   ses->nameid = zxid_decrypt_nameid(cf, a7n->Subject->NameID, a7n->Subject->EncryptedID);
-  if (!ses->nameid || !ses->nameid->gg.content) {
+  if (!(subj = ZX_GET_CONTENT(ses->nameid))) {
     ERR("SSO failed: assertion does not have Subject->NameID. %p", ses->nameid);
     goto erro;
   }
   
-  subj = ses->nameid->gg.content;
   ses->nid = zx_str_to_c(cf->ctx, subj);
   if (ses->nameid->Format && !memcmp(ses->nameid->Format->g.s, SAML2_TRANSIENT_NID_FMT, ses->nameid->Format->g.len)) {
     ses->nidfmt = 0;
@@ -654,7 +647,7 @@ int zxid_sp_sso_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, zxid_a7n* 
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
   cgi->msg = "SSO completed and session created.";
   cgi->op = '-';  /* Make sure management screen does not try to redispatch. */
-  zxid_put_user(cf, &ses->nameid->Format->g, &ses->nameid->NameQualifier->g, &ses->nameid->SPNameQualifier->g, ses->nameid->gg.content, 0);
+  zxid_put_user(cf, &ses->nameid->Format->g, &ses->nameid->NameQualifier->g, &ses->nameid->SPNameQualifier->g, ZX_GET_CONTENT(ses->nameid), 0);
   DD("Logging... %d", 0);
   zxlog(cf, &ourts, &srcts, 0, issuer, 0, &a7n->ID->g, subj,
 	cgi->sigval, "K", "NEWSES", ses->sid, "sesix(%s)", ses->sesix?ses->sesix:"-");
@@ -700,7 +693,7 @@ int zxid_sp_anon_finalize(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   zxid_snarf_eprs_from_ses(cf, ses);  /* Harvest attributes and bootstrap(s) */
   cgi->msg = "SSO Failure treated as anonymous login and session created.";
   cgi->op = '-';  /* Make sure management screen does not try to redispatch. */
-  /*zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ses->nameid->gg.content, 0);*/
+  /*zxid_put_user(cf, ses->nameid->Format, ses->nameid->NameQualifier, ses->nameid->SPNameQualifier, ZX_GET_CONTENT(ses->nameid), 0);*/
   zxlog(cf, 0, 0, 0, 0, 0, 0, 0, cgi->sigval, "K", "TMPSSO", "-", 0);
   D_DEDENT("anon_ssof: ");
   return ZXID_SSO_OK;
@@ -776,10 +769,10 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
   *p = 0;
   ZX_FREE(cf->ctx, buf);
   
-  body = zx_NEW_e_Body(cf->ctx);
-  body->SASLRequest = zx_NEW_as_SASLRequest(cf->ctx);
+  body = zx_NEW_e_Body(cf->ctx,0);
+  body->SASLRequest = zx_NEW_as_SASLRequest(cf->ctx, &body->gg);
   body->SASLRequest->mechanism = zx_dup_attr(cf->ctx, zx_mechanism_ATTR, "PLAIN");
-  body->SASLRequest->Data = zx_ref_len_simple_elem(cf->ctx, p-b64, b64);
+  body->SASLRequest->Data = zx_ref_len_simple_elem(cf->ctx, &body->SASLRequest->gg, zx_as_Data_ELEM, p-b64, b64);
   r = zxid_soap_call_body(cf, &ar_svc->Location->g, body);
   /* *** free the body */
   

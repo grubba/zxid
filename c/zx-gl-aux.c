@@ -66,15 +66,21 @@ void zx_FREE_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s* 
   zx_free_attr(c, x->itemID, free_strs);
   zx_free_attr(c, x->returnLocation, free_strs);
 
-  for (e = &x->CivilData->gg; e; e = en) {
+  for (e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, free_strs);
   }
-  for (e = &x->shape->gg; e; e = en) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -116,11 +122,17 @@ void zx_DUP_STRS_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison
   zx_dup_attr(c, x->itemID);
   zx_dup_attr(c, x->returnLocation);
 
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CivilData(c, (struct zx_gl_CivilData_s*)se);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_shape(c, (struct zx_gl_shape_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -143,7 +155,9 @@ struct zx_gl_AreaComparison_s* zx_DEEP_CLONE_gl_AreaComparison(struct zx_ctx* c,
   x->itemID = zx_clone_attr(c, x->itemID);
   x->returnLocation = zx_clone_attr(c, x->returnLocation);
 
-  for (enn = 0, e = &x->CivilData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CivilData(c,(struct zx_gl_CivilData_s*)e,dup_strs);
   	  if (!enn)
   	      x->CivilData = (struct zx_gl_CivilData_s*)en;
@@ -151,7 +165,9 @@ struct zx_gl_AreaComparison_s* zx_DEEP_CLONE_gl_AreaComparison(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_shape(c,(struct zx_gl_shape_s*)e,dup_strs);
   	  if (!enn)
   	      x->shape = (struct zx_gl_shape_s*)en;
@@ -159,7 +175,9 @@ struct zx_gl_AreaComparison_s* zx_DEEP_CLONE_gl_AreaComparison(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -190,17 +208,23 @@ int zx_WALK_SO_gl_AreaComparison(struct zx_ctx* c, struct zx_gl_AreaComparison_s
   if (ret)
     return ret;
 
-  for (e = &x->CivilData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_shape(c, (struct zx_gl_shape_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -259,7 +283,9 @@ void zx_FREE_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x, int free_strs)
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->coord->gg; e; e = en) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
   }
@@ -301,7 +327,9 @@ void zx_DUP_STRS_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x)
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_coord(c, (struct zx_gl_coord_s*)se);
 
 }
@@ -324,7 +352,9 @@ struct zx_gl_Box_s* zx_DEEP_CLONE_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_coord(c,(struct zx_gl_coord_s*)e,dup_strs);
   	  if (!enn)
   	      x->coord = (struct zx_gl_coord_s*)en;
@@ -355,7 +385,9 @@ int zx_WALK_SO_gl_Box(struct zx_ctx* c, struct zx_gl_Box_s* x, void* ctx, int (*
   if (ret)
     return ret;
 
-  for (e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_coord(c, (struct zx_gl_coord_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -413,15 +445,21 @@ void zx_FREE_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x, int f
 
   zx_free_attr(c, x->event, free_strs);
 
-  for (e = &x->CivilData->gg; e; e = en) {
+  for (e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, free_strs);
   }
-  for (e = &x->shape->gg; e; e = en) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -462,11 +500,17 @@ void zx_DUP_STRS_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x)
 
   zx_dup_attr(c, x->event);
 
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CivilData(c, (struct zx_gl_CivilData_s*)se);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_shape(c, (struct zx_gl_shape_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -488,7 +532,9 @@ struct zx_gl_ChangeArea_s* zx_DEEP_CLONE_gl_ChangeArea(struct zx_ctx* c, struct 
 
   x->event = zx_clone_attr(c, x->event);
 
-  for (enn = 0, e = &x->CivilData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CivilData(c,(struct zx_gl_CivilData_s*)e,dup_strs);
   	  if (!enn)
   	      x->CivilData = (struct zx_gl_CivilData_s*)en;
@@ -496,7 +542,9 @@ struct zx_gl_ChangeArea_s* zx_DEEP_CLONE_gl_ChangeArea(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_shape(c,(struct zx_gl_shape_s*)e,dup_strs);
   	  if (!enn)
   	      x->shape = (struct zx_gl_shape_s*)en;
@@ -504,7 +552,9 @@ struct zx_gl_ChangeArea_s* zx_DEEP_CLONE_gl_ChangeArea(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -535,17 +585,23 @@ int zx_WALK_SO_gl_ChangeArea(struct zx_ctx* c, struct zx_gl_ChangeArea_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->CivilData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_shape(c, (struct zx_gl_shape_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -604,7 +660,9 @@ void zx_FREE_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea_s
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->coord->gg; e; e = en) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
   }
@@ -652,7 +710,9 @@ void zx_DUP_STRS_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcAr
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_coord(c, (struct zx_gl_coord_s*)se);
   zx_dup_strs_simple_elems(c, x->inRadius);
   zx_dup_strs_simple_elems(c, x->outRadius);
@@ -681,7 +741,9 @@ struct zx_gl_CircularArcArea_s* zx_DEEP_CLONE_gl_CircularArcArea(struct zx_ctx* 
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_coord(c,(struct zx_gl_coord_s*)e,dup_strs);
   	  if (!enn)
   	      x->coord = (struct zx_gl_coord_s*)en;
@@ -718,7 +780,9 @@ int zx_WALK_SO_gl_CircularArcArea(struct zx_ctx* c, struct zx_gl_CircularArcArea
   if (ret)
     return ret;
 
-  for (e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_coord(c, (struct zx_gl_coord_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -795,7 +859,9 @@ void zx_FREE_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x, i
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->coord->gg; e; e = en) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
   }
@@ -839,7 +905,9 @@ void zx_DUP_STRS_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* 
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_coord(c, (struct zx_gl_coord_s*)se);
   zx_dup_strs_simple_elems(c, x->radius);
   zx_dup_strs_simple_elems(c, x->distanceUnit);
@@ -864,7 +932,9 @@ struct zx_gl_CircularArea_s* zx_DEEP_CLONE_gl_CircularArea(struct zx_ctx* c, str
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_coord(c,(struct zx_gl_coord_s*)e,dup_strs);
   	  if (!enn)
   	      x->coord = (struct zx_gl_coord_s*)en;
@@ -897,7 +967,9 @@ int zx_WALK_SO_gl_CircularArea(struct zx_ctx* c, struct zx_gl_CircularArea_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_coord(c, (struct zx_gl_coord_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -961,24 +1033,32 @@ void zx_FREE_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, int fre
 
 
   zx_free_simple_elems(c, x->PostalAddress, free_strs);
-  for (e = &x->LPostalAddress->gg; e; e = en) {
+  for (e = &x->LPostalAddress->gg;
+       e && e->g.tok == zx_gl_LPostalAddress_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_LPostalAddress(c, (struct zx_gl_LPostalAddress_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->PostalCode, free_strs);
   zx_free_simple_elems(c, x->L, free_strs);
-  for (e = &x->LL->gg; e; e = en) {
+  for (e = &x->LL->gg;
+       e && e->g.tok == zx_gl_LL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_LL(c, (struct zx_gl_LL_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->St, free_strs);
-  for (e = &x->LSt->gg; e; e = en) {
+  for (e = &x->LSt->gg;
+       e && e->g.tok == zx_gl_LSt_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_LSt(c, (struct zx_gl_LSt_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->C, free_strs);
   zx_free_simple_elems(c, x->MNC, free_strs);
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -1019,18 +1099,26 @@ void zx_DUP_STRS_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x)
 
 
   zx_dup_strs_simple_elems(c, x->PostalAddress);
-  for (se = &x->LPostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LPostalAddress->gg;
+       se && se->g.tok == zx_gl_LPostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_LPostalAddress(c, (struct zx_gl_LPostalAddress_s*)se);
   zx_dup_strs_simple_elems(c, x->PostalCode);
   zx_dup_strs_simple_elems(c, x->L);
-  for (se = &x->LL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LL->gg;
+       se && se->g.tok == zx_gl_LL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_LL(c, (struct zx_gl_LL_s*)se);
   zx_dup_strs_simple_elems(c, x->St);
-  for (se = &x->LSt->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LSt->gg;
+       se && se->g.tok == zx_gl_LSt_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_LSt(c, (struct zx_gl_LSt_s*)se);
   zx_dup_strs_simple_elems(c, x->C);
   zx_dup_strs_simple_elems(c, x->MNC);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -1052,7 +1140,9 @@ struct zx_gl_CivilData_s* zx_DEEP_CLONE_gl_CivilData(struct zx_ctx* c, struct zx
 
 
   x->PostalAddress = zx_deep_clone_simple_elems(c,x->PostalAddress, dup_strs);
-  for (enn = 0, e = &x->LPostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LPostalAddress->gg;
+       e && e->g.tok == zx_gl_LPostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_LPostalAddress(c,(struct zx_gl_LPostalAddress_s*)e,dup_strs);
   	  if (!enn)
   	      x->LPostalAddress = (struct zx_gl_LPostalAddress_s*)en;
@@ -1062,7 +1152,9 @@ struct zx_gl_CivilData_s* zx_DEEP_CLONE_gl_CivilData(struct zx_ctx* c, struct zx
   }
   x->PostalCode = zx_deep_clone_simple_elems(c,x->PostalCode, dup_strs);
   x->L = zx_deep_clone_simple_elems(c,x->L, dup_strs);
-  for (enn = 0, e = &x->LL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LL->gg;
+       e && e->g.tok == zx_gl_LL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_LL(c,(struct zx_gl_LL_s*)e,dup_strs);
   	  if (!enn)
   	      x->LL = (struct zx_gl_LL_s*)en;
@@ -1071,7 +1163,9 @@ struct zx_gl_CivilData_s* zx_DEEP_CLONE_gl_CivilData(struct zx_ctx* c, struct zx
   	  enn = en;
   }
   x->St = zx_deep_clone_simple_elems(c,x->St, dup_strs);
-  for (enn = 0, e = &x->LSt->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LSt->gg;
+       e && e->g.tok == zx_gl_LSt_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_LSt(c,(struct zx_gl_LSt_s*)e,dup_strs);
   	  if (!enn)
   	      x->LSt = (struct zx_gl_LSt_s*)en;
@@ -1081,7 +1175,9 @@ struct zx_gl_CivilData_s* zx_DEEP_CLONE_gl_CivilData(struct zx_ctx* c, struct zx
   }
   x->C = zx_deep_clone_simple_elems(c,x->C, dup_strs);
   x->MNC = zx_deep_clone_simple_elems(c,x->MNC, dup_strs);
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -1115,7 +1211,9 @@ int zx_WALK_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->PostalAddress, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->LPostalAddress->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LPostalAddress->gg;
+       e && e->g.tok == zx_gl_LPostalAddress_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_LPostalAddress(c, (struct zx_gl_LPostalAddress_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1126,7 +1224,9 @@ int zx_WALK_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->L, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->LL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LL->gg;
+       e && e->g.tok == zx_gl_LL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_LL(c, (struct zx_gl_LL_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1134,7 +1234,9 @@ int zx_WALK_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->St, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->LSt->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LSt->gg;
+       e && e->g.tok == zx_gl_LSt_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_LSt(c, (struct zx_gl_LSt_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1145,7 +1247,9 @@ int zx_WALK_SO_gl_CivilData(struct zx_ctx* c, struct zx_gl_CivilData_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->MNC, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1335,7 +1439,9 @@ void zx_FREE_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_Coordin
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Identifier->gg; e; e = en) {
+  for (e = &x->Identifier->gg;
+       e && e->g.tok == zx_gl_Identifier_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Identifier(c, (struct zx_gl_Identifier_s*)e, free_strs);
   }
@@ -1375,7 +1481,9 @@ void zx_DUP_STRS_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_Coo
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Identifier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Identifier->gg;
+       se && se->g.tok == zx_gl_Identifier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Identifier(c, (struct zx_gl_Identifier_s*)se);
 
 }
@@ -1396,7 +1504,9 @@ struct zx_gl_CoordinateReferenceSystem_s* zx_DEEP_CLONE_gl_CoordinateReferenceSy
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Identifier->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Identifier->gg;
+       e && e->g.tok == zx_gl_Identifier_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Identifier(c,(struct zx_gl_Identifier_s*)e,dup_strs);
   	  if (!enn)
   	      x->Identifier = (struct zx_gl_Identifier_s*)en;
@@ -1427,7 +1537,9 @@ int zx_WALK_SO_gl_CoordinateReferenceSystem(struct zx_ctx* c, struct zx_gl_Coord
   if (ret)
     return ret;
 
-  for (e = &x->Identifier->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Identifier->gg;
+       e && e->g.tok == zx_gl_Identifier_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Identifier(c, (struct zx_gl_Identifier_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1485,27 +1597,39 @@ void zx_FREE_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x, int free_strs
 
   zx_free_attr(c, x->id, free_strs);
 
-  for (e = &x->ResourceID->gg; e; e = en) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, free_strs);
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = en) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, free_strs);
   }
-  for (e = &x->Subscription->gg; e; e = en) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_gl_Subscription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Subscription(c, (struct zx_gl_Subscription_s*)e, free_strs);
   }
-  for (e = &x->CreateItem->gg; e; e = en) {
+  for (e = &x->CreateItem->gg;
+       e && e->g.tok == zx_gl_CreateItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CreateItem(c, (struct zx_gl_CreateItem_s*)e, free_strs);
   }
-  for (e = &x->ItemSelection->gg; e; e = en) {
+  for (e = &x->ItemSelection->gg;
+       e && e->g.tok == zx_gl_ItemSelection_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -1546,17 +1670,29 @@ void zx_DUP_STRS_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x)
 
   zx_dup_attr(c, x->id);
 
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_gl_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Subscription(c, (struct zx_gl_Subscription_s*)se);
-  for (se = &x->CreateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreateItem->gg;
+       se && se->g.tok == zx_gl_CreateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CreateItem(c, (struct zx_gl_CreateItem_s*)se);
-  for (se = &x->ItemSelection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemSelection->gg;
+       se && se->g.tok == zx_gl_ItemSelection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -1578,7 +1714,9 @@ struct zx_gl_Create_s* zx_DEEP_CLONE_gl_Create(struct zx_ctx* c, struct zx_gl_Cr
 
   x->id = zx_clone_attr(c, x->id);
 
-  for (enn = 0, e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ResourceID(c,(struct zx_gl_ResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceID = (struct zx_gl_ResourceID_s*)en;
@@ -1586,7 +1724,9 @@ struct zx_gl_Create_s* zx_DEEP_CLONE_gl_Create(struct zx_ctx* c, struct zx_gl_Cr
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_EncryptedResourceID(c,(struct zx_gl_EncryptedResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedResourceID = (struct zx_gl_EncryptedResourceID_s*)en;
@@ -1594,7 +1734,9 @@ struct zx_gl_Create_s* zx_DEEP_CLONE_gl_Create(struct zx_ctx* c, struct zx_gl_Cr
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subscription->gg;
+       e && e->g.tok == zx_gl_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Subscription(c,(struct zx_gl_Subscription_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subscription = (struct zx_gl_Subscription_s*)en;
@@ -1602,7 +1744,9 @@ struct zx_gl_Create_s* zx_DEEP_CLONE_gl_Create(struct zx_ctx* c, struct zx_gl_Cr
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CreateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CreateItem->gg;
+       e && e->g.tok == zx_gl_CreateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CreateItem(c,(struct zx_gl_CreateItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->CreateItem = (struct zx_gl_CreateItem_s*)en;
@@ -1610,7 +1754,9 @@ struct zx_gl_Create_s* zx_DEEP_CLONE_gl_Create(struct zx_ctx* c, struct zx_gl_Cr
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ItemSelection->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ItemSelection->gg;
+       e && e->g.tok == zx_gl_ItemSelection_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ItemSelection(c,(struct zx_gl_ItemSelection_s*)e,dup_strs);
   	  if (!enn)
   	      x->ItemSelection = (struct zx_gl_ItemSelection_s*)en;
@@ -1618,7 +1764,9 @@ struct zx_gl_Create_s* zx_DEEP_CLONE_gl_Create(struct zx_ctx* c, struct zx_gl_Cr
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -1649,32 +1797,44 @@ int zx_WALK_SO_gl_Create(struct zx_ctx* c, struct zx_gl_Create_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_gl_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Subscription(c, (struct zx_gl_Subscription_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CreateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CreateItem->gg;
+       e && e->g.tok == zx_gl_CreateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CreateItem(c, (struct zx_gl_CreateItem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ItemSelection->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ItemSelection->gg;
+       e && e->g.tok == zx_gl_ItemSelection_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1734,7 +1894,9 @@ void zx_FREE_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x, int f
   zx_free_attr(c, x->itemID, free_strs);
   zx_free_attr(c, x->objectType, free_strs);
 
-  for (e = &x->NewData->gg; e; e = en) {
+  for (e = &x->NewData->gg;
+       e && e->g.tok == zx_gl_NewData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_NewData(c, (struct zx_gl_NewData_s*)e, free_strs);
   }
@@ -1777,7 +1939,9 @@ void zx_DUP_STRS_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x)
   zx_dup_attr(c, x->itemID);
   zx_dup_attr(c, x->objectType);
 
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_gl_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_NewData(c, (struct zx_gl_NewData_s*)se);
 
 }
@@ -1801,7 +1965,9 @@ struct zx_gl_CreateItem_s* zx_DEEP_CLONE_gl_CreateItem(struct zx_ctx* c, struct 
   x->itemID = zx_clone_attr(c, x->itemID);
   x->objectType = zx_clone_attr(c, x->objectType);
 
-  for (enn = 0, e = &x->NewData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NewData->gg;
+       e && e->g.tok == zx_gl_NewData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_NewData(c,(struct zx_gl_NewData_s*)e,dup_strs);
   	  if (!enn)
   	      x->NewData = (struct zx_gl_NewData_s*)en;
@@ -1832,7 +1998,9 @@ int zx_WALK_SO_gl_CreateItem(struct zx_ctx* c, struct zx_gl_CreateItem_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->NewData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NewData->gg;
+       e && e->g.tok == zx_gl_NewData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_NewData(c, (struct zx_gl_NewData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1891,15 +2059,21 @@ void zx_FREE_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s* 
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->timeStamp, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
   }
-  for (e = &x->ItemData->gg; e; e = en) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_gl_ItemData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ItemData(c, (struct zx_gl_ItemData_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -1941,11 +2115,17 @@ void zx_DUP_STRS_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->timeStamp);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_gl_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ItemData(c, (struct zx_gl_ItemData_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -1968,7 +2148,9 @@ struct zx_gl_CreateResponse_s* zx_DEEP_CLONE_gl_CreateResponse(struct zx_ctx* c,
   x->id = zx_clone_attr(c, x->id);
   x->timeStamp = zx_clone_attr(c, x->timeStamp);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Status(c,(struct zx_gl_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_gl_Status_s*)en;
@@ -1976,7 +2158,9 @@ struct zx_gl_CreateResponse_s* zx_DEEP_CLONE_gl_CreateResponse(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ItemData->gg;
+       e && e->g.tok == zx_gl_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ItemData(c,(struct zx_gl_ItemData_s*)e,dup_strs);
   	  if (!enn)
   	      x->ItemData = (struct zx_gl_ItemData_s*)en;
@@ -1984,7 +2168,9 @@ struct zx_gl_CreateResponse_s* zx_DEEP_CLONE_gl_CreateResponse(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -2015,17 +2201,23 @@ int zx_WALK_SO_gl_CreateResponse(struct zx_ctx* c, struct zx_gl_CreateResponse_s
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Status(c, (struct zx_gl_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_gl_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ItemData(c, (struct zx_gl_ItemData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2083,7 +2275,9 @@ void zx_FREE_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x, int f
 
   zx_free_attr(c, x->notOnOrAfter, free_strs);
 
-  for (e = &x->Assertion->gg; e; e = en) {
+  for (e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa_Assertion_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa_Assertion(c, (struct zx_sa_Assertion_s*)e, free_strs);
   }
@@ -2124,7 +2318,9 @@ void zx_DUP_STRS_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x)
 
   zx_dup_attr(c, x->notOnOrAfter);
 
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa_Assertion(c, (struct zx_sa_Assertion_s*)se);
 
 }
@@ -2146,7 +2342,9 @@ struct zx_gl_Credential_s* zx_DEEP_CLONE_gl_Credential(struct zx_ctx* c, struct 
 
   x->notOnOrAfter = zx_clone_attr(c, x->notOnOrAfter);
 
-  for (enn = 0, e = &x->Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa_Assertion(c,(struct zx_sa_Assertion_s*)e,dup_strs);
   	  if (!enn)
   	      x->Assertion = (struct zx_sa_Assertion_s*)en;
@@ -2177,7 +2375,9 @@ int zx_WALK_SO_gl_Credential(struct zx_ctx* c, struct zx_gl_Credential_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2386,19 +2586,27 @@ void zx_FREE_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x, int free_strs
 
   zx_free_attr(c, x->id, free_strs);
 
-  for (e = &x->ResourceID->gg; e; e = en) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, free_strs);
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = en) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, free_strs);
   }
-  for (e = &x->DeleteItem->gg; e; e = en) {
+  for (e = &x->DeleteItem->gg;
+       e && e->g.tok == zx_gl_DeleteItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_DeleteItem(c, (struct zx_gl_DeleteItem_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -2439,13 +2647,21 @@ void zx_DUP_STRS_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x)
 
   zx_dup_attr(c, x->id);
 
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se);
-  for (se = &x->DeleteItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteItem->gg;
+       se && se->g.tok == zx_gl_DeleteItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_DeleteItem(c, (struct zx_gl_DeleteItem_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -2467,7 +2683,9 @@ struct zx_gl_Delete_s* zx_DEEP_CLONE_gl_Delete(struct zx_ctx* c, struct zx_gl_De
 
   x->id = zx_clone_attr(c, x->id);
 
-  for (enn = 0, e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ResourceID(c,(struct zx_gl_ResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceID = (struct zx_gl_ResourceID_s*)en;
@@ -2475,7 +2693,9 @@ struct zx_gl_Delete_s* zx_DEEP_CLONE_gl_Delete(struct zx_ctx* c, struct zx_gl_De
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_EncryptedResourceID(c,(struct zx_gl_EncryptedResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedResourceID = (struct zx_gl_EncryptedResourceID_s*)en;
@@ -2483,7 +2703,9 @@ struct zx_gl_Delete_s* zx_DEEP_CLONE_gl_Delete(struct zx_ctx* c, struct zx_gl_De
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DeleteItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DeleteItem->gg;
+       e && e->g.tok == zx_gl_DeleteItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_DeleteItem(c,(struct zx_gl_DeleteItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->DeleteItem = (struct zx_gl_DeleteItem_s*)en;
@@ -2491,7 +2713,9 @@ struct zx_gl_Delete_s* zx_DEEP_CLONE_gl_Delete(struct zx_ctx* c, struct zx_gl_De
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -2522,22 +2746,30 @@ int zx_WALK_SO_gl_Delete(struct zx_ctx* c, struct zx_gl_Delete_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DeleteItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DeleteItem->gg;
+       e && e->g.tok == zx_gl_DeleteItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_DeleteItem(c, (struct zx_gl_DeleteItem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2746,11 +2978,15 @@ void zx_FREE_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s* 
 
   zx_free_attr(c, x->id, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -2791,9 +3027,13 @@ void zx_DUP_STRS_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse
 
   zx_dup_attr(c, x->id);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -2815,7 +3055,9 @@ struct zx_gl_DeleteResponse_s* zx_DEEP_CLONE_gl_DeleteResponse(struct zx_ctx* c,
 
   x->id = zx_clone_attr(c, x->id);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Status(c,(struct zx_gl_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_gl_Status_s*)en;
@@ -2823,7 +3065,9 @@ struct zx_gl_DeleteResponse_s* zx_DEEP_CLONE_gl_DeleteResponse(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -2854,12 +3098,16 @@ int zx_WALK_SO_gl_DeleteResponse(struct zx_ctx* c, struct zx_gl_DeleteResponse_s
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Status(c, (struct zx_gl_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2918,7 +3166,9 @@ void zx_FREE_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s* 
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->coord->gg; e; e = en) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
   }
@@ -2965,7 +3215,9 @@ void zx_DUP_STRS_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_coord(c, (struct zx_gl_coord_s*)se);
   zx_dup_strs_simple_elems(c, x->angle);
   zx_dup_strs_simple_elems(c, x->semiMajor);
@@ -2993,7 +3245,9 @@ struct zx_gl_EllipticalArea_s* zx_DEEP_CLONE_gl_EllipticalArea(struct zx_ctx* c,
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_coord(c,(struct zx_gl_coord_s*)e,dup_strs);
   	  if (!enn)
   	      x->coord = (struct zx_gl_coord_s*)en;
@@ -3029,7 +3283,9 @@ int zx_WALK_SO_gl_EllipticalArea(struct zx_ctx* c, struct zx_gl_EllipticalArea_s
   if (ret)
     return ret;
 
-  for (e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_coord(c, (struct zx_gl_coord_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3101,11 +3357,15 @@ void zx_FREE_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedReso
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->EncryptedData->gg; e; e = en) {
+  for (e = &x->EncryptedData->gg;
+       e && e->g.tok == zx_xenc_EncryptedData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)e, free_strs);
   }
-  for (e = &x->EncryptedKey->gg; e; e = en) {
+  for (e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, free_strs);
   }
@@ -3145,9 +3405,13 @@ void zx_DUP_STRS_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_Encrypted
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->EncryptedData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedData->gg;
+       se && se->g.tok == zx_xenc_EncryptedData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)se);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se);
 
 }
@@ -3168,7 +3432,9 @@ struct zx_gl_EncryptedResourceID_s* zx_DEEP_CLONE_gl_EncryptedResourceID(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->EncryptedData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedData->gg;
+       e && e->g.tok == zx_xenc_EncryptedData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptedData(c,(struct zx_xenc_EncryptedData_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedData = (struct zx_xenc_EncryptedData_s*)en;
@@ -3176,7 +3442,9 @@ struct zx_gl_EncryptedResourceID_s* zx_DEEP_CLONE_gl_EncryptedResourceID(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_xenc_EncryptedKey(c,(struct zx_xenc_EncryptedKey_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedKey = (struct zx_xenc_EncryptedKey_s*)en;
@@ -3207,12 +3475,16 @@ int zx_WALK_SO_gl_EncryptedResourceID(struct zx_ctx* c, struct zx_gl_EncryptedRe
   if (ret)
     return ret;
 
-  for (e = &x->EncryptedData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedData->gg;
+       e && e->g.tok == zx_xenc_EncryptedData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptedData(c, (struct zx_xenc_EncryptedData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedKey->gg;
+       e && e->g.tok == zx_xenc_EncryptedKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3401,7 +3673,9 @@ void zx_FREE_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCollec
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->shape->gg; e; e = en) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
   }
@@ -3443,7 +3717,9 @@ void zx_DUP_STRS_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryCo
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_shape(c, (struct zx_gl_shape_s*)se);
 
 }
@@ -3466,7 +3742,9 @@ struct zx_gl_GeometryCollection_s* zx_DEEP_CLONE_gl_GeometryCollection(struct zx
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_shape(c,(struct zx_gl_shape_s*)e,dup_strs);
   	  if (!enn)
   	      x->shape = (struct zx_gl_shape_s*)en;
@@ -3497,7 +3775,9 @@ int zx_WALK_SO_gl_GeometryCollection(struct zx_ctx* c, struct zx_gl_GeometryColl
   if (ret)
     return ret;
 
-  for (e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_shape(c, (struct zx_gl_shape_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3844,27 +4124,39 @@ void zx_FREE_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->AreaComparison->gg; e; e = en) {
+  for (e = &x->AreaComparison->gg;
+       e && e->g.tok == zx_gl_AreaComparison_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)e, free_strs);
   }
-  for (e = &x->eqop->gg; e; e = en) {
+  for (e = &x->eqop->gg;
+       e && e->g.tok == zx_gl_eqop_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_eqop(c, (struct zx_gl_eqop_s*)e, free_strs);
   }
-  for (e = &x->geoinfo->gg; e; e = en) {
+  for (e = &x->geoinfo->gg;
+       e && e->g.tok == zx_gl_geoinfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)e, free_strs);
   }
-  for (e = &x->loc_type->gg; e; e = en) {
+  for (e = &x->loc_type->gg;
+       e && e->g.tok == zx_gl_loc_type_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_loc_type(c, (struct zx_gl_loc_type_s*)e, free_strs);
   }
-  for (e = &x->prio->gg; e; e = en) {
+  for (e = &x->prio->gg;
+       e && e->g.tok == zx_gl_prio_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_prio(c, (struct zx_gl_prio_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -3904,17 +4196,29 @@ void zx_DUP_STRS_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->AreaComparison->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AreaComparison->gg;
+       se && se->g.tok == zx_gl_AreaComparison_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)se);
-  for (se = &x->eqop->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->eqop->gg;
+       se && se->g.tok == zx_gl_eqop_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_eqop(c, (struct zx_gl_eqop_s*)se);
-  for (se = &x->geoinfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->geoinfo->gg;
+       se && se->g.tok == zx_gl_geoinfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)se);
-  for (se = &x->loc_type->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->loc_type->gg;
+       se && se->g.tok == zx_gl_loc_type_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_loc_type(c, (struct zx_gl_loc_type_s*)se);
-  for (se = &x->prio->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prio->gg;
+       se && se->g.tok == zx_gl_prio_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_prio(c, (struct zx_gl_prio_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -3935,7 +4239,9 @@ struct zx_gl_ItemSelection_s* zx_DEEP_CLONE_gl_ItemSelection(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->AreaComparison->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AreaComparison->gg;
+       e && e->g.tok == zx_gl_AreaComparison_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_AreaComparison(c,(struct zx_gl_AreaComparison_s*)e,dup_strs);
   	  if (!enn)
   	      x->AreaComparison = (struct zx_gl_AreaComparison_s*)en;
@@ -3943,7 +4249,9 @@ struct zx_gl_ItemSelection_s* zx_DEEP_CLONE_gl_ItemSelection(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->eqop->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->eqop->gg;
+       e && e->g.tok == zx_gl_eqop_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_eqop(c,(struct zx_gl_eqop_s*)e,dup_strs);
   	  if (!enn)
   	      x->eqop = (struct zx_gl_eqop_s*)en;
@@ -3951,7 +4259,9 @@ struct zx_gl_ItemSelection_s* zx_DEEP_CLONE_gl_ItemSelection(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->geoinfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->geoinfo->gg;
+       e && e->g.tok == zx_gl_geoinfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_geoinfo(c,(struct zx_gl_geoinfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->geoinfo = (struct zx_gl_geoinfo_s*)en;
@@ -3959,7 +4269,9 @@ struct zx_gl_ItemSelection_s* zx_DEEP_CLONE_gl_ItemSelection(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->loc_type->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->loc_type->gg;
+       e && e->g.tok == zx_gl_loc_type_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_loc_type(c,(struct zx_gl_loc_type_s*)e,dup_strs);
   	  if (!enn)
   	      x->loc_type = (struct zx_gl_loc_type_s*)en;
@@ -3967,7 +4279,9 @@ struct zx_gl_ItemSelection_s* zx_DEEP_CLONE_gl_ItemSelection(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->prio->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->prio->gg;
+       e && e->g.tok == zx_gl_prio_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_prio(c,(struct zx_gl_prio_s*)e,dup_strs);
   	  if (!enn)
   	      x->prio = (struct zx_gl_prio_s*)en;
@@ -3975,7 +4289,9 @@ struct zx_gl_ItemSelection_s* zx_DEEP_CLONE_gl_ItemSelection(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -4006,32 +4322,44 @@ int zx_WALK_SO_gl_ItemSelection(struct zx_ctx* c, struct zx_gl_ItemSelection_s* 
   if (ret)
     return ret;
 
-  for (e = &x->AreaComparison->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AreaComparison->gg;
+       e && e->g.tok == zx_gl_AreaComparison_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->eqop->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->eqop->gg;
+       e && e->g.tok == zx_gl_eqop_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_eqop(c, (struct zx_gl_eqop_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->geoinfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->geoinfo->gg;
+       e && e->g.tok == zx_gl_geoinfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->loc_type->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->loc_type->gg;
+       e && e->g.tok == zx_gl_loc_type_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_loc_type(c, (struct zx_gl_loc_type_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->prio->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->prio->gg;
+       e && e->g.tok == zx_gl_prio_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_prio(c, (struct zx_gl_prio_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4498,7 +4826,9 @@ void zx_FREE_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x, int f
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->coord->gg; e; e = en) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
   }
@@ -4540,7 +4870,9 @@ void zx_DUP_STRS_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x)
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_coord(c, (struct zx_gl_coord_s*)se);
 
 }
@@ -4563,7 +4895,9 @@ struct zx_gl_LineString_s* zx_DEEP_CLONE_gl_LineString(struct zx_ctx* c, struct 
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_coord(c,(struct zx_gl_coord_s*)e,dup_strs);
   	  if (!enn)
   	      x->coord = (struct zx_gl_coord_s*)en;
@@ -4594,7 +4928,9 @@ int zx_WALK_SO_gl_LineString(struct zx_ctx* c, struct zx_gl_LineString_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_coord(c, (struct zx_gl_coord_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4653,7 +4989,9 @@ void zx_FREE_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x, int f
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->coord->gg; e; e = en) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
   }
@@ -4695,7 +5033,9 @@ void zx_DUP_STRS_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x)
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_coord(c, (struct zx_gl_coord_s*)se);
 
 }
@@ -4718,7 +5058,9 @@ struct zx_gl_LinearRing_s* zx_DEEP_CLONE_gl_LinearRing(struct zx_ctx* c, struct 
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_coord(c,(struct zx_gl_coord_s*)e,dup_strs);
   	  if (!enn)
   	      x->coord = (struct zx_gl_coord_s*)en;
@@ -4749,7 +5091,9 @@ int zx_WALK_SO_gl_LinearRing(struct zx_ctx* c, struct zx_gl_LinearRing_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_coord(c, (struct zx_gl_coord_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4812,7 +5156,9 @@ void zx_FREE_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x, i
   zx_free_attr(c, x->overrideAllowed, free_strs);
 
   zx_free_simple_elems(c, x->Select, free_strs);
-  for (e = &x->NewData->gg; e; e = en) {
+  for (e = &x->NewData->gg;
+       e && e->g.tok == zx_gl_NewData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_NewData(c, (struct zx_gl_NewData_s*)e, free_strs);
   }
@@ -4858,7 +5204,9 @@ void zx_DUP_STRS_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* 
   zx_dup_attr(c, x->overrideAllowed);
 
   zx_dup_strs_simple_elems(c, x->Select);
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_gl_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_NewData(c, (struct zx_gl_NewData_s*)se);
 
 }
@@ -4885,7 +5233,9 @@ struct zx_gl_Modification_s* zx_DEEP_CLONE_gl_Modification(struct zx_ctx* c, str
   x->overrideAllowed = zx_clone_attr(c, x->overrideAllowed);
 
   x->Select = zx_deep_clone_simple_elems(c,x->Select, dup_strs);
-  for (enn = 0, e = &x->NewData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NewData->gg;
+       e && e->g.tok == zx_gl_NewData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_NewData(c,(struct zx_gl_NewData_s*)e,dup_strs);
   	  if (!enn)
   	      x->NewData = (struct zx_gl_NewData_s*)en;
@@ -4919,7 +5269,9 @@ int zx_WALK_SO_gl_Modification(struct zx_ctx* c, struct zx_gl_Modification_s* x,
   ret = zx_walk_so_simple_elems(c, x->Select, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->NewData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NewData->gg;
+       e && e->g.tok == zx_gl_NewData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_NewData(c, (struct zx_gl_NewData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4977,27 +5329,39 @@ void zx_FREE_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x, int free_strs
 
   zx_free_attr(c, x->id, free_strs);
 
-  for (e = &x->ResourceID->gg; e; e = en) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, free_strs);
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = en) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, free_strs);
   }
-  for (e = &x->Subscription->gg; e; e = en) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_gl_Subscription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Subscription(c, (struct zx_gl_Subscription_s*)e, free_strs);
   }
-  for (e = &x->Modification->gg; e; e = en) {
+  for (e = &x->Modification->gg;
+       e && e->g.tok == zx_gl_Modification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Modification(c, (struct zx_gl_Modification_s*)e, free_strs);
   }
-  for (e = &x->ItemSelection->gg; e; e = en) {
+  for (e = &x->ItemSelection->gg;
+       e && e->g.tok == zx_gl_ItemSelection_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -5038,17 +5402,29 @@ void zx_DUP_STRS_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x)
 
   zx_dup_attr(c, x->id);
 
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_gl_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Subscription(c, (struct zx_gl_Subscription_s*)se);
-  for (se = &x->Modification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Modification->gg;
+       se && se->g.tok == zx_gl_Modification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Modification(c, (struct zx_gl_Modification_s*)se);
-  for (se = &x->ItemSelection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemSelection->gg;
+       se && se->g.tok == zx_gl_ItemSelection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -5070,7 +5446,9 @@ struct zx_gl_Modify_s* zx_DEEP_CLONE_gl_Modify(struct zx_ctx* c, struct zx_gl_Mo
 
   x->id = zx_clone_attr(c, x->id);
 
-  for (enn = 0, e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ResourceID(c,(struct zx_gl_ResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceID = (struct zx_gl_ResourceID_s*)en;
@@ -5078,7 +5456,9 @@ struct zx_gl_Modify_s* zx_DEEP_CLONE_gl_Modify(struct zx_ctx* c, struct zx_gl_Mo
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_EncryptedResourceID(c,(struct zx_gl_EncryptedResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedResourceID = (struct zx_gl_EncryptedResourceID_s*)en;
@@ -5086,7 +5466,9 @@ struct zx_gl_Modify_s* zx_DEEP_CLONE_gl_Modify(struct zx_ctx* c, struct zx_gl_Mo
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subscription->gg;
+       e && e->g.tok == zx_gl_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Subscription(c,(struct zx_gl_Subscription_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subscription = (struct zx_gl_Subscription_s*)en;
@@ -5094,7 +5476,9 @@ struct zx_gl_Modify_s* zx_DEEP_CLONE_gl_Modify(struct zx_ctx* c, struct zx_gl_Mo
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Modification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Modification->gg;
+       e && e->g.tok == zx_gl_Modification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Modification(c,(struct zx_gl_Modification_s*)e,dup_strs);
   	  if (!enn)
   	      x->Modification = (struct zx_gl_Modification_s*)en;
@@ -5102,7 +5486,9 @@ struct zx_gl_Modify_s* zx_DEEP_CLONE_gl_Modify(struct zx_ctx* c, struct zx_gl_Mo
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ItemSelection->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ItemSelection->gg;
+       e && e->g.tok == zx_gl_ItemSelection_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ItemSelection(c,(struct zx_gl_ItemSelection_s*)e,dup_strs);
   	  if (!enn)
   	      x->ItemSelection = (struct zx_gl_ItemSelection_s*)en;
@@ -5110,7 +5496,9 @@ struct zx_gl_Modify_s* zx_DEEP_CLONE_gl_Modify(struct zx_ctx* c, struct zx_gl_Mo
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -5141,32 +5529,44 @@ int zx_WALK_SO_gl_Modify(struct zx_ctx* c, struct zx_gl_Modify_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_gl_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Subscription(c, (struct zx_gl_Subscription_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Modification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Modification->gg;
+       e && e->g.tok == zx_gl_Modification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Modification(c, (struct zx_gl_Modification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ItemSelection->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ItemSelection->gg;
+       e && e->g.tok == zx_gl_ItemSelection_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5225,15 +5625,21 @@ void zx_FREE_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s* 
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->timeStamp, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
   }
-  for (e = &x->ItemData->gg; e; e = en) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_gl_ItemData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ItemData(c, (struct zx_gl_ItemData_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -5275,11 +5681,17 @@ void zx_DUP_STRS_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->timeStamp);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_gl_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ItemData(c, (struct zx_gl_ItemData_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -5302,7 +5714,9 @@ struct zx_gl_ModifyResponse_s* zx_DEEP_CLONE_gl_ModifyResponse(struct zx_ctx* c,
   x->id = zx_clone_attr(c, x->id);
   x->timeStamp = zx_clone_attr(c, x->timeStamp);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Status(c,(struct zx_gl_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_gl_Status_s*)en;
@@ -5310,7 +5724,9 @@ struct zx_gl_ModifyResponse_s* zx_DEEP_CLONE_gl_ModifyResponse(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ItemData->gg;
+       e && e->g.tok == zx_gl_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ItemData(c,(struct zx_gl_ItemData_s*)e,dup_strs);
   	  if (!enn)
   	      x->ItemData = (struct zx_gl_ItemData_s*)en;
@@ -5318,7 +5734,9 @@ struct zx_gl_ModifyResponse_s* zx_DEEP_CLONE_gl_ModifyResponse(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -5349,17 +5767,23 @@ int zx_WALK_SO_gl_ModifyResponse(struct zx_ctx* c, struct zx_gl_ModifyResponse_s
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Status(c, (struct zx_gl_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_gl_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ItemData(c, (struct zx_gl_ItemData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5418,7 +5842,9 @@ void zx_FREE_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString_s
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->LineString->gg; e; e = en) {
+  for (e = &x->LineString->gg;
+       e && e->g.tok == zx_gl_LineString_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_LineString(c, (struct zx_gl_LineString_s*)e, free_strs);
   }
@@ -5460,7 +5886,9 @@ void zx_DUP_STRS_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineStri
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->LineString->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LineString->gg;
+       se && se->g.tok == zx_gl_LineString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_LineString(c, (struct zx_gl_LineString_s*)se);
 
 }
@@ -5483,7 +5911,9 @@ struct zx_gl_MultiLineString_s* zx_DEEP_CLONE_gl_MultiLineString(struct zx_ctx* 
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->LineString->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LineString->gg;
+       e && e->g.tok == zx_gl_LineString_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_LineString(c,(struct zx_gl_LineString_s*)e,dup_strs);
   	  if (!enn)
   	      x->LineString = (struct zx_gl_LineString_s*)en;
@@ -5514,7 +5944,9 @@ int zx_WALK_SO_gl_MultiLineString(struct zx_ctx* c, struct zx_gl_MultiLineString
   if (ret)
     return ret;
 
-  for (e = &x->LineString->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LineString->gg;
+       e && e->g.tok == zx_gl_LineString_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_LineString(c, (struct zx_gl_LineString_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5573,7 +6005,9 @@ void zx_FREE_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x, int f
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->Point->gg; e; e = en) {
+  for (e = &x->Point->gg;
+       e && e->g.tok == zx_gl_Point_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Point(c, (struct zx_gl_Point_s*)e, free_strs);
   }
@@ -5615,7 +6049,9 @@ void zx_DUP_STRS_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x)
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->Point->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Point->gg;
+       se && se->g.tok == zx_gl_Point_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Point(c, (struct zx_gl_Point_s*)se);
 
 }
@@ -5638,7 +6074,9 @@ struct zx_gl_MultiPoint_s* zx_DEEP_CLONE_gl_MultiPoint(struct zx_ctx* c, struct 
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->Point->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Point->gg;
+       e && e->g.tok == zx_gl_Point_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Point(c,(struct zx_gl_Point_s*)e,dup_strs);
   	  if (!enn)
   	      x->Point = (struct zx_gl_Point_s*)en;
@@ -5669,7 +6107,9 @@ int zx_WALK_SO_gl_MultiPoint(struct zx_ctx* c, struct zx_gl_MultiPoint_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->Point->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Point->gg;
+       e && e->g.tok == zx_gl_Point_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Point(c, (struct zx_gl_Point_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -5728,23 +6168,33 @@ void zx_FREE_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x, i
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->Polygon->gg; e; e = en) {
+  for (e = &x->Polygon->gg;
+       e && e->g.tok == zx_gl_Polygon_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Polygon(c, (struct zx_gl_Polygon_s*)e, free_strs);
   }
-  for (e = &x->Box->gg; e; e = en) {
+  for (e = &x->Box->gg;
+       e && e->g.tok == zx_gl_Box_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Box(c, (struct zx_gl_Box_s*)e, free_strs);
   }
-  for (e = &x->CircularArea->gg; e; e = en) {
+  for (e = &x->CircularArea->gg;
+       e && e->g.tok == zx_gl_CircularArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)e, free_strs);
   }
-  for (e = &x->CircularArcArea->gg; e; e = en) {
+  for (e = &x->CircularArcArea->gg;
+       e && e->g.tok == zx_gl_CircularArcArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)e, free_strs);
   }
-  for (e = &x->EllipticalArea->gg; e; e = en) {
+  for (e = &x->EllipticalArea->gg;
+       e && e->g.tok == zx_gl_EllipticalArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)e, free_strs);
   }
@@ -5786,15 +6236,25 @@ void zx_DUP_STRS_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* 
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->Polygon->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Polygon->gg;
+       se && se->g.tok == zx_gl_Polygon_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Polygon(c, (struct zx_gl_Polygon_s*)se);
-  for (se = &x->Box->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Box->gg;
+       se && se->g.tok == zx_gl_Box_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Box(c, (struct zx_gl_Box_s*)se);
-  for (se = &x->CircularArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArea->gg;
+       se && se->g.tok == zx_gl_CircularArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)se);
-  for (se = &x->CircularArcArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArcArea->gg;
+       se && se->g.tok == zx_gl_CircularArcArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)se);
-  for (se = &x->EllipticalArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EllipticalArea->gg;
+       se && se->g.tok == zx_gl_EllipticalArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)se);
 
 }
@@ -5817,7 +6277,9 @@ struct zx_gl_MultiPolygon_s* zx_DEEP_CLONE_gl_MultiPolygon(struct zx_ctx* c, str
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->Polygon->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Polygon->gg;
+       e && e->g.tok == zx_gl_Polygon_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Polygon(c,(struct zx_gl_Polygon_s*)e,dup_strs);
   	  if (!enn)
   	      x->Polygon = (struct zx_gl_Polygon_s*)en;
@@ -5825,7 +6287,9 @@ struct zx_gl_MultiPolygon_s* zx_DEEP_CLONE_gl_MultiPolygon(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Box->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Box->gg;
+       e && e->g.tok == zx_gl_Box_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Box(c,(struct zx_gl_Box_s*)e,dup_strs);
   	  if (!enn)
   	      x->Box = (struct zx_gl_Box_s*)en;
@@ -5833,7 +6297,9 @@ struct zx_gl_MultiPolygon_s* zx_DEEP_CLONE_gl_MultiPolygon(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CircularArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CircularArea->gg;
+       e && e->g.tok == zx_gl_CircularArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CircularArea(c,(struct zx_gl_CircularArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->CircularArea = (struct zx_gl_CircularArea_s*)en;
@@ -5841,7 +6307,9 @@ struct zx_gl_MultiPolygon_s* zx_DEEP_CLONE_gl_MultiPolygon(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CircularArcArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CircularArcArea->gg;
+       e && e->g.tok == zx_gl_CircularArcArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CircularArcArea(c,(struct zx_gl_CircularArcArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->CircularArcArea = (struct zx_gl_CircularArcArea_s*)en;
@@ -5849,7 +6317,9 @@ struct zx_gl_MultiPolygon_s* zx_DEEP_CLONE_gl_MultiPolygon(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EllipticalArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EllipticalArea->gg;
+       e && e->g.tok == zx_gl_EllipticalArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_EllipticalArea(c,(struct zx_gl_EllipticalArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->EllipticalArea = (struct zx_gl_EllipticalArea_s*)en;
@@ -5880,27 +6350,37 @@ int zx_WALK_SO_gl_MultiPolygon(struct zx_ctx* c, struct zx_gl_MultiPolygon_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->Polygon->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Polygon->gg;
+       e && e->g.tok == zx_gl_Polygon_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Polygon(c, (struct zx_gl_Polygon_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Box->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Box->gg;
+       e && e->g.tok == zx_gl_Box_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Box(c, (struct zx_gl_Box_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CircularArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CircularArea->gg;
+       e && e->g.tok == zx_gl_CircularArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CircularArcArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CircularArcArea->gg;
+       e && e->g.tok == zx_gl_CircularArcArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EllipticalArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EllipticalArea->gg;
+       e && e->g.tok == zx_gl_EllipticalArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6091,7 +6571,9 @@ void zx_FREE_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x, i
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->subscriptionID, free_strs);
 
-  for (e = &x->ItemData->gg; e; e = en) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_gl_ItemData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ItemData(c, (struct zx_gl_ItemData_s*)e, free_strs);
   }
@@ -6135,7 +6617,9 @@ void zx_DUP_STRS_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* 
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->subscriptionID);
 
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_gl_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ItemData(c, (struct zx_gl_ItemData_s*)se);
 
 }
@@ -6160,7 +6644,9 @@ struct zx_gl_Notification_s* zx_DEEP_CLONE_gl_Notification(struct zx_ctx* c, str
   x->id = zx_clone_attr(c, x->id);
   x->subscriptionID = zx_clone_attr(c, x->subscriptionID);
 
-  for (enn = 0, e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ItemData->gg;
+       e && e->g.tok == zx_gl_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ItemData(c,(struct zx_gl_ItemData_s*)e,dup_strs);
   	  if (!enn)
   	      x->ItemData = (struct zx_gl_ItemData_s*)en;
@@ -6191,7 +6677,9 @@ int zx_WALK_SO_gl_Notification(struct zx_ctx* c, struct zx_gl_Notification_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_gl_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ItemData(c, (struct zx_gl_ItemData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6250,11 +6738,15 @@ void zx_FREE_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x, int free_strs
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->timeStamp, free_strs);
 
-  for (e = &x->Notification->gg; e; e = en) {
+  for (e = &x->Notification->gg;
+       e && e->g.tok == zx_gl_Notification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Notification(c, (struct zx_gl_Notification_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -6296,9 +6788,13 @@ void zx_DUP_STRS_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->timeStamp);
 
-  for (se = &x->Notification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notification->gg;
+       se && se->g.tok == zx_gl_Notification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Notification(c, (struct zx_gl_Notification_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -6321,7 +6817,9 @@ struct zx_gl_Notify_s* zx_DEEP_CLONE_gl_Notify(struct zx_ctx* c, struct zx_gl_No
   x->id = zx_clone_attr(c, x->id);
   x->timeStamp = zx_clone_attr(c, x->timeStamp);
 
-  for (enn = 0, e = &x->Notification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Notification->gg;
+       e && e->g.tok == zx_gl_Notification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Notification(c,(struct zx_gl_Notification_s*)e,dup_strs);
   	  if (!enn)
   	      x->Notification = (struct zx_gl_Notification_s*)en;
@@ -6329,7 +6827,9 @@ struct zx_gl_Notify_s* zx_DEEP_CLONE_gl_Notify(struct zx_ctx* c, struct zx_gl_No
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -6360,12 +6860,16 @@ int zx_WALK_SO_gl_Notify(struct zx_ctx* c, struct zx_gl_Notify_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->Notification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Notification->gg;
+       e && e->g.tok == zx_gl_Notification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Notification(c, (struct zx_gl_Notification_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6424,7 +6928,9 @@ void zx_FREE_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* x,
   zx_free_attr(c, x->id, free_strs);
 
   zx_free_simple_elems(c, x->SecurityMechID, free_strs);
-  for (e = &x->Credential->gg; e; e = en) {
+  for (e = &x->Credential->gg;
+       e && e->g.tok == zx_gl_Credential_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Credential(c, (struct zx_gl_Credential_s*)e, free_strs);
   }
@@ -6467,7 +6973,9 @@ void zx_DUP_STRS_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s
   zx_dup_attr(c, x->id);
 
   zx_dup_strs_simple_elems(c, x->SecurityMechID);
-  for (se = &x->Credential->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Credential->gg;
+       se && se->g.tok == zx_gl_Credential_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Credential(c, (struct zx_gl_Credential_s*)se);
   zx_dup_strs_simple_elems(c, x->Endpoint);
 
@@ -6491,7 +6999,9 @@ struct zx_gl_NotifyAdminTo_s* zx_DEEP_CLONE_gl_NotifyAdminTo(struct zx_ctx* c, s
   x->id = zx_clone_attr(c, x->id);
 
   x->SecurityMechID = zx_deep_clone_simple_elems(c,x->SecurityMechID, dup_strs);
-  for (enn = 0, e = &x->Credential->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Credential->gg;
+       e && e->g.tok == zx_gl_Credential_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Credential(c,(struct zx_gl_Credential_s*)e,dup_strs);
   	  if (!enn)
   	      x->Credential = (struct zx_gl_Credential_s*)en;
@@ -6526,7 +7036,9 @@ int zx_WALK_SO_gl_NotifyAdminTo(struct zx_ctx* c, struct zx_gl_NotifyAdminTo_s* 
   ret = zx_walk_so_simple_elems(c, x->SecurityMechID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Credential->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Credential->gg;
+       e && e->g.tok == zx_gl_Credential_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Credential(c, (struct zx_gl_Credential_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6587,11 +7099,15 @@ void zx_FREE_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s* 
 
   zx_free_attr(c, x->id, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -6632,9 +7148,13 @@ void zx_DUP_STRS_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse
 
   zx_dup_attr(c, x->id);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -6656,7 +7176,9 @@ struct zx_gl_NotifyResponse_s* zx_DEEP_CLONE_gl_NotifyResponse(struct zx_ctx* c,
 
   x->id = zx_clone_attr(c, x->id);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Status(c,(struct zx_gl_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_gl_Status_s*)en;
@@ -6664,7 +7186,9 @@ struct zx_gl_NotifyResponse_s* zx_DEEP_CLONE_gl_NotifyResponse(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -6695,12 +7219,16 @@ int zx_WALK_SO_gl_NotifyResponse(struct zx_ctx* c, struct zx_gl_NotifyResponse_s
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Status(c, (struct zx_gl_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6759,7 +7287,9 @@ void zx_FREE_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x, int free_
   zx_free_attr(c, x->id, free_strs);
 
   zx_free_simple_elems(c, x->SecurityMechID, free_strs);
-  for (e = &x->Credential->gg; e; e = en) {
+  for (e = &x->Credential->gg;
+       e && e->g.tok == zx_gl_Credential_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Credential(c, (struct zx_gl_Credential_s*)e, free_strs);
   }
@@ -6802,7 +7332,9 @@ void zx_DUP_STRS_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x)
   zx_dup_attr(c, x->id);
 
   zx_dup_strs_simple_elems(c, x->SecurityMechID);
-  for (se = &x->Credential->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Credential->gg;
+       se && se->g.tok == zx_gl_Credential_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Credential(c, (struct zx_gl_Credential_s*)se);
   zx_dup_strs_simple_elems(c, x->Endpoint);
 
@@ -6826,7 +7358,9 @@ struct zx_gl_NotifyTo_s* zx_DEEP_CLONE_gl_NotifyTo(struct zx_ctx* c, struct zx_g
   x->id = zx_clone_attr(c, x->id);
 
   x->SecurityMechID = zx_deep_clone_simple_elems(c,x->SecurityMechID, dup_strs);
-  for (enn = 0, e = &x->Credential->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Credential->gg;
+       e && e->g.tok == zx_gl_Credential_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Credential(c,(struct zx_gl_Credential_s*)e,dup_strs);
   	  if (!enn)
   	      x->Credential = (struct zx_gl_Credential_s*)en;
@@ -6861,7 +7395,9 @@ int zx_WALK_SO_gl_NotifyTo(struct zx_ctx* c, struct zx_gl_NotifyTo_s* x, void* c
   ret = zx_walk_so_simple_elems(c, x->SecurityMechID, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Credential->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Credential->gg;
+       e && e->g.tok == zx_gl_Credential_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Credential(c, (struct zx_gl_Credential_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -6923,7 +7459,9 @@ void zx_FREE_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x, int free_strs)
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->coord->gg; e; e = en) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_coord(c, (struct zx_gl_coord_s*)e, free_strs);
   }
@@ -6965,7 +7503,9 @@ void zx_DUP_STRS_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x)
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->coord->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->coord->gg;
+       se && se->g.tok == zx_gl_coord_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_coord(c, (struct zx_gl_coord_s*)se);
 
 }
@@ -6988,7 +7528,9 @@ struct zx_gl_Point_s* zx_DEEP_CLONE_gl_Point(struct zx_ctx* c, struct zx_gl_Poin
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_coord(c,(struct zx_gl_coord_s*)e,dup_strs);
   	  if (!enn)
   	      x->coord = (struct zx_gl_coord_s*)en;
@@ -7019,7 +7561,9 @@ int zx_WALK_SO_gl_Point(struct zx_ctx* c, struct zx_gl_Point_s* x, void* ctx, in
   if (ret)
     return ret;
 
-  for (e = &x->coord->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->coord->gg;
+       e && e->g.tok == zx_gl_coord_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_coord(c, (struct zx_gl_coord_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7078,11 +7622,15 @@ void zx_FREE_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x, int free_st
   zx_free_attr(c, x->gid, free_strs);
   zx_free_attr(c, x->srsName, free_strs);
 
-  for (e = &x->outerBoundaryIs->gg; e; e = en) {
+  for (e = &x->outerBoundaryIs->gg;
+       e && e->g.tok == zx_gl_outerBoundaryIs_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_outerBoundaryIs(c, (struct zx_gl_outerBoundaryIs_s*)e, free_strs);
   }
-  for (e = &x->innerBoundaryIs->gg; e; e = en) {
+  for (e = &x->innerBoundaryIs->gg;
+       e && e->g.tok == zx_gl_innerBoundaryIs_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_innerBoundaryIs(c, (struct zx_gl_innerBoundaryIs_s*)e, free_strs);
   }
@@ -7124,9 +7672,13 @@ void zx_DUP_STRS_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x)
   zx_dup_attr(c, x->gid);
   zx_dup_attr(c, x->srsName);
 
-  for (se = &x->outerBoundaryIs->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->outerBoundaryIs->gg;
+       se && se->g.tok == zx_gl_outerBoundaryIs_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_outerBoundaryIs(c, (struct zx_gl_outerBoundaryIs_s*)se);
-  for (se = &x->innerBoundaryIs->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->innerBoundaryIs->gg;
+       se && se->g.tok == zx_gl_innerBoundaryIs_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_innerBoundaryIs(c, (struct zx_gl_innerBoundaryIs_s*)se);
 
 }
@@ -7149,7 +7701,9 @@ struct zx_gl_Polygon_s* zx_DEEP_CLONE_gl_Polygon(struct zx_ctx* c, struct zx_gl_
   x->gid = zx_clone_attr(c, x->gid);
   x->srsName = zx_clone_attr(c, x->srsName);
 
-  for (enn = 0, e = &x->outerBoundaryIs->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->outerBoundaryIs->gg;
+       e && e->g.tok == zx_gl_outerBoundaryIs_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_outerBoundaryIs(c,(struct zx_gl_outerBoundaryIs_s*)e,dup_strs);
   	  if (!enn)
   	      x->outerBoundaryIs = (struct zx_gl_outerBoundaryIs_s*)en;
@@ -7157,7 +7711,9 @@ struct zx_gl_Polygon_s* zx_DEEP_CLONE_gl_Polygon(struct zx_ctx* c, struct zx_gl_
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->innerBoundaryIs->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->innerBoundaryIs->gg;
+       e && e->g.tok == zx_gl_innerBoundaryIs_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_innerBoundaryIs(c,(struct zx_gl_innerBoundaryIs_s*)e,dup_strs);
   	  if (!enn)
   	      x->innerBoundaryIs = (struct zx_gl_innerBoundaryIs_s*)en;
@@ -7188,12 +7744,16 @@ int zx_WALK_SO_gl_Polygon(struct zx_ctx* c, struct zx_gl_Polygon_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->outerBoundaryIs->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->outerBoundaryIs->gg;
+       e && e->g.tok == zx_gl_outerBoundaryIs_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_outerBoundaryIs(c, (struct zx_gl_outerBoundaryIs_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->innerBoundaryIs->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->innerBoundaryIs->gg;
+       e && e->g.tok == zx_gl_innerBoundaryIs_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_innerBoundaryIs(c, (struct zx_gl_innerBoundaryIs_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7251,23 +7811,33 @@ void zx_FREE_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x, int free_strs)
 
   zx_free_attr(c, x->id, free_strs);
 
-  for (e = &x->ResourceID->gg; e; e = en) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, free_strs);
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = en) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, free_strs);
   }
-  for (e = &x->Subscription->gg; e; e = en) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_gl_Subscription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Subscription(c, (struct zx_gl_Subscription_s*)e, free_strs);
   }
-  for (e = &x->QueryItem->gg; e; e = en) {
+  for (e = &x->QueryItem->gg;
+       e && e->g.tok == zx_gl_QueryItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_QueryItem(c, (struct zx_gl_QueryItem_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -7308,15 +7878,25 @@ void zx_DUP_STRS_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x)
 
   zx_dup_attr(c, x->id);
 
-  for (se = &x->ResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResourceID->gg;
+       se && se->g.tok == zx_gl_ResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)se);
-  for (se = &x->EncryptedResourceID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedResourceID->gg;
+       se && se->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_gl_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Subscription(c, (struct zx_gl_Subscription_s*)se);
-  for (se = &x->QueryItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryItem->gg;
+       se && se->g.tok == zx_gl_QueryItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_QueryItem(c, (struct zx_gl_QueryItem_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -7338,7 +7918,9 @@ struct zx_gl_Query_s* zx_DEEP_CLONE_gl_Query(struct zx_ctx* c, struct zx_gl_Quer
 
   x->id = zx_clone_attr(c, x->id);
 
-  for (enn = 0, e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ResourceID(c,(struct zx_gl_ResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResourceID = (struct zx_gl_ResourceID_s*)en;
@@ -7346,7 +7928,9 @@ struct zx_gl_Query_s* zx_DEEP_CLONE_gl_Query(struct zx_ctx* c, struct zx_gl_Quer
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_EncryptedResourceID(c,(struct zx_gl_EncryptedResourceID_s*)e,dup_strs);
   	  if (!enn)
   	      x->EncryptedResourceID = (struct zx_gl_EncryptedResourceID_s*)en;
@@ -7354,7 +7938,9 @@ struct zx_gl_Query_s* zx_DEEP_CLONE_gl_Query(struct zx_ctx* c, struct zx_gl_Quer
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subscription->gg;
+       e && e->g.tok == zx_gl_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Subscription(c,(struct zx_gl_Subscription_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subscription = (struct zx_gl_Subscription_s*)en;
@@ -7362,7 +7948,9 @@ struct zx_gl_Query_s* zx_DEEP_CLONE_gl_Query(struct zx_ctx* c, struct zx_gl_Quer
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->QueryItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->QueryItem->gg;
+       e && e->g.tok == zx_gl_QueryItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_QueryItem(c,(struct zx_gl_QueryItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->QueryItem = (struct zx_gl_QueryItem_s*)en;
@@ -7370,7 +7958,9 @@ struct zx_gl_Query_s* zx_DEEP_CLONE_gl_Query(struct zx_ctx* c, struct zx_gl_Quer
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -7401,27 +7991,37 @@ int zx_WALK_SO_gl_Query(struct zx_ctx* c, struct zx_gl_Query_s* x, void* ctx, in
   if (ret)
     return ret;
 
-  for (e = &x->ResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResourceID->gg;
+       e && e->g.tok == zx_gl_ResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ResourceID(c, (struct zx_gl_ResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EncryptedResourceID->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EncryptedResourceID->gg;
+       e && e->g.tok == zx_gl_EncryptedResourceID_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_EncryptedResourceID(c, (struct zx_gl_EncryptedResourceID_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_gl_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Subscription(c, (struct zx_gl_Subscription_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->QueryItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->QueryItem->gg;
+       e && e->g.tok == zx_gl_QueryItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_QueryItem(c, (struct zx_gl_QueryItem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7482,27 +8082,39 @@ void zx_FREE_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x, int fre
   zx_free_attr(c, x->setID, free_strs);
   zx_free_attr(c, x->setReq, free_strs);
 
-  for (e = &x->AreaComparison->gg; e; e = en) {
+  for (e = &x->AreaComparison->gg;
+       e && e->g.tok == zx_gl_AreaComparison_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)e, free_strs);
   }
-  for (e = &x->eqop->gg; e; e = en) {
+  for (e = &x->eqop->gg;
+       e && e->g.tok == zx_gl_eqop_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_eqop(c, (struct zx_gl_eqop_s*)e, free_strs);
   }
-  for (e = &x->geoinfo->gg; e; e = en) {
+  for (e = &x->geoinfo->gg;
+       e && e->g.tok == zx_gl_geoinfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)e, free_strs);
   }
-  for (e = &x->loc_type->gg; e; e = en) {
+  for (e = &x->loc_type->gg;
+       e && e->g.tok == zx_gl_loc_type_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_loc_type(c, (struct zx_gl_loc_type_s*)e, free_strs);
   }
-  for (e = &x->prio->gg; e; e = en) {
+  for (e = &x->prio->gg;
+       e && e->g.tok == zx_gl_prio_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_prio(c, (struct zx_gl_prio_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -7546,17 +8158,29 @@ void zx_DUP_STRS_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x)
   zx_dup_attr(c, x->setID);
   zx_dup_attr(c, x->setReq);
 
-  for (se = &x->AreaComparison->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AreaComparison->gg;
+       se && se->g.tok == zx_gl_AreaComparison_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)se);
-  for (se = &x->eqop->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->eqop->gg;
+       se && se->g.tok == zx_gl_eqop_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_eqop(c, (struct zx_gl_eqop_s*)se);
-  for (se = &x->geoinfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->geoinfo->gg;
+       se && se->g.tok == zx_gl_geoinfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)se);
-  for (se = &x->loc_type->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->loc_type->gg;
+       se && se->g.tok == zx_gl_loc_type_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_loc_type(c, (struct zx_gl_loc_type_s*)se);
-  for (se = &x->prio->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prio->gg;
+       se && se->g.tok == zx_gl_prio_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_prio(c, (struct zx_gl_prio_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -7581,7 +8205,9 @@ struct zx_gl_QueryItem_s* zx_DEEP_CLONE_gl_QueryItem(struct zx_ctx* c, struct zx
   x->setID = zx_clone_attr(c, x->setID);
   x->setReq = zx_clone_attr(c, x->setReq);
 
-  for (enn = 0, e = &x->AreaComparison->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AreaComparison->gg;
+       e && e->g.tok == zx_gl_AreaComparison_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_AreaComparison(c,(struct zx_gl_AreaComparison_s*)e,dup_strs);
   	  if (!enn)
   	      x->AreaComparison = (struct zx_gl_AreaComparison_s*)en;
@@ -7589,7 +8215,9 @@ struct zx_gl_QueryItem_s* zx_DEEP_CLONE_gl_QueryItem(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->eqop->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->eqop->gg;
+       e && e->g.tok == zx_gl_eqop_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_eqop(c,(struct zx_gl_eqop_s*)e,dup_strs);
   	  if (!enn)
   	      x->eqop = (struct zx_gl_eqop_s*)en;
@@ -7597,7 +8225,9 @@ struct zx_gl_QueryItem_s* zx_DEEP_CLONE_gl_QueryItem(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->geoinfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->geoinfo->gg;
+       e && e->g.tok == zx_gl_geoinfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_geoinfo(c,(struct zx_gl_geoinfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->geoinfo = (struct zx_gl_geoinfo_s*)en;
@@ -7605,7 +8235,9 @@ struct zx_gl_QueryItem_s* zx_DEEP_CLONE_gl_QueryItem(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->loc_type->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->loc_type->gg;
+       e && e->g.tok == zx_gl_loc_type_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_loc_type(c,(struct zx_gl_loc_type_s*)e,dup_strs);
   	  if (!enn)
   	      x->loc_type = (struct zx_gl_loc_type_s*)en;
@@ -7613,7 +8245,9 @@ struct zx_gl_QueryItem_s* zx_DEEP_CLONE_gl_QueryItem(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->prio->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->prio->gg;
+       e && e->g.tok == zx_gl_prio_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_prio(c,(struct zx_gl_prio_s*)e,dup_strs);
   	  if (!enn)
   	      x->prio = (struct zx_gl_prio_s*)en;
@@ -7621,7 +8255,9 @@ struct zx_gl_QueryItem_s* zx_DEEP_CLONE_gl_QueryItem(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -7652,32 +8288,44 @@ int zx_WALK_SO_gl_QueryItem(struct zx_ctx* c, struct zx_gl_QueryItem_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->AreaComparison->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AreaComparison->gg;
+       e && e->g.tok == zx_gl_AreaComparison_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_AreaComparison(c, (struct zx_gl_AreaComparison_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->eqop->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->eqop->gg;
+       e && e->g.tok == zx_gl_eqop_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_eqop(c, (struct zx_gl_eqop_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->geoinfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->geoinfo->gg;
+       e && e->g.tok == zx_gl_geoinfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_geoinfo(c, (struct zx_gl_geoinfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->loc_type->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->loc_type->gg;
+       e && e->g.tok == zx_gl_loc_type_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_loc_type(c, (struct zx_gl_loc_type_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->prio->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->prio->gg;
+       e && e->g.tok == zx_gl_prio_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_prio(c, (struct zx_gl_prio_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -7737,15 +8385,21 @@ void zx_FREE_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* x,
   zx_free_attr(c, x->itemIDRef, free_strs);
   zx_free_attr(c, x->timeStamp, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
   }
-  for (e = &x->Data->gg; e; e = en) {
+  for (e = &x->Data->gg;
+       e && e->g.tok == zx_gl_Data_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Data(c, (struct zx_gl_Data_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -7788,11 +8442,17 @@ void zx_DUP_STRS_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s
   zx_dup_attr(c, x->itemIDRef);
   zx_dup_attr(c, x->timeStamp);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Status(c, (struct zx_gl_Status_s*)se);
-  for (se = &x->Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Data->gg;
+       se && se->g.tok == zx_gl_Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Data(c, (struct zx_gl_Data_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -7816,7 +8476,9 @@ struct zx_gl_QueryResponse_s* zx_DEEP_CLONE_gl_QueryResponse(struct zx_ctx* c, s
   x->itemIDRef = zx_clone_attr(c, x->itemIDRef);
   x->timeStamp = zx_clone_attr(c, x->timeStamp);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Status(c,(struct zx_gl_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_gl_Status_s*)en;
@@ -7824,7 +8486,9 @@ struct zx_gl_QueryResponse_s* zx_DEEP_CLONE_gl_QueryResponse(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Data->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Data->gg;
+       e && e->g.tok == zx_gl_Data_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Data(c,(struct zx_gl_Data_s*)e,dup_strs);
   	  if (!enn)
   	      x->Data = (struct zx_gl_Data_s*)en;
@@ -7832,7 +8496,9 @@ struct zx_gl_QueryResponse_s* zx_DEEP_CLONE_gl_QueryResponse(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -7863,17 +8529,23 @@ int zx_WALK_SO_gl_QueryResponse(struct zx_ctx* c, struct zx_gl_QueryResponse_s* 
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Status(c, (struct zx_gl_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Data->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Data->gg;
+       e && e->g.tok == zx_gl_Data_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Data(c, (struct zx_gl_Data_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8202,7 +8874,9 @@ void zx_FREE_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x, int free_strs
   zx_free_attr(c, x->comment, free_strs);
   zx_free_attr(c, x->ref, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Status(c, (struct zx_gl_Status_s*)e, free_strs);
   }
@@ -8245,7 +8919,9 @@ void zx_DUP_STRS_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x)
   zx_dup_attr(c, x->comment);
   zx_dup_attr(c, x->ref);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_gl_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Status(c, (struct zx_gl_Status_s*)se);
 
 }
@@ -8269,7 +8945,9 @@ struct zx_gl_Status_s* zx_DEEP_CLONE_gl_Status(struct zx_ctx* c, struct zx_gl_St
   x->comment = zx_clone_attr(c, x->comment);
   x->ref = zx_clone_attr(c, x->ref);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Status(c,(struct zx_gl_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_gl_Status_s*)en;
@@ -8300,7 +8978,9 @@ int zx_WALK_SO_gl_Status(struct zx_ctx* c, struct zx_gl_Status_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_gl_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Status(c, (struct zx_gl_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8362,28 +9042,40 @@ void zx_FREE_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x, i
   zx_free_attr(c, x->starts, free_strs);
   zx_free_attr(c, x->subscriptionID, free_strs);
 
-  for (e = &x->ItemSelection->gg; e; e = en) {
+  for (e = &x->ItemSelection->gg;
+       e && e->g.tok == zx_gl_ItemSelection_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)e, free_strs);
   }
-  for (e = &x->RefItem->gg; e; e = en) {
+  for (e = &x->RefItem->gg;
+       e && e->g.tok == zx_gl_RefItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_RefItem(c, (struct zx_gl_RefItem_s*)e, free_strs);
   }
-  for (e = &x->NotifyTo->gg; e; e = en) {
+  for (e = &x->NotifyTo->gg;
+       e && e->g.tok == zx_gl_NotifyTo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_NotifyTo(c, (struct zx_gl_NotifyTo_s*)e, free_strs);
   }
-  for (e = &x->NotifyAdminTo->gg; e; e = en) {
+  for (e = &x->NotifyAdminTo->gg;
+       e && e->g.tok == zx_gl_NotifyAdminTo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_NotifyAdminTo(c, (struct zx_gl_NotifyAdminTo_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Aggregation, free_strs);
-  for (e = &x->Trigger->gg; e; e = en) {
+  for (e = &x->Trigger->gg;
+       e && e->g.tok == zx_gl_Trigger_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Trigger(c, (struct zx_gl_Trigger_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -8428,18 +9120,30 @@ void zx_DUP_STRS_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* 
   zx_dup_attr(c, x->starts);
   zx_dup_attr(c, x->subscriptionID);
 
-  for (se = &x->ItemSelection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemSelection->gg;
+       se && se->g.tok == zx_gl_ItemSelection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)se);
-  for (se = &x->RefItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RefItem->gg;
+       se && se->g.tok == zx_gl_RefItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_RefItem(c, (struct zx_gl_RefItem_s*)se);
-  for (se = &x->NotifyTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NotifyTo->gg;
+       se && se->g.tok == zx_gl_NotifyTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_NotifyTo(c, (struct zx_gl_NotifyTo_s*)se);
-  for (se = &x->NotifyAdminTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NotifyAdminTo->gg;
+       se && se->g.tok == zx_gl_NotifyAdminTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_NotifyAdminTo(c, (struct zx_gl_NotifyAdminTo_s*)se);
   zx_dup_strs_simple_elems(c, x->Aggregation);
-  for (se = &x->Trigger->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Trigger->gg;
+       se && se->g.tok == zx_gl_Trigger_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Trigger(c, (struct zx_gl_Trigger_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -8465,7 +9169,9 @@ struct zx_gl_Subscription_s* zx_DEEP_CLONE_gl_Subscription(struct zx_ctx* c, str
   x->starts = zx_clone_attr(c, x->starts);
   x->subscriptionID = zx_clone_attr(c, x->subscriptionID);
 
-  for (enn = 0, e = &x->ItemSelection->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ItemSelection->gg;
+       e && e->g.tok == zx_gl_ItemSelection_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ItemSelection(c,(struct zx_gl_ItemSelection_s*)e,dup_strs);
   	  if (!enn)
   	      x->ItemSelection = (struct zx_gl_ItemSelection_s*)en;
@@ -8473,7 +9179,9 @@ struct zx_gl_Subscription_s* zx_DEEP_CLONE_gl_Subscription(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RefItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RefItem->gg;
+       e && e->g.tok == zx_gl_RefItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_RefItem(c,(struct zx_gl_RefItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->RefItem = (struct zx_gl_RefItem_s*)en;
@@ -8481,7 +9189,9 @@ struct zx_gl_Subscription_s* zx_DEEP_CLONE_gl_Subscription(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->NotifyTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NotifyTo->gg;
+       e && e->g.tok == zx_gl_NotifyTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_NotifyTo(c,(struct zx_gl_NotifyTo_s*)e,dup_strs);
   	  if (!enn)
   	      x->NotifyTo = (struct zx_gl_NotifyTo_s*)en;
@@ -8489,7 +9199,9 @@ struct zx_gl_Subscription_s* zx_DEEP_CLONE_gl_Subscription(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->NotifyAdminTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NotifyAdminTo->gg;
+       e && e->g.tok == zx_gl_NotifyAdminTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_NotifyAdminTo(c,(struct zx_gl_NotifyAdminTo_s*)e,dup_strs);
   	  if (!enn)
   	      x->NotifyAdminTo = (struct zx_gl_NotifyAdminTo_s*)en;
@@ -8498,7 +9210,9 @@ struct zx_gl_Subscription_s* zx_DEEP_CLONE_gl_Subscription(struct zx_ctx* c, str
   	  enn = en;
   }
   x->Aggregation = zx_deep_clone_simple_elems(c,x->Aggregation, dup_strs);
-  for (enn = 0, e = &x->Trigger->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Trigger->gg;
+       e && e->g.tok == zx_gl_Trigger_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Trigger(c,(struct zx_gl_Trigger_s*)e,dup_strs);
   	  if (!enn)
   	      x->Trigger = (struct zx_gl_Trigger_s*)en;
@@ -8506,7 +9220,9 @@ struct zx_gl_Subscription_s* zx_DEEP_CLONE_gl_Subscription(struct zx_ctx* c, str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -8537,22 +9253,30 @@ int zx_WALK_SO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->ItemSelection->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ItemSelection->gg;
+       e && e->g.tok == zx_gl_ItemSelection_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ItemSelection(c, (struct zx_gl_ItemSelection_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RefItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RefItem->gg;
+       e && e->g.tok == zx_gl_RefItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_RefItem(c, (struct zx_gl_RefItem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->NotifyTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NotifyTo->gg;
+       e && e->g.tok == zx_gl_NotifyTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_NotifyTo(c, (struct zx_gl_NotifyTo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->NotifyAdminTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NotifyAdminTo->gg;
+       e && e->g.tok == zx_gl_NotifyAdminTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_NotifyAdminTo(c, (struct zx_gl_NotifyAdminTo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8560,12 +9284,16 @@ int zx_WALK_SO_gl_Subscription(struct zx_ctx* c, struct zx_gl_Subscription_s* x,
   ret = zx_walk_so_simple_elems(c, x->Aggregation, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Trigger->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Trigger->gg;
+       e && e->g.tok == zx_gl_Trigger_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Trigger(c, (struct zx_gl_Trigger_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8624,15 +9352,21 @@ void zx_FREE_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x, int free_st
 
   zx_free_simple_elems(c, x->Granularity, free_strs);
   zx_free_simple_elems(c, x->Interval, free_strs);
-  for (e = &x->ms_action->gg; e; e = en) {
+  for (e = &x->ms_action->gg;
+       e && e->g.tok == zx_gl_ms_action_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ms_action(c, (struct zx_gl_ms_action_s*)e, free_strs);
   }
-  for (e = &x->ChangeArea->gg; e; e = en) {
+  for (e = &x->ChangeArea->gg;
+       e && e->g.tok == zx_gl_ChangeArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_ChangeArea(c, (struct zx_gl_ChangeArea_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -8674,11 +9408,17 @@ void zx_DUP_STRS_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x)
 
   zx_dup_strs_simple_elems(c, x->Granularity);
   zx_dup_strs_simple_elems(c, x->Interval);
-  for (se = &x->ms_action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ms_action->gg;
+       se && se->g.tok == zx_gl_ms_action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ms_action(c, (struct zx_gl_ms_action_s*)se);
-  for (se = &x->ChangeArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ChangeArea->gg;
+       se && se->g.tok == zx_gl_ChangeArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_ChangeArea(c, (struct zx_gl_ChangeArea_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -8701,7 +9441,9 @@ struct zx_gl_Trigger_s* zx_DEEP_CLONE_gl_Trigger(struct zx_ctx* c, struct zx_gl_
 
   x->Granularity = zx_deep_clone_simple_elems(c,x->Granularity, dup_strs);
   x->Interval = zx_deep_clone_simple_elems(c,x->Interval, dup_strs);
-  for (enn = 0, e = &x->ms_action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ms_action->gg;
+       e && e->g.tok == zx_gl_ms_action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ms_action(c,(struct zx_gl_ms_action_s*)e,dup_strs);
   	  if (!enn)
   	      x->ms_action = (struct zx_gl_ms_action_s*)en;
@@ -8709,7 +9451,9 @@ struct zx_gl_Trigger_s* zx_DEEP_CLONE_gl_Trigger(struct zx_ctx* c, struct zx_gl_
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ChangeArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ChangeArea->gg;
+       e && e->g.tok == zx_gl_ChangeArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_ChangeArea(c,(struct zx_gl_ChangeArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->ChangeArea = (struct zx_gl_ChangeArea_s*)en;
@@ -8717,7 +9461,9 @@ struct zx_gl_Trigger_s* zx_DEEP_CLONE_gl_Trigger(struct zx_ctx* c, struct zx_gl_
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -8754,17 +9500,23 @@ int zx_WALK_SO_gl_Trigger(struct zx_ctx* c, struct zx_gl_Trigger_s* x, void* ctx
   ret = zx_walk_so_simple_elems(c, x->Interval, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ms_action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ms_action->gg;
+       e && e->g.tok == zx_gl_ms_action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ms_action(c, (struct zx_gl_ms_action_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ChangeArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ChangeArea->gg;
+       e && e->g.tok == zx_gl_ChangeArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_ChangeArea(c, (struct zx_gl_ChangeArea_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -8969,7 +9721,9 @@ void zx_FREE_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, int free_strs)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->resp_req->gg; e; e = en) {
+  for (e = &x->resp_req->gg;
+       e && e->g.tok == zx_gl_resp_req_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_resp_req(c, (struct zx_gl_resp_req_s*)e, free_strs);
   }
@@ -8977,7 +9731,9 @@ void zx_FREE_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, int free_strs)
   zx_free_simple_elems(c, x->hor_acc, free_strs);
   zx_free_simple_elems(c, x->alt_acc, free_strs);
   zx_free_simple_elems(c, x->max_loc_age, free_strs);
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -9017,13 +9773,17 @@ void zx_DUP_STRS_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->resp_req->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->resp_req->gg;
+       se && se->g.tok == zx_gl_resp_req_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_resp_req(c, (struct zx_gl_resp_req_s*)se);
   zx_dup_strs_simple_elems(c, x->ll_acc);
   zx_dup_strs_simple_elems(c, x->hor_acc);
   zx_dup_strs_simple_elems(c, x->alt_acc);
   zx_dup_strs_simple_elems(c, x->max_loc_age);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -9044,7 +9804,9 @@ struct zx_gl_eqop_s* zx_DEEP_CLONE_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->resp_req->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->resp_req->gg;
+       e && e->g.tok == zx_gl_resp_req_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_resp_req(c,(struct zx_gl_resp_req_s*)e,dup_strs);
   	  if (!enn)
   	      x->resp_req = (struct zx_gl_resp_req_s*)en;
@@ -9056,7 +9818,9 @@ struct zx_gl_eqop_s* zx_DEEP_CLONE_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s
   x->hor_acc = zx_deep_clone_simple_elems(c,x->hor_acc, dup_strs);
   x->alt_acc = zx_deep_clone_simple_elems(c,x->alt_acc, dup_strs);
   x->max_loc_age = zx_deep_clone_simple_elems(c,x->max_loc_age, dup_strs);
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -9087,7 +9851,9 @@ int zx_WALK_SO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, void* ctx, int 
   if (ret)
     return ret;
 
-  for (e = &x->resp_req->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->resp_req->gg;
+       e && e->g.tok == zx_gl_resp_req_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_resp_req(c, (struct zx_gl_resp_req_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9104,7 +9870,9 @@ int zx_WALK_SO_gl_eqop(struct zx_ctx* c, struct zx_gl_eqop_s* x, void* ctx, int 
   ret = zx_walk_so_simple_elems(c, x->max_loc_age, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9427,15 +10195,21 @@ void zx_FREE_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, int free_st
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->CoordinateReferenceSystem->gg; e; e = en) {
+  for (e = &x->CoordinateReferenceSystem->gg;
+       e && e->g.tok == zx_gl_CoordinateReferenceSystem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CoordinateReferenceSystem(c, (struct zx_gl_CoordinateReferenceSystem_s*)e, free_strs);
   }
-  for (e = &x->CivilData->gg; e; e = en) {
+  for (e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, free_strs);
   }
-  for (e = &x->shape->gg; e; e = en) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
   }
@@ -9443,7 +10217,9 @@ void zx_FREE_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, int free_st
   zx_free_simple_elems(c, x->alt, free_strs);
   zx_free_simple_elems(c, x->direction, free_strs);
   zx_free_simple_elems(c, x->Heading, free_strs);
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -9483,17 +10259,25 @@ void zx_DUP_STRS_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->CoordinateReferenceSystem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CoordinateReferenceSystem->gg;
+       se && se->g.tok == zx_gl_CoordinateReferenceSystem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CoordinateReferenceSystem(c, (struct zx_gl_CoordinateReferenceSystem_s*)se);
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CivilData(c, (struct zx_gl_CivilData_s*)se);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_shape(c, (struct zx_gl_shape_s*)se);
   zx_dup_strs_simple_elems(c, x->speed);
   zx_dup_strs_simple_elems(c, x->alt);
   zx_dup_strs_simple_elems(c, x->direction);
   zx_dup_strs_simple_elems(c, x->Heading);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -9514,7 +10298,9 @@ struct zx_gl_geoinfo_s* zx_DEEP_CLONE_gl_geoinfo(struct zx_ctx* c, struct zx_gl_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->CoordinateReferenceSystem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CoordinateReferenceSystem->gg;
+       e && e->g.tok == zx_gl_CoordinateReferenceSystem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CoordinateReferenceSystem(c,(struct zx_gl_CoordinateReferenceSystem_s*)e,dup_strs);
   	  if (!enn)
   	      x->CoordinateReferenceSystem = (struct zx_gl_CoordinateReferenceSystem_s*)en;
@@ -9522,7 +10308,9 @@ struct zx_gl_geoinfo_s* zx_DEEP_CLONE_gl_geoinfo(struct zx_ctx* c, struct zx_gl_
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CivilData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CivilData(c,(struct zx_gl_CivilData_s*)e,dup_strs);
   	  if (!enn)
   	      x->CivilData = (struct zx_gl_CivilData_s*)en;
@@ -9530,7 +10318,9 @@ struct zx_gl_geoinfo_s* zx_DEEP_CLONE_gl_geoinfo(struct zx_ctx* c, struct zx_gl_
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_shape(c,(struct zx_gl_shape_s*)e,dup_strs);
   	  if (!enn)
   	      x->shape = (struct zx_gl_shape_s*)en;
@@ -9542,7 +10332,9 @@ struct zx_gl_geoinfo_s* zx_DEEP_CLONE_gl_geoinfo(struct zx_ctx* c, struct zx_gl_
   x->alt = zx_deep_clone_simple_elems(c,x->alt, dup_strs);
   x->direction = zx_deep_clone_simple_elems(c,x->direction, dup_strs);
   x->Heading = zx_deep_clone_simple_elems(c,x->Heading, dup_strs);
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -9573,17 +10365,23 @@ int zx_WALK_SO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->CoordinateReferenceSystem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CoordinateReferenceSystem->gg;
+       e && e->g.tok == zx_gl_CoordinateReferenceSystem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CoordinateReferenceSystem(c, (struct zx_gl_CoordinateReferenceSystem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CivilData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_shape(c, (struct zx_gl_shape_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9600,7 +10398,9 @@ int zx_WALK_SO_gl_geoinfo(struct zx_ctx* c, struct zx_gl_geoinfo_s* x, void* ctx
   ret = zx_walk_so_simple_elems(c, x->Heading, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -9657,7 +10457,9 @@ void zx_FREE_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->LinearRing->gg; e; e = en) {
+  for (e = &x->LinearRing->gg;
+       e && e->g.tok == zx_gl_LinearRing_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)e, free_strs);
   }
@@ -9697,7 +10499,9 @@ void zx_DUP_STRS_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundary
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->LinearRing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LinearRing->gg;
+       se && se->g.tok == zx_gl_LinearRing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)se);
 
 }
@@ -9718,7 +10522,9 @@ struct zx_gl_innerBoundaryIs_s* zx_DEEP_CLONE_gl_innerBoundaryIs(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->LinearRing->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LinearRing->gg;
+       e && e->g.tok == zx_gl_LinearRing_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_LinearRing(c,(struct zx_gl_LinearRing_s*)e,dup_strs);
   	  if (!enn)
   	      x->LinearRing = (struct zx_gl_LinearRing_s*)en;
@@ -9749,7 +10555,9 @@ int zx_WALK_SO_gl_innerBoundaryIs(struct zx_ctx* c, struct zx_gl_innerBoundaryIs
   if (ret)
     return ret;
 
-  for (e = &x->LinearRing->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LinearRing->gg;
+       e && e->g.tok == zx_gl_LinearRing_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -10072,7 +10880,9 @@ void zx_FREE_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->LinearRing->gg; e; e = en) {
+  for (e = &x->LinearRing->gg;
+       e && e->g.tok == zx_gl_LinearRing_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)e, free_strs);
   }
@@ -10112,7 +10922,9 @@ void zx_DUP_STRS_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundary
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->LinearRing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LinearRing->gg;
+       se && se->g.tok == zx_gl_LinearRing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)se);
 
 }
@@ -10133,7 +10945,9 @@ struct zx_gl_outerBoundaryIs_s* zx_DEEP_CLONE_gl_outerBoundaryIs(struct zx_ctx* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->LinearRing->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LinearRing->gg;
+       e && e->g.tok == zx_gl_LinearRing_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_LinearRing(c,(struct zx_gl_LinearRing_s*)e,dup_strs);
   	  if (!enn)
   	      x->LinearRing = (struct zx_gl_LinearRing_s*)en;
@@ -10164,7 +10978,9 @@ int zx_WALK_SO_gl_outerBoundaryIs(struct zx_ctx* c, struct zx_gl_outerBoundaryIs
   if (ret)
     return ret;
 
-  for (e = &x->LinearRing->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LinearRing->gg;
+       e && e->g.tok == zx_gl_LinearRing_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_LinearRing(c, (struct zx_gl_LinearRing_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -10223,11 +11039,15 @@ void zx_FREE_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, int free_strs)
   zx_free_attr(c, x->ACC, free_strs);
 
   zx_free_simple_elems(c, x->time, free_strs);
-  for (e = &x->CivilData->gg; e; e = en) {
+  for (e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, free_strs);
   }
-  for (e = &x->shape->gg; e; e = en) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_shape(c, (struct zx_gl_shape_s*)e, free_strs);
   }
@@ -10237,7 +11057,9 @@ void zx_FREE_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, int free_strs)
   zx_free_simple_elems(c, x->direction, free_strs);
   zx_free_simple_elems(c, x->Heading, free_strs);
   zx_free_simple_elems(c, x->lev_conf, free_strs);
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -10279,9 +11101,13 @@ void zx_DUP_STRS_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x)
   zx_dup_attr(c, x->ACC);
 
   zx_dup_strs_simple_elems(c, x->time);
-  for (se = &x->CivilData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CivilData->gg;
+       se && se->g.tok == zx_gl_CivilData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CivilData(c, (struct zx_gl_CivilData_s*)se);
-  for (se = &x->shape->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shape->gg;
+       se && se->g.tok == zx_gl_shape_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_shape(c, (struct zx_gl_shape_s*)se);
   zx_dup_strs_simple_elems(c, x->alt);
   zx_dup_strs_simple_elems(c, x->alt_acc);
@@ -10289,7 +11115,9 @@ void zx_DUP_STRS_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x)
   zx_dup_strs_simple_elems(c, x->direction);
   zx_dup_strs_simple_elems(c, x->Heading);
   zx_dup_strs_simple_elems(c, x->lev_conf);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -10312,7 +11140,9 @@ struct zx_gl_pd_s* zx_DEEP_CLONE_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, i
   x->ACC = zx_clone_attr(c, x->ACC);
 
   x->time = zx_deep_clone_simple_elems(c,x->time, dup_strs);
-  for (enn = 0, e = &x->CivilData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CivilData(c,(struct zx_gl_CivilData_s*)e,dup_strs);
   	  if (!enn)
   	      x->CivilData = (struct zx_gl_CivilData_s*)en;
@@ -10320,7 +11150,9 @@ struct zx_gl_pd_s* zx_DEEP_CLONE_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, i
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_shape(c,(struct zx_gl_shape_s*)e,dup_strs);
   	  if (!enn)
   	      x->shape = (struct zx_gl_shape_s*)en;
@@ -10334,7 +11166,9 @@ struct zx_gl_pd_s* zx_DEEP_CLONE_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, i
   x->direction = zx_deep_clone_simple_elems(c,x->direction, dup_strs);
   x->Heading = zx_deep_clone_simple_elems(c,x->Heading, dup_strs);
   x->lev_conf = zx_deep_clone_simple_elems(c,x->lev_conf, dup_strs);
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -10368,12 +11202,16 @@ int zx_WALK_SO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, void* ctx, int (*ca
   ret = zx_walk_so_simple_elems(c, x->time, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->CivilData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CivilData->gg;
+       e && e->g.tok == zx_gl_CivilData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CivilData(c, (struct zx_gl_CivilData_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->shape->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->shape->gg;
+       e && e->g.tok == zx_gl_shape_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_shape(c, (struct zx_gl_shape_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -10396,7 +11234,9 @@ int zx_WALK_SO_gl_pd(struct zx_ctx* c, struct zx_gl_pd_s* x, void* ctx, int (*ca
   ret = zx_walk_so_simple_elems(c, x->lev_conf, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -10719,51 +11559,75 @@ void zx_FREE_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x, int free_strs)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Point->gg; e; e = en) {
+  for (e = &x->Point->gg;
+       e && e->g.tok == zx_gl_Point_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Point(c, (struct zx_gl_Point_s*)e, free_strs);
   }
-  for (e = &x->LineString->gg; e; e = en) {
+  for (e = &x->LineString->gg;
+       e && e->g.tok == zx_gl_LineString_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_LineString(c, (struct zx_gl_LineString_s*)e, free_strs);
   }
-  for (e = &x->Polygon->gg; e; e = en) {
+  for (e = &x->Polygon->gg;
+       e && e->g.tok == zx_gl_Polygon_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Polygon(c, (struct zx_gl_Polygon_s*)e, free_strs);
   }
-  for (e = &x->Box->gg; e; e = en) {
+  for (e = &x->Box->gg;
+       e && e->g.tok == zx_gl_Box_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Box(c, (struct zx_gl_Box_s*)e, free_strs);
   }
-  for (e = &x->CircularArea->gg; e; e = en) {
+  for (e = &x->CircularArea->gg;
+       e && e->g.tok == zx_gl_CircularArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)e, free_strs);
   }
-  for (e = &x->CircularArcArea->gg; e; e = en) {
+  for (e = &x->CircularArcArea->gg;
+       e && e->g.tok == zx_gl_CircularArcArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)e, free_strs);
   }
-  for (e = &x->EllipticalArea->gg; e; e = en) {
+  for (e = &x->EllipticalArea->gg;
+       e && e->g.tok == zx_gl_EllipticalArea_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)e, free_strs);
   }
-  for (e = &x->GeometryCollection->gg; e; e = en) {
+  for (e = &x->GeometryCollection->gg;
+       e && e->g.tok == zx_gl_GeometryCollection_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_GeometryCollection(c, (struct zx_gl_GeometryCollection_s*)e, free_strs);
   }
-  for (e = &x->MultiLineString->gg; e; e = en) {
+  for (e = &x->MultiLineString->gg;
+       e && e->g.tok == zx_gl_MultiLineString_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_MultiLineString(c, (struct zx_gl_MultiLineString_s*)e, free_strs);
   }
-  for (e = &x->MultiPoint->gg; e; e = en) {
+  for (e = &x->MultiPoint->gg;
+       e && e->g.tok == zx_gl_MultiPoint_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_MultiPoint(c, (struct zx_gl_MultiPoint_s*)e, free_strs);
   }
-  for (e = &x->MultiPolygon->gg; e; e = en) {
+  for (e = &x->MultiPolygon->gg;
+       e && e->g.tok == zx_gl_MultiPolygon_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_MultiPolygon(c, (struct zx_gl_MultiPolygon_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_gl_Extension(c, (struct zx_gl_Extension_s*)e, free_strs);
   }
@@ -10803,29 +11667,53 @@ void zx_DUP_STRS_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Point->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Point->gg;
+       se && se->g.tok == zx_gl_Point_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Point(c, (struct zx_gl_Point_s*)se);
-  for (se = &x->LineString->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LineString->gg;
+       se && se->g.tok == zx_gl_LineString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_LineString(c, (struct zx_gl_LineString_s*)se);
-  for (se = &x->Polygon->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Polygon->gg;
+       se && se->g.tok == zx_gl_Polygon_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Polygon(c, (struct zx_gl_Polygon_s*)se);
-  for (se = &x->Box->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Box->gg;
+       se && se->g.tok == zx_gl_Box_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Box(c, (struct zx_gl_Box_s*)se);
-  for (se = &x->CircularArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArea->gg;
+       se && se->g.tok == zx_gl_CircularArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)se);
-  for (se = &x->CircularArcArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CircularArcArea->gg;
+       se && se->g.tok == zx_gl_CircularArcArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)se);
-  for (se = &x->EllipticalArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EllipticalArea->gg;
+       se && se->g.tok == zx_gl_EllipticalArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)se);
-  for (se = &x->GeometryCollection->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GeometryCollection->gg;
+       se && se->g.tok == zx_gl_GeometryCollection_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_GeometryCollection(c, (struct zx_gl_GeometryCollection_s*)se);
-  for (se = &x->MultiLineString->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MultiLineString->gg;
+       se && se->g.tok == zx_gl_MultiLineString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_MultiLineString(c, (struct zx_gl_MultiLineString_s*)se);
-  for (se = &x->MultiPoint->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MultiPoint->gg;
+       se && se->g.tok == zx_gl_MultiPoint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_MultiPoint(c, (struct zx_gl_MultiPoint_s*)se);
-  for (se = &x->MultiPolygon->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MultiPolygon->gg;
+       se && se->g.tok == zx_gl_MultiPolygon_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_MultiPolygon(c, (struct zx_gl_MultiPolygon_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_gl_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_gl_Extension(c, (struct zx_gl_Extension_s*)se);
 
 }
@@ -10846,7 +11734,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Point->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Point->gg;
+       e && e->g.tok == zx_gl_Point_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Point(c,(struct zx_gl_Point_s*)e,dup_strs);
   	  if (!enn)
   	      x->Point = (struct zx_gl_Point_s*)en;
@@ -10854,7 +11744,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->LineString->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LineString->gg;
+       e && e->g.tok == zx_gl_LineString_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_LineString(c,(struct zx_gl_LineString_s*)e,dup_strs);
   	  if (!enn)
   	      x->LineString = (struct zx_gl_LineString_s*)en;
@@ -10862,7 +11754,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Polygon->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Polygon->gg;
+       e && e->g.tok == zx_gl_Polygon_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Polygon(c,(struct zx_gl_Polygon_s*)e,dup_strs);
   	  if (!enn)
   	      x->Polygon = (struct zx_gl_Polygon_s*)en;
@@ -10870,7 +11764,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Box->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Box->gg;
+       e && e->g.tok == zx_gl_Box_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Box(c,(struct zx_gl_Box_s*)e,dup_strs);
   	  if (!enn)
   	      x->Box = (struct zx_gl_Box_s*)en;
@@ -10878,7 +11774,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CircularArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CircularArea->gg;
+       e && e->g.tok == zx_gl_CircularArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CircularArea(c,(struct zx_gl_CircularArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->CircularArea = (struct zx_gl_CircularArea_s*)en;
@@ -10886,7 +11784,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CircularArcArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CircularArcArea->gg;
+       e && e->g.tok == zx_gl_CircularArcArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_CircularArcArea(c,(struct zx_gl_CircularArcArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->CircularArcArea = (struct zx_gl_CircularArcArea_s*)en;
@@ -10894,7 +11794,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->EllipticalArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EllipticalArea->gg;
+       e && e->g.tok == zx_gl_EllipticalArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_EllipticalArea(c,(struct zx_gl_EllipticalArea_s*)e,dup_strs);
   	  if (!enn)
   	      x->EllipticalArea = (struct zx_gl_EllipticalArea_s*)en;
@@ -10902,7 +11804,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->GeometryCollection->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->GeometryCollection->gg;
+       e && e->g.tok == zx_gl_GeometryCollection_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_GeometryCollection(c,(struct zx_gl_GeometryCollection_s*)e,dup_strs);
   	  if (!enn)
   	      x->GeometryCollection = (struct zx_gl_GeometryCollection_s*)en;
@@ -10910,7 +11814,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MultiLineString->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MultiLineString->gg;
+       e && e->g.tok == zx_gl_MultiLineString_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_MultiLineString(c,(struct zx_gl_MultiLineString_s*)e,dup_strs);
   	  if (!enn)
   	      x->MultiLineString = (struct zx_gl_MultiLineString_s*)en;
@@ -10918,7 +11824,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MultiPoint->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MultiPoint->gg;
+       e && e->g.tok == zx_gl_MultiPoint_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_MultiPoint(c,(struct zx_gl_MultiPoint_s*)e,dup_strs);
   	  if (!enn)
   	      x->MultiPoint = (struct zx_gl_MultiPoint_s*)en;
@@ -10926,7 +11834,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->MultiPolygon->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->MultiPolygon->gg;
+       e && e->g.tok == zx_gl_MultiPolygon_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_MultiPolygon(c,(struct zx_gl_MultiPolygon_s*)e,dup_strs);
   	  if (!enn)
   	      x->MultiPolygon = (struct zx_gl_MultiPolygon_s*)en;
@@ -10934,7 +11844,9 @@ struct zx_gl_shape_s* zx_DEEP_CLONE_gl_shape(struct zx_ctx* c, struct zx_gl_shap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_gl_Extension(c,(struct zx_gl_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_gl_Extension_s*)en;
@@ -10965,62 +11877,86 @@ int zx_WALK_SO_gl_shape(struct zx_ctx* c, struct zx_gl_shape_s* x, void* ctx, in
   if (ret)
     return ret;
 
-  for (e = &x->Point->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Point->gg;
+       e && e->g.tok == zx_gl_Point_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Point(c, (struct zx_gl_Point_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->LineString->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LineString->gg;
+       e && e->g.tok == zx_gl_LineString_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_LineString(c, (struct zx_gl_LineString_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Polygon->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Polygon->gg;
+       e && e->g.tok == zx_gl_Polygon_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Polygon(c, (struct zx_gl_Polygon_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Box->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Box->gg;
+       e && e->g.tok == zx_gl_Box_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Box(c, (struct zx_gl_Box_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CircularArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CircularArea->gg;
+       e && e->g.tok == zx_gl_CircularArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CircularArea(c, (struct zx_gl_CircularArea_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CircularArcArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CircularArcArea->gg;
+       e && e->g.tok == zx_gl_CircularArcArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_CircularArcArea(c, (struct zx_gl_CircularArcArea_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->EllipticalArea->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EllipticalArea->gg;
+       e && e->g.tok == zx_gl_EllipticalArea_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_EllipticalArea(c, (struct zx_gl_EllipticalArea_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->GeometryCollection->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->GeometryCollection->gg;
+       e && e->g.tok == zx_gl_GeometryCollection_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_GeometryCollection(c, (struct zx_gl_GeometryCollection_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MultiLineString->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MultiLineString->gg;
+       e && e->g.tok == zx_gl_MultiLineString_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_MultiLineString(c, (struct zx_gl_MultiLineString_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MultiPoint->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MultiPoint->gg;
+       e && e->g.tok == zx_gl_MultiPoint_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_MultiPoint(c, (struct zx_gl_MultiPoint_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->MultiPolygon->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->MultiPolygon->gg;
+       e && e->g.tok == zx_gl_MultiPolygon_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_MultiPolygon(c, (struct zx_gl_MultiPolygon_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_gl_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_gl_Extension(c, (struct zx_gl_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;

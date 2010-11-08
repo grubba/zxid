@@ -157,7 +157,7 @@ int zxid_cache_epr(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
     return 0;
   }
   zxid_epr_path(cf, ZXID_SES_DIR, ses->sid, path, sizeof(path),
-		epr->Metadata->ServiceType->content, ss);
+		ZX_GET_CONTENT(epr->Metadata->ServiceType), ss);
   //fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
   fd = open_fd_from_path(O_CREAT | O_WRONLY | O_TRUNC, 0666, "zxid_cache_epr", 1, "%s", path);
   if (fd == BADFD) {
@@ -188,8 +188,8 @@ void zxid_snarf_eprs(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr)
   struct zx_str* urlss;
   int wsf20 = 0;
   for (; epr && epr->gg.g.tok == zx_a_EndpointReference_ELEM; epr = (zxid_epr*)epr->gg.g.n) {
-    ss = epr->Metadata->ServiceType->content;
-    urlss = epr->Address->gg.content;
+    ss = ZX_GET_CONTENT(epr->Metadata->ServiceType);
+    urlss = ZX_GET_CONTENT(epr->Address);
     D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
     if (zxid_cache_epr(cf, ses, epr)) {
       ++wsf20;
@@ -237,7 +237,7 @@ void zxid_snarf_eprs_from_ses(zxid_conf* cf, zxid_ses* ses)
 	    ss = zx_EASY_ENC_WO_any_elem(cf->ctx, &av->ResourceOffering->gg);
 	    
 	    zxid_epr_path(cf, ZXID_SES_DIR, ses->sid, path, sizeof(path),
-			  av->EndpointReference->Metadata->ServiceType->content, ss);
+			  ZX_GET_CONTENT(av->EndpointReference->Metadata->ServiceType), ss);
 	    fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	    if (fd == -1) {
 	      perror("open for write epr");
@@ -347,29 +347,29 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
     }
     epr = r->EndpointReference;
     ZX_FREE(cf->ctx, r);
-    if (!epr->Address || !epr->Address->gg.content->s || !epr->Address->gg.content->len) {
+    if (!ZX_SIMPLE_ELEM_CHK(epr->Address)) {
       ERR("The EPR does not have <Address> element. Rejected. %p", epr->Address);
       continue;
     }
     /* *** add ID-WSF 1.1 handling */
     md = epr->Metadata;
     if (svc &&
-	(!md || !md->ServiceType || !md->ServiceType->content || !md->ServiceType->content->len)) {
+	(!md || !ZX_SIMPLE_ELEM_CHK(md->ServiceType))) {
       ERR("No Metadata %p or ServiceType. Failed to parse epr_buf(%.*s)", md, epr_len, epr_buf);
       continue;
     }
-    if (svc && (len != md->ServiceType->content->len
-		|| memcmp(svc, md->ServiceType->content->s, len))) {
-      D("%d Internal svctype(%.*s) does not match desired(%s). Reject.", n, md->ServiceType->content->len, md->ServiceType->content->s, svc);
+    if (svc && (len != ZX_GET_CONTENT_LEN(md->ServiceType)
+		|| memcmp(svc, ZX_GET_CONTENT_S(md->ServiceType), len))) {
+      D("%d Internal svctype(%.*s) does not match desired(%s). Reject.", n, ZX_GET_CONTENT_LEN(md->ServiceType), ZX_GET_CONTENT_S(md->ServiceType), svc);
       continue;
     }
     
-    if (url && (strlen(url) != epr->Address->gg.content->len
-		|| memcmp(url, epr->Address->gg.content->s, epr->Address->gg.content->len))) {
-      if (md && md->ProviderID && md->ProviderID->content || md->ProviderID->content->len
-	  && (strlen(url) != md->ProviderID->content->len
-	      || memcmp(url, md->ProviderID->content->s, md->ProviderID->content->len))) {
-	D("%d ProviderID(%.*s) or endpoint URL(%.*s) does not match desired url(%s). Reject.", n, epr->Metadata->ProviderID->content->len, epr->Metadata->ProviderID->content->s, epr->Address->gg.content->len, epr->Address->gg.content->s, url);
+    if (url && (strlen(url) != ZX_GET_CONTENT_LEN(epr->Address)
+		|| memcmp(url, ZX_GET_CONTENT_S(epr->Address), ZX_GET_CONTENT_LEN(epr->Address)))) {
+      if (md && ZX_SIMPLE_ELEM_CHK(md->ProviderID)
+	  && (strlen(url) != ZX_GET_CONTENT_LEN(md->ProviderID)
+	      || memcmp(url, ZX_GET_CONTENT_S(md->ProviderID), ZX_GET_CONTENT_LEN(md->ProviderID)))) {
+	D("%d ProviderID(%.*s) or endpoint URL(%.*s) does not match desired url(%s). Reject.", n, ZX_GET_CONTENT_LEN(epr->Metadata->ProviderID), ZX_GET_CONTENT_S(epr->Metadata->ProviderID), ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address), url);
 	continue;
       }
     }
@@ -381,7 +381,7 @@ zxid_epr* zxid_find_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const cha
     if (--n)
       continue;
     
-    D("%d Found svc(%s) url(%.*s)", n, STRNULLCHK(svc), epr->Address->gg.content->len, epr->Address->gg.content->s);
+    D("%d Found svc(%s) url(%.*s)", n, STRNULLCHK(svc), ZX_GET_CONTENT_LEN(epr->Address), ZX_GET_CONTENT_S(epr->Address));
     closedir(dir);
     D_DEDENT("find_epr: ");
     return epr;
@@ -422,9 +422,9 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
     return 0;  /* Do not discover any more */
   
   INFO("%d Discovering svc(%s)...", n, STRNULLCHK(svc));
-  env = zx_NEW_e_Envelope(cf->ctx);
-  env->Header = zx_NEW_e_Header(cf->ctx);
-  env->Body = zx_NEW_e_Body(cf->ctx);
+  env = zx_NEW_e_Envelope(cf->ctx,0);
+  env->Header = zx_NEW_e_Header(cf->ctx,env);
+  env->Body = zx_NEW_e_Body(cf->ctx,env);
   env->Body->Query = zxid_mk_di_query(cf, svc, url, di_opt, 0);
   if (ses->deleg_di_epr) {
     epr = ses->deleg_di_epr;
@@ -442,8 +442,8 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
       for (epr = env->Body->QueryResponse->EndpointReference;
 	   epr && epr->gg.g.tok == zx_a_EndpointReference_ELEM;
 	   epr = (zxid_epr*)ZX_NEXT(epr)) {
-	ss = epr->Metadata->ServiceType->content;
-	urlss = epr->Address->gg.content;
+	ss = ZX_GET_CONTENT(epr->Metadata->ServiceType);
+	urlss = ZX_GET_CONTENT(epr->Address);
 	D("%d: EPR svc(%.*s) url(%.*s)", wsf20, ss?ss->len:0, ss?ss->s:"", urlss?urlss->len:0, urlss?urlss->s:"");
 	if (zxid_cache_epr(cf, ses, epr)) {
 	  ++wsf20;
@@ -467,33 +467,41 @@ zxid_epr* zxid_get_epr(zxid_conf* cf, zxid_ses* ses, const char* svc, const char
 
 /* Called by: */
 struct zx_str* zxid_get_epr_address(zxid_conf* cf, zxid_epr* epr) {
-  return epr&&epr->Address?epr->Address->gg.content:0;
+  if (!epr)
+    return 0;
+  return ZX_GET_CONTENT(epr->Address);
 }
 
 /*() Accessor function for extracting endpoint ProviderID. */
 
 /* Called by: */
 struct zx_str* zxid_get_epr_entid(zxid_conf* cf, zxid_epr* epr) {
-  return epr&&epr->Metadata&&epr->Metadata->ProviderID?epr->Metadata->ProviderID->content:0;
+  if (!epr || !epr->Metadata)
+    return 0;
+  return ZX_GET_CONTENT(epr->Metadata->ProviderID);
 }
 
 /*() Accessor function for extracting endpoint Description (Abstract). */
 
 /* Called by: */
 struct zx_str* zxid_get_epr_desc(zxid_conf* cf, zxid_epr* epr) {
-  return epr&&epr->Metadata&&epr->Metadata->Abstract?epr->Metadata->Abstract->content:0;
+  if (!epr || !epr->Metadata)
+    return 0;
+  return ZX_GET_CONTENT(epr->Metadata->Abstract);
 }
 
 /*() Accessor function for extracting security mechanism ID. */
 
 struct zx_str* zxid_get_epr_secmech(zxid_conf* cf, zxid_epr* epr) {
   struct zx_elem_s* secmech;
-  if (!epr || !epr->Metadata || !epr->Metadata->SecurityContext
+  if (!epr || !epr->Metadata)
+    return 0;
+  if (!epr->Metadata->SecurityContext
       || (secmech = epr->Metadata->SecurityContext->SecurityMechID)) {
     ERR("Null EPR or EPR is missing Metadata, SecurityContext or SecurityMechID. %p", epr);
     return 0;
   }
-  return secmech->content;
+  return ZX_GET_CONTENT(secmech);
 }
 
 /*() Set security mechanism ID.
@@ -511,14 +519,16 @@ void zxid_set_epr_secmech(zxid_conf* cf, zxid_epr* epr, const char* secmec) {
     return;
   }
   if (!epr->Metadata)
-    epr->Metadata = zx_NEW_a_Metadata(cf->ctx);
+    epr->Metadata = zx_NEW_a_Metadata(cf->ctx, &epr->gg);
   if (!epr->Metadata->SecurityContext)
-    epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx);
+    epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx, &epr->Metadata->gg);
   if (secmec) {
-    epr->Metadata->SecurityContext->SecurityMechID = zx_dup_simple_elem(cf->ctx, secmec);
+    epr->Metadata->SecurityContext->SecurityMechID
+      = zx_dup_simple_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, secmec);
     INFO("SecurityMechID set to(%s)", secmec);
   } else {
-    epr->Metadata->SecurityContext->SecurityMechID = zx_dup_simple_elem(cf->ctx, secmec);
+    epr->Metadata->SecurityContext->SecurityMechID
+      = zx_dup_simple_elem(cf->ctx, &epr->Metadata->SecurityContext->gg, zx_di_SecurityMechID_ELEM, 0);
     INFO("SecurityMechID set null %d", 0);
   }
 }
@@ -550,9 +560,9 @@ void zxid_set_epr_token(zxid_conf* cf, zxid_epr* epr, zxid_tok* tok) {
     return;
   }
   if (!epr->Metadata)
-    epr->Metadata = zx_NEW_a_Metadata(cf->ctx);
+    epr->Metadata = zx_NEW_a_Metadata(cf->ctx, &epr->gg);
   if (!epr->Metadata->SecurityContext)
-    epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx);
+    epr->Metadata->SecurityContext = zx_NEW_di_SecurityContext(cf->ctx, &epr->Metadata->gg);
   epr->Metadata->SecurityContext->Token = tok;
   INFO("EPR token set %p", tok);
 }
@@ -566,19 +576,22 @@ void zxid_set_epr_token(zxid_conf* cf, zxid_epr* epr, zxid_tok* tok) {
 /* Called by: */
 zxid_epr* zxid_new_epr(zxid_conf* cf, char* address, char* desc, char* entid, char* svctype)
 {
-  zxid_epr* epr = zx_NEW_a_EndpointReference(cf->ctx);
+  zxid_epr* epr = zx_NEW_a_EndpointReference(cf->ctx,0);
   if (address) {
-    epr->Address = zx_NEW_a_Address(cf->ctx);
-    epr->Address->gg.content = zx_dup_str(cf->ctx, address);
+    epr->Address = zx_NEW_a_Address(cf->ctx, &epr->gg);
+    zx_add_content(cf->ctx, &epr->Address->gg, zx_dup_str(cf->ctx, address));
   }
   if (desc || entid || svctype) {
-    epr->Metadata = zx_NEW_a_Metadata(cf->ctx);
+    epr->Metadata = zx_NEW_a_Metadata(cf->ctx, &epr->gg);
     if (desc)
-      epr->Metadata->Abstract = zx_dup_simple_elem(cf->ctx, desc);
+      epr->Metadata->Abstract
+	= zx_dup_simple_elem(cf->ctx, &epr->Metadata->gg, zx_di_Abstract_ELEM, desc);
     if (entid)
-      epr->Metadata->ProviderID = zx_dup_simple_elem(cf->ctx, entid);
+      epr->Metadata->ProviderID
+	= zx_dup_simple_elem(cf->ctx, &epr->Metadata->gg, zx_di_ProviderID_ELEM, entid);
     if (svctype)
-      epr->Metadata->ServiceType = zx_dup_simple_elem(cf->ctx, svctype);
+      epr->Metadata->ServiceType
+	= zx_dup_simple_elem(cf->ctx, &epr->Metadata->gg, zx_di_ServiceType_ELEM, svctype);
   }
   return epr;
 }
@@ -662,7 +675,7 @@ zxid_tok* zxid_str2token(zxid_conf* cf, struct zx_str* ss) {
   }
   if (r->Token)
     return r->Token;
-  tok = zx_NEW_sec_Token(cf->ctx);
+  tok = zx_NEW_sec_Token(cf->ctx,0);
   tok->Assertion = r->Assertion;
   tok->EncryptedAssertion = r->EncryptedAssertion;
   tok->sa11_Assertion = r->sa11_Assertion;

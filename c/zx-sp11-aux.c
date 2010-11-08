@@ -65,11 +65,15 @@ void zx_FREE_sp11_AttributeQuery(struct zx_ctx* c, struct zx_sp11_AttributeQuery
 
   zx_free_attr(c, x->Resource, free_strs);
 
-  for (e = &x->Subject->gg; e; e = en) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa11_Subject(c, (struct zx_sa11_Subject_s*)e, free_strs);
   }
-  for (e = &x->AttributeDesignator->gg; e; e = en) {
+  for (e = &x->AttributeDesignator->gg;
+       e && e->g.tok == zx_sa11_AttributeDesignator_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa11_AttributeDesignator(c, (struct zx_sa11_AttributeDesignator_s*)e, free_strs);
   }
@@ -110,9 +114,13 @@ void zx_DUP_STRS_sp11_AttributeQuery(struct zx_ctx* c, struct zx_sp11_AttributeQ
 
   zx_dup_attr(c, x->Resource);
 
-  for (se = &x->Subject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subject->gg;
+       se && se->g.tok == zx_sa11_Subject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa11_Subject(c, (struct zx_sa11_Subject_s*)se);
-  for (se = &x->AttributeDesignator->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeDesignator->gg;
+       se && se->g.tok == zx_sa11_AttributeDesignator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa11_AttributeDesignator(c, (struct zx_sa11_AttributeDesignator_s*)se);
 
 }
@@ -134,7 +142,9 @@ struct zx_sp11_AttributeQuery_s* zx_DEEP_CLONE_sp11_AttributeQuery(struct zx_ctx
 
   x->Resource = zx_clone_attr(c, x->Resource);
 
-  for (enn = 0, e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa11_Subject(c,(struct zx_sa11_Subject_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subject = (struct zx_sa11_Subject_s*)en;
@@ -142,7 +152,9 @@ struct zx_sp11_AttributeQuery_s* zx_DEEP_CLONE_sp11_AttributeQuery(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeDesignator->gg;
+       e && e->g.tok == zx_sa11_AttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa11_AttributeDesignator(c,(struct zx_sa11_AttributeDesignator_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeDesignator = (struct zx_sa11_AttributeDesignator_s*)en;
@@ -173,12 +185,16 @@ int zx_WALK_SO_sp11_AttributeQuery(struct zx_ctx* c, struct zx_sp11_AttributeQue
   if (ret)
     return ret;
 
-  for (e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa11_Subject(c, (struct zx_sa11_Subject_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AttributeDesignator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeDesignator->gg;
+       e && e->g.tok == zx_sa11_AttributeDesignator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa11_AttributeDesignator(c, (struct zx_sa11_AttributeDesignator_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -236,7 +252,9 @@ void zx_FREE_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_sp11_Authentic
 
   zx_free_attr(c, x->AuthenticationMethod, free_strs);
 
-  for (e = &x->Subject->gg; e; e = en) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa11_Subject(c, (struct zx_sa11_Subject_s*)e, free_strs);
   }
@@ -277,7 +295,9 @@ void zx_DUP_STRS_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_sp11_Authe
 
   zx_dup_attr(c, x->AuthenticationMethod);
 
-  for (se = &x->Subject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subject->gg;
+       se && se->g.tok == zx_sa11_Subject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa11_Subject(c, (struct zx_sa11_Subject_s*)se);
 
 }
@@ -299,7 +319,9 @@ struct zx_sp11_AuthenticationQuery_s* zx_DEEP_CLONE_sp11_AuthenticationQuery(str
 
   x->AuthenticationMethod = zx_clone_attr(c, x->AuthenticationMethod);
 
-  for (enn = 0, e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa11_Subject(c,(struct zx_sa11_Subject_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subject = (struct zx_sa11_Subject_s*)en;
@@ -330,7 +352,9 @@ int zx_WALK_SO_sp11_AuthenticationQuery(struct zx_ctx* c, struct zx_sp11_Authent
   if (ret)
     return ret;
 
-  for (e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa11_Subject(c, (struct zx_sa11_Subject_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -388,15 +412,21 @@ void zx_FREE_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_sp11_Au
 
   zx_free_attr(c, x->Resource, free_strs);
 
-  for (e = &x->Subject->gg; e; e = en) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa11_Subject(c, (struct zx_sa11_Subject_s*)e, free_strs);
   }
-  for (e = &x->Action->gg; e; e = en) {
+  for (e = &x->Action->gg;
+       e && e->g.tok == zx_sa11_Action_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa11_Action(c, (struct zx_sa11_Action_s*)e, free_strs);
   }
-  for (e = &x->Evidence->gg; e; e = en) {
+  for (e = &x->Evidence->gg;
+       e && e->g.tok == zx_sa11_Evidence_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa11_Evidence(c, (struct zx_sa11_Evidence_s*)e, free_strs);
   }
@@ -437,11 +467,17 @@ void zx_DUP_STRS_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_sp1
 
   zx_dup_attr(c, x->Resource);
 
-  for (se = &x->Subject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subject->gg;
+       se && se->g.tok == zx_sa11_Subject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa11_Subject(c, (struct zx_sa11_Subject_s*)se);
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_sa11_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa11_Action(c, (struct zx_sa11_Action_s*)se);
-  for (se = &x->Evidence->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Evidence->gg;
+       se && se->g.tok == zx_sa11_Evidence_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa11_Evidence(c, (struct zx_sa11_Evidence_s*)se);
 
 }
@@ -463,7 +499,9 @@ struct zx_sp11_AuthorizationDecisionQuery_s* zx_DEEP_CLONE_sp11_AuthorizationDec
 
   x->Resource = zx_clone_attr(c, x->Resource);
 
-  for (enn = 0, e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa11_Subject(c,(struct zx_sa11_Subject_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subject = (struct zx_sa11_Subject_s*)en;
@@ -471,7 +509,9 @@ struct zx_sp11_AuthorizationDecisionQuery_s* zx_DEEP_CLONE_sp11_AuthorizationDec
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Action->gg;
+       e && e->g.tok == zx_sa11_Action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa11_Action(c,(struct zx_sa11_Action_s*)e,dup_strs);
   	  if (!enn)
   	      x->Action = (struct zx_sa11_Action_s*)en;
@@ -479,7 +519,9 @@ struct zx_sp11_AuthorizationDecisionQuery_s* zx_DEEP_CLONE_sp11_AuthorizationDec
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Evidence->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Evidence->gg;
+       e && e->g.tok == zx_sa11_Evidence_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa11_Evidence(c,(struct zx_sa11_Evidence_s*)e,dup_strs);
   	  if (!enn)
   	      x->Evidence = (struct zx_sa11_Evidence_s*)en;
@@ -510,17 +552,23 @@ int zx_WALK_SO_sp11_AuthorizationDecisionQuery(struct zx_ctx* c, struct zx_sp11_
   if (ret)
     return ret;
 
-  for (e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa11_Subject(c, (struct zx_sa11_Subject_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Action->gg;
+       e && e->g.tok == zx_sa11_Action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa11_Action(c, (struct zx_sa11_Action_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Evidence->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Evidence->gg;
+       e && e->g.tok == zx_sa11_Evidence_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa11_Evidence(c, (struct zx_sa11_Evidence_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -582,24 +630,34 @@ void zx_FREE_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x, int fre
   zx_free_attr(c, x->RequestID, free_strs);
 
   zx_free_simple_elems(c, x->RespondWith, free_strs);
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Query, free_strs);
-  for (e = &x->SubjectQuery->gg; e; e = en) {
+  for (e = &x->SubjectQuery->gg;
+       e && e->g.tok == zx_sp11_SubjectQuery_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp11_SubjectQuery(c, (struct zx_sp11_SubjectQuery_s*)e, free_strs);
   }
-  for (e = &x->AuthenticationQuery->gg; e; e = en) {
+  for (e = &x->AuthenticationQuery->gg;
+       e && e->g.tok == zx_sp11_AuthenticationQuery_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp11_AuthenticationQuery(c, (struct zx_sp11_AuthenticationQuery_s*)e, free_strs);
   }
-  for (e = &x->AttributeQuery->gg; e; e = en) {
+  for (e = &x->AttributeQuery->gg;
+       e && e->g.tok == zx_sp11_AttributeQuery_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp11_AttributeQuery(c, (struct zx_sp11_AttributeQuery_s*)e, free_strs);
   }
-  for (e = &x->AuthorizationDecisionQuery->gg; e; e = en) {
+  for (e = &x->AuthorizationDecisionQuery->gg;
+       e && e->g.tok == zx_sp11_AuthorizationDecisionQuery_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp11_AuthorizationDecisionQuery(c, (struct zx_sp11_AuthorizationDecisionQuery_s*)e, free_strs);
   }
@@ -646,16 +704,26 @@ void zx_DUP_STRS_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x)
   zx_dup_attr(c, x->RequestID);
 
   zx_dup_strs_simple_elems(c, x->RespondWith);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
   zx_dup_strs_simple_elems(c, x->Query);
-  for (se = &x->SubjectQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubjectQuery->gg;
+       se && se->g.tok == zx_sp11_SubjectQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp11_SubjectQuery(c, (struct zx_sp11_SubjectQuery_s*)se);
-  for (se = &x->AuthenticationQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthenticationQuery->gg;
+       se && se->g.tok == zx_sp11_AuthenticationQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp11_AuthenticationQuery(c, (struct zx_sp11_AuthenticationQuery_s*)se);
-  for (se = &x->AttributeQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeQuery->gg;
+       se && se->g.tok == zx_sp11_AttributeQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp11_AttributeQuery(c, (struct zx_sp11_AttributeQuery_s*)se);
-  for (se = &x->AuthorizationDecisionQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthorizationDecisionQuery->gg;
+       se && se->g.tok == zx_sp11_AuthorizationDecisionQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp11_AuthorizationDecisionQuery(c, (struct zx_sp11_AuthorizationDecisionQuery_s*)se);
   zx_dup_strs_simple_elems(c, x->AssertionIDReference);
   zx_dup_strs_simple_elems(c, x->AssertionArtifact);
@@ -683,7 +751,9 @@ struct zx_sp11_Request_s* zx_DEEP_CLONE_sp11_Request(struct zx_ctx* c, struct zx
   x->RequestID = zx_clone_attr(c, x->RequestID);
 
   x->RespondWith = zx_deep_clone_simple_elems(c,x->RespondWith, dup_strs);
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -692,7 +762,9 @@ struct zx_sp11_Request_s* zx_DEEP_CLONE_sp11_Request(struct zx_ctx* c, struct zx
   	  enn = en;
   }
   x->Query = zx_deep_clone_simple_elems(c,x->Query, dup_strs);
-  for (enn = 0, e = &x->SubjectQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SubjectQuery->gg;
+       e && e->g.tok == zx_sp11_SubjectQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp11_SubjectQuery(c,(struct zx_sp11_SubjectQuery_s*)e,dup_strs);
   	  if (!enn)
   	      x->SubjectQuery = (struct zx_sp11_SubjectQuery_s*)en;
@@ -700,7 +772,9 @@ struct zx_sp11_Request_s* zx_DEEP_CLONE_sp11_Request(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AuthenticationQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AuthenticationQuery->gg;
+       e && e->g.tok == zx_sp11_AuthenticationQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp11_AuthenticationQuery(c,(struct zx_sp11_AuthenticationQuery_s*)e,dup_strs);
   	  if (!enn)
   	      x->AuthenticationQuery = (struct zx_sp11_AuthenticationQuery_s*)en;
@@ -708,7 +782,9 @@ struct zx_sp11_Request_s* zx_DEEP_CLONE_sp11_Request(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AttributeQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AttributeQuery->gg;
+       e && e->g.tok == zx_sp11_AttributeQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp11_AttributeQuery(c,(struct zx_sp11_AttributeQuery_s*)e,dup_strs);
   	  if (!enn)
   	      x->AttributeQuery = (struct zx_sp11_AttributeQuery_s*)en;
@@ -716,7 +792,9 @@ struct zx_sp11_Request_s* zx_DEEP_CLONE_sp11_Request(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AuthorizationDecisionQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AuthorizationDecisionQuery->gg;
+       e && e->g.tok == zx_sp11_AuthorizationDecisionQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp11_AuthorizationDecisionQuery(c,(struct zx_sp11_AuthorizationDecisionQuery_s*)e,dup_strs);
   	  if (!enn)
   	      x->AuthorizationDecisionQuery = (struct zx_sp11_AuthorizationDecisionQuery_s*)en;
@@ -752,7 +830,9 @@ int zx_WALK_SO_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->RespondWith, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -760,22 +840,30 @@ int zx_WALK_SO_sp11_Request(struct zx_ctx* c, struct zx_sp11_Request_s* x, void*
   ret = zx_walk_so_simple_elems(c, x->Query, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SubjectQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SubjectQuery->gg;
+       e && e->g.tok == zx_sp11_SubjectQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp11_SubjectQuery(c, (struct zx_sp11_SubjectQuery_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AuthenticationQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AuthenticationQuery->gg;
+       e && e->g.tok == zx_sp11_AuthenticationQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp11_AuthenticationQuery(c, (struct zx_sp11_AuthenticationQuery_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AttributeQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AttributeQuery->gg;
+       e && e->g.tok == zx_sp11_AttributeQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp11_AttributeQuery(c, (struct zx_sp11_AttributeQuery_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AuthorizationDecisionQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AuthorizationDecisionQuery->gg;
+       e && e->g.tok == zx_sp11_AuthorizationDecisionQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp11_AuthorizationDecisionQuery(c, (struct zx_sp11_AuthorizationDecisionQuery_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -844,15 +932,21 @@ void zx_FREE_sp11_Response(struct zx_ctx* c, struct zx_sp11_Response_s* x, int f
   zx_free_attr(c, x->Recipient, free_strs);
   zx_free_attr(c, x->ResponseID, free_strs);
 
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_sp11_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp11_Status(c, (struct zx_sp11_Status_s*)e, free_strs);
   }
-  for (e = &x->Assertion->gg; e; e = en) {
+  for (e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa11_Assertion_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)e, free_strs);
   }
@@ -898,11 +992,17 @@ void zx_DUP_STRS_sp11_Response(struct zx_ctx* c, struct zx_sp11_Response_s* x)
   zx_dup_attr(c, x->Recipient);
   zx_dup_attr(c, x->ResponseID);
 
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_sp11_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp11_Status(c, (struct zx_sp11_Status_s*)se);
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa11_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)se);
 
 }
@@ -929,7 +1029,9 @@ struct zx_sp11_Response_s* zx_DEEP_CLONE_sp11_Response(struct zx_ctx* c, struct 
   x->Recipient = zx_clone_attr(c, x->Recipient);
   x->ResponseID = zx_clone_attr(c, x->ResponseID);
 
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -937,7 +1039,9 @@ struct zx_sp11_Response_s* zx_DEEP_CLONE_sp11_Response(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_sp11_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp11_Status(c,(struct zx_sp11_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_sp11_Status_s*)en;
@@ -945,7 +1049,9 @@ struct zx_sp11_Response_s* zx_DEEP_CLONE_sp11_Response(struct zx_ctx* c, struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa11_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa11_Assertion(c,(struct zx_sa11_Assertion_s*)e,dup_strs);
   	  if (!enn)
   	      x->Assertion = (struct zx_sa11_Assertion_s*)en;
@@ -976,17 +1082,23 @@ int zx_WALK_SO_sp11_Response(struct zx_ctx* c, struct zx_sp11_Response_s* x, voi
   if (ret)
     return ret;
 
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_sp11_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp11_Status(c, (struct zx_sp11_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Assertion->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Assertion->gg;
+       e && e->g.tok == zx_sa11_Assertion_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1043,12 +1155,16 @@ void zx_FREE_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x, int free_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->StatusCode->gg; e; e = en) {
+  for (e = &x->StatusCode->gg;
+       e && e->g.tok == zx_sp11_StatusCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp11_StatusCode(c, (struct zx_sp11_StatusCode_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->StatusMessage, free_strs);
-  for (e = &x->StatusDetail->gg; e; e = en) {
+  for (e = &x->StatusDetail->gg;
+       e && e->g.tok == zx_sp11_StatusDetail_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp11_StatusDetail(c, (struct zx_sp11_StatusDetail_s*)e, free_strs);
   }
@@ -1088,10 +1204,14 @@ void zx_DUP_STRS_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->StatusCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StatusCode->gg;
+       se && se->g.tok == zx_sp11_StatusCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp11_StatusCode(c, (struct zx_sp11_StatusCode_s*)se);
   zx_dup_strs_simple_elems(c, x->StatusMessage);
-  for (se = &x->StatusDetail->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StatusDetail->gg;
+       se && se->g.tok == zx_sp11_StatusDetail_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp11_StatusDetail(c, (struct zx_sp11_StatusDetail_s*)se);
 
 }
@@ -1112,7 +1232,9 @@ struct zx_sp11_Status_s* zx_DEEP_CLONE_sp11_Status(struct zx_ctx* c, struct zx_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->StatusCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StatusCode->gg;
+       e && e->g.tok == zx_sp11_StatusCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp11_StatusCode(c,(struct zx_sp11_StatusCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->StatusCode = (struct zx_sp11_StatusCode_s*)en;
@@ -1121,7 +1243,9 @@ struct zx_sp11_Status_s* zx_DEEP_CLONE_sp11_Status(struct zx_ctx* c, struct zx_s
   	  enn = en;
   }
   x->StatusMessage = zx_deep_clone_simple_elems(c,x->StatusMessage, dup_strs);
-  for (enn = 0, e = &x->StatusDetail->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StatusDetail->gg;
+       e && e->g.tok == zx_sp11_StatusDetail_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp11_StatusDetail(c,(struct zx_sp11_StatusDetail_s*)e,dup_strs);
   	  if (!enn)
   	      x->StatusDetail = (struct zx_sp11_StatusDetail_s*)en;
@@ -1152,7 +1276,9 @@ int zx_WALK_SO_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->StatusCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StatusCode->gg;
+       e && e->g.tok == zx_sp11_StatusCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp11_StatusCode(c, (struct zx_sp11_StatusCode_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1160,7 +1286,9 @@ int zx_WALK_SO_sp11_Status(struct zx_ctx* c, struct zx_sp11_Status_s* x, void* c
   ret = zx_walk_so_simple_elems(c, x->StatusMessage, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->StatusDetail->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StatusDetail->gg;
+       e && e->g.tok == zx_sp11_StatusDetail_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp11_StatusDetail(c, (struct zx_sp11_StatusDetail_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1218,7 +1346,9 @@ void zx_FREE_sp11_StatusCode(struct zx_ctx* c, struct zx_sp11_StatusCode_s* x, i
 
   zx_free_attr(c, x->Value, free_strs);
 
-  for (e = &x->StatusCode->gg; e; e = en) {
+  for (e = &x->StatusCode->gg;
+       e && e->g.tok == zx_sp11_StatusCode_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sp11_StatusCode(c, (struct zx_sp11_StatusCode_s*)e, free_strs);
   }
@@ -1259,7 +1389,9 @@ void zx_DUP_STRS_sp11_StatusCode(struct zx_ctx* c, struct zx_sp11_StatusCode_s* 
 
   zx_dup_attr(c, x->Value);
 
-  for (se = &x->StatusCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StatusCode->gg;
+       se && se->g.tok == zx_sp11_StatusCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sp11_StatusCode(c, (struct zx_sp11_StatusCode_s*)se);
 
 }
@@ -1281,7 +1413,9 @@ struct zx_sp11_StatusCode_s* zx_DEEP_CLONE_sp11_StatusCode(struct zx_ctx* c, str
 
   x->Value = zx_clone_attr(c, x->Value);
 
-  for (enn = 0, e = &x->StatusCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->StatusCode->gg;
+       e && e->g.tok == zx_sp11_StatusCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sp11_StatusCode(c,(struct zx_sp11_StatusCode_s*)e,dup_strs);
   	  if (!enn)
   	      x->StatusCode = (struct zx_sp11_StatusCode_s*)en;
@@ -1312,7 +1446,9 @@ int zx_WALK_SO_sp11_StatusCode(struct zx_ctx* c, struct zx_sp11_StatusCode_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->StatusCode->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->StatusCode->gg;
+       e && e->g.tok == zx_sp11_StatusCode_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sp11_StatusCode(c, (struct zx_sp11_StatusCode_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1499,7 +1635,9 @@ void zx_FREE_sp11_SubjectQuery(struct zx_ctx* c, struct zx_sp11_SubjectQuery_s* 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Subject->gg; e; e = en) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sa11_Subject(c, (struct zx_sa11_Subject_s*)e, free_strs);
   }
@@ -1539,7 +1677,9 @@ void zx_DUP_STRS_sp11_SubjectQuery(struct zx_ctx* c, struct zx_sp11_SubjectQuery
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Subject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subject->gg;
+       se && se->g.tok == zx_sa11_Subject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sa11_Subject(c, (struct zx_sa11_Subject_s*)se);
 
 }
@@ -1560,7 +1700,9 @@ struct zx_sp11_SubjectQuery_s* zx_DEEP_CLONE_sp11_SubjectQuery(struct zx_ctx* c,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sa11_Subject(c,(struct zx_sa11_Subject_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subject = (struct zx_sa11_Subject_s*)en;
@@ -1591,7 +1733,9 @@ int zx_WALK_SO_sp11_SubjectQuery(struct zx_ctx* c, struct zx_sp11_SubjectQuery_s
   if (ret)
     return ret;
 
-  for (e = &x->Subject->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subject->gg;
+       e && e->g.tok == zx_sa11_Subject_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sa11_Subject(c, (struct zx_sa11_Subject_s*)e, ctx, callback);
     if (ret)
       return ret;

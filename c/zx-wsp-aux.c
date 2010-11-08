@@ -64,19 +64,27 @@ void zx_FREE_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x, int free_strs)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Policy->gg; e; e = en) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
   }
-  for (e = &x->All->gg; e; e = en) {
+  for (e = &x->All->gg;
+       e && e->g.tok == zx_wsp_All_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_All(c, (struct zx_wsp_All_s*)e, free_strs);
   }
-  for (e = &x->ExactlyOne->gg; e; e = en) {
+  for (e = &x->ExactlyOne->gg;
+       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)e, free_strs);
   }
-  for (e = &x->PolicyReference->gg; e; e = en) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
   }
@@ -116,13 +124,21 @@ void zx_DUP_STRS_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->All->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->All->gg;
+       se && se->g.tok == zx_wsp_All_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_All(c, (struct zx_wsp_All_s*)se);
-  for (se = &x->ExactlyOne->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExactlyOne->gg;
+       se && se->g.tok == zx_wsp_ExactlyOne_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 }
@@ -143,7 +159,9 @@ struct zx_wsp_All_s* zx_DEEP_CLONE_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_Policy(c,(struct zx_wsp_Policy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Policy = (struct zx_wsp_Policy_s*)en;
@@ -151,7 +169,9 @@ struct zx_wsp_All_s* zx_DEEP_CLONE_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->All->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->All->gg;
+       e && e->g.tok == zx_wsp_All_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_All(c,(struct zx_wsp_All_s*)e,dup_strs);
   	  if (!enn)
   	      x->All = (struct zx_wsp_All_s*)en;
@@ -159,7 +179,9 @@ struct zx_wsp_All_s* zx_DEEP_CLONE_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ExactlyOne->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ExactlyOne->gg;
+       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_ExactlyOne(c,(struct zx_wsp_ExactlyOne_s*)e,dup_strs);
   	  if (!enn)
   	      x->ExactlyOne = (struct zx_wsp_ExactlyOne_s*)en;
@@ -167,7 +189,9 @@ struct zx_wsp_All_s* zx_DEEP_CLONE_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_PolicyReference(c,(struct zx_wsp_PolicyReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)en;
@@ -198,22 +222,30 @@ int zx_WALK_SO_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x, void* ctx, int 
   if (ret)
     return ret;
 
-  for (e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->All->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->All->gg;
+       e && e->g.tok == zx_wsp_All_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_All(c, (struct zx_wsp_All_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ExactlyOne->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ExactlyOne->gg;
+       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -400,19 +432,27 @@ void zx_FREE_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x, int
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Policy->gg; e; e = en) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
   }
-  for (e = &x->All->gg; e; e = en) {
+  for (e = &x->All->gg;
+       e && e->g.tok == zx_wsp_All_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_All(c, (struct zx_wsp_All_s*)e, free_strs);
   }
-  for (e = &x->ExactlyOne->gg; e; e = en) {
+  for (e = &x->ExactlyOne->gg;
+       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)e, free_strs);
   }
-  for (e = &x->PolicyReference->gg; e; e = en) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
   }
@@ -452,13 +492,21 @@ void zx_DUP_STRS_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->All->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->All->gg;
+       se && se->g.tok == zx_wsp_All_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_All(c, (struct zx_wsp_All_s*)se);
-  for (se = &x->ExactlyOne->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExactlyOne->gg;
+       se && se->g.tok == zx_wsp_ExactlyOne_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 }
@@ -479,7 +527,9 @@ struct zx_wsp_ExactlyOne_s* zx_DEEP_CLONE_wsp_ExactlyOne(struct zx_ctx* c, struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_Policy(c,(struct zx_wsp_Policy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Policy = (struct zx_wsp_Policy_s*)en;
@@ -487,7 +537,9 @@ struct zx_wsp_ExactlyOne_s* zx_DEEP_CLONE_wsp_ExactlyOne(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->All->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->All->gg;
+       e && e->g.tok == zx_wsp_All_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_All(c,(struct zx_wsp_All_s*)e,dup_strs);
   	  if (!enn)
   	      x->All = (struct zx_wsp_All_s*)en;
@@ -495,7 +547,9 @@ struct zx_wsp_ExactlyOne_s* zx_DEEP_CLONE_wsp_ExactlyOne(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ExactlyOne->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ExactlyOne->gg;
+       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_ExactlyOne(c,(struct zx_wsp_ExactlyOne_s*)e,dup_strs);
   	  if (!enn)
   	      x->ExactlyOne = (struct zx_wsp_ExactlyOne_s*)en;
@@ -503,7 +557,9 @@ struct zx_wsp_ExactlyOne_s* zx_DEEP_CLONE_wsp_ExactlyOne(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_PolicyReference(c,(struct zx_wsp_PolicyReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)en;
@@ -534,22 +590,30 @@ int zx_WALK_SO_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->All->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->All->gg;
+       e && e->g.tok == zx_wsp_All_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_All(c, (struct zx_wsp_All_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ExactlyOne->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ExactlyOne->gg;
+       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -608,19 +672,27 @@ void zx_FREE_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x, int free_st
   zx_free_attr(c, x->Name, free_strs);
   zx_free_attr(c, x->Id, free_strs);
 
-  for (e = &x->Policy->gg; e; e = en) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
   }
-  for (e = &x->All->gg; e; e = en) {
+  for (e = &x->All->gg;
+       e && e->g.tok == zx_wsp_All_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_All(c, (struct zx_wsp_All_s*)e, free_strs);
   }
-  for (e = &x->ExactlyOne->gg; e; e = en) {
+  for (e = &x->ExactlyOne->gg;
+       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)e, free_strs);
   }
-  for (e = &x->PolicyReference->gg; e; e = en) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
   }
@@ -662,13 +734,21 @@ void zx_DUP_STRS_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x)
   zx_dup_attr(c, x->Name);
   zx_dup_attr(c, x->Id);
 
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->All->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->All->gg;
+       se && se->g.tok == zx_wsp_All_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_All(c, (struct zx_wsp_All_s*)se);
-  for (se = &x->ExactlyOne->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExactlyOne->gg;
+       se && se->g.tok == zx_wsp_ExactlyOne_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 }
@@ -691,7 +771,9 @@ struct zx_wsp_Policy_s* zx_DEEP_CLONE_wsp_Policy(struct zx_ctx* c, struct zx_wsp
   x->Name = zx_clone_attr(c, x->Name);
   x->Id = zx_clone_attr(c, x->Id);
 
-  for (enn = 0, e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_Policy(c,(struct zx_wsp_Policy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Policy = (struct zx_wsp_Policy_s*)en;
@@ -699,7 +781,9 @@ struct zx_wsp_Policy_s* zx_DEEP_CLONE_wsp_Policy(struct zx_ctx* c, struct zx_wsp
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->All->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->All->gg;
+       e && e->g.tok == zx_wsp_All_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_All(c,(struct zx_wsp_All_s*)e,dup_strs);
   	  if (!enn)
   	      x->All = (struct zx_wsp_All_s*)en;
@@ -707,7 +791,9 @@ struct zx_wsp_Policy_s* zx_DEEP_CLONE_wsp_Policy(struct zx_ctx* c, struct zx_wsp
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ExactlyOne->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ExactlyOne->gg;
+       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_ExactlyOne(c,(struct zx_wsp_ExactlyOne_s*)e,dup_strs);
   	  if (!enn)
   	      x->ExactlyOne = (struct zx_wsp_ExactlyOne_s*)en;
@@ -715,7 +801,9 @@ struct zx_wsp_Policy_s* zx_DEEP_CLONE_wsp_Policy(struct zx_ctx* c, struct zx_wsp
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_PolicyReference(c,(struct zx_wsp_PolicyReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)en;
@@ -746,22 +834,30 @@ int zx_WALK_SO_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->All->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->All->gg;
+       e && e->g.tok == zx_wsp_All_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_All(c, (struct zx_wsp_All_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ExactlyOne->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ExactlyOne->gg;
+       e && e->g.tok == zx_wsp_ExactlyOne_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -818,15 +914,21 @@ void zx_FREE_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttachme
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->AppliesTo->gg; e; e = en) {
+  for (e = &x->AppliesTo->gg;
+       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)e, free_strs);
   }
-  for (e = &x->Policy->gg; e; e = en) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
   }
-  for (e = &x->PolicyReference->gg; e; e = en) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
   }
@@ -866,11 +968,17 @@ void zx_DUP_STRS_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAtta
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->AppliesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AppliesTo->gg;
+       se && se->g.tok == zx_wsp_AppliesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)se);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 }
@@ -891,7 +999,9 @@ struct zx_wsp_PolicyAttachment_s* zx_DEEP_CLONE_wsp_PolicyAttachment(struct zx_c
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->AppliesTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AppliesTo->gg;
+       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_AppliesTo(c,(struct zx_wsp_AppliesTo_s*)e,dup_strs);
   	  if (!enn)
   	      x->AppliesTo = (struct zx_wsp_AppliesTo_s*)en;
@@ -899,7 +1009,9 @@ struct zx_wsp_PolicyAttachment_s* zx_DEEP_CLONE_wsp_PolicyAttachment(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_Policy(c,(struct zx_wsp_Policy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Policy = (struct zx_wsp_Policy_s*)en;
@@ -907,7 +1019,9 @@ struct zx_wsp_PolicyAttachment_s* zx_DEEP_CLONE_wsp_PolicyAttachment(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_PolicyReference(c,(struct zx_wsp_PolicyReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)en;
@@ -938,17 +1052,23 @@ int zx_WALK_SO_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttach
   if (ret)
     return ret;
 
-  for (e = &x->AppliesTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AppliesTo->gg;
+       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, ctx, callback);
     if (ret)
       return ret;

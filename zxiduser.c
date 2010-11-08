@@ -75,11 +75,11 @@ zxid_nid* zxid_parse_mni(zxid_conf* cf, char* buf, char** pmniptr)
     return 0;
   }
   
-  nameid = zx_NEW_sa_NameID(cf->ctx);
-  if (*buf)              nameid->Format = zx_dup_str(cf->ctx, buf);
-  if (idpent && *idpent) nameid->NameQualifier = zx_dup_str(cf->ctx, idpent);
-  if (spqual && *spqual) nameid->SPNameQualifier = zx_dup_str(cf->ctx, spqual);
-  if (nid && *nid)       nameid->gg.content = zx_dup_str(cf->ctx, nid);
+  nameid = zx_NEW_sa_NameID(cf->ctx,0);
+  if (*buf)              nameid->Format = zx_dup_attr(cf->ctx, zx_Format_ATTR, buf);
+  if (idpent && *idpent) nameid->NameQualifier = zx_dup_attr(cf->ctx, zx_NameQualifier_ATTR, idpent);
+  if (spqual && *spqual) nameid->SPNameQualifier = zx_dup_attr(cf->ctx, zx_SPNameQualifier_ATTR, spqual);
+  if (nid && *nid)       zx_add_content(c, &nameid->gg, zx_dup_str(cf->ctx, nid));
   return nameid;
 }
 
@@ -121,7 +121,7 @@ zxid_nid* zxid_get_user_nameid(zxid_conf* cf, zxid_nid* oldnid)
   if (!cf->user_local)
     return oldnid;
   
-  zxid_user_sha1_name(cf, oldnid->NameQualifier, oldnid->gg.content, sha1_name);
+  zxid_user_sha1_name(cf, oldnid->NameQualifier, ZX_GET_CONTENT(oldnid), sha1_name);
   buf = ZX_ALLOC(cf->ctx, ZXID_MAX_USER);
   mniptr = sha1_name;
 
@@ -135,7 +135,7 @@ zxid_nid* zxid_get_user_nameid(zxid_conf* cf, zxid_nid* oldnid)
       return 0;
     }
   }
-  ERR("Too many mniptr indirections for oldnid(%.*s)", oldnid->gg.content->len, oldnid->gg.content->s);
+  ERR("Too many mniptr indirections for oldnid(%.*s)", ZX_GET_CONTENT_LEN(oldnid), ZX_GET_CONTENT_S(oldnid));
   return 0;
 }
 
@@ -147,7 +147,7 @@ void zxid_user_change_nameid(zxid_conf* cf, zxid_nid* oldnid, struct zx_str* new
   char sha1_name[28];
   zxid_user_sha1_name(cf, oldnid->NameQualifier, newnym, sha1_name);
   zxid_put_user(cf, oldnid->Format, oldnid->NameQualifier, oldnid->SPNameQualifier, newnym, 0);
-  zxid_put_user(cf, oldnid->Format, oldnid->NameQualifier, oldnid->SPNameQualifier, oldnid->gg.content, sha1_name);
+  zxid_put_user(cf, oldnid->Format, oldnid->NameQualifier, oldnid->SPNameQualifier, ZX_GET_CONTENT(oldnid), sha1_name);
 }
 
 /*() Create new user object in file system. Will create user diretory (but not

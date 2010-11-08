@@ -65,19 +65,27 @@ void zx_FREE_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x, int free_st
 
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
-  for (e = &x->Subscription->gg; e; e = en) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, free_strs);
   }
-  for (e = &x->CreateItem->gg; e; e = en) {
+  for (e = &x->CreateItem->gg;
+       e && e->g.tok == zx_dap_CreateItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_CreateItem(c, (struct zx_dap_CreateItem_s*)e, free_strs);
   }
-  for (e = &x->ResultQuery->gg; e; e = en) {
+  for (e = &x->ResultQuery->gg;
+       e && e->g.tok == zx_dap_ResultQuery_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_ResultQuery(c, (struct zx_dap_ResultQuery_s*)e, free_strs);
   }
@@ -118,13 +126,21 @@ void zx_DUP_STRS_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x)
 
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_dap_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Subscription(c, (struct zx_dap_Subscription_s*)se);
-  for (se = &x->CreateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreateItem->gg;
+       se && se->g.tok == zx_dap_CreateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_CreateItem(c, (struct zx_dap_CreateItem_s*)se);
-  for (se = &x->ResultQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResultQuery->gg;
+       se && se->g.tok == zx_dap_ResultQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_ResultQuery(c, (struct zx_dap_ResultQuery_s*)se);
 
 }
@@ -146,7 +162,9 @@ struct zx_dap_Create_s* zx_DEEP_CLONE_dap_Create(struct zx_ctx* c, struct zx_dap
 
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -154,7 +172,9 @@ struct zx_dap_Create_s* zx_DEEP_CLONE_dap_Create(struct zx_ctx* c, struct zx_dap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Subscription(c,(struct zx_dap_Subscription_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subscription = (struct zx_dap_Subscription_s*)en;
@@ -162,7 +182,9 @@ struct zx_dap_Create_s* zx_DEEP_CLONE_dap_Create(struct zx_ctx* c, struct zx_dap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->CreateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->CreateItem->gg;
+       e && e->g.tok == zx_dap_CreateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_CreateItem(c,(struct zx_dap_CreateItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->CreateItem = (struct zx_dap_CreateItem_s*)en;
@@ -170,7 +192,9 @@ struct zx_dap_Create_s* zx_DEEP_CLONE_dap_Create(struct zx_ctx* c, struct zx_dap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ResultQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResultQuery->gg;
+       e && e->g.tok == zx_dap_ResultQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_ResultQuery(c,(struct zx_dap_ResultQuery_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResultQuery = (struct zx_dap_ResultQuery_s*)en;
@@ -201,22 +225,30 @@ int zx_WALK_SO_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->CreateItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->CreateItem->gg;
+       e && e->g.tok == zx_dap_CreateItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_CreateItem(c, (struct zx_dap_CreateItem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ResultQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResultQuery->gg;
+       e && e->g.tok == zx_dap_ResultQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_ResultQuery(c, (struct zx_dap_ResultQuery_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -276,7 +308,9 @@ void zx_FREE_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x, int
   zx_free_attr(c, x->itemID, free_strs);
   zx_free_attr(c, x->objectType, free_strs);
 
-  for (e = &x->NewData->gg; e; e = en) {
+  for (e = &x->NewData->gg;
+       e && e->g.tok == zx_dap_NewData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_NewData(c, (struct zx_dap_NewData_s*)e, free_strs);
   }
@@ -319,7 +353,9 @@ void zx_DUP_STRS_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x)
   zx_dup_attr(c, x->itemID);
   zx_dup_attr(c, x->objectType);
 
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_dap_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_NewData(c, (struct zx_dap_NewData_s*)se);
 
 }
@@ -343,7 +379,9 @@ struct zx_dap_CreateItem_s* zx_DEEP_CLONE_dap_CreateItem(struct zx_ctx* c, struc
   x->itemID = zx_clone_attr(c, x->itemID);
   x->objectType = zx_clone_attr(c, x->objectType);
 
-  for (enn = 0, e = &x->NewData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NewData->gg;
+       e && e->g.tok == zx_dap_NewData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_NewData(c,(struct zx_dap_NewData_s*)e,dup_strs);
   	  if (!enn)
   	      x->NewData = (struct zx_dap_NewData_s*)en;
@@ -374,7 +412,9 @@ int zx_WALK_SO_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->NewData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NewData->gg;
+       e && e->g.tok == zx_dap_NewData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_NewData(c, (struct zx_dap_NewData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -433,15 +473,21 @@ void zx_FREE_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse_s
   zx_free_attr(c, x->timeStamp, free_strs);
   zx_free_attr(c, x->itemIDRef, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
-  for (e = &x->ItemData->gg; e; e = en) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_dap_ItemData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_ItemData(c, (struct zx_dap_ItemData_s*)e, free_strs);
   }
@@ -483,11 +529,17 @@ void zx_DUP_STRS_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateRespon
   zx_dup_attr(c, x->timeStamp);
   zx_dup_attr(c, x->itemIDRef);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_dap_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_ItemData(c, (struct zx_dap_ItemData_s*)se);
 
 }
@@ -510,7 +562,9 @@ struct zx_dap_CreateResponse_s* zx_DEEP_CLONE_dap_CreateResponse(struct zx_ctx* 
   x->timeStamp = zx_clone_attr(c, x->timeStamp);
   x->itemIDRef = zx_clone_attr(c, x->itemIDRef);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -518,7 +572,9 @@ struct zx_dap_CreateResponse_s* zx_DEEP_CLONE_dap_CreateResponse(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -526,7 +582,9 @@ struct zx_dap_CreateResponse_s* zx_DEEP_CLONE_dap_CreateResponse(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ItemData->gg;
+       e && e->g.tok == zx_dap_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_ItemData(c,(struct zx_dap_ItemData_s*)e,dup_strs);
   	  if (!enn)
   	      x->ItemData = (struct zx_dap_ItemData_s*)en;
@@ -557,17 +615,23 @@ int zx_WALK_SO_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateResponse
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_dap_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_ItemData(c, (struct zx_dap_ItemData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -630,11 +694,15 @@ void zx_FREE_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x, int free_strs)
   zx_free_attr(c, x->changeFormat, free_strs);
   zx_free_attr(c, x->itemIDRef, free_strs);
 
-  for (e = &x->LDIF->gg; e; e = en) {
+  for (e = &x->LDIF->gg;
+       e && e->g.tok == zx_dap_LDIF_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_LDIF(c, (struct zx_dap_LDIF_s*)e, free_strs);
   }
-  for (e = &x->Subscription->gg; e; e = en) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, free_strs);
   }
@@ -680,9 +748,13 @@ void zx_DUP_STRS_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x)
   zx_dup_attr(c, x->changeFormat);
   zx_dup_attr(c, x->itemIDRef);
 
-  for (se = &x->LDIF->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LDIF->gg;
+       se && se->g.tok == zx_dap_LDIF_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_LDIF(c, (struct zx_dap_LDIF_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_dap_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Subscription(c, (struct zx_dap_Subscription_s*)se);
 
 }
@@ -709,7 +781,9 @@ struct zx_dap_Data_s* zx_DEEP_CLONE_dap_Data(struct zx_ctx* c, struct zx_dap_Dat
   x->changeFormat = zx_clone_attr(c, x->changeFormat);
   x->itemIDRef = zx_clone_attr(c, x->itemIDRef);
 
-  for (enn = 0, e = &x->LDIF->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LDIF->gg;
+       e && e->g.tok == zx_dap_LDIF_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_LDIF(c,(struct zx_dap_LDIF_s*)e,dup_strs);
   	  if (!enn)
   	      x->LDIF = (struct zx_dap_LDIF_s*)en;
@@ -717,7 +791,9 @@ struct zx_dap_Data_s* zx_DEEP_CLONE_dap_Data(struct zx_ctx* c, struct zx_dap_Dat
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Subscription(c,(struct zx_dap_Subscription_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subscription = (struct zx_dap_Subscription_s*)en;
@@ -748,12 +824,16 @@ int zx_WALK_SO_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x, void* ctx, in
   if (ret)
     return ret;
 
-  for (e = &x->LDIF->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LDIF->gg;
+       e && e->g.tok == zx_dap_LDIF_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_LDIF(c, (struct zx_dap_LDIF_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -811,11 +891,15 @@ void zx_FREE_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x, int free_st
 
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
-  for (e = &x->DeleteItem->gg; e; e = en) {
+  for (e = &x->DeleteItem->gg;
+       e && e->g.tok == zx_dap_DeleteItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_DeleteItem(c, (struct zx_dap_DeleteItem_s*)e, free_strs);
   }
@@ -856,9 +940,13 @@ void zx_DUP_STRS_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x)
 
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->DeleteItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteItem->gg;
+       se && se->g.tok == zx_dap_DeleteItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_DeleteItem(c, (struct zx_dap_DeleteItem_s*)se);
 
 }
@@ -880,7 +968,9 @@ struct zx_dap_Delete_s* zx_DEEP_CLONE_dap_Delete(struct zx_ctx* c, struct zx_dap
 
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -888,7 +978,9 @@ struct zx_dap_Delete_s* zx_DEEP_CLONE_dap_Delete(struct zx_ctx* c, struct zx_dap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->DeleteItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DeleteItem->gg;
+       e && e->g.tok == zx_dap_DeleteItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_DeleteItem(c,(struct zx_dap_DeleteItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->DeleteItem = (struct zx_dap_DeleteItem_s*)en;
@@ -919,12 +1011,16 @@ int zx_WALK_SO_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->DeleteItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DeleteItem->gg;
+       e && e->g.tok == zx_dap_DeleteItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_DeleteItem(c, (struct zx_dap_DeleteItem_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -986,7 +1082,9 @@ void zx_FREE_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x, int
   zx_free_attr(c, x->objectType, free_strs);
   zx_free_attr(c, x->predefined, free_strs);
 
-  for (e = &x->Select->gg; e; e = en) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Select(c, (struct zx_dap_Select_s*)e, free_strs);
   }
@@ -1031,7 +1129,9 @@ void zx_DUP_STRS_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x)
   zx_dup_attr(c, x->objectType);
   zx_dup_attr(c, x->predefined);
 
-  for (se = &x->Select->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Select->gg;
+       se && se->g.tok == zx_dap_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Select(c, (struct zx_dap_Select_s*)se);
 
 }
@@ -1057,7 +1157,9 @@ struct zx_dap_DeleteItem_s* zx_DEEP_CLONE_dap_DeleteItem(struct zx_ctx* c, struc
   x->objectType = zx_clone_attr(c, x->objectType);
   x->predefined = zx_clone_attr(c, x->predefined);
 
-  for (enn = 0, e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Select(c,(struct zx_dap_Select_s*)e,dup_strs);
   	  if (!enn)
   	      x->Select = (struct zx_dap_Select_s*)en;
@@ -1088,7 +1190,9 @@ int zx_WALK_SO_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Select(c, (struct zx_dap_Select_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1146,11 +1250,15 @@ void zx_FREE_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse_s
 
   zx_free_attr(c, x->itemIDRef, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
@@ -1191,9 +1299,13 @@ void zx_DUP_STRS_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteRespon
 
   zx_dup_attr(c, x->itemIDRef);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
 
 }
@@ -1215,7 +1327,9 @@ struct zx_dap_DeleteResponse_s* zx_DEEP_CLONE_dap_DeleteResponse(struct zx_ctx* 
 
   x->itemIDRef = zx_clone_attr(c, x->itemIDRef);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -1223,7 +1337,9 @@ struct zx_dap_DeleteResponse_s* zx_DEEP_CLONE_dap_DeleteResponse(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -1254,12 +1370,16 @@ int zx_WALK_SO_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteResponse
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1319,11 +1439,15 @@ void zx_FREE_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x, int fre
   zx_free_attr(c, x->changeFormat, free_strs);
   zx_free_attr(c, x->itemIDRef, free_strs);
 
-  for (e = &x->LDIF->gg; e; e = en) {
+  for (e = &x->LDIF->gg;
+       e && e->g.tok == zx_dap_LDIF_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_LDIF(c, (struct zx_dap_LDIF_s*)e, free_strs);
   }
-  for (e = &x->Subscription->gg; e; e = en) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, free_strs);
   }
@@ -1366,9 +1490,13 @@ void zx_DUP_STRS_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x)
   zx_dup_attr(c, x->changeFormat);
   zx_dup_attr(c, x->itemIDRef);
 
-  for (se = &x->LDIF->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LDIF->gg;
+       se && se->g.tok == zx_dap_LDIF_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_LDIF(c, (struct zx_dap_LDIF_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_dap_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Subscription(c, (struct zx_dap_Subscription_s*)se);
 
 }
@@ -1392,7 +1520,9 @@ struct zx_dap_ItemData_s* zx_DEEP_CLONE_dap_ItemData(struct zx_ctx* c, struct zx
   x->changeFormat = zx_clone_attr(c, x->changeFormat);
   x->itemIDRef = zx_clone_attr(c, x->itemIDRef);
 
-  for (enn = 0, e = &x->LDIF->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LDIF->gg;
+       e && e->g.tok == zx_dap_LDIF_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_LDIF(c,(struct zx_dap_LDIF_s*)e,dup_strs);
   	  if (!enn)
   	      x->LDIF = (struct zx_dap_LDIF_s*)en;
@@ -1400,7 +1530,9 @@ struct zx_dap_ItemData_s* zx_DEEP_CLONE_dap_ItemData(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Subscription(c,(struct zx_dap_Subscription_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subscription = (struct zx_dap_Subscription_s*)en;
@@ -1431,12 +1563,16 @@ int zx_WALK_SO_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->LDIF->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LDIF->gg;
+       e && e->g.tok == zx_dap_LDIF_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_LDIF(c, (struct zx_dap_LDIF_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1645,19 +1781,27 @@ void zx_FREE_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x, int free_st
 
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
-  for (e = &x->Subscription->gg; e; e = en) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, free_strs);
   }
-  for (e = &x->ModifyItem->gg; e; e = en) {
+  for (e = &x->ModifyItem->gg;
+       e && e->g.tok == zx_dap_ModifyItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_ModifyItem(c, (struct zx_dap_ModifyItem_s*)e, free_strs);
   }
-  for (e = &x->ResultQuery->gg; e; e = en) {
+  for (e = &x->ResultQuery->gg;
+       e && e->g.tok == zx_dap_ResultQuery_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_ResultQuery(c, (struct zx_dap_ResultQuery_s*)e, free_strs);
   }
@@ -1698,13 +1842,21 @@ void zx_DUP_STRS_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x)
 
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_dap_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Subscription(c, (struct zx_dap_Subscription_s*)se);
-  for (se = &x->ModifyItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ModifyItem->gg;
+       se && se->g.tok == zx_dap_ModifyItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_ModifyItem(c, (struct zx_dap_ModifyItem_s*)se);
-  for (se = &x->ResultQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResultQuery->gg;
+       se && se->g.tok == zx_dap_ResultQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_ResultQuery(c, (struct zx_dap_ResultQuery_s*)se);
 
 }
@@ -1726,7 +1878,9 @@ struct zx_dap_Modify_s* zx_DEEP_CLONE_dap_Modify(struct zx_ctx* c, struct zx_dap
 
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -1734,7 +1888,9 @@ struct zx_dap_Modify_s* zx_DEEP_CLONE_dap_Modify(struct zx_ctx* c, struct zx_dap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Subscription(c,(struct zx_dap_Subscription_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subscription = (struct zx_dap_Subscription_s*)en;
@@ -1742,7 +1898,9 @@ struct zx_dap_Modify_s* zx_DEEP_CLONE_dap_Modify(struct zx_ctx* c, struct zx_dap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ModifyItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ModifyItem->gg;
+       e && e->g.tok == zx_dap_ModifyItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_ModifyItem(c,(struct zx_dap_ModifyItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->ModifyItem = (struct zx_dap_ModifyItem_s*)en;
@@ -1750,7 +1908,9 @@ struct zx_dap_Modify_s* zx_DEEP_CLONE_dap_Modify(struct zx_ctx* c, struct zx_dap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ResultQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResultQuery->gg;
+       e && e->g.tok == zx_dap_ResultQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_ResultQuery(c,(struct zx_dap_ResultQuery_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResultQuery = (struct zx_dap_ResultQuery_s*)en;
@@ -1781,22 +1941,30 @@ int zx_WALK_SO_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ModifyItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ModifyItem->gg;
+       e && e->g.tok == zx_dap_ModifyItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_ModifyItem(c, (struct zx_dap_ModifyItem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ResultQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResultQuery->gg;
+       e && e->g.tok == zx_dap_ResultQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_ResultQuery(c, (struct zx_dap_ResultQuery_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1859,11 +2027,15 @@ void zx_FREE_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x, int
   zx_free_attr(c, x->objectType, free_strs);
   zx_free_attr(c, x->predefined, free_strs);
 
-  for (e = &x->Select->gg; e; e = en) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Select(c, (struct zx_dap_Select_s*)e, free_strs);
   }
-  for (e = &x->NewData->gg; e; e = en) {
+  for (e = &x->NewData->gg;
+       e && e->g.tok == zx_dap_NewData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_NewData(c, (struct zx_dap_NewData_s*)e, free_strs);
   }
@@ -1909,9 +2081,13 @@ void zx_DUP_STRS_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x)
   zx_dup_attr(c, x->objectType);
   zx_dup_attr(c, x->predefined);
 
-  for (se = &x->Select->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Select->gg;
+       se && se->g.tok == zx_dap_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Select(c, (struct zx_dap_Select_s*)se);
-  for (se = &x->NewData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NewData->gg;
+       se && se->g.tok == zx_dap_NewData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_NewData(c, (struct zx_dap_NewData_s*)se);
 
 }
@@ -1938,7 +2114,9 @@ struct zx_dap_ModifyItem_s* zx_DEEP_CLONE_dap_ModifyItem(struct zx_ctx* c, struc
   x->objectType = zx_clone_attr(c, x->objectType);
   x->predefined = zx_clone_attr(c, x->predefined);
 
-  for (enn = 0, e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Select(c,(struct zx_dap_Select_s*)e,dup_strs);
   	  if (!enn)
   	      x->Select = (struct zx_dap_Select_s*)en;
@@ -1946,7 +2124,9 @@ struct zx_dap_ModifyItem_s* zx_DEEP_CLONE_dap_ModifyItem(struct zx_ctx* c, struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->NewData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->NewData->gg;
+       e && e->g.tok == zx_dap_NewData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_NewData(c,(struct zx_dap_NewData_s*)e,dup_strs);
   	  if (!enn)
   	      x->NewData = (struct zx_dap_NewData_s*)en;
@@ -1977,12 +2157,16 @@ int zx_WALK_SO_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x, v
   if (ret)
     return ret;
 
-  for (e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Select(c, (struct zx_dap_Select_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->NewData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->NewData->gg;
+       e && e->g.tok == zx_dap_NewData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_NewData(c, (struct zx_dap_NewData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2041,15 +2225,21 @@ void zx_FREE_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse_s
   zx_free_attr(c, x->timeStamp, free_strs);
   zx_free_attr(c, x->itemIDRef, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
-  for (e = &x->ItemData->gg; e; e = en) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_dap_ItemData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_ItemData(c, (struct zx_dap_ItemData_s*)e, free_strs);
   }
@@ -2091,11 +2281,17 @@ void zx_DUP_STRS_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyRespon
   zx_dup_attr(c, x->timeStamp);
   zx_dup_attr(c, x->itemIDRef);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_dap_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_ItemData(c, (struct zx_dap_ItemData_s*)se);
 
 }
@@ -2118,7 +2314,9 @@ struct zx_dap_ModifyResponse_s* zx_DEEP_CLONE_dap_ModifyResponse(struct zx_ctx* 
   x->timeStamp = zx_clone_attr(c, x->timeStamp);
   x->itemIDRef = zx_clone_attr(c, x->itemIDRef);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -2126,7 +2324,9 @@ struct zx_dap_ModifyResponse_s* zx_DEEP_CLONE_dap_ModifyResponse(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -2134,7 +2334,9 @@ struct zx_dap_ModifyResponse_s* zx_DEEP_CLONE_dap_ModifyResponse(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ItemData->gg;
+       e && e->g.tok == zx_dap_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_ItemData(c,(struct zx_dap_ItemData_s*)e,dup_strs);
   	  if (!enn)
   	      x->ItemData = (struct zx_dap_ItemData_s*)en;
@@ -2165,17 +2367,23 @@ int zx_WALK_SO_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyResponse
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_dap_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_ItemData(c, (struct zx_dap_ItemData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2232,11 +2440,15 @@ void zx_FREE_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x, int free_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->LDIF->gg; e; e = en) {
+  for (e = &x->LDIF->gg;
+       e && e->g.tok == zx_dap_LDIF_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_LDIF(c, (struct zx_dap_LDIF_s*)e, free_strs);
   }
-  for (e = &x->Subscription->gg; e; e = en) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, free_strs);
   }
@@ -2276,9 +2488,13 @@ void zx_DUP_STRS_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->LDIF->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LDIF->gg;
+       se && se->g.tok == zx_dap_LDIF_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_LDIF(c, (struct zx_dap_LDIF_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_dap_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Subscription(c, (struct zx_dap_Subscription_s*)se);
 
 }
@@ -2299,7 +2515,9 @@ struct zx_dap_NewData_s* zx_DEEP_CLONE_dap_NewData(struct zx_ctx* c, struct zx_d
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->LDIF->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->LDIF->gg;
+       e && e->g.tok == zx_dap_LDIF_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_LDIF(c,(struct zx_dap_LDIF_s*)e,dup_strs);
   	  if (!enn)
   	      x->LDIF = (struct zx_dap_LDIF_s*)en;
@@ -2307,7 +2525,9 @@ struct zx_dap_NewData_s* zx_DEEP_CLONE_dap_NewData(struct zx_ctx* c, struct zx_d
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Subscription(c,(struct zx_dap_Subscription_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subscription = (struct zx_dap_Subscription_s*)en;
@@ -2338,12 +2558,16 @@ int zx_WALK_SO_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x, void* c
   if (ret)
     return ret;
 
-  for (e = &x->LDIF->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->LDIF->gg;
+       e && e->g.tok == zx_dap_LDIF_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_LDIF(c, (struct zx_dap_LDIF_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2404,11 +2628,15 @@ void zx_FREE_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* x,
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->subscriptionID, free_strs);
 
-  for (e = &x->TestResult->gg; e; e = en) {
+  for (e = &x->TestResult->gg;
+       e && e->g.tok == zx_lu_TestResult_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_TestResult(c, (struct zx_lu_TestResult_s*)e, free_strs);
   }
-  for (e = &x->ItemData->gg; e; e = en) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_dap_ItemData_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_ItemData(c, (struct zx_dap_ItemData_s*)e, free_strs);
   }
@@ -2452,9 +2680,13 @@ void zx_DUP_STRS_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->subscriptionID);
 
-  for (se = &x->TestResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestResult->gg;
+       se && se->g.tok == zx_lu_TestResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_TestResult(c, (struct zx_lu_TestResult_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_dap_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_ItemData(c, (struct zx_dap_ItemData_s*)se);
 
 }
@@ -2479,7 +2711,9 @@ struct zx_dap_Notification_s* zx_DEEP_CLONE_dap_Notification(struct zx_ctx* c, s
   x->id = zx_clone_attr(c, x->id);
   x->subscriptionID = zx_clone_attr(c, x->subscriptionID);
 
-  for (enn = 0, e = &x->TestResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TestResult->gg;
+       e && e->g.tok == zx_lu_TestResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_TestResult(c,(struct zx_lu_TestResult_s*)e,dup_strs);
   	  if (!enn)
   	      x->TestResult = (struct zx_lu_TestResult_s*)en;
@@ -2487,7 +2721,9 @@ struct zx_dap_Notification_s* zx_DEEP_CLONE_dap_Notification(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ItemData->gg;
+       e && e->g.tok == zx_dap_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_ItemData(c,(struct zx_dap_ItemData_s*)e,dup_strs);
   	  if (!enn)
   	      x->ItemData = (struct zx_dap_ItemData_s*)en;
@@ -2518,12 +2754,16 @@ int zx_WALK_SO_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s* 
   if (ret)
     return ret;
 
-  for (e = &x->TestResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TestResult->gg;
+       e && e->g.tok == zx_lu_TestResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_TestResult(c, (struct zx_lu_TestResult_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ItemData->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ItemData->gg;
+       e && e->g.tok == zx_dap_ItemData_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_ItemData(c, (struct zx_dap_ItemData_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2582,11 +2822,15 @@ void zx_FREE_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x, int free_st
   zx_free_attr(c, x->timeStamp, free_strs);
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
-  for (e = &x->Notification->gg; e; e = en) {
+  for (e = &x->Notification->gg;
+       e && e->g.tok == zx_dap_Notification_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Notification(c, (struct zx_dap_Notification_s*)e, free_strs);
   }
@@ -2628,9 +2872,13 @@ void zx_DUP_STRS_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x)
   zx_dup_attr(c, x->timeStamp);
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->Notification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notification->gg;
+       se && se->g.tok == zx_dap_Notification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Notification(c, (struct zx_dap_Notification_s*)se);
 
 }
@@ -2653,7 +2901,9 @@ struct zx_dap_Notify_s* zx_DEEP_CLONE_dap_Notify(struct zx_ctx* c, struct zx_dap
   x->timeStamp = zx_clone_attr(c, x->timeStamp);
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -2661,7 +2911,9 @@ struct zx_dap_Notify_s* zx_DEEP_CLONE_dap_Notify(struct zx_ctx* c, struct zx_dap
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Notification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Notification->gg;
+       e && e->g.tok == zx_dap_Notification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Notification(c,(struct zx_dap_Notification_s*)e,dup_strs);
   	  if (!enn)
   	      x->Notification = (struct zx_dap_Notification_s*)en;
@@ -2692,12 +2944,16 @@ int zx_WALK_SO_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Notification->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Notification->gg;
+       e && e->g.tok == zx_dap_Notification_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Notification(c, (struct zx_dap_Notification_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2755,11 +3011,15 @@ void zx_FREE_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse_s
 
   zx_free_attr(c, x->itemIDRef, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
@@ -2800,9 +3060,13 @@ void zx_DUP_STRS_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyRespon
 
   zx_dup_attr(c, x->itemIDRef);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
 
 }
@@ -2824,7 +3088,9 @@ struct zx_dap_NotifyResponse_s* zx_DEEP_CLONE_dap_NotifyResponse(struct zx_ctx* 
 
   x->itemIDRef = zx_clone_attr(c, x->itemIDRef);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -2832,7 +3098,9 @@ struct zx_dap_NotifyResponse_s* zx_DEEP_CLONE_dap_NotifyResponse(struct zx_ctx* 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -2863,12 +3131,16 @@ int zx_WALK_SO_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyResponse
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2926,19 +3198,27 @@ void zx_FREE_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x, int free_strs
 
   zx_free_attr(c, x->itemID, free_strs);
 
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
-  for (e = &x->TestItem->gg; e; e = en) {
+  for (e = &x->TestItem->gg;
+       e && e->g.tok == zx_dap_TestItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_TestItem(c, (struct zx_dap_TestItem_s*)e, free_strs);
   }
-  for (e = &x->QueryItem->gg; e; e = en) {
+  for (e = &x->QueryItem->gg;
+       e && e->g.tok == zx_dap_QueryItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_QueryItem(c, (struct zx_dap_QueryItem_s*)e, free_strs);
   }
-  for (e = &x->Subscription->gg; e; e = en) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, free_strs);
   }
@@ -2979,13 +3259,21 @@ void zx_DUP_STRS_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x)
 
   zx_dup_attr(c, x->itemID);
 
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->TestItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestItem->gg;
+       se && se->g.tok == zx_dap_TestItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_TestItem(c, (struct zx_dap_TestItem_s*)se);
-  for (se = &x->QueryItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryItem->gg;
+       se && se->g.tok == zx_dap_QueryItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_QueryItem(c, (struct zx_dap_QueryItem_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_dap_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Subscription(c, (struct zx_dap_Subscription_s*)se);
 
 }
@@ -3007,7 +3295,9 @@ struct zx_dap_Query_s* zx_DEEP_CLONE_dap_Query(struct zx_ctx* c, struct zx_dap_Q
 
   x->itemID = zx_clone_attr(c, x->itemID);
 
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -3015,7 +3305,9 @@ struct zx_dap_Query_s* zx_DEEP_CLONE_dap_Query(struct zx_ctx* c, struct zx_dap_Q
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TestItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TestItem->gg;
+       e && e->g.tok == zx_dap_TestItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_TestItem(c,(struct zx_dap_TestItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->TestItem = (struct zx_dap_TestItem_s*)en;
@@ -3023,7 +3315,9 @@ struct zx_dap_Query_s* zx_DEEP_CLONE_dap_Query(struct zx_ctx* c, struct zx_dap_Q
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->QueryItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->QueryItem->gg;
+       e && e->g.tok == zx_dap_QueryItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_QueryItem(c,(struct zx_dap_QueryItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->QueryItem = (struct zx_dap_QueryItem_s*)en;
@@ -3031,7 +3325,9 @@ struct zx_dap_Query_s* zx_DEEP_CLONE_dap_Query(struct zx_ctx* c, struct zx_dap_Q
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Subscription(c,(struct zx_dap_Subscription_s*)e,dup_strs);
   	  if (!enn)
   	      x->Subscription = (struct zx_dap_Subscription_s*)en;
@@ -3062,22 +3358,30 @@ int zx_WALK_SO_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TestItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TestItem->gg;
+       e && e->g.tok == zx_dap_TestItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_TestItem(c, (struct zx_dap_TestItem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->QueryItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->QueryItem->gg;
+       e && e->g.tok == zx_dap_QueryItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_QueryItem(c, (struct zx_dap_QueryItem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Subscription->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Subscription->gg;
+       e && e->g.tok == zx_dap_Subscription_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Subscription(c, (struct zx_dap_Subscription_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3146,7 +3450,9 @@ void zx_FREE_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x, int f
   zx_free_attr(c, x->predefined, free_strs);
 
   zx_free_simple_elems(c, x->ChangeFormat, free_strs);
-  for (e = &x->Select->gg; e; e = en) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Select(c, (struct zx_dap_Select_s*)e, free_strs);
   }
@@ -3199,7 +3505,9 @@ void zx_DUP_STRS_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x)
   zx_dup_attr(c, x->predefined);
 
   zx_dup_strs_simple_elems(c, x->ChangeFormat);
-  for (se = &x->Select->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Select->gg;
+       se && se->g.tok == zx_dap_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Select(c, (struct zx_dap_Select_s*)se);
   zx_dup_strs_simple_elems(c, x->Sort);
 
@@ -3233,7 +3541,9 @@ struct zx_dap_QueryItem_s* zx_DEEP_CLONE_dap_QueryItem(struct zx_ctx* c, struct 
   x->predefined = zx_clone_attr(c, x->predefined);
 
   x->ChangeFormat = zx_deep_clone_simple_elems(c,x->ChangeFormat, dup_strs);
-  for (enn = 0, e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Select(c,(struct zx_dap_Select_s*)e,dup_strs);
   	  if (!enn)
   	      x->Select = (struct zx_dap_Select_s*)en;
@@ -3268,7 +3578,9 @@ int zx_WALK_SO_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x, voi
   ret = zx_walk_so_simple_elems(c, x->ChangeFormat, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Select(c, (struct zx_dap_Select_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3330,19 +3642,27 @@ void zx_FREE_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s* 
   zx_free_attr(c, x->timeStamp, free_strs);
   zx_free_attr(c, x->itemIDRef, free_strs);
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
-  for (e = &x->TestResult->gg; e; e = en) {
+  for (e = &x->TestResult->gg;
+       e && e->g.tok == zx_dst_TestResult_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dst_TestResult(c, (struct zx_dst_TestResult_s*)e, free_strs);
   }
-  for (e = &x->Data->gg; e; e = en) {
+  for (e = &x->Data->gg;
+       e && e->g.tok == zx_dap_Data_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Data(c, (struct zx_dap_Data_s*)e, free_strs);
   }
@@ -3384,13 +3704,21 @@ void zx_DUP_STRS_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse
   zx_dup_attr(c, x->timeStamp);
   zx_dup_attr(c, x->itemIDRef);
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->TestResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestResult->gg;
+       se && se->g.tok == zx_dst_TestResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dst_TestResult(c, (struct zx_dst_TestResult_s*)se);
-  for (se = &x->Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Data->gg;
+       se && se->g.tok == zx_dap_Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Data(c, (struct zx_dap_Data_s*)se);
 
 }
@@ -3413,7 +3741,9 @@ struct zx_dap_QueryResponse_s* zx_DEEP_CLONE_dap_QueryResponse(struct zx_ctx* c,
   x->timeStamp = zx_clone_attr(c, x->timeStamp);
   x->itemIDRef = zx_clone_attr(c, x->itemIDRef);
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -3421,7 +3751,9 @@ struct zx_dap_QueryResponse_s* zx_DEEP_CLONE_dap_QueryResponse(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -3429,7 +3761,9 @@ struct zx_dap_QueryResponse_s* zx_DEEP_CLONE_dap_QueryResponse(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->TestResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TestResult->gg;
+       e && e->g.tok == zx_dst_TestResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dst_TestResult(c,(struct zx_dst_TestResult_s*)e,dup_strs);
   	  if (!enn)
   	      x->TestResult = (struct zx_dst_TestResult_s*)en;
@@ -3437,7 +3771,9 @@ struct zx_dap_QueryResponse_s* zx_DEEP_CLONE_dap_QueryResponse(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Data->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Data->gg;
+       e && e->g.tok == zx_dap_Data_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Data(c,(struct zx_dap_Data_s*)e,dup_strs);
   	  if (!enn)
   	      x->Data = (struct zx_dap_Data_s*)en;
@@ -3468,22 +3804,30 @@ int zx_WALK_SO_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_s
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->TestResult->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TestResult->gg;
+       e && e->g.tok == zx_dst_TestResult_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dst_TestResult(c, (struct zx_dst_TestResult_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Data->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Data->gg;
+       e && e->g.tok == zx_dap_Data_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Data(c, (struct zx_dap_Data_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3548,7 +3892,9 @@ void zx_FREE_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x, i
   zx_free_attr(c, x->predefined, free_strs);
 
   zx_free_simple_elems(c, x->ChangeFormat, free_strs);
-  for (e = &x->Select->gg; e; e = en) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_Select(c, (struct zx_dap_Select_s*)e, free_strs);
   }
@@ -3597,7 +3943,9 @@ void zx_DUP_STRS_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* 
   zx_dup_attr(c, x->predefined);
 
   zx_dup_strs_simple_elems(c, x->ChangeFormat);
-  for (se = &x->Select->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Select->gg;
+       se && se->g.tok == zx_dap_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_Select(c, (struct zx_dap_Select_s*)se);
   zx_dup_strs_simple_elems(c, x->Sort);
 
@@ -3627,7 +3975,9 @@ struct zx_dap_ResultQuery_s* zx_DEEP_CLONE_dap_ResultQuery(struct zx_ctx* c, str
   x->predefined = zx_clone_attr(c, x->predefined);
 
   x->ChangeFormat = zx_deep_clone_simple_elems(c,x->ChangeFormat, dup_strs);
-  for (enn = 0, e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_Select(c,(struct zx_dap_Select_s*)e,dup_strs);
   	  if (!enn)
   	      x->Select = (struct zx_dap_Select_s*)en;
@@ -3662,7 +4012,9 @@ int zx_WALK_SO_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x,
   ret = zx_walk_so_simple_elems(c, x->ChangeFormat, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_dap_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_Select(c, (struct zx_dap_Select_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3889,15 +4241,21 @@ void zx_FREE_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* x,
   zx_free_attr(c, x->starts, free_strs);
   zx_free_attr(c, x->subscriptionID, free_strs);
 
-  for (e = &x->RefItem->gg; e; e = en) {
+  for (e = &x->RefItem->gg;
+       e && e->g.tok == zx_subs_RefItem_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_subs_RefItem(c, (struct zx_subs_RefItem_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Extension(c, (struct zx_lu_Extension_s*)e, free_strs);
   }
-  for (e = &x->ResultQuery->gg; e; e = en) {
+  for (e = &x->ResultQuery->gg;
+       e && e->g.tok == zx_dap_ResultQuery_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_ResultQuery(c, (struct zx_dap_ResultQuery_s*)e, free_strs);
   }
@@ -3946,11 +4304,17 @@ void zx_DUP_STRS_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s
   zx_dup_attr(c, x->starts);
   zx_dup_attr(c, x->subscriptionID);
 
-  for (se = &x->RefItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RefItem->gg;
+       se && se->g.tok == zx_subs_RefItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_subs_RefItem(c, (struct zx_subs_RefItem_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Extension(c, (struct zx_lu_Extension_s*)se);
-  for (se = &x->ResultQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResultQuery->gg;
+       se && se->g.tok == zx_dap_ResultQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_ResultQuery(c, (struct zx_dap_ResultQuery_s*)se);
   zx_dup_strs_simple_elems(c, x->Aggregation);
   zx_dup_strs_simple_elems(c, x->Trigger);
@@ -3980,7 +4344,9 @@ struct zx_dap_Subscription_s* zx_DEEP_CLONE_dap_Subscription(struct zx_ctx* c, s
   x->starts = zx_clone_attr(c, x->starts);
   x->subscriptionID = zx_clone_attr(c, x->subscriptionID);
 
-  for (enn = 0, e = &x->RefItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RefItem->gg;
+       e && e->g.tok == zx_subs_RefItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_subs_RefItem(c,(struct zx_subs_RefItem_s*)e,dup_strs);
   	  if (!enn)
   	      x->RefItem = (struct zx_subs_RefItem_s*)en;
@@ -3988,7 +4354,9 @@ struct zx_dap_Subscription_s* zx_DEEP_CLONE_dap_Subscription(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Extension(c,(struct zx_lu_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_lu_Extension_s*)en;
@@ -3996,7 +4364,9 @@ struct zx_dap_Subscription_s* zx_DEEP_CLONE_dap_Subscription(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ResultQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ResultQuery->gg;
+       e && e->g.tok == zx_dap_ResultQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_ResultQuery(c,(struct zx_dap_ResultQuery_s*)e,dup_strs);
   	  if (!enn)
   	      x->ResultQuery = (struct zx_dap_ResultQuery_s*)en;
@@ -4029,17 +4399,23 @@ int zx_WALK_SO_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s* 
   if (ret)
     return ret;
 
-  for (e = &x->RefItem->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RefItem->gg;
+       e && e->g.tok == zx_subs_RefItem_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_subs_RefItem(c, (struct zx_subs_RefItem_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_lu_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Extension(c, (struct zx_lu_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ResultQuery->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ResultQuery->gg;
+       e && e->g.tok == zx_dap_ResultQuery_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_ResultQuery(c, (struct zx_dap_ResultQuery_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4106,7 +4482,9 @@ void zx_FREE_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x, int fre
   zx_free_attr(c, x->objectType, free_strs);
   zx_free_attr(c, x->predefined, free_strs);
 
-  for (e = &x->TestOp->gg; e; e = en) {
+  for (e = &x->TestOp->gg;
+       e && e->g.tok == zx_dap_TestOp_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_dap_TestOp(c, (struct zx_dap_TestOp_s*)e, free_strs);
   }
@@ -4150,7 +4528,9 @@ void zx_DUP_STRS_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x)
   zx_dup_attr(c, x->objectType);
   zx_dup_attr(c, x->predefined);
 
-  for (se = &x->TestOp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestOp->gg;
+       se && se->g.tok == zx_dap_TestOp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_dap_TestOp(c, (struct zx_dap_TestOp_s*)se);
 
 }
@@ -4175,7 +4555,9 @@ struct zx_dap_TestItem_s* zx_DEEP_CLONE_dap_TestItem(struct zx_ctx* c, struct zx
   x->objectType = zx_clone_attr(c, x->objectType);
   x->predefined = zx_clone_attr(c, x->predefined);
 
-  for (enn = 0, e = &x->TestOp->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TestOp->gg;
+       e && e->g.tok == zx_dap_TestOp_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_dap_TestOp(c,(struct zx_dap_TestOp_s*)e,dup_strs);
   	  if (!enn)
   	      x->TestOp = (struct zx_dap_TestOp_s*)en;
@@ -4206,7 +4588,9 @@ int zx_WALK_SO_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->TestOp->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TestOp->gg;
+       e && e->g.tok == zx_dap_TestOp_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_dap_TestOp(c, (struct zx_dap_TestOp_s*)e, ctx, callback);
     if (ret)
       return ret;

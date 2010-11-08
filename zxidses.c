@@ -85,11 +85,11 @@ int zxid_get_ses_sso_a7n(zxid_conf* cf, zxid_ses* ses)
       ses->nameid = r->NameID;
     }
     if (ses->nameid)
-      subj = ses->nameid->gg.content;
+      subj = ZX_GET_CONTENT(ses->nameid);
   } else if (ses->a7n11)
-    subj = ses->a7n11->AuthenticationStatement->Subject->NameIdentifier->gg.content;
+    subj = ZX_GET_CONTENT(ses->a7n11->AuthenticationStatement->Subject->NameIdentifier);
   else if (ses->a7n12)
-    subj = ses->a7n12->AuthenticationStatement->Subject->NameIdentifier->gg.content;
+    subj = ZX_GET_CONTENT(ses->a7n12->AuthenticationStatement->Subject->NameIdentifier);
   
   if (subj) {
     if (ses->nid) {
@@ -118,7 +118,7 @@ zxid_entity* zxid_get_ses_idp(zxid_conf* cf, zxid_ses* ses)
     ERR("Session assertion is missing Issuer (the IdP) %p", ses->a7n);
     return 0;
   }
-  return zxid_get_ent_ss(cf, ses->a7n->Issuer->gg.content);
+  return zxid_get_ent_ss(cf, ZX_GET_CONTENT(ses->a7n->Issuer));
 }
 
 /*() Allocate memory for session object. Used with zxid_simple_cf_ses(). */

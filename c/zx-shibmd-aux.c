@@ -65,7 +65,9 @@ void zx_FREE_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthority
 
   zx_free_attr(c, x->VerifyDepth, free_strs);
 
-  for (e = &x->KeyInfo->gg; e; e = en) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, free_strs);
   }
@@ -106,7 +108,9 @@ void zx_DUP_STRS_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAutho
 
   zx_dup_attr(c, x->VerifyDepth);
 
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
 
 }
@@ -128,7 +132,9 @@ struct zx_shibmd_KeyAuthority_s* zx_DEEP_CLONE_shibmd_KeyAuthority(struct zx_ctx
 
   x->VerifyDepth = zx_clone_attr(c, x->VerifyDepth);
 
-  for (enn = 0, e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_KeyInfo(c,(struct zx_ds_KeyInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyInfo = (struct zx_ds_KeyInfo_s*)en;
@@ -159,7 +165,9 @@ int zx_WALK_SO_shibmd_KeyAuthority(struct zx_ctx* c, struct zx_shibmd_KeyAuthori
   if (ret)
     return ret;
 
-  for (e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, ctx, callback);
     if (ret)
       return ret;

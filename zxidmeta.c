@@ -66,12 +66,12 @@ static void zxid_process_keys(zxid_conf* cf, zxid_entity* ent, struct zx_md_KeyD
   for (;
        kd && kd->gg.g.tok == zx_md_KeyDescriptor_ELEM;
        kd = (struct zx_md_KeyDescriptor_s*)kd->gg.g.n) {
-    if (!kd->KeyInfo || !kd->KeyInfo->X509Data || !kd->KeyInfo->X509Data->X509Certificate || !kd->KeyInfo->X509Data->X509Certificate->content) {
+    if (!kd->KeyInfo || !kd->KeyInfo->X509Data || !ZX_GET_CONTENT(kd->KeyInfo->X509Data->X509Certificate)) {
       ERR("KeyDescriptor for %s missing essential subelements KeyInfo=%p", logkey, kd->KeyInfo);
       return;
     }
-    p = kd->KeyInfo->X509Data->X509Certificate->content->s;
-    len = kd->KeyInfo->X509Data->X509Certificate->content->len;
+    p = ZX_GET_CONTENT_S(kd->KeyInfo->X509Data->X509Certificate);
+    len = ZX_GET_CONTENT_LEN(kd->KeyInfo->X509Data->X509Certificate);
     e = p + len;
     pp = ZX_ALLOC(cf->ctx, SIMPLE_BASE64_PESSIMISTIC_DECODE_LEN(e-p));
     e = unbase64_raw(p, e, pp, zx_std_index_64);
@@ -111,9 +111,8 @@ static zxid_entity* zxid_mk_ent(zxid_conf* cf, struct zx_md_EntityDescriptor_s* 
   sha1_safe_base64(ent->sha1_name, ed->entityID->g.len, ent->eid);
   ent->sha1_name[27] = 0;
   
-  if (ed->Organization && ed->Organization->OrganizationDisplayName
-      && ed->Organization->OrganizationDisplayName->gg.content)
-    ent->dpy_name = zx_str_to_c(cf->ctx, ed->Organization->OrganizationDisplayName->gg.content);
+  if (ed->Organization && ZX_GET_CONTENT(ed->Organization->OrganizationDisplayName))
+    ent->dpy_name = zx_str_to_c(cf->ctx,ZX_GET_CONTENT(ed->Organization->OrganizationDisplayName));
   
   if (ed->IDPSSODescriptor)
     zxid_process_keys(cf, ent, ed->IDPSSODescriptor->KeyDescriptor, "IDP SSO");
@@ -474,64 +473,18 @@ zxid_entity* zxid_load_cot_cache(zxid_conf* cf)
 
 /* ============== Our Metadata ============== */
 
-#if 0
-/*() Constructor for key descriptor.
- * In the metadata the PEM start/end cert markers are NOT used. */
-
-/* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, char* use, X509* x)
-{
-  int len;
-  char* dd;
-  char* d;
-  char* pp;
-  char* p;
-  struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx);
-  kd->use = zx_ref_str(cf->ctx, use);
-  kd->KeyInfo = zx_NEW_ds_KeyInfo(cf->ctx);
-  kd->KeyInfo->X509Data = zx_NEW_ds_X509Data(cf->ctx);
-
-#ifdef USE_OPENSSL
-  /* Build PEM encoding */
-  
-  len = i2d_X509(x, 0);
-  if (len <= 0) {
-    ERR("DER encoding certificate failed: %d", len);
-  } else {
-    dd = d = ZX_ALLOC(cf->ctx, len);
-    i2d_X509(x, (unsigned char**)&d);
-    pp = p = ZX_ALLOC(cf->ctx, (len+4) * 4 / 3 + (len/64) + 6
-		      + sizeof(PEM_CERT_START) + sizeof(PEM_CERT_END));    
-    memcpy(p, PEM_CERT_START, sizeof(PEM_CERT_START)-1);
-    p += sizeof(PEM_CERT_START)-1;
-    *p++ = '\n';
-    p = base64_fancy_raw(dd, len, p, std_basis_64, 64, 1, "\n", '=');
-    memcpy(p, PEM_CERT_END, sizeof(PEM_CERT_END)-1);
-    p += sizeof(PEM_CERT_END)-1;
-    /**p++ = '\n';*/
-    *p = 0;
-
-    kd->KeyInfo->X509Data->X509Certificate = zx_ref_len_simple_elem(cf->ctx, p-pp, pp);
-  }
-#else
-  ERR("This copy of zxid was compiled to NOT use OpenSSL. Generating KeyInfo is not supported. Add -DUSE_OPENSSL and recompile. %d", 0);
-#endif
-  return kd;
-}
-#endif
-
 /*() Generate XML-DSIG key info given X509 certificate. */
 
 /* Called by:  zxenc_pubkey_enc, zxid_key_desc */
-struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, X509* x)
+struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, struct zx_elem_s* father, X509* x)
 {
   int len;
   char* dd;
   char* d;
   char* pp;
   char* p;
-  struct zx_ds_KeyInfo_s* ki = zx_NEW_ds_KeyInfo(cf->ctx);
-  ki->X509Data = zx_NEW_ds_X509Data(cf->ctx);
+  struct zx_ds_KeyInfo_s* ki = zx_NEW_ds_KeyInfo(cf->ctx,father);
+  ki->X509Data = zx_NEW_ds_X509Data(cf->ctx, &ki->gg);
 
 #ifdef USE_OPENSSL
   /* Build PEM encoding (which is base64 of the DER encoding + header and footer) */
@@ -545,7 +498,7 @@ struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, X509* x)
     pp = p = ZX_ALLOC(cf->ctx, (len+4) * 4 / 3 + (len/64) + 6);    
     p = base64_fancy_raw(dd, len, p, std_basis_64, 64, 1, "\n", '=');
     *p = 0;
-    ki->X509Data->X509Certificate = zx_ref_len_simple_elem(cf->ctx, p-pp, pp);
+    ki->X509Data->X509Certificate = zx_ref_len_simple_elem(cf->ctx, &ki->X509Data->gg, zx_ds_X509Certificate_ELEM, p-pp, pp);
   }
 #else
   ERR("This copy of zxid was compiled to NOT use OpenSSL. Generating KeyInfo is not supported. Add -DUSE_OPENSSL and recompile. %d", 0);
@@ -556,9 +509,9 @@ struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, X509* x)
 /*() Generate key descriptor metadata fragment given X509 certificate [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, char* use, X509* x)
+struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, struct zx_elem_s* father, char* use, X509* x)
 {
-  struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx);
+  struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx,father);
   kd->use = zx_ref_attr(cf->ctx, zx_use_ATTR, use);
   kd->KeyInfo = zxid_key_info(cf, x);
   return kd;
@@ -567,9 +520,9 @@ struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, char* use, X509* x)
 /*() Generate Artifact Resolution (AR) Descriptor idp metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc */
-struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
+struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
 {
-  struct zx_md_ArtifactResolutionService_s* d = zx_NEW_md_ArtifactResolutionService(cf->ctx);
+  struct zx_md_ArtifactResolutionService_s* d = zx_NEW_md_ArtifactResolutionService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
@@ -580,9 +533,9 @@ struct zx_md_ArtifactResolutionService_s* zxid_ar_desc(zxid_conf* cf, char* bind
 /*() Generate Single SignOn (SSO) Descriptor idp metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc */
-struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
+struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
 {
-  struct zx_md_SingleSignOnService_s* d = zx_NEW_md_SingleSignOnService(cf->ctx);
+  struct zx_md_SingleSignOnService_s* d = zx_NEW_md_SingleSignOnService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
@@ -593,9 +546,9 @@ struct zx_md_SingleSignOnService_s* zxid_sso_desc(zxid_conf* cf, char* binding, 
 /*() Generate Single Logout (SLO) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
+struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
 {
-  struct zx_md_SingleLogoutService_s* d = zx_NEW_md_SingleLogoutService(cf->ctx);
+  struct zx_md_SingleLogoutService_s* d = zx_NEW_md_SingleLogoutService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
@@ -606,9 +559,9 @@ struct zx_md_SingleLogoutService_s* zxid_slo_desc(zxid_conf* cf, char* binding, 
 /*() Generate Manage Name Id (MNI) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
+struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
 {
-  struct zx_md_ManageNameIDService_s* d = zx_NEW_md_ManageNameIDService(cf->ctx);
+  struct zx_md_ManageNameIDService_s* d = zx_NEW_md_ManageNameIDService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
@@ -619,9 +572,9 @@ struct zx_md_ManageNameIDService_s* zxid_mni_desc(zxid_conf* cf, char* binding, 
 /*() Generate Name ID Mapping Service metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
-struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, char* binding, char* loc, char* resp_loc)
+struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* resp_loc)
 {
-  struct zx_md_NameIDMappingService_s* d = zx_NEW_md_NameIDMappingService(cf->ctx);
+  struct zx_md_NameIDMappingService_s* d = zx_NEW_md_NameIDMappingService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   if (resp_loc)
@@ -632,9 +585,9 @@ struct zx_md_NameIDMappingService_s* zxid_nimap_desc(zxid_conf* cf, char* bindin
 /*() Generate Assertion Consumer Service (SSO) Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_sso_desc x5 */
-struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, char* binding, char* loc, char* ix)
+struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, struct zx_elem_s* father, char* binding, char* loc, char* ix)
 {
-  struct zx_md_AssertionConsumerService_s* d = zx_NEW_md_AssertionConsumerService(cf->ctx);
+  struct zx_md_AssertionConsumerService_s* d = zx_NEW_md_AssertionConsumerService(cf->ctx,father);
   d->Binding = zx_ref_attr(cf->ctx, zx_Binding_ATTR, binding);
   d->Location = zx_attrf(cf->ctx, zx_Location_ATTR, "%s%s", cf->url, loc);
   d->index = zx_ref_attr(cf->ctx, zx_index_ATTR, ix);
@@ -644,14 +597,14 @@ struct zx_md_AssertionConsumerService_s* zxid_ac_desc(zxid_conf* cf, char* bindi
 /*() Generate SP SSO Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_meta */
-struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf)
+struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf, struct zx_elem_s* father)
 {
   struct zx_md_AssertionConsumerService_s* za;
   struct zx_elem_s* ze;
   struct zx_md_ManageNameIDService_s* z3;
   struct zx_md_SingleLogoutService_s* z2;
   struct zx_md_KeyDescriptor_s* zk;
-  struct zx_md_SPSSODescriptor_s* sp_ssod = zx_NEW_md_SPSSODescriptor(cf->ctx);
+  struct zx_md_SPSSODescriptor_s* sp_ssod = zx_NEW_md_SPSSODescriptor(cf->ctx,father);
   sp_ssod->AuthnRequestsSigned        = zx_ref_attr(cf->ctx, zx_AuthnRequestsSigned_ATTR, cf->authn_req_sign?"1":"0");
   sp_ssod->WantAssertionsSigned       = zx_ref_attr(cf->ctx, zx_WantAssertionsSigned_ATTR, cf->want_sso_a7n_signed?"1":"0");
   sp_ssod->errorURL                   = zx_attrf(cf->ctx, zx_errorURL_ATTR, "%s?o=E", cf->url);
@@ -668,70 +621,35 @@ struct zx_md_SPSSODescriptor_s* zxid_sp_sso_desc(zxid_conf* cf)
     UNLOCK(cf->mx, "read certs for our md");
     ERR("Signing or encryption certificate not found (or both are corrupt). %p", cf->enc_cert);
   } else {
-    zk = zxid_key_desc(cf, "encryption", cf->enc_cert);
-    zk->gg.g.n = &sp_ssod->KeyDescriptor->gg.g;
-    sp_ssod->KeyDescriptor = zk;
-    
-    zk = zxid_key_desc(cf, "signing", cf->sign_cert);
-    zk->gg.g.n = &sp_ssod->KeyDescriptor->gg.g;
-    sp_ssod->KeyDescriptor = zk;
+    sp_ssod->KeyDescriptor = zxid_key_desc(cf, &sp_ssod->gg, "encryption", cf->enc_cert);
+    sp_ssod->KeyDescriptor = zxid_key_desc(cf, &sp_ssod->gg, "signing", cf->sign_cert);
     UNLOCK(cf->mx, "read certs for our md");
   }
 
-  z2 = zxid_slo_desc(cf, SAML2_REDIR, "?o=Q", "?o=Q");
-  z2->gg.g.n = &sp_ssod->SingleLogoutService->gg.g;
-  sp_ssod->SingleLogoutService = z2;
+  sp_ssod->SingleLogoutService = zxid_slo_desc(cf, &sp_ssod->gg, SAML2_REDIR, "?o=Q", "?o=Q");
+  sp_ssod->SingleLogoutService = zxid_slo_desc(cf, &sp_ssod->gg, SAML2_SOAP,  "?o=S", 0);
 
-  z2 = zxid_slo_desc(cf, SAML2_SOAP, "?o=S", 0);
-  z2->gg.g.n = &sp_ssod->SingleLogoutService->gg.g;
-  sp_ssod->SingleLogoutService = z2;
+  sp_ssod->ManageNameIDService = zxid_mni_desc(cf, &sp_ssod->gg, SAML2_REDIR, "?o=Q", "?o=Q");
+  sp_ssod->ManageNameIDService = zxid_mni_desc(cf, &sp_ssod->gg, SAML2_SOAP,  "?o=S", 0);
 
-  z3 = zxid_mni_desc(cf, SAML2_REDIR, "?o=Q", "?o=Q");
-  z3->gg.g.n = &sp_ssod->ManageNameIDService->gg.g;
-  sp_ssod->ManageNameIDService = z3;
-
-  z3 = zxid_mni_desc(cf, SAML2_SOAP, "?o=S", 0);
-  z3->gg.g.n = &sp_ssod->ManageNameIDService->gg.g;
-  sp_ssod->ManageNameIDService = z3;
-
-  ze = zx_ref_simple_elem(cf->ctx, SAML2_PERSISTENT_NID_FMT);
-  ze->g.n = &sp_ssod->NameIDFormat->g;
-  sp_ssod->NameIDFormat = ze;
-
-  ze = zx_ref_simple_elem(cf->ctx, SAML2_TRANSIENT_NID_FMT);
-  ze->g.n = &sp_ssod->NameIDFormat->g;
-  sp_ssod->NameIDFormat = ze;
+  sp_ssod->NameIDFormat = zx_ref_simple_elem(cf->ctx, &sp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_PERSISTENT_NID_FMT);
+  sp_ssod->NameIDFormat = zx_ref_simple_elem(cf->ctx, &sp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_TRANSIENT_NID_FMT);
 
   /* N.B. The index values should not be changed. They are used in
    * AuthnReq to choose profile using AssertionConsumerServiceIndex */
 
-  za = zxid_ac_desc(cf, SAML2_POST_SIMPLE_SIGN, "?o=P", "5");
-  za->gg.g.n = &sp_ssod->AssertionConsumerService->gg.g;
-  sp_ssod->AssertionConsumerService = za;
-
-  za = zxid_ac_desc(cf, SAML2_PAOS, "?o=P", "4");
-  za->gg.g.n = &sp_ssod->AssertionConsumerService->gg.g;
-  sp_ssod->AssertionConsumerService = za;
-
-  za = zxid_ac_desc(cf, SAML2_SOAP, "?o=S", "3");
-  za->gg.g.n = &sp_ssod->AssertionConsumerService->gg.g;
-  sp_ssod->AssertionConsumerService = za;
-
-  za = zxid_ac_desc(cf, SAML2_POST, "?o=P", "2");
-  za->gg.g.n = &sp_ssod->AssertionConsumerService->gg.g;
-  sp_ssod->AssertionConsumerService = za;
-
-  za = zxid_ac_desc(cf, SAML2_ART, "", "1");
-  za->gg.g.n = &sp_ssod->AssertionConsumerService->gg.g;
-  sp_ssod->AssertionConsumerService = za;
-  
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_POST_SIMPLE_SIGN, "?o=P", "5");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_PAOS, "?o=P", "4");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_SOAP, "?o=S", "3");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_POST, "?o=P", "2");
+  sp_ssod->AssertionConsumerService = zxid_ac_desc(cf, &sp_ssod->gg, SAML2_ART, "", "1");
   return sp_ssod;
 }
 
 /*() Generate IdP SSO Descriptor metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_meta */
-struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf)
+struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf, struct zx_elem_s* father)
 {
   /*struct zx_md_ArtifactResolutionService_s* z5;*/
   struct zx_elem_s* ze;
@@ -739,7 +657,7 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf)
   struct zx_md_SingleLogoutService_s* z2;
   struct zx_md_SingleSignOnService_s* z4;
   struct zx_md_KeyDescriptor_s* zk;
-  struct zx_md_IDPSSODescriptor_s* idp_ssod = zx_NEW_md_IDPSSODescriptor(cf->ctx);
+  struct zx_md_IDPSSODescriptor_s* idp_ssod = zx_NEW_md_IDPSSODescriptor(cf->ctx,father);
   idp_ssod->WantAuthnRequestsSigned    = zx_ref_attr(cf->ctx, zx_WantAuthnRequestsSigned_ATTR, cf->want_authn_req_signed?"1":"0");
   idp_ssod->errorURL                   = zx_attrf(cf->ctx, zx_errorURL_ATTR, "%s?o=E", cf->url);
   idp_ssod->protocolSupportEnumeration = zx_ref_attr(cf->ctx, zx_protocolSupportEnumeration_ATTR, SAML2_PROTO);
@@ -755,56 +673,32 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf)
     UNLOCK(cf->mx, "read certs for our md idp");
     ERR("Signing or encryption certificate not found (or both are corrupt). %p", cf->enc_cert);
   } else {
-    zk = zxid_key_desc(cf, "encryption", cf->enc_cert);
-    zk->gg.g.n = &idp_ssod->KeyDescriptor->gg.g;
-    idp_ssod->KeyDescriptor = zk;
-    
-    zk = zxid_key_desc(cf, "signing", cf->sign_cert);
-    zk->gg.g.n = &idp_ssod->KeyDescriptor->gg.g;
-    idp_ssod->KeyDescriptor = zk;
+    idp_ssod->KeyDescriptor = zxid_key_desc(cf, &idp_ssod->gg, "encryption", cf->enc_cert);
+    idp_ssod->KeyDescriptor = zxid_key_desc(cf, &idp_ssod->gg, "signing", cf->sign_cert);
     UNLOCK(cf->mx, "read certs for our md idp");
   }
 
 #if 0
   /* *** NI */
-  z5 = zxid_ar_desc(cf, SAML2_SOAP, "?o=S", 0);
-  z5->gg.g.n = &idp_ssod->ArtifactResolutionService->gg.g;
-  idp_ssod->ArtifactResolutionService = z5;
+  idp_ssod->ArtifactResolutionService = zxid_ar_desc(cf, &idp_ssod->gg, SAML2_SOAP, "?o=S", 0);
 #endif
 
-  z2 = zxid_slo_desc(cf, SAML2_REDIR, "?o=Q", "?o=Q");
-  z2->gg.g.n = &idp_ssod->SingleLogoutService->gg.g;
-  idp_ssod->SingleLogoutService = z2;
-
-  z2 = zxid_slo_desc(cf, SAML2_SOAP, "?o=S", 0);
-  z2->gg.g.n = &idp_ssod->SingleLogoutService->gg.g;
-  idp_ssod->SingleLogoutService = z2;
+  idp_ssod->SingleLogoutService = zxid_slo_desc(cf, &idp_ssod->gg, SAML2_REDIR, "?o=Q", "?o=Q");
+  idp_ssod->SingleLogoutService = zxid_slo_desc(cf, &idp_ssod->gg, SAML2_SOAP, "?o=S", 0);
 
 #if 0
   /* *** NI */
-  z3 = zxid_mni_desc(cf, SAML2_REDIR, "?o=Q", "?o=Q");
-  z3->gg.g.n = &idp_ssod->ManageNameIDService->gg.g;
-  idp_ssod->ManageNameIDService = z3;
-
-  z3 = zxid_mni_desc(cf, SAML2_SOAP, "?o=S", 0);
-  z3->gg.g.n = &idp_ssod->ManageNameIDService->gg.g;
-  idp_ssod->ManageNameIDService = z3;
+  idp_ssod->ManageNameIDService = zxid_mni_desc(cf, &idp_ssod->gg, SAML2_REDIR, "?o=Q", "?o=Q");
+  idp_ssod->ManageNameIDService = zxid_mni_desc(cf, &idp_ssod->gg, SAML2_SOAP, "?o=S", 0);
 #endif
 
-  ze = zx_ref_simple_elem(cf->ctx, SAML2_PERSISTENT_NID_FMT);
-  ze->g.n = &idp_ssod->NameIDFormat->g;
-  idp_ssod->NameIDFormat = ze;
+  idp_ssod->NameIDFormat = zx_ref_simple_elem(cf->ctx, &sp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_PERSISTENT_NID_FMT);
+  idp_ssod->NameIDFormat = zx_ref_simple_elem(cf->ctx, &sp_ssod->gg, zx_md_NameIDFormat_ELEM, SAML2_TRANSIENT_NID_FMT);
 
-  ze = zx_ref_simple_elem(cf->ctx, SAML2_TRANSIENT_NID_FMT);
-  ze->g.n = &idp_ssod->NameIDFormat->g;
-  idp_ssod->NameIDFormat = ze;
-
-  z4 = zxid_sso_desc(cf, SAML2_REDIR, "?o=F", 0);
-  z4->gg.g.n = &idp_ssod->SingleSignOnService->gg.g;
-  idp_ssod->SingleSignOnService = z4;
+  idp_ssod->SingleSignOnService = zxid_sso_desc(cf, &idp_ssod->gg, SAML2_REDIR, "?o=F", 0);
 
   if (cf->imps_ena)
-    idp_ssod->NameIDMappingService = zxid_nimap_desc(cf, SAML2_SOAP, "?o=S", 0);
+    idp_ssod->NameIDMappingService = zxid_nimap_desc(cf, &idp_ssod->gg, SAML2_SOAP, "?o=S", 0);
   
   return idp_ssod;
 }
@@ -812,26 +706,26 @@ struct zx_md_IDPSSODescriptor_s* zxid_idp_sso_desc(zxid_conf* cf)
 /*() Generate Organization metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_meta */
-struct zx_md_Organization_s* zxid_org_desc(zxid_conf* cf)
+struct zx_md_Organization_s* zxid_org_desc(zxid_conf* cf, struct zx_elem_s* father)
 {
-  struct zx_md_Organization_s* org = zx_NEW_md_Organization(cf->ctx);
-  org->OrganizationDisplayName = zx_NEW_md_OrganizationDisplayName(cf->ctx);
+  struct zx_md_Organization_s* org = zx_NEW_md_Organization(cf->ctx,father);
+  org->OrganizationDisplayName = zx_NEW_md_OrganizationDisplayName(cf->ctx, &org->gg);
   org->OrganizationDisplayName->lang = zx_ref_attr(cf->ctx, zx_lang_ATTR, "en");  /* *** config */
-  org->OrganizationDisplayName->gg.content = zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name));
+  zx_add_content(c, &org->OrganizationDisplayName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
 
-  org->OrganizationName = zx_NEW_md_OrganizationName(cf->ctx);
+  org->OrganizationName = zx_NEW_md_OrganizationName(cf->ctx, &org->gg);
   org->OrganizationName->lang = zx_ref_attr(cf->ctx, zx_lang_ATTR, "en");  /* *** config */
   if (cf->org_name && cf->org_name[0])
-    org->OrganizationName->gg.content = zx_ref_str(cf->ctx, cf->org_name);
+    zx_add_content(c, &org->OrganizationName->gg, zx_ref_str(cf->ctx, cf->org_name));
   else
-    org->OrganizationName->gg.content = zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name));
+    zx_add_content(c, &org->OrganizationName->gg, zx_ref_str(cf->ctx, STRNULLCHKQ(cf->nice_name)));
 
-  org->OrganizationURL = zx_NEW_md_OrganizationURL(cf->ctx);
+  org->OrganizationURL = zx_NEW_md_OrganizationURL(cf->ctx, &org->gg);
   org->OrganizationURL->lang = zx_ref_attr(cf->ctx, zx_lang_ATTR, "en");  /* *** config */
   if (cf->org_url && cf->org_url[0])
-    org->OrganizationURL->gg.content = zx_ref_str(cf->ctx, cf->org_url);
+    zx_add_content(c, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->org_url));
   else
-    org->OrganizationURL->gg.content = zx_ref_str(cf->ctx, cf->url);
+    zx_add_content(c, &org->OrganizationURL->gg, zx_ref_str(cf->ctx, cf->url));
 
   return org;
 }
@@ -839,9 +733,9 @@ struct zx_md_Organization_s* zxid_org_desc(zxid_conf* cf)
 /*() Generate Contact Person metadata fragment [SAML2meta]. */
 
 /* Called by:  zxid_sp_meta */
-struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf)
+struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf, struct zx_elem_s* father)
 {
-  struct zx_md_ContactPerson_s* contact = zx_NEW_md_ContactPerson(cf->ctx);
+  struct zx_md_ContactPerson_s* contact = zx_NEW_md_ContactPerson(cf->ctx,father);
 
   contact->contactType = zx_ref_attr(cf->ctx, zx_contactType_ATTR, "administrative");  /* *** config */
 
@@ -850,17 +744,18 @@ struct zx_md_ContactPerson_s* zxid_contact_desc(zxid_conf* cf)
       contact->Company = zx_ref_simple_elem(cf->ctx, cf->contact_org);
   } else
     if (cf->org_name && cf->org_name[0])
-      contact->Company = zx_ref_simple_elem(cf->ctx, cf->org_name);
+      contact->Company
+	= zx_ref_simple_elem(cf->ctx, &contact->gg, zx_md_Company_ELEM, cf->org_name);
     else
       contact->Company
-	= zx_ref_simple_elem(cf->ctx, STRNULLCHKQ(cf->nice_name));
+	= zx_ref_simple_elem(cf->ctx, &contact->gg, zx_md_Company_ELEM, STRNULLCHKQ(cf->nice_name));
 
   if (cf->contact_name && cf->contact_name[0])
-    contact->SurName = zx_ref_simple_elem(cf->ctx, cf->contact_name);
+    contact->SurName = zx_ref_simple_elem(cf->ctx, &contact->gg, zx_md_SurName_ELEM, cf->contact_name);
   if (cf->contact_email && cf->contact_email[0])
-    contact->EmailAddress = zx_ref_simple_elem(cf->ctx, cf->contact_email);
+    contact->EmailAddress = zx_ref_simple_elem(cf->ctx, &contact->gg, zx_md_EmailAddress_ELEM, cf->contact_email);
   if (cf->contact_tel && cf->contact_tel[0])
-    contact->TelephoneNumber = zx_ref_simple_elem(cf->ctx, cf->contact_tel);
+    contact->TelephoneNumber = zx_ref_simple_elem(cf->ctx, &contact->gg, zx_md_TelephoneNumber_ELEM, cf->contact_tel);
 
   return contact;
 }
@@ -918,8 +813,8 @@ struct zx_str* zxid_my_cdc_url(zxid_conf* cf)
 /* Called by:  zxid_my_issuer */
 struct zx_sa_Issuer_s* zxid_issuer(zxid_conf* cf, struct zx_str* nameid, char* affiliation)
 {
-  struct zx_sa_Issuer_s* is = zx_NEW_sa_Issuer(cf->ctx);
-  is->gg.content = nameid;
+  struct zx_sa_Issuer_s* is = zx_NEW_sa_Issuer(cf->ctx,0);
+  zx_add_content(c, &is->gg, nameid);
   if (affiliation && affiliation[0])
     is->NameQualifier = zx_ref_attr(cf->ctx, zx_NameQualifier_ATTR, affiliation);
   /*is->Format = zx_ref_str(cf->ctx, );*/
@@ -941,13 +836,13 @@ struct zx_str* zxid_sp_meta(zxid_conf* cf, zxid_cgi* cgi)
 {
   struct zx_md_EntityDescriptor_s* ed;
   
-  ed = zx_NEW_md_EntityDescriptor(cf->ctx);
+  ed = zx_NEW_md_EntityDescriptor(cf->ctx,0);
   ed->entityID = zxid_my_entity_id_attr(cf, zx_entityID_ATTR);
-  ed->SPSSODescriptor = zxid_sp_sso_desc(cf);
+  ed->SPSSODescriptor = zxid_sp_sso_desc(cf, &ed->gg);
   if (cf->idp_ena)
-    ed->IDPSSODescriptor = zxid_idp_sso_desc(cf);
-  ed->Organization = zxid_org_desc(cf);
-  ed->ContactPerson = zxid_contact_desc(cf);
+    ed->IDPSSODescriptor = zxid_idp_sso_desc(cf, &ed->gg);
+  ed->Organization = zxid_org_desc(cf, &ed->gg);
+  ed->ContactPerson = zxid_contact_desc(cf, &ed->gg);
   
   if (cf->log_level>0)
     zxlog(cf, 0, 0, 0, 0, 0, 0, 0, "N", "W", "MYMD", 0, 0);

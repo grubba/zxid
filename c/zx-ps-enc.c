@@ -85,7 +85,7 @@ int zx_LEN_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollecti
   int len = sizeof("<ps:AddCollectionRequest")-1 + 1 + sizeof("</ps:AddCollectionRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -94,9 +94,13 @@ int zx_LEN_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollecti
   int len = 0;
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
 
 
@@ -124,7 +128,7 @@ char* zx_ENC_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollec
   ZX_OUT_TAG(p, "<ps:AddCollectionRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -137,9 +141,13 @@ char* zx_ENC_SO_ps_AddCollectionRequest(struct zx_ctx* c, struct zx_ps_AddCollec
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -220,7 +228,7 @@ int zx_LEN_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollect
   int len = sizeof("<ps:AddCollectionResponse")-1 + 1 + sizeof("</ps:AddCollectionResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -230,9 +238,13 @@ int zx_LEN_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddCollect
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
 
 
@@ -260,7 +272,7 @@ char* zx_ENC_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddColle
   ZX_OUT_TAG(p, "<ps:AddCollectionResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -274,9 +286,13 @@ char* zx_ENC_SO_ps_AddCollectionResponse(struct zx_ctx* c, struct zx_ps_AddColle
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -357,7 +373,7 @@ int zx_LEN_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityReques
   int len = sizeof("<ps:AddEntityRequest")-1 + 1 + sizeof("</ps:AddEntityRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -366,15 +382,25 @@ int zx_LEN_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityReques
   int len = 0;
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
-  for (se = x->PStoSPRedirectURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:PStoSPRedirectURL")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->CreatePSObject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PStoSPRedirectURL;
+    se && se->g.tok == zx_ps_PStoSPRedirectURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:PStoSPRedirectURL")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CreatePSObject->gg;
+       se && se->g.tok == zx_ps_CreatePSObject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_CreatePSObject(c, (struct zx_ps_CreatePSObject_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
-  for (se = &x->TokenPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TokenPolicy->gg;
+       se && se->g.tok == zx_sec_TokenPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)se);
 
 
@@ -402,7 +428,7 @@ char* zx_ENC_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequ
   ZX_OUT_TAG(p, "<ps:AddEntityRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -415,15 +441,25 @@ char* zx_ENC_SO_ps_AddEntityRequest(struct zx_ctx* c, struct zx_ps_AddEntityRequ
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
-  for (se = x->PStoSPRedirectURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:PStoSPRedirectURL", sizeof("ps:PStoSPRedirectURL")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->CreatePSObject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PStoSPRedirectURL;
+       se && se->g.tok == zx_ps_PStoSPRedirectURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:PStoSPRedirectURL", sizeof("ps:PStoSPRedirectURL")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CreatePSObject->gg;
+       se && se->g.tok == zx_ps_CreatePSObject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_CreatePSObject(c, (struct zx_ps_CreatePSObject_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
-  for (se = &x->TokenPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TokenPolicy->gg;
+       se && se->g.tok == zx_sec_TokenPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -504,7 +540,7 @@ int zx_LEN_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityRespo
   int len = sizeof("<ps:AddEntityResponse")-1 + 1 + sizeof("</ps:AddEntityResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -514,14 +550,22 @@ int zx_LEN_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityRespo
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
-  for (se = x->SPtoPSRedirectURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:SPtoPSRedirectURL")-1, zx_ns_tab+zx_ps_NS);
-  for (se = x->QueryString; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:QueryString")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->SPtoPSRedirectURL;
+    se && se->g.tok == zx_ps_SPtoPSRedirectURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:SPtoPSRedirectURL")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->QueryString;
+    se && se->g.tok == zx_ps_QueryString_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:QueryString")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -548,7 +592,7 @@ char* zx_ENC_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityRes
   ZX_OUT_TAG(p, "<ps:AddEntityResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -562,14 +606,22 @@ char* zx_ENC_SO_ps_AddEntityResponse(struct zx_ctx* c, struct zx_ps_AddEntityRes
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
-  for (se = x->SPtoPSRedirectURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:SPtoPSRedirectURL", sizeof("ps:SPtoPSRedirectURL")-1, zx_ns_tab+zx_ps_NS);
-  for (se = x->QueryString; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:QueryString", sizeof("ps:QueryString")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->SPtoPSRedirectURL;
+       se && se->g.tok == zx_ps_SPtoPSRedirectURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:SPtoPSRedirectURL", sizeof("ps:SPtoPSRedirectURL")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->QueryString;
+       se && se->g.tok == zx_ps_QueryString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:QueryString", sizeof("ps:QueryString")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -649,7 +701,7 @@ int zx_LEN_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEn
   int len = sizeof("<ps:AddKnownEntityRequest")-1 + 1 + sizeof("</ps:AddKnownEntityRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -658,15 +710,25 @@ int zx_LEN_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnownEn
   int len = 0;
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_Token(c, (struct zx_sec_Token_s*)se);
-  for (se = &x->CreatePSObject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreatePSObject->gg;
+       se && se->g.tok == zx_ps_CreatePSObject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_CreatePSObject(c, (struct zx_ps_CreatePSObject_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
-  for (se = &x->TokenPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TokenPolicy->gg;
+       se && se->g.tok == zx_sec_TokenPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)se);
 
 
@@ -694,7 +756,7 @@ char* zx_ENC_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnown
   ZX_OUT_TAG(p, "<ps:AddKnownEntityRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -707,15 +769,25 @@ char* zx_ENC_SO_ps_AddKnownEntityRequest(struct zx_ctx* c, struct zx_ps_AddKnown
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_Token(c, (struct zx_sec_Token_s*)se, p);
-  for (se = &x->CreatePSObject->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreatePSObject->gg;
+       se && se->g.tok == zx_ps_CreatePSObject_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_CreatePSObject(c, (struct zx_ps_CreatePSObject_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
-  for (se = &x->TokenPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TokenPolicy->gg;
+       se && se->g.tok == zx_sec_TokenPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -796,7 +868,7 @@ int zx_LEN_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownE
   int len = sizeof("<ps:AddKnownEntityResponse")-1 + 1 + sizeof("</ps:AddKnownEntityResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -806,14 +878,22 @@ int zx_LEN_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnownE
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
-  for (se = x->SPtoPSRedirectURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:SPtoPSRedirectURL")-1, zx_ns_tab+zx_ps_NS);
-  for (se = x->QueryString; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:QueryString")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->SPtoPSRedirectURL;
+    se && se->g.tok == zx_ps_SPtoPSRedirectURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:SPtoPSRedirectURL")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->QueryString;
+    se && se->g.tok == zx_ps_QueryString_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:QueryString")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -840,7 +920,7 @@ char* zx_ENC_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnow
   ZX_OUT_TAG(p, "<ps:AddKnownEntityResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -854,14 +934,22 @@ char* zx_ENC_SO_ps_AddKnownEntityResponse(struct zx_ctx* c, struct zx_ps_AddKnow
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
-  for (se = x->SPtoPSRedirectURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:SPtoPSRedirectURL", sizeof("ps:SPtoPSRedirectURL")-1, zx_ns_tab+zx_ps_NS);
-  for (se = x->QueryString; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:QueryString", sizeof("ps:QueryString")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->SPtoPSRedirectURL;
+       se && se->g.tok == zx_ps_SPtoPSRedirectURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:SPtoPSRedirectURL", sizeof("ps:SPtoPSRedirectURL")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->QueryString;
+       se && se->g.tok == zx_ps_QueryString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:QueryString", sizeof("ps:QueryString")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -941,7 +1029,7 @@ int zx_LEN_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToColl
   int len = sizeof("<ps:AddToCollectionRequest")-1 + 1 + sizeof("</ps:AddToCollectionRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -950,11 +1038,17 @@ int zx_LEN_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToColl
   int len = 0;
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:ObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+    se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ObjectID;
+    se && se->g.tok == zx_ps_ObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:ObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
 
 
@@ -982,7 +1076,7 @@ char* zx_ENC_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCo
   ZX_OUT_TAG(p, "<ps:AddToCollectionRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -995,11 +1089,17 @@ char* zx_ENC_SO_ps_AddToCollectionRequest(struct zx_ctx* c, struct zx_ps_AddToCo
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:ObjectID", sizeof("ps:ObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+       se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ObjectID;
+       se && se->g.tok == zx_ps_ObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:ObjectID", sizeof("ps:ObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1080,7 +1180,7 @@ int zx_LEN_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCol
   int len = sizeof("<ps:AddToCollectionResponse")-1 + 1 + sizeof("</ps:AddToCollectionResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -1090,7 +1190,9 @@ int zx_LEN_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToCol
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -1118,7 +1220,7 @@ char* zx_ENC_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToC
   ZX_OUT_TAG(p, "<ps:AddToCollectionResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1132,7 +1234,9 @@ char* zx_ENC_SO_ps_AddToCollectionResponse(struct zx_ctx* c, struct zx_ps_AddToC
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1213,7 +1317,7 @@ int zx_LEN_SO_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_s*
   int len = sizeof("<ps:CreatePSObject")-1 + 1 + sizeof("</ps:CreatePSObject>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1247,7 +1351,7 @@ char* zx_ENC_SO_ps_CreatePSObject(struct zx_ctx* c, struct zx_ps_CreatePSObject_
   ZX_OUT_TAG(p, "<ps:CreatePSObject");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1338,7 +1442,7 @@ int zx_LEN_SO_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x )
   int len = sizeof("<ps:DisplayName")-1 + 1 + sizeof("</ps:DisplayName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->IsDefault, sizeof("IsDefault")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Locale, sizeof("Locale")-1, &pop_seen);
@@ -1374,7 +1478,7 @@ char* zx_ENC_SO_ps_DisplayName(struct zx_ctx* c, struct zx_ps_DisplayName_s* x, 
   ZX_OUT_TAG(p, "<ps:DisplayName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1467,7 +1571,7 @@ int zx_LEN_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectIn
   int len = sizeof("<ps:GetObjectInfoRequest")-1 + 1 + sizeof("</ps:GetObjectInfoRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -1476,9 +1580,13 @@ int zx_LEN_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObjectIn
   int len = 0;
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+    se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
 
 
@@ -1506,7 +1614,7 @@ char* zx_ENC_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObject
   ZX_OUT_TAG(p, "<ps:GetObjectInfoRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1519,9 +1627,13 @@ char* zx_ENC_SO_ps_GetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_GetObject
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+       se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1602,7 +1714,7 @@ int zx_LEN_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectI
   int len = sizeof("<ps:GetObjectInfoResponse")-1 + 1 + sizeof("</ps:GetObjectInfoResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -1612,9 +1724,13 @@ int zx_LEN_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjectI
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
 
 
@@ -1642,7 +1758,7 @@ char* zx_ENC_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjec
   ZX_OUT_TAG(p, "<ps:GetObjectInfoResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1656,9 +1772,13 @@ char* zx_ENC_SO_ps_GetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_GetObjec
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1739,7 +1859,7 @@ int zx_LEN_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x )
   int len = sizeof("<ps:ItemData")-1 + 1 + sizeof("</ps:ItemData>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1747,7 +1867,9 @@ int zx_LEN_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
 
 
@@ -1775,7 +1897,7 @@ char* zx_ENC_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x, char* 
   ZX_OUT_TAG(p, "<ps:ItemData");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1787,7 +1909,9 @@ char* zx_ENC_SO_ps_ItemData(struct zx_ctx* c, struct zx_ps_ItemData_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1868,7 +1992,7 @@ int zx_LEN_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRe
   int len = sizeof("<ps:ListMembersRequest")-1 + 1 + sizeof("</ps:ListMembersRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Count, sizeof("Count")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Offset, sizeof("Offset")-1, &pop_seen);
@@ -1880,9 +2004,13 @@ int zx_LEN_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembersRe
   int len = 0;
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+    se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
 
 
@@ -1910,7 +2038,7 @@ char* zx_ENC_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembers
   ZX_OUT_TAG(p, "<ps:ListMembersRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1926,9 +2054,13 @@ char* zx_ENC_SO_ps_ListMembersRequest(struct zx_ctx* c, struct zx_ps_ListMembers
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+       se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2009,7 +2141,7 @@ int zx_LEN_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersR
   int len = sizeof("<ps:ListMembersResponse")-1 + 1 + sizeof("</ps:ListMembersResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -2019,9 +2151,13 @@ int zx_LEN_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMembersR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
 
 
@@ -2049,7 +2185,7 @@ char* zx_ENC_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMember
   ZX_OUT_TAG(p, "<ps:ListMembersResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2063,9 +2199,13 @@ char* zx_ENC_SO_ps_ListMembersResponse(struct zx_ctx* c, struct zx_ps_ListMember
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2146,7 +2286,7 @@ int zx_LEN_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x )
   int len = sizeof("<ps:Notification")-1 + 1 + sizeof("</ps:Notification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->endReason, sizeof("endReason")-1, &pop_seen);
   len += zx_attr_so_len(c, x->expires, sizeof("expires")-1, &pop_seen);
@@ -2158,9 +2298,13 @@ int zx_LEN_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->TestResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestResult->gg;
+       se && se->g.tok == zx_lu_TestResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_TestResult(c, (struct zx_lu_TestResult_s*)se);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_ps_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_ItemData(c, (struct zx_ps_ItemData_s*)se);
 
 
@@ -2188,7 +2332,7 @@ char* zx_ENC_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x
   ZX_OUT_TAG(p, "<ps:Notification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2204,9 +2348,13 @@ char* zx_ENC_SO_ps_Notification(struct zx_ctx* c, struct zx_ps_Notification_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->TestResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestResult->gg;
+       se && se->g.tok == zx_lu_TestResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_TestResult(c, (struct zx_lu_TestResult_s*)se, p);
-  for (se = &x->ItemData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ItemData->gg;
+       se && se->g.tok == zx_ps_ItemData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_ItemData(c, (struct zx_ps_ItemData_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2287,7 +2435,7 @@ int zx_LEN_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x )
   int len = sizeof("<ps:Notify")-1 + 1 + sizeof("</ps:Notify>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->timeStamp, sizeof("timeStamp")-1, &pop_seen);
@@ -2297,7 +2445,9 @@ int zx_LEN_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Notification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notification->gg;
+       se && se->g.tok == zx_ps_Notification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Notification(c, (struct zx_ps_Notification_s*)se);
 
 
@@ -2325,7 +2475,7 @@ char* zx_ENC_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x, char* p )
   ZX_OUT_TAG(p, "<ps:Notify");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2339,7 +2489,9 @@ char* zx_ENC_SO_ps_Notify(struct zx_ctx* c, struct zx_ps_Notify_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Notification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notification->gg;
+       se && se->g.tok == zx_ps_Notification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Notification(c, (struct zx_ps_Notification_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2420,7 +2572,7 @@ int zx_LEN_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s*
   int len = sizeof("<ps:NotifyResponse")-1 + 1 + sizeof("</ps:NotifyResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemIDRef, sizeof("itemIDRef")-1, &pop_seen);
 
@@ -2429,9 +2581,13 @@ int zx_LEN_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_s*
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
 
 
@@ -2459,7 +2615,7 @@ char* zx_ENC_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_
   ZX_OUT_TAG(p, "<ps:NotifyResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2472,9 +2628,13 @@ char* zx_ENC_SO_ps_NotifyResponse(struct zx_ctx* c, struct zx_ps_NotifyResponse_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2555,7 +2715,7 @@ int zx_LEN_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x )
   int len = sizeof("<ps:Object")-1 + 1 + sizeof("</ps:Object>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->CreatedDateTime, sizeof("CreatedDateTime")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ModifiedDateTime, sizeof("ModifiedDateTime")-1, &pop_seen);
@@ -2566,16 +2726,26 @@ int zx_LEN_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x )
   int len = 0;
 #endif
   
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:ObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->DisplayName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ObjectID;
+    se && se->g.tok == zx_ps_ObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:ObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DisplayName->gg;
+       se && se->g.tok == zx_ps_DisplayName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_DisplayName(c, (struct zx_ps_DisplayName_s*)se);
-  for (se = &x->Tag->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Tag->gg;
+       se && se->g.tok == zx_ps_Tag_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Tag(c, (struct zx_ps_Tag_s*)se);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
-  for (se = x->ObjectRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:ObjectRef")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->ObjectRef;
+    se && se->g.tok == zx_ps_ObjectRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:ObjectRef")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2602,7 +2772,7 @@ char* zx_ENC_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x, char* p )
   ZX_OUT_TAG(p, "<ps:Object");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2617,16 +2787,26 @@ char* zx_ENC_SO_ps_Object(struct zx_ctx* c, struct zx_ps_Object_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:ObjectID", sizeof("ps:ObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->DisplayName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ObjectID;
+       se && se->g.tok == zx_ps_ObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:ObjectID", sizeof("ps:ObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DisplayName->gg;
+       se && se->g.tok == zx_ps_DisplayName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_DisplayName(c, (struct zx_ps_DisplayName_s*)se, p);
-  for (se = &x->Tag->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Tag->gg;
+       se && se->g.tok == zx_ps_Tag_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Tag(c, (struct zx_ps_Tag_s*)se, p);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
-  for (se = x->ObjectRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:ObjectRef", sizeof("ps:ObjectRef")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->ObjectRef;
+       se && se->g.tok == zx_ps_ObjectRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:ObjectRef", sizeof("ps:ObjectRef")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2706,7 +2886,7 @@ int zx_LEN_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjects
   int len = sizeof("<ps:QueryObjectsRequest")-1 + 1 + sizeof("</ps:QueryObjectsRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Count, sizeof("Count")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Offset, sizeof("Offset")-1, &pop_seen);
@@ -2717,9 +2897,13 @@ int zx_LEN_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjects
   int len = 0;
 #endif
   
-  for (se = x->Filter; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:Filter")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Filter;
+    se && se->g.tok == zx_ps_Filter_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:Filter")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
 
 
@@ -2747,7 +2931,7 @@ char* zx_ENC_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjec
   ZX_OUT_TAG(p, "<ps:QueryObjectsRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2762,9 +2946,13 @@ char* zx_ENC_SO_ps_QueryObjectsRequest(struct zx_ctx* c, struct zx_ps_QueryObjec
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Filter; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:Filter", sizeof("ps:Filter")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Filter;
+       se && se->g.tok == zx_ps_Filter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:Filter", sizeof("ps:Filter")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2845,7 +3033,7 @@ int zx_LEN_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObject
   int len = sizeof("<ps:QueryObjectsResponse")-1 + 1 + sizeof("</ps:QueryObjectsResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -2855,9 +3043,13 @@ int zx_LEN_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObject
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
 
 
@@ -2885,7 +3077,7 @@ char* zx_ENC_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObje
   ZX_OUT_TAG(p, "<ps:QueryObjectsResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2899,9 +3091,13 @@ char* zx_ENC_SO_ps_QueryObjectsResponse(struct zx_ctx* c, struct zx_ps_QueryObje
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2982,7 +3178,7 @@ int zx_LEN_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCo
   int len = sizeof("<ps:RemoveCollectionRequest")-1 + 1 + sizeof("</ps:RemoveCollectionRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -2991,8 +3187,10 @@ int zx_LEN_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_RemoveCo
   int len = 0;
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->TargetObjectID;
+    se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3019,7 +3217,7 @@ char* zx_ENC_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_Remove
   ZX_OUT_TAG(p, "<ps:RemoveCollectionRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3032,8 +3230,10 @@ char* zx_ENC_SO_ps_RemoveCollectionRequest(struct zx_ctx* c, struct zx_ps_Remove
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->TargetObjectID;
+       se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3113,7 +3313,7 @@ int zx_LEN_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveC
   int len = sizeof("<ps:RemoveCollectionResponse")-1 + 1 + sizeof("</ps:RemoveCollectionResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -3123,7 +3323,9 @@ int zx_LEN_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_RemoveC
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -3151,7 +3353,7 @@ char* zx_ENC_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_Remov
   ZX_OUT_TAG(p, "<ps:RemoveCollectionResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3165,7 +3367,9 @@ char* zx_ENC_SO_ps_RemoveCollectionResponse(struct zx_ctx* c, struct zx_ps_Remov
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3246,7 +3450,7 @@ int zx_LEN_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntity
   int len = sizeof("<ps:RemoveEntityRequest")-1 + 1 + sizeof("</ps:RemoveEntityRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -3255,8 +3459,10 @@ int zx_LEN_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEntity
   int len = 0;
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->TargetObjectID;
+    se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3283,7 +3489,7 @@ char* zx_ENC_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEnti
   ZX_OUT_TAG(p, "<ps:RemoveEntityRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3296,8 +3502,10 @@ char* zx_ENC_SO_ps_RemoveEntityRequest(struct zx_ctx* c, struct zx_ps_RemoveEnti
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->TargetObjectID;
+       se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3377,7 +3585,7 @@ int zx_LEN_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntit
   int len = sizeof("<ps:RemoveEntityResponse")-1 + 1 + sizeof("</ps:RemoveEntityResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -3387,7 +3595,9 @@ int zx_LEN_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEntit
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -3415,7 +3625,7 @@ char* zx_ENC_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEnt
   ZX_OUT_TAG(p, "<ps:RemoveEntityResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3429,7 +3639,9 @@ char* zx_ENC_SO_ps_RemoveEntityResponse(struct zx_ctx* c, struct zx_ps_RemoveEnt
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3510,7 +3722,7 @@ int zx_LEN_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_Remo
   int len = sizeof("<ps:RemoveFromCollectionRequest")-1 + 1 + sizeof("</ps:RemoveFromCollectionRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -3519,11 +3731,17 @@ int zx_LEN_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_Remo
   int len = 0;
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:ObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+    se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ObjectID;
+    se && se->g.tok == zx_ps_ObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:ObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
 
 
@@ -3551,7 +3769,7 @@ char* zx_ENC_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_Re
   ZX_OUT_TAG(p, "<ps:RemoveFromCollectionRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3564,11 +3782,17 @@ char* zx_ENC_SO_ps_RemoveFromCollectionRequest(struct zx_ctx* c, struct zx_ps_Re
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = x->ObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:ObjectID", sizeof("ps:ObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+       se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ObjectID;
+       se && se->g.tok == zx_ps_ObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:ObjectID", sizeof("ps:ObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3649,7 +3873,7 @@ int zx_LEN_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_Rem
   int len = sizeof("<ps:RemoveFromCollectionResponse")-1 + 1 + sizeof("</ps:RemoveFromCollectionResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -3659,7 +3883,9 @@ int zx_LEN_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_Rem
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -3687,7 +3913,7 @@ char* zx_ENC_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_R
   ZX_OUT_TAG(p, "<ps:RemoveFromCollectionResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3701,7 +3927,9 @@ char* zx_ENC_SO_ps_RemoveFromCollectionResponse(struct zx_ctx* c, struct zx_ps_R
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3782,7 +4010,7 @@ int zx_LEN_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_Resolve
   int len = sizeof("<ps:ResolveIdentifierRequest")-1 + 1 + sizeof("</ps:ResolveIdentifierRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -3791,7 +4019,9 @@ int zx_LEN_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_Resolve
   int len = 0;
 #endif
   
-  for (se = &x->ResolveInput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResolveInput->gg;
+       se && se->g.tok == zx_ps_ResolveInput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_ResolveInput(c, (struct zx_ps_ResolveInput_s*)se);
 
 
@@ -3819,7 +4049,7 @@ char* zx_ENC_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_Resol
   ZX_OUT_TAG(p, "<ps:ResolveIdentifierRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3832,7 +4062,9 @@ char* zx_ENC_SO_ps_ResolveIdentifierRequest(struct zx_ctx* c, struct zx_ps_Resol
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResolveInput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResolveInput->gg;
+       se && se->g.tok == zx_ps_ResolveInput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_ResolveInput(c, (struct zx_ps_ResolveInput_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3913,7 +4145,7 @@ int zx_LEN_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_Resolv
   int len = sizeof("<ps:ResolveIdentifierResponse")-1 + 1 + sizeof("</ps:ResolveIdentifierResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -3923,9 +4155,13 @@ int zx_LEN_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_Resolv
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->ResolveOutput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResolveOutput->gg;
+       se && se->g.tok == zx_ps_ResolveOutput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_ResolveOutput(c, (struct zx_ps_ResolveOutput_s*)se);
 
 
@@ -3953,7 +4189,7 @@ char* zx_ENC_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_Reso
   ZX_OUT_TAG(p, "<ps:ResolveIdentifierResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3967,9 +4203,13 @@ char* zx_ENC_SO_ps_ResolveIdentifierResponse(struct zx_ctx* c, struct zx_ps_Reso
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->ResolveOutput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResolveOutput->gg;
+       se && se->g.tok == zx_ps_ResolveOutput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_ResolveOutput(c, (struct zx_ps_ResolveOutput_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4050,7 +4290,7 @@ int zx_LEN_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x )
   int len = sizeof("<ps:ResolveInput")-1 + 1 + sizeof("</ps:ResolveInput>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->reqID, sizeof("reqID")-1, &pop_seen);
 
@@ -4059,12 +4299,18 @@ int zx_LEN_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->TokenPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TokenPolicy->gg;
+       se && se->g.tok == zx_sec_TokenPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)se);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_Token(c, (struct zx_sec_Token_s*)se);
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->TargetObjectID;
+    se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -4091,7 +4337,7 @@ char* zx_ENC_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x
   ZX_OUT_TAG(p, "<ps:ResolveInput");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4104,12 +4350,18 @@ char* zx_ENC_SO_ps_ResolveInput(struct zx_ctx* c, struct zx_ps_ResolveInput_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->TokenPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TokenPolicy->gg;
+       se && se->g.tok == zx_sec_TokenPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)se, p);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_Token(c, (struct zx_sec_Token_s*)se, p);
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->TargetObjectID;
+       se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -4189,7 +4441,7 @@ int zx_LEN_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x
   int len = sizeof("<ps:ResolveOutput")-1 + 1 + sizeof("</ps:ResolveOutput>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->reqRef, sizeof("reqRef")-1, &pop_seen);
 
@@ -4198,7 +4450,9 @@ int zx_LEN_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_Token(c, (struct zx_sec_Token_s*)se);
 
 
@@ -4226,7 +4480,7 @@ char* zx_ENC_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s*
   ZX_OUT_TAG(p, "<ps:ResolveOutput");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4239,7 +4493,9 @@ char* zx_ENC_SO_ps_ResolveOutput(struct zx_ctx* c, struct zx_ps_ResolveOutput_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_Token(c, (struct zx_sec_Token_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4320,7 +4576,7 @@ int zx_LEN_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectIn
   int len = sizeof("<ps:SetObjectInfoRequest")-1 + 1 + sizeof("</ps:SetObjectInfoRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -4329,9 +4585,13 @@ int zx_LEN_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObjectIn
   int len = 0;
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Object(c, (struct zx_ps_Object_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
 
 
@@ -4359,7 +4619,7 @@ char* zx_ENC_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObject
   ZX_OUT_TAG(p, "<ps:SetObjectInfoRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4372,9 +4632,13 @@ char* zx_ENC_SO_ps_SetObjectInfoRequest(struct zx_ctx* c, struct zx_ps_SetObject
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Object->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Object->gg;
+       se && se->g.tok == zx_ps_Object_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Object(c, (struct zx_ps_Object_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4455,7 +4719,7 @@ int zx_LEN_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectI
   int len = sizeof("<ps:SetObjectInfoResponse")-1 + 1 + sizeof("</ps:SetObjectInfoResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -4465,7 +4729,9 @@ int zx_LEN_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjectI
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -4493,7 +4759,7 @@ char* zx_ENC_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjec
   ZX_OUT_TAG(p, "<ps:SetObjectInfoResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4507,7 +4773,9 @@ char* zx_ENC_SO_ps_SetObjectInfoResponse(struct zx_ctx* c, struct zx_ps_SetObjec
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4588,7 +4856,7 @@ int zx_LEN_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x )
   int len = sizeof("<ps:Subscription")-1 + 1 + sizeof("</ps:Subscription>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->adminNotifyToRef, sizeof("adminNotifyToRef")-1, &pop_seen);
   len += zx_attr_so_len(c, x->expires, sizeof("expires")-1, &pop_seen);
@@ -4603,9 +4871,13 @@ int zx_LEN_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->RefItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RefItem->gg;
+       se && se->g.tok == zx_subs_RefItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_subs_RefItem(c, (struct zx_subs_RefItem_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se);
 
 
@@ -4633,7 +4905,7 @@ char* zx_ENC_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x
   ZX_OUT_TAG(p, "<ps:Subscription");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4652,9 +4924,13 @@ char* zx_ENC_SO_ps_Subscription(struct zx_ctx* c, struct zx_ps_Subscription_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->RefItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RefItem->gg;
+       se && se->g.tok == zx_subs_RefItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_subs_RefItem(c, (struct zx_subs_RefItem_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_lu_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Extension(c, (struct zx_lu_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4735,7 +5011,7 @@ int zx_LEN_SO_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x )
   int len = sizeof("<ps:Tag")-1 + 1 + sizeof("</ps:Tag>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Ref, sizeof("Ref")-1, &pop_seen);
 
@@ -4770,7 +5046,7 @@ char* zx_ENC_SO_ps_Tag(struct zx_ctx* c, struct zx_ps_Tag_s* x, char* p )
   ZX_OUT_TAG(p, "<ps:Tag");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4862,7 +5138,7 @@ int zx_LEN_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMember
   int len = sizeof("<ps:TestMembershipRequest")-1 + 1 + sizeof("</ps:TestMembershipRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -4871,11 +5147,17 @@ int zx_LEN_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMember
   int len = 0;
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+    se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_Token(c, (struct zx_sec_Token_s*)se);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se);
 
 
@@ -4903,7 +5185,7 @@ char* zx_ENC_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMemb
   ZX_OUT_TAG(p, "<ps:TestMembershipRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4916,11 +5198,17 @@ char* zx_ENC_SO_ps_TestMembershipRequest(struct zx_ctx* c, struct zx_ps_TestMemb
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TargetObjectID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+zx_ps_NS);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TargetObjectID;
+       se && se->g.tok == zx_ps_TargetObjectID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:TargetObjectID", sizeof("ps:TargetObjectID")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_Token(c, (struct zx_sec_Token_s*)se, p);
-  for (se = &x->Subscription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Subscription->gg;
+       se && se->g.tok == zx_ps_Subscription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Subscription(c, (struct zx_ps_Subscription_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5001,7 +5289,7 @@ int zx_LEN_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembe
   int len = sizeof("<ps:TestMembershipResponse")-1 + 1 + sizeof("</ps:TestMembershipResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->TimeStamp, sizeof("TimeStamp")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -5011,10 +5299,14 @@ int zx_LEN_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMembe
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = x->Result; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:Result")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->Result;
+    se && se->g.tok == zx_ps_Result_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ps:Result")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -5041,7 +5333,7 @@ char* zx_ENC_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMem
   ZX_OUT_TAG(p, "<ps:TestMembershipResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_ps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5055,10 +5347,14 @@ char* zx_ENC_SO_ps_TestMembershipResponse(struct zx_ctx* c, struct zx_ps_TestMem
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = x->Result; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ps:Result", sizeof("ps:Result")-1, zx_ns_tab+zx_ps_NS);
+  for (se = x->Result;
+       se && se->g.tok == zx_ps_Result_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ps:Result", sizeof("ps:Result")-1, zx_ns_tab+(zx_ps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   

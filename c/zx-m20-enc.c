@@ -85,7 +85,7 @@ int zx_LEN_SO_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_Additio
   int len = sizeof("<m20:AdditionalMetaLocation")-1 + 1 + sizeof("</m20:AdditionalMetaLocation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->namespace_is_cxx_keyword, sizeof("namespace")-1, &pop_seen);
 
@@ -120,7 +120,7 @@ char* zx_ENC_SO_m20_AdditionalMetaLocation(struct zx_ctx* c, struct zx_m20_Addit
   ZX_OUT_TAG(p, "<m20:AdditionalMetaLocation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -212,7 +212,7 @@ int zx_LEN_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_Affiliat
   int len = sizeof("<m20:AffiliationDescriptor")-1 + 1 + sizeof("</m20:AffiliationDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->affiliationOwnerID, sizeof("affiliationOwnerID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->cacheDuration, sizeof("cacheDuration")-1, &pop_seen);
@@ -224,13 +224,21 @@ int zx_LEN_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_Affiliat
   int len = 0;
 #endif
   
-  for (se = x->AffiliateMember; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:AffiliateMember")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AffiliateMember;
+    se && se->g.tok == zx_m20_AffiliateMember_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:AffiliateMember")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_m20_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
@@ -259,7 +267,7 @@ char* zx_ENC_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_Affili
   ZX_OUT_TAG(p, "<m20:AffiliationDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -275,13 +283,21 @@ char* zx_ENC_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_Affili
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AffiliateMember; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:AffiliateMember", sizeof("m20:AffiliateMember")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AffiliateMember;
+       se && se->g.tok == zx_m20_AffiliateMember_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:AffiliateMember", sizeof("m20:AffiliateMember")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se, p);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_m20_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)se, p);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
 
@@ -363,7 +379,7 @@ int zx_LEN_SO_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_As
   int len = sizeof("<m20:AssertionConsumerServiceURL")-1 + 1 + sizeof("</m20:AssertionConsumerServiceURL>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->isDefault, sizeof("isDefault")-1, &pop_seen);
@@ -399,7 +415,7 @@ char* zx_ENC_SO_m20_AssertionConsumerServiceURL(struct zx_ctx* c, struct zx_m20_
   ZX_OUT_TAG(p, "<m20:AssertionConsumerServiceURL");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -492,7 +508,7 @@ int zx_LEN_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s*
   int len = sizeof("<m20:ContactPerson")-1 + 1 + sizeof("</m20:ContactPerson>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->contactType, sizeof("contactType")-1, &pop_seen);
   len += zx_attr_so_len(c, x->libertyPrincipalIdentifier, sizeof("libertyPrincipalIdentifier")-1, &pop_seen);
@@ -502,17 +518,29 @@ int zx_LEN_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s*
   int len = 0;
 #endif
   
-  for (se = x->Company; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:Company")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:GivenName")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SurName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SurName")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->EmailAddress; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:EmailAddress")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->TelephoneNumber; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:TelephoneNumber")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Company;
+    se && se->g.tok == zx_m20_Company_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:Company")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+    se && se->g.tok == zx_m20_GivenName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:GivenName")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SurName;
+    se && se->g.tok == zx_m20_SurName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SurName")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EmailAddress;
+    se && se->g.tok == zx_m20_EmailAddress_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:EmailAddress")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->TelephoneNumber;
+    se && se->g.tok == zx_m20_TelephoneNumber_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:TelephoneNumber")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se);
 
 
@@ -540,7 +568,7 @@ char* zx_ENC_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_
   ZX_OUT_TAG(p, "<m20:ContactPerson");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -554,17 +582,29 @@ char* zx_ENC_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Company; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:Company", sizeof("m20:Company")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:GivenName", sizeof("m20:GivenName")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SurName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SurName", sizeof("m20:SurName")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->EmailAddress; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:EmailAddress", sizeof("m20:EmailAddress")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->TelephoneNumber; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:TelephoneNumber", sizeof("m20:TelephoneNumber")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Company;
+       se && se->g.tok == zx_m20_Company_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:Company", sizeof("m20:Company")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+       se && se->g.tok == zx_m20_GivenName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:GivenName", sizeof("m20:GivenName")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SurName;
+       se && se->g.tok == zx_m20_SurName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SurName", sizeof("m20:SurName")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EmailAddress;
+       se && se->g.tok == zx_m20_EmailAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:EmailAddress", sizeof("m20:EmailAddress")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->TelephoneNumber;
+       se && se->g.tok == zx_m20_TelephoneNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:TelephoneNumber", sizeof("m20:TelephoneNumber")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -645,7 +685,7 @@ int zx_LEN_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDes
   int len = sizeof("<m20:EntitiesDescriptor")-1 + 1 + sizeof("</m20:EntitiesDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -653,7 +693,9 @@ int zx_LEN_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDes
   int len = 0;
 #endif
   
-  for (se = &x->EntityDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EntityDescriptor->gg;
+       se && se->g.tok == zx_m20_EntityDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_EntityDescriptor(c, (struct zx_m20_EntityDescriptor_s*)se);
 
 
@@ -681,7 +723,7 @@ char* zx_ENC_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesD
   ZX_OUT_TAG(p, "<m20:EntitiesDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -693,7 +735,9 @@ char* zx_ENC_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesD
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EntityDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EntityDescriptor->gg;
+       se && se->g.tok == zx_m20_EntityDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_EntityDescriptor(c, (struct zx_m20_EntityDescriptor_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -774,7 +818,7 @@ int zx_LEN_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescrip
   int len = sizeof("<m20:EntityDescriptor")-1 + 1 + sizeof("</m20:EntityDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->cacheDuration, sizeof("cacheDuration")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -786,19 +830,33 @@ int zx_LEN_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescrip
   int len = 0;
 #endif
   
-  for (se = &x->IDPDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPDescriptor->gg;
+       se && se->g.tok == zx_m20_IDPDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_IDPDescriptor(c, (struct zx_m20_IDPDescriptor_s*)se);
-  for (se = &x->SPDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPDescriptor->gg;
+       se && se->g.tok == zx_m20_SPDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_SPDescriptor(c, (struct zx_m20_SPDescriptor_s*)se);
-  for (se = &x->AffiliationDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AffiliationDescriptor->gg;
+       se && se->g.tok == zx_m20_AffiliationDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_AffiliationDescriptor(c, (struct zx_m20_AffiliationDescriptor_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_m20_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)se);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_m20_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Organization(c, (struct zx_m20_Organization_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
@@ -827,7 +885,7 @@ char* zx_ENC_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescr
   ZX_OUT_TAG(p, "<m20:EntityDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -843,19 +901,33 @@ char* zx_ENC_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescr
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IDPDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPDescriptor->gg;
+       se && se->g.tok == zx_m20_IDPDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_IDPDescriptor(c, (struct zx_m20_IDPDescriptor_s*)se, p);
-  for (se = &x->SPDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPDescriptor->gg;
+       se && se->g.tok == zx_m20_SPDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_SPDescriptor(c, (struct zx_m20_SPDescriptor_s*)se, p);
-  for (se = &x->AffiliationDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AffiliationDescriptor->gg;
+       se && se->g.tok == zx_m20_AffiliationDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_AffiliationDescriptor(c, (struct zx_m20_AffiliationDescriptor_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_m20_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)se, p);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_m20_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Organization(c, (struct zx_m20_Organization_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se, p);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
 
@@ -937,7 +1009,7 @@ int zx_LEN_SO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x )
   int len = sizeof("<m20:Extension")-1 + 1 + sizeof("</m20:Extension>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -971,7 +1043,7 @@ char* zx_ENC_SO_m20_Extension(struct zx_ctx* c, struct zx_m20_Extension_s* x, ch
   ZX_OUT_TAG(p, "<m20:Extension");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1062,7 +1134,7 @@ int zx_LEN_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s*
   int len = sizeof("<m20:IDPDescriptor")-1 + 1 + sizeof("</m20:IDPDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->cacheDuration, sizeof("cacheDuration")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -1074,49 +1146,91 @@ int zx_LEN_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s*
   int len = 0;
 #endif
   
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_m20_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)se);
-  for (se = x->SoapEndpoint; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SoapEndpoint")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationNotificationProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationNotificationProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->NameIdentifierMappingProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:NameIdentifierMappingProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->NameIdentifierMappingEncryptionProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:NameIdentifierMappingEncryptionProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SoapEndpoint;
+    se && se->g.tok == zx_m20_SoapEndpoint_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SoapEndpoint")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutServiceURL;
+    se && se->g.tok == zx_m20_SingleLogoutServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutServiceReturnURL;
+    se && se->g.tok == zx_m20_SingleLogoutServiceReturnURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationServiceURL;
+    se && se->g.tok == zx_m20_FederationTerminationServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationServiceReturnURL;
+    se && se->g.tok == zx_m20_FederationTerminationServiceReturnURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationNotificationProtocolProfile;
+    se && se->g.tok == zx_m20_FederationTerminationNotificationProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationNotificationProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutProtocolProfile;
+    se && se->g.tok == zx_m20_SingleLogoutProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierProtocolProfile;
+    se && se->g.tok == zx_m20_RegisterNameIdentifierProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierServiceURL;
+    se && se->g.tok == zx_m20_RegisterNameIdentifierServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierServiceReturnURL;
+    se && se->g.tok == zx_m20_RegisterNameIdentifierServiceReturnURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIdentifierMappingProtocolProfile;
+    se && se->g.tok == zx_m20_NameIdentifierMappingProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:NameIdentifierMappingProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIdentifierMappingEncryptionProfile;
+    se && se->g.tok == zx_m20_NameIdentifierMappingEncryptionProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:NameIdentifierMappingEncryptionProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_m20_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Organization(c, (struct zx_m20_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_m20_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)se);
-  for (se = &x->AdditionalMetaLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalMetaLocation->gg;
+       se && se->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = x->SingleSignOnServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleSignOnServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleSignOnProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleSignOnProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->AuthnServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:AuthnServiceURL")-1, zx_ns_tab+zx_m20_NS);
+  for (se = x->SingleSignOnServiceURL;
+    se && se->g.tok == zx_m20_SingleSignOnServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleSignOnServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleSignOnProtocolProfile;
+    se && se->g.tok == zx_m20_SingleSignOnProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleSignOnProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AuthnServiceURL;
+    se && se->g.tok == zx_m20_AuthnServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:AuthnServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1143,7 +1257,7 @@ char* zx_ENC_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_
   ZX_OUT_TAG(p, "<m20:IDPDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1159,49 +1273,91 @@ char* zx_ENC_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_m20_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)se, p);
-  for (se = x->SoapEndpoint; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SoapEndpoint", sizeof("m20:SoapEndpoint")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutServiceURL", sizeof("m20:SingleLogoutServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutServiceReturnURL", sizeof("m20:SingleLogoutServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationServiceURL", sizeof("m20:FederationTerminationServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationServiceReturnURL", sizeof("m20:FederationTerminationServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationNotificationProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationNotificationProtocolProfile", sizeof("m20:FederationTerminationNotificationProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutProtocolProfile", sizeof("m20:SingleLogoutProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierProtocolProfile", sizeof("m20:RegisterNameIdentifierProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierServiceURL", sizeof("m20:RegisterNameIdentifierServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierServiceReturnURL", sizeof("m20:RegisterNameIdentifierServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->NameIdentifierMappingProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:NameIdentifierMappingProtocolProfile", sizeof("m20:NameIdentifierMappingProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->NameIdentifierMappingEncryptionProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:NameIdentifierMappingEncryptionProfile", sizeof("m20:NameIdentifierMappingEncryptionProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SoapEndpoint;
+       se && se->g.tok == zx_m20_SoapEndpoint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SoapEndpoint", sizeof("m20:SoapEndpoint")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutServiceURL;
+       se && se->g.tok == zx_m20_SingleLogoutServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutServiceURL", sizeof("m20:SingleLogoutServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutServiceReturnURL;
+       se && se->g.tok == zx_m20_SingleLogoutServiceReturnURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutServiceReturnURL", sizeof("m20:SingleLogoutServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationServiceURL;
+       se && se->g.tok == zx_m20_FederationTerminationServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationServiceURL", sizeof("m20:FederationTerminationServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationServiceReturnURL;
+       se && se->g.tok == zx_m20_FederationTerminationServiceReturnURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationServiceReturnURL", sizeof("m20:FederationTerminationServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationNotificationProtocolProfile;
+       se && se->g.tok == zx_m20_FederationTerminationNotificationProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationNotificationProtocolProfile", sizeof("m20:FederationTerminationNotificationProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutProtocolProfile;
+       se && se->g.tok == zx_m20_SingleLogoutProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutProtocolProfile", sizeof("m20:SingleLogoutProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierProtocolProfile;
+       se && se->g.tok == zx_m20_RegisterNameIdentifierProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierProtocolProfile", sizeof("m20:RegisterNameIdentifierProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierServiceURL;
+       se && se->g.tok == zx_m20_RegisterNameIdentifierServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierServiceURL", sizeof("m20:RegisterNameIdentifierServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierServiceReturnURL;
+       se && se->g.tok == zx_m20_RegisterNameIdentifierServiceReturnURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierServiceReturnURL", sizeof("m20:RegisterNameIdentifierServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIdentifierMappingProtocolProfile;
+       se && se->g.tok == zx_m20_NameIdentifierMappingProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:NameIdentifierMappingProtocolProfile", sizeof("m20:NameIdentifierMappingProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIdentifierMappingEncryptionProfile;
+       se && se->g.tok == zx_m20_NameIdentifierMappingEncryptionProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:NameIdentifierMappingEncryptionProfile", sizeof("m20:NameIdentifierMappingEncryptionProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_m20_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Organization(c, (struct zx_m20_Organization_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_m20_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)se, p);
-  for (se = &x->AdditionalMetaLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalMetaLocation->gg;
+       se && se->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se, p);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = x->SingleSignOnServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleSignOnServiceURL", sizeof("m20:SingleSignOnServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleSignOnProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleSignOnProtocolProfile", sizeof("m20:SingleSignOnProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->AuthnServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:AuthnServiceURL", sizeof("m20:AuthnServiceURL")-1, zx_ns_tab+zx_m20_NS);
+  for (se = x->SingleSignOnServiceURL;
+       se && se->g.tok == zx_m20_SingleSignOnServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleSignOnServiceURL", sizeof("m20:SingleSignOnServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleSignOnProtocolProfile;
+       se && se->g.tok == zx_m20_SingleSignOnProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleSignOnProtocolProfile", sizeof("m20:SingleSignOnProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AuthnServiceURL;
+       se && se->g.tok == zx_m20_AuthnServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:AuthnServiceURL", sizeof("m20:AuthnServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1281,7 +1437,7 @@ int zx_LEN_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s*
   int len = sizeof("<m20:KeyDescriptor")-1 + 1 + sizeof("</m20:KeyDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->use, sizeof("use")-1, &pop_seen);
 
@@ -1290,13 +1446,21 @@ int zx_LEN_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s*
   int len = 0;
 #endif
   
-  for (se = x->EncryptionMethod; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:EncryptionMethod")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:KeySize")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EncryptionMethod;
+    se && se->g.tok == zx_m20_EncryptionMethod_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:EncryptionMethod")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->KeySize;
+    se && se->g.tok == zx_m20_KeySize_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:KeySize")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se);
 
 
@@ -1324,7 +1488,7 @@ char* zx_ENC_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_
   ZX_OUT_TAG(p, "<m20:KeyDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1337,13 +1501,21 @@ char* zx_ENC_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->EncryptionMethod; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:EncryptionMethod", sizeof("m20:EncryptionMethod")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:KeySize", sizeof("m20:KeySize")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EncryptionMethod;
+       se && se->g.tok == zx_m20_EncryptionMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:EncryptionMethod", sizeof("m20:EncryptionMethod")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->KeySize;
+       se && se->g.tok == zx_m20_KeySize_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:KeySize", sizeof("m20:KeySize")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1424,7 +1596,7 @@ int zx_LEN_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x
   int len = sizeof("<m20:Organization")-1 + 1 + sizeof("</m20:Organization>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1432,13 +1604,21 @@ int zx_LEN_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x
   int len = 0;
 #endif
   
-  for (se = &x->OrganizationName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationName->gg;
+       se && se->g.tok == zx_m20_OrganizationName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_OrganizationName(c, (struct zx_m20_OrganizationName_s*)se);
-  for (se = &x->OrganizationDisplayName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationDisplayName->gg;
+       se && se->g.tok == zx_m20_OrganizationDisplayName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_OrganizationDisplayName(c, (struct zx_m20_OrganizationDisplayName_s*)se);
-  for (se = &x->OrganizationURL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationURL->gg;
+       se && se->g.tok == zx_m20_OrganizationURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_OrganizationURL(c, (struct zx_m20_OrganizationURL_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se);
 
 
@@ -1466,7 +1646,7 @@ char* zx_ENC_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s*
   ZX_OUT_TAG(p, "<m20:Organization");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1478,13 +1658,21 @@ char* zx_ENC_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->OrganizationName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationName->gg;
+       se && se->g.tok == zx_m20_OrganizationName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_OrganizationName(c, (struct zx_m20_OrganizationName_s*)se, p);
-  for (se = &x->OrganizationDisplayName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationDisplayName->gg;
+       se && se->g.tok == zx_m20_OrganizationDisplayName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_OrganizationDisplayName(c, (struct zx_m20_OrganizationDisplayName_s*)se, p);
-  for (se = &x->OrganizationURL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationURL->gg;
+       se && se->g.tok == zx_m20_OrganizationURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_OrganizationURL(c, (struct zx_m20_OrganizationURL_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1565,7 +1753,7 @@ int zx_LEN_SO_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_Organi
   int len = sizeof("<m20:OrganizationDisplayName")-1 + 1 + sizeof("</m20:OrganizationDisplayName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("lang")-1, &pop_seen);
 
@@ -1600,7 +1788,7 @@ char* zx_ENC_SO_m20_OrganizationDisplayName(struct zx_ctx* c, struct zx_m20_Orga
   ZX_OUT_TAG(p, "<m20:OrganizationDisplayName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1692,7 +1880,7 @@ int zx_LEN_SO_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_OrganizationN
   int len = sizeof("<m20:OrganizationName")-1 + 1 + sizeof("</m20:OrganizationName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("lang")-1, &pop_seen);
 
@@ -1727,7 +1915,7 @@ char* zx_ENC_SO_m20_OrganizationName(struct zx_ctx* c, struct zx_m20_Organizatio
   ZX_OUT_TAG(p, "<m20:OrganizationName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1819,7 +2007,7 @@ int zx_LEN_SO_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_OrganizationUR
   int len = sizeof("<m20:OrganizationURL")-1 + 1 + sizeof("</m20:OrganizationURL>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("lang")-1, &pop_seen);
 
@@ -1854,7 +2042,7 @@ char* zx_ENC_SO_m20_OrganizationURL(struct zx_ctx* c, struct zx_m20_Organization
   ZX_OUT_TAG(p, "<m20:OrganizationURL");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1946,7 +2134,7 @@ int zx_LEN_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x
   int len = sizeof("<m20:SPDescriptor")-1 + 1 + sizeof("</m20:SPDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->cacheDuration, sizeof("cacheDuration")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -1958,47 +2146,87 @@ int zx_LEN_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x
   int len = 0;
 #endif
   
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_m20_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)se);
-  for (se = x->SoapEndpoint; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SoapEndpoint")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationNotificationProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationNotificationProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->NameIdentifierMappingProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:NameIdentifierMappingProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->NameIdentifierMappingEncryptionProfile; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:NameIdentifierMappingEncryptionProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SoapEndpoint;
+    se && se->g.tok == zx_m20_SoapEndpoint_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SoapEndpoint")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutServiceURL;
+    se && se->g.tok == zx_m20_SingleLogoutServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutServiceReturnURL;
+    se && se->g.tok == zx_m20_SingleLogoutServiceReturnURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationServiceURL;
+    se && se->g.tok == zx_m20_FederationTerminationServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationServiceReturnURL;
+    se && se->g.tok == zx_m20_FederationTerminationServiceReturnURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationNotificationProtocolProfile;
+    se && se->g.tok == zx_m20_FederationTerminationNotificationProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:FederationTerminationNotificationProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutProtocolProfile;
+    se && se->g.tok == zx_m20_SingleLogoutProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:SingleLogoutProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierProtocolProfile;
+    se && se->g.tok == zx_m20_RegisterNameIdentifierProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierServiceURL;
+    se && se->g.tok == zx_m20_RegisterNameIdentifierServiceURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierServiceReturnURL;
+    se && se->g.tok == zx_m20_RegisterNameIdentifierServiceReturnURL_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:RegisterNameIdentifierServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIdentifierMappingProtocolProfile;
+    se && se->g.tok == zx_m20_NameIdentifierMappingProtocolProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:NameIdentifierMappingProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIdentifierMappingEncryptionProfile;
+    se && se->g.tok == zx_m20_NameIdentifierMappingEncryptionProfile_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:NameIdentifierMappingEncryptionProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_m20_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Organization(c, (struct zx_m20_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_m20_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)se);
-  for (se = &x->AdditionalMetaLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalMetaLocation->gg;
+       se && se->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->AssertionConsumerServiceURL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionConsumerServiceURL->gg;
+       se && se->g.tok == zx_m20_AssertionConsumerServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_m20_AssertionConsumerServiceURL(c, (struct zx_m20_AssertionConsumerServiceURL_s*)se);
-  for (se = x->AuthnRequestsSigned; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:AuthnRequestsSigned")-1, zx_ns_tab+zx_m20_NS);
+  for (se = x->AuthnRequestsSigned;
+    se && se->g.tok == zx_m20_AuthnRequestsSigned_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("m20:AuthnRequestsSigned")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2025,7 +2253,7 @@ char* zx_ENC_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s*
   ZX_OUT_TAG(p, "<m20:SPDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_m20_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2041,47 +2269,87 @@ char* zx_ENC_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_m20_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)se, p);
-  for (se = x->SoapEndpoint; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SoapEndpoint", sizeof("m20:SoapEndpoint")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutServiceURL", sizeof("m20:SingleLogoutServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutServiceReturnURL", sizeof("m20:SingleLogoutServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationServiceURL", sizeof("m20:FederationTerminationServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationServiceReturnURL", sizeof("m20:FederationTerminationServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->FederationTerminationNotificationProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationNotificationProtocolProfile", sizeof("m20:FederationTerminationNotificationProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->SingleLogoutProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutProtocolProfile", sizeof("m20:SingleLogoutProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierProtocolProfile", sizeof("m20:RegisterNameIdentifierProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierServiceURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierServiceURL", sizeof("m20:RegisterNameIdentifierServiceURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->RegisterNameIdentifierServiceReturnURL; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierServiceReturnURL", sizeof("m20:RegisterNameIdentifierServiceReturnURL")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->NameIdentifierMappingProtocolProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:NameIdentifierMappingProtocolProfile", sizeof("m20:NameIdentifierMappingProtocolProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = x->NameIdentifierMappingEncryptionProfile; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:NameIdentifierMappingEncryptionProfile", sizeof("m20:NameIdentifierMappingEncryptionProfile")-1, zx_ns_tab+zx_m20_NS);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SoapEndpoint;
+       se && se->g.tok == zx_m20_SoapEndpoint_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SoapEndpoint", sizeof("m20:SoapEndpoint")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutServiceURL;
+       se && se->g.tok == zx_m20_SingleLogoutServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutServiceURL", sizeof("m20:SingleLogoutServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutServiceReturnURL;
+       se && se->g.tok == zx_m20_SingleLogoutServiceReturnURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutServiceReturnURL", sizeof("m20:SingleLogoutServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationServiceURL;
+       se && se->g.tok == zx_m20_FederationTerminationServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationServiceURL", sizeof("m20:FederationTerminationServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationServiceReturnURL;
+       se && se->g.tok == zx_m20_FederationTerminationServiceReturnURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationServiceReturnURL", sizeof("m20:FederationTerminationServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->FederationTerminationNotificationProtocolProfile;
+       se && se->g.tok == zx_m20_FederationTerminationNotificationProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:FederationTerminationNotificationProtocolProfile", sizeof("m20:FederationTerminationNotificationProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SingleLogoutProtocolProfile;
+       se && se->g.tok == zx_m20_SingleLogoutProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:SingleLogoutProtocolProfile", sizeof("m20:SingleLogoutProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierProtocolProfile;
+       se && se->g.tok == zx_m20_RegisterNameIdentifierProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierProtocolProfile", sizeof("m20:RegisterNameIdentifierProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierServiceURL;
+       se && se->g.tok == zx_m20_RegisterNameIdentifierServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierServiceURL", sizeof("m20:RegisterNameIdentifierServiceURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RegisterNameIdentifierServiceReturnURL;
+       se && se->g.tok == zx_m20_RegisterNameIdentifierServiceReturnURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:RegisterNameIdentifierServiceReturnURL", sizeof("m20:RegisterNameIdentifierServiceReturnURL")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIdentifierMappingProtocolProfile;
+       se && se->g.tok == zx_m20_NameIdentifierMappingProtocolProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:NameIdentifierMappingProtocolProfile", sizeof("m20:NameIdentifierMappingProtocolProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NameIdentifierMappingEncryptionProfile;
+       se && se->g.tok == zx_m20_NameIdentifierMappingEncryptionProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:NameIdentifierMappingEncryptionProfile", sizeof("m20:NameIdentifierMappingEncryptionProfile")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_m20_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Organization(c, (struct zx_m20_Organization_s*)se, p);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_m20_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)se, p);
-  for (se = &x->AdditionalMetaLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalMetaLocation->gg;
+       se && se->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)se, p);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_Extension(c, (struct zx_m20_Extension_s*)se, p);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->AssertionConsumerServiceURL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionConsumerServiceURL->gg;
+       se && se->g.tok == zx_m20_AssertionConsumerServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_m20_AssertionConsumerServiceURL(c, (struct zx_m20_AssertionConsumerServiceURL_s*)se, p);
-  for (se = x->AuthnRequestsSigned; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "m20:AuthnRequestsSigned", sizeof("m20:AuthnRequestsSigned")-1, zx_ns_tab+zx_m20_NS);
+  for (se = x->AuthnRequestsSigned;
+       se && se->g.tok == zx_m20_AuthnRequestsSigned_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "m20:AuthnRequestsSigned", sizeof("m20:AuthnRequestsSigned")-1, zx_ns_tab+(zx_m20_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   

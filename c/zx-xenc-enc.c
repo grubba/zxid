@@ -85,7 +85,7 @@ int zx_LEN_SO_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMet
   int len = sizeof("<xenc:AgreementMethod")-1 + 1 + sizeof("</xenc:AgreementMethod>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Algorithm, sizeof("Algorithm")-1, &pop_seen);
 
@@ -94,11 +94,17 @@ int zx_LEN_SO_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementMet
   int len = 0;
 #endif
   
-  for (se = x->KA_Nonce; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:KA_Nonce")-1, zx_ns_tab+zx_xenc_NS);
-  for (se = &x->OriginatorKeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->KA_Nonce;
+    se && se->g.tok == zx_xenc_KA_Nonce_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:KA_Nonce")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OriginatorKeyInfo->gg;
+       se && se->g.tok == zx_xenc_OriginatorKeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_OriginatorKeyInfo(c, (struct zx_xenc_OriginatorKeyInfo_s*)se);
-  for (se = &x->RecipientKeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RecipientKeyInfo->gg;
+       se && se->g.tok == zx_xenc_RecipientKeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_RecipientKeyInfo(c, (struct zx_xenc_RecipientKeyInfo_s*)se);
 
 
@@ -126,7 +132,7 @@ char* zx_ENC_SO_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementM
   ZX_OUT_TAG(p, "<xenc:AgreementMethod");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -139,11 +145,17 @@ char* zx_ENC_SO_xenc_AgreementMethod(struct zx_ctx* c, struct zx_xenc_AgreementM
   /* root node has no begin tag */
 #endif
   
-  for (se = x->KA_Nonce; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:KA_Nonce", sizeof("xenc:KA_Nonce")-1, zx_ns_tab+zx_xenc_NS);
-  for (se = &x->OriginatorKeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->KA_Nonce;
+       se && se->g.tok == zx_xenc_KA_Nonce_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:KA_Nonce", sizeof("xenc:KA_Nonce")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OriginatorKeyInfo->gg;
+       se && se->g.tok == zx_xenc_OriginatorKeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_OriginatorKeyInfo(c, (struct zx_xenc_OriginatorKeyInfo_s*)se, p);
-  for (se = &x->RecipientKeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RecipientKeyInfo->gg;
+       se && se->g.tok == zx_xenc_RecipientKeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_RecipientKeyInfo(c, (struct zx_xenc_RecipientKeyInfo_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -224,7 +236,7 @@ int zx_LEN_SO_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x )
   int len = sizeof("<xenc:CipherData")-1 + 1 + sizeof("</xenc:CipherData>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -232,9 +244,13 @@ int zx_LEN_SO_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x )
   int len = 0;
 #endif
   
-  for (se = x->CipherValue; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:CipherValue")-1, zx_ns_tab+zx_xenc_NS);
-  for (se = &x->CipherReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CipherValue;
+    se && se->g.tok == zx_xenc_CipherValue_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:CipherValue")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CipherReference->gg;
+       se && se->g.tok == zx_xenc_CipherReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_CipherReference(c, (struct zx_xenc_CipherReference_s*)se);
 
 
@@ -262,7 +278,7 @@ char* zx_ENC_SO_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x
   ZX_OUT_TAG(p, "<xenc:CipherData");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -274,9 +290,13 @@ char* zx_ENC_SO_xenc_CipherData(struct zx_ctx* c, struct zx_xenc_CipherData_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->CipherValue; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:CipherValue", sizeof("xenc:CipherValue")-1, zx_ns_tab+zx_xenc_NS);
-  for (se = &x->CipherReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CipherValue;
+       se && se->g.tok == zx_xenc_CipherValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:CipherValue", sizeof("xenc:CipherValue")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CipherReference->gg;
+       se && se->g.tok == zx_xenc_CipherReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_CipherReference(c, (struct zx_xenc_CipherReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -357,7 +377,7 @@ int zx_LEN_SO_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherRefere
   int len = sizeof("<xenc:CipherReference")-1 + 1 + sizeof("</xenc:CipherReference>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->URI, sizeof("URI")-1, &pop_seen);
 
@@ -366,7 +386,9 @@ int zx_LEN_SO_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherRefere
   int len = 0;
 #endif
   
-  for (se = &x->Transforms->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Transforms->gg;
+       se && se->g.tok == zx_xenc_Transforms_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_Transforms(c, (struct zx_xenc_Transforms_s*)se);
 
 
@@ -394,7 +416,7 @@ char* zx_ENC_SO_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherRefe
   ZX_OUT_TAG(p, "<xenc:CipherReference");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -407,7 +429,9 @@ char* zx_ENC_SO_xenc_CipherReference(struct zx_ctx* c, struct zx_xenc_CipherRefe
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Transforms->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Transforms->gg;
+       se && se->g.tok == zx_xenc_Transforms_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_Transforms(c, (struct zx_xenc_Transforms_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -488,7 +512,7 @@ int zx_LEN_SO_xenc_DataReference(struct zx_ctx* c, struct zx_xenc_DataReference_
   int len = sizeof("<xenc:DataReference")-1 + 1 + sizeof("</xenc:DataReference>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->URI, sizeof("URI")-1, &pop_seen);
 
@@ -523,7 +547,7 @@ char* zx_ENC_SO_xenc_DataReference(struct zx_ctx* c, struct zx_xenc_DataReferenc
   ZX_OUT_TAG(p, "<xenc:DataReference");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -615,7 +639,7 @@ int zx_LEN_SO_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData_
   int len = sizeof("<xenc:EncryptedData")-1 + 1 + sizeof("</xenc:EncryptedData>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Encoding, sizeof("Encoding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Id, sizeof("Id")-1, &pop_seen);
@@ -627,13 +651,21 @@ int zx_LEN_SO_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedData_
   int len = 0;
 #endif
   
-  for (se = &x->EncryptionMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionMethod->gg;
+       se && se->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)se);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
-  for (se = &x->CipherData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CipherData->gg;
+       se && se->g.tok == zx_xenc_CipherData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)se);
-  for (se = &x->EncryptionProperties->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionProperties->gg;
+       se && se->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)se);
 
 
@@ -661,7 +693,7 @@ char* zx_ENC_SO_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedDat
   ZX_OUT_TAG(p, "<xenc:EncryptedData");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -677,13 +709,21 @@ char* zx_ENC_SO_xenc_EncryptedData(struct zx_ctx* c, struct zx_xenc_EncryptedDat
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EncryptionMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionMethod->gg;
+       se && se->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)se, p);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se, p);
-  for (se = &x->CipherData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CipherData->gg;
+       se && se->g.tok == zx_xenc_CipherData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)se, p);
-  for (se = &x->EncryptionProperties->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionProperties->gg;
+       se && se->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -764,7 +804,7 @@ int zx_LEN_SO_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s*
   int len = sizeof("<xenc:EncryptedKey")-1 + 1 + sizeof("</xenc:EncryptedKey>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Encoding, sizeof("Encoding")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Id, sizeof("Id")-1, &pop_seen);
@@ -777,18 +817,30 @@ int zx_LEN_SO_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_s*
   int len = 0;
 #endif
   
-  for (se = &x->EncryptionMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionMethod->gg;
+       se && se->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)se);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
-  for (se = &x->CipherData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CipherData->gg;
+       se && se->g.tok == zx_xenc_CipherData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)se);
-  for (se = &x->EncryptionProperties->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionProperties->gg;
+       se && se->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)se);
-  for (se = &x->ReferenceList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceList->gg;
+       se && se->g.tok == zx_xenc_ReferenceList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_ReferenceList(c, (struct zx_xenc_ReferenceList_s*)se);
-  for (se = x->CarriedKeyName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:CarriedKeyName")-1, zx_ns_tab+zx_xenc_NS);
+  for (se = x->CarriedKeyName;
+    se && se->g.tok == zx_xenc_CarriedKeyName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:CarriedKeyName")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -815,7 +867,7 @@ char* zx_ENC_SO_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_
   ZX_OUT_TAG(p, "<xenc:EncryptedKey");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -832,18 +884,30 @@ char* zx_ENC_SO_xenc_EncryptedKey(struct zx_ctx* c, struct zx_xenc_EncryptedKey_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EncryptionMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionMethod->gg;
+       se && se->g.tok == zx_xenc_EncryptionMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptionMethod(c, (struct zx_xenc_EncryptionMethod_s*)se, p);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se, p);
-  for (se = &x->CipherData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CipherData->gg;
+       se && se->g.tok == zx_xenc_CipherData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_CipherData(c, (struct zx_xenc_CipherData_s*)se, p);
-  for (se = &x->EncryptionProperties->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionProperties->gg;
+       se && se->g.tok == zx_xenc_EncryptionProperties_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptionProperties(c, (struct zx_xenc_EncryptionProperties_s*)se, p);
-  for (se = &x->ReferenceList->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceList->gg;
+       se && se->g.tok == zx_xenc_ReferenceList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_ReferenceList(c, (struct zx_xenc_ReferenceList_s*)se, p);
-  for (se = x->CarriedKeyName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:CarriedKeyName", sizeof("xenc:CarriedKeyName")-1, zx_ns_tab+zx_xenc_NS);
+  for (se = x->CarriedKeyName;
+       se && se->g.tok == zx_xenc_CarriedKeyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:CarriedKeyName", sizeof("xenc:CarriedKeyName")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -923,7 +987,7 @@ int zx_LEN_SO_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_EncryptionM
   int len = sizeof("<xenc:EncryptionMethod")-1 + 1 + sizeof("</xenc:EncryptionMethod>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Algorithm, sizeof("Algorithm")-1, &pop_seen);
 
@@ -932,10 +996,14 @@ int zx_LEN_SO_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_EncryptionM
   int len = 0;
 #endif
   
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:KeySize")-1, zx_ns_tab+zx_xenc_NS);
-  for (se = x->OAEPparams; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:OAEPparams")-1, zx_ns_tab+zx_xenc_NS);
+  for (se = x->KeySize;
+    se && se->g.tok == zx_xenc_KeySize_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:KeySize")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OAEPparams;
+    se && se->g.tok == zx_xenc_OAEPparams_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("xenc:OAEPparams")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -962,7 +1030,7 @@ char* zx_ENC_SO_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_Encryptio
   ZX_OUT_TAG(p, "<xenc:EncryptionMethod");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -975,10 +1043,14 @@ char* zx_ENC_SO_xenc_EncryptionMethod(struct zx_ctx* c, struct zx_xenc_Encryptio
   /* root node has no begin tag */
 #endif
   
-  for (se = x->KeySize; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:KeySize", sizeof("xenc:KeySize")-1, zx_ns_tab+zx_xenc_NS);
-  for (se = x->OAEPparams; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:OAEPparams", sizeof("xenc:OAEPparams")-1, zx_ns_tab+zx_xenc_NS);
+  for (se = x->KeySize;
+       se && se->g.tok == zx_xenc_KeySize_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:KeySize", sizeof("xenc:KeySize")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OAEPparams;
+       se && se->g.tok == zx_xenc_OAEPparams_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "xenc:OAEPparams", sizeof("xenc:OAEPparams")-1, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1058,7 +1130,7 @@ int zx_LEN_SO_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_Encrypt
   int len = sizeof("<xenc:EncryptionProperties")-1 + 1 + sizeof("</xenc:EncryptionProperties>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Id, sizeof("Id")-1, &pop_seen);
 
@@ -1067,7 +1139,9 @@ int zx_LEN_SO_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_Encrypt
   int len = 0;
 #endif
   
-  for (se = &x->EncryptionProperty->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionProperty->gg;
+       se && se->g.tok == zx_xenc_EncryptionProperty_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptionProperty(c, (struct zx_xenc_EncryptionProperty_s*)se);
 
 
@@ -1095,7 +1169,7 @@ char* zx_ENC_SO_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_Encry
   ZX_OUT_TAG(p, "<xenc:EncryptionProperties");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1108,7 +1182,9 @@ char* zx_ENC_SO_xenc_EncryptionProperties(struct zx_ctx* c, struct zx_xenc_Encry
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EncryptionProperty->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptionProperty->gg;
+       se && se->g.tok == zx_xenc_EncryptionProperty_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptionProperty(c, (struct zx_xenc_EncryptionProperty_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1189,7 +1265,7 @@ int zx_LEN_SO_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_xenc_Encryptio
   int len = sizeof("<xenc:EncryptionProperty")-1 + 1 + sizeof("</xenc:EncryptionProperty>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Id, sizeof("Id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Target, sizeof("Target")-1, &pop_seen);
@@ -1225,7 +1301,7 @@ char* zx_ENC_SO_xenc_EncryptionProperty(struct zx_ctx* c, struct zx_xenc_Encrypt
   ZX_OUT_TAG(p, "<xenc:EncryptionProperty");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1318,7 +1394,7 @@ int zx_LEN_SO_xenc_KeyReference(struct zx_ctx* c, struct zx_xenc_KeyReference_s*
   int len = sizeof("<xenc:KeyReference")-1 + 1 + sizeof("</xenc:KeyReference>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->URI, sizeof("URI")-1, &pop_seen);
 
@@ -1353,7 +1429,7 @@ char* zx_ENC_SO_xenc_KeyReference(struct zx_ctx* c, struct zx_xenc_KeyReference_
   ZX_OUT_TAG(p, "<xenc:KeyReference");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1445,7 +1521,7 @@ int zx_LEN_SO_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_Originator
   int len = sizeof("<xenc:OriginatorKeyInfo")-1 + 1 + sizeof("</xenc:OriginatorKeyInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Id, sizeof("Id")-1, &pop_seen);
 
@@ -1454,21 +1530,37 @@ int zx_LEN_SO_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_Originator
   int len = 0;
 #endif
   
-  for (se = x->KeyName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ds:KeyName")-1, zx_ns_tab+zx_ds_NS);
-  for (se = &x->KeyValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->KeyName;
+    se && se->g.tok == zx_ds_KeyName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ds:KeyName")-1, zx_ns_tab+(zx_ds_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->KeyValue->gg;
+       se && se->g.tok == zx_ds_KeyValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)se);
-  for (se = &x->RetrievalMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RetrievalMethod->gg;
+       se && se->g.tok == zx_ds_RetrievalMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)se);
-  for (se = &x->X509Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->X509Data->gg;
+       se && se->g.tok == zx_ds_X509Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_X509Data(c, (struct zx_ds_X509Data_s*)se);
-  for (se = &x->PGPData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PGPData->gg;
+       se && se->g.tok == zx_ds_PGPData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_PGPData(c, (struct zx_ds_PGPData_s*)se);
-  for (se = &x->SPKIData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPKIData->gg;
+       se && se->g.tok == zx_ds_SPKIData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)se);
-  for (se = x->MgmtData; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ds:MgmtData")-1, zx_ns_tab+zx_ds_NS);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->MgmtData;
+    se && se->g.tok == zx_ds_MgmtData_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ds:MgmtData")-1, zx_ns_tab+(zx_ds_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se);
 
 
@@ -1496,7 +1588,7 @@ char* zx_ENC_SO_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_Originat
   ZX_OUT_TAG(p, "<xenc:OriginatorKeyInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1509,21 +1601,37 @@ char* zx_ENC_SO_xenc_OriginatorKeyInfo(struct zx_ctx* c, struct zx_xenc_Originat
   /* root node has no begin tag */
 #endif
   
-  for (se = x->KeyName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ds:KeyName", sizeof("ds:KeyName")-1, zx_ns_tab+zx_ds_NS);
-  for (se = &x->KeyValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->KeyName;
+       se && se->g.tok == zx_ds_KeyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ds:KeyName", sizeof("ds:KeyName")-1, zx_ns_tab+(zx_ds_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->KeyValue->gg;
+       se && se->g.tok == zx_ds_KeyValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)se, p);
-  for (se = &x->RetrievalMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RetrievalMethod->gg;
+       se && se->g.tok == zx_ds_RetrievalMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)se, p);
-  for (se = &x->X509Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->X509Data->gg;
+       se && se->g.tok == zx_ds_X509Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_X509Data(c, (struct zx_ds_X509Data_s*)se, p);
-  for (se = &x->PGPData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PGPData->gg;
+       se && se->g.tok == zx_ds_PGPData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_PGPData(c, (struct zx_ds_PGPData_s*)se, p);
-  for (se = &x->SPKIData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPKIData->gg;
+       se && se->g.tok == zx_ds_SPKIData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)se, p);
-  for (se = x->MgmtData; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ds:MgmtData", sizeof("ds:MgmtData")-1, zx_ns_tab+zx_ds_NS);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->MgmtData;
+       se && se->g.tok == zx_ds_MgmtData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ds:MgmtData", sizeof("ds:MgmtData")-1, zx_ns_tab+(zx_ds_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1604,7 +1712,7 @@ int zx_LEN_SO_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientKe
   int len = sizeof("<xenc:RecipientKeyInfo")-1 + 1 + sizeof("</xenc:RecipientKeyInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Id, sizeof("Id")-1, &pop_seen);
 
@@ -1613,21 +1721,37 @@ int zx_LEN_SO_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_RecipientKe
   int len = 0;
 #endif
   
-  for (se = x->KeyName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ds:KeyName")-1, zx_ns_tab+zx_ds_NS);
-  for (se = &x->KeyValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->KeyName;
+    se && se->g.tok == zx_ds_KeyName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ds:KeyName")-1, zx_ns_tab+(zx_ds_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->KeyValue->gg;
+       se && se->g.tok == zx_ds_KeyValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)se);
-  for (se = &x->RetrievalMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RetrievalMethod->gg;
+       se && se->g.tok == zx_ds_RetrievalMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)se);
-  for (se = &x->X509Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->X509Data->gg;
+       se && se->g.tok == zx_ds_X509Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_X509Data(c, (struct zx_ds_X509Data_s*)se);
-  for (se = &x->PGPData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PGPData->gg;
+       se && se->g.tok == zx_ds_PGPData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_PGPData(c, (struct zx_ds_PGPData_s*)se);
-  for (se = &x->SPKIData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPKIData->gg;
+       se && se->g.tok == zx_ds_SPKIData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)se);
-  for (se = x->MgmtData; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("ds:MgmtData")-1, zx_ns_tab+zx_ds_NS);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->MgmtData;
+    se && se->g.tok == zx_ds_MgmtData_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("ds:MgmtData")-1, zx_ns_tab+(zx_ds_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se);
 
 
@@ -1655,7 +1779,7 @@ char* zx_ENC_SO_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_Recipient
   ZX_OUT_TAG(p, "<xenc:RecipientKeyInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1668,21 +1792,37 @@ char* zx_ENC_SO_xenc_RecipientKeyInfo(struct zx_ctx* c, struct zx_xenc_Recipient
   /* root node has no begin tag */
 #endif
   
-  for (se = x->KeyName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ds:KeyName", sizeof("ds:KeyName")-1, zx_ns_tab+zx_ds_NS);
-  for (se = &x->KeyValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->KeyName;
+       se && se->g.tok == zx_ds_KeyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ds:KeyName", sizeof("ds:KeyName")-1, zx_ns_tab+(zx_ds_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->KeyValue->gg;
+       se && se->g.tok == zx_ds_KeyValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_KeyValue(c, (struct zx_ds_KeyValue_s*)se, p);
-  for (se = &x->RetrievalMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RetrievalMethod->gg;
+       se && se->g.tok == zx_ds_RetrievalMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_RetrievalMethod(c, (struct zx_ds_RetrievalMethod_s*)se, p);
-  for (se = &x->X509Data->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->X509Data->gg;
+       se && se->g.tok == zx_ds_X509Data_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_X509Data(c, (struct zx_ds_X509Data_s*)se, p);
-  for (se = &x->PGPData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PGPData->gg;
+       se && se->g.tok == zx_ds_PGPData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_PGPData(c, (struct zx_ds_PGPData_s*)se, p);
-  for (se = &x->SPKIData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPKIData->gg;
+       se && se->g.tok == zx_ds_SPKIData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_SPKIData(c, (struct zx_ds_SPKIData_s*)se, p);
-  for (se = x->MgmtData; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "ds:MgmtData", sizeof("ds:MgmtData")-1, zx_ns_tab+zx_ds_NS);
-  for (se = &x->EncryptedKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->MgmtData;
+       se && se->g.tok == zx_ds_MgmtData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "ds:MgmtData", sizeof("ds:MgmtData")-1, zx_ns_tab+(zx_ds_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EncryptedKey->gg;
+       se && se->g.tok == zx_xenc_EncryptedKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_EncryptedKey(c, (struct zx_xenc_EncryptedKey_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1763,7 +1903,7 @@ int zx_LEN_SO_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList_
   int len = sizeof("<xenc:ReferenceList")-1 + 1 + sizeof("</xenc:ReferenceList>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1771,9 +1911,13 @@ int zx_LEN_SO_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceList_
   int len = 0;
 #endif
   
-  for (se = &x->DataReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DataReference->gg;
+       se && se->g.tok == zx_xenc_DataReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_DataReference(c, (struct zx_xenc_DataReference_s*)se);
-  for (se = &x->KeyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyReference->gg;
+       se && se->g.tok == zx_xenc_KeyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xenc_KeyReference(c, (struct zx_xenc_KeyReference_s*)se);
 
 
@@ -1801,7 +1945,7 @@ char* zx_ENC_SO_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceLis
   ZX_OUT_TAG(p, "<xenc:ReferenceList");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1813,9 +1957,13 @@ char* zx_ENC_SO_xenc_ReferenceList(struct zx_ctx* c, struct zx_xenc_ReferenceLis
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->DataReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DataReference->gg;
+       se && se->g.tok == zx_xenc_DataReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_DataReference(c, (struct zx_xenc_DataReference_s*)se, p);
-  for (se = &x->KeyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyReference->gg;
+       se && se->g.tok == zx_xenc_KeyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xenc_KeyReference(c, (struct zx_xenc_KeyReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1896,7 +2044,7 @@ int zx_LEN_SO_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x )
   int len = sizeof("<xenc:Transforms")-1 + 1 + sizeof("</xenc:Transforms>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1904,7 +2052,9 @@ int zx_LEN_SO_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Transform->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Transform->gg;
+       se && se->g.tok == zx_ds_Transform_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ds_Transform(c, (struct zx_ds_Transform_s*)se);
 
 
@@ -1932,7 +2082,7 @@ char* zx_ENC_SO_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x
   ZX_OUT_TAG(p, "<xenc:Transforms");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xenc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xenc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1944,7 +2094,9 @@ char* zx_ENC_SO_xenc_Transforms(struct zx_ctx* c, struct zx_xenc_Transforms_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Transform->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Transform->gg;
+       se && se->g.tok == zx_ds_Transform_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ds_Transform(c, (struct zx_ds_Transform_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

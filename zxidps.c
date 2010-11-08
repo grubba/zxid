@@ -508,8 +508,7 @@ char* zxid_ps_finalize_invite(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int* 
 struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_AddEntityRequest_s* req, struct zx_str* issuer)
 {
   struct zx_str* tag;
-  struct zx_ps_Tag_s* pstag;
-  struct zx_ps_AddEntityResponse_s* resp = zx_NEW_ps_AddEntityResponse(cf->ctx);
+  struct zx_ps_AddEntityResponse_s* resp = zx_NEW_ps_AddEntityResponse(cf->ctx,0);
   struct zxid_invite* inv;
   struct zxid_psobj* obj;
   char uid[ZXID_MAX_USER];
@@ -534,7 +533,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
   inv->maxusage = 1;
   inv->starts = time(0);
   inv->expires = time(0) + 86400 * 30;  /* *** make configurable (about a month) */
-  inv->ps2spredir = req->PStoSPRedirectURL->content;
+  inv->ps2spredir = ZX_GET_CONTENT(req->PStoSPRedirectURL);
   inv->perms = ZX_ZALLOC(cf->ctx, struct zxid_perm);
   inv->perms->eid = issuer;
 
@@ -543,13 +542,13 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
   obj->psobj = req->Object->ObjectID ? zxid_psobj_dec(cf, issuer, "ZO", req->Object->ObjectID) : zxid_mk_id(cf, "o", 48);  /* What is secure and sufficient space? */
 #else
   if (req->Object->ObjectID) {
-    ERR("AddEntityRequest contained ObjectID(%.*s), but AddEntity is about creating new objects and the object IDs are assigned by People Service, not client. Ignoring ObjectID.", req->Object->ObjectID->content->len, req->Object->ObjectID->content->s);
+    ERR("AddEntityRequest contained ObjectID(%.*s), but AddEntity is about creating new objects and the object IDs are assigned by People Service, not client. Ignoring ObjectID.", ZX_GET_CONTENT_LEN(req->Object->ObjectID), ZX_GET_CONTENT_S(req->Object->ObjectID));
   }
   obj->psobj = zxid_mk_id(cf, "o", 48);  /* What is secure and sufficient space? */
 #endif
   obj->uid = uid;
-  obj->dispname = req->Object->DisplayName?req->Object->DisplayName->gg.content:0;
-  obj->tags = req->Object->Tag?req->Object->Tag->gg.content:0;
+  obj->dispname = ZX_GET_CONTENT(req->Object->DisplayName);
+  obj->tags = ZX_GET_CONTENT(req->Object->Tag);
   obj->invids = inv->invid;
   obj->create_secs = time(0);
 
@@ -558,17 +557,17 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
   zxid_put_psobj(cf, obj);
 
   /* The invitation URL will be processed by zxid_ps_accept_invite(), see above. */
-  resp->SPtoPSRedirectURL = zx_new_simple_elem(cf->ctx, zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->url, inv->invid->len, inv->invid->s));
-  resp->Object = zx_NEW_ps_Object(cf->ctx);
-  resp->Object->ObjectID = zx_new_simple_elem(cf->ctx, zxid_psobj_enc(cf, issuer,"ZO",obj->psobj));
-  resp->Object->DisplayName = zx_NEW_ps_DisplayName(cf->ctx);
-  resp->Object->DisplayName->gg.content = obj->dispname;
+  resp->SPtoPSRedirectURL
+    = zx_new_simple_elem(cf->ctx, &resp->gg, zx_ps_SPtoPSRedirectURL_ELEM,
+			 zx_strf(cf->ctx, "%s?o=D&inv=%.*s", cf->url, inv->invid->len, inv->invid->s));
+  resp->Object = zx_NEW_ps_Object(cf->ctx, &resp->gg);
+  resp->Object->ObjectID = zx_new_simple_elem(cf->ctx, &resp->Object->gg, zx_ps_ObjectID_ELEM, zxid_psobj_enc(cf, issuer,"ZO",obj->psobj));
+  resp->Object->DisplayName = zx_NEW_ps_DisplayName(cf->ctx, &resp->Object->gg);
+  zx_add_content(c, &resp->Object->DisplayName->gg, obj->dispname);
   resp->Object->DisplayName->Locale = zx_dup_attr(cf->ctx, zx_Locale_ATTR, "xx");  /* unknown locale */
   for (tag = obj->tags; tag; tag = tag->n) {
-    pstag = zx_NEW_ps_Tag(cf->ctx);
-    pstag->gg.content = tag;
-    pstag->gg.g.n = &resp->Object->Tag->gg.g;
-    resp->Object->Tag = pstag;
+    resp->Object->Tag = zx_NEW_ps_Tag(cf->ctx, &resp->Object->rr);
+    zx_add_content(c, &resp->Object->Tag->gg, tag);
   }
   resp->Object->NodeType = zx_dup_attr(cf->ctx, zx_NodeType_ATTR, obj->nodetype?PS_COL:PS_ENT);
   resp->Object->CreatedDateTime = zxid_date_time_attr(cf, zx_CreatedDateTime_ATTR, obj->create_secs);
@@ -576,7 +575,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
   resp->TimeStamp = resp->Object->CreatedDateTime;
   resp->id = zx_ref_len_attr(cf->ctx, zx_id_ATTR, inv->invid->len, inv->invid->s);  /* *** why is ID requred by schema at all? */
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
-  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, nameid->gg.content, "N", "K", "PSINV", 0, "inv=%.*s", inv->invid->len, inv->invid->s);
+  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "PSINV", 0, "inv=%.*s", inv->invid->len, inv->invid->s);
   D_DEDENT("ps_inv: ");
   return resp;
 }
@@ -586,7 +585,7 @@ struct zx_ps_AddEntityResponse_s* zxid_ps_addent_invite(zxid_conf* cf, zxid_a7n*
 /* Called by:  zxid_sp_soap_dispatch */
 struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_a7n* a7n, struct zx_ps_ResolveIdentifierRequest_s* req, struct zx_str* issuer)
 {
-  struct zx_ps_ResolveIdentifierResponse_s* resp = zx_NEW_ps_ResolveIdentifierResponse(cf->ctx);
+  struct zx_ps_ResolveIdentifierResponse_s* resp = zx_NEW_ps_ResolveIdentifierResponse(cf->ctx,0);
   struct zx_ps_ResolveInput_s* inp;
   //struct zx_ps_ResolveOutput_s* out;
   int n_resolv = 0;
@@ -608,7 +607,7 @@ struct zx_ps_ResolveIdentifierResponse_s* zxid_ps_resolv_id(zxid_conf* cf, zxid_
     // ***
   }
 
-  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, nameid->gg.content, "N", "K", "PSRESOLVOK", 0, "n=%d", n_resolv);
+  zxlog(cf, 0, 0, 0, issuer, 0, &a7n->ID->g, ZX_GET_CONTENT(nameid), "N", "K", "PSRESOLVOK", 0, "n=%d", n_resolv);
   resp->Status = zxid_mk_lu_Status(cf, "OK", 0, 0, 0);
   D_DEDENT("ps_resolv: ");
   return resp;

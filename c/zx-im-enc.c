@@ -85,7 +85,7 @@ int zx_LEN_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityM
   int len = sizeof("<im:IdentityMappingRequest")-1 + 1 + sizeof("</im:IdentityMappingRequest>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_im_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_im_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -93,7 +93,9 @@ int zx_LEN_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_IdentityM
   int len = 0;
 #endif
   
-  for (se = &x->MappingInput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MappingInput->gg;
+       se && se->g.tok == zx_im_MappingInput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_im_MappingInput(c, (struct zx_im_MappingInput_s*)se);
 
 
@@ -121,7 +123,7 @@ char* zx_ENC_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_Identit
   ZX_OUT_TAG(p, "<im:IdentityMappingRequest");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_im_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_im_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -133,7 +135,9 @@ char* zx_ENC_SO_im_IdentityMappingRequest(struct zx_ctx* c, struct zx_im_Identit
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->MappingInput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MappingInput->gg;
+       se && se->g.tok == zx_im_MappingInput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_im_MappingInput(c, (struct zx_im_MappingInput_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -214,7 +218,7 @@ int zx_LEN_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_Identity
   int len = sizeof("<im:IdentityMappingResponse")-1 + 1 + sizeof("</im:IdentityMappingResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_im_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_im_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -222,9 +226,13 @@ int zx_LEN_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_Identity
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->MappingOutput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MappingOutput->gg;
+       se && se->g.tok == zx_im_MappingOutput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_im_MappingOutput(c, (struct zx_im_MappingOutput_s*)se);
 
 
@@ -252,7 +260,7 @@ char* zx_ENC_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_Identi
   ZX_OUT_TAG(p, "<im:IdentityMappingResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_im_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_im_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -264,9 +272,13 @@ char* zx_ENC_SO_im_IdentityMappingResponse(struct zx_ctx* c, struct zx_im_Identi
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->MappingOutput->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MappingOutput->gg;
+       se && se->g.tok == zx_im_MappingOutput_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_im_MappingOutput(c, (struct zx_im_MappingOutput_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -347,7 +359,7 @@ int zx_LEN_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x )
   int len = sizeof("<im:MappingInput")-1 + 1 + sizeof("</im:MappingInput>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_im_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_im_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->reqID, sizeof("reqID")-1, &pop_seen);
 
@@ -356,9 +368,13 @@ int zx_LEN_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->TokenPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TokenPolicy->gg;
+       se && se->g.tok == zx_sec_TokenPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)se);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_Token(c, (struct zx_sec_Token_s*)se);
 
 
@@ -386,7 +402,7 @@ char* zx_ENC_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x
   ZX_OUT_TAG(p, "<im:MappingInput");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_im_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_im_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -399,9 +415,13 @@ char* zx_ENC_SO_im_MappingInput(struct zx_ctx* c, struct zx_im_MappingInput_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->TokenPolicy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TokenPolicy->gg;
+       se && se->g.tok == zx_sec_TokenPolicy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_TokenPolicy(c, (struct zx_sec_TokenPolicy_s*)se, p);
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_Token(c, (struct zx_sec_Token_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -482,7 +502,7 @@ int zx_LEN_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x
   int len = sizeof("<im:MappingOutput")-1 + 1 + sizeof("</im:MappingOutput>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_im_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_im_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->reqRef, sizeof("reqRef")-1, &pop_seen);
 
@@ -491,7 +511,9 @@ int zx_LEN_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sec_Token(c, (struct zx_sec_Token_s*)se);
 
 
@@ -519,7 +541,7 @@ char* zx_ENC_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s*
   ZX_OUT_TAG(p, "<im:MappingOutput");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_im_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_im_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -532,7 +554,9 @@ char* zx_ENC_SO_im_MappingOutput(struct zx_ctx* c, struct zx_im_MappingOutput_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Token->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Token->gg;
+       se && se->g.tok == zx_sec_Token_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sec_Token(c, (struct zx_sec_Token_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

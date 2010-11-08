@@ -1122,7 +1122,9 @@ void zx_FREE_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RequestSecurityTokenResponse->gg; e; e = en) {
+  for (e = &x->RequestSecurityTokenResponse->gg;
+       e && e->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)e, free_strs);
   }
@@ -1162,7 +1164,9 @@ void zx_DUP_STRS_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RequestSecurityTokenResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestSecurityTokenResponse->gg;
+       se && se->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)se);
 
 }
@@ -1183,7 +1187,9 @@ struct zx_wst_IssuedTokens_s* zx_DEEP_CLONE_wst_IssuedTokens(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RequestSecurityTokenResponse->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestSecurityTokenResponse->gg;
+       e && e->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_RequestSecurityTokenResponse(c,(struct zx_wst_RequestSecurityTokenResponse_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestSecurityTokenResponse = (struct zx_wst_RequestSecurityTokenResponse_s*)en;
@@ -1214,7 +1220,9 @@ int zx_WALK_SO_wst_IssuedTokens(struct zx_ctx* c, struct zx_wst_IssuedTokens_s* 
   if (ret)
     return ret;
 
-  for (e = &x->RequestSecurityTokenResponse->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestSecurityTokenResponse->gg;
+       e && e->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1277,15 +1285,21 @@ void zx_FREE_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x, int free_st
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Address->gg; e; e = en) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Address(c, (struct zx_a_Address_s*)e, free_strs);
   }
-  for (e = &x->ReferenceParameters->gg; e; e = en) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, free_strs);
   }
-  for (e = &x->Metadata->gg; e; e = en) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Metadata(c, (struct zx_a_Metadata_s*)e, free_strs);
   }
@@ -1331,11 +1345,17 @@ void zx_DUP_STRS_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x)
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 }
@@ -1362,7 +1382,9 @@ struct zx_wst_Issuer_s* zx_DEEP_CLONE_wst_Issuer(struct zx_ctx* c, struct zx_wst
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Address(c,(struct zx_a_Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->Address = (struct zx_a_Address_s*)en;
@@ -1370,7 +1392,9 @@ struct zx_wst_Issuer_s* zx_DEEP_CLONE_wst_Issuer(struct zx_ctx* c, struct zx_wst
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_ReferenceParameters(c,(struct zx_a_ReferenceParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)en;
@@ -1378,7 +1402,9 @@ struct zx_wst_Issuer_s* zx_DEEP_CLONE_wst_Issuer(struct zx_ctx* c, struct zx_wst
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Metadata(c,(struct zx_a_Metadata_s*)e,dup_strs);
   	  if (!enn)
   	      x->Metadata = (struct zx_a_Metadata_s*)en;
@@ -1409,17 +1435,23 @@ int zx_WALK_SO_wst_Issuer(struct zx_ctx* c, struct zx_wst_Issuer_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Address(c, (struct zx_a_Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Metadata(c, (struct zx_a_Metadata_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1606,11 +1638,15 @@ void zx_FREE_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x, int fre
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Created->gg; e; e = en) {
+  for (e = &x->Created->gg;
+       e && e->g.tok == zx_wsu_Created_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsu_Created(c, (struct zx_wsu_Created_s*)e, free_strs);
   }
-  for (e = &x->Expires->gg; e; e = en) {
+  for (e = &x->Expires->gg;
+       e && e->g.tok == zx_wsu_Expires_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsu_Expires(c, (struct zx_wsu_Expires_s*)e, free_strs);
   }
@@ -1650,9 +1686,13 @@ void zx_DUP_STRS_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Created->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Created->gg;
+       se && se->g.tok == zx_wsu_Created_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsu_Created(c, (struct zx_wsu_Created_s*)se);
-  for (se = &x->Expires->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Expires->gg;
+       se && se->g.tok == zx_wsu_Expires_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsu_Expires(c, (struct zx_wsu_Expires_s*)se);
 
 }
@@ -1673,7 +1713,9 @@ struct zx_wst_Lifetime_s* zx_DEEP_CLONE_wst_Lifetime(struct zx_ctx* c, struct zx
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Created->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Created->gg;
+       e && e->g.tok == zx_wsu_Created_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsu_Created(c,(struct zx_wsu_Created_s*)e,dup_strs);
   	  if (!enn)
   	      x->Created = (struct zx_wsu_Created_s*)en;
@@ -1681,7 +1723,9 @@ struct zx_wst_Lifetime_s* zx_DEEP_CLONE_wst_Lifetime(struct zx_ctx* c, struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Expires->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Expires->gg;
+       e && e->g.tok == zx_wsu_Expires_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsu_Expires(c,(struct zx_wsu_Expires_s*)e,dup_strs);
   	  if (!enn)
   	      x->Expires = (struct zx_wsu_Expires_s*)en;
@@ -1712,12 +1756,16 @@ int zx_WALK_SO_wst_Lifetime(struct zx_ctx* c, struct zx_wst_Lifetime_s* x, void*
   if (ret)
     return ret;
 
-  for (e = &x->Created->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Created->gg;
+       e && e->g.tok == zx_wsu_Created_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsu_Created(c, (struct zx_wsu_Created_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Expires->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Expires->gg;
+       e && e->g.tok == zx_wsu_Expires_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsu_Expires(c, (struct zx_wsu_Expires_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2034,11 +2082,15 @@ void zx_FREE_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Primary->gg; e; e = en) {
+  for (e = &x->Primary->gg;
+       e && e->g.tok == zx_wst_Primary_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Primary(c, (struct zx_wst_Primary_s*)e, free_strs);
   }
-  for (e = &x->Participant->gg; e; e = en) {
+  for (e = &x->Participant->gg;
+       e && e->g.tok == zx_wst_Participant_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Participant(c, (struct zx_wst_Participant_s*)e, free_strs);
   }
@@ -2078,9 +2130,13 @@ void zx_DUP_STRS_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Primary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Primary->gg;
+       se && se->g.tok == zx_wst_Primary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Primary(c, (struct zx_wst_Primary_s*)se);
-  for (se = &x->Participant->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Participant->gg;
+       se && se->g.tok == zx_wst_Participant_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Participant(c, (struct zx_wst_Participant_s*)se);
 
 }
@@ -2101,7 +2157,9 @@ struct zx_wst_Participants_s* zx_DEEP_CLONE_wst_Participants(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Primary->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Primary->gg;
+       e && e->g.tok == zx_wst_Primary_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Primary(c,(struct zx_wst_Primary_s*)e,dup_strs);
   	  if (!enn)
   	      x->Primary = (struct zx_wst_Primary_s*)en;
@@ -2109,7 +2167,9 @@ struct zx_wst_Participants_s* zx_DEEP_CLONE_wst_Participants(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Participant->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Participant->gg;
+       e && e->g.tok == zx_wst_Participant_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Participant(c,(struct zx_wst_Participant_s*)e,dup_strs);
   	  if (!enn)
   	      x->Participant = (struct zx_wst_Participant_s*)en;
@@ -2140,12 +2200,16 @@ int zx_WALK_SO_wst_Participants(struct zx_ctx* c, struct zx_wst_Participants_s* 
   if (ret)
     return ret;
 
-  for (e = &x->Primary->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Primary->gg;
+       e && e->g.tok == zx_wst_Primary_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Primary(c, (struct zx_wst_Primary_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Participant->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Participant->gg;
+       e && e->g.tok == zx_wst_Participant_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Participant(c, (struct zx_wst_Participant_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2731,32 +2795,46 @@ void zx_FREE_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSec
 
   zx_free_simple_elems(c, x->TokenType, free_strs);
   zx_free_simple_elems(c, x->RequestType, free_strs);
-  for (e = &x->AppliesTo->gg; e; e = en) {
+  for (e = &x->AppliesTo->gg;
+       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)e, free_strs);
   }
-  for (e = &x->Claims->gg; e; e = en) {
+  for (e = &x->Claims->gg;
+       e && e->g.tok == zx_wst_Claims_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Claims(c, (struct zx_wst_Claims_s*)e, free_strs);
   }
-  for (e = &x->Entropy->gg; e; e = en) {
+  for (e = &x->Entropy->gg;
+       e && e->g.tok == zx_wst_Entropy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Entropy(c, (struct zx_wst_Entropy_s*)e, free_strs);
   }
-  for (e = &x->Lifetime->gg; e; e = en) {
+  for (e = &x->Lifetime->gg;
+       e && e->g.tok == zx_wst_Lifetime_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->AllowPostdating, free_strs);
-  for (e = &x->Renewing->gg; e; e = en) {
+  for (e = &x->Renewing->gg;
+       e && e->g.tok == zx_wst_Renewing_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Renewing(c, (struct zx_wst_Renewing_s*)e, free_strs);
   }
-  for (e = &x->OnBehalfOf->gg; e; e = en) {
+  for (e = &x->OnBehalfOf->gg;
+       e && e->g.tok == zx_wst_OnBehalfOf_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)e, free_strs);
   }
-  for (e = &x->Issuer->gg; e; e = en) {
+  for (e = &x->Issuer->gg;
+       e && e->g.tok == zx_wst_Issuer_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Issuer(c, (struct zx_wst_Issuer_s*)e, free_strs);
   }
@@ -2764,33 +2842,45 @@ void zx_FREE_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestSec
   zx_free_simple_elems(c, x->KeyType, free_strs);
   zx_free_simple_elems(c, x->KeySize, free_strs);
   zx_free_simple_elems(c, x->SignatureAlgorithm, free_strs);
-  for (e = &x->Encryption->gg; e; e = en) {
+  for (e = &x->Encryption->gg;
+       e && e->g.tok == zx_wst_Encryption_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Encryption(c, (struct zx_wst_Encryption_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->EncryptionAlgorithm, free_strs);
   zx_free_simple_elems(c, x->CanonicalizationAlgorithm, free_strs);
-  for (e = &x->ProofEncryption->gg; e; e = en) {
+  for (e = &x->ProofEncryption->gg;
+       e && e->g.tok == zx_wst_ProofEncryption_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)e, free_strs);
   }
-  for (e = &x->UseKey->gg; e; e = en) {
+  for (e = &x->UseKey->gg;
+       e && e->g.tok == zx_wst_UseKey_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_UseKey(c, (struct zx_wst_UseKey_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->SignWith, free_strs);
   zx_free_simple_elems(c, x->EncryptWith, free_strs);
-  for (e = &x->DelegateTo->gg; e; e = en) {
+  for (e = &x->DelegateTo->gg;
+       e && e->g.tok == zx_wst_DelegateTo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Forwardable, free_strs);
   zx_free_simple_elems(c, x->Delegatable, free_strs);
-  for (e = &x->Policy->gg; e; e = en) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
   }
-  for (e = &x->PolicyReference->gg; e; e = en) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
   }
@@ -2833,42 +2923,68 @@ void zx_DUP_STRS_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_Reques
 
   zx_dup_strs_simple_elems(c, x->TokenType);
   zx_dup_strs_simple_elems(c, x->RequestType);
-  for (se = &x->AppliesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AppliesTo->gg;
+       se && se->g.tok == zx_wsp_AppliesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)se);
-  for (se = &x->Claims->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Claims->gg;
+       se && se->g.tok == zx_wst_Claims_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Claims(c, (struct zx_wst_Claims_s*)se);
-  for (se = &x->Entropy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Entropy->gg;
+       se && se->g.tok == zx_wst_Entropy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Entropy(c, (struct zx_wst_Entropy_s*)se);
-  for (se = &x->Lifetime->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Lifetime->gg;
+       se && se->g.tok == zx_wst_Lifetime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)se);
   zx_dup_strs_simple_elems(c, x->AllowPostdating);
-  for (se = &x->Renewing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Renewing->gg;
+       se && se->g.tok == zx_wst_Renewing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Renewing(c, (struct zx_wst_Renewing_s*)se);
-  for (se = &x->OnBehalfOf->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OnBehalfOf->gg;
+       se && se->g.tok == zx_wst_OnBehalfOf_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)se);
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_wst_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Issuer(c, (struct zx_wst_Issuer_s*)se);
   zx_dup_strs_simple_elems(c, x->AuthenticationType);
   zx_dup_strs_simple_elems(c, x->KeyType);
   zx_dup_strs_simple_elems(c, x->KeySize);
   zx_dup_strs_simple_elems(c, x->SignatureAlgorithm);
-  for (se = &x->Encryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Encryption->gg;
+       se && se->g.tok == zx_wst_Encryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Encryption(c, (struct zx_wst_Encryption_s*)se);
   zx_dup_strs_simple_elems(c, x->EncryptionAlgorithm);
   zx_dup_strs_simple_elems(c, x->CanonicalizationAlgorithm);
-  for (se = &x->ProofEncryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProofEncryption->gg;
+       se && se->g.tok == zx_wst_ProofEncryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)se);
-  for (se = &x->UseKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UseKey->gg;
+       se && se->g.tok == zx_wst_UseKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_UseKey(c, (struct zx_wst_UseKey_s*)se);
   zx_dup_strs_simple_elems(c, x->SignWith);
   zx_dup_strs_simple_elems(c, x->EncryptWith);
-  for (se = &x->DelegateTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DelegateTo->gg;
+       se && se->g.tok == zx_wst_DelegateTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)se);
   zx_dup_strs_simple_elems(c, x->Forwardable);
   zx_dup_strs_simple_elems(c, x->Delegatable);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 }
@@ -2892,7 +3008,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
 
   x->TokenType = zx_deep_clone_simple_elems(c,x->TokenType, dup_strs);
   x->RequestType = zx_deep_clone_simple_elems(c,x->RequestType, dup_strs);
-  for (enn = 0, e = &x->AppliesTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AppliesTo->gg;
+       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_AppliesTo(c,(struct zx_wsp_AppliesTo_s*)e,dup_strs);
   	  if (!enn)
   	      x->AppliesTo = (struct zx_wsp_AppliesTo_s*)en;
@@ -2900,7 +3018,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Claims->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Claims->gg;
+       e && e->g.tok == zx_wst_Claims_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Claims(c,(struct zx_wst_Claims_s*)e,dup_strs);
   	  if (!enn)
   	      x->Claims = (struct zx_wst_Claims_s*)en;
@@ -2908,7 +3028,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Entropy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Entropy->gg;
+       e && e->g.tok == zx_wst_Entropy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Entropy(c,(struct zx_wst_Entropy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Entropy = (struct zx_wst_Entropy_s*)en;
@@ -2916,7 +3038,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Lifetime->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Lifetime->gg;
+       e && e->g.tok == zx_wst_Lifetime_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Lifetime(c,(struct zx_wst_Lifetime_s*)e,dup_strs);
   	  if (!enn)
   	      x->Lifetime = (struct zx_wst_Lifetime_s*)en;
@@ -2925,7 +3049,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   	  enn = en;
   }
   x->AllowPostdating = zx_deep_clone_simple_elems(c,x->AllowPostdating, dup_strs);
-  for (enn = 0, e = &x->Renewing->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Renewing->gg;
+       e && e->g.tok == zx_wst_Renewing_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Renewing(c,(struct zx_wst_Renewing_s*)e,dup_strs);
   	  if (!enn)
   	      x->Renewing = (struct zx_wst_Renewing_s*)en;
@@ -2933,7 +3059,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OnBehalfOf->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OnBehalfOf->gg;
+       e && e->g.tok == zx_wst_OnBehalfOf_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_OnBehalfOf(c,(struct zx_wst_OnBehalfOf_s*)e,dup_strs);
   	  if (!enn)
   	      x->OnBehalfOf = (struct zx_wst_OnBehalfOf_s*)en;
@@ -2941,7 +3069,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Issuer->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Issuer->gg;
+       e && e->g.tok == zx_wst_Issuer_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Issuer(c,(struct zx_wst_Issuer_s*)e,dup_strs);
   	  if (!enn)
   	      x->Issuer = (struct zx_wst_Issuer_s*)en;
@@ -2953,7 +3083,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   x->KeyType = zx_deep_clone_simple_elems(c,x->KeyType, dup_strs);
   x->KeySize = zx_deep_clone_simple_elems(c,x->KeySize, dup_strs);
   x->SignatureAlgorithm = zx_deep_clone_simple_elems(c,x->SignatureAlgorithm, dup_strs);
-  for (enn = 0, e = &x->Encryption->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Encryption->gg;
+       e && e->g.tok == zx_wst_Encryption_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Encryption(c,(struct zx_wst_Encryption_s*)e,dup_strs);
   	  if (!enn)
   	      x->Encryption = (struct zx_wst_Encryption_s*)en;
@@ -2963,7 +3095,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   }
   x->EncryptionAlgorithm = zx_deep_clone_simple_elems(c,x->EncryptionAlgorithm, dup_strs);
   x->CanonicalizationAlgorithm = zx_deep_clone_simple_elems(c,x->CanonicalizationAlgorithm, dup_strs);
-  for (enn = 0, e = &x->ProofEncryption->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ProofEncryption->gg;
+       e && e->g.tok == zx_wst_ProofEncryption_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_ProofEncryption(c,(struct zx_wst_ProofEncryption_s*)e,dup_strs);
   	  if (!enn)
   	      x->ProofEncryption = (struct zx_wst_ProofEncryption_s*)en;
@@ -2971,7 +3105,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UseKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UseKey->gg;
+       e && e->g.tok == zx_wst_UseKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_UseKey(c,(struct zx_wst_UseKey_s*)e,dup_strs);
   	  if (!enn)
   	      x->UseKey = (struct zx_wst_UseKey_s*)en;
@@ -2981,7 +3117,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   }
   x->SignWith = zx_deep_clone_simple_elems(c,x->SignWith, dup_strs);
   x->EncryptWith = zx_deep_clone_simple_elems(c,x->EncryptWith, dup_strs);
-  for (enn = 0, e = &x->DelegateTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DelegateTo->gg;
+       e && e->g.tok == zx_wst_DelegateTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_DelegateTo(c,(struct zx_wst_DelegateTo_s*)e,dup_strs);
   	  if (!enn)
   	      x->DelegateTo = (struct zx_wst_DelegateTo_s*)en;
@@ -2991,7 +3129,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   }
   x->Forwardable = zx_deep_clone_simple_elems(c,x->Forwardable, dup_strs);
   x->Delegatable = zx_deep_clone_simple_elems(c,x->Delegatable, dup_strs);
-  for (enn = 0, e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_Policy(c,(struct zx_wsp_Policy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Policy = (struct zx_wsp_Policy_s*)en;
@@ -2999,7 +3139,9 @@ struct zx_wst_RequestSecurityToken_s* zx_DEEP_CLONE_wst_RequestSecurityToken(str
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_PolicyReference(c,(struct zx_wsp_PolicyReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)en;
@@ -3036,22 +3178,30 @@ int zx_WALK_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestS
   ret = zx_walk_so_simple_elems(c, x->RequestType, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->AppliesTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AppliesTo->gg;
+       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Claims->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Claims->gg;
+       e && e->g.tok == zx_wst_Claims_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Claims(c, (struct zx_wst_Claims_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Entropy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Entropy->gg;
+       e && e->g.tok == zx_wst_Entropy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Entropy(c, (struct zx_wst_Entropy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Lifetime->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Lifetime->gg;
+       e && e->g.tok == zx_wst_Lifetime_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3059,17 +3209,23 @@ int zx_WALK_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestS
   ret = zx_walk_so_simple_elems(c, x->AllowPostdating, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Renewing->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Renewing->gg;
+       e && e->g.tok == zx_wst_Renewing_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Renewing(c, (struct zx_wst_Renewing_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OnBehalfOf->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OnBehalfOf->gg;
+       e && e->g.tok == zx_wst_OnBehalfOf_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Issuer->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Issuer->gg;
+       e && e->g.tok == zx_wst_Issuer_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Issuer(c, (struct zx_wst_Issuer_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3086,7 +3242,9 @@ int zx_WALK_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestS
   ret = zx_walk_so_simple_elems(c, x->SignatureAlgorithm, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Encryption->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Encryption->gg;
+       e && e->g.tok == zx_wst_Encryption_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Encryption(c, (struct zx_wst_Encryption_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3097,12 +3255,16 @@ int zx_WALK_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestS
   ret = zx_walk_so_simple_elems(c, x->CanonicalizationAlgorithm, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ProofEncryption->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ProofEncryption->gg;
+       e && e->g.tok == zx_wst_ProofEncryption_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UseKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UseKey->gg;
+       e && e->g.tok == zx_wst_UseKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_UseKey(c, (struct zx_wst_UseKey_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3113,7 +3275,9 @@ int zx_WALK_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestS
   ret = zx_walk_so_simple_elems(c, x->EncryptWith, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->DelegateTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DelegateTo->gg;
+       e && e->g.tok == zx_wst_DelegateTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3124,12 +3288,16 @@ int zx_WALK_SO_wst_RequestSecurityToken(struct zx_ctx* c, struct zx_wst_RequestS
   ret = zx_walk_so_simple_elems(c, x->Delegatable, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3186,7 +3354,9 @@ void zx_FREE_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_wst_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RequestSecurityToken->gg; e; e = en) {
+  for (e = &x->RequestSecurityToken->gg;
+       e && e->g.tok == zx_wst_RequestSecurityToken_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_RequestSecurityToken(c, (struct zx_wst_RequestSecurityToken_s*)e, free_strs);
   }
@@ -3226,7 +3396,9 @@ void zx_DUP_STRS_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RequestSecurityToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestSecurityToken->gg;
+       se && se->g.tok == zx_wst_RequestSecurityToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_RequestSecurityToken(c, (struct zx_wst_RequestSecurityToken_s*)se);
 
 }
@@ -3247,7 +3419,9 @@ struct zx_wst_RequestSecurityTokenCollection_s* zx_DEEP_CLONE_wst_RequestSecurit
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RequestSecurityToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestSecurityToken->gg;
+       e && e->g.tok == zx_wst_RequestSecurityToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_RequestSecurityToken(c,(struct zx_wst_RequestSecurityToken_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestSecurityToken = (struct zx_wst_RequestSecurityToken_s*)en;
@@ -3278,7 +3452,9 @@ int zx_WALK_SO_wst_RequestSecurityTokenCollection(struct zx_ctx* c, struct zx_ws
   if (ret)
     return ret;
 
-  for (e = &x->RequestSecurityToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestSecurityToken->gg;
+       e && e->g.tok == zx_wst_RequestSecurityToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_RequestSecurityToken(c, (struct zx_wst_RequestSecurityToken_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3338,86 +3514,122 @@ void zx_FREE_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_Re
 
   zx_free_simple_elems(c, x->TokenType, free_strs);
   zx_free_simple_elems(c, x->RequestType, free_strs);
-  for (e = &x->RequestedSecurityToken->gg; e; e = en) {
+  for (e = &x->RequestedSecurityToken->gg;
+       e && e->g.tok == zx_wst_RequestedSecurityToken_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_RequestedSecurityToken(c, (struct zx_wst_RequestedSecurityToken_s*)e, free_strs);
   }
-  for (e = &x->AppliesTo->gg; e; e = en) {
+  for (e = &x->AppliesTo->gg;
+       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)e, free_strs);
   }
-  for (e = &x->RequestedAttachedReference->gg; e; e = en) {
+  for (e = &x->RequestedAttachedReference->gg;
+       e && e->g.tok == zx_wst_RequestedAttachedReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_RequestedAttachedReference(c, (struct zx_wst_RequestedAttachedReference_s*)e, free_strs);
   }
-  for (e = &x->RequestedUnattachedReference->gg; e; e = en) {
+  for (e = &x->RequestedUnattachedReference->gg;
+       e && e->g.tok == zx_wst_RequestedUnattachedReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_RequestedUnattachedReference(c, (struct zx_wst_RequestedUnattachedReference_s*)e, free_strs);
   }
-  for (e = &x->RequestedProofToken->gg; e; e = en) {
+  for (e = &x->RequestedProofToken->gg;
+       e && e->g.tok == zx_wst_RequestedProofToken_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_RequestedProofToken(c, (struct zx_wst_RequestedProofToken_s*)e, free_strs);
   }
-  for (e = &x->Entropy->gg; e; e = en) {
+  for (e = &x->Entropy->gg;
+       e && e->g.tok == zx_wst_Entropy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Entropy(c, (struct zx_wst_Entropy_s*)e, free_strs);
   }
-  for (e = &x->Lifetime->gg; e; e = en) {
+  for (e = &x->Lifetime->gg;
+       e && e->g.tok == zx_wst_Lifetime_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)e, free_strs);
   }
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_wst_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Status(c, (struct zx_wst_Status_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->AllowPostdating, free_strs);
-  for (e = &x->Renewing->gg; e; e = en) {
+  for (e = &x->Renewing->gg;
+       e && e->g.tok == zx_wst_Renewing_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Renewing(c, (struct zx_wst_Renewing_s*)e, free_strs);
   }
-  for (e = &x->OnBehalfOf->gg; e; e = en) {
+  for (e = &x->OnBehalfOf->gg;
+       e && e->g.tok == zx_wst_OnBehalfOf_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)e, free_strs);
   }
-  for (e = &x->Issuer->gg; e; e = en) {
+  for (e = &x->Issuer->gg;
+       e && e->g.tok == zx_wst_Issuer_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Issuer(c, (struct zx_wst_Issuer_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->AuthenticationType, free_strs);
-  for (e = &x->Authenticator->gg; e; e = en) {
+  for (e = &x->Authenticator->gg;
+       e && e->g.tok == zx_wst_Authenticator_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Authenticator(c, (struct zx_wst_Authenticator_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->KeyType, free_strs);
   zx_free_simple_elems(c, x->KeySize, free_strs);
   zx_free_simple_elems(c, x->SignatureAlgorithm, free_strs);
-  for (e = &x->Encryption->gg; e; e = en) {
+  for (e = &x->Encryption->gg;
+       e && e->g.tok == zx_wst_Encryption_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_Encryption(c, (struct zx_wst_Encryption_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->EncryptionAlgorithm, free_strs);
   zx_free_simple_elems(c, x->CanonicalizationAlgorithm, free_strs);
-  for (e = &x->ProofEncryption->gg; e; e = en) {
+  for (e = &x->ProofEncryption->gg;
+       e && e->g.tok == zx_wst_ProofEncryption_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)e, free_strs);
   }
-  for (e = &x->UseKey->gg; e; e = en) {
+  for (e = &x->UseKey->gg;
+       e && e->g.tok == zx_wst_UseKey_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_UseKey(c, (struct zx_wst_UseKey_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->SignWith, free_strs);
   zx_free_simple_elems(c, x->EncryptWith, free_strs);
-  for (e = &x->DelegateTo->gg; e; e = en) {
+  for (e = &x->DelegateTo->gg;
+       e && e->g.tok == zx_wst_DelegateTo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Forwardable, free_strs);
   zx_free_simple_elems(c, x->Delegatable, free_strs);
-  for (e = &x->Policy->gg; e; e = en) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, free_strs);
   }
-  for (e = &x->PolicyReference->gg; e; e = en) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, free_strs);
   }
@@ -3460,52 +3672,88 @@ void zx_DUP_STRS_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_ws
 
   zx_dup_strs_simple_elems(c, x->TokenType);
   zx_dup_strs_simple_elems(c, x->RequestType);
-  for (se = &x->RequestedSecurityToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedSecurityToken->gg;
+       se && se->g.tok == zx_wst_RequestedSecurityToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_RequestedSecurityToken(c, (struct zx_wst_RequestedSecurityToken_s*)se);
-  for (se = &x->AppliesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AppliesTo->gg;
+       se && se->g.tok == zx_wsp_AppliesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)se);
-  for (se = &x->RequestedAttachedReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedAttachedReference->gg;
+       se && se->g.tok == zx_wst_RequestedAttachedReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_RequestedAttachedReference(c, (struct zx_wst_RequestedAttachedReference_s*)se);
-  for (se = &x->RequestedUnattachedReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedUnattachedReference->gg;
+       se && se->g.tok == zx_wst_RequestedUnattachedReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_RequestedUnattachedReference(c, (struct zx_wst_RequestedUnattachedReference_s*)se);
-  for (se = &x->RequestedProofToken->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedProofToken->gg;
+       se && se->g.tok == zx_wst_RequestedProofToken_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_RequestedProofToken(c, (struct zx_wst_RequestedProofToken_s*)se);
-  for (se = &x->Entropy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Entropy->gg;
+       se && se->g.tok == zx_wst_Entropy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Entropy(c, (struct zx_wst_Entropy_s*)se);
-  for (se = &x->Lifetime->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Lifetime->gg;
+       se && se->g.tok == zx_wst_Lifetime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)se);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_wst_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Status(c, (struct zx_wst_Status_s*)se);
   zx_dup_strs_simple_elems(c, x->AllowPostdating);
-  for (se = &x->Renewing->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Renewing->gg;
+       se && se->g.tok == zx_wst_Renewing_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Renewing(c, (struct zx_wst_Renewing_s*)se);
-  for (se = &x->OnBehalfOf->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OnBehalfOf->gg;
+       se && se->g.tok == zx_wst_OnBehalfOf_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)se);
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_wst_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Issuer(c, (struct zx_wst_Issuer_s*)se);
   zx_dup_strs_simple_elems(c, x->AuthenticationType);
-  for (se = &x->Authenticator->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Authenticator->gg;
+       se && se->g.tok == zx_wst_Authenticator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Authenticator(c, (struct zx_wst_Authenticator_s*)se);
   zx_dup_strs_simple_elems(c, x->KeyType);
   zx_dup_strs_simple_elems(c, x->KeySize);
   zx_dup_strs_simple_elems(c, x->SignatureAlgorithm);
-  for (se = &x->Encryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Encryption->gg;
+       se && se->g.tok == zx_wst_Encryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_Encryption(c, (struct zx_wst_Encryption_s*)se);
   zx_dup_strs_simple_elems(c, x->EncryptionAlgorithm);
   zx_dup_strs_simple_elems(c, x->CanonicalizationAlgorithm);
-  for (se = &x->ProofEncryption->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProofEncryption->gg;
+       se && se->g.tok == zx_wst_ProofEncryption_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)se);
-  for (se = &x->UseKey->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UseKey->gg;
+       se && se->g.tok == zx_wst_UseKey_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_UseKey(c, (struct zx_wst_UseKey_s*)se);
   zx_dup_strs_simple_elems(c, x->SignWith);
   zx_dup_strs_simple_elems(c, x->EncryptWith);
-  for (se = &x->DelegateTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DelegateTo->gg;
+       se && se->g.tok == zx_wst_DelegateTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)se);
   zx_dup_strs_simple_elems(c, x->Forwardable);
   zx_dup_strs_simple_elems(c, x->Delegatable);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 }
@@ -3529,7 +3777,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
 
   x->TokenType = zx_deep_clone_simple_elems(c,x->TokenType, dup_strs);
   x->RequestType = zx_deep_clone_simple_elems(c,x->RequestType, dup_strs);
-  for (enn = 0, e = &x->RequestedSecurityToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestedSecurityToken->gg;
+       e && e->g.tok == zx_wst_RequestedSecurityToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_RequestedSecurityToken(c,(struct zx_wst_RequestedSecurityToken_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestedSecurityToken = (struct zx_wst_RequestedSecurityToken_s*)en;
@@ -3537,7 +3787,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AppliesTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AppliesTo->gg;
+       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_AppliesTo(c,(struct zx_wsp_AppliesTo_s*)e,dup_strs);
   	  if (!enn)
   	      x->AppliesTo = (struct zx_wsp_AppliesTo_s*)en;
@@ -3545,7 +3797,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RequestedAttachedReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestedAttachedReference->gg;
+       e && e->g.tok == zx_wst_RequestedAttachedReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_RequestedAttachedReference(c,(struct zx_wst_RequestedAttachedReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestedAttachedReference = (struct zx_wst_RequestedAttachedReference_s*)en;
@@ -3553,7 +3807,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RequestedUnattachedReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestedUnattachedReference->gg;
+       e && e->g.tok == zx_wst_RequestedUnattachedReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_RequestedUnattachedReference(c,(struct zx_wst_RequestedUnattachedReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestedUnattachedReference = (struct zx_wst_RequestedUnattachedReference_s*)en;
@@ -3561,7 +3817,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->RequestedProofToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestedProofToken->gg;
+       e && e->g.tok == zx_wst_RequestedProofToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_RequestedProofToken(c,(struct zx_wst_RequestedProofToken_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestedProofToken = (struct zx_wst_RequestedProofToken_s*)en;
@@ -3569,7 +3827,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Entropy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Entropy->gg;
+       e && e->g.tok == zx_wst_Entropy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Entropy(c,(struct zx_wst_Entropy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Entropy = (struct zx_wst_Entropy_s*)en;
@@ -3577,7 +3837,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Lifetime->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Lifetime->gg;
+       e && e->g.tok == zx_wst_Lifetime_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Lifetime(c,(struct zx_wst_Lifetime_s*)e,dup_strs);
   	  if (!enn)
   	      x->Lifetime = (struct zx_wst_Lifetime_s*)en;
@@ -3585,7 +3847,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_wst_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Status(c,(struct zx_wst_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_wst_Status_s*)en;
@@ -3594,7 +3858,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	  enn = en;
   }
   x->AllowPostdating = zx_deep_clone_simple_elems(c,x->AllowPostdating, dup_strs);
-  for (enn = 0, e = &x->Renewing->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Renewing->gg;
+       e && e->g.tok == zx_wst_Renewing_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Renewing(c,(struct zx_wst_Renewing_s*)e,dup_strs);
   	  if (!enn)
   	      x->Renewing = (struct zx_wst_Renewing_s*)en;
@@ -3602,7 +3868,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OnBehalfOf->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OnBehalfOf->gg;
+       e && e->g.tok == zx_wst_OnBehalfOf_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_OnBehalfOf(c,(struct zx_wst_OnBehalfOf_s*)e,dup_strs);
   	  if (!enn)
   	      x->OnBehalfOf = (struct zx_wst_OnBehalfOf_s*)en;
@@ -3610,7 +3878,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Issuer->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Issuer->gg;
+       e && e->g.tok == zx_wst_Issuer_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Issuer(c,(struct zx_wst_Issuer_s*)e,dup_strs);
   	  if (!enn)
   	      x->Issuer = (struct zx_wst_Issuer_s*)en;
@@ -3619,7 +3889,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	  enn = en;
   }
   x->AuthenticationType = zx_deep_clone_simple_elems(c,x->AuthenticationType, dup_strs);
-  for (enn = 0, e = &x->Authenticator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Authenticator->gg;
+       e && e->g.tok == zx_wst_Authenticator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Authenticator(c,(struct zx_wst_Authenticator_s*)e,dup_strs);
   	  if (!enn)
   	      x->Authenticator = (struct zx_wst_Authenticator_s*)en;
@@ -3630,7 +3902,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   x->KeyType = zx_deep_clone_simple_elems(c,x->KeyType, dup_strs);
   x->KeySize = zx_deep_clone_simple_elems(c,x->KeySize, dup_strs);
   x->SignatureAlgorithm = zx_deep_clone_simple_elems(c,x->SignatureAlgorithm, dup_strs);
-  for (enn = 0, e = &x->Encryption->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Encryption->gg;
+       e && e->g.tok == zx_wst_Encryption_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_Encryption(c,(struct zx_wst_Encryption_s*)e,dup_strs);
   	  if (!enn)
   	      x->Encryption = (struct zx_wst_Encryption_s*)en;
@@ -3640,7 +3914,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   }
   x->EncryptionAlgorithm = zx_deep_clone_simple_elems(c,x->EncryptionAlgorithm, dup_strs);
   x->CanonicalizationAlgorithm = zx_deep_clone_simple_elems(c,x->CanonicalizationAlgorithm, dup_strs);
-  for (enn = 0, e = &x->ProofEncryption->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ProofEncryption->gg;
+       e && e->g.tok == zx_wst_ProofEncryption_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_ProofEncryption(c,(struct zx_wst_ProofEncryption_s*)e,dup_strs);
   	  if (!enn)
   	      x->ProofEncryption = (struct zx_wst_ProofEncryption_s*)en;
@@ -3648,7 +3924,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->UseKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->UseKey->gg;
+       e && e->g.tok == zx_wst_UseKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_UseKey(c,(struct zx_wst_UseKey_s*)e,dup_strs);
   	  if (!enn)
   	      x->UseKey = (struct zx_wst_UseKey_s*)en;
@@ -3658,7 +3936,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   }
   x->SignWith = zx_deep_clone_simple_elems(c,x->SignWith, dup_strs);
   x->EncryptWith = zx_deep_clone_simple_elems(c,x->EncryptWith, dup_strs);
-  for (enn = 0, e = &x->DelegateTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->DelegateTo->gg;
+       e && e->g.tok == zx_wst_DelegateTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_DelegateTo(c,(struct zx_wst_DelegateTo_s*)e,dup_strs);
   	  if (!enn)
   	      x->DelegateTo = (struct zx_wst_DelegateTo_s*)en;
@@ -3668,7 +3948,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   }
   x->Forwardable = zx_deep_clone_simple_elems(c,x->Forwardable, dup_strs);
   x->Delegatable = zx_deep_clone_simple_elems(c,x->Delegatable, dup_strs);
-  for (enn = 0, e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_Policy(c,(struct zx_wsp_Policy_s*)e,dup_strs);
   	  if (!enn)
   	      x->Policy = (struct zx_wsp_Policy_s*)en;
@@ -3676,7 +3958,9 @@ struct zx_wst_RequestSecurityTokenResponse_s* zx_DEEP_CLONE_wst_RequestSecurityT
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsp_PolicyReference(c,(struct zx_wsp_PolicyReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->PolicyReference = (struct zx_wsp_PolicyReference_s*)en;
@@ -3713,42 +3997,58 @@ int zx_WALK_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_
   ret = zx_walk_so_simple_elems(c, x->RequestType, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->RequestedSecurityToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestedSecurityToken->gg;
+       e && e->g.tok == zx_wst_RequestedSecurityToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_RequestedSecurityToken(c, (struct zx_wst_RequestedSecurityToken_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AppliesTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AppliesTo->gg;
+       e && e->g.tok == zx_wsp_AppliesTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RequestedAttachedReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestedAttachedReference->gg;
+       e && e->g.tok == zx_wst_RequestedAttachedReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_RequestedAttachedReference(c, (struct zx_wst_RequestedAttachedReference_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RequestedUnattachedReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestedUnattachedReference->gg;
+       e && e->g.tok == zx_wst_RequestedUnattachedReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_RequestedUnattachedReference(c, (struct zx_wst_RequestedUnattachedReference_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->RequestedProofToken->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestedProofToken->gg;
+       e && e->g.tok == zx_wst_RequestedProofToken_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_RequestedProofToken(c, (struct zx_wst_RequestedProofToken_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Entropy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Entropy->gg;
+       e && e->g.tok == zx_wst_Entropy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Entropy(c, (struct zx_wst_Entropy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Lifetime->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Lifetime->gg;
+       e && e->g.tok == zx_wst_Lifetime_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Lifetime(c, (struct zx_wst_Lifetime_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_wst_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Status(c, (struct zx_wst_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3756,17 +4056,23 @@ int zx_WALK_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_
   ret = zx_walk_so_simple_elems(c, x->AllowPostdating, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Renewing->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Renewing->gg;
+       e && e->g.tok == zx_wst_Renewing_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Renewing(c, (struct zx_wst_Renewing_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OnBehalfOf->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OnBehalfOf->gg;
+       e && e->g.tok == zx_wst_OnBehalfOf_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_OnBehalfOf(c, (struct zx_wst_OnBehalfOf_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Issuer->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Issuer->gg;
+       e && e->g.tok == zx_wst_Issuer_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Issuer(c, (struct zx_wst_Issuer_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3774,7 +4080,9 @@ int zx_WALK_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_
   ret = zx_walk_so_simple_elems(c, x->AuthenticationType, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Authenticator->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Authenticator->gg;
+       e && e->g.tok == zx_wst_Authenticator_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Authenticator(c, (struct zx_wst_Authenticator_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3788,7 +4096,9 @@ int zx_WALK_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_
   ret = zx_walk_so_simple_elems(c, x->SignatureAlgorithm, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Encryption->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Encryption->gg;
+       e && e->g.tok == zx_wst_Encryption_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_Encryption(c, (struct zx_wst_Encryption_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3799,12 +4109,16 @@ int zx_WALK_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_
   ret = zx_walk_so_simple_elems(c, x->CanonicalizationAlgorithm, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->ProofEncryption->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ProofEncryption->gg;
+       e && e->g.tok == zx_wst_ProofEncryption_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_ProofEncryption(c, (struct zx_wst_ProofEncryption_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->UseKey->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->UseKey->gg;
+       e && e->g.tok == zx_wst_UseKey_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_UseKey(c, (struct zx_wst_UseKey_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3815,7 +4129,9 @@ int zx_WALK_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_
   ret = zx_walk_so_simple_elems(c, x->EncryptWith, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->DelegateTo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->DelegateTo->gg;
+       e && e->g.tok == zx_wst_DelegateTo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_DelegateTo(c, (struct zx_wst_DelegateTo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3826,12 +4142,16 @@ int zx_WALK_SO_wst_RequestSecurityTokenResponse(struct zx_ctx* c, struct zx_wst_
   ret = zx_walk_so_simple_elems(c, x->Delegatable, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Policy->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Policy->gg;
+       e && e->g.tok == zx_wsp_Policy_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->PolicyReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->PolicyReference->gg;
+       e && e->g.tok == zx_wsp_PolicyReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -3888,7 +4208,9 @@ void zx_FREE_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, struct
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->RequestSecurityTokenResponse->gg; e; e = en) {
+  for (e = &x->RequestSecurityTokenResponse->gg;
+       e && e->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)e, free_strs);
   }
@@ -3928,7 +4250,9 @@ void zx_DUP_STRS_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, st
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->RequestSecurityTokenResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestSecurityTokenResponse->gg;
+       se && se->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)se);
 
 }
@@ -3949,7 +4273,9 @@ struct zx_wst_RequestSecurityTokenResponseCollection_s* zx_DEEP_CLONE_wst_Reques
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->RequestSecurityTokenResponse->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->RequestSecurityTokenResponse->gg;
+       e && e->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wst_RequestSecurityTokenResponse(c,(struct zx_wst_RequestSecurityTokenResponse_s*)e,dup_strs);
   	  if (!enn)
   	      x->RequestSecurityTokenResponse = (struct zx_wst_RequestSecurityTokenResponse_s*)en;
@@ -3980,7 +4306,9 @@ int zx_WALK_SO_wst_RequestSecurityTokenResponseCollection(struct zx_ctx* c, stru
   if (ret)
     return ret;
 
-  for (e = &x->RequestSecurityTokenResponse->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->RequestSecurityTokenResponse->gg;
+       e && e->g.tok == zx_wst_RequestSecurityTokenResponse_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wst_RequestSecurityTokenResponse(c, (struct zx_wst_RequestSecurityTokenResponse_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4037,7 +4365,9 @@ void zx_FREE_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_Requ
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SecurityTokenReference->gg; e; e = en) {
+  for (e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)e, free_strs);
   }
@@ -4077,7 +4407,9 @@ void zx_DUP_STRS_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se);
 
 }
@@ -4098,7 +4430,9 @@ struct zx_wst_RequestedAttachedReference_s* zx_DEEP_CLONE_wst_RequestedAttachedR
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SecurityTokenReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsse_SecurityTokenReference(c,(struct zx_wsse_SecurityTokenReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->SecurityTokenReference = (struct zx_wsse_SecurityTokenReference_s*)en;
@@ -4129,7 +4463,9 @@ int zx_WALK_SO_wst_RequestedAttachedReference(struct zx_ctx* c, struct zx_wst_Re
   if (ret)
     return ret;
 
-  for (e = &x->SecurityTokenReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -4446,7 +4782,9 @@ void zx_FREE_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_Re
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->SecurityTokenReference->gg; e; e = en) {
+  for (e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)e, free_strs);
   }
@@ -4486,7 +4824,9 @@ void zx_DUP_STRS_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_ws
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se);
 
 }
@@ -4507,7 +4847,9 @@ struct zx_wst_RequestedUnattachedReference_s* zx_DEEP_CLONE_wst_RequestedUnattac
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->SecurityTokenReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_wsse_SecurityTokenReference(c,(struct zx_wsse_SecurityTokenReference_s*)e,dup_strs);
   	  if (!enn)
   	      x->SecurityTokenReference = (struct zx_wsse_SecurityTokenReference_s*)en;
@@ -4538,7 +4880,9 @@ int zx_WALK_SO_wst_RequestedUnattachedReference(struct zx_ctx* c, struct zx_wst_
   if (ret)
     return ret;
 
-  for (e = &x->SecurityTokenReference->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SecurityTokenReference->gg;
+       e && e->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)e, ctx, callback);
     if (ret)
       return ret;

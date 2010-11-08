@@ -86,10 +86,10 @@ int zx_LEN_SO_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* x
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -103,11 +103,17 @@ int zx_LEN_SO_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 
@@ -136,10 +142,10 @@ char* zx_ENC_SO_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s*
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -157,11 +163,17 @@ char* zx_ENC_SO_prov_CallbackEPR(struct zx_ctx* c, struct zx_prov_CallbackEPR_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Address(c, (struct zx_a_Address_s*)se, p);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se, p);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Metadata(c, (struct zx_a_Metadata_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -242,7 +254,7 @@ int zx_LEN_SO_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x )
   int len = sizeof("<prov:PMActivate")-1 + 1 + sizeof("</prov:PMActivate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -250,10 +262,14 @@ int zx_LEN_SO_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->PMActivateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMActivateItem->gg;
+       se && se->g.tok == zx_prov_PMActivateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMActivateItem(c, (struct zx_prov_PMActivateItem_s*)se);
-  for (se = x->NotifyTo; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("dp:NotifyTo")-1, zx_ns_tab+zx_dp_NS);
+  for (se = x->NotifyTo;
+    se && se->g.tok == zx_dp_NotifyTo_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("dp:NotifyTo")-1, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -280,7 +296,7 @@ char* zx_ENC_SO_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x
   ZX_OUT_TAG(p, "<prov:PMActivate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -292,10 +308,14 @@ char* zx_ENC_SO_prov_PMActivate(struct zx_ctx* c, struct zx_prov_PMActivate_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMActivateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMActivateItem->gg;
+       se && se->g.tok == zx_prov_PMActivateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMActivateItem(c, (struct zx_prov_PMActivateItem_s*)se, p);
-  for (se = x->NotifyTo; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "dp:NotifyTo", sizeof("dp:NotifyTo")-1, zx_ns_tab+zx_dp_NS);
+  for (se = x->NotifyTo;
+       se && se->g.tok == zx_dp_NotifyTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "dp:NotifyTo", sizeof("dp:NotifyTo")-1, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -375,7 +395,7 @@ int zx_LEN_SO_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateIte
   int len = sizeof("<prov:PMActivateItem")-1 + 1 + sizeof("</prov:PMActivateItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->at, sizeof("at")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
@@ -385,7 +405,9 @@ int zx_LEN_SO_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateIte
   int len = 0;
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se);
 
 
@@ -413,7 +435,7 @@ char* zx_ENC_SO_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateI
   ZX_OUT_TAG(p, "<prov:PMActivateItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -427,7 +449,9 @@ char* zx_ENC_SO_prov_PMActivateItem(struct zx_ctx* c, struct zx_prov_PMActivateI
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -508,7 +532,7 @@ int zx_LEN_SO_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActivat
   int len = sizeof("<prov:PMActivateResponse")-1 + 1 + sizeof("</prov:PMActivateResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -516,7 +540,9 @@ int zx_LEN_SO_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActivat
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -544,7 +570,7 @@ char* zx_ENC_SO_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActiv
   ZX_OUT_TAG(p, "<prov:PMActivateResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -556,7 +582,9 @@ char* zx_ENC_SO_prov_PMActivateResponse(struct zx_ctx* c, struct zx_prov_PMActiv
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -637,7 +665,7 @@ int zx_LEN_SO_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s*
   int len = sizeof("<prov:PMDeactivate")-1 + 1 + sizeof("</prov:PMDeactivate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -645,10 +673,14 @@ int zx_LEN_SO_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_s*
   int len = 0;
 #endif
   
-  for (se = &x->PMDeactivateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeactivateItem->gg;
+       se && se->g.tok == zx_prov_PMDeactivateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMDeactivateItem(c, (struct zx_prov_PMDeactivateItem_s*)se);
-  for (se = x->NotifyTo; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("dp:NotifyTo")-1, zx_ns_tab+zx_dp_NS);
+  for (se = x->NotifyTo;
+    se && se->g.tok == zx_dp_NotifyTo_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("dp:NotifyTo")-1, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -675,7 +707,7 @@ char* zx_ENC_SO_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_
   ZX_OUT_TAG(p, "<prov:PMDeactivate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -687,10 +719,14 @@ char* zx_ENC_SO_prov_PMDeactivate(struct zx_ctx* c, struct zx_prov_PMDeactivate_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMDeactivateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeactivateItem->gg;
+       se && se->g.tok == zx_prov_PMDeactivateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMDeactivateItem(c, (struct zx_prov_PMDeactivateItem_s*)se, p);
-  for (se = x->NotifyTo; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "dp:NotifyTo", sizeof("dp:NotifyTo")-1, zx_ns_tab+zx_dp_NS);
+  for (se = x->NotifyTo;
+       se && se->g.tok == zx_dp_NotifyTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "dp:NotifyTo", sizeof("dp:NotifyTo")-1, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -770,7 +806,7 @@ int zx_LEN_SO_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactivat
   int len = sizeof("<prov:PMDeactivateItem")-1 + 1 + sizeof("</prov:PMDeactivateItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->at, sizeof("at")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
@@ -780,7 +816,9 @@ int zx_LEN_SO_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactivat
   int len = 0;
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se);
 
 
@@ -808,7 +846,7 @@ char* zx_ENC_SO_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactiv
   ZX_OUT_TAG(p, "<prov:PMDeactivateItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -822,7 +860,9 @@ char* zx_ENC_SO_prov_PMDeactivateItem(struct zx_ctx* c, struct zx_prov_PMDeactiv
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -903,7 +943,7 @@ int zx_LEN_SO_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeact
   int len = sizeof("<prov:PMDeactivateResponse")-1 + 1 + sizeof("</prov:PMDeactivateResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -911,7 +951,9 @@ int zx_LEN_SO_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDeact
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -939,7 +981,7 @@ char* zx_ENC_SO_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDea
   ZX_OUT_TAG(p, "<prov:PMDeactivateResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -951,7 +993,9 @@ char* zx_ENC_SO_prov_PMDeactivateResponse(struct zx_ctx* c, struct zx_prov_PMDea
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1032,7 +1076,7 @@ int zx_LEN_SO_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x )
   int len = sizeof("<prov:PMDelete")-1 + 1 + sizeof("</prov:PMDelete>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1040,10 +1084,14 @@ int zx_LEN_SO_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->PMDeleteItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeleteItem->gg;
+       se && se->g.tok == zx_prov_PMDeleteItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMDeleteItem(c, (struct zx_prov_PMDeleteItem_s*)se);
-  for (se = x->NotifyTo; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("dp:NotifyTo")-1, zx_ns_tab+zx_dp_NS);
+  for (se = x->NotifyTo;
+    se && se->g.tok == zx_dp_NotifyTo_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("dp:NotifyTo")-1, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1070,7 +1118,7 @@ char* zx_ENC_SO_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x, ch
   ZX_OUT_TAG(p, "<prov:PMDelete");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1082,10 +1130,14 @@ char* zx_ENC_SO_prov_PMDelete(struct zx_ctx* c, struct zx_prov_PMDelete_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMDeleteItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeleteItem->gg;
+       se && se->g.tok == zx_prov_PMDeleteItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMDeleteItem(c, (struct zx_prov_PMDeleteItem_s*)se, p);
-  for (se = x->NotifyTo; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "dp:NotifyTo", sizeof("dp:NotifyTo")-1, zx_ns_tab+zx_dp_NS);
+  for (se = x->NotifyTo;
+       se && se->g.tok == zx_dp_NotifyTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "dp:NotifyTo", sizeof("dp:NotifyTo")-1, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1165,7 +1217,7 @@ int zx_LEN_SO_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s*
   int len = sizeof("<prov:PMDeleteItem")-1 + 1 + sizeof("</prov:PMDeleteItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
@@ -1174,7 +1226,9 @@ int zx_LEN_SO_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_s*
   int len = 0;
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se);
 
 
@@ -1202,7 +1256,7 @@ char* zx_ENC_SO_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_
   ZX_OUT_TAG(p, "<prov:PMDeleteItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1215,7 +1269,9 @@ char* zx_ENC_SO_prov_PMDeleteItem(struct zx_ctx* c, struct zx_prov_PMDeleteItem_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1296,7 +1352,7 @@ int zx_LEN_SO_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteRes
   int len = sizeof("<prov:PMDeleteResponse")-1 + 1 + sizeof("</prov:PMDeleteResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1304,7 +1360,9 @@ int zx_LEN_SO_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteRes
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -1332,7 +1390,7 @@ char* zx_ENC_SO_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteR
   ZX_OUT_TAG(p, "<prov:PMDeleteResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1344,7 +1402,9 @@ char* zx_ENC_SO_prov_PMDeleteResponse(struct zx_ctx* c, struct zx_prov_PMDeleteR
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1425,7 +1485,7 @@ int zx_LEN_SO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s*
   int len = sizeof("<prov:PMDescriptor")-1 + 1 + sizeof("</prov:PMDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->activate, sizeof("activate")-1, &pop_seen);
   len += zx_attr_so_len(c, x->activateAt, sizeof("activateAt")-1, &pop_seen);
@@ -1436,15 +1496,25 @@ int zx_LEN_SO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_s*
   int len = 0;
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se);
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMInitData; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMInitData")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMRTData; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMRTData")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMEngineRef;
+    se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMInitData;
+    se && se->g.tok == zx_prov_PMInitData_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMInitData")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMRTData;
+    se && se->g.tok == zx_prov_PMRTData_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMRTData")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
@@ -1473,7 +1543,7 @@ char* zx_ENC_SO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_
   ZX_OUT_TAG(p, "<prov:PMDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1488,15 +1558,25 @@ char* zx_ENC_SO_prov_PMDescriptor(struct zx_ctx* c, struct zx_prov_PMDescriptor_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se, p);
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMInitData; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMInitData", sizeof("prov:PMInitData")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMRTData; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMRTData", sizeof("prov:PMRTData")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMEngineRef;
+       se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMInitData;
+       se && se->g.tok == zx_prov_PMInitData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMInitData", sizeof("prov:PMInitData")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMRTData;
+       se && se->g.tok == zx_prov_PMRTData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMRTData", sizeof("prov:PMRTData")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
 
@@ -1578,7 +1658,7 @@ int zx_LEN_SO_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x )
   int len = sizeof("<prov:PMEDelete")-1 + 1 + sizeof("</prov:PMEDelete>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1586,8 +1666,10 @@ int zx_LEN_SO_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x )
   int len = 0;
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+    se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1614,7 +1696,7 @@ char* zx_ENC_SO_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x, 
   ZX_OUT_TAG(p, "<prov:PMEDelete");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1626,8 +1708,10 @@ char* zx_ENC_SO_prov_PMEDelete(struct zx_ctx* c, struct zx_prov_PMEDelete_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+       se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1707,7 +1791,7 @@ int zx_LEN_SO_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDeleteR
   int len = sizeof("<prov:PMEDeleteResponse")-1 + 1 + sizeof("</prov:PMEDeleteResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1715,7 +1799,9 @@ int zx_LEN_SO_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDeleteR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -1743,7 +1829,7 @@ char* zx_ENC_SO_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDelet
   ZX_OUT_TAG(p, "<prov:PMEDeleteResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1755,7 +1841,9 @@ char* zx_ENC_SO_prov_PMEDeleteResponse(struct zx_ctx* c, struct zx_prov_PMEDelet
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1836,7 +1924,7 @@ int zx_LEN_SO_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x )
   int len = sizeof("<prov:PMEDisable")-1 + 1 + sizeof("</prov:PMEDisable>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1844,8 +1932,10 @@ int zx_LEN_SO_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x )
   int len = 0;
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+    se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1872,7 +1962,7 @@ char* zx_ENC_SO_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x
   ZX_OUT_TAG(p, "<prov:PMEDisable");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1884,8 +1974,10 @@ char* zx_ENC_SO_prov_PMEDisable(struct zx_ctx* c, struct zx_prov_PMEDisable_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+       se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1965,7 +2057,7 @@ int zx_LEN_SO_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisabl
   int len = sizeof("<prov:PMEDisableResponse")-1 + 1 + sizeof("</prov:PMEDisableResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1973,7 +2065,9 @@ int zx_LEN_SO_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisabl
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -2001,7 +2095,7 @@ char* zx_ENC_SO_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisa
   ZX_OUT_TAG(p, "<prov:PMEDisableResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2013,7 +2107,9 @@ char* zx_ENC_SO_prov_PMEDisableResponse(struct zx_ctx* c, struct zx_prov_PMEDisa
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2094,7 +2190,7 @@ int zx_LEN_SO_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s* x
   int len = sizeof("<prov:PMEDownload")-1 + 1 + sizeof("</prov:PMEDownload>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2102,8 +2198,10 @@ int zx_LEN_SO_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s* x
   int len = 0;
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+    se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2130,7 +2228,7 @@ char* zx_ENC_SO_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s*
   ZX_OUT_TAG(p, "<prov:PMEDownload");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2142,8 +2240,10 @@ char* zx_ENC_SO_prov_PMEDownload(struct zx_ctx* c, struct zx_prov_PMEDownload_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+       se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2223,7 +2323,7 @@ int zx_LEN_SO_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDownl
   int len = sizeof("<prov:PMEDownloadResponse")-1 + 1 + sizeof("</prov:PMEDownloadResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2231,10 +2331,14 @@ int zx_LEN_SO_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDownl
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = x->EngineData; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:EngineData")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->EngineData;
+    se && se->g.tok == zx_prov_EngineData_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:EngineData")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2261,7 +2365,7 @@ char* zx_ENC_SO_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDow
   ZX_OUT_TAG(p, "<prov:PMEDownloadResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2273,10 +2377,14 @@ char* zx_ENC_SO_prov_PMEDownloadResponse(struct zx_ctx* c, struct zx_prov_PMEDow
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = x->EngineData; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:EngineData", sizeof("prov:EngineData")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->EngineData;
+       se && se->g.tok == zx_prov_EngineData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:EngineData", sizeof("prov:EngineData")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2356,7 +2464,7 @@ int zx_LEN_SO_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x )
   int len = sizeof("<prov:PMEEnable")-1 + 1 + sizeof("</prov:PMEEnable>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2364,8 +2472,10 @@ int zx_LEN_SO_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x )
   int len = 0;
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+    se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2392,7 +2502,7 @@ char* zx_ENC_SO_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x, 
   ZX_OUT_TAG(p, "<prov:PMEEnable");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2404,8 +2514,10 @@ char* zx_ENC_SO_prov_PMEEnable(struct zx_ctx* c, struct zx_prov_PMEEnable_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+       se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2485,7 +2597,7 @@ int zx_LEN_SO_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnableR
   int len = sizeof("<prov:PMEEnableResponse")-1 + 1 + sizeof("</prov:PMEEnableResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2493,7 +2605,9 @@ int zx_LEN_SO_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnableR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -2521,7 +2635,7 @@ char* zx_ENC_SO_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnabl
   ZX_OUT_TAG(p, "<prov:PMEEnableResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2533,7 +2647,9 @@ char* zx_ENC_SO_prov_PMEEnableResponse(struct zx_ctx* c, struct zx_prov_PMEEnabl
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2614,7 +2730,7 @@ int zx_LEN_SO_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x )
   int len = sizeof("<prov:PMEGetInfo")-1 + 1 + sizeof("</prov:PMEGetInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2622,8 +2738,10 @@ int zx_LEN_SO_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x )
   int len = 0;
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+    se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2650,7 +2768,7 @@ char* zx_ENC_SO_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x
   ZX_OUT_TAG(p, "<prov:PMEGetInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2662,8 +2780,10 @@ char* zx_ENC_SO_prov_PMEGetInfo(struct zx_ctx* c, struct zx_prov_PMEGetInfo_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+       se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2743,7 +2863,7 @@ int zx_LEN_SO_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetInf
   int len = sizeof("<prov:PMEGetInfoResponse")-1 + 1 + sizeof("</prov:PMEGetInfoResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2751,9 +2871,13 @@ int zx_LEN_SO_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetInf
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PMEInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEInfo->gg;
+       se && se->g.tok == zx_prov_PMEInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEInfo(c, (struct zx_prov_PMEInfo_s*)se);
 
 
@@ -2781,7 +2905,7 @@ char* zx_ENC_SO_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetI
   ZX_OUT_TAG(p, "<prov:PMEGetInfoResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2793,9 +2917,13 @@ char* zx_ENC_SO_prov_PMEGetInfoResponse(struct zx_ctx* c, struct zx_prov_PMEGetI
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->PMEInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEInfo->gg;
+       se && se->g.tok == zx_prov_PMEInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEInfo(c, (struct zx_prov_PMEInfo_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2876,7 +3004,7 @@ int zx_LEN_SO_prov_PMEHash(struct zx_ctx* c, struct zx_prov_PMEHash_s* x )
   int len = sizeof("<prov:PMEHash")-1 + 1 + sizeof("</prov:PMEHash>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->method, sizeof("method")-1, &pop_seen);
 
@@ -2911,7 +3039,7 @@ char* zx_ENC_SO_prov_PMEHash(struct zx_ctx* c, struct zx_prov_PMEHash_s* x, char
   ZX_OUT_TAG(p, "<prov:PMEHash");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3003,7 +3131,7 @@ int zx_LEN_SO_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x )
   int len = sizeof("<prov:PMEInfo")-1 + 1 + sizeof("</prov:PMEInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3011,19 +3139,33 @@ int zx_LEN_SO_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x )
   int len = 0;
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMECreatorID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMECreatorID")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMEWhenCreated; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEWhenCreated")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMEEnabled; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEEnabled")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMEWhenEnabled; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEWhenEnabled")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMESize; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMESize")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->PMEHash->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMEngineRef;
+    se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMECreatorID;
+    se && se->g.tok == zx_prov_PMECreatorID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMECreatorID")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMEWhenCreated;
+    se && se->g.tok == zx_prov_PMEWhenCreated_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEWhenCreated")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMEEnabled;
+    se && se->g.tok == zx_prov_PMEEnabled_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEEnabled")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMEWhenEnabled;
+    se && se->g.tok == zx_prov_PMEWhenEnabled_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEWhenEnabled")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMESize;
+    se && se->g.tok == zx_prov_PMESize_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMESize")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PMEHash->gg;
+       se && se->g.tok == zx_prov_PMEHash_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)se);
 
 
@@ -3051,7 +3193,7 @@ char* zx_ENC_SO_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x, char
   ZX_OUT_TAG(p, "<prov:PMEInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3063,19 +3205,33 @@ char* zx_ENC_SO_prov_PMEInfo(struct zx_ctx* c, struct zx_prov_PMEInfo_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMECreatorID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMECreatorID", sizeof("prov:PMECreatorID")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMEWhenCreated; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEWhenCreated", sizeof("prov:PMEWhenCreated")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMEEnabled; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEEnabled", sizeof("prov:PMEEnabled")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMEWhenEnabled; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEWhenEnabled", sizeof("prov:PMEWhenEnabled")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMESize; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMESize", sizeof("prov:PMESize")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->PMEHash->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMEngineRef;
+       se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMECreatorID;
+       se && se->g.tok == zx_prov_PMECreatorID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMECreatorID", sizeof("prov:PMECreatorID")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMEWhenCreated;
+       se && se->g.tok == zx_prov_PMEWhenCreated_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEWhenCreated", sizeof("prov:PMEWhenCreated")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMEEnabled;
+       se && se->g.tok == zx_prov_PMEEnabled_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEEnabled", sizeof("prov:PMEEnabled")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMEWhenEnabled;
+       se && se->g.tok == zx_prov_PMEWhenEnabled_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEWhenEnabled", sizeof("prov:PMEWhenEnabled")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMESize;
+       se && se->g.tok == zx_prov_PMESize_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMESize", sizeof("prov:PMESize")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PMEHash->gg;
+       se && se->g.tok == zx_prov_PMEHash_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3156,7 +3312,7 @@ int zx_LEN_SO_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* x
   int len = sizeof("<prov:PMERegister")-1 + 1 + sizeof("</prov:PMERegister>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3164,11 +3320,17 @@ int zx_LEN_SO_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s* x
   int len = 0;
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMESize; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMESize")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->PMEHash->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMEngineRef;
+    se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMESize;
+    se && se->g.tok == zx_prov_PMESize_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMESize")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PMEHash->gg;
+       se && se->g.tok == zx_prov_PMEHash_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)se);
 
 
@@ -3196,7 +3358,7 @@ char* zx_ENC_SO_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s*
   ZX_OUT_TAG(p, "<prov:PMERegister");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3208,11 +3370,17 @@ char* zx_ENC_SO_prov_PMERegister(struct zx_ctx* c, struct zx_prov_PMERegister_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->PMESize; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMESize", sizeof("prov:PMESize")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->PMEHash->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMEngineRef;
+       se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PMESize;
+       se && se->g.tok == zx_prov_PMESize_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMESize", sizeof("prov:PMESize")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PMEHash->gg;
+       se && se->g.tok == zx_prov_PMEHash_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEHash(c, (struct zx_prov_PMEHash_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3293,7 +3461,7 @@ int zx_LEN_SO_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegis
   int len = sizeof("<prov:PMERegisterResponse")-1 + 1 + sizeof("</prov:PMERegisterResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3301,10 +3469,14 @@ int zx_LEN_SO_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMERegis
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = x->PMEUploadMax; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEUploadMax")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEUploadMax;
+    se && se->g.tok == zx_prov_PMEUploadMax_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEUploadMax")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3331,7 +3503,7 @@ char* zx_ENC_SO_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMEReg
   ZX_OUT_TAG(p, "<prov:PMERegisterResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3343,10 +3515,14 @@ char* zx_ENC_SO_prov_PMERegisterResponse(struct zx_ctx* c, struct zx_prov_PMEReg
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = x->PMEUploadMax; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEUploadMax", sizeof("prov:PMEUploadMax")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEUploadMax;
+       se && se->g.tok == zx_prov_PMEUploadMax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEUploadMax", sizeof("prov:PMEUploadMax")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3426,7 +3602,7 @@ int zx_LEN_SO_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x )
   int len = sizeof("<prov:PMEUpload")-1 + 1 + sizeof("</prov:PMEUpload>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->offset, sizeof("offset")-1, &pop_seen);
   len += zx_attr_so_len(c, x->remaining, sizeof("remaining")-1, &pop_seen);
@@ -3436,10 +3612,14 @@ int zx_LEN_SO_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x )
   int len = 0;
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->EngineData; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:EngineData")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+    se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EngineData;
+    se && se->g.tok == zx_prov_EngineData_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:EngineData")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3466,7 +3646,7 @@ char* zx_ENC_SO_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x, 
   ZX_OUT_TAG(p, "<prov:PMEUpload");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3480,10 +3660,14 @@ char* zx_ENC_SO_prov_PMEUpload(struct zx_ctx* c, struct zx_prov_PMEUpload_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMEngineRef; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+zx_prov_NS);
-  for (se = x->EngineData; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:EngineData", sizeof("prov:EngineData")-1, zx_ns_tab+zx_prov_NS);
+  for (se = x->PMEngineRef;
+       se && se->g.tok == zx_prov_PMEngineRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMEngineRef", sizeof("prov:PMEngineRef")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EngineData;
+       se && se->g.tok == zx_prov_EngineData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:EngineData", sizeof("prov:EngineData")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3563,7 +3747,7 @@ int zx_LEN_SO_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploadR
   int len = sizeof("<prov:PMEUploadResponse")-1 + 1 + sizeof("</prov:PMEUploadResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3571,7 +3755,9 @@ int zx_LEN_SO_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploadR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -3599,7 +3785,7 @@ char* zx_ENC_SO_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploa
   ZX_OUT_TAG(p, "<prov:PMEUploadResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3611,7 +3797,9 @@ char* zx_ENC_SO_prov_PMEUploadResponse(struct zx_ctx* c, struct zx_prov_PMEUploa
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3692,7 +3880,7 @@ int zx_LEN_SO_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescrip
   int len = sizeof("<prov:PMGetDescriptor")-1 + 1 + sizeof("</prov:PMGetDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3700,9 +3888,13 @@ int zx_LEN_SO_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescrip
   int len = 0;
 #endif
   
-  for (se = x->PMDArtifact; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMDArtifact")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->CallbackEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMDArtifact;
+    se && se->g.tok == zx_prov_PMDArtifact_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMDArtifact")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CallbackEPR->gg;
+       se && se->g.tok == zx_prov_CallbackEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)se);
 
 
@@ -3730,7 +3922,7 @@ char* zx_ENC_SO_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescr
   ZX_OUT_TAG(p, "<prov:PMGetDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3742,9 +3934,13 @@ char* zx_ENC_SO_prov_PMGetDescriptor(struct zx_ctx* c, struct zx_prov_PMGetDescr
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMDArtifact; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMDArtifact", sizeof("prov:PMDArtifact")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->CallbackEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMDArtifact;
+       se && se->g.tok == zx_prov_PMDArtifact_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMDArtifact", sizeof("prov:PMDArtifact")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CallbackEPR->gg;
+       se && se->g.tok == zx_prov_CallbackEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3825,7 +4021,7 @@ int zx_LEN_SO_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMGe
   int len = sizeof("<prov:PMGetDescriptorResponse")-1 + 1 + sizeof("</prov:PMGetDescriptorResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3833,9 +4029,13 @@ int zx_LEN_SO_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PMGe
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PMDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDescriptor->gg;
+       se && se->g.tok == zx_prov_PMDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)se);
 
 
@@ -3863,7 +4063,7 @@ char* zx_ENC_SO_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PM
   ZX_OUT_TAG(p, "<prov:PMGetDescriptorResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3875,9 +4075,13 @@ char* zx_ENC_SO_prov_PMGetDescriptorResponse(struct zx_ctx* c, struct zx_prov_PM
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->PMDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDescriptor->gg;
+       se && se->g.tok == zx_prov_PMDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3958,7 +4162,7 @@ int zx_LEN_SO_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* x
   int len = sizeof("<prov:PMGetStatus")-1 + 1 + sizeof("</prov:PMGetStatus>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3966,7 +4170,9 @@ int zx_LEN_SO_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s* x
   int len = 0;
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se);
 
 
@@ -3994,7 +4200,7 @@ char* zx_ENC_SO_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s*
   ZX_OUT_TAG(p, "<prov:PMGetStatus");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4006,7 +4212,9 @@ char* zx_ENC_SO_prov_PMGetStatus(struct zx_ctx* c, struct zx_prov_PMGetStatus_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4087,7 +4295,7 @@ int zx_LEN_SO_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetSta
   int len = sizeof("<prov:PMGetStatusResponse")-1 + 1 + sizeof("</prov:PMGetStatusResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -4095,9 +4303,13 @@ int zx_LEN_SO_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetSta
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PMStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMStatus->gg;
+       se && se->g.tok == zx_prov_PMStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)se);
 
 
@@ -4125,7 +4337,7 @@ char* zx_ENC_SO_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetS
   ZX_OUT_TAG(p, "<prov:PMGetStatusResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4137,9 +4349,13 @@ char* zx_ENC_SO_prov_PMGetStatusResponse(struct zx_ctx* c, struct zx_prov_PMGetS
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->PMStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMStatus->gg;
+       se && se->g.tok == zx_prov_PMStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4220,7 +4436,7 @@ int zx_LEN_SO_prov_PMID(struct zx_ctx* c, struct zx_prov_PMID_s* x )
   int len = sizeof("<prov:PMID")-1 + 1 + sizeof("</prov:PMID>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->issuer, sizeof("issuer")-1, &pop_seen);
 
@@ -4255,7 +4471,7 @@ char* zx_ENC_SO_prov_PMID(struct zx_ctx* c, struct zx_prov_PMID_s* x, char* p )
   ZX_OUT_TAG(p, "<prov:PMID");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4347,7 +4563,7 @@ int zx_LEN_SO_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegis
   int len = sizeof("<prov:PMRegisterDescriptor")-1 + 1 + sizeof("</prov:PMRegisterDescriptor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -4355,7 +4571,9 @@ int zx_LEN_SO_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMRegis
   int len = 0;
 #endif
   
-  for (se = &x->PMRegisterDescriptorItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptorItem->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptorItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMRegisterDescriptorItem(c, (struct zx_prov_PMRegisterDescriptorItem_s*)se);
 
 
@@ -4383,7 +4601,7 @@ char* zx_ENC_SO_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMReg
   ZX_OUT_TAG(p, "<prov:PMRegisterDescriptor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4395,7 +4613,9 @@ char* zx_ENC_SO_prov_PMRegisterDescriptor(struct zx_ctx* c, struct zx_prov_PMReg
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMRegisterDescriptorItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptorItem->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptorItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMRegisterDescriptorItem(c, (struct zx_prov_PMRegisterDescriptorItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4476,7 +4696,7 @@ int zx_LEN_SO_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PMR
   int len = sizeof("<prov:PMRegisterDescriptorItem")-1 + 1 + sizeof("</prov:PMRegisterDescriptorItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
@@ -4485,7 +4705,9 @@ int zx_LEN_SO_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_PMR
   int len = 0;
 #endif
   
-  for (se = &x->PMDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDescriptor->gg;
+       se && se->g.tok == zx_prov_PMDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)se);
 
 
@@ -4513,7 +4735,7 @@ char* zx_ENC_SO_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_P
   ZX_OUT_TAG(p, "<prov:PMRegisterDescriptorItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4526,7 +4748,9 @@ char* zx_ENC_SO_prov_PMRegisterDescriptorItem(struct zx_ctx* c, struct zx_prov_P
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDescriptor->gg;
+       se && se->g.tok == zx_prov_PMDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4607,7 +4831,7 @@ int zx_LEN_SO_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_prov
   int len = sizeof("<prov:PMRegisterDescriptorResponse")-1 + 1 + sizeof("</prov:PMRegisterDescriptorResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -4615,9 +4839,13 @@ int zx_LEN_SO_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_prov
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->PMRegisterDescriptorResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptorResponseItem->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptorResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMRegisterDescriptorResponseItem(c, (struct zx_prov_PMRegisterDescriptorResponseItem_s*)se);
 
 
@@ -4645,7 +4873,7 @@ char* zx_ENC_SO_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_pr
   ZX_OUT_TAG(p, "<prov:PMRegisterDescriptorResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4657,9 +4885,13 @@ char* zx_ENC_SO_prov_PMRegisterDescriptorResponse(struct zx_ctx* c, struct zx_pr
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->PMRegisterDescriptorResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptorResponseItem->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptorResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMRegisterDescriptorResponseItem(c, (struct zx_prov_PMRegisterDescriptorResponseItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4740,7 +4972,7 @@ int zx_LEN_SO_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_
   int len = sizeof("<prov:PMRegisterDescriptorResponseItem")-1 + 1 + sizeof("</prov:PMRegisterDescriptorResponseItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
 
@@ -4749,7 +4981,9 @@ int zx_LEN_SO_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct zx_
   int len = 0;
 #endif
   
-  for (se = &x->ProvisioningHandle->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProvisioningHandle->gg;
+       se && se->g.tok == zx_prov_ProvisioningHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_ProvisioningHandle(c, (struct zx_prov_ProvisioningHandle_s*)se);
 
 
@@ -4777,7 +5011,7 @@ char* zx_ENC_SO_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct z
   ZX_OUT_TAG(p, "<prov:PMRegisterDescriptorResponseItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4790,7 +5024,9 @@ char* zx_ENC_SO_prov_PMRegisterDescriptorResponseItem(struct zx_ctx* c, struct z
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ProvisioningHandle->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProvisioningHandle->gg;
+       se && se->g.tok == zx_prov_ProvisioningHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_ProvisioningHandle(c, (struct zx_prov_ProvisioningHandle_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4871,7 +5107,7 @@ int zx_LEN_SO_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* x
   int len = sizeof("<prov:PMSetStatus")-1 + 1 + sizeof("</prov:PMSetStatus>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -4879,7 +5115,9 @@ int zx_LEN_SO_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s* x
   int len = 0;
 #endif
   
-  for (se = &x->PMStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMStatus->gg;
+       se && se->g.tok == zx_prov_PMStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)se);
 
 
@@ -4907,7 +5145,7 @@ char* zx_ENC_SO_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s*
   ZX_OUT_TAG(p, "<prov:PMSetStatus");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4919,7 +5157,9 @@ char* zx_ENC_SO_prov_PMSetStatus(struct zx_ctx* c, struct zx_prov_PMSetStatus_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMStatus->gg;
+       se && se->g.tok == zx_prov_PMStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMStatus(c, (struct zx_prov_PMStatus_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5000,7 +5240,7 @@ int zx_LEN_SO_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetSta
   int len = sizeof("<prov:PMSetStatusResponse")-1 + 1 + sizeof("</prov:PMSetStatusResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -5008,7 +5248,9 @@ int zx_LEN_SO_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetSta
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -5036,7 +5278,7 @@ char* zx_ENC_SO_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetS
   ZX_OUT_TAG(p, "<prov:PMSetStatusResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5048,7 +5290,9 @@ char* zx_ENC_SO_prov_PMSetStatusResponse(struct zx_ctx* c, struct zx_prov_PMSetS
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5129,7 +5373,7 @@ int zx_LEN_SO_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x )
   int len = sizeof("<prov:PMStatus")-1 + 1 + sizeof("</prov:PMStatus>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -5137,9 +5381,13 @@ int zx_LEN_SO_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se);
-  for (se = &x->State->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->State->gg;
+       se && se->g.tok == zx_prov_State_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_State(c, (struct zx_prov_State_s*)se);
 
 
@@ -5167,7 +5415,7 @@ char* zx_ENC_SO_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x, ch
   ZX_OUT_TAG(p, "<prov:PMStatus");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5179,9 +5427,13 @@ char* zx_ENC_SO_prov_PMStatus(struct zx_ctx* c, struct zx_prov_PMStatus_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se, p);
-  for (se = &x->State->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->State->gg;
+       se && se->g.tok == zx_prov_State_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_State(c, (struct zx_prov_State_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5262,7 +5514,7 @@ int zx_LEN_SO_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x )
   int len = sizeof("<prov:PMUpdate")-1 + 1 + sizeof("</prov:PMUpdate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -5270,10 +5522,14 @@ int zx_LEN_SO_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->PMUpdateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMUpdateItem->gg;
+       se && se->g.tok == zx_prov_PMUpdateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMUpdateItem(c, (struct zx_prov_PMUpdateItem_s*)se);
-  for (se = x->NotifyTo; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("dp:NotifyTo")-1, zx_ns_tab+zx_dp_NS);
+  for (se = x->NotifyTo;
+    se && se->g.tok == zx_dp_NotifyTo_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("dp:NotifyTo")-1, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -5300,7 +5556,7 @@ char* zx_ENC_SO_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x, ch
   ZX_OUT_TAG(p, "<prov:PMUpdate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5312,10 +5568,14 @@ char* zx_ENC_SO_prov_PMUpdate(struct zx_ctx* c, struct zx_prov_PMUpdate_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMUpdateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMUpdateItem->gg;
+       se && se->g.tok == zx_prov_PMUpdateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMUpdateItem(c, (struct zx_prov_PMUpdateItem_s*)se, p);
-  for (se = x->NotifyTo; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "dp:NotifyTo", sizeof("dp:NotifyTo")-1, zx_ns_tab+zx_dp_NS);
+  for (se = x->NotifyTo;
+       se && se->g.tok == zx_dp_NotifyTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "dp:NotifyTo", sizeof("dp:NotifyTo")-1, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -5395,7 +5655,7 @@ int zx_LEN_SO_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s*
   int len = sizeof("<prov:PMUpdateItem")-1 + 1 + sizeof("</prov:PMUpdateItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->at, sizeof("at")-1, &pop_seen);
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
@@ -5406,7 +5666,9 @@ int zx_LEN_SO_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_s*
   int len = 0;
 #endif
   
-  for (se = &x->PMDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDescriptor->gg;
+       se && se->g.tok == zx_prov_PMDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)se);
 
 
@@ -5434,7 +5696,7 @@ char* zx_ENC_SO_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_
   ZX_OUT_TAG(p, "<prov:PMUpdateItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5449,7 +5711,9 @@ char* zx_ENC_SO_prov_PMUpdateItem(struct zx_ctx* c, struct zx_prov_PMUpdateItem_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDescriptor->gg;
+       se && se->g.tok == zx_prov_PMDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMDescriptor(c, (struct zx_prov_PMDescriptor_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5530,7 +5794,7 @@ int zx_LEN_SO_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateRes
   int len = sizeof("<prov:PMUpdateResponse")-1 + 1 + sizeof("</prov:PMUpdateResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -5538,7 +5802,9 @@ int zx_LEN_SO_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateRes
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -5566,7 +5832,7 @@ char* zx_ENC_SO_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateR
   ZX_OUT_TAG(p, "<prov:PMUpdateResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5578,7 +5844,9 @@ char* zx_ENC_SO_prov_PMUpdateResponse(struct zx_ctx* c, struct zx_prov_PMUpdateR
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5659,7 +5927,7 @@ int zx_LEN_SO_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x )
   int len = sizeof("<prov:Poll")-1 + 1 + sizeof("</prov:Poll>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->wait, sizeof("wait")-1, &pop_seen);
 
@@ -5668,9 +5936,13 @@ int zx_LEN_SO_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_a_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Action(c, (struct zx_a_Action_s*)se);
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_dp_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dp_Response(c, (struct zx_dp_Response_s*)se);
 
 
@@ -5698,7 +5970,7 @@ char* zx_ENC_SO_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x, char* p )
   ZX_OUT_TAG(p, "<prov:Poll");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5711,9 +5983,13 @@ char* zx_ENC_SO_prov_Poll(struct zx_ctx* c, struct zx_prov_Poll_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_a_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Action(c, (struct zx_a_Action_s*)se, p);
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_dp_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dp_Response(c, (struct zx_dp_Response_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5794,7 +6070,7 @@ int zx_LEN_SO_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s*
   int len = sizeof("<prov:PollResponse")-1 + 1 + sizeof("</prov:PollResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->nextPoll, sizeof("nextPoll")-1, &pop_seen);
 
@@ -5803,7 +6079,9 @@ int zx_LEN_SO_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_s*
   int len = 0;
 #endif
   
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_dp_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dp_Request(c, (struct zx_dp_Request_s*)se);
 
 
@@ -5831,7 +6109,7 @@ char* zx_ENC_SO_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_
   ZX_OUT_TAG(p, "<prov:PollResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5844,7 +6122,9 @@ char* zx_ENC_SO_prov_PollResponse(struct zx_ctx* c, struct zx_prov_PollResponse_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_dp_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dp_Request(c, (struct zx_dp_Request_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5925,7 +6205,7 @@ int zx_LEN_SO_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_Provision
   int len = sizeof("<prov:ProvisioningHandle")-1 + 1 + sizeof("</prov:ProvisioningHandle>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->expires, sizeof("expires")-1, &pop_seen);
 
@@ -5934,11 +6214,17 @@ int zx_LEN_SO_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_Provision
   int len = 0;
 #endif
   
-  for (se = x->PMDArtifact; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMDArtifact")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->ProvisioningServiceEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMDArtifact;
+    se && se->g.tok == zx_prov_PMDArtifact_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("prov:PMDArtifact")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ProvisioningServiceEPR->gg;
+       se && se->g.tok == zx_prov_ProvisioningServiceEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_ProvisioningServiceEPR(c, (struct zx_prov_ProvisioningServiceEPR_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
@@ -5967,7 +6253,7 @@ char* zx_ENC_SO_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_Provisi
   ZX_OUT_TAG(p, "<prov:ProvisioningHandle");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5980,11 +6266,17 @@ char* zx_ENC_SO_prov_ProvisioningHandle(struct zx_ctx* c, struct zx_prov_Provisi
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PMDArtifact; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMDArtifact", sizeof("prov:PMDArtifact")-1, zx_ns_tab+zx_prov_NS);
-  for (se = &x->ProvisioningServiceEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PMDArtifact;
+       se && se->g.tok == zx_prov_PMDArtifact_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "prov:PMDArtifact", sizeof("prov:PMDArtifact")-1, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ProvisioningServiceEPR->gg;
+       se && se->g.tok == zx_prov_ProvisioningServiceEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_ProvisioningServiceEPR(c, (struct zx_prov_ProvisioningServiceEPR_s*)se, p);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
 
@@ -6067,10 +6359,10 @@ int zx_LEN_SO_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_Provi
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -6084,11 +6376,17 @@ int zx_LEN_SO_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_Provi
   int len = 0;
 #endif
   
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 
@@ -6117,10 +6415,10 @@ char* zx_ENC_SO_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_Pro
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6138,11 +6436,17 @@ char* zx_ENC_SO_prov_ProvisioningServiceEPR(struct zx_ctx* c, struct zx_prov_Pro
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Address(c, (struct zx_a_Address_s*)se, p);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se, p);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Metadata(c, (struct zx_a_Metadata_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6223,7 +6527,7 @@ int zx_LEN_SO_prov_State(struct zx_ctx* c, struct zx_prov_State_s* x )
   int len = sizeof("<prov:State")-1 + 1 + sizeof("</prov:State>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->asof, sizeof("asof")-1, &pop_seen);
 
@@ -6258,7 +6562,7 @@ char* zx_ENC_SO_prov_State(struct zx_ctx* c, struct zx_prov_State_s* x, char* p 
   ZX_OUT_TAG(p, "<prov:State");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6350,7 +6654,7 @@ int zx_LEN_SO_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x )
   int len = sizeof("<prov:UpdateEPR")-1 + 1 + sizeof("</prov:UpdateEPR>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -6358,7 +6662,9 @@ int zx_LEN_SO_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->UpdateEPRItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateEPRItem->gg;
+       se && se->g.tok == zx_prov_UpdateEPRItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_UpdateEPRItem(c, (struct zx_prov_UpdateEPRItem_s*)se);
 
 
@@ -6386,7 +6692,7 @@ char* zx_ENC_SO_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x, 
   ZX_OUT_TAG(p, "<prov:UpdateEPR");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6398,7 +6704,9 @@ char* zx_ENC_SO_prov_UpdateEPR(struct zx_ctx* c, struct zx_prov_UpdateEPR_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->UpdateEPRItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateEPRItem->gg;
+       se && se->g.tok == zx_prov_UpdateEPRItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_UpdateEPRItem(c, (struct zx_prov_UpdateEPRItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6479,7 +6787,7 @@ int zx_LEN_SO_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem_
   int len = sizeof("<prov:UpdateEPRItem")-1 + 1 + sizeof("</prov:UpdateEPRItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
@@ -6488,9 +6796,13 @@ int zx_LEN_SO_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRItem_
   int len = 0;
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se);
-  for (se = &x->CallbackEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CallbackEPR->gg;
+       se && se->g.tok == zx_prov_CallbackEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)se);
 
 
@@ -6518,7 +6830,7 @@ char* zx_ENC_SO_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRIte
   ZX_OUT_TAG(p, "<prov:UpdateEPRItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6531,9 +6843,13 @@ char* zx_ENC_SO_prov_UpdateEPRItem(struct zx_ctx* c, struct zx_prov_UpdateEPRIte
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PMID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMID->gg;
+       se && se->g.tok == zx_prov_PMID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMID(c, (struct zx_prov_PMID_s*)se, p);
-  for (se = &x->CallbackEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CallbackEPR->gg;
+       se && se->g.tok == zx_prov_CallbackEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_CallbackEPR(c, (struct zx_prov_CallbackEPR_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6614,7 +6930,7 @@ int zx_LEN_SO_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEPRR
   int len = sizeof("<prov:UpdateEPRResponse")-1 + 1 + sizeof("</prov:UpdateEPRResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -6622,7 +6938,9 @@ int zx_LEN_SO_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEPRR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -6650,7 +6968,7 @@ char* zx_ENC_SO_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEP
   ZX_OUT_TAG(p, "<prov:UpdateEPRResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_prov_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_prov_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6662,7 +6980,9 @@ char* zx_ENC_SO_prov_UpdateEPRResponse(struct zx_ctx* c, struct zx_prov_UpdateEP
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

@@ -360,15 +360,21 @@ void zx_FREE_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReference
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Address->gg; e; e = en) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Address(c, (struct zx_a_Address_s*)e, free_strs);
   }
-  for (e = &x->ReferenceParameters->gg; e; e = en) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, free_strs);
   }
-  for (e = &x->Metadata->gg; e; e = en) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Metadata(c, (struct zx_a_Metadata_s*)e, free_strs);
   }
@@ -414,11 +420,17 @@ void zx_DUP_STRS_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointRefer
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 }
@@ -445,7 +457,9 @@ struct zx_a_EndpointReference_s* zx_DEEP_CLONE_a_EndpointReference(struct zx_ctx
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Address(c,(struct zx_a_Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->Address = (struct zx_a_Address_s*)en;
@@ -453,7 +467,9 @@ struct zx_a_EndpointReference_s* zx_DEEP_CLONE_a_EndpointReference(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_ReferenceParameters(c,(struct zx_a_ReferenceParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)en;
@@ -461,7 +477,9 @@ struct zx_a_EndpointReference_s* zx_DEEP_CLONE_a_EndpointReference(struct zx_ctx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Metadata(c,(struct zx_a_Metadata_s*)e,dup_strs);
   	  if (!enn)
   	      x->Metadata = (struct zx_a_Metadata_s*)en;
@@ -492,17 +510,23 @@ int zx_WALK_SO_a_EndpointReference(struct zx_ctx* c, struct zx_a_EndpointReferen
   if (ret)
     return ret;
 
-  for (e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Address(c, (struct zx_a_Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Metadata(c, (struct zx_a_Metadata_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -565,15 +589,21 @@ void zx_FREE_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x, int free_strs
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Address->gg; e; e = en) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Address(c, (struct zx_a_Address_s*)e, free_strs);
   }
-  for (e = &x->ReferenceParameters->gg; e; e = en) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, free_strs);
   }
-  for (e = &x->Metadata->gg; e; e = en) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Metadata(c, (struct zx_a_Metadata_s*)e, free_strs);
   }
@@ -619,11 +649,17 @@ void zx_DUP_STRS_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x)
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 }
@@ -650,7 +686,9 @@ struct zx_a_FaultTo_s* zx_DEEP_CLONE_a_FaultTo(struct zx_ctx* c, struct zx_a_Fau
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Address(c,(struct zx_a_Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->Address = (struct zx_a_Address_s*)en;
@@ -658,7 +696,9 @@ struct zx_a_FaultTo_s* zx_DEEP_CLONE_a_FaultTo(struct zx_ctx* c, struct zx_a_Fau
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_ReferenceParameters(c,(struct zx_a_ReferenceParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)en;
@@ -666,7 +706,9 @@ struct zx_a_FaultTo_s* zx_DEEP_CLONE_a_FaultTo(struct zx_ctx* c, struct zx_a_Fau
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Metadata(c,(struct zx_a_Metadata_s*)e,dup_strs);
   	  if (!enn)
   	      x->Metadata = (struct zx_a_Metadata_s*)en;
@@ -697,17 +739,23 @@ int zx_WALK_SO_a_FaultTo(struct zx_ctx* c, struct zx_a_FaultTo_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Address(c, (struct zx_a_Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Metadata(c, (struct zx_a_Metadata_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -770,15 +818,21 @@ void zx_FREE_a_From(struct zx_ctx* c, struct zx_a_From_s* x, int free_strs)
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Address->gg; e; e = en) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Address(c, (struct zx_a_Address_s*)e, free_strs);
   }
-  for (e = &x->ReferenceParameters->gg; e; e = en) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, free_strs);
   }
-  for (e = &x->Metadata->gg; e; e = en) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Metadata(c, (struct zx_a_Metadata_s*)e, free_strs);
   }
@@ -824,11 +878,17 @@ void zx_DUP_STRS_a_From(struct zx_ctx* c, struct zx_a_From_s* x)
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 }
@@ -855,7 +915,9 @@ struct zx_a_From_s* zx_DEEP_CLONE_a_From(struct zx_ctx* c, struct zx_a_From_s* x
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Address(c,(struct zx_a_Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->Address = (struct zx_a_Address_s*)en;
@@ -863,7 +925,9 @@ struct zx_a_From_s* zx_DEEP_CLONE_a_From(struct zx_ctx* c, struct zx_a_From_s* x
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_ReferenceParameters(c,(struct zx_a_ReferenceParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)en;
@@ -871,7 +935,9 @@ struct zx_a_From_s* zx_DEEP_CLONE_a_From(struct zx_ctx* c, struct zx_a_From_s* x
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Metadata(c,(struct zx_a_Metadata_s*)e,dup_strs);
   	  if (!enn)
   	      x->Metadata = (struct zx_a_Metadata_s*)en;
@@ -902,17 +968,23 @@ int zx_WALK_SO_a_From(struct zx_ctx* c, struct zx_a_From_s* x, void* ctx, int (*
   if (ret)
     return ret;
 
-  for (e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Address(c, (struct zx_a_Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Metadata(c, (struct zx_a_Metadata_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1114,14 +1186,18 @@ void zx_FREE_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x, int free_st
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Framework->gg; e; e = en) {
+  for (e = &x->Framework->gg;
+       e && e->g.tok == zx_sbf_Framework_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_sbf_Framework(c, (struct zx_sbf_Framework_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Abstract, free_strs);
   zx_free_simple_elems(c, x->ProviderID, free_strs);
   zx_free_simple_elems(c, x->ServiceType, free_strs);
-  for (e = &x->SecurityContext->gg; e; e = en) {
+  for (e = &x->SecurityContext->gg;
+       e && e->g.tok == zx_di_SecurityContext_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_di_SecurityContext(c, (struct zx_di_SecurityContext_s*)e, free_strs);
   }
@@ -1161,12 +1237,16 @@ void zx_DUP_STRS_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x)
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Framework->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Framework->gg;
+       se && se->g.tok == zx_sbf_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_sbf_Framework(c, (struct zx_sbf_Framework_s*)se);
   zx_dup_strs_simple_elems(c, x->Abstract);
   zx_dup_strs_simple_elems(c, x->ProviderID);
   zx_dup_strs_simple_elems(c, x->ServiceType);
-  for (se = &x->SecurityContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityContext->gg;
+       se && se->g.tok == zx_di_SecurityContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_di_SecurityContext(c, (struct zx_di_SecurityContext_s*)se);
 
 }
@@ -1187,7 +1267,9 @@ struct zx_a_Metadata_s* zx_DEEP_CLONE_a_Metadata(struct zx_ctx* c, struct zx_a_M
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Framework->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Framework->gg;
+       e && e->g.tok == zx_sbf_Framework_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_sbf_Framework(c,(struct zx_sbf_Framework_s*)e,dup_strs);
   	  if (!enn)
   	      x->Framework = (struct zx_sbf_Framework_s*)en;
@@ -1198,7 +1280,9 @@ struct zx_a_Metadata_s* zx_DEEP_CLONE_a_Metadata(struct zx_ctx* c, struct zx_a_M
   x->Abstract = zx_deep_clone_simple_elems(c,x->Abstract, dup_strs);
   x->ProviderID = zx_deep_clone_simple_elems(c,x->ProviderID, dup_strs);
   x->ServiceType = zx_deep_clone_simple_elems(c,x->ServiceType, dup_strs);
-  for (enn = 0, e = &x->SecurityContext->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SecurityContext->gg;
+       e && e->g.tok == zx_di_SecurityContext_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_di_SecurityContext(c,(struct zx_di_SecurityContext_s*)e,dup_strs);
   	  if (!enn)
   	      x->SecurityContext = (struct zx_di_SecurityContext_s*)en;
@@ -1229,7 +1313,9 @@ int zx_WALK_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Framework->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Framework->gg;
+       e && e->g.tok == zx_sbf_Framework_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1243,7 +1329,9 @@ int zx_WALK_SO_a_Metadata(struct zx_ctx* c, struct zx_a_Metadata_s* x, void* ctx
   ret = zx_walk_so_simple_elems(c, x->ServiceType, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->SecurityContext->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SecurityContext->gg;
+       e && e->g.tok == zx_di_SecurityContext_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_di_SecurityContext(c, (struct zx_di_SecurityContext_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1305,7 +1393,9 @@ void zx_FREE_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x, i
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Action->gg; e; e = en) {
+  for (e = &x->Action->gg;
+       e && e->g.tok == zx_a_Action_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Action(c, (struct zx_a_Action_s*)e, free_strs);
   }
@@ -1351,7 +1441,9 @@ void zx_DUP_STRS_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* 
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_a_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Action(c, (struct zx_a_Action_s*)se);
   zx_dup_strs_simple_elems(c, x->SoapAction);
 
@@ -1378,7 +1470,9 @@ struct zx_a_ProblemAction_s* zx_DEEP_CLONE_a_ProblemAction(struct zx_ctx* c, str
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Action->gg;
+       e && e->g.tok == zx_a_Action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Action(c,(struct zx_a_Action_s*)e,dup_strs);
   	  if (!enn)
   	      x->Action = (struct zx_a_Action_s*)en;
@@ -1410,7 +1504,9 @@ int zx_WALK_SO_a_ProblemAction(struct zx_ctx* c, struct zx_a_ProblemAction_s* x,
   if (ret)
     return ret;
 
-  for (e = &x->Action->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Action->gg;
+       e && e->g.tok == zx_a_Action_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Action(c, (struct zx_a_Action_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1910,7 +2006,9 @@ void zx_FREE_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferenceParame
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->TargetIdentity->gg; e; e = en) {
+  for (e = &x->TargetIdentity->gg;
+       e && e->g.tok == zx_b_TargetIdentity_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_b_TargetIdentity(c, (struct zx_b_TargetIdentity_s*)e, free_strs);
   }
@@ -1955,7 +2053,9 @@ void zx_DUP_STRS_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferencePa
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->TargetIdentity->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TargetIdentity->gg;
+       se && se->g.tok == zx_b_TargetIdentity_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_b_TargetIdentity(c, (struct zx_b_TargetIdentity_s*)se);
 
 }
@@ -1981,7 +2081,9 @@ struct zx_a_ReferenceParameters_s* zx_DEEP_CLONE_a_ReferenceParameters(struct zx
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->TargetIdentity->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->TargetIdentity->gg;
+       e && e->g.tok == zx_b_TargetIdentity_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_b_TargetIdentity(c,(struct zx_b_TargetIdentity_s*)e,dup_strs);
   	  if (!enn)
   	      x->TargetIdentity = (struct zx_b_TargetIdentity_s*)en;
@@ -2012,7 +2114,9 @@ int zx_WALK_SO_a_ReferenceParameters(struct zx_ctx* c, struct zx_a_ReferencePara
   if (ret)
     return ret;
 
-  for (e = &x->TargetIdentity->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->TargetIdentity->gg;
+       e && e->g.tok == zx_b_TargetIdentity_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_b_TargetIdentity(c, (struct zx_b_TargetIdentity_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2223,15 +2327,21 @@ void zx_FREE_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x, int free_strs
   zx_free_attr(c, x->actor, free_strs);
   zx_free_attr(c, x->mustUnderstand, free_strs);
 
-  for (e = &x->Address->gg; e; e = en) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Address(c, (struct zx_a_Address_s*)e, free_strs);
   }
-  for (e = &x->ReferenceParameters->gg; e; e = en) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, free_strs);
   }
-  for (e = &x->Metadata->gg; e; e = en) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_a_Metadata(c, (struct zx_a_Metadata_s*)e, free_strs);
   }
@@ -2277,11 +2387,17 @@ void zx_DUP_STRS_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x)
   zx_dup_attr(c, x->actor);
   zx_dup_attr(c, x->mustUnderstand);
 
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 }
@@ -2308,7 +2424,9 @@ struct zx_a_ReplyTo_s* zx_DEEP_CLONE_a_ReplyTo(struct zx_ctx* c, struct zx_a_Rep
   x->actor = zx_clone_attr(c, x->actor);
   x->mustUnderstand = zx_clone_attr(c, x->mustUnderstand);
 
-  for (enn = 0, e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Address(c,(struct zx_a_Address_s*)e,dup_strs);
   	  if (!enn)
   	      x->Address = (struct zx_a_Address_s*)en;
@@ -2316,7 +2434,9 @@ struct zx_a_ReplyTo_s* zx_DEEP_CLONE_a_ReplyTo(struct zx_ctx* c, struct zx_a_Rep
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_ReferenceParameters(c,(struct zx_a_ReferenceParameters_s*)e,dup_strs);
   	  if (!enn)
   	      x->ReferenceParameters = (struct zx_a_ReferenceParameters_s*)en;
@@ -2324,7 +2444,9 @@ struct zx_a_ReplyTo_s* zx_DEEP_CLONE_a_ReplyTo(struct zx_ctx* c, struct zx_a_Rep
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_a_Metadata(c,(struct zx_a_Metadata_s*)e,dup_strs);
   	  if (!enn)
   	      x->Metadata = (struct zx_a_Metadata_s*)en;
@@ -2355,17 +2477,23 @@ int zx_WALK_SO_a_ReplyTo(struct zx_ctx* c, struct zx_a_ReplyTo_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->Address->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Address->gg;
+       e && e->g.tok == zx_a_Address_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Address(c, (struct zx_a_Address_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ReferenceParameters->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ReferenceParameters->gg;
+       e && e->g.tok == zx_a_ReferenceParameters_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Metadata->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Metadata->gg;
+       e && e->g.tok == zx_a_Metadata_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_a_Metadata(c, (struct zx_a_Metadata_s*)e, ctx, callback);
     if (ret)
       return ret;

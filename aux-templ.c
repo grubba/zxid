@@ -31,36 +31,19 @@
 #define EL_NS     ELNS
 #define EL_TAG    ELTAG
 
-/* FUNC(TXFREE_ELNAME) */
-
-/* Depth first traversal of data structure to free it and its subelements. Simple
- * strings are handled as a special case according to the free_strs flag. This
- * is useful if the strings point to underlying data from the wire that was
- * allocated differently. */
-
-/* Called by: */
-void TXFREE_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x, int free_strs)
-{
-  struct zx_elem_s* e  MAYBE_UNUSED;
-  struct zx_elem_s* en MAYBE_UNUSED;
-
-  /* *** deal with xmlns specifications in exc c14n way */
-
-ATTRS_FREE;
-ELEMS_FREE;
-
-  zx_free_elem_common(c, &x->gg, free_strs); 
-}
-
 /* FUNC(TXNEW_ELNAME) */
 
 /* Trivial allocator/constructor for the datatype. */
 
 /* Called by: */
-struct ELSTRUCT* TXNEW_ELNAME(struct zx_ctx* c)
+struct ELSTRUCT* TXNEW_ELNAME(struct zx_ctx* c, struct zx_elem_s* father)
 {
   struct ELSTRUCT* x = ZX_ZALLOC(c, struct ELSTRUCT);
   x->gg.g.tok = TXELNAME_ELEM;
+  if (father) {
+    x->gg.g.n = &father->kids.g;
+    father->kids = x;
+  }
   return x;
 }
 

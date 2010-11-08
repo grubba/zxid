@@ -85,7 +85,7 @@ int zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd
   int len = sizeof("<xaspcd1:XACMLAuthzDecisionQuery")-1 + 1 + sizeof("</xaspcd1:XACMLAuthzDecisionQuery>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xaspcd1_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->CombinePolicies, sizeof("CombinePolicies")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Consent, sizeof("Consent")-1, &pop_seen);
@@ -101,20 +101,34 @@ int zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd
   int len = 0;
 #endif
   
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_sa_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_Issuer(c, (struct zx_sa_Issuer_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_sp_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_Extensions(c, (struct zx_sp_Extensions_s*)se);
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_xac_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xac_Request(c, (struct zx_xac_Request_s*)se);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_xa_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_Policy(c, (struct zx_xa_Policy_s*)se);
-  for (se = &x->PolicySet->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySet->gg;
+       se && se->g.tok == zx_xa_PolicySet_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)se);
-  for (se = &x->ReferencedPolicies->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferencedPolicies->gg;
+       se && se->g.tok == zx_xasacd1_ReferencedPolicies_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xasacd1_ReferencedPolicies(c, (struct zx_xasacd1_ReferencedPolicies_s*)se);
 
 
@@ -142,7 +156,7 @@ char* zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xasp
   ZX_OUT_TAG(p, "<xaspcd1:XACMLAuthzDecisionQuery");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xaspcd1_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -162,20 +176,34 @@ char* zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xasp
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_sa_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_Issuer(c, (struct zx_sa_Issuer_s*)se, p);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_sp_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_Extensions(c, (struct zx_sp_Extensions_s*)se, p);
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_xac_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xac_Request(c, (struct zx_xac_Request_s*)se, p);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_xa_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_Policy(c, (struct zx_xa_Policy_s*)se, p);
-  for (se = &x->PolicySet->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySet->gg;
+       se && se->g.tok == zx_xa_PolicySet_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)se, p);
-  for (se = &x->ReferencedPolicies->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferencedPolicies->gg;
+       se && se->g.tok == zx_xasacd1_ReferencedPolicies_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xasacd1_ReferencedPolicies(c, (struct zx_xasacd1_ReferencedPolicies_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -256,7 +284,7 @@ int zx_LEN_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACML
   int len = sizeof("<xaspcd1:XACMLPolicyQuery")-1 + 1 + sizeof("</xaspcd1:XACMLPolicyQuery>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xaspcd1_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Consent, sizeof("Consent")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Destination, sizeof("Destination")-1, &pop_seen);
@@ -269,20 +297,34 @@ int zx_LEN_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACML
   int len = 0;
 #endif
   
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_sa_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_Issuer(c, (struct zx_sa_Issuer_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       len += zx_LEN_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_sp_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_Extensions(c, (struct zx_sp_Extensions_s*)se);
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_xac_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xac_Request(c, (struct zx_xac_Request_s*)se);
-  for (se = &x->Target->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Target->gg;
+       se && se->g.tok == zx_xa_Target_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_Target(c, (struct zx_xa_Target_s*)se);
-  for (se = &x->PolicySetIdReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySetIdReference->gg;
+       se && se->g.tok == zx_xa_PolicySetIdReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_PolicySetIdReference(c, (struct zx_xa_PolicySetIdReference_s*)se);
-  for (se = &x->PolicyIdReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyIdReference->gg;
+       se && se->g.tok == zx_xa_PolicyIdReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_PolicyIdReference(c, (struct zx_xa_PolicyIdReference_s*)se);
 
 
@@ -310,7 +352,7 @@ char* zx_ENC_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XAC
   ZX_OUT_TAG(p, "<xaspcd1:XACMLPolicyQuery");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xaspcd1_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -327,20 +369,34 @@ char* zx_ENC_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XAC
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Issuer->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Issuer->gg;
+       se && se->g.tok == zx_sa_Issuer_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_Issuer(c, (struct zx_sa_Issuer_s*)se, p);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     if (se != c->exclude_sig)
       p = zx_ENC_SO_ds_Signature(c, (struct zx_ds_Signature_s*)se, p);
-  for (se = &x->Extensions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extensions->gg;
+       se && se->g.tok == zx_sp_Extensions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_Extensions(c, (struct zx_sp_Extensions_s*)se, p);
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_xac_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xac_Request(c, (struct zx_xac_Request_s*)se, p);
-  for (se = &x->Target->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Target->gg;
+       se && se->g.tok == zx_xa_Target_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_Target(c, (struct zx_xa_Target_s*)se, p);
-  for (se = &x->PolicySetIdReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySetIdReference->gg;
+       se && se->g.tok == zx_xa_PolicySetIdReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_PolicySetIdReference(c, (struct zx_xa_PolicySetIdReference_s*)se, p);
-  for (se = &x->PolicyIdReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyIdReference->gg;
+       se && se->g.tok == zx_xa_PolicyIdReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_PolicyIdReference(c, (struct zx_xa_PolicyIdReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

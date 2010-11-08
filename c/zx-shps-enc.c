@@ -86,10 +86,10 @@ int zx_LEN_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ID, sizeof("ID")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -103,11 +103,17 @@ int zx_LEN_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Address(c, (struct zx_a_Address_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Metadata(c, (struct zx_a_Metadata_s*)se);
 
 
@@ -136,10 +142,10 @@ char* zx_ENC_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s*
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -157,11 +163,17 @@ char* zx_ENC_SO_shps_CallbackEPR(struct zx_ctx* c, struct zx_shps_CallbackEPR_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Address->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Address->gg;
+       se && se->g.tok == zx_a_Address_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Address(c, (struct zx_a_Address_s*)se, p);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se, p);
-  for (se = &x->Metadata->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Metadata->gg;
+       se && se->g.tok == zx_a_Metadata_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Metadata(c, (struct zx_a_Metadata_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -242,7 +254,7 @@ int zx_LEN_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x )
   int len = sizeof("<shps:Delete")-1 + 1 + sizeof("</shps:Delete>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -250,8 +262,10 @@ int zx_LEN_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x )
   int len = 0;
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -278,7 +292,7 @@ char* zx_ENC_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x, char* 
   ZX_OUT_TAG(p, "<shps:Delete");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -290,8 +304,10 @@ char* zx_ENC_SO_shps_Delete(struct zx_ctx* c, struct zx_shps_Delete_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -371,7 +387,7 @@ int zx_LEN_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteRespons
   int len = sizeof("<shps:DeleteResponse")-1 + 1 + sizeof("</shps:DeleteResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -379,7 +395,9 @@ int zx_LEN_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteRespons
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -407,7 +425,7 @@ char* zx_ENC_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteRespo
   ZX_OUT_TAG(p, "<shps:DeleteResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -419,7 +437,9 @@ char* zx_ENC_SO_shps_DeleteResponse(struct zx_ctx* c, struct zx_shps_DeleteRespo
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -500,7 +520,7 @@ int zx_LEN_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x )
   int len = sizeof("<shps:GetStatus")-1 + 1 + sizeof("</shps:GetStatus>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -508,8 +528,10 @@ int zx_LEN_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x )
   int len = 0;
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -536,7 +558,7 @@ char* zx_ENC_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x, 
   ZX_OUT_TAG(p, "<shps:GetStatus");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -548,8 +570,10 @@ char* zx_ENC_SO_shps_GetStatus(struct zx_ctx* c, struct zx_shps_GetStatus_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -629,7 +653,7 @@ int zx_LEN_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusR
   int len = sizeof("<shps:GetStatusResponse")-1 + 1 + sizeof("</shps:GetStatusResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -637,9 +661,13 @@ int zx_LEN_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatusR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->GetStatusResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetStatusResponseItem->gg;
+       se && se->g.tok == zx_shps_GetStatusResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_GetStatusResponseItem(c, (struct zx_shps_GetStatusResponseItem_s*)se);
 
 
@@ -667,7 +695,7 @@ char* zx_ENC_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatu
   ZX_OUT_TAG(p, "<shps:GetStatusResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -679,9 +707,13 @@ char* zx_ENC_SO_shps_GetStatusResponse(struct zx_ctx* c, struct zx_shps_GetStatu
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->GetStatusResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetStatusResponseItem->gg;
+       se && se->g.tok == zx_shps_GetStatusResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_GetStatusResponseItem(c, (struct zx_shps_GetStatusResponseItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -762,7 +794,7 @@ int zx_LEN_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetSta
   int len = sizeof("<shps:GetStatusResponseItem")-1 + 1 + sizeof("</shps:GetStatusResponseItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -770,10 +802,14 @@ int zx_LEN_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetSta
   int len = 0;
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->ServiceStatus; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceStatus")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ServiceStatus;
+    se && se->g.tok == zx_shps_ServiceStatus_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceStatus")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -800,7 +836,7 @@ char* zx_ENC_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetS
   ZX_OUT_TAG(p, "<shps:GetStatusResponseItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -812,10 +848,14 @@ char* zx_ENC_SO_shps_GetStatusResponseItem(struct zx_ctx* c, struct zx_shps_GetS
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->ServiceStatus; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceStatus", sizeof("shps:ServiceStatus")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ServiceStatus;
+       se && se->g.tok == zx_shps_ServiceStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceStatus", sizeof("shps:ServiceStatus")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -895,7 +935,7 @@ int zx_LEN_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_Invocation
   int len = sizeof("<shps:InvocationContext")-1 + 1 + sizeof("</shps:InvocationContext>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -903,12 +943,18 @@ int zx_LEN_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_Invocation
   int len = 0;
 #endif
   
-  for (se = x->InvokingProvider; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:InvokingProvider")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->InvokingPrincipal; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:InvokingPrincipal")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->SecurityMechID; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("di:SecurityMechID")-1, zx_ns_tab+zx_di_NS);
+  for (se = x->InvokingProvider;
+    se && se->g.tok == zx_shps_InvokingProvider_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:InvokingProvider")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->InvokingPrincipal;
+    se && se->g.tok == zx_shps_InvokingPrincipal_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:InvokingPrincipal")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SecurityMechID;
+    se && se->g.tok == zx_di_SecurityMechID_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("di:SecurityMechID")-1, zx_ns_tab+(zx_di_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -935,7 +981,7 @@ char* zx_ENC_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_Invocati
   ZX_OUT_TAG(p, "<shps:InvocationContext");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -947,12 +993,18 @@ char* zx_ENC_SO_shps_InvocationContext(struct zx_ctx* c, struct zx_shps_Invocati
   /* root node has no begin tag */
 #endif
   
-  for (se = x->InvokingProvider; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:InvokingProvider", sizeof("shps:InvokingProvider")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->InvokingPrincipal; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:InvokingPrincipal", sizeof("shps:InvokingPrincipal")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->SecurityMechID; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "di:SecurityMechID", sizeof("di:SecurityMechID")-1, zx_ns_tab+zx_di_NS);
+  for (se = x->InvokingProvider;
+       se && se->g.tok == zx_shps_InvokingProvider_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:InvokingProvider", sizeof("shps:InvokingProvider")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->InvokingPrincipal;
+       se && se->g.tok == zx_shps_InvokingPrincipal_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:InvokingPrincipal", sizeof("shps:InvokingPrincipal")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SecurityMechID;
+       se && se->g.tok == zx_di_SecurityMechID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "di:SecurityMechID", sizeof("di:SecurityMechID")-1, zx_ns_tab+(zx_di_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1032,7 +1084,7 @@ int zx_LEN_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x )
   int len = sizeof("<shps:InvokeItem")-1 + 1 + sizeof("</shps:InvokeItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
@@ -1041,8 +1093,10 @@ int zx_LEN_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x )
   int len = 0;
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1069,7 +1123,7 @@ char* zx_ENC_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x
   ZX_OUT_TAG(p, "<shps:InvokeItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1082,8 +1136,10 @@ char* zx_ENC_SO_shps_InvokeItem(struct zx_ctx* c, struct zx_shps_InvokeItem_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1163,7 +1219,7 @@ int zx_LEN_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeRespons
   int len = sizeof("<shps:InvokeResponse")-1 + 1 + sizeof("</shps:InvokeResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1171,9 +1227,13 @@ int zx_LEN_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeRespons
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->InvokeResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InvokeResponseItem->gg;
+       se && se->g.tok == zx_shps_InvokeResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_InvokeResponseItem(c, (struct zx_shps_InvokeResponseItem_s*)se);
 
 
@@ -1201,7 +1261,7 @@ char* zx_ENC_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeRespo
   ZX_OUT_TAG(p, "<shps:InvokeResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1213,9 +1273,13 @@ char* zx_ENC_SO_shps_InvokeResponse(struct zx_ctx* c, struct zx_shps_InvokeRespo
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->InvokeResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InvokeResponseItem->gg;
+       se && se->g.tok == zx_shps_InvokeResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_InvokeResponseItem(c, (struct zx_shps_InvokeResponseItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1296,7 +1360,7 @@ int zx_LEN_SO_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeRes
   int len = sizeof("<shps:InvokeResponseItem")-1 + 1 + sizeof("</shps:InvokeResponseItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
 
@@ -1331,7 +1395,7 @@ char* zx_ENC_SO_shps_InvokeResponseItem(struct zx_ctx* c, struct zx_shps_InvokeR
   ZX_OUT_TAG(p, "<shps:InvokeResponseItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1423,7 +1487,7 @@ int zx_LEN_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x )
   int len = sizeof("<shps:Poll")-1 + 1 + sizeof("</shps:Poll>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->wait, sizeof("wait")-1, &pop_seen);
 
@@ -1432,9 +1496,13 @@ int zx_LEN_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_a_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Action(c, (struct zx_a_Action_s*)se);
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_dp_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dp_Response(c, (struct zx_dp_Response_s*)se);
 
 
@@ -1462,7 +1530,7 @@ char* zx_ENC_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x, char* p )
   ZX_OUT_TAG(p, "<shps:Poll");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1475,9 +1543,13 @@ char* zx_ENC_SO_shps_Poll(struct zx_ctx* c, struct zx_shps_Poll_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_a_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Action(c, (struct zx_a_Action_s*)se, p);
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_dp_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dp_Response(c, (struct zx_dp_Response_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1558,7 +1630,7 @@ int zx_LEN_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s*
   int len = sizeof("<shps:PollResponse")-1 + 1 + sizeof("</shps:PollResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->nextPoll, sizeof("nextPoll")-1, &pop_seen);
 
@@ -1567,7 +1639,9 @@ int zx_LEN_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_s*
   int len = 0;
 #endif
   
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_dp_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dp_Request(c, (struct zx_dp_Request_s*)se);
 
 
@@ -1595,7 +1669,7 @@ char* zx_ENC_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_
   ZX_OUT_TAG(p, "<shps:PollResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1608,7 +1682,9 @@ char* zx_ENC_SO_shps_PollResponse(struct zx_ctx* c, struct zx_shps_PollResponse_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_dp_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dp_Request(c, (struct zx_dp_Request_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1689,7 +1765,7 @@ int zx_LEN_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x
   int len = sizeof("<shps:ProxyInvoke")-1 + 1 + sizeof("</shps:ProxyInvoke>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1697,7 +1773,9 @@ int zx_LEN_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s* x
   int len = 0;
 #endif
   
-  for (se = &x->ProxyInvokeItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProxyInvokeItem->gg;
+       se && se->g.tok == zx_shps_ProxyInvokeItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_ProxyInvokeItem(c, (struct zx_shps_ProxyInvokeItem_s*)se);
 
 
@@ -1725,7 +1803,7 @@ char* zx_ENC_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s*
   ZX_OUT_TAG(p, "<shps:ProxyInvoke");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1737,7 +1815,9 @@ char* zx_ENC_SO_shps_ProxyInvoke(struct zx_ctx* c, struct zx_shps_ProxyInvoke_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ProxyInvokeItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProxyInvokeItem->gg;
+       se && se->g.tok == zx_shps_ProxyInvokeItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_ProxyInvokeItem(c, (struct zx_shps_ProxyInvokeItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1818,7 +1898,7 @@ int zx_LEN_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeI
   int len = sizeof("<shps:ProxyInvokeItem")-1 + 1 + sizeof("</shps:ProxyInvokeItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
@@ -1827,12 +1907,18 @@ int zx_LEN_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvokeI
   int len = 0;
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
-  for (se = &x->InvocationContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->InvocationContext->gg;
+       se && se->g.tok == zx_shps_InvocationContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_InvocationContext(c, (struct zx_shps_InvocationContext_s*)se);
-  for (se = x->RequestHeaders; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:RequestHeaders")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->RequestHeaders;
+    se && se->g.tok == zx_shps_RequestHeaders_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:RequestHeaders")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1859,7 +1945,7 @@ char* zx_ENC_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvok
   ZX_OUT_TAG(p, "<shps:ProxyInvokeItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1872,12 +1958,18 @@ char* zx_ENC_SO_shps_ProxyInvokeItem(struct zx_ctx* c, struct zx_shps_ProxyInvok
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
-  for (se = &x->InvocationContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->InvocationContext->gg;
+       se && se->g.tok == zx_shps_InvocationContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_InvocationContext(c, (struct zx_shps_InvocationContext_s*)se, p);
-  for (se = x->RequestHeaders; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:RequestHeaders", sizeof("shps:RequestHeaders")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->RequestHeaders;
+       se && se->g.tok == zx_shps_RequestHeaders_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:RequestHeaders", sizeof("shps:RequestHeaders")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1957,7 +2049,7 @@ int zx_LEN_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInv
   int len = sizeof("<shps:ProxyInvokeResponse")-1 + 1 + sizeof("</shps:ProxyInvokeResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1965,9 +2057,13 @@ int zx_LEN_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyInv
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->ProxyInvokeResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProxyInvokeResponseItem->gg;
+       se && se->g.tok == zx_shps_ProxyInvokeResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_ProxyInvokeResponseItem(c, (struct zx_shps_ProxyInvokeResponseItem_s*)se);
 
 
@@ -1995,7 +2091,7 @@ char* zx_ENC_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyI
   ZX_OUT_TAG(p, "<shps:ProxyInvokeResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2007,9 +2103,13 @@ char* zx_ENC_SO_shps_ProxyInvokeResponse(struct zx_ctx* c, struct zx_shps_ProxyI
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->ProxyInvokeResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProxyInvokeResponseItem->gg;
+       se && se->g.tok == zx_shps_ProxyInvokeResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_ProxyInvokeResponseItem(c, (struct zx_shps_ProxyInvokeResponseItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2090,7 +2190,7 @@ int zx_LEN_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_Prox
   int len = sizeof("<shps:ProxyInvokeResponseItem")-1 + 1 + sizeof("</shps:ProxyInvokeResponseItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
 
@@ -2099,10 +2199,14 @@ int zx_LEN_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_Prox
   int len = 0;
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->ResponseHeaders; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ResponseHeaders")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ResponseHeaders;
+    se && se->g.tok == zx_shps_ResponseHeaders_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ResponseHeaders")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2129,7 +2233,7 @@ char* zx_ENC_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_Pr
   ZX_OUT_TAG(p, "<shps:ProxyInvokeResponseItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2142,10 +2246,14 @@ char* zx_ENC_SO_shps_ProxyInvokeResponseItem(struct zx_ctx* c, struct zx_shps_Pr
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->ResponseHeaders; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ResponseHeaders", sizeof("shps:ResponseHeaders")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ResponseHeaders;
+       se && se->g.tok == zx_shps_ResponseHeaders_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ResponseHeaders", sizeof("shps:ResponseHeaders")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2225,7 +2333,7 @@ int zx_LEN_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x )
   int len = sizeof("<shps:Query")-1 + 1 + sizeof("</shps:Query>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2233,7 +2341,9 @@ int zx_LEN_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->RequestedService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedService->gg;
+       se && se->g.tok == zx_di_RequestedService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_RequestedService(c, (struct zx_di_RequestedService_s*)se);
 
 
@@ -2261,7 +2371,7 @@ char* zx_ENC_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x, char* p 
   ZX_OUT_TAG(p, "<shps:Query");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2273,7 +2383,9 @@ char* zx_ENC_SO_shps_Query(struct zx_ctx* c, struct zx_shps_Query_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->RequestedService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RequestedService->gg;
+       se && se->g.tok == zx_di_RequestedService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_RequestedService(c, (struct zx_di_RequestedService_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2354,7 +2466,7 @@ int zx_LEN_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegiste
   int len = sizeof("<shps:QueryRegistered")-1 + 1 + sizeof("</shps:QueryRegistered>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2362,8 +2474,10 @@ int zx_LEN_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegiste
   int len = 0;
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2390,7 +2504,7 @@ char* zx_ENC_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegis
   ZX_OUT_TAG(p, "<shps:QueryRegistered");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2402,8 +2516,10 @@ char* zx_ENC_SO_shps_QueryRegistered(struct zx_ctx* c, struct zx_shps_QueryRegis
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2483,7 +2599,7 @@ int zx_LEN_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_Quer
   int len = sizeof("<shps:QueryRegisteredResponse")-1 + 1 + sizeof("</shps:QueryRegisteredResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2491,9 +2607,13 @@ int zx_LEN_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_Quer
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se);
 
 
@@ -2521,7 +2641,7 @@ char* zx_ENC_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_Qu
   ZX_OUT_TAG(p, "<shps:QueryRegisteredResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2533,9 +2653,13 @@ char* zx_ENC_SO_shps_QueryRegisteredResponse(struct zx_ctx* c, struct zx_shps_Qu
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2616,7 +2740,7 @@ int zx_LEN_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_
   int len = sizeof("<shps:QueryResponse")-1 + 1 + sizeof("</shps:QueryResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2624,9 +2748,13 @@ int zx_LEN_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryResponse_
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se);
 
 
@@ -2654,7 +2782,7 @@ char* zx_ENC_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryRespons
   ZX_OUT_TAG(p, "<shps:QueryResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2666,9 +2794,13 @@ char* zx_ENC_SO_shps_QueryResponse(struct zx_ctx* c, struct zx_shps_QueryRespons
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2749,7 +2881,7 @@ int zx_LEN_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x )
   int len = sizeof("<shps:Register")-1 + 1 + sizeof("</shps:Register>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2757,7 +2889,9 @@ int zx_LEN_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se);
 
 
@@ -2785,7 +2919,7 @@ char* zx_ENC_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x, ch
   ZX_OUT_TAG(p, "<shps:Register");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2797,7 +2931,9 @@ char* zx_ENC_SO_shps_Register(struct zx_ctx* c, struct zx_shps_Register_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2878,7 +3014,7 @@ int zx_LEN_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterRes
   int len = sizeof("<shps:RegisterResponse")-1 + 1 + sizeof("</shps:RegisterResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2886,9 +3022,13 @@ int zx_LEN_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterRes
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->RegisterResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RegisterResponseItem->gg;
+       se && se->g.tok == zx_shps_RegisterResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_RegisterResponseItem(c, (struct zx_shps_RegisterResponseItem_s*)se);
 
 
@@ -2916,7 +3056,7 @@ char* zx_ENC_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterR
   ZX_OUT_TAG(p, "<shps:RegisterResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2928,9 +3068,13 @@ char* zx_ENC_SO_shps_RegisterResponse(struct zx_ctx* c, struct zx_shps_RegisterR
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
-  for (se = &x->RegisterResponseItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RegisterResponseItem->gg;
+       se && se->g.tok == zx_shps_RegisterResponseItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_RegisterResponseItem(c, (struct zx_shps_RegisterResponseItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3011,7 +3155,7 @@ int zx_LEN_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_Registe
   int len = sizeof("<shps:RegisterResponseItem")-1 + 1 + sizeof("</shps:RegisterResponseItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
 
@@ -3020,8 +3164,10 @@ int zx_LEN_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_Registe
   int len = 0;
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3048,7 +3194,7 @@ char* zx_ENC_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_Regis
   ZX_OUT_TAG(p, "<shps:RegisterResponseItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3061,8 +3207,10 @@ char* zx_ENC_SO_shps_RegisterResponseItem(struct zx_ctx* c, struct zx_shps_Regis
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3142,7 +3290,7 @@ int zx_LEN_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x )
   int len = sizeof("<shps:SetStatus")-1 + 1 + sizeof("</shps:SetStatus>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3150,7 +3298,9 @@ int zx_LEN_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->SetStatusItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetStatusItem->gg;
+       se && se->g.tok == zx_shps_SetStatusItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_SetStatusItem(c, (struct zx_shps_SetStatusItem_s*)se);
 
 
@@ -3178,7 +3328,7 @@ char* zx_ENC_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x, 
   ZX_OUT_TAG(p, "<shps:SetStatus");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3190,7 +3340,9 @@ char* zx_ENC_SO_shps_SetStatus(struct zx_ctx* c, struct zx_shps_SetStatus_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SetStatusItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetStatusItem->gg;
+       se && se->g.tok == zx_shps_SetStatusItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_SetStatusItem(c, (struct zx_shps_SetStatusItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3271,7 +3423,7 @@ int zx_LEN_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_
   int len = sizeof("<shps:SetStatusItem")-1 + 1 + sizeof("</shps:SetStatusItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
@@ -3280,10 +3432,14 @@ int zx_LEN_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusItem_
   int len = 0;
 #endif
   
-  for (se = x->ServiceStatus; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceStatus")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceStatus;
+    se && se->g.tok == zx_shps_ServiceStatus_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceStatus")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3310,7 +3466,7 @@ char* zx_ENC_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusIte
   ZX_OUT_TAG(p, "<shps:SetStatusItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3323,10 +3479,14 @@ char* zx_ENC_SO_shps_SetStatusItem(struct zx_ctx* c, struct zx_shps_SetStatusIte
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceStatus; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceStatus", sizeof("shps:ServiceStatus")-1, zx_ns_tab+zx_shps_NS);
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
+  for (se = x->ServiceStatus;
+       se && se->g.tok == zx_shps_ServiceStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceStatus", sizeof("shps:ServiceStatus")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3406,7 +3566,7 @@ int zx_LEN_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusR
   int len = sizeof("<shps:SetStatusResponse")-1 + 1 + sizeof("</shps:SetStatusResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3414,7 +3574,9 @@ int zx_LEN_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatusR
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -3442,7 +3604,7 @@ char* zx_ENC_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatu
   ZX_OUT_TAG(p, "<shps:SetStatusResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3454,7 +3616,9 @@ char* zx_ENC_SO_shps_SetStatusResponse(struct zx_ctx* c, struct zx_shps_SetStatu
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3535,7 +3699,7 @@ int zx_LEN_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x )
   int len = sizeof("<shps:Update")-1 + 1 + sizeof("</shps:Update>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3543,7 +3707,9 @@ int zx_LEN_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->UpdateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateItem->gg;
+       se && se->g.tok == zx_shps_UpdateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_UpdateItem(c, (struct zx_shps_UpdateItem_s*)se);
 
 
@@ -3571,7 +3737,7 @@ char* zx_ENC_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x, char* 
   ZX_OUT_TAG(p, "<shps:Update");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3583,7 +3749,9 @@ char* zx_ENC_SO_shps_Update(struct zx_ctx* c, struct zx_shps_Update_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->UpdateItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateItem->gg;
+       se && se->g.tok == zx_shps_UpdateItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_UpdateItem(c, (struct zx_shps_UpdateItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3664,7 +3832,7 @@ int zx_LEN_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x )
   int len = sizeof("<shps:UpdateItem")-1 + 1 + sizeof("</shps:UpdateItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
@@ -3673,9 +3841,13 @@ int zx_LEN_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x )
   int len = 0;
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceHandle;
+    se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se);
 
 
@@ -3703,7 +3875,7 @@ char* zx_ENC_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x
   ZX_OUT_TAG(p, "<shps:UpdateItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3716,9 +3888,13 @@ char* zx_ENC_SO_shps_UpdateItem(struct zx_ctx* c, struct zx_shps_UpdateItem_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ServiceHandle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+zx_shps_NS);
-  for (se = &x->EndpointReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceHandle;
+       se && se->g.tok == zx_shps_ServiceHandle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:ServiceHandle", sizeof("shps:ServiceHandle")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EndpointReference->gg;
+       se && se->g.tok == zx_a_EndpointReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_EndpointReference(c, (struct zx_a_EndpointReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3799,7 +3975,7 @@ int zx_LEN_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateRespons
   int len = sizeof("<shps:UpdateResponse")-1 + 1 + sizeof("</shps:UpdateResponse>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3807,7 +3983,9 @@ int zx_LEN_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateRespons
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -3835,7 +4013,7 @@ char* zx_ENC_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateRespo
   ZX_OUT_TAG(p, "<shps:UpdateResponse");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_shps_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3847,7 +4025,9 @@ char* zx_ENC_SO_shps_UpdateResponse(struct zx_ctx* c, struct zx_shps_UpdateRespo
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

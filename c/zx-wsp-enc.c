@@ -85,7 +85,7 @@ int zx_LEN_SO_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x )
   int len = sizeof("<wsp:All")-1 + 1 + sizeof("</wsp:All>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -93,13 +93,21 @@ int zx_LEN_SO_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->All->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->All->gg;
+       se && se->g.tok == zx_wsp_All_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_All(c, (struct zx_wsp_All_s*)se);
-  for (se = &x->ExactlyOne->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExactlyOne->gg;
+       se && se->g.tok == zx_wsp_ExactlyOne_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 
@@ -127,7 +135,7 @@ char* zx_ENC_SO_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x, char* p )
   ZX_OUT_TAG(p, "<wsp:All");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -139,13 +147,21 @@ char* zx_ENC_SO_wsp_All(struct zx_ctx* c, struct zx_wsp_All_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se, p);
-  for (se = &x->All->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->All->gg;
+       se && se->g.tok == zx_wsp_All_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_All(c, (struct zx_wsp_All_s*)se, p);
-  for (se = &x->ExactlyOne->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExactlyOne->gg;
+       se && se->g.tok == zx_wsp_ExactlyOne_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)se, p);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -226,7 +242,7 @@ int zx_LEN_SO_wsp_AppliesTo(struct zx_ctx* c, struct zx_wsp_AppliesTo_s* x )
   int len = sizeof("<wsp:AppliesTo")-1 + 1 + sizeof("</wsp:AppliesTo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -260,7 +276,7 @@ char* zx_ENC_SO_wsp_AppliesTo(struct zx_ctx* c, struct zx_wsp_AppliesTo_s* x, ch
   ZX_OUT_TAG(p, "<wsp:AppliesTo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -351,7 +367,7 @@ int zx_LEN_SO_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x )
   int len = sizeof("<wsp:ExactlyOne")-1 + 1 + sizeof("</wsp:ExactlyOne>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -359,13 +375,21 @@ int zx_LEN_SO_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->All->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->All->gg;
+       se && se->g.tok == zx_wsp_All_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_All(c, (struct zx_wsp_All_s*)se);
-  for (se = &x->ExactlyOne->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExactlyOne->gg;
+       se && se->g.tok == zx_wsp_ExactlyOne_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 
@@ -393,7 +417,7 @@ char* zx_ENC_SO_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x, 
   ZX_OUT_TAG(p, "<wsp:ExactlyOne");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -405,13 +429,21 @@ char* zx_ENC_SO_wsp_ExactlyOne(struct zx_ctx* c, struct zx_wsp_ExactlyOne_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se, p);
-  for (se = &x->All->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->All->gg;
+       se && se->g.tok == zx_wsp_All_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_All(c, (struct zx_wsp_All_s*)se, p);
-  for (se = &x->ExactlyOne->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExactlyOne->gg;
+       se && se->g.tok == zx_wsp_ExactlyOne_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)se, p);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -492,9 +524,9 @@ int zx_LEN_SO_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x )
   int len = sizeof("<wsp:Policy")-1 + 1 + sizeof("</wsp:Policy>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Name, sizeof("Name")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Id, sizeof("wsu:Id")-1, &pop_seen);
@@ -504,13 +536,21 @@ int zx_LEN_SO_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->All->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->All->gg;
+       se && se->g.tok == zx_wsp_All_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_All(c, (struct zx_wsp_All_s*)se);
-  for (se = &x->ExactlyOne->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExactlyOne->gg;
+       se && se->g.tok == zx_wsp_ExactlyOne_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 
@@ -538,9 +578,9 @@ char* zx_ENC_SO_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x, char* p 
   ZX_OUT_TAG(p, "<wsp:Policy");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -554,13 +594,21 @@ char* zx_ENC_SO_wsp_Policy(struct zx_ctx* c, struct zx_wsp_Policy_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se, p);
-  for (se = &x->All->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->All->gg;
+       se && se->g.tok == zx_wsp_All_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_All(c, (struct zx_wsp_All_s*)se, p);
-  for (se = &x->ExactlyOne->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExactlyOne->gg;
+       se && se->g.tok == zx_wsp_ExactlyOne_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_ExactlyOne(c, (struct zx_wsp_ExactlyOne_s*)se, p);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -641,7 +689,7 @@ int zx_LEN_SO_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttachm
   int len = sizeof("<wsp:PolicyAttachment")-1 + 1 + sizeof("</wsp:PolicyAttachment>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -649,11 +697,17 @@ int zx_LEN_SO_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttachm
   int len = 0;
 #endif
   
-  for (se = &x->AppliesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AppliesTo->gg;
+       se && se->g.tok == zx_wsp_AppliesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)se);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se);
 
 
@@ -681,7 +735,7 @@ char* zx_ENC_SO_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttac
   ZX_OUT_TAG(p, "<wsp:PolicyAttachment");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -693,11 +747,17 @@ char* zx_ENC_SO_wsp_PolicyAttachment(struct zx_ctx* c, struct zx_wsp_PolicyAttac
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->AppliesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AppliesTo->gg;
+       se && se->g.tok == zx_wsp_AppliesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_AppliesTo(c, (struct zx_wsp_AppliesTo_s*)se, p);
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_wsp_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_Policy(c, (struct zx_wsp_Policy_s*)se, p);
-  for (se = &x->PolicyReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicyReference->gg;
+       se && se->g.tok == zx_wsp_PolicyReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsp_PolicyReference(c, (struct zx_wsp_PolicyReference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -778,7 +838,7 @@ int zx_LEN_SO_wsp_PolicyReference(struct zx_ctx* c, struct zx_wsp_PolicyReferenc
   int len = sizeof("<wsp:PolicyReference")-1 + 1 + sizeof("</wsp:PolicyReference>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Digest, sizeof("Digest")-1, &pop_seen);
   len += zx_attr_so_len(c, x->DigestAlgorithm, sizeof("DigestAlgorithm")-1, &pop_seen);
@@ -815,7 +875,7 @@ char* zx_ENC_SO_wsp_PolicyReference(struct zx_ctx* c, struct zx_wsp_PolicyRefere
   ZX_OUT_TAG(p, "<wsp:PolicyReference");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsp_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 

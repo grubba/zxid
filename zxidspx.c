@@ -74,7 +74,7 @@ static int zxid_sp_dig_sso_a7n(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, stru
   if (cf->anon_ok && cgi->rs && !strcmp(cf->anon_ok, cgi->rs))  /* Prefix match */
     return zxid_sp_anon_finalize(cf, cgi, ses);
   ERR("No Assertion found and not anon_ok in SAML Response %d", 0);
-  zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "ERR", 0, "sid(%s) No assertion", ses->sid);
+  zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "C", "ERR", 0, "sid(%s) No assertion", ses->sid);
   return 0;
 }
 
@@ -138,7 +138,7 @@ struct zx_str* zxid_sp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   }
 
   if (r->ManageNameIDRequest) {
-    idp_meta = zxid_get_ent_ss(cf, r->ManageNameIDRequest->Issuer->gg.content);
+    idp_meta = zxid_get_ent_ss(cf, ZX_GET_CONTENT(r->ManageNameIDRequest->Issuer));
     loc = zxid_idp_loc_raw(cf, cgi, idp_meta, ZXID_MNI_SVC, SAML2_REDIR, 0);
     if (!loc)
       return zx_dup_str(cf->ctx, "* ERR");  /* *** consider sending error page */
@@ -164,7 +164,7 @@ struct zx_str* zxid_sp_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses)
   }
   
   if (cf->log_level > 0)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "SPDISP", 0, "sid(%s) unknown req or resp", STRNULLCHK(ses->sid));
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "C", "SPDISP", 0, "sid(%s) unknown req or resp", STRNULLCHK(ses->sid));
   ERR("Unknown request or response %p", r);
   return zx_dup_str(cf->ctx, "* ERR");
 }
@@ -181,11 +181,11 @@ static void zxid_ins_xacml_az_stmt(zxid_conf* cf, zxid_a7n* a7n, char* deci)
    * and in effect the XACML interop events have done (de-facto standard?). */
 
 #if 1
-  a7n->XACMLAuthzDecisionStatement = zx_NEW_xasa_XACMLAuthzDecisionStatement(cf->ctx);
+  a7n->XACMLAuthzDecisionStatement = zx_NEW_xasa_XACMLAuthzDecisionStatement(cf->ctx,0);
   a7n->XACMLAuthzDecisionStatement->Response = zxid_mk_xacml_resp(cf, deci);
   /* *** Add xaspcd1 and xasacd1 variants */
 #else
-  a7n->Statement = zx_NEW_sa_Statement(cf->ctx);
+  a7n->Statement = zx_NEW_sa_Statement(cf->ctx,0);
   a7n->Statement->type = zx_ref_str(cf->ctx, "xasa:XACMLAuthzDecisionStatementType");
   a7n->Statement->Response = zxid_mk_xacml_resp(cf, deci);
 #endif
@@ -201,11 +201,11 @@ static void zxid_ins_xacml_az_cd1_stmt(zxid_conf* cf, zxid_a7n* a7n, char* deci)
    * and in effect the XACML interop events have done (de-facto standard?). */
 
 #if 1
-  a7n->xasacd1_XACMLAuthzDecisionStatement = zx_NEW_xasacd1_XACMLAuthzDecisionStatement(cf->ctx);
+  a7n->xasacd1_XACMLAuthzDecisionStatement = zx_NEW_xasacd1_XACMLAuthzDecisionStatement(cf->ctx,0);
   a7n->xasacd1_XACMLAuthzDecisionStatement->Response = zxid_mk_xacml_resp(cf, deci);
   /* *** Add xaspcd1 and xasacd1 variants */
 #else
-  a7n->Statement = zx_NEW_sa_Statement(cf->ctx);
+  a7n->Statement = zx_NEW_sa_Statement(cf->ctx,0);
   a7n->Statement->type = zx_ref_str(cf->ctx, "xasacd1:XACMLAuthzDecisionStatementType");
   a7n->Statement->Response = zxid_mk_xacml_resp(cf, deci);
 #endif
@@ -230,7 +230,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, z
 #if 0
   affil = ar->NameIDPolicy && ar->NameIDPolicy->SPNameQualifier
     ? ar->NameIDPolicy->SPNameQualifier
-    : ar->Issuer->gg.content;
+    : ZX_GET_CONTENT(ar->Issuer);
   subj = zxid_mk_subj(cf, ses, affil, sp_meta);
 #endif
   //a7n = zxid_mk_a7n(cf, affil, subj, 0, 0, 0);
@@ -242,9 +242,8 @@ static struct zx_sp_Response_s* zxid_xacml_az_do(zxid_conf* cf, zxid_cgi* cgi, z
 	 xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
       if (xac_at->AttributeId->g.len == sizeof("role")-1
 	  && !memcmp(xac_at->AttributeId->g.s, "role", sizeof("role")-1)) {
-	if (xac_at->AttributeValue && xac_at->AttributeValue->content
-	    && xac_at->AttributeValue->content->len == sizeof("deny")-1
-	    && !memcmp(xac_at->AttributeValue->content->s, "deny", sizeof("deny")-1)) {
+	if (ZX_GET_CONTENT_LEN(xac_at->AttributeValue) == sizeof("deny")-1
+	    && !memcmp(ZX_GET_CONTENT_S(xac_at->AttributeValue), "deny", sizeof("deny")-1)) {
 	  D("PDP: Deny due to role=deny %d",0);
 	  zxid_ins_xacml_az_stmt(cf, a7n, "Deny");
 	  resp = zxid_mk_saml_resp(cf);
@@ -277,7 +276,7 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
 #if 0
   affil = ar->NameIDPolicy && ar->NameIDPolicy->SPNameQualifier
     ? ar->NameIDPolicy->SPNameQualifier
-    : ar->Issuer->gg.content;
+    : ZX_GET_CONTENT(ar->Issuer);
   subj = zxid_mk_subj(cf, ses, affil, sp_meta);
 #endif
   //a7n = zxid_mk_a7n(cf, affil, subj, 0, 0, 0);
@@ -289,9 +288,8 @@ static struct zx_sp_Response_s* zxid_xacml_az_cd1_do(zxid_conf* cf, zxid_cgi* cg
 	 xac_at = (struct zx_xac_Attribute_s*)ZX_NEXT(xac_at)) {
       if (xac_at->AttributeId->g.len == sizeof("role")-1
 	  && !memcmp(xac_at->AttributeId->g.s, "role", sizeof("role")-1)) {
-	if (xac_at->AttributeValue && xac_at->AttributeValue->content
-	    && xac_at->AttributeValue->content->len == sizeof("deny")-1
-	    && !memcmp(xac_at->AttributeValue->content->s, "deny", sizeof("deny")-1)) {
+	if (ZX_GET_CONTENT_LEN(xac_at->AttributeValue) == sizeof("deny")-1
+	    && !memcmp(ZX_GET_CONTENT_S(xac_at->AttributeValue), "deny", sizeof("deny")-1)) {
 	  D("PDP: Deny due to role=deny %d",0);
 	  zxid_ins_xacml_az_cd1_stmt(cf, a7n, "Deny");
 	  resp = zxid_mk_saml_resp(cf);
@@ -333,7 +331,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
   bdy = r->Envelope->Body;
 
   if (cf->log_level > 1)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "W", "SPDISP", 0, "sid(%s) soap", STRNULLCHK(ses->sid));
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "W", "SPDISP", 0, "sid(%s) soap", STRNULLCHK(ses->sid));
 
   if (bdy->ArtifactResponse) {
     if (!zxid_saml_ok(cf, cgi, bdy->ArtifactResponse->Status, "ArtResp"))
@@ -347,7 +345,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
     return zxid_sp_dig_sso_a7n(cf, cgi, ses, bdy->Response);
   }
 
-  body = zx_NEW_e_Body(cf->ctx);
+  body = zx_NEW_e_Body(cf->ctx,0);
   
   if (bdy->LogoutRequest) {
     if (!zxid_sp_slo_do(cf, cgi, ses, bdy->LogoutRequest))
@@ -361,7 +359,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	body->LogoutResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
-    return zxid_soap_cgi_resp_body(cf, body, bdy->LogoutRequest->Issuer->gg.content);
+    return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->LogoutRequest->Issuer));
   }
 
   if (bdy->ManageNameIDRequest) {
@@ -374,7 +372,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	body->ManageNameIDResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
       zx_str_free(cf->ctx, refs.canon);
     }
-    return zxid_soap_cgi_resp_body(cf, body, bdy->ManageNameIDRequest->Issuer->gg.content);
+    return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->ManageNameIDRequest->Issuer));
   }
   
   DD("as_ena=%d %p", cf->as_ena, bdy->SASLRequest);
@@ -385,7 +383,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	issuer = &hdr->Sender->providerID->g;
       else
 	issuer = 0;
-      //issuer = bdy->SASLRequest->Issuer->gg.content;
+      //issuer = ZX_GET_CONTENT(bdy->SASLRequest->Issuer);
       body->SASLResponse = zxid_idp_as_do(cf, bdy->SASLRequest);
 #if 0
       if (cf->sso_soap_resp_sign) {
@@ -413,7 +411,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
 	zx_str_free(cf->ctx, refs.canon);
       }
-      return zxid_soap_cgi_resp_body(cf, body, bdy->XACMLAuthzDecisionQuery->Issuer->gg.content);
+      return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->XACMLAuthzDecisionQuery->Issuer));
     }
     if (bdy->xaspcd1_XACMLAuthzDecisionQuery) {
       D("xaspcd1:XACMLAuthzDecisionQuery %d",0);
@@ -426,7 +424,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	body->Response->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
 	zx_str_free(cf->ctx, refs.canon);
       }
-      return zxid_soap_cgi_resp_body(cf, body, bdy->XACMLAuthzDecisionQuery->Issuer->gg.content);
+      return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->XACMLAuthzDecisionQuery->Issuer));
     }
   }
 
@@ -448,7 +446,7 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
 	  body->NameIDMappingResponse->Signature = zxsig_sign(cf->ctx, 1, &refs, sign_cert, sign_pkey);
 	zx_str_free(cf->ctx, refs.canon);
       }
-      return zxid_soap_cgi_resp_body(cf, body, bdy->NameIDMappingRequest->Issuer->gg.content);
+      return zxid_soap_cgi_resp_body(cf, body, ZX_GET_CONTENT(bdy->NameIDMappingRequest->Issuer));
     }
     
     if (!hdr || !hdr->Security || !hdr->Sender || !hdr->Sender->providerID) {
@@ -499,12 +497,12 @@ int zxid_sp_soap_dispatch(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx
  bad:
   ERR("Unknown soap request %p", r);
   if (cf->log_level > 0)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "SPDISP", 0, "sid(%s) unknown soap req", STRNULLCHK(ses->sid));
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "C", "SPDISP", 0, "sid(%s) unknown soap req", STRNULLCHK(ses->sid));
   return 0;
  malformed:
   ERR("Malformed soap request %p", r);
   if (cf->log_level > 0)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "SPDISP", 0, "sid(%s) malformed soap req", STRNULLCHK(ses->sid));
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "C", "SPDISP", 0, "sid(%s) malformed soap req", STRNULLCHK(ses->sid));
   return 0;
 }
 
@@ -517,7 +515,7 @@ int zxid_sp_soap_parse(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, int len, cha
   r = zx_dec_zx_root(cf->ctx, len, buf, "sp soap parse");
   if (!r || !r->Envelope || !r->Envelope->Body) {
     ERR("Failed to parse SOAP request buf(%.*s)", len, buf);
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "C", "BADXML", 0, "sid(%s) bad soap req", STRNULLCHK(ses->sid));
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "C", "BADXML", 0, "sid(%s) bad soap req", STRNULLCHK(ses->sid));
     return 0;
   }
   return zxid_sp_soap_dispatch(cf, cgi, ses, r);

@@ -85,9 +85,9 @@ int zx_LEN_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToke
   int len = sizeof("<wsc:DerivedKeyToken")-1 + 1 + sizeof("</wsc:DerivedKeyToken>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Algorithm, sizeof("Algorithm")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Id, sizeof("wsu:Id")-1, &pop_seen);
@@ -97,20 +97,34 @@ int zx_LEN_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyToke
   int len = 0;
 #endif
   
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se);
-  for (se = &x->Properties->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Properties->gg;
+       se && se->g.tok == zx_wsc_Properties_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsc_Properties(c, (struct zx_wsc_Properties_s*)se);
-  for (se = x->Generation; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Generation")-1, zx_ns_tab+zx_wsc_NS);
-  for (se = x->Offset; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Offset")-1, zx_ns_tab+zx_wsc_NS);
-  for (se = x->Length; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Length")-1, zx_ns_tab+zx_wsc_NS);
-  for (se = x->Label; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Label")-1, zx_ns_tab+zx_wsc_NS);
-  for (se = x->Nonce; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Nonce")-1, zx_ns_tab+zx_wsc_NS);
+  for (se = x->Generation;
+    se && se->g.tok == zx_wsc_Generation_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Generation")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Offset;
+    se && se->g.tok == zx_wsc_Offset_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Offset")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Length;
+    se && se->g.tok == zx_wsc_Length_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Length")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Label;
+    se && se->g.tok == zx_wsc_Label_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Label")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Nonce;
+    se && se->g.tok == zx_wsc_Nonce_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("wsc:Nonce")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -137,9 +151,9 @@ char* zx_ENC_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyTo
   ZX_OUT_TAG(p, "<wsc:DerivedKeyToken");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -153,20 +167,34 @@ char* zx_ENC_SO_wsc_DerivedKeyToken(struct zx_ctx* c, struct zx_wsc_DerivedKeyTo
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SecurityTokenReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityTokenReference->gg;
+       se && se->g.tok == zx_wsse_SecurityTokenReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsse_SecurityTokenReference(c, (struct zx_wsse_SecurityTokenReference_s*)se, p);
-  for (se = &x->Properties->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Properties->gg;
+       se && se->g.tok == zx_wsc_Properties_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsc_Properties(c, (struct zx_wsc_Properties_s*)se, p);
-  for (se = x->Generation; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Generation", sizeof("wsc:Generation")-1, zx_ns_tab+zx_wsc_NS);
-  for (se = x->Offset; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Offset", sizeof("wsc:Offset")-1, zx_ns_tab+zx_wsc_NS);
-  for (se = x->Length; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Length", sizeof("wsc:Length")-1, zx_ns_tab+zx_wsc_NS);
-  for (se = x->Label; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Label", sizeof("wsc:Label")-1, zx_ns_tab+zx_wsc_NS);
-  for (se = x->Nonce; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Nonce", sizeof("wsc:Nonce")-1, zx_ns_tab+zx_wsc_NS);
+  for (se = x->Generation;
+       se && se->g.tok == zx_wsc_Generation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Generation", sizeof("wsc:Generation")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Offset;
+       se && se->g.tok == zx_wsc_Offset_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Offset", sizeof("wsc:Offset")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Length;
+       se && se->g.tok == zx_wsc_Length_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Length", sizeof("wsc:Length")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Label;
+       se && se->g.tok == zx_wsc_Label_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Label", sizeof("wsc:Label")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Nonce;
+       se && se->g.tok == zx_wsc_Nonce_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "wsc:Nonce", sizeof("wsc:Nonce")-1, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -246,7 +274,7 @@ int zx_LEN_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x )
   int len = sizeof("<wsc:Properties")-1 + 1 + sizeof("</wsc:Properties>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -280,7 +308,7 @@ char* zx_ENC_SO_wsc_Properties(struct zx_ctx* c, struct zx_wsc_Properties_s* x, 
   ZX_OUT_TAG(p, "<wsc:Properties");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -371,9 +399,9 @@ int zx_LEN_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_SecurityC
   int len = sizeof("<wsc:SecurityContextToken")-1 + 1 + sizeof("</wsc:SecurityContextToken>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsc_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsc_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Id, sizeof("wsu:Id")-1, &pop_seen);
 
@@ -408,9 +436,9 @@ char* zx_ENC_SO_wsc_SecurityContextToken(struct zx_ctx* c, struct zx_wsc_Securit
   ZX_OUT_TAG(p, "<wsc:SecurityContextToken");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsc_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsc_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 

@@ -86,10 +86,10 @@ int zx_LEN_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->usage, sizeof("usage")-1, &pop_seen);
@@ -102,19 +102,33 @@ int zx_LEN_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)se);
-  for (se = &x->EncryptedAssertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedAssertion->gg;
+       se && se->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)se);
-  for (se = &x->sa11_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->sa11_Assertion->gg;
+       se && se->g.tok == zx_sa11_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)se);
-  for (se = &x->ff12_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ff12_Assertion->gg;
+       se && se->g.tok == zx_ff12_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)se);
-  for (se = &x->Attribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Attribute->gg;
+       se && se->g.tok == zx_sa_Attribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_Attribute(c, (struct zx_sa_Attribute_s*)se);
-  for (se = &x->EncryptedAttribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedAttribute->gg;
+       se && se->g.tok == zx_sa_EncryptedAttribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sa_EncryptedAttribute(c, (struct zx_sa_EncryptedAttribute_s*)se);
-  for (se = &x->xac_Attribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xac_Attribute->gg;
+       se && se->g.tok == zx_xac_Attribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xac_Attribute(c, (struct zx_xac_Attribute_s*)se);
 
 
@@ -143,10 +157,10 @@ char* zx_ENC_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s*
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -163,19 +177,33 @@ char* zx_ENC_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Assertion->gg;
+       se && se->g.tok == zx_sa_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_Assertion(c, (struct zx_sa_Assertion_s*)se, p);
-  for (se = &x->EncryptedAssertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedAssertion->gg;
+       se && se->g.tok == zx_sa_EncryptedAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_EncryptedAssertion(c, (struct zx_sa_EncryptedAssertion_s*)se, p);
-  for (se = &x->sa11_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->sa11_Assertion->gg;
+       se && se->g.tok == zx_sa11_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa11_Assertion(c, (struct zx_sa11_Assertion_s*)se, p);
-  for (se = &x->ff12_Assertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ff12_Assertion->gg;
+       se && se->g.tok == zx_ff12_Assertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_Assertion(c, (struct zx_ff12_Assertion_s*)se, p);
-  for (se = &x->Attribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Attribute->gg;
+       se && se->g.tok == zx_sa_Attribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_Attribute(c, (struct zx_sa_Attribute_s*)se, p);
-  for (se = &x->EncryptedAttribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EncryptedAttribute->gg;
+       se && se->g.tok == zx_sa_EncryptedAttribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sa_EncryptedAttribute(c, (struct zx_sa_EncryptedAttribute_s*)se, p);
-  for (se = &x->xac_Attribute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xac_Attribute->gg;
+       se && se->g.tok == zx_xac_Attribute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xac_Attribute(c, (struct zx_xac_Attribute_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -256,7 +284,7 @@ int zx_LEN_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x )
   int len = sizeof("<tas3:ESLApply")-1 + 1 + sizeof("</tas3:ESLApply>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -264,9 +292,13 @@ int zx_LEN_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ESLRef->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ESLRef->gg;
+       se && se->g.tok == zx_tas3_ESLRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_tas3_ESLRef(c, (struct zx_tas3_ESLRef_s*)se);
-  for (se = &x->Obligation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Obligation->gg;
+       se && se->g.tok == zx_xa_Obligation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_Obligation(c, (struct zx_xa_Obligation_s*)se);
 
 
@@ -294,7 +326,7 @@ char* zx_ENC_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x, ch
   ZX_OUT_TAG(p, "<tas3:ESLApply");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -306,9 +338,13 @@ char* zx_ENC_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ESLRef->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ESLRef->gg;
+       se && se->g.tok == zx_tas3_ESLRef_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_tas3_ESLRef(c, (struct zx_tas3_ESLRef_s*)se, p);
-  for (se = &x->Obligation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Obligation->gg;
+       se && se->g.tok == zx_xa_Obligation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_Obligation(c, (struct zx_xa_Obligation_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -390,10 +426,10 @@ int zx_LEN_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->usage, sizeof("usage")-1, &pop_seen);
@@ -406,7 +442,9 @@ int zx_LEN_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s* x
   int len = 0;
 #endif
   
-  for (se = &x->ESLApply->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ESLApply->gg;
+       se && se->g.tok == zx_tas3_ESLApply_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_tas3_ESLApply(c, (struct zx_tas3_ESLApply_s*)se);
 
 
@@ -435,10 +473,10 @@ char* zx_ENC_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s*
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -455,7 +493,9 @@ char* zx_ENC_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ESLApply->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ESLApply->gg;
+       se && se->g.tok == zx_tas3_ESLApply_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_tas3_ESLApply(c, (struct zx_tas3_ESLApply_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -536,7 +576,7 @@ int zx_LEN_SO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x )
   int len = sizeof("<tas3:ESLRef")-1 + 1 + sizeof("</tas3:ESLRef>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
   len += zx_attr_so_len(c, x->xpath, sizeof("xpath")-1, &pop_seen);
@@ -572,7 +612,7 @@ char* zx_ENC_SO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x, char* 
   ZX_OUT_TAG(p, "<tas3:ESLRef");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -666,10 +706,10 @@ int zx_LEN_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x )
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->code, sizeof("code")-1, &pop_seen);
   len += zx_attr_so_len(c, x->comment, sizeof("comment")-1, &pop_seen);
@@ -685,7 +725,9 @@ int zx_LEN_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -714,10 +756,10 @@ char* zx_ENC_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x, char* 
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_tas3_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_tas3_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_wsu_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -737,7 +779,9 @@ char* zx_ENC_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

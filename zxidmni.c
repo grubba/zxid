@@ -40,13 +40,13 @@ int zxid_sp_mni_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, struct zx_str*
     zxid_entity* idp_meta;
 
     if (cf->log_level>0)
-      zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "W", "MNISOAP", ses->sid, "newnym(%.*s) loc", new_nym?new_nym->len:0, new_nym?new_nym->s:"");
+      zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "W", "MNISOAP", ses->sid, "newnym(%.*s) loc", new_nym?new_nym->len:0, new_nym?new_nym->s:"");
     
     idp_meta = zxid_get_ses_idp(cf, ses);
     if (!idp_meta)
       return 0;
 
-    body = zx_NEW_e_Body(cf->ctx);
+    body = zx_NEW_e_Body(cf->ctx,0);
     body->ManageNameIDRequest = zxid_mk_mni(cf, zxid_get_user_nameid(cf, ses->nameid), new_nym, idp_meta);
     if (cf->sso_soap_sign) {
       ZERO(&refs, sizeof(refs));
@@ -89,7 +89,7 @@ struct zx_str* zxid_sp_mni_redir(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, st
     zxid_entity* idp_meta;
 
     if (cf->log_level>0)
-      zxlog(cf, 0, 0, 0, 0, 0, 0, ses->nameid?ses->nameid->gg.content:0, "N", "W", "MNIREDIR", ses->sid, "newnym(%.*s)", new_nym?new_nym->len:0, new_nym?new_nym->s:"");
+      zxlog(cf, 0, 0, 0, 0, 0, 0, ZX_GET_CONTENT(ses->nameid), "N", "W", "MNIREDIR", ses->sid, "newnym(%.*s)", new_nym?new_nym->len:0, new_nym?new_nym->s:"");
     
     idp_meta = zxid_get_ses_idp(cf, ses);
     if (!idp_meta)
@@ -127,12 +127,12 @@ struct zx_sp_ManageNameIDResponse_s* zxid_mni_do(zxid_conf* cf, zxid_cgi* cgi, z
     return 0;
   
   nid = zxid_decrypt_nameid(cf, mni->NameID, mni->EncryptedID);
-  if (!nid || !nid->gg.content) {
+  if (!ZX_GET_CONTENT(nid)) {
     ERR("MNI failed: request does not have NameID. %p", nid);
     return 0;
   }
   
-  newnym = zxid_decrypt_newnym(cf, mni->NewID?mni->NewID->content:0, mni->NewEncryptedID);
+  newnym = zxid_decrypt_newnym(cf, ZX_GET_CONTENT(mni->NewID):0, mni->NewEncryptedID);
   if (!newnym) {
     D("MNI Terminate %d",0);
   } else {

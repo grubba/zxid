@@ -171,14 +171,14 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
   struct zx_str* ss;
   struct zx_sp_Response_s* resp;
 
-  hdr = zx_NEW_e_Header(cf->ctx);
+  hdr = zx_NEW_e_Header(cf->ctx,0);
 #if 0
-  hdr->Action = zx_NEW_a_Action(cf->ctx);
-  //hdr->Action->gg.content = zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01");
-  hdr->Action->gg.content = zx_dup_str(cf->ctx, "urn:oasis:xacml:2.0:saml:protocol:schema:os");
+  hdr->Action = zx_NEW_a_Action(cf->ctx, &hdr->gg);
+  //zx_add_content(c, &hdr->Action->gg, zx_dup_str(cf->ctx, "urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol:cd-01"));
+  zx_add_content(c, &hdr->Action->gg, zx_dup_str(cf->ctx, "urn:oasis:xacml:2.0:saml:protocol:schema:os"));
 
-  //hdr->Action->gg.content = zx_dup_str(cf->ctx, "SAML2XACMLAuthzRequest");
-  //hdr->Action->gg.content = zx_dup_str(cf->ctx, "http://ws.apache.org/axis2/TestPolicyPortType/authRequestRequest");
+  //zx_add_content(c, &hdr->Action->gg, zx_dup_str(cf->ctx, "SAML2XACMLAuthzRequest"));
+  //zx_add_content(c, &hdr->Action->gg, zx_dup_str(cf->ctx, "http://ws.apache.org/axis2/TestPolicyPortType/authRequestRequest"));
   hdr->Action->actor = zx_ref_str(cf->ctx, SOAP_ACTOR_NEXT);
   hdr->Action->mustUnderstand = zx_ref_str(cf->ctx, ZXID_TRUE);
 #endif
@@ -186,17 +186,17 @@ static struct zx_sp_Response_s* zxid_az_soap(zxid_conf* cf, zxid_cgi* cgi, zxid_
   /* Add our own token so PDP can do whatever PEP can (they are considered to be
    * part of the same entity). This is TAS3 specific hack. */
 
-  sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx);
+  sec = hdr->Security = zx_NEW_wsse_Security(cf->ctx, &hdr->gg);
   sec->actor = zx_ref_attr(cf->ctx, zx_e_actor_ATTR, SOAP_ACTOR_NEXT);
   sec->mustUnderstand = zx_ref_attr(cf->ctx, zx_e_mustUnderstand_ATTR, ZXID_TRUE);
-  sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx);
-  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx);
+  sec->Timestamp = zx_NEW_wsu_Timestamp(cf->ctx, &sec->gg);
+  sec->Timestamp->Created = zx_NEW_wsu_Created(cf->ctx, &sec->Timestamp->gg);
   sec->Assertion = ses->tgta7n;
   D("tgta7n=%p", ses->tgta7n);
 
   /* Prepare request according to the version */
 
-  body = zx_NEW_e_Body(cf->ctx);
+  body = zx_NEW_e_Body(cf->ctx,0);
   if (!strcmp(cf->xasp_vers, "xac-soap")) {
     body->xac_Request = zxid_mk_xac_az(cf, subj, rsrc, act, env);
 #if 0
@@ -305,7 +305,7 @@ char* zxid_pep_az_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, const
   struct zx_elem_s* decision;
 
   if (cf->log_level>0)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses&&ses->nameid?ses->nameid->gg.content:0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ses?ZX_GET_CONTENT(ses->nameid):0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
   
   if (!pdp_url || !*pdp_url) {
     ERR("No PDP_URL or PDP_CALL_URL set. Deny. %p", pdp_url);
@@ -402,7 +402,7 @@ char* zxid_pep_az_base_soap_pepmap(zxid_conf* cf, zxid_cgi* cgi, zxid_ses* ses, 
   struct zx_xasacd1_XACMLAuthzDecisionStatement_s* az_stmt_cd1;
 
   if (cf->log_level>0)
-    zxlog(cf, 0, 0, 0, 0, 0, 0, ses&&ses->nameid?ses->nameid->gg.content:0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
+    zxlog(cf, 0, 0, 0, 0, 0, 0, ses?ZX_GET_CONTENT(ses->nameid):0, "N", "W", "AZSOAP", ses?ses->sid:0, " ");
   
   if (!pdp_url || !*pdp_url) {
     ERR("No PDP_URL or PDP_CALL_URL set. Deny. %p", pdp_url);

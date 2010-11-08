@@ -1,0 +1,46 @@
+<saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="ccddcf6453490bc214cfcc40ab798eb1" IssueInstant="2007-10-19T13:16:07Z" Version="2.0"><saml:Issuer>saml.rsa.idp</saml:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:CanonicalizationMethod>
+<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"></ds:SignatureMethod>
+<ds:Reference URI="#ccddcf6453490bc214cfcc40ab798eb1">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></ds:Transform>
+<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:Transform>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>
+<ds:DigestValue>Q+cgyN5oVGccTxhhwaQiMxW9xtY=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue>
+nTZqHzF5CoHchv/uoleXmtKa50NNOM6vbiUpk3J/qUUfRleGD/g+F0fr4C39zx8dMkFWaC2U91Ip
+G0lrt4sOKKr6fQZtZ+39wSgxymIiUAwfDRNIQECsRR0hdCOkuVStxFa9MI9DpWwDnSfeBW6ZG9qe
+AA/4HtgcdfrZIo5IcEA=
+</ds:SignatureValue>
+<ds:KeyInfo>
+<ds:X509Data>
+<ds:X509Certificate>
+MIIDAzCCAmygAwIBAgIQaWB/vPH0oVTF6GUlSsQ1NzANBgkqhkiG9w0BAQUFADB1MSYwJAYJKoZI
+hvcNAQkBFhdzcHNpbmdoQHJzYXNlY3VyaXR5LmNvbTELMAkGA1UEBhMCSU4xGzAZBgNVBAoTElJT
+QSBTZWN1cml0eSBJbmRpYTEMMAoGA1UECxMDRklNMRMwEQYDVQQDEwpTZXJ2ZXNoIENBMB4XDTA3
+MTAwOTE5MzM1M1oXDTEwMDcyOTA2MDg0MVowfjEOMAwGA1UEBhMFSU5ESUExEzARBgNVBAgTCktB
+UkFOQVRBS0ExEjAQBgNVBAcTCUJBTkdBTE9SRTEMMAoGA1UEChMDRU1DMQwwCgYDVQQLEwNSU0Ex
+JzAlBgNVBAMTHnJzYWlkcC5jb3RzLnByb2plY3RsaWJlcnR5Lm9yZzCBnzANBgkqhkiG9w0BAQEF
+AAOBjQAwgYkCgYEAoyFPC8nEi6qi773rTM63M5tpc3GecHSmKOy3YyFtbjViyE3lGyX5kZdvXdwl
+UtIxNpt4xUamGVPHyMzdCPbS89HQeTuDLeOWRfX5vP+U7M4li+yDgq8m6ZmO7dlX3zlOHeJLdYPT
+/zUlj/w5IavoZUOMYnTrpmI2LVRZ4rncqQsCAwEAAaOBijCBhzAfBgNVHSMEGDAWgBSrXsqiCS+x
+589687KzIMSoGXbJVTAOBgNVHQ8BAf8EBAMCAf4wEQYJYIZIAYb4QgEBBAQDAgZAMCIGA1UdEQQb
+MBmCF3lvdXIuc2VydmVyLmFkZHJlc3MuY29tMB0GA1UdDgQWBBQ+RZRlgkSNgK0umM7QI+MoH1i0
+GDANBgkqhkiG9w0BAQUFAAOBgQBRm7ca44wXmygMHOGC+FYkquICzANswZXaKyoG6oDSpNLYw29v
+bStRHwRu0t98tLIWvjQ7yOVi+5wrXggvdDLic6V7flA448GmTYQXAi+cHteRAPLGEx59UdNcTtHM
+BLp4oZHUSqi1HDRlSpKEjQipvJWtj6fm6mBq5221J39zow==
+</ds:X509Certificate>
+</ds:X509Data>
+</ds:KeyInfo></ds:Signature><saml:Subject><saml:EncryptedID><xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element"><xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"></xenc:EncryptionMethod><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<xenc:EncryptedKey Recipient="https://s-xtra.liberty-iop.org:8443/sfis?o=B"><xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"></xenc:EncryptionMethod><xenc:CipherData><xenc:CipherValue>JbPjpbvFAK9juuBBTx4qOKKmt6KvQ4Vv8Y2UTtN4ENPXFEe3TsjaNpAAsvrw1L4yI1QwTT2+1Mwg
+JcUzH05KuXYfGAGAD9mkak8EAX/aOvHrjZPQjLJT8WRVgpqx20tN+dtkF10fby9MAQsZ09xqBpJ6
+t1Yc8A/CnYq1+hTWhT0=</xenc:CipherValue></xenc:CipherData></xenc:EncryptedKey></ds:KeyInfo><xenc:CipherData><xenc:CipherValue>YhNV1oA38ql0ab5Bl7xeh9xI6e3SUBsiS4AP0KS8+/Jn/WUCpHusgfpOrjbTuA+N+KI1B4XwGR71
+3xz8nbMRrpFRX3XSjQ4PJUxwEnS6BZSQwfGeQv6g8XKGzB8Fjjo5xalVZqoWbUvpEk9AUixefdXt
+js2RIb2MYqIcLIkpCPBhp1MxYZFRFsZ+I49FCLagKUtdkN0MJDw6y3MtVnVH9s2BRtdcNc+BRkmf
+xDDJMDppmFDLpcRu5nPCxWS4ZhqLTjupfq7NEJWxuNVpSHyicT4bt5gy4BbUuTVYemKSF/KIF+t2
+i8vLmhMEVDI00pn89583kfsqdSs8GANsiHhgnkpcYDC/BVfqY42lwGBflRTaGxIkrTUaLQ==</xenc:CipherValue></xenc:CipherData></xenc:EncryptedData></saml:EncryptedID><saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"><saml:SubjectConfirmationData InResponseTo="NtpWr4e1F" NotOnOrAfter="2007-10-19T13:26:07Z" Recipient="https://s-xtra.liberty-iop.org:8443/sfis"></saml:SubjectConfirmationData></saml:SubjectConfirmation></saml:Subject><saml:Conditions NotBefore="2007-10-19T13:11:07Z" NotOnOrAfter="2007-10-19T13:26:07Z"><saml:AudienceRestriction><saml:Audience>https://s-xtra.liberty-iop.org:8443/sfis?o=B</saml:Audience></saml:AudienceRestriction></saml:Conditions><saml:AuthnStatement AuthnInstant="2007-10-19T13:15:39Z" SessionIndex="ccddcf6453490bc214cfcc40ab798eb1"><saml:SubjectLocality Address="193.172.60.55" DNSName="193.172.60.55"></saml:SubjectLocality><saml:AuthnContext><saml:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml:AuthnContextClassRef></saml:AuthnContext></saml:AuthnStatement></saml:Assertion>
+Canon sha1 of Assertion verified OK 5

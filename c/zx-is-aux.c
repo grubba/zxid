@@ -65,7 +65,9 @@ void zx_FREE_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x, int free_st
 
   zx_free_attr(c, x->name, free_strs);
 
-  for (e = &x->Help->gg; e; e = en) {
+  for (e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Help(c, (struct zx_is_Help_s*)e, free_strs);
   }
@@ -109,7 +111,9 @@ void zx_DUP_STRS_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x)
 
   zx_dup_attr(c, x->name);
 
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Help(c, (struct zx_is_Help_s*)se);
   zx_dup_strs_simple_elems(c, x->Hint);
   zx_dup_strs_simple_elems(c, x->Label);
@@ -134,7 +138,9 @@ struct zx_is_Confirm_s* zx_DEEP_CLONE_is_Confirm(struct zx_ctx* c, struct zx_is_
 
   x->name = zx_clone_attr(c, x->name);
 
-  for (enn = 0, e = &x->Help->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Help(c,(struct zx_is_Help_s*)e,dup_strs);
   	  if (!enn)
   	      x->Help = (struct zx_is_Help_s*)en;
@@ -168,7 +174,9 @@ int zx_WALK_SO_is_Confirm(struct zx_ctx* c, struct zx_is_Confirm_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Help->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Help(c, (struct zx_is_Help_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -375,19 +383,27 @@ void zx_FREE_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x, int free_st
   zx_free_attr(c, x->id, free_strs);
   zx_free_attr(c, x->title, free_strs);
 
-  for (e = &x->Help->gg; e; e = en) {
+  for (e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Help(c, (struct zx_is_Help_s*)e, free_strs);
   }
-  for (e = &x->Select->gg; e; e = en) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_is_Select_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Select(c, (struct zx_is_Select_s*)e, free_strs);
   }
-  for (e = &x->Confirm->gg; e; e = en) {
+  for (e = &x->Confirm->gg;
+       e && e->g.tok == zx_is_Confirm_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Confirm(c, (struct zx_is_Confirm_s*)e, free_strs);
   }
-  for (e = &x->Text->gg; e; e = en) {
+  for (e = &x->Text->gg;
+       e && e->g.tok == zx_is_Text_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Text(c, (struct zx_is_Text_s*)e, free_strs);
   }
@@ -429,13 +445,21 @@ void zx_DUP_STRS_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x)
   zx_dup_attr(c, x->id);
   zx_dup_attr(c, x->title);
 
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Help(c, (struct zx_is_Help_s*)se);
-  for (se = &x->Select->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Select->gg;
+       se && se->g.tok == zx_is_Select_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Select(c, (struct zx_is_Select_s*)se);
-  for (se = &x->Confirm->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Confirm->gg;
+       se && se->g.tok == zx_is_Confirm_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Confirm(c, (struct zx_is_Confirm_s*)se);
-  for (se = &x->Text->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Text->gg;
+       se && se->g.tok == zx_is_Text_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Text(c, (struct zx_is_Text_s*)se);
 
 }
@@ -458,7 +482,9 @@ struct zx_is_Inquiry_s* zx_DEEP_CLONE_is_Inquiry(struct zx_ctx* c, struct zx_is_
   x->id = zx_clone_attr(c, x->id);
   x->title = zx_clone_attr(c, x->title);
 
-  for (enn = 0, e = &x->Help->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Help(c,(struct zx_is_Help_s*)e,dup_strs);
   	  if (!enn)
   	      x->Help = (struct zx_is_Help_s*)en;
@@ -466,7 +492,9 @@ struct zx_is_Inquiry_s* zx_DEEP_CLONE_is_Inquiry(struct zx_ctx* c, struct zx_is_
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Select->gg;
+       e && e->g.tok == zx_is_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Select(c,(struct zx_is_Select_s*)e,dup_strs);
   	  if (!enn)
   	      x->Select = (struct zx_is_Select_s*)en;
@@ -474,7 +502,9 @@ struct zx_is_Inquiry_s* zx_DEEP_CLONE_is_Inquiry(struct zx_ctx* c, struct zx_is_
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Confirm->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Confirm->gg;
+       e && e->g.tok == zx_is_Confirm_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Confirm(c,(struct zx_is_Confirm_s*)e,dup_strs);
   	  if (!enn)
   	      x->Confirm = (struct zx_is_Confirm_s*)en;
@@ -482,7 +512,9 @@ struct zx_is_Inquiry_s* zx_DEEP_CLONE_is_Inquiry(struct zx_ctx* c, struct zx_is_
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Text->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Text->gg;
+       e && e->g.tok == zx_is_Text_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Text(c,(struct zx_is_Text_s*)e,dup_strs);
   	  if (!enn)
   	      x->Text = (struct zx_is_Text_s*)en;
@@ -513,22 +545,30 @@ int zx_WALK_SO_is_Inquiry(struct zx_ctx* c, struct zx_is_Inquiry_s* x, void* ctx
   if (ret)
     return ret;
 
-  for (e = &x->Help->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Help(c, (struct zx_is_Help_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Select->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Select->gg;
+       e && e->g.tok == zx_is_Select_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Select(c, (struct zx_is_Select_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Confirm->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Confirm->gg;
+       e && e->g.tok == zx_is_Confirm_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Confirm(c, (struct zx_is_Confirm_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Text->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Text->gg;
+       e && e->g.tok == zx_is_Text_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Text(c, (struct zx_is_Text_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -589,11 +629,15 @@ void zx_FREE_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionReq
   zx_free_attr(c, x->maxInteractTime, free_strs);
   zx_free_attr(c, x->signed_is_c_keyword, free_strs);
 
-  for (e = &x->Inquiry->gg; e; e = en) {
+  for (e = &x->Inquiry->gg;
+       e && e->g.tok == zx_is_Inquiry_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Inquiry(c, (struct zx_is_Inquiry_s*)e, free_strs);
   }
-  for (e = &x->KeyInfo->gg; e; e = en) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, free_strs);
   }
@@ -637,9 +681,13 @@ void zx_DUP_STRS_is_InteractionRequest(struct zx_ctx* c, struct zx_is_Interactio
   zx_dup_attr(c, x->maxInteractTime);
   zx_dup_attr(c, x->signed_is_c_keyword);
 
-  for (se = &x->Inquiry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Inquiry->gg;
+       se && se->g.tok == zx_is_Inquiry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Inquiry(c, (struct zx_is_Inquiry_s*)se);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
 
 }
@@ -664,7 +712,9 @@ struct zx_is_InteractionRequest_s* zx_DEEP_CLONE_is_InteractionRequest(struct zx
   x->maxInteractTime = zx_clone_attr(c, x->maxInteractTime);
   x->signed_is_c_keyword = zx_clone_attr(c, x->signed_is_c_keyword);
 
-  for (enn = 0, e = &x->Inquiry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Inquiry->gg;
+       e && e->g.tok == zx_is_Inquiry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Inquiry(c,(struct zx_is_Inquiry_s*)e,dup_strs);
   	  if (!enn)
   	      x->Inquiry = (struct zx_is_Inquiry_s*)en;
@@ -672,7 +722,9 @@ struct zx_is_InteractionRequest_s* zx_DEEP_CLONE_is_InteractionRequest(struct zx
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_KeyInfo(c,(struct zx_ds_KeyInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyInfo = (struct zx_ds_KeyInfo_s*)en;
@@ -703,12 +755,16 @@ int zx_WALK_SO_is_InteractionRequest(struct zx_ctx* c, struct zx_is_InteractionR
   if (ret)
     return ret;
 
-  for (e = &x->Inquiry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Inquiry->gg;
+       e && e->g.tok == zx_is_Inquiry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Inquiry(c, (struct zx_is_Inquiry_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -765,15 +821,21 @@ void zx_FREE_is_InteractionResponse(struct zx_ctx* c, struct zx_is_InteractionRe
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Status->gg; e; e = en) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_lu_Status(c, (struct zx_lu_Status_s*)e, free_strs);
   }
-  for (e = &x->InteractionStatement->gg; e; e = en) {
+  for (e = &x->InteractionStatement->gg;
+       e && e->g.tok == zx_is_InteractionStatement_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_InteractionStatement(c, (struct zx_is_InteractionStatement_s*)e, free_strs);
   }
-  for (e = &x->Parameter->gg; e; e = en) {
+  for (e = &x->Parameter->gg;
+       e && e->g.tok == zx_is_Parameter_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Parameter(c, (struct zx_is_Parameter_s*)e, free_strs);
   }
@@ -813,11 +875,17 @@ void zx_DUP_STRS_is_InteractionResponse(struct zx_ctx* c, struct zx_is_Interacti
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_lu_Status(c, (struct zx_lu_Status_s*)se);
-  for (se = &x->InteractionStatement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InteractionStatement->gg;
+       se && se->g.tok == zx_is_InteractionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_InteractionStatement(c, (struct zx_is_InteractionStatement_s*)se);
-  for (se = &x->Parameter->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Parameter->gg;
+       se && se->g.tok == zx_is_Parameter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Parameter(c, (struct zx_is_Parameter_s*)se);
 
 }
@@ -838,7 +906,9 @@ struct zx_is_InteractionResponse_s* zx_DEEP_CLONE_is_InteractionResponse(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_lu_Status(c,(struct zx_lu_Status_s*)e,dup_strs);
   	  if (!enn)
   	      x->Status = (struct zx_lu_Status_s*)en;
@@ -846,7 +916,9 @@ struct zx_is_InteractionResponse_s* zx_DEEP_CLONE_is_InteractionResponse(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->InteractionStatement->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->InteractionStatement->gg;
+       e && e->g.tok == zx_is_InteractionStatement_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_InteractionStatement(c,(struct zx_is_InteractionStatement_s*)e,dup_strs);
   	  if (!enn)
   	      x->InteractionStatement = (struct zx_is_InteractionStatement_s*)en;
@@ -854,7 +926,9 @@ struct zx_is_InteractionResponse_s* zx_DEEP_CLONE_is_InteractionResponse(struct 
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Parameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Parameter->gg;
+       e && e->g.tok == zx_is_Parameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Parameter(c,(struct zx_is_Parameter_s*)e,dup_strs);
   	  if (!enn)
   	      x->Parameter = (struct zx_is_Parameter_s*)en;
@@ -885,17 +959,23 @@ int zx_WALK_SO_is_InteractionResponse(struct zx_ctx* c, struct zx_is_Interaction
   if (ret)
     return ret;
 
-  for (e = &x->Status->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Status->gg;
+       e && e->g.tok == zx_lu_Status_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_lu_Status(c, (struct zx_lu_Status_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->InteractionStatement->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->InteractionStatement->gg;
+       e && e->g.tok == zx_is_InteractionStatement_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_InteractionStatement(c, (struct zx_is_InteractionStatement_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Parameter->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Parameter->gg;
+       e && e->g.tok == zx_is_Parameter_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Parameter(c, (struct zx_is_Parameter_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -952,11 +1032,15 @@ void zx_FREE_is_InteractionStatement(struct zx_ctx* c, struct zx_is_InteractionS
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->Inquiry->gg; e; e = en) {
+  for (e = &x->Inquiry->gg;
+       e && e->g.tok == zx_is_Inquiry_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Inquiry(c, (struct zx_is_Inquiry_s*)e, free_strs);
   }
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
@@ -996,9 +1080,13 @@ void zx_DUP_STRS_is_InteractionStatement(struct zx_ctx* c, struct zx_is_Interact
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->Inquiry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Inquiry->gg;
+       se && se->g.tok == zx_is_Inquiry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Inquiry(c, (struct zx_is_Inquiry_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
 }
@@ -1019,7 +1107,9 @@ struct zx_is_InteractionStatement_s* zx_DEEP_CLONE_is_InteractionStatement(struc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->Inquiry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Inquiry->gg;
+       e && e->g.tok == zx_is_Inquiry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Inquiry(c,(struct zx_is_Inquiry_s*)e,dup_strs);
   	  if (!enn)
   	      x->Inquiry = (struct zx_is_Inquiry_s*)en;
@@ -1027,7 +1117,9 @@ struct zx_is_InteractionStatement_s* zx_DEEP_CLONE_is_InteractionStatement(struc
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -1058,12 +1150,16 @@ int zx_WALK_SO_is_InteractionStatement(struct zx_ctx* c, struct zx_is_Interactio
   if (ret)
     return ret;
 
-  for (e = &x->Inquiry->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Inquiry->gg;
+       e && e->g.tok == zx_is_Inquiry_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Inquiry(c, (struct zx_is_Inquiry_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1400,14 +1496,18 @@ void zx_FREE_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x, int free_strs
   zx_free_attr(c, x->multiple, free_strs);
   zx_free_attr(c, x->name, free_strs);
 
-  for (e = &x->Help->gg; e; e = en) {
+  for (e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Help(c, (struct zx_is_Help_s*)e, free_strs);
   }
   zx_free_simple_elems(c, x->Hint, free_strs);
   zx_free_simple_elems(c, x->Label, free_strs);
   zx_free_simple_elems(c, x->Value, free_strs);
-  for (e = &x->Item->gg; e; e = en) {
+  for (e = &x->Item->gg;
+       e && e->g.tok == zx_is_Item_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Item(c, (struct zx_is_Item_s*)e, free_strs);
   }
@@ -1449,12 +1549,16 @@ void zx_DUP_STRS_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x)
   zx_dup_attr(c, x->multiple);
   zx_dup_attr(c, x->name);
 
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Help(c, (struct zx_is_Help_s*)se);
   zx_dup_strs_simple_elems(c, x->Hint);
   zx_dup_strs_simple_elems(c, x->Label);
   zx_dup_strs_simple_elems(c, x->Value);
-  for (se = &x->Item->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Item->gg;
+       se && se->g.tok == zx_is_Item_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Item(c, (struct zx_is_Item_s*)se);
 
 }
@@ -1477,7 +1581,9 @@ struct zx_is_Select_s* zx_DEEP_CLONE_is_Select(struct zx_ctx* c, struct zx_is_Se
   x->multiple = zx_clone_attr(c, x->multiple);
   x->name = zx_clone_attr(c, x->name);
 
-  for (enn = 0, e = &x->Help->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Help(c,(struct zx_is_Help_s*)e,dup_strs);
   	  if (!enn)
   	      x->Help = (struct zx_is_Help_s*)en;
@@ -1488,7 +1594,9 @@ struct zx_is_Select_s* zx_DEEP_CLONE_is_Select(struct zx_ctx* c, struct zx_is_Se
   x->Hint = zx_deep_clone_simple_elems(c,x->Hint, dup_strs);
   x->Label = zx_deep_clone_simple_elems(c,x->Label, dup_strs);
   x->Value = zx_deep_clone_simple_elems(c,x->Value, dup_strs);
-  for (enn = 0, e = &x->Item->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Item->gg;
+       e && e->g.tok == zx_is_Item_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Item(c,(struct zx_is_Item_s*)e,dup_strs);
   	  if (!enn)
   	      x->Item = (struct zx_is_Item_s*)en;
@@ -1519,7 +1627,9 @@ int zx_WALK_SO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x, void* ctx, 
   if (ret)
     return ret;
 
-  for (e = &x->Help->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Help(c, (struct zx_is_Help_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1533,7 +1643,9 @@ int zx_WALK_SO_is_Select(struct zx_ctx* c, struct zx_is_Select_s* x, void* ctx, 
   ret = zx_walk_so_simple_elems(c, x->Value, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Item->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Item->gg;
+       e && e->g.tok == zx_is_Item_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Item(c, (struct zx_is_Item_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1594,7 +1706,9 @@ void zx_FREE_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x, int free_strs)
   zx_free_attr(c, x->minChars, free_strs);
   zx_free_attr(c, x->name, free_strs);
 
-  for (e = &x->Help->gg; e; e = en) {
+  for (e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_is_Help(c, (struct zx_is_Help_s*)e, free_strs);
   }
@@ -1641,7 +1755,9 @@ void zx_DUP_STRS_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x)
   zx_dup_attr(c, x->minChars);
   zx_dup_attr(c, x->name);
 
-  for (se = &x->Help->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Help->gg;
+       se && se->g.tok == zx_is_Help_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_is_Help(c, (struct zx_is_Help_s*)se);
   zx_dup_strs_simple_elems(c, x->Hint);
   zx_dup_strs_simple_elems(c, x->Label);
@@ -1669,7 +1785,9 @@ struct zx_is_Text_s* zx_DEEP_CLONE_is_Text(struct zx_ctx* c, struct zx_is_Text_s
   x->minChars = zx_clone_attr(c, x->minChars);
   x->name = zx_clone_attr(c, x->name);
 
-  for (enn = 0, e = &x->Help->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_is_Help(c,(struct zx_is_Help_s*)e,dup_strs);
   	  if (!enn)
   	      x->Help = (struct zx_is_Help_s*)en;
@@ -1703,7 +1821,9 @@ int zx_WALK_SO_is_Text(struct zx_ctx* c, struct zx_is_Text_s* x, void* ctx, int 
   if (ret)
     return ret;
 
-  for (e = &x->Help->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Help->gg;
+       e && e->g.tok == zx_is_Help_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_is_Help(c, (struct zx_is_Help_s*)e, ctx, callback);
     if (ret)
       return ret;

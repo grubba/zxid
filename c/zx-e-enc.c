@@ -85,7 +85,7 @@ int zx_LEN_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x )
   int len = sizeof("<e:Body")-1 + 1 + sizeof("</e:Body>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -94,457 +94,909 @@ int zx_LEN_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->ArtifactResolve->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ArtifactResolve->gg;
+       se && se->g.tok == zx_sp_ArtifactResolve_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_ArtifactResolve(c, (struct zx_sp_ArtifactResolve_s*)se);
-  for (se = &x->ArtifactResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ArtifactResponse->gg;
+       se && se->g.tok == zx_sp_ArtifactResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_ArtifactResponse(c, (struct zx_sp_ArtifactResponse_s*)se);
-  for (se = &x->ManageNameIDRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ManageNameIDRequest->gg;
+       se && se->g.tok == zx_sp_ManageNameIDRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_ManageNameIDRequest(c, (struct zx_sp_ManageNameIDRequest_s*)se);
-  for (se = &x->ManageNameIDResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ManageNameIDResponse->gg;
+       se && se->g.tok == zx_sp_ManageNameIDResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_ManageNameIDResponse(c, (struct zx_sp_ManageNameIDResponse_s*)se);
-  for (se = &x->LogoutRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LogoutRequest->gg;
+       se && se->g.tok == zx_sp_LogoutRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_LogoutRequest(c, (struct zx_sp_LogoutRequest_s*)se);
-  for (se = &x->LogoutResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LogoutResponse->gg;
+       se && se->g.tok == zx_sp_LogoutResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_LogoutResponse(c, (struct zx_sp_LogoutResponse_s*)se);
-  for (se = &x->NameIDMappingRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIDMappingRequest->gg;
+       se && se->g.tok == zx_sp_NameIDMappingRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_NameIDMappingRequest(c, (struct zx_sp_NameIDMappingRequest_s*)se);
-  for (se = &x->NameIDMappingResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIDMappingResponse->gg;
+       se && se->g.tok == zx_sp_NameIDMappingResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_NameIDMappingResponse(c, (struct zx_sp_NameIDMappingResponse_s*)se);
-  for (se = &x->AttributeQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeQuery->gg;
+       se && se->g.tok == zx_sp_AttributeQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_AttributeQuery(c, (struct zx_sp_AttributeQuery_s*)se);
-  for (se = &x->AuthnQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnQuery->gg;
+       se && se->g.tok == zx_sp_AuthnQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_AuthnQuery(c, (struct zx_sp_AuthnQuery_s*)se);
-  for (se = &x->AuthzDecisionQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthzDecisionQuery->gg;
+       se && se->g.tok == zx_sp_AuthzDecisionQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_AuthzDecisionQuery(c, (struct zx_sp_AuthzDecisionQuery_s*)se);
-  for (se = &x->AssertionIDRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequest->gg;
+       se && se->g.tok == zx_sp_AssertionIDRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_AssertionIDRequest(c, (struct zx_sp_AssertionIDRequest_s*)se);
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_sp_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_Response(c, (struct zx_sp_Response_s*)se);
-  for (se = &x->AuthnRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnRequest->gg;
+       se && se->g.tok == zx_sp_AuthnRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp_AuthnRequest(c, (struct zx_sp_AuthnRequest_s*)se);
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_sp11_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp11_Request(c, (struct zx_sp11_Request_s*)se);
-  for (se = &x->sp11_Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->sp11_Response->gg;
+       se && se->g.tok == zx_sp11_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sp11_Response(c, (struct zx_sp11_Response_s*)se);
-  for (se = &x->RegisterNameIdentifierRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RegisterNameIdentifierRequest->gg;
+       se && se->g.tok == zx_ff12_RegisterNameIdentifierRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_RegisterNameIdentifierRequest(c, (struct zx_ff12_RegisterNameIdentifierRequest_s*)se);
-  for (se = &x->RegisterNameIdentifierResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RegisterNameIdentifierResponse->gg;
+       se && se->g.tok == zx_ff12_RegisterNameIdentifierResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_RegisterNameIdentifierResponse(c, (struct zx_ff12_RegisterNameIdentifierResponse_s*)se);
-  for (se = &x->FederationTerminationNotification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FederationTerminationNotification->gg;
+       se && se->g.tok == zx_ff12_FederationTerminationNotification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_FederationTerminationNotification(c, (struct zx_ff12_FederationTerminationNotification_s*)se);
-  for (se = &x->ff12_LogoutRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ff12_LogoutRequest->gg;
+       se && se->g.tok == zx_ff12_LogoutRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_LogoutRequest(c, (struct zx_ff12_LogoutRequest_s*)se);
-  for (se = &x->ff12_LogoutResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ff12_LogoutResponse->gg;
+       se && se->g.tok == zx_ff12_LogoutResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_LogoutResponse(c, (struct zx_ff12_LogoutResponse_s*)se);
-  for (se = &x->NameIdentifierMappingRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIdentifierMappingRequest->gg;
+       se && se->g.tok == zx_ff12_NameIdentifierMappingRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_NameIdentifierMappingRequest(c, (struct zx_ff12_NameIdentifierMappingRequest_s*)se);
-  for (se = &x->NameIdentifierMappingResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIdentifierMappingResponse->gg;
+       se && se->g.tok == zx_ff12_NameIdentifierMappingResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ff12_NameIdentifierMappingResponse(c, (struct zx_ff12_NameIdentifierMappingResponse_s*)se);
-  for (se = &x->XACMLAuthzDecisionQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->XACMLAuthzDecisionQuery->gg;
+       se && se->g.tok == zx_xasp_XACMLAuthzDecisionQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xasp_XACMLAuthzDecisionQuery(c, (struct zx_xasp_XACMLAuthzDecisionQuery_s*)se);
-  for (se = &x->XACMLPolicyQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->XACMLPolicyQuery->gg;
+       se && se->g.tok == zx_xasp_XACMLPolicyQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xasp_XACMLPolicyQuery(c, (struct zx_xasp_XACMLPolicyQuery_s*)se);
-  for (se = &x->xaspcd1_XACMLAuthzDecisionQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xaspcd1_XACMLAuthzDecisionQuery->gg;
+       se && se->g.tok == zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(c, (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)se);
-  for (se = &x->xaspcd1_XACMLPolicyQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xaspcd1_XACMLPolicyQuery->gg;
+       se && se->g.tok == zx_xaspcd1_XACMLPolicyQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xaspcd1_XACMLPolicyQuery(c, (struct zx_xaspcd1_XACMLPolicyQuery_s*)se);
-  for (se = &x->xac_Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xac_Request->gg;
+       se && se->g.tok == zx_xac_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xac_Request(c, (struct zx_xac_Request_s*)se);
-  for (se = &x->xac_Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xac_Response->gg;
+       se && se->g.tok == zx_xac_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xac_Response(c, (struct zx_xac_Response_s*)se);
-  for (se = &x->Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Query->gg;
+       se && se->g.tok == zx_di_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_Query(c, (struct zx_di_Query_s*)se);
-  for (se = &x->QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryResponse->gg;
+       se && se->g.tok == zx_di_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_QueryResponse(c, (struct zx_di_QueryResponse_s*)se);
-  for (se = &x->di12_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->di12_Query->gg;
+       se && se->g.tok == zx_di12_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Query(c, (struct zx_di12_Query_s*)se);
-  for (se = &x->di12_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->di12_QueryResponse->gg;
+       se && se->g.tok == zx_di12_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_QueryResponse(c, (struct zx_di12_QueryResponse_s*)se);
-  for (se = &x->Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Modify->gg;
+       se && se->g.tok == zx_di12_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_Modify(c, (struct zx_di12_Modify_s*)se);
-  for (se = &x->ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ModifyResponse->gg;
+       se && se->g.tok == zx_di12_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di12_ModifyResponse(c, (struct zx_di12_ModifyResponse_s*)se);
-  for (se = &x->Fault->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Fault->gg;
+       se && se->g.tok == zx_e_Fault_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_e_Fault(c, (struct zx_e_Fault_s*)se);
-  for (se = &x->SvcMDAssociationAdd->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationAdd->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationAdd_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDAssociationAdd(c, (struct zx_di_SvcMDAssociationAdd_s*)se);
-  for (se = &x->SvcMDAssociationAddResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationAddResponse->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationAddResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDAssociationAddResponse(c, (struct zx_di_SvcMDAssociationAddResponse_s*)se);
-  for (se = &x->SvcMDAssociationDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationDelete->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDAssociationDelete(c, (struct zx_di_SvcMDAssociationDelete_s*)se);
-  for (se = &x->SvcMDAssociationDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationDeleteResponse->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDAssociationDeleteResponse(c, (struct zx_di_SvcMDAssociationDeleteResponse_s*)se);
-  for (se = &x->SvcMDAssociationQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationQuery->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDAssociationQuery(c, (struct zx_di_SvcMDAssociationQuery_s*)se);
-  for (se = &x->SvcMDAssociationQueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationQueryResponse->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationQueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDAssociationQueryResponse(c, (struct zx_di_SvcMDAssociationQueryResponse_s*)se);
-  for (se = &x->SvcMDRegister->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDRegister->gg;
+       se && se->g.tok == zx_di_SvcMDRegister_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDRegister(c, (struct zx_di_SvcMDRegister_s*)se);
-  for (se = &x->SvcMDRegisterResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDRegisterResponse->gg;
+       se && se->g.tok == zx_di_SvcMDRegisterResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDRegisterResponse(c, (struct zx_di_SvcMDRegisterResponse_s*)se);
-  for (se = &x->SvcMDDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDDelete->gg;
+       se && se->g.tok == zx_di_SvcMDDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDDelete(c, (struct zx_di_SvcMDDelete_s*)se);
-  for (se = &x->SvcMDDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDDeleteResponse->gg;
+       se && se->g.tok == zx_di_SvcMDDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDDeleteResponse(c, (struct zx_di_SvcMDDeleteResponse_s*)se);
-  for (se = &x->SvcMDQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDQuery->gg;
+       se && se->g.tok == zx_di_SvcMDQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDQuery(c, (struct zx_di_SvcMDQuery_s*)se);
-  for (se = &x->SvcMDQueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDQueryResponse->gg;
+       se && se->g.tok == zx_di_SvcMDQueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDQueryResponse(c, (struct zx_di_SvcMDQueryResponse_s*)se);
-  for (se = &x->SvcMDReplace->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDReplace->gg;
+       se && se->g.tok == zx_di_SvcMDReplace_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDReplace(c, (struct zx_di_SvcMDReplace_s*)se);
-  for (se = &x->SvcMDReplaceResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDReplaceResponse->gg;
+       se && se->g.tok == zx_di_SvcMDReplaceResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_di_SvcMDReplaceResponse(c, (struct zx_di_SvcMDReplaceResponse_s*)se);
-  for (se = &x->Create->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Create->gg;
+       se && se->g.tok == zx_dap_Create_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_Create(c, (struct zx_dap_Create_s*)se);
-  for (se = &x->CreateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreateResponse->gg;
+       se && se->g.tok == zx_dap_CreateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_CreateResponse(c, (struct zx_dap_CreateResponse_s*)se);
-  for (se = &x->dap_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->dap_Query->gg;
+       se && se->g.tok == zx_dap_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_Query(c, (struct zx_dap_Query_s*)se);
-  for (se = &x->dap_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->dap_QueryResponse->gg;
+       se && se->g.tok == zx_dap_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_QueryResponse(c, (struct zx_dap_QueryResponse_s*)se);
-  for (se = &x->dap_Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->dap_Modify->gg;
+       se && se->g.tok == zx_dap_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_Modify(c, (struct zx_dap_Modify_s*)se);
-  for (se = &x->dap_ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->dap_ModifyResponse->gg;
+       se && se->g.tok == zx_dap_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_ModifyResponse(c, (struct zx_dap_ModifyResponse_s*)se);
-  for (se = &x->Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Delete->gg;
+       se && se->g.tok == zx_dap_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_Delete(c, (struct zx_dap_Delete_s*)se);
-  for (se = &x->DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteResponse->gg;
+       se && se->g.tok == zx_dap_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_DeleteResponse(c, (struct zx_dap_DeleteResponse_s*)se);
-  for (se = &x->Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notify->gg;
+       se && se->g.tok == zx_dap_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_Notify(c, (struct zx_dap_Notify_s*)se);
-  for (se = &x->NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NotifyResponse->gg;
+       se && se->g.tok == zx_dap_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_dap_NotifyResponse(c, (struct zx_dap_NotifyResponse_s*)se);
-  for (se = &x->AddEntityRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddEntityRequest->gg;
+       se && se->g.tok == zx_ps_AddEntityRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_AddEntityRequest(c, (struct zx_ps_AddEntityRequest_s*)se);
-  for (se = &x->AddEntityResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddEntityResponse->gg;
+       se && se->g.tok == zx_ps_AddEntityResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_AddEntityResponse(c, (struct zx_ps_AddEntityResponse_s*)se);
-  for (se = &x->AddKnownEntityRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddKnownEntityRequest->gg;
+       se && se->g.tok == zx_ps_AddKnownEntityRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_AddKnownEntityRequest(c, (struct zx_ps_AddKnownEntityRequest_s*)se);
-  for (se = &x->AddKnownEntityResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddKnownEntityResponse->gg;
+       se && se->g.tok == zx_ps_AddKnownEntityResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_AddKnownEntityResponse(c, (struct zx_ps_AddKnownEntityResponse_s*)se);
-  for (se = &x->AddCollectionRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddCollectionRequest->gg;
+       se && se->g.tok == zx_ps_AddCollectionRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_AddCollectionRequest(c, (struct zx_ps_AddCollectionRequest_s*)se);
-  for (se = &x->AddCollectionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddCollectionResponse->gg;
+       se && se->g.tok == zx_ps_AddCollectionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_AddCollectionResponse(c, (struct zx_ps_AddCollectionResponse_s*)se);
-  for (se = &x->AddToCollectionRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddToCollectionRequest->gg;
+       se && se->g.tok == zx_ps_AddToCollectionRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_AddToCollectionRequest(c, (struct zx_ps_AddToCollectionRequest_s*)se);
-  for (se = &x->AddToCollectionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddToCollectionResponse->gg;
+       se && se->g.tok == zx_ps_AddToCollectionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_AddToCollectionResponse(c, (struct zx_ps_AddToCollectionResponse_s*)se);
-  for (se = &x->RemoveEntityRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveEntityRequest->gg;
+       se && se->g.tok == zx_ps_RemoveEntityRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_RemoveEntityRequest(c, (struct zx_ps_RemoveEntityRequest_s*)se);
-  for (se = &x->RemoveEntityResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveEntityResponse->gg;
+       se && se->g.tok == zx_ps_RemoveEntityResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_RemoveEntityResponse(c, (struct zx_ps_RemoveEntityResponse_s*)se);
-  for (se = &x->RemoveCollectionRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveCollectionRequest->gg;
+       se && se->g.tok == zx_ps_RemoveCollectionRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_RemoveCollectionRequest(c, (struct zx_ps_RemoveCollectionRequest_s*)se);
-  for (se = &x->RemoveCollectionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveCollectionResponse->gg;
+       se && se->g.tok == zx_ps_RemoveCollectionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_RemoveCollectionResponse(c, (struct zx_ps_RemoveCollectionResponse_s*)se);
-  for (se = &x->RemoveFromCollectionRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveFromCollectionRequest->gg;
+       se && se->g.tok == zx_ps_RemoveFromCollectionRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_RemoveFromCollectionRequest(c, (struct zx_ps_RemoveFromCollectionRequest_s*)se);
-  for (se = &x->RemoveFromCollectionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveFromCollectionResponse->gg;
+       se && se->g.tok == zx_ps_RemoveFromCollectionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_RemoveFromCollectionResponse(c, (struct zx_ps_RemoveFromCollectionResponse_s*)se);
-  for (se = &x->ListMembersRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ListMembersRequest->gg;
+       se && se->g.tok == zx_ps_ListMembersRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_ListMembersRequest(c, (struct zx_ps_ListMembersRequest_s*)se);
-  for (se = &x->ListMembersResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ListMembersResponse->gg;
+       se && se->g.tok == zx_ps_ListMembersResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_ListMembersResponse(c, (struct zx_ps_ListMembersResponse_s*)se);
-  for (se = &x->QueryObjectsRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryObjectsRequest->gg;
+       se && se->g.tok == zx_ps_QueryObjectsRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_QueryObjectsRequest(c, (struct zx_ps_QueryObjectsRequest_s*)se);
-  for (se = &x->QueryObjectsResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryObjectsResponse->gg;
+       se && se->g.tok == zx_ps_QueryObjectsResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_QueryObjectsResponse(c, (struct zx_ps_QueryObjectsResponse_s*)se);
-  for (se = &x->GetObjectInfoRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectInfoRequest->gg;
+       se && se->g.tok == zx_ps_GetObjectInfoRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_GetObjectInfoRequest(c, (struct zx_ps_GetObjectInfoRequest_s*)se);
-  for (se = &x->GetObjectInfoResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectInfoResponse->gg;
+       se && se->g.tok == zx_ps_GetObjectInfoResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_GetObjectInfoResponse(c, (struct zx_ps_GetObjectInfoResponse_s*)se);
-  for (se = &x->SetObjectInfoRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetObjectInfoRequest->gg;
+       se && se->g.tok == zx_ps_SetObjectInfoRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_SetObjectInfoRequest(c, (struct zx_ps_SetObjectInfoRequest_s*)se);
-  for (se = &x->SetObjectInfoResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetObjectInfoResponse->gg;
+       se && se->g.tok == zx_ps_SetObjectInfoResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_SetObjectInfoResponse(c, (struct zx_ps_SetObjectInfoResponse_s*)se);
-  for (se = &x->TestMembershipRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestMembershipRequest->gg;
+       se && se->g.tok == zx_ps_TestMembershipRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_TestMembershipRequest(c, (struct zx_ps_TestMembershipRequest_s*)se);
-  for (se = &x->TestMembershipResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestMembershipResponse->gg;
+       se && se->g.tok == zx_ps_TestMembershipResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_TestMembershipResponse(c, (struct zx_ps_TestMembershipResponse_s*)se);
-  for (se = &x->ResolveIdentifierRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResolveIdentifierRequest->gg;
+       se && se->g.tok == zx_ps_ResolveIdentifierRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_ResolveIdentifierRequest(c, (struct zx_ps_ResolveIdentifierRequest_s*)se);
-  for (se = &x->ResolveIdentifierResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResolveIdentifierResponse->gg;
+       se && se->g.tok == zx_ps_ResolveIdentifierResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_ResolveIdentifierResponse(c, (struct zx_ps_ResolveIdentifierResponse_s*)se);
-  for (se = &x->ps_Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ps_Notify->gg;
+       se && se->g.tok == zx_ps_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_Notify(c, (struct zx_ps_Notify_s*)se);
-  for (se = &x->ps_NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ps_NotifyResponse->gg;
+       se && se->g.tok == zx_ps_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ps_NotifyResponse(c, (struct zx_ps_NotifyResponse_s*)se);
-  for (se = &x->IdentityMappingRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdentityMappingRequest->gg;
+       se && se->g.tok == zx_im_IdentityMappingRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_im_IdentityMappingRequest(c, (struct zx_im_IdentityMappingRequest_s*)se);
-  for (se = &x->IdentityMappingResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdentityMappingResponse->gg;
+       se && se->g.tok == zx_im_IdentityMappingResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_im_IdentityMappingResponse(c, (struct zx_im_IdentityMappingResponse_s*)se);
-  for (se = &x->SASLRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SASLRequest->gg;
+       se && se->g.tok == zx_as_SASLRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_as_SASLRequest(c, (struct zx_as_SASLRequest_s*)se);
-  for (se = &x->SASLResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SASLResponse->gg;
+       se && se->g.tok == zx_as_SASLResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_as_SASLResponse(c, (struct zx_as_SASLResponse_s*)se);
-  for (se = &x->SubmitReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubmitReq->gg;
+       se && se->g.tok == zx_mm7_SubmitReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_SubmitReq(c, (struct zx_mm7_SubmitReq_s*)se);
-  for (se = &x->SubmitRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubmitRsp->gg;
+       se && se->g.tok == zx_mm7_SubmitRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_SubmitRsp(c, (struct zx_mm7_SubmitRsp_s*)se);
-  for (se = &x->DeliverReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliverReq->gg;
+       se && se->g.tok == zx_mm7_DeliverReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_DeliverReq(c, (struct zx_mm7_DeliverReq_s*)se);
-  for (se = &x->DeliverRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliverRsp->gg;
+       se && se->g.tok == zx_mm7_DeliverRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_DeliverRsp(c, (struct zx_mm7_DeliverRsp_s*)se);
-  for (se = &x->CancelReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CancelReq->gg;
+       se && se->g.tok == zx_mm7_CancelReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_CancelReq(c, (struct zx_mm7_CancelReq_s*)se);
-  for (se = &x->CancelRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CancelRsp->gg;
+       se && se->g.tok == zx_mm7_CancelRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_CancelRsp(c, (struct zx_mm7_CancelRsp_s*)se);
-  for (se = &x->ReplaceReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReplaceReq->gg;
+       se && se->g.tok == zx_mm7_ReplaceReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_ReplaceReq(c, (struct zx_mm7_ReplaceReq_s*)se);
-  for (se = &x->ReplaceRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReplaceRsp->gg;
+       se && se->g.tok == zx_mm7_ReplaceRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_ReplaceRsp(c, (struct zx_mm7_ReplaceRsp_s*)se);
-  for (se = &x->extendedCancelReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->extendedCancelReq->gg;
+       se && se->g.tok == zx_mm7_extendedCancelReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_extendedCancelReq(c, (struct zx_mm7_extendedCancelReq_s*)se);
-  for (se = &x->extendedCancelRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->extendedCancelRsp->gg;
+       se && se->g.tok == zx_mm7_extendedCancelRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_extendedCancelRsp(c, (struct zx_mm7_extendedCancelRsp_s*)se);
-  for (se = &x->extendedReplaceReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->extendedReplaceReq->gg;
+       se && se->g.tok == zx_mm7_extendedReplaceReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_extendedReplaceReq(c, (struct zx_mm7_extendedReplaceReq_s*)se);
-  for (se = &x->extendedReplaceRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->extendedReplaceRsp->gg;
+       se && se->g.tok == zx_mm7_extendedReplaceRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_extendedReplaceRsp(c, (struct zx_mm7_extendedReplaceRsp_s*)se);
-  for (se = &x->DeliveryReportReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliveryReportReq->gg;
+       se && se->g.tok == zx_mm7_DeliveryReportReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_DeliveryReportReq(c, (struct zx_mm7_DeliveryReportReq_s*)se);
-  for (se = &x->DeliveryReportRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliveryReportRsp->gg;
+       se && se->g.tok == zx_mm7_DeliveryReportRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_DeliveryReportRsp(c, (struct zx_mm7_DeliveryReportRsp_s*)se);
-  for (se = &x->ReadReplyReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReadReplyReq->gg;
+       se && se->g.tok == zx_mm7_ReadReplyReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_ReadReplyReq(c, (struct zx_mm7_ReadReplyReq_s*)se);
-  for (se = &x->ReadReplyRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReadReplyRsp->gg;
+       se && se->g.tok == zx_mm7_ReadReplyRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_ReadReplyRsp(c, (struct zx_mm7_ReadReplyRsp_s*)se);
-  for (se = &x->RSErrorRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RSErrorRsp->gg;
+       se && se->g.tok == zx_mm7_RSErrorRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_RSErrorRsp(c, (struct zx_mm7_RSErrorRsp_s*)se);
-  for (se = &x->VASPErrorRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VASPErrorRsp->gg;
+       se && se->g.tok == zx_mm7_VASPErrorRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_VASPErrorRsp(c, (struct zx_mm7_VASPErrorRsp_s*)se);
-  for (se = &x->QueryStatusReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryStatusReq->gg;
+       se && se->g.tok == zx_mm7_QueryStatusReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_QueryStatusReq(c, (struct zx_mm7_QueryStatusReq_s*)se);
-  for (se = &x->QueryStatusRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryStatusRsp->gg;
+       se && se->g.tok == zx_mm7_QueryStatusRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_QueryStatusRsp(c, (struct zx_mm7_QueryStatusRsp_s*)se);
-  for (se = &x->cb_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Query->gg;
+       se && se->g.tok == zx_cb_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_Query(c, (struct zx_cb_Query_s*)se);
-  for (se = &x->cb_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_QueryResponse->gg;
+       se && se->g.tok == zx_cb_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_QueryResponse(c, (struct zx_cb_QueryResponse_s*)se);
-  for (se = &x->cb_Create->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Create->gg;
+       se && se->g.tok == zx_cb_Create_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_Create(c, (struct zx_cb_Create_s*)se);
-  for (se = &x->cb_CreateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_CreateResponse->gg;
+       se && se->g.tok == zx_cb_CreateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_CreateResponse(c, (struct zx_cb_CreateResponse_s*)se);
-  for (se = &x->cb_Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Delete->gg;
+       se && se->g.tok == zx_cb_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_Delete(c, (struct zx_cb_Delete_s*)se);
-  for (se = &x->cb_DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_DeleteResponse->gg;
+       se && se->g.tok == zx_cb_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_DeleteResponse(c, (struct zx_cb_DeleteResponse_s*)se);
-  for (se = &x->cb_Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Modify->gg;
+       se && se->g.tok == zx_cb_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_Modify(c, (struct zx_cb_Modify_s*)se);
-  for (se = &x->cb_ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_ModifyResponse->gg;
+       se && se->g.tok == zx_cb_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_ModifyResponse(c, (struct zx_cb_ModifyResponse_s*)se);
-  for (se = &x->cb_Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Notify->gg;
+       se && se->g.tok == zx_cb_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_Notify(c, (struct zx_cb_Notify_s*)se);
-  for (se = &x->cb_NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_NotifyResponse->gg;
+       se && se->g.tok == zx_cb_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_NotifyResponse(c, (struct zx_cb_NotifyResponse_s*)se);
-  for (se = &x->ReportUsage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReportUsage->gg;
+       se && se->g.tok == zx_cb_ReportUsage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_ReportUsage(c, (struct zx_cb_ReportUsage_s*)se);
-  for (se = &x->ReportUsageResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReportUsageResponse->gg;
+       se && se->g.tok == zx_cb_ReportUsageResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_cb_ReportUsageResponse(c, (struct zx_cb_ReportUsageResponse_s*)se);
-  for (se = &x->gl_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Query->gg;
+       se && se->g.tok == zx_gl_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Query(c, (struct zx_gl_Query_s*)se);
-  for (se = &x->gl_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_QueryResponse->gg;
+       se && se->g.tok == zx_gl_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_QueryResponse(c, (struct zx_gl_QueryResponse_s*)se);
-  for (se = &x->gl_Create->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Create->gg;
+       se && se->g.tok == zx_gl_Create_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Create(c, (struct zx_gl_Create_s*)se);
-  for (se = &x->gl_CreateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_CreateResponse->gg;
+       se && se->g.tok == zx_gl_CreateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_CreateResponse(c, (struct zx_gl_CreateResponse_s*)se);
-  for (se = &x->gl_Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Delete->gg;
+       se && se->g.tok == zx_gl_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Delete(c, (struct zx_gl_Delete_s*)se);
-  for (se = &x->gl_DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_DeleteResponse->gg;
+       se && se->g.tok == zx_gl_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_DeleteResponse(c, (struct zx_gl_DeleteResponse_s*)se);
-  for (se = &x->gl_Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Modify->gg;
+       se && se->g.tok == zx_gl_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Modify(c, (struct zx_gl_Modify_s*)se);
-  for (se = &x->gl_ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_ModifyResponse->gg;
+       se && se->g.tok == zx_gl_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_ModifyResponse(c, (struct zx_gl_ModifyResponse_s*)se);
-  for (se = &x->gl_Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Notify->gg;
+       se && se->g.tok == zx_gl_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_Notify(c, (struct zx_gl_Notify_s*)se);
-  for (se = &x->gl_NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_NotifyResponse->gg;
+       se && se->g.tok == zx_gl_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_gl_NotifyResponse(c, (struct zx_gl_NotifyResponse_s*)se);
-  for (se = &x->StoreObjectRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StoreObjectRequest->gg;
+       se && se->g.tok == zx_demomed_StoreObjectRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_StoreObjectRequest(c, (struct zx_demomed_StoreObjectRequest_s*)se);
-  for (se = &x->StoreObjectResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StoreObjectResponse->gg;
+       se && se->g.tok == zx_demomed_StoreObjectResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_StoreObjectResponse(c, (struct zx_demomed_StoreObjectResponse_s*)se);
-  for (se = &x->GetObjectListRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectListRequest->gg;
+       se && se->g.tok == zx_demomed_GetObjectListRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_GetObjectListRequest(c, (struct zx_demomed_GetObjectListRequest_s*)se);
-  for (se = &x->GetObjectListResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectListResponse->gg;
+       se && se->g.tok == zx_demomed_GetObjectListResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_GetObjectListResponse(c, (struct zx_demomed_GetObjectListResponse_s*)se);
-  for (se = &x->GetObjectRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectRequest->gg;
+       se && se->g.tok == zx_demomed_GetObjectRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_GetObjectRequest(c, (struct zx_demomed_GetObjectRequest_s*)se);
-  for (se = &x->GetObjectResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectResponse->gg;
+       se && se->g.tok == zx_demomed_GetObjectResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_GetObjectResponse(c, (struct zx_demomed_GetObjectResponse_s*)se);
-  for (se = &x->DeleteObjectRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteObjectRequest->gg;
+       se && se->g.tok == zx_demomed_DeleteObjectRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_DeleteObjectRequest(c, (struct zx_demomed_DeleteObjectRequest_s*)se);
-  for (se = &x->DeleteObjectResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteObjectResponse->gg;
+       se && se->g.tok == zx_demomed_DeleteObjectResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_demomed_DeleteObjectResponse(c, (struct zx_demomed_DeleteObjectResponse_s*)se);
-  for (se = &x->Provision->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Provision->gg;
+       se && se->g.tok == zx_pmm_Provision_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_Provision(c, (struct zx_pmm_Provision_s*)se);
-  for (se = &x->ProvisionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProvisionResponse->gg;
+       se && se->g.tok == zx_pmm_ProvisionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_ProvisionResponse(c, (struct zx_pmm_ProvisionResponse_s*)se);
-  for (se = &x->PMActivate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMActivate->gg;
+       se && se->g.tok == zx_pmm_PMActivate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMActivate(c, (struct zx_pmm_PMActivate_s*)se);
-  for (se = &x->PMActivateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMActivateResponse->gg;
+       se && se->g.tok == zx_pmm_PMActivateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMActivateResponse(c, (struct zx_pmm_PMActivateResponse_s*)se);
-  for (se = &x->PMDeactivate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeactivate->gg;
+       se && se->g.tok == zx_pmm_PMDeactivate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMDeactivate(c, (struct zx_pmm_PMDeactivate_s*)se);
-  for (se = &x->PMDeactivateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeactivateResponse->gg;
+       se && se->g.tok == zx_pmm_PMDeactivateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMDeactivateResponse(c, (struct zx_pmm_PMDeactivateResponse_s*)se);
-  for (se = &x->PMDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDelete->gg;
+       se && se->g.tok == zx_pmm_PMDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMDelete(c, (struct zx_pmm_PMDelete_s*)se);
-  for (se = &x->PMDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeleteResponse->gg;
+       se && se->g.tok == zx_pmm_PMDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMDeleteResponse(c, (struct zx_pmm_PMDeleteResponse_s*)se);
-  for (se = &x->PMUpdate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMUpdate->gg;
+       se && se->g.tok == zx_pmm_PMUpdate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMUpdate(c, (struct zx_pmm_PMUpdate_s*)se);
-  for (se = &x->PMUpdateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMUpdateResponse->gg;
+       se && se->g.tok == zx_pmm_PMUpdateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMUpdateResponse(c, (struct zx_pmm_PMUpdateResponse_s*)se);
-  for (se = &x->PMGetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMGetStatus->gg;
+       se && se->g.tok == zx_pmm_PMGetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMGetStatus(c, (struct zx_pmm_PMGetStatus_s*)se);
-  for (se = &x->PMGetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMGetStatusResponse->gg;
+       se && se->g.tok == zx_pmm_PMGetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMGetStatusResponse(c, (struct zx_pmm_PMGetStatusResponse_s*)se);
-  for (se = &x->PMSetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMSetStatus->gg;
+       se && se->g.tok == zx_pmm_PMSetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMSetStatus(c, (struct zx_pmm_PMSetStatus_s*)se);
-  for (se = &x->PMSetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMSetStatusResponse->gg;
+       se && se->g.tok == zx_pmm_PMSetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_pmm_PMSetStatusResponse(c, (struct zx_pmm_PMSetStatusResponse_s*)se);
-  for (se = &x->PMERegister->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMERegister->gg;
+       se && se->g.tok == zx_prov_PMERegister_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMERegister(c, (struct zx_prov_PMERegister_s*)se);
-  for (se = &x->PMERegisterResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMERegisterResponse->gg;
+       se && se->g.tok == zx_prov_PMERegisterResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMERegisterResponse(c, (struct zx_prov_PMERegisterResponse_s*)se);
-  for (se = &x->PMEUpload->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEUpload->gg;
+       se && se->g.tok == zx_prov_PMEUpload_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEUpload(c, (struct zx_prov_PMEUpload_s*)se);
-  for (se = &x->PMEUploadResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEUploadResponse->gg;
+       se && se->g.tok == zx_prov_PMEUploadResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEUploadResponse(c, (struct zx_prov_PMEUploadResponse_s*)se);
-  for (se = &x->PMEDownload->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDownload->gg;
+       se && se->g.tok == zx_prov_PMEDownload_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEDownload(c, (struct zx_prov_PMEDownload_s*)se);
-  for (se = &x->PMEDownloadResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDownloadResponse->gg;
+       se && se->g.tok == zx_prov_PMEDownloadResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEDownloadResponse(c, (struct zx_prov_PMEDownloadResponse_s*)se);
-  for (se = &x->PMEEnable->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEEnable->gg;
+       se && se->g.tok == zx_prov_PMEEnable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEEnable(c, (struct zx_prov_PMEEnable_s*)se);
-  for (se = &x->PMEEnableResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEEnableResponse->gg;
+       se && se->g.tok == zx_prov_PMEEnableResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEEnableResponse(c, (struct zx_prov_PMEEnableResponse_s*)se);
-  for (se = &x->PMEDisable->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDisable->gg;
+       se && se->g.tok == zx_prov_PMEDisable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEDisable(c, (struct zx_prov_PMEDisable_s*)se);
-  for (se = &x->PMEDisableResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDisableResponse->gg;
+       se && se->g.tok == zx_prov_PMEDisableResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEDisableResponse(c, (struct zx_prov_PMEDisableResponse_s*)se);
-  for (se = &x->PMEDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDelete->gg;
+       se && se->g.tok == zx_prov_PMEDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEDelete(c, (struct zx_prov_PMEDelete_s*)se);
-  for (se = &x->PMEDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDeleteResponse->gg;
+       se && se->g.tok == zx_prov_PMEDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEDeleteResponse(c, (struct zx_prov_PMEDeleteResponse_s*)se);
-  for (se = &x->PMEGetInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEGetInfo->gg;
+       se && se->g.tok == zx_prov_PMEGetInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEGetInfo(c, (struct zx_prov_PMEGetInfo_s*)se);
-  for (se = &x->PMEGetInfoResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEGetInfoResponse->gg;
+       se && se->g.tok == zx_prov_PMEGetInfoResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMEGetInfoResponse(c, (struct zx_prov_PMEGetInfoResponse_s*)se);
-  for (se = &x->prov_PMGetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMGetStatus->gg;
+       se && se->g.tok == zx_prov_PMGetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMGetStatus(c, (struct zx_prov_PMGetStatus_s*)se);
-  for (se = &x->prov_PMGetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMGetStatusResponse->gg;
+       se && se->g.tok == zx_prov_PMGetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMGetStatusResponse(c, (struct zx_prov_PMGetStatusResponse_s*)se);
-  for (se = &x->prov_PMSetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMSetStatus->gg;
+       se && se->g.tok == zx_prov_PMSetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMSetStatus(c, (struct zx_prov_PMSetStatus_s*)se);
-  for (se = &x->prov_PMSetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMSetStatusResponse->gg;
+       se && se->g.tok == zx_prov_PMSetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMSetStatusResponse(c, (struct zx_prov_PMSetStatusResponse_s*)se);
-  for (se = &x->PMGetDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMGetDescriptor->gg;
+       se && se->g.tok == zx_prov_PMGetDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMGetDescriptor(c, (struct zx_prov_PMGetDescriptor_s*)se);
-  for (se = &x->PMGetDescriptorResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMGetDescriptorResponse->gg;
+       se && se->g.tok == zx_prov_PMGetDescriptorResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMGetDescriptorResponse(c, (struct zx_prov_PMGetDescriptorResponse_s*)se);
-  for (se = &x->prov_PMActivate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMActivate->gg;
+       se && se->g.tok == zx_prov_PMActivate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMActivate(c, (struct zx_prov_PMActivate_s*)se);
-  for (se = &x->prov_PMActivateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMActivateResponse->gg;
+       se && se->g.tok == zx_prov_PMActivateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMActivateResponse(c, (struct zx_prov_PMActivateResponse_s*)se);
-  for (se = &x->prov_PMDeactivate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMDeactivate->gg;
+       se && se->g.tok == zx_prov_PMDeactivate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMDeactivate(c, (struct zx_prov_PMDeactivate_s*)se);
-  for (se = &x->prov_PMDeactivateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMDeactivateResponse->gg;
+       se && se->g.tok == zx_prov_PMDeactivateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMDeactivateResponse(c, (struct zx_prov_PMDeactivateResponse_s*)se);
-  for (se = &x->PMRegisterDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptor->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMRegisterDescriptor(c, (struct zx_prov_PMRegisterDescriptor_s*)se);
-  for (se = &x->PMRegisterDescriptorResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptorResponse->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptorResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMRegisterDescriptorResponse(c, (struct zx_prov_PMRegisterDescriptorResponse_s*)se);
-  for (se = &x->prov_PMUpdate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMUpdate->gg;
+       se && se->g.tok == zx_prov_PMUpdate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMUpdate(c, (struct zx_prov_PMUpdate_s*)se);
-  for (se = &x->prov_PMUpdateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMUpdateResponse->gg;
+       se && se->g.tok == zx_prov_PMUpdateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMUpdateResponse(c, (struct zx_prov_PMUpdateResponse_s*)se);
-  for (se = &x->prov_PMDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMDelete->gg;
+       se && se->g.tok == zx_prov_PMDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMDelete(c, (struct zx_prov_PMDelete_s*)se);
-  for (se = &x->prov_PMDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMDeleteResponse->gg;
+       se && se->g.tok == zx_prov_PMDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PMDeleteResponse(c, (struct zx_prov_PMDeleteResponse_s*)se);
-  for (se = &x->Poll->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Poll->gg;
+       se && se->g.tok == zx_prov_Poll_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_Poll(c, (struct zx_prov_Poll_s*)se);
-  for (se = &x->PollResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PollResponse->gg;
+       se && se->g.tok == zx_prov_PollResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_PollResponse(c, (struct zx_prov_PollResponse_s*)se);
-  for (se = &x->UpdateEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateEPR->gg;
+       se && se->g.tok == zx_prov_UpdateEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_UpdateEPR(c, (struct zx_prov_UpdateEPR_s*)se);
-  for (se = &x->UpdateEPRResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateEPRResponse->gg;
+       se && se->g.tok == zx_prov_UpdateEPRResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_prov_UpdateEPRResponse(c, (struct zx_prov_UpdateEPRResponse_s*)se);
-  for (se = &x->GetAssertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetAssertion->gg;
+       se && se->g.tok == zx_idp_GetAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idp_GetAssertion(c, (struct zx_idp_GetAssertion_s*)se);
-  for (se = &x->GetAssertionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetAssertionResponse->gg;
+       se && se->g.tok == zx_idp_GetAssertionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idp_GetAssertionResponse(c, (struct zx_idp_GetAssertionResponse_s*)se);
-  for (se = &x->GetProviderInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetProviderInfo->gg;
+       se && se->g.tok == zx_idp_GetProviderInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idp_GetProviderInfo(c, (struct zx_idp_GetProviderInfo_s*)se);
-  for (se = &x->GetProviderInfoResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetProviderInfoResponse->gg;
+       se && se->g.tok == zx_idp_GetProviderInfoResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idp_GetProviderInfoResponse(c, (struct zx_idp_GetProviderInfoResponse_s*)se);
-  for (se = &x->CreatedStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreatedStatus->gg;
+       se && se->g.tok == zx_idp_CreatedStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idp_CreatedStatus(c, (struct zx_idp_CreatedStatus_s*)se);
-  for (se = &x->CreatedStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreatedStatusResponse->gg;
+       se && se->g.tok == zx_idp_CreatedStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idp_CreatedStatusResponse(c, (struct zx_idp_CreatedStatusResponse_s*)se);
-  for (se = &x->shps_Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_Delete->gg;
+       se && se->g.tok == zx_shps_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_Delete(c, (struct zx_shps_Delete_s*)se);
-  for (se = &x->shps_DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_DeleteResponse->gg;
+       se && se->g.tok == zx_shps_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_DeleteResponse(c, (struct zx_shps_DeleteResponse_s*)se);
-  for (se = &x->GetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetStatus->gg;
+       se && se->g.tok == zx_shps_GetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_GetStatus(c, (struct zx_shps_GetStatus_s*)se);
-  for (se = &x->GetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetStatusResponse->gg;
+       se && se->g.tok == zx_shps_GetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_GetStatusResponse(c, (struct zx_shps_GetStatusResponse_s*)se);
-  for (se = &x->shps_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_Query->gg;
+       se && se->g.tok == zx_shps_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_Query(c, (struct zx_shps_Query_s*)se);
-  for (se = &x->shps_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_QueryResponse->gg;
+       se && se->g.tok == zx_shps_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_QueryResponse(c, (struct zx_shps_QueryResponse_s*)se);
-  for (se = x->Invoke; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:Invoke")-1, zx_ns_tab+zx_shps_NS);
-  for (se = &x->InvokeResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Invoke;
+    se && se->g.tok == zx_shps_Invoke_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("shps:Invoke")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->InvokeResponse->gg;
+       se && se->g.tok == zx_shps_InvokeResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_InvokeResponse(c, (struct zx_shps_InvokeResponse_s*)se);
-  for (se = &x->QueryRegistered->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryRegistered->gg;
+       se && se->g.tok == zx_shps_QueryRegistered_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_QueryRegistered(c, (struct zx_shps_QueryRegistered_s*)se);
-  for (se = &x->QueryRegisteredResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryRegisteredResponse->gg;
+       se && se->g.tok == zx_shps_QueryRegisteredResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_QueryRegisteredResponse(c, (struct zx_shps_QueryRegisteredResponse_s*)se);
-  for (se = &x->Register->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Register->gg;
+       se && se->g.tok == zx_shps_Register_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_Register(c, (struct zx_shps_Register_s*)se);
-  for (se = &x->RegisterResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RegisterResponse->gg;
+       se && se->g.tok == zx_shps_RegisterResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_RegisterResponse(c, (struct zx_shps_RegisterResponse_s*)se);
-  for (se = &x->SetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetStatus->gg;
+       se && se->g.tok == zx_shps_SetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_SetStatus(c, (struct zx_shps_SetStatus_s*)se);
-  for (se = &x->SetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetStatusResponse->gg;
+       se && se->g.tok == zx_shps_SetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_SetStatusResponse(c, (struct zx_shps_SetStatusResponse_s*)se);
-  for (se = &x->Update->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Update->gg;
+       se && se->g.tok == zx_shps_Update_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_Update(c, (struct zx_shps_Update_s*)se);
-  for (se = &x->UpdateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateResponse->gg;
+       se && se->g.tok == zx_shps_UpdateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_UpdateResponse(c, (struct zx_shps_UpdateResponse_s*)se);
-  for (se = &x->shps_Poll->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_Poll->gg;
+       se && se->g.tok == zx_shps_Poll_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_Poll(c, (struct zx_shps_Poll_s*)se);
-  for (se = &x->shps_PollResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_PollResponse->gg;
+       se && se->g.tok == zx_shps_PollResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_PollResponse(c, (struct zx_shps_PollResponse_s*)se);
-  for (se = &x->ProxyInvoke->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProxyInvoke->gg;
+       se && se->g.tok == zx_shps_ProxyInvoke_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_ProxyInvoke(c, (struct zx_shps_ProxyInvoke_s*)se);
-  for (se = &x->ProxyInvokeResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProxyInvokeResponse->gg;
+       se && se->g.tok == zx_shps_ProxyInvokeResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_shps_ProxyInvokeResponse(c, (struct zx_shps_ProxyInvokeResponse_s*)se);
-  for (se = &x->idhrxml_Create->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Create->gg;
+       se && se->g.tok == zx_idhrxml_Create_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Create(c, (struct zx_idhrxml_Create_s*)se);
-  for (se = &x->idhrxml_CreateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_CreateResponse->gg;
+       se && se->g.tok == zx_idhrxml_CreateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_CreateResponse(c, (struct zx_idhrxml_CreateResponse_s*)se);
-  for (se = &x->idhrxml_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Query->gg;
+       se && se->g.tok == zx_idhrxml_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Query(c, (struct zx_idhrxml_Query_s*)se);
-  for (se = &x->idhrxml_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_QueryResponse->gg;
+       se && se->g.tok == zx_idhrxml_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_QueryResponse(c, (struct zx_idhrxml_QueryResponse_s*)se);
-  for (se = &x->idhrxml_Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Modify->gg;
+       se && se->g.tok == zx_idhrxml_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Modify(c, (struct zx_idhrxml_Modify_s*)se);
-  for (se = &x->idhrxml_ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_ModifyResponse->gg;
+       se && se->g.tok == zx_idhrxml_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_ModifyResponse(c, (struct zx_idhrxml_ModifyResponse_s*)se);
-  for (se = &x->idhrxml_Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Delete->gg;
+       se && se->g.tok == zx_idhrxml_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Delete(c, (struct zx_idhrxml_Delete_s*)se);
-  for (se = &x->idhrxml_DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_DeleteResponse->gg;
+       se && se->g.tok == zx_idhrxml_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_DeleteResponse(c, (struct zx_idhrxml_DeleteResponse_s*)se);
-  for (se = &x->idhrxml_Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Notify->gg;
+       se && se->g.tok == zx_idhrxml_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_Notify(c, (struct zx_idhrxml_Notify_s*)se);
-  for (se = &x->idhrxml_NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_NotifyResponse->gg;
+       se && se->g.tok == zx_idhrxml_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_idhrxml_NotifyResponse(c, (struct zx_idhrxml_NotifyResponse_s*)se);
 
 
@@ -572,7 +1024,7 @@ char* zx_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, char* p )
   ZX_OUT_TAG(p, "<e:Body");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -585,457 +1037,909 @@ char* zx_ENC_SO_e_Body(struct zx_ctx* c, struct zx_e_Body_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ArtifactResolve->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ArtifactResolve->gg;
+       se && se->g.tok == zx_sp_ArtifactResolve_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_ArtifactResolve(c, (struct zx_sp_ArtifactResolve_s*)se, p);
-  for (se = &x->ArtifactResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ArtifactResponse->gg;
+       se && se->g.tok == zx_sp_ArtifactResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_ArtifactResponse(c, (struct zx_sp_ArtifactResponse_s*)se, p);
-  for (se = &x->ManageNameIDRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ManageNameIDRequest->gg;
+       se && se->g.tok == zx_sp_ManageNameIDRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_ManageNameIDRequest(c, (struct zx_sp_ManageNameIDRequest_s*)se, p);
-  for (se = &x->ManageNameIDResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ManageNameIDResponse->gg;
+       se && se->g.tok == zx_sp_ManageNameIDResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_ManageNameIDResponse(c, (struct zx_sp_ManageNameIDResponse_s*)se, p);
-  for (se = &x->LogoutRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LogoutRequest->gg;
+       se && se->g.tok == zx_sp_LogoutRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_LogoutRequest(c, (struct zx_sp_LogoutRequest_s*)se, p);
-  for (se = &x->LogoutResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LogoutResponse->gg;
+       se && se->g.tok == zx_sp_LogoutResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_LogoutResponse(c, (struct zx_sp_LogoutResponse_s*)se, p);
-  for (se = &x->NameIDMappingRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIDMappingRequest->gg;
+       se && se->g.tok == zx_sp_NameIDMappingRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_NameIDMappingRequest(c, (struct zx_sp_NameIDMappingRequest_s*)se, p);
-  for (se = &x->NameIDMappingResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIDMappingResponse->gg;
+       se && se->g.tok == zx_sp_NameIDMappingResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_NameIDMappingResponse(c, (struct zx_sp_NameIDMappingResponse_s*)se, p);
-  for (se = &x->AttributeQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AttributeQuery->gg;
+       se && se->g.tok == zx_sp_AttributeQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_AttributeQuery(c, (struct zx_sp_AttributeQuery_s*)se, p);
-  for (se = &x->AuthnQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnQuery->gg;
+       se && se->g.tok == zx_sp_AuthnQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_AuthnQuery(c, (struct zx_sp_AuthnQuery_s*)se, p);
-  for (se = &x->AuthzDecisionQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthzDecisionQuery->gg;
+       se && se->g.tok == zx_sp_AuthzDecisionQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_AuthzDecisionQuery(c, (struct zx_sp_AuthzDecisionQuery_s*)se, p);
-  for (se = &x->AssertionIDRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionIDRequest->gg;
+       se && se->g.tok == zx_sp_AssertionIDRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_AssertionIDRequest(c, (struct zx_sp_AssertionIDRequest_s*)se, p);
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_sp_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_Response(c, (struct zx_sp_Response_s*)se, p);
-  for (se = &x->AuthnRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AuthnRequest->gg;
+       se && se->g.tok == zx_sp_AuthnRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp_AuthnRequest(c, (struct zx_sp_AuthnRequest_s*)se, p);
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_sp11_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp11_Request(c, (struct zx_sp11_Request_s*)se, p);
-  for (se = &x->sp11_Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->sp11_Response->gg;
+       se && se->g.tok == zx_sp11_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sp11_Response(c, (struct zx_sp11_Response_s*)se, p);
-  for (se = &x->RegisterNameIdentifierRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RegisterNameIdentifierRequest->gg;
+       se && se->g.tok == zx_ff12_RegisterNameIdentifierRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_RegisterNameIdentifierRequest(c, (struct zx_ff12_RegisterNameIdentifierRequest_s*)se, p);
-  for (se = &x->RegisterNameIdentifierResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RegisterNameIdentifierResponse->gg;
+       se && se->g.tok == zx_ff12_RegisterNameIdentifierResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_RegisterNameIdentifierResponse(c, (struct zx_ff12_RegisterNameIdentifierResponse_s*)se, p);
-  for (se = &x->FederationTerminationNotification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FederationTerminationNotification->gg;
+       se && se->g.tok == zx_ff12_FederationTerminationNotification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_FederationTerminationNotification(c, (struct zx_ff12_FederationTerminationNotification_s*)se, p);
-  for (se = &x->ff12_LogoutRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ff12_LogoutRequest->gg;
+       se && se->g.tok == zx_ff12_LogoutRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_LogoutRequest(c, (struct zx_ff12_LogoutRequest_s*)se, p);
-  for (se = &x->ff12_LogoutResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ff12_LogoutResponse->gg;
+       se && se->g.tok == zx_ff12_LogoutResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_LogoutResponse(c, (struct zx_ff12_LogoutResponse_s*)se, p);
-  for (se = &x->NameIdentifierMappingRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIdentifierMappingRequest->gg;
+       se && se->g.tok == zx_ff12_NameIdentifierMappingRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_NameIdentifierMappingRequest(c, (struct zx_ff12_NameIdentifierMappingRequest_s*)se, p);
-  for (se = &x->NameIdentifierMappingResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NameIdentifierMappingResponse->gg;
+       se && se->g.tok == zx_ff12_NameIdentifierMappingResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ff12_NameIdentifierMappingResponse(c, (struct zx_ff12_NameIdentifierMappingResponse_s*)se, p);
-  for (se = &x->XACMLAuthzDecisionQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->XACMLAuthzDecisionQuery->gg;
+       se && se->g.tok == zx_xasp_XACMLAuthzDecisionQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xasp_XACMLAuthzDecisionQuery(c, (struct zx_xasp_XACMLAuthzDecisionQuery_s*)se, p);
-  for (se = &x->XACMLPolicyQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->XACMLPolicyQuery->gg;
+       se && se->g.tok == zx_xasp_XACMLPolicyQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xasp_XACMLPolicyQuery(c, (struct zx_xasp_XACMLPolicyQuery_s*)se, p);
-  for (se = &x->xaspcd1_XACMLAuthzDecisionQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xaspcd1_XACMLAuthzDecisionQuery->gg;
+       se && se->g.tok == zx_xaspcd1_XACMLAuthzDecisionQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(c, (struct zx_xaspcd1_XACMLAuthzDecisionQuery_s*)se, p);
-  for (se = &x->xaspcd1_XACMLPolicyQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xaspcd1_XACMLPolicyQuery->gg;
+       se && se->g.tok == zx_xaspcd1_XACMLPolicyQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xaspcd1_XACMLPolicyQuery(c, (struct zx_xaspcd1_XACMLPolicyQuery_s*)se, p);
-  for (se = &x->xac_Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xac_Request->gg;
+       se && se->g.tok == zx_xac_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xac_Request(c, (struct zx_xac_Request_s*)se, p);
-  for (se = &x->xac_Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->xac_Response->gg;
+       se && se->g.tok == zx_xac_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xac_Response(c, (struct zx_xac_Response_s*)se, p);
-  for (se = &x->Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Query->gg;
+       se && se->g.tok == zx_di_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_Query(c, (struct zx_di_Query_s*)se, p);
-  for (se = &x->QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryResponse->gg;
+       se && se->g.tok == zx_di_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_QueryResponse(c, (struct zx_di_QueryResponse_s*)se, p);
-  for (se = &x->di12_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->di12_Query->gg;
+       se && se->g.tok == zx_di12_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Query(c, (struct zx_di12_Query_s*)se, p);
-  for (se = &x->di12_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->di12_QueryResponse->gg;
+       se && se->g.tok == zx_di12_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_QueryResponse(c, (struct zx_di12_QueryResponse_s*)se, p);
-  for (se = &x->Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Modify->gg;
+       se && se->g.tok == zx_di12_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_Modify(c, (struct zx_di12_Modify_s*)se, p);
-  for (se = &x->ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ModifyResponse->gg;
+       se && se->g.tok == zx_di12_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di12_ModifyResponse(c, (struct zx_di12_ModifyResponse_s*)se, p);
-  for (se = &x->Fault->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Fault->gg;
+       se && se->g.tok == zx_e_Fault_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_e_Fault(c, (struct zx_e_Fault_s*)se, p);
-  for (se = &x->SvcMDAssociationAdd->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationAdd->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationAdd_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDAssociationAdd(c, (struct zx_di_SvcMDAssociationAdd_s*)se, p);
-  for (se = &x->SvcMDAssociationAddResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationAddResponse->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationAddResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDAssociationAddResponse(c, (struct zx_di_SvcMDAssociationAddResponse_s*)se, p);
-  for (se = &x->SvcMDAssociationDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationDelete->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDAssociationDelete(c, (struct zx_di_SvcMDAssociationDelete_s*)se, p);
-  for (se = &x->SvcMDAssociationDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationDeleteResponse->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDAssociationDeleteResponse(c, (struct zx_di_SvcMDAssociationDeleteResponse_s*)se, p);
-  for (se = &x->SvcMDAssociationQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationQuery->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDAssociationQuery(c, (struct zx_di_SvcMDAssociationQuery_s*)se, p);
-  for (se = &x->SvcMDAssociationQueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDAssociationQueryResponse->gg;
+       se && se->g.tok == zx_di_SvcMDAssociationQueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDAssociationQueryResponse(c, (struct zx_di_SvcMDAssociationQueryResponse_s*)se, p);
-  for (se = &x->SvcMDRegister->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDRegister->gg;
+       se && se->g.tok == zx_di_SvcMDRegister_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDRegister(c, (struct zx_di_SvcMDRegister_s*)se, p);
-  for (se = &x->SvcMDRegisterResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDRegisterResponse->gg;
+       se && se->g.tok == zx_di_SvcMDRegisterResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDRegisterResponse(c, (struct zx_di_SvcMDRegisterResponse_s*)se, p);
-  for (se = &x->SvcMDDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDDelete->gg;
+       se && se->g.tok == zx_di_SvcMDDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDDelete(c, (struct zx_di_SvcMDDelete_s*)se, p);
-  for (se = &x->SvcMDDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDDeleteResponse->gg;
+       se && se->g.tok == zx_di_SvcMDDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDDeleteResponse(c, (struct zx_di_SvcMDDeleteResponse_s*)se, p);
-  for (se = &x->SvcMDQuery->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDQuery->gg;
+       se && se->g.tok == zx_di_SvcMDQuery_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDQuery(c, (struct zx_di_SvcMDQuery_s*)se, p);
-  for (se = &x->SvcMDQueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDQueryResponse->gg;
+       se && se->g.tok == zx_di_SvcMDQueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDQueryResponse(c, (struct zx_di_SvcMDQueryResponse_s*)se, p);
-  for (se = &x->SvcMDReplace->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDReplace->gg;
+       se && se->g.tok == zx_di_SvcMDReplace_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDReplace(c, (struct zx_di_SvcMDReplace_s*)se, p);
-  for (se = &x->SvcMDReplaceResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SvcMDReplaceResponse->gg;
+       se && se->g.tok == zx_di_SvcMDReplaceResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_di_SvcMDReplaceResponse(c, (struct zx_di_SvcMDReplaceResponse_s*)se, p);
-  for (se = &x->Create->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Create->gg;
+       se && se->g.tok == zx_dap_Create_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_Create(c, (struct zx_dap_Create_s*)se, p);
-  for (se = &x->CreateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreateResponse->gg;
+       se && se->g.tok == zx_dap_CreateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_CreateResponse(c, (struct zx_dap_CreateResponse_s*)se, p);
-  for (se = &x->dap_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->dap_Query->gg;
+       se && se->g.tok == zx_dap_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_Query(c, (struct zx_dap_Query_s*)se, p);
-  for (se = &x->dap_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->dap_QueryResponse->gg;
+       se && se->g.tok == zx_dap_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_QueryResponse(c, (struct zx_dap_QueryResponse_s*)se, p);
-  for (se = &x->dap_Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->dap_Modify->gg;
+       se && se->g.tok == zx_dap_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_Modify(c, (struct zx_dap_Modify_s*)se, p);
-  for (se = &x->dap_ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->dap_ModifyResponse->gg;
+       se && se->g.tok == zx_dap_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_ModifyResponse(c, (struct zx_dap_ModifyResponse_s*)se, p);
-  for (se = &x->Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Delete->gg;
+       se && se->g.tok == zx_dap_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_Delete(c, (struct zx_dap_Delete_s*)se, p);
-  for (se = &x->DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteResponse->gg;
+       se && se->g.tok == zx_dap_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_DeleteResponse(c, (struct zx_dap_DeleteResponse_s*)se, p);
-  for (se = &x->Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Notify->gg;
+       se && se->g.tok == zx_dap_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_Notify(c, (struct zx_dap_Notify_s*)se, p);
-  for (se = &x->NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NotifyResponse->gg;
+       se && se->g.tok == zx_dap_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_dap_NotifyResponse(c, (struct zx_dap_NotifyResponse_s*)se, p);
-  for (se = &x->AddEntityRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddEntityRequest->gg;
+       se && se->g.tok == zx_ps_AddEntityRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_AddEntityRequest(c, (struct zx_ps_AddEntityRequest_s*)se, p);
-  for (se = &x->AddEntityResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddEntityResponse->gg;
+       se && se->g.tok == zx_ps_AddEntityResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_AddEntityResponse(c, (struct zx_ps_AddEntityResponse_s*)se, p);
-  for (se = &x->AddKnownEntityRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddKnownEntityRequest->gg;
+       se && se->g.tok == zx_ps_AddKnownEntityRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_AddKnownEntityRequest(c, (struct zx_ps_AddKnownEntityRequest_s*)se, p);
-  for (se = &x->AddKnownEntityResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddKnownEntityResponse->gg;
+       se && se->g.tok == zx_ps_AddKnownEntityResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_AddKnownEntityResponse(c, (struct zx_ps_AddKnownEntityResponse_s*)se, p);
-  for (se = &x->AddCollectionRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddCollectionRequest->gg;
+       se && se->g.tok == zx_ps_AddCollectionRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_AddCollectionRequest(c, (struct zx_ps_AddCollectionRequest_s*)se, p);
-  for (se = &x->AddCollectionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddCollectionResponse->gg;
+       se && se->g.tok == zx_ps_AddCollectionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_AddCollectionResponse(c, (struct zx_ps_AddCollectionResponse_s*)se, p);
-  for (se = &x->AddToCollectionRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddToCollectionRequest->gg;
+       se && se->g.tok == zx_ps_AddToCollectionRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_AddToCollectionRequest(c, (struct zx_ps_AddToCollectionRequest_s*)se, p);
-  for (se = &x->AddToCollectionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AddToCollectionResponse->gg;
+       se && se->g.tok == zx_ps_AddToCollectionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_AddToCollectionResponse(c, (struct zx_ps_AddToCollectionResponse_s*)se, p);
-  for (se = &x->RemoveEntityRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveEntityRequest->gg;
+       se && se->g.tok == zx_ps_RemoveEntityRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_RemoveEntityRequest(c, (struct zx_ps_RemoveEntityRequest_s*)se, p);
-  for (se = &x->RemoveEntityResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveEntityResponse->gg;
+       se && se->g.tok == zx_ps_RemoveEntityResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_RemoveEntityResponse(c, (struct zx_ps_RemoveEntityResponse_s*)se, p);
-  for (se = &x->RemoveCollectionRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveCollectionRequest->gg;
+       se && se->g.tok == zx_ps_RemoveCollectionRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_RemoveCollectionRequest(c, (struct zx_ps_RemoveCollectionRequest_s*)se, p);
-  for (se = &x->RemoveCollectionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveCollectionResponse->gg;
+       se && se->g.tok == zx_ps_RemoveCollectionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_RemoveCollectionResponse(c, (struct zx_ps_RemoveCollectionResponse_s*)se, p);
-  for (se = &x->RemoveFromCollectionRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveFromCollectionRequest->gg;
+       se && se->g.tok == zx_ps_RemoveFromCollectionRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_RemoveFromCollectionRequest(c, (struct zx_ps_RemoveFromCollectionRequest_s*)se, p);
-  for (se = &x->RemoveFromCollectionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemoveFromCollectionResponse->gg;
+       se && se->g.tok == zx_ps_RemoveFromCollectionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_RemoveFromCollectionResponse(c, (struct zx_ps_RemoveFromCollectionResponse_s*)se, p);
-  for (se = &x->ListMembersRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ListMembersRequest->gg;
+       se && se->g.tok == zx_ps_ListMembersRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_ListMembersRequest(c, (struct zx_ps_ListMembersRequest_s*)se, p);
-  for (se = &x->ListMembersResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ListMembersResponse->gg;
+       se && se->g.tok == zx_ps_ListMembersResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_ListMembersResponse(c, (struct zx_ps_ListMembersResponse_s*)se, p);
-  for (se = &x->QueryObjectsRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryObjectsRequest->gg;
+       se && se->g.tok == zx_ps_QueryObjectsRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_QueryObjectsRequest(c, (struct zx_ps_QueryObjectsRequest_s*)se, p);
-  for (se = &x->QueryObjectsResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryObjectsResponse->gg;
+       se && se->g.tok == zx_ps_QueryObjectsResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_QueryObjectsResponse(c, (struct zx_ps_QueryObjectsResponse_s*)se, p);
-  for (se = &x->GetObjectInfoRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectInfoRequest->gg;
+       se && se->g.tok == zx_ps_GetObjectInfoRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_GetObjectInfoRequest(c, (struct zx_ps_GetObjectInfoRequest_s*)se, p);
-  for (se = &x->GetObjectInfoResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectInfoResponse->gg;
+       se && se->g.tok == zx_ps_GetObjectInfoResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_GetObjectInfoResponse(c, (struct zx_ps_GetObjectInfoResponse_s*)se, p);
-  for (se = &x->SetObjectInfoRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetObjectInfoRequest->gg;
+       se && se->g.tok == zx_ps_SetObjectInfoRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_SetObjectInfoRequest(c, (struct zx_ps_SetObjectInfoRequest_s*)se, p);
-  for (se = &x->SetObjectInfoResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetObjectInfoResponse->gg;
+       se && se->g.tok == zx_ps_SetObjectInfoResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_SetObjectInfoResponse(c, (struct zx_ps_SetObjectInfoResponse_s*)se, p);
-  for (se = &x->TestMembershipRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestMembershipRequest->gg;
+       se && se->g.tok == zx_ps_TestMembershipRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_TestMembershipRequest(c, (struct zx_ps_TestMembershipRequest_s*)se, p);
-  for (se = &x->TestMembershipResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TestMembershipResponse->gg;
+       se && se->g.tok == zx_ps_TestMembershipResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_TestMembershipResponse(c, (struct zx_ps_TestMembershipResponse_s*)se, p);
-  for (se = &x->ResolveIdentifierRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResolveIdentifierRequest->gg;
+       se && se->g.tok == zx_ps_ResolveIdentifierRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_ResolveIdentifierRequest(c, (struct zx_ps_ResolveIdentifierRequest_s*)se, p);
-  for (se = &x->ResolveIdentifierResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResolveIdentifierResponse->gg;
+       se && se->g.tok == zx_ps_ResolveIdentifierResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_ResolveIdentifierResponse(c, (struct zx_ps_ResolveIdentifierResponse_s*)se, p);
-  for (se = &x->ps_Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ps_Notify->gg;
+       se && se->g.tok == zx_ps_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_Notify(c, (struct zx_ps_Notify_s*)se, p);
-  for (se = &x->ps_NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ps_NotifyResponse->gg;
+       se && se->g.tok == zx_ps_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ps_NotifyResponse(c, (struct zx_ps_NotifyResponse_s*)se, p);
-  for (se = &x->IdentityMappingRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdentityMappingRequest->gg;
+       se && se->g.tok == zx_im_IdentityMappingRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_im_IdentityMappingRequest(c, (struct zx_im_IdentityMappingRequest_s*)se, p);
-  for (se = &x->IdentityMappingResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdentityMappingResponse->gg;
+       se && se->g.tok == zx_im_IdentityMappingResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_im_IdentityMappingResponse(c, (struct zx_im_IdentityMappingResponse_s*)se, p);
-  for (se = &x->SASLRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SASLRequest->gg;
+       se && se->g.tok == zx_as_SASLRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_as_SASLRequest(c, (struct zx_as_SASLRequest_s*)se, p);
-  for (se = &x->SASLResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SASLResponse->gg;
+       se && se->g.tok == zx_as_SASLResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_as_SASLResponse(c, (struct zx_as_SASLResponse_s*)se, p);
-  for (se = &x->SubmitReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubmitReq->gg;
+       se && se->g.tok == zx_mm7_SubmitReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_SubmitReq(c, (struct zx_mm7_SubmitReq_s*)se, p);
-  for (se = &x->SubmitRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SubmitRsp->gg;
+       se && se->g.tok == zx_mm7_SubmitRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_SubmitRsp(c, (struct zx_mm7_SubmitRsp_s*)se, p);
-  for (se = &x->DeliverReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliverReq->gg;
+       se && se->g.tok == zx_mm7_DeliverReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_DeliverReq(c, (struct zx_mm7_DeliverReq_s*)se, p);
-  for (se = &x->DeliverRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliverRsp->gg;
+       se && se->g.tok == zx_mm7_DeliverRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_DeliverRsp(c, (struct zx_mm7_DeliverRsp_s*)se, p);
-  for (se = &x->CancelReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CancelReq->gg;
+       se && se->g.tok == zx_mm7_CancelReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_CancelReq(c, (struct zx_mm7_CancelReq_s*)se, p);
-  for (se = &x->CancelRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CancelRsp->gg;
+       se && se->g.tok == zx_mm7_CancelRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_CancelRsp(c, (struct zx_mm7_CancelRsp_s*)se, p);
-  for (se = &x->ReplaceReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReplaceReq->gg;
+       se && se->g.tok == zx_mm7_ReplaceReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_ReplaceReq(c, (struct zx_mm7_ReplaceReq_s*)se, p);
-  for (se = &x->ReplaceRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReplaceRsp->gg;
+       se && se->g.tok == zx_mm7_ReplaceRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_ReplaceRsp(c, (struct zx_mm7_ReplaceRsp_s*)se, p);
-  for (se = &x->extendedCancelReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->extendedCancelReq->gg;
+       se && se->g.tok == zx_mm7_extendedCancelReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_extendedCancelReq(c, (struct zx_mm7_extendedCancelReq_s*)se, p);
-  for (se = &x->extendedCancelRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->extendedCancelRsp->gg;
+       se && se->g.tok == zx_mm7_extendedCancelRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_extendedCancelRsp(c, (struct zx_mm7_extendedCancelRsp_s*)se, p);
-  for (se = &x->extendedReplaceReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->extendedReplaceReq->gg;
+       se && se->g.tok == zx_mm7_extendedReplaceReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_extendedReplaceReq(c, (struct zx_mm7_extendedReplaceReq_s*)se, p);
-  for (se = &x->extendedReplaceRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->extendedReplaceRsp->gg;
+       se && se->g.tok == zx_mm7_extendedReplaceRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_extendedReplaceRsp(c, (struct zx_mm7_extendedReplaceRsp_s*)se, p);
-  for (se = &x->DeliveryReportReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliveryReportReq->gg;
+       se && se->g.tok == zx_mm7_DeliveryReportReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_DeliveryReportReq(c, (struct zx_mm7_DeliveryReportReq_s*)se, p);
-  for (se = &x->DeliveryReportRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeliveryReportRsp->gg;
+       se && se->g.tok == zx_mm7_DeliveryReportRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_DeliveryReportRsp(c, (struct zx_mm7_DeliveryReportRsp_s*)se, p);
-  for (se = &x->ReadReplyReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReadReplyReq->gg;
+       se && se->g.tok == zx_mm7_ReadReplyReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_ReadReplyReq(c, (struct zx_mm7_ReadReplyReq_s*)se, p);
-  for (se = &x->ReadReplyRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReadReplyRsp->gg;
+       se && se->g.tok == zx_mm7_ReadReplyRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_ReadReplyRsp(c, (struct zx_mm7_ReadReplyRsp_s*)se, p);
-  for (se = &x->RSErrorRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RSErrorRsp->gg;
+       se && se->g.tok == zx_mm7_RSErrorRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_RSErrorRsp(c, (struct zx_mm7_RSErrorRsp_s*)se, p);
-  for (se = &x->VASPErrorRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VASPErrorRsp->gg;
+       se && se->g.tok == zx_mm7_VASPErrorRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_VASPErrorRsp(c, (struct zx_mm7_VASPErrorRsp_s*)se, p);
-  for (se = &x->QueryStatusReq->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryStatusReq->gg;
+       se && se->g.tok == zx_mm7_QueryStatusReq_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_QueryStatusReq(c, (struct zx_mm7_QueryStatusReq_s*)se, p);
-  for (se = &x->QueryStatusRsp->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryStatusRsp->gg;
+       se && se->g.tok == zx_mm7_QueryStatusRsp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_QueryStatusRsp(c, (struct zx_mm7_QueryStatusRsp_s*)se, p);
-  for (se = &x->cb_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Query->gg;
+       se && se->g.tok == zx_cb_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_Query(c, (struct zx_cb_Query_s*)se, p);
-  for (se = &x->cb_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_QueryResponse->gg;
+       se && se->g.tok == zx_cb_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_QueryResponse(c, (struct zx_cb_QueryResponse_s*)se, p);
-  for (se = &x->cb_Create->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Create->gg;
+       se && se->g.tok == zx_cb_Create_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_Create(c, (struct zx_cb_Create_s*)se, p);
-  for (se = &x->cb_CreateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_CreateResponse->gg;
+       se && se->g.tok == zx_cb_CreateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_CreateResponse(c, (struct zx_cb_CreateResponse_s*)se, p);
-  for (se = &x->cb_Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Delete->gg;
+       se && se->g.tok == zx_cb_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_Delete(c, (struct zx_cb_Delete_s*)se, p);
-  for (se = &x->cb_DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_DeleteResponse->gg;
+       se && se->g.tok == zx_cb_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_DeleteResponse(c, (struct zx_cb_DeleteResponse_s*)se, p);
-  for (se = &x->cb_Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Modify->gg;
+       se && se->g.tok == zx_cb_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_Modify(c, (struct zx_cb_Modify_s*)se, p);
-  for (se = &x->cb_ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_ModifyResponse->gg;
+       se && se->g.tok == zx_cb_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_ModifyResponse(c, (struct zx_cb_ModifyResponse_s*)se, p);
-  for (se = &x->cb_Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_Notify->gg;
+       se && se->g.tok == zx_cb_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_Notify(c, (struct zx_cb_Notify_s*)se, p);
-  for (se = &x->cb_NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->cb_NotifyResponse->gg;
+       se && se->g.tok == zx_cb_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_NotifyResponse(c, (struct zx_cb_NotifyResponse_s*)se, p);
-  for (se = &x->ReportUsage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReportUsage->gg;
+       se && se->g.tok == zx_cb_ReportUsage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_ReportUsage(c, (struct zx_cb_ReportUsage_s*)se, p);
-  for (se = &x->ReportUsageResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReportUsageResponse->gg;
+       se && se->g.tok == zx_cb_ReportUsageResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_cb_ReportUsageResponse(c, (struct zx_cb_ReportUsageResponse_s*)se, p);
-  for (se = &x->gl_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Query->gg;
+       se && se->g.tok == zx_gl_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Query(c, (struct zx_gl_Query_s*)se, p);
-  for (se = &x->gl_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_QueryResponse->gg;
+       se && se->g.tok == zx_gl_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_QueryResponse(c, (struct zx_gl_QueryResponse_s*)se, p);
-  for (se = &x->gl_Create->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Create->gg;
+       se && se->g.tok == zx_gl_Create_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Create(c, (struct zx_gl_Create_s*)se, p);
-  for (se = &x->gl_CreateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_CreateResponse->gg;
+       se && se->g.tok == zx_gl_CreateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_CreateResponse(c, (struct zx_gl_CreateResponse_s*)se, p);
-  for (se = &x->gl_Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Delete->gg;
+       se && se->g.tok == zx_gl_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Delete(c, (struct zx_gl_Delete_s*)se, p);
-  for (se = &x->gl_DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_DeleteResponse->gg;
+       se && se->g.tok == zx_gl_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_DeleteResponse(c, (struct zx_gl_DeleteResponse_s*)se, p);
-  for (se = &x->gl_Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Modify->gg;
+       se && se->g.tok == zx_gl_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Modify(c, (struct zx_gl_Modify_s*)se, p);
-  for (se = &x->gl_ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_ModifyResponse->gg;
+       se && se->g.tok == zx_gl_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_ModifyResponse(c, (struct zx_gl_ModifyResponse_s*)se, p);
-  for (se = &x->gl_Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_Notify->gg;
+       se && se->g.tok == zx_gl_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_Notify(c, (struct zx_gl_Notify_s*)se, p);
-  for (se = &x->gl_NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->gl_NotifyResponse->gg;
+       se && se->g.tok == zx_gl_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_gl_NotifyResponse(c, (struct zx_gl_NotifyResponse_s*)se, p);
-  for (se = &x->StoreObjectRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StoreObjectRequest->gg;
+       se && se->g.tok == zx_demomed_StoreObjectRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_StoreObjectRequest(c, (struct zx_demomed_StoreObjectRequest_s*)se, p);
-  for (se = &x->StoreObjectResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StoreObjectResponse->gg;
+       se && se->g.tok == zx_demomed_StoreObjectResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_StoreObjectResponse(c, (struct zx_demomed_StoreObjectResponse_s*)se, p);
-  for (se = &x->GetObjectListRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectListRequest->gg;
+       se && se->g.tok == zx_demomed_GetObjectListRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_GetObjectListRequest(c, (struct zx_demomed_GetObjectListRequest_s*)se, p);
-  for (se = &x->GetObjectListResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectListResponse->gg;
+       se && se->g.tok == zx_demomed_GetObjectListResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_GetObjectListResponse(c, (struct zx_demomed_GetObjectListResponse_s*)se, p);
-  for (se = &x->GetObjectRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectRequest->gg;
+       se && se->g.tok == zx_demomed_GetObjectRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_GetObjectRequest(c, (struct zx_demomed_GetObjectRequest_s*)se, p);
-  for (se = &x->GetObjectResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetObjectResponse->gg;
+       se && se->g.tok == zx_demomed_GetObjectResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_GetObjectResponse(c, (struct zx_demomed_GetObjectResponse_s*)se, p);
-  for (se = &x->DeleteObjectRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteObjectRequest->gg;
+       se && se->g.tok == zx_demomed_DeleteObjectRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_DeleteObjectRequest(c, (struct zx_demomed_DeleteObjectRequest_s*)se, p);
-  for (se = &x->DeleteObjectResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DeleteObjectResponse->gg;
+       se && se->g.tok == zx_demomed_DeleteObjectResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_demomed_DeleteObjectResponse(c, (struct zx_demomed_DeleteObjectResponse_s*)se, p);
-  for (se = &x->Provision->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Provision->gg;
+       se && se->g.tok == zx_pmm_Provision_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_Provision(c, (struct zx_pmm_Provision_s*)se, p);
-  for (se = &x->ProvisionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProvisionResponse->gg;
+       se && se->g.tok == zx_pmm_ProvisionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_ProvisionResponse(c, (struct zx_pmm_ProvisionResponse_s*)se, p);
-  for (se = &x->PMActivate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMActivate->gg;
+       se && se->g.tok == zx_pmm_PMActivate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMActivate(c, (struct zx_pmm_PMActivate_s*)se, p);
-  for (se = &x->PMActivateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMActivateResponse->gg;
+       se && se->g.tok == zx_pmm_PMActivateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMActivateResponse(c, (struct zx_pmm_PMActivateResponse_s*)se, p);
-  for (se = &x->PMDeactivate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeactivate->gg;
+       se && se->g.tok == zx_pmm_PMDeactivate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMDeactivate(c, (struct zx_pmm_PMDeactivate_s*)se, p);
-  for (se = &x->PMDeactivateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeactivateResponse->gg;
+       se && se->g.tok == zx_pmm_PMDeactivateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMDeactivateResponse(c, (struct zx_pmm_PMDeactivateResponse_s*)se, p);
-  for (se = &x->PMDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDelete->gg;
+       se && se->g.tok == zx_pmm_PMDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMDelete(c, (struct zx_pmm_PMDelete_s*)se, p);
-  for (se = &x->PMDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMDeleteResponse->gg;
+       se && se->g.tok == zx_pmm_PMDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMDeleteResponse(c, (struct zx_pmm_PMDeleteResponse_s*)se, p);
-  for (se = &x->PMUpdate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMUpdate->gg;
+       se && se->g.tok == zx_pmm_PMUpdate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMUpdate(c, (struct zx_pmm_PMUpdate_s*)se, p);
-  for (se = &x->PMUpdateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMUpdateResponse->gg;
+       se && se->g.tok == zx_pmm_PMUpdateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMUpdateResponse(c, (struct zx_pmm_PMUpdateResponse_s*)se, p);
-  for (se = &x->PMGetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMGetStatus->gg;
+       se && se->g.tok == zx_pmm_PMGetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMGetStatus(c, (struct zx_pmm_PMGetStatus_s*)se, p);
-  for (se = &x->PMGetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMGetStatusResponse->gg;
+       se && se->g.tok == zx_pmm_PMGetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMGetStatusResponse(c, (struct zx_pmm_PMGetStatusResponse_s*)se, p);
-  for (se = &x->PMSetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMSetStatus->gg;
+       se && se->g.tok == zx_pmm_PMSetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMSetStatus(c, (struct zx_pmm_PMSetStatus_s*)se, p);
-  for (se = &x->PMSetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMSetStatusResponse->gg;
+       se && se->g.tok == zx_pmm_PMSetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_pmm_PMSetStatusResponse(c, (struct zx_pmm_PMSetStatusResponse_s*)se, p);
-  for (se = &x->PMERegister->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMERegister->gg;
+       se && se->g.tok == zx_prov_PMERegister_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMERegister(c, (struct zx_prov_PMERegister_s*)se, p);
-  for (se = &x->PMERegisterResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMERegisterResponse->gg;
+       se && se->g.tok == zx_prov_PMERegisterResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMERegisterResponse(c, (struct zx_prov_PMERegisterResponse_s*)se, p);
-  for (se = &x->PMEUpload->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEUpload->gg;
+       se && se->g.tok == zx_prov_PMEUpload_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEUpload(c, (struct zx_prov_PMEUpload_s*)se, p);
-  for (se = &x->PMEUploadResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEUploadResponse->gg;
+       se && se->g.tok == zx_prov_PMEUploadResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEUploadResponse(c, (struct zx_prov_PMEUploadResponse_s*)se, p);
-  for (se = &x->PMEDownload->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDownload->gg;
+       se && se->g.tok == zx_prov_PMEDownload_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEDownload(c, (struct zx_prov_PMEDownload_s*)se, p);
-  for (se = &x->PMEDownloadResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDownloadResponse->gg;
+       se && se->g.tok == zx_prov_PMEDownloadResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEDownloadResponse(c, (struct zx_prov_PMEDownloadResponse_s*)se, p);
-  for (se = &x->PMEEnable->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEEnable->gg;
+       se && se->g.tok == zx_prov_PMEEnable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEEnable(c, (struct zx_prov_PMEEnable_s*)se, p);
-  for (se = &x->PMEEnableResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEEnableResponse->gg;
+       se && se->g.tok == zx_prov_PMEEnableResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEEnableResponse(c, (struct zx_prov_PMEEnableResponse_s*)se, p);
-  for (se = &x->PMEDisable->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDisable->gg;
+       se && se->g.tok == zx_prov_PMEDisable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEDisable(c, (struct zx_prov_PMEDisable_s*)se, p);
-  for (se = &x->PMEDisableResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDisableResponse->gg;
+       se && se->g.tok == zx_prov_PMEDisableResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEDisableResponse(c, (struct zx_prov_PMEDisableResponse_s*)se, p);
-  for (se = &x->PMEDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDelete->gg;
+       se && se->g.tok == zx_prov_PMEDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEDelete(c, (struct zx_prov_PMEDelete_s*)se, p);
-  for (se = &x->PMEDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEDeleteResponse->gg;
+       se && se->g.tok == zx_prov_PMEDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEDeleteResponse(c, (struct zx_prov_PMEDeleteResponse_s*)se, p);
-  for (se = &x->PMEGetInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEGetInfo->gg;
+       se && se->g.tok == zx_prov_PMEGetInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEGetInfo(c, (struct zx_prov_PMEGetInfo_s*)se, p);
-  for (se = &x->PMEGetInfoResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMEGetInfoResponse->gg;
+       se && se->g.tok == zx_prov_PMEGetInfoResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMEGetInfoResponse(c, (struct zx_prov_PMEGetInfoResponse_s*)se, p);
-  for (se = &x->prov_PMGetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMGetStatus->gg;
+       se && se->g.tok == zx_prov_PMGetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMGetStatus(c, (struct zx_prov_PMGetStatus_s*)se, p);
-  for (se = &x->prov_PMGetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMGetStatusResponse->gg;
+       se && se->g.tok == zx_prov_PMGetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMGetStatusResponse(c, (struct zx_prov_PMGetStatusResponse_s*)se, p);
-  for (se = &x->prov_PMSetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMSetStatus->gg;
+       se && se->g.tok == zx_prov_PMSetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMSetStatus(c, (struct zx_prov_PMSetStatus_s*)se, p);
-  for (se = &x->prov_PMSetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMSetStatusResponse->gg;
+       se && se->g.tok == zx_prov_PMSetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMSetStatusResponse(c, (struct zx_prov_PMSetStatusResponse_s*)se, p);
-  for (se = &x->PMGetDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMGetDescriptor->gg;
+       se && se->g.tok == zx_prov_PMGetDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMGetDescriptor(c, (struct zx_prov_PMGetDescriptor_s*)se, p);
-  for (se = &x->PMGetDescriptorResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMGetDescriptorResponse->gg;
+       se && se->g.tok == zx_prov_PMGetDescriptorResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMGetDescriptorResponse(c, (struct zx_prov_PMGetDescriptorResponse_s*)se, p);
-  for (se = &x->prov_PMActivate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMActivate->gg;
+       se && se->g.tok == zx_prov_PMActivate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMActivate(c, (struct zx_prov_PMActivate_s*)se, p);
-  for (se = &x->prov_PMActivateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMActivateResponse->gg;
+       se && se->g.tok == zx_prov_PMActivateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMActivateResponse(c, (struct zx_prov_PMActivateResponse_s*)se, p);
-  for (se = &x->prov_PMDeactivate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMDeactivate->gg;
+       se && se->g.tok == zx_prov_PMDeactivate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMDeactivate(c, (struct zx_prov_PMDeactivate_s*)se, p);
-  for (se = &x->prov_PMDeactivateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMDeactivateResponse->gg;
+       se && se->g.tok == zx_prov_PMDeactivateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMDeactivateResponse(c, (struct zx_prov_PMDeactivateResponse_s*)se, p);
-  for (se = &x->PMRegisterDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptor->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMRegisterDescriptor(c, (struct zx_prov_PMRegisterDescriptor_s*)se, p);
-  for (se = &x->PMRegisterDescriptorResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PMRegisterDescriptorResponse->gg;
+       se && se->g.tok == zx_prov_PMRegisterDescriptorResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMRegisterDescriptorResponse(c, (struct zx_prov_PMRegisterDescriptorResponse_s*)se, p);
-  for (se = &x->prov_PMUpdate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMUpdate->gg;
+       se && se->g.tok == zx_prov_PMUpdate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMUpdate(c, (struct zx_prov_PMUpdate_s*)se, p);
-  for (se = &x->prov_PMUpdateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMUpdateResponse->gg;
+       se && se->g.tok == zx_prov_PMUpdateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMUpdateResponse(c, (struct zx_prov_PMUpdateResponse_s*)se, p);
-  for (se = &x->prov_PMDelete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMDelete->gg;
+       se && se->g.tok == zx_prov_PMDelete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMDelete(c, (struct zx_prov_PMDelete_s*)se, p);
-  for (se = &x->prov_PMDeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->prov_PMDeleteResponse->gg;
+       se && se->g.tok == zx_prov_PMDeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PMDeleteResponse(c, (struct zx_prov_PMDeleteResponse_s*)se, p);
-  for (se = &x->Poll->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Poll->gg;
+       se && se->g.tok == zx_prov_Poll_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_Poll(c, (struct zx_prov_Poll_s*)se, p);
-  for (se = &x->PollResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PollResponse->gg;
+       se && se->g.tok == zx_prov_PollResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_PollResponse(c, (struct zx_prov_PollResponse_s*)se, p);
-  for (se = &x->UpdateEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateEPR->gg;
+       se && se->g.tok == zx_prov_UpdateEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_UpdateEPR(c, (struct zx_prov_UpdateEPR_s*)se, p);
-  for (se = &x->UpdateEPRResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateEPRResponse->gg;
+       se && se->g.tok == zx_prov_UpdateEPRResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_prov_UpdateEPRResponse(c, (struct zx_prov_UpdateEPRResponse_s*)se, p);
-  for (se = &x->GetAssertion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetAssertion->gg;
+       se && se->g.tok == zx_idp_GetAssertion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idp_GetAssertion(c, (struct zx_idp_GetAssertion_s*)se, p);
-  for (se = &x->GetAssertionResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetAssertionResponse->gg;
+       se && se->g.tok == zx_idp_GetAssertionResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idp_GetAssertionResponse(c, (struct zx_idp_GetAssertionResponse_s*)se, p);
-  for (se = &x->GetProviderInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetProviderInfo->gg;
+       se && se->g.tok == zx_idp_GetProviderInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idp_GetProviderInfo(c, (struct zx_idp_GetProviderInfo_s*)se, p);
-  for (se = &x->GetProviderInfoResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetProviderInfoResponse->gg;
+       se && se->g.tok == zx_idp_GetProviderInfoResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idp_GetProviderInfoResponse(c, (struct zx_idp_GetProviderInfoResponse_s*)se, p);
-  for (se = &x->CreatedStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreatedStatus->gg;
+       se && se->g.tok == zx_idp_CreatedStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idp_CreatedStatus(c, (struct zx_idp_CreatedStatus_s*)se, p);
-  for (se = &x->CreatedStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CreatedStatusResponse->gg;
+       se && se->g.tok == zx_idp_CreatedStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idp_CreatedStatusResponse(c, (struct zx_idp_CreatedStatusResponse_s*)se, p);
-  for (se = &x->shps_Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_Delete->gg;
+       se && se->g.tok == zx_shps_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_Delete(c, (struct zx_shps_Delete_s*)se, p);
-  for (se = &x->shps_DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_DeleteResponse->gg;
+       se && se->g.tok == zx_shps_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_DeleteResponse(c, (struct zx_shps_DeleteResponse_s*)se, p);
-  for (se = &x->GetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetStatus->gg;
+       se && se->g.tok == zx_shps_GetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_GetStatus(c, (struct zx_shps_GetStatus_s*)se, p);
-  for (se = &x->GetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->GetStatusResponse->gg;
+       se && se->g.tok == zx_shps_GetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_GetStatusResponse(c, (struct zx_shps_GetStatusResponse_s*)se, p);
-  for (se = &x->shps_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_Query->gg;
+       se && se->g.tok == zx_shps_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_Query(c, (struct zx_shps_Query_s*)se, p);
-  for (se = &x->shps_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_QueryResponse->gg;
+       se && se->g.tok == zx_shps_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_QueryResponse(c, (struct zx_shps_QueryResponse_s*)se, p);
-  for (se = x->Invoke; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "shps:Invoke", sizeof("shps:Invoke")-1, zx_ns_tab+zx_shps_NS);
-  for (se = &x->InvokeResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Invoke;
+       se && se->g.tok == zx_shps_Invoke_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "shps:Invoke", sizeof("shps:Invoke")-1, zx_ns_tab+(zx_shps_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->InvokeResponse->gg;
+       se && se->g.tok == zx_shps_InvokeResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_InvokeResponse(c, (struct zx_shps_InvokeResponse_s*)se, p);
-  for (se = &x->QueryRegistered->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryRegistered->gg;
+       se && se->g.tok == zx_shps_QueryRegistered_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_QueryRegistered(c, (struct zx_shps_QueryRegistered_s*)se, p);
-  for (se = &x->QueryRegisteredResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->QueryRegisteredResponse->gg;
+       se && se->g.tok == zx_shps_QueryRegisteredResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_QueryRegisteredResponse(c, (struct zx_shps_QueryRegisteredResponse_s*)se, p);
-  for (se = &x->Register->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Register->gg;
+       se && se->g.tok == zx_shps_Register_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_Register(c, (struct zx_shps_Register_s*)se, p);
-  for (se = &x->RegisterResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RegisterResponse->gg;
+       se && se->g.tok == zx_shps_RegisterResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_RegisterResponse(c, (struct zx_shps_RegisterResponse_s*)se, p);
-  for (se = &x->SetStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetStatus->gg;
+       se && se->g.tok == zx_shps_SetStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_SetStatus(c, (struct zx_shps_SetStatus_s*)se, p);
-  for (se = &x->SetStatusResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SetStatusResponse->gg;
+       se && se->g.tok == zx_shps_SetStatusResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_SetStatusResponse(c, (struct zx_shps_SetStatusResponse_s*)se, p);
-  for (se = &x->Update->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Update->gg;
+       se && se->g.tok == zx_shps_Update_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_Update(c, (struct zx_shps_Update_s*)se, p);
-  for (se = &x->UpdateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UpdateResponse->gg;
+       se && se->g.tok == zx_shps_UpdateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_UpdateResponse(c, (struct zx_shps_UpdateResponse_s*)se, p);
-  for (se = &x->shps_Poll->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_Poll->gg;
+       se && se->g.tok == zx_shps_Poll_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_Poll(c, (struct zx_shps_Poll_s*)se, p);
-  for (se = &x->shps_PollResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->shps_PollResponse->gg;
+       se && se->g.tok == zx_shps_PollResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_PollResponse(c, (struct zx_shps_PollResponse_s*)se, p);
-  for (se = &x->ProxyInvoke->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProxyInvoke->gg;
+       se && se->g.tok == zx_shps_ProxyInvoke_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_ProxyInvoke(c, (struct zx_shps_ProxyInvoke_s*)se, p);
-  for (se = &x->ProxyInvokeResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProxyInvokeResponse->gg;
+       se && se->g.tok == zx_shps_ProxyInvokeResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_shps_ProxyInvokeResponse(c, (struct zx_shps_ProxyInvokeResponse_s*)se, p);
-  for (se = &x->idhrxml_Create->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Create->gg;
+       se && se->g.tok == zx_idhrxml_Create_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Create(c, (struct zx_idhrxml_Create_s*)se, p);
-  for (se = &x->idhrxml_CreateResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_CreateResponse->gg;
+       se && se->g.tok == zx_idhrxml_CreateResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_CreateResponse(c, (struct zx_idhrxml_CreateResponse_s*)se, p);
-  for (se = &x->idhrxml_Query->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Query->gg;
+       se && se->g.tok == zx_idhrxml_Query_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Query(c, (struct zx_idhrxml_Query_s*)se, p);
-  for (se = &x->idhrxml_QueryResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_QueryResponse->gg;
+       se && se->g.tok == zx_idhrxml_QueryResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_QueryResponse(c, (struct zx_idhrxml_QueryResponse_s*)se, p);
-  for (se = &x->idhrxml_Modify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Modify->gg;
+       se && se->g.tok == zx_idhrxml_Modify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Modify(c, (struct zx_idhrxml_Modify_s*)se, p);
-  for (se = &x->idhrxml_ModifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_ModifyResponse->gg;
+       se && se->g.tok == zx_idhrxml_ModifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_ModifyResponse(c, (struct zx_idhrxml_ModifyResponse_s*)se, p);
-  for (se = &x->idhrxml_Delete->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Delete->gg;
+       se && se->g.tok == zx_idhrxml_Delete_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Delete(c, (struct zx_idhrxml_Delete_s*)se, p);
-  for (se = &x->idhrxml_DeleteResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_DeleteResponse->gg;
+       se && se->g.tok == zx_idhrxml_DeleteResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_DeleteResponse(c, (struct zx_idhrxml_DeleteResponse_s*)se, p);
-  for (se = &x->idhrxml_Notify->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_Notify->gg;
+       se && se->g.tok == zx_idhrxml_Notify_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_Notify(c, (struct zx_idhrxml_Notify_s*)se, p);
-  for (se = &x->idhrxml_NotifyResponse->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->idhrxml_NotifyResponse->gg;
+       se && se->g.tok == zx_idhrxml_NotifyResponse_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_idhrxml_NotifyResponse(c, (struct zx_idhrxml_NotifyResponse_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1116,7 +2020,7 @@ int zx_LEN_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x )
   int len = sizeof("<e:Envelope")-1 + 1 + sizeof("</e:Envelope>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -1125,9 +2029,13 @@ int zx_LEN_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Header->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Header->gg;
+       se && se->g.tok == zx_e_Header_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_e_Header(c, (struct zx_e_Header_s*)se);
-  for (se = &x->Body->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Body->gg;
+       se && se->g.tok == zx_e_Body_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_e_Body(c, (struct zx_e_Body_s*)se);
 
 
@@ -1155,7 +2063,7 @@ char* zx_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, char* p 
   ZX_OUT_TAG(p, "<e:Envelope");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1168,9 +2076,13 @@ char* zx_ENC_SO_e_Envelope(struct zx_ctx* c, struct zx_e_Envelope_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Header->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Header->gg;
+       se && se->g.tok == zx_e_Header_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_e_Header(c, (struct zx_e_Header_s*)se, p);
-  for (se = &x->Body->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Body->gg;
+       se && se->g.tok == zx_e_Body_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_e_Body(c, (struct zx_e_Body_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1251,7 +2163,7 @@ int zx_LEN_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x )
   int len = sizeof("<e:Fault")-1 + 1 + sizeof("</e:Fault>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1259,13 +2171,21 @@ int zx_LEN_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x )
   int len = 0;
 #endif
   
-  for (se = x->faultcode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("e:faultcode")-1, zx_ns_tab+zx_e_NS);
-  for (se = x->faultstring; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("e:faultstring")-1, zx_ns_tab+zx_e_NS);
-  for (se = x->faultactor; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("e:faultactor")-1, zx_ns_tab+zx_e_NS);
-  for (se = &x->detail->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->faultcode;
+    se && se->g.tok == zx_e_faultcode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("e:faultcode")-1, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->faultstring;
+    se && se->g.tok == zx_e_faultstring_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("e:faultstring")-1, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->faultactor;
+    se && se->g.tok == zx_e_faultactor_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("e:faultactor")-1, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->detail->gg;
+       se && se->g.tok == zx_e_detail_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_e_detail(c, (struct zx_e_detail_s*)se);
 
 
@@ -1293,7 +2213,7 @@ char* zx_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, char* p )
   ZX_OUT_TAG(p, "<e:Fault");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1305,13 +2225,21 @@ char* zx_ENC_SO_e_Fault(struct zx_ctx* c, struct zx_e_Fault_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = x->faultcode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "e:faultcode", sizeof("e:faultcode")-1, zx_ns_tab+zx_e_NS);
-  for (se = x->faultstring; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "e:faultstring", sizeof("e:faultstring")-1, zx_ns_tab+zx_e_NS);
-  for (se = x->faultactor; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "e:faultactor", sizeof("e:faultactor")-1, zx_ns_tab+zx_e_NS);
-  for (se = &x->detail->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->faultcode;
+       se && se->g.tok == zx_e_faultcode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "e:faultcode", sizeof("e:faultcode")-1, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->faultstring;
+       se && se->g.tok == zx_e_faultstring_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "e:faultstring", sizeof("e:faultstring")-1, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->faultactor;
+       se && se->g.tok == zx_e_faultactor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "e:faultactor", sizeof("e:faultactor")-1, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->detail->gg;
+       se && se->g.tok == zx_e_detail_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_e_detail(c, (struct zx_e_detail_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1392,7 +2320,7 @@ int zx_LEN_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x )
   int len = sizeof("<e:Header")-1 + 1 + sizeof("</e:Header>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
 
@@ -1401,77 +2329,149 @@ int zx_LEN_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_paos_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_paos_Request(c, (struct zx_paos_Request_s*)se);
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_paos_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_paos_Response(c, (struct zx_paos_Response_s*)se);
-  for (se = &x->ecp_Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ecp_Request->gg;
+       se && se->g.tok == zx_ecp_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ecp_Request(c, (struct zx_ecp_Request_s*)se);
-  for (se = &x->ecp_Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ecp_Response->gg;
+       se && se->g.tok == zx_ecp_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ecp_Response(c, (struct zx_ecp_Response_s*)se);
-  for (se = &x->RelayState->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelayState->gg;
+       se && se->g.tok == zx_ecp_RelayState_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_ecp_RelayState(c, (struct zx_ecp_RelayState_s*)se);
-  for (se = &x->MessageID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MessageID->gg;
+       se && se->g.tok == zx_a_MessageID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_MessageID(c, (struct zx_a_MessageID_s*)se);
-  for (se = &x->RelatesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatesTo->gg;
+       se && se->g.tok == zx_a_RelatesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_RelatesTo(c, (struct zx_a_RelatesTo_s*)se);
-  for (se = &x->ReplyTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReplyTo->gg;
+       se && se->g.tok == zx_a_ReplyTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_ReplyTo(c, (struct zx_a_ReplyTo_s*)se);
-  for (se = &x->From->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->From->gg;
+       se && se->g.tok == zx_a_From_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_From(c, (struct zx_a_From_s*)se);
-  for (se = &x->FaultTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FaultTo->gg;
+       se && se->g.tok == zx_a_FaultTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_FaultTo(c, (struct zx_a_FaultTo_s*)se);
-  for (se = &x->To->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->To->gg;
+       se && se->g.tok == zx_a_To_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_To(c, (struct zx_a_To_s*)se);
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_a_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_Action(c, (struct zx_a_Action_s*)se);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se);
-  for (se = &x->Framework->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Framework->gg;
+       se && se->g.tok == zx_sbf_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)se);
-  for (se = &x->b_Framework->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->b_Framework->gg;
+       se && se->g.tok == zx_b_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_Framework(c, (struct zx_b_Framework_s*)se);
-  for (se = &x->Sender->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Sender->gg;
+       se && se->g.tok == zx_b_Sender_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_Sender(c, (struct zx_b_Sender_s*)se);
-  for (se = &x->TargetIdentity->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TargetIdentity->gg;
+       se && se->g.tok == zx_b_TargetIdentity_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_TargetIdentity(c, (struct zx_b_TargetIdentity_s*)se);
-  for (se = &x->CredentialsContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CredentialsContext->gg;
+       se && se->g.tok == zx_b_CredentialsContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_CredentialsContext(c, (struct zx_b_CredentialsContext_s*)se);
-  for (se = &x->EndpointUpdate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointUpdate->gg;
+       se && se->g.tok == zx_b_EndpointUpdate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_EndpointUpdate(c, (struct zx_b_EndpointUpdate_s*)se);
-  for (se = &x->Timeout->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Timeout->gg;
+       se && se->g.tok == zx_b_Timeout_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_Timeout(c, (struct zx_b_Timeout_s*)se);
-  for (se = &x->ProcessingContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProcessingContext->gg;
+       se && se->g.tok == zx_b_ProcessingContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_ProcessingContext(c, (struct zx_b_ProcessingContext_s*)se);
-  for (se = &x->Consent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Consent->gg;
+       se && se->g.tok == zx_b_Consent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_Consent(c, (struct zx_b_Consent_s*)se);
-  for (se = &x->UsageDirective->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UsageDirective->gg;
+       se && se->g.tok == zx_b_UsageDirective_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_UsageDirective(c, (struct zx_b_UsageDirective_s*)se);
-  for (se = &x->ApplicationEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ApplicationEPR->gg;
+       se && se->g.tok == zx_b_ApplicationEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_ApplicationEPR(c, (struct zx_b_ApplicationEPR_s*)se);
-  for (se = &x->UserInteraction->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserInteraction->gg;
+       se && se->g.tok == zx_b_UserInteraction_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_UserInteraction(c, (struct zx_b_UserInteraction_s*)se);
-  for (se = &x->RedirectRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RedirectRequest->gg;
+       se && se->g.tok == zx_b_RedirectRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b_RedirectRequest(c, (struct zx_b_RedirectRequest_s*)se);
-  for (se = &x->Correlation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Correlation->gg;
+       se && se->g.tok == zx_b12_Correlation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b12_Correlation(c, (struct zx_b12_Correlation_s*)se);
-  for (se = &x->Provider->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Provider->gg;
+       se && se->g.tok == zx_b12_Provider_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b12_Provider(c, (struct zx_b12_Provider_s*)se);
-  for (se = &x->b12_ProcessingContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->b12_ProcessingContext->gg;
+       se && se->g.tok == zx_b12_ProcessingContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b12_ProcessingContext(c, (struct zx_b12_ProcessingContext_s*)se);
-  for (se = &x->b12_Consent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->b12_Consent->gg;
+       se && se->g.tok == zx_b12_Consent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b12_Consent(c, (struct zx_b12_Consent_s*)se);
-  for (se = &x->b12_UsageDirective->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->b12_UsageDirective->gg;
+       se && se->g.tok == zx_b12_UsageDirective_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_b12_UsageDirective(c, (struct zx_b12_UsageDirective_s*)se);
-  for (se = &x->TransactionID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TransactionID->gg;
+       se && se->g.tok == zx_mm7_TransactionID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)se);
-  for (se = &x->Security->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Security->gg;
+       se && se->g.tok == zx_wsse_Security_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_wsse_Security(c, (struct zx_wsse_Security_s*)se);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_tas3_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_tas3_Status(c, (struct zx_tas3_Status_s*)se);
-  for (se = &x->Credentials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Credentials->gg;
+       se && se->g.tok == zx_tas3_Credentials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_tas3_Credentials(c, (struct zx_tas3_Credentials_s*)se);
-  for (se = &x->ESLPolicies->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ESLPolicies->gg;
+       se && se->g.tok == zx_tas3_ESLPolicies_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_tas3_ESLPolicies(c, (struct zx_tas3_ESLPolicies_s*)se);
 
 
@@ -1499,7 +2499,7 @@ char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p )
   ZX_OUT_TAG(p, "<e:Header");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1512,77 +2512,149 @@ char* zx_ENC_SO_e_Header(struct zx_ctx* c, struct zx_e_Header_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_paos_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_paos_Request(c, (struct zx_paos_Request_s*)se, p);
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_paos_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_paos_Response(c, (struct zx_paos_Response_s*)se, p);
-  for (se = &x->ecp_Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ecp_Request->gg;
+       se && se->g.tok == zx_ecp_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ecp_Request(c, (struct zx_ecp_Request_s*)se, p);
-  for (se = &x->ecp_Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ecp_Response->gg;
+       se && se->g.tok == zx_ecp_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ecp_Response(c, (struct zx_ecp_Response_s*)se, p);
-  for (se = &x->RelayState->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelayState->gg;
+       se && se->g.tok == zx_ecp_RelayState_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_ecp_RelayState(c, (struct zx_ecp_RelayState_s*)se, p);
-  for (se = &x->MessageID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MessageID->gg;
+       se && se->g.tok == zx_a_MessageID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_MessageID(c, (struct zx_a_MessageID_s*)se, p);
-  for (se = &x->RelatesTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatesTo->gg;
+       se && se->g.tok == zx_a_RelatesTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_RelatesTo(c, (struct zx_a_RelatesTo_s*)se, p);
-  for (se = &x->ReplyTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReplyTo->gg;
+       se && se->g.tok == zx_a_ReplyTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_ReplyTo(c, (struct zx_a_ReplyTo_s*)se, p);
-  for (se = &x->From->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->From->gg;
+       se && se->g.tok == zx_a_From_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_From(c, (struct zx_a_From_s*)se, p);
-  for (se = &x->FaultTo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FaultTo->gg;
+       se && se->g.tok == zx_a_FaultTo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_FaultTo(c, (struct zx_a_FaultTo_s*)se, p);
-  for (se = &x->To->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->To->gg;
+       se && se->g.tok == zx_a_To_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_To(c, (struct zx_a_To_s*)se, p);
-  for (se = &x->Action->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Action->gg;
+       se && se->g.tok == zx_a_Action_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_Action(c, (struct zx_a_Action_s*)se, p);
-  for (se = &x->ReferenceParameters->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferenceParameters->gg;
+       se && se->g.tok == zx_a_ReferenceParameters_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_a_ReferenceParameters(c, (struct zx_a_ReferenceParameters_s*)se, p);
-  for (se = &x->Framework->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Framework->gg;
+       se && se->g.tok == zx_sbf_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_sbf_Framework(c, (struct zx_sbf_Framework_s*)se, p);
-  for (se = &x->b_Framework->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->b_Framework->gg;
+       se && se->g.tok == zx_b_Framework_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_Framework(c, (struct zx_b_Framework_s*)se, p);
-  for (se = &x->Sender->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Sender->gg;
+       se && se->g.tok == zx_b_Sender_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_Sender(c, (struct zx_b_Sender_s*)se, p);
-  for (se = &x->TargetIdentity->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TargetIdentity->gg;
+       se && se->g.tok == zx_b_TargetIdentity_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_TargetIdentity(c, (struct zx_b_TargetIdentity_s*)se, p);
-  for (se = &x->CredentialsContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CredentialsContext->gg;
+       se && se->g.tok == zx_b_CredentialsContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_CredentialsContext(c, (struct zx_b_CredentialsContext_s*)se, p);
-  for (se = &x->EndpointUpdate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndpointUpdate->gg;
+       se && se->g.tok == zx_b_EndpointUpdate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_EndpointUpdate(c, (struct zx_b_EndpointUpdate_s*)se, p);
-  for (se = &x->Timeout->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Timeout->gg;
+       se && se->g.tok == zx_b_Timeout_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_Timeout(c, (struct zx_b_Timeout_s*)se, p);
-  for (se = &x->ProcessingContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProcessingContext->gg;
+       se && se->g.tok == zx_b_ProcessingContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_ProcessingContext(c, (struct zx_b_ProcessingContext_s*)se, p);
-  for (se = &x->Consent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Consent->gg;
+       se && se->g.tok == zx_b_Consent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_Consent(c, (struct zx_b_Consent_s*)se, p);
-  for (se = &x->UsageDirective->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UsageDirective->gg;
+       se && se->g.tok == zx_b_UsageDirective_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_UsageDirective(c, (struct zx_b_UsageDirective_s*)se, p);
-  for (se = &x->ApplicationEPR->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ApplicationEPR->gg;
+       se && se->g.tok == zx_b_ApplicationEPR_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_ApplicationEPR(c, (struct zx_b_ApplicationEPR_s*)se, p);
-  for (se = &x->UserInteraction->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserInteraction->gg;
+       se && se->g.tok == zx_b_UserInteraction_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_UserInteraction(c, (struct zx_b_UserInteraction_s*)se, p);
-  for (se = &x->RedirectRequest->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RedirectRequest->gg;
+       se && se->g.tok == zx_b_RedirectRequest_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b_RedirectRequest(c, (struct zx_b_RedirectRequest_s*)se, p);
-  for (se = &x->Correlation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Correlation->gg;
+       se && se->g.tok == zx_b12_Correlation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b12_Correlation(c, (struct zx_b12_Correlation_s*)se, p);
-  for (se = &x->Provider->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Provider->gg;
+       se && se->g.tok == zx_b12_Provider_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b12_Provider(c, (struct zx_b12_Provider_s*)se, p);
-  for (se = &x->b12_ProcessingContext->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->b12_ProcessingContext->gg;
+       se && se->g.tok == zx_b12_ProcessingContext_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b12_ProcessingContext(c, (struct zx_b12_ProcessingContext_s*)se, p);
-  for (se = &x->b12_Consent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->b12_Consent->gg;
+       se && se->g.tok == zx_b12_Consent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b12_Consent(c, (struct zx_b12_Consent_s*)se, p);
-  for (se = &x->b12_UsageDirective->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->b12_UsageDirective->gg;
+       se && se->g.tok == zx_b12_UsageDirective_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_b12_UsageDirective(c, (struct zx_b12_UsageDirective_s*)se, p);
-  for (se = &x->TransactionID->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TransactionID->gg;
+       se && se->g.tok == zx_mm7_TransactionID_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_mm7_TransactionID(c, (struct zx_mm7_TransactionID_s*)se, p);
-  for (se = &x->Security->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Security->gg;
+       se && se->g.tok == zx_wsse_Security_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_wsse_Security(c, (struct zx_wsse_Security_s*)se, p);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_tas3_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_tas3_Status(c, (struct zx_tas3_Status_s*)se, p);
-  for (se = &x->Credentials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Credentials->gg;
+       se && se->g.tok == zx_tas3_Credentials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_tas3_Credentials(c, (struct zx_tas3_Credentials_s*)se, p);
-  for (se = &x->ESLPolicies->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ESLPolicies->gg;
+       se && se->g.tok == zx_tas3_ESLPolicies_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_tas3_ESLPolicies(c, (struct zx_tas3_ESLPolicies_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1663,7 +2735,7 @@ int zx_LEN_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x )
   int len = sizeof("<e:detail")-1 + 1 + sizeof("</e:detail>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1671,7 +2743,9 @@ int zx_LEN_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_lu_Status(c, (struct zx_lu_Status_s*)se);
 
 
@@ -1699,7 +2773,7 @@ char* zx_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, char* p )
   ZX_OUT_TAG(p, "<e:detail");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_e_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1711,7 +2785,9 @@ char* zx_ENC_SO_e_detail(struct zx_ctx* c, struct zx_e_detail_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_lu_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_lu_Status(c, (struct zx_lu_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

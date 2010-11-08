@@ -202,15 +202,21 @@ void zx_FREE_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_Affiliati
   zx_free_attr(c, x->validUntil, free_strs);
 
   zx_free_simple_elems(c, x->AffiliateMember, free_strs);
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Extension(c, (struct zx_m20_Extension_s*)e, free_strs);
   }
-  for (e = &x->KeyDescriptor->gg; e; e = en) {
+  for (e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_m20_KeyDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)e, free_strs);
   }
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
@@ -255,11 +261,17 @@ void zx_DUP_STRS_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_Affil
   zx_dup_attr(c, x->validUntil);
 
   zx_dup_strs_simple_elems(c, x->AffiliateMember);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Extension(c, (struct zx_m20_Extension_s*)se);
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_m20_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
 }
@@ -285,7 +297,9 @@ struct zx_m20_AffiliationDescriptor_s* zx_DEEP_CLONE_m20_AffiliationDescriptor(s
   x->validUntil = zx_clone_attr(c, x->validUntil);
 
   x->AffiliateMember = zx_deep_clone_simple_elems(c,x->AffiliateMember, dup_strs);
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Extension(c,(struct zx_m20_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_m20_Extension_s*)en;
@@ -293,7 +307,9 @@ struct zx_m20_AffiliationDescriptor_s* zx_DEEP_CLONE_m20_AffiliationDescriptor(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->KeyDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_m20_KeyDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_KeyDescriptor(c,(struct zx_m20_KeyDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyDescriptor = (struct zx_m20_KeyDescriptor_s*)en;
@@ -301,7 +317,9 @@ struct zx_m20_AffiliationDescriptor_s* zx_DEEP_CLONE_m20_AffiliationDescriptor(s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -335,17 +353,23 @@ int zx_WALK_SO_m20_AffiliationDescriptor(struct zx_ctx* c, struct zx_m20_Affilia
   ret = zx_walk_so_simple_elems(c, x->AffiliateMember, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Extension(c, (struct zx_m20_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->KeyDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_m20_KeyDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -545,7 +569,9 @@ void zx_FREE_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s* 
   zx_free_simple_elems(c, x->SurName, free_strs);
   zx_free_simple_elems(c, x->EmailAddress, free_strs);
   zx_free_simple_elems(c, x->TelephoneNumber, free_strs);
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Extension(c, (struct zx_m20_Extension_s*)e, free_strs);
   }
@@ -592,7 +618,9 @@ void zx_DUP_STRS_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson
   zx_dup_strs_simple_elems(c, x->SurName);
   zx_dup_strs_simple_elems(c, x->EmailAddress);
   zx_dup_strs_simple_elems(c, x->TelephoneNumber);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Extension(c, (struct zx_m20_Extension_s*)se);
 
 }
@@ -620,7 +648,9 @@ struct zx_m20_ContactPerson_s* zx_DEEP_CLONE_m20_ContactPerson(struct zx_ctx* c,
   x->SurName = zx_deep_clone_simple_elems(c,x->SurName, dup_strs);
   x->EmailAddress = zx_deep_clone_simple_elems(c,x->EmailAddress, dup_strs);
   x->TelephoneNumber = zx_deep_clone_simple_elems(c,x->TelephoneNumber, dup_strs);
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Extension(c,(struct zx_m20_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_m20_Extension_s*)en;
@@ -666,7 +696,9 @@ int zx_WALK_SO_m20_ContactPerson(struct zx_ctx* c, struct zx_m20_ContactPerson_s
   ret = zx_walk_so_simple_elems(c, x->TelephoneNumber, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Extension(c, (struct zx_m20_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -723,7 +755,9 @@ void zx_FREE_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDesc
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->EntityDescriptor->gg; e; e = en) {
+  for (e = &x->EntityDescriptor->gg;
+       e && e->g.tok == zx_m20_EntityDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_EntityDescriptor(c, (struct zx_m20_EntityDescriptor_s*)e, free_strs);
   }
@@ -763,7 +797,9 @@ void zx_DUP_STRS_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_Entities
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->EntityDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EntityDescriptor->gg;
+       se && se->g.tok == zx_m20_EntityDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_EntityDescriptor(c, (struct zx_m20_EntityDescriptor_s*)se);
 
 }
@@ -784,7 +820,9 @@ struct zx_m20_EntitiesDescriptor_s* zx_DEEP_CLONE_m20_EntitiesDescriptor(struct 
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->EntityDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->EntityDescriptor->gg;
+       e && e->g.tok == zx_m20_EntityDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_EntityDescriptor(c,(struct zx_m20_EntityDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->EntityDescriptor = (struct zx_m20_EntityDescriptor_s*)en;
@@ -815,7 +853,9 @@ int zx_WALK_SO_m20_EntitiesDescriptor(struct zx_ctx* c, struct zx_m20_EntitiesDe
   if (ret)
     return ret;
 
-  for (e = &x->EntityDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->EntityDescriptor->gg;
+       e && e->g.tok == zx_m20_EntityDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_EntityDescriptor(c, (struct zx_m20_EntityDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -876,31 +916,45 @@ void zx_FREE_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescript
   zx_free_attr(c, x->providerID, free_strs);
   zx_free_attr(c, x->validUntil, free_strs);
 
-  for (e = &x->IDPDescriptor->gg; e; e = en) {
+  for (e = &x->IDPDescriptor->gg;
+       e && e->g.tok == zx_m20_IDPDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_IDPDescriptor(c, (struct zx_m20_IDPDescriptor_s*)e, free_strs);
   }
-  for (e = &x->SPDescriptor->gg; e; e = en) {
+  for (e = &x->SPDescriptor->gg;
+       e && e->g.tok == zx_m20_SPDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_SPDescriptor(c, (struct zx_m20_SPDescriptor_s*)e, free_strs);
   }
-  for (e = &x->AffiliationDescriptor->gg; e; e = en) {
+  for (e = &x->AffiliationDescriptor->gg;
+       e && e->g.tok == zx_m20_AffiliationDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_AffiliationDescriptor(c, (struct zx_m20_AffiliationDescriptor_s*)e, free_strs);
   }
-  for (e = &x->ContactPerson->gg; e; e = en) {
+  for (e = &x->ContactPerson->gg;
+       e && e->g.tok == zx_m20_ContactPerson_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)e, free_strs);
   }
-  for (e = &x->Organization->gg; e; e = en) {
+  for (e = &x->Organization->gg;
+       e && e->g.tok == zx_m20_Organization_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Organization(c, (struct zx_m20_Organization_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Extension(c, (struct zx_m20_Extension_s*)e, free_strs);
   }
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
@@ -944,19 +998,33 @@ void zx_DUP_STRS_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDesc
   zx_dup_attr(c, x->providerID);
   zx_dup_attr(c, x->validUntil);
 
-  for (se = &x->IDPDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IDPDescriptor->gg;
+       se && se->g.tok == zx_m20_IDPDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_IDPDescriptor(c, (struct zx_m20_IDPDescriptor_s*)se);
-  for (se = &x->SPDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SPDescriptor->gg;
+       se && se->g.tok == zx_m20_SPDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_SPDescriptor(c, (struct zx_m20_SPDescriptor_s*)se);
-  for (se = &x->AffiliationDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AffiliationDescriptor->gg;
+       se && se->g.tok == zx_m20_AffiliationDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_AffiliationDescriptor(c, (struct zx_m20_AffiliationDescriptor_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_m20_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)se);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_m20_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Organization(c, (struct zx_m20_Organization_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Extension(c, (struct zx_m20_Extension_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
 
 }
@@ -981,7 +1049,9 @@ struct zx_m20_EntityDescriptor_s* zx_DEEP_CLONE_m20_EntityDescriptor(struct zx_c
   x->providerID = zx_clone_attr(c, x->providerID);
   x->validUntil = zx_clone_attr(c, x->validUntil);
 
-  for (enn = 0, e = &x->IDPDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->IDPDescriptor->gg;
+       e && e->g.tok == zx_m20_IDPDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_IDPDescriptor(c,(struct zx_m20_IDPDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->IDPDescriptor = (struct zx_m20_IDPDescriptor_s*)en;
@@ -989,7 +1059,9 @@ struct zx_m20_EntityDescriptor_s* zx_DEEP_CLONE_m20_EntityDescriptor(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->SPDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->SPDescriptor->gg;
+       e && e->g.tok == zx_m20_SPDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_SPDescriptor(c,(struct zx_m20_SPDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->SPDescriptor = (struct zx_m20_SPDescriptor_s*)en;
@@ -997,7 +1069,9 @@ struct zx_m20_EntityDescriptor_s* zx_DEEP_CLONE_m20_EntityDescriptor(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AffiliationDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AffiliationDescriptor->gg;
+       e && e->g.tok == zx_m20_AffiliationDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_AffiliationDescriptor(c,(struct zx_m20_AffiliationDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->AffiliationDescriptor = (struct zx_m20_AffiliationDescriptor_s*)en;
@@ -1005,7 +1079,9 @@ struct zx_m20_EntityDescriptor_s* zx_DEEP_CLONE_m20_EntityDescriptor(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ContactPerson->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactPerson->gg;
+       e && e->g.tok == zx_m20_ContactPerson_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_ContactPerson(c,(struct zx_m20_ContactPerson_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactPerson = (struct zx_m20_ContactPerson_s*)en;
@@ -1013,7 +1089,9 @@ struct zx_m20_EntityDescriptor_s* zx_DEEP_CLONE_m20_EntityDescriptor(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Organization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Organization->gg;
+       e && e->g.tok == zx_m20_Organization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Organization(c,(struct zx_m20_Organization_s*)e,dup_strs);
   	  if (!enn)
   	      x->Organization = (struct zx_m20_Organization_s*)en;
@@ -1021,7 +1099,9 @@ struct zx_m20_EntityDescriptor_s* zx_DEEP_CLONE_m20_EntityDescriptor(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Extension(c,(struct zx_m20_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_m20_Extension_s*)en;
@@ -1029,7 +1109,9 @@ struct zx_m20_EntityDescriptor_s* zx_DEEP_CLONE_m20_EntityDescriptor(struct zx_c
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -1060,37 +1142,51 @@ int zx_WALK_SO_m20_EntityDescriptor(struct zx_ctx* c, struct zx_m20_EntityDescri
   if (ret)
     return ret;
 
-  for (e = &x->IDPDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->IDPDescriptor->gg;
+       e && e->g.tok == zx_m20_IDPDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_IDPDescriptor(c, (struct zx_m20_IDPDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->SPDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->SPDescriptor->gg;
+       e && e->g.tok == zx_m20_SPDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_SPDescriptor(c, (struct zx_m20_SPDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AffiliationDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AffiliationDescriptor->gg;
+       e && e->g.tok == zx_m20_AffiliationDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_AffiliationDescriptor(c, (struct zx_m20_AffiliationDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ContactPerson->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactPerson->gg;
+       e && e->g.tok == zx_m20_ContactPerson_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Organization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Organization->gg;
+       e && e->g.tok == zx_m20_Organization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Organization(c, (struct zx_m20_Organization_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Extension(c, (struct zx_m20_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1281,7 +1377,9 @@ void zx_FREE_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* 
   zx_free_attr(c, x->protocolSupportEnumeration, free_strs);
   zx_free_attr(c, x->validUntil, free_strs);
 
-  for (e = &x->KeyDescriptor->gg; e; e = en) {
+  for (e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_m20_KeyDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)e, free_strs);
   }
@@ -1297,23 +1395,33 @@ void zx_FREE_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s* 
   zx_free_simple_elems(c, x->RegisterNameIdentifierServiceReturnURL, free_strs);
   zx_free_simple_elems(c, x->NameIdentifierMappingProtocolProfile, free_strs);
   zx_free_simple_elems(c, x->NameIdentifierMappingEncryptionProfile, free_strs);
-  for (e = &x->Organization->gg; e; e = en) {
+  for (e = &x->Organization->gg;
+       e && e->g.tok == zx_m20_Organization_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Organization(c, (struct zx_m20_Organization_s*)e, free_strs);
   }
-  for (e = &x->ContactPerson->gg; e; e = en) {
+  for (e = &x->ContactPerson->gg;
+       e && e->g.tok == zx_m20_ContactPerson_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)e, free_strs);
   }
-  for (e = &x->AdditionalMetaLocation->gg; e; e = en) {
+  for (e = &x->AdditionalMetaLocation->gg;
+       e && e->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Extension(c, (struct zx_m20_Extension_s*)e, free_strs);
   }
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
@@ -1360,7 +1468,9 @@ void zx_DUP_STRS_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor
   zx_dup_attr(c, x->protocolSupportEnumeration);
   zx_dup_attr(c, x->validUntil);
 
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_m20_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)se);
   zx_dup_strs_simple_elems(c, x->SoapEndpoint);
   zx_dup_strs_simple_elems(c, x->SingleLogoutServiceURL);
@@ -1374,15 +1484,25 @@ void zx_DUP_STRS_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor
   zx_dup_strs_simple_elems(c, x->RegisterNameIdentifierServiceReturnURL);
   zx_dup_strs_simple_elems(c, x->NameIdentifierMappingProtocolProfile);
   zx_dup_strs_simple_elems(c, x->NameIdentifierMappingEncryptionProfile);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_m20_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Organization(c, (struct zx_m20_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_m20_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)se);
-  for (se = &x->AdditionalMetaLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalMetaLocation->gg;
+       se && se->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Extension(c, (struct zx_m20_Extension_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
   zx_dup_strs_simple_elems(c, x->SingleSignOnServiceURL);
   zx_dup_strs_simple_elems(c, x->SingleSignOnProtocolProfile);
@@ -1410,7 +1530,9 @@ struct zx_m20_IDPDescriptor_s* zx_DEEP_CLONE_m20_IDPDescriptor(struct zx_ctx* c,
   x->protocolSupportEnumeration = zx_clone_attr(c, x->protocolSupportEnumeration);
   x->validUntil = zx_clone_attr(c, x->validUntil);
 
-  for (enn = 0, e = &x->KeyDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_m20_KeyDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_KeyDescriptor(c,(struct zx_m20_KeyDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyDescriptor = (struct zx_m20_KeyDescriptor_s*)en;
@@ -1430,7 +1552,9 @@ struct zx_m20_IDPDescriptor_s* zx_DEEP_CLONE_m20_IDPDescriptor(struct zx_ctx* c,
   x->RegisterNameIdentifierServiceReturnURL = zx_deep_clone_simple_elems(c,x->RegisterNameIdentifierServiceReturnURL, dup_strs);
   x->NameIdentifierMappingProtocolProfile = zx_deep_clone_simple_elems(c,x->NameIdentifierMappingProtocolProfile, dup_strs);
   x->NameIdentifierMappingEncryptionProfile = zx_deep_clone_simple_elems(c,x->NameIdentifierMappingEncryptionProfile, dup_strs);
-  for (enn = 0, e = &x->Organization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Organization->gg;
+       e && e->g.tok == zx_m20_Organization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Organization(c,(struct zx_m20_Organization_s*)e,dup_strs);
   	  if (!enn)
   	      x->Organization = (struct zx_m20_Organization_s*)en;
@@ -1438,7 +1562,9 @@ struct zx_m20_IDPDescriptor_s* zx_DEEP_CLONE_m20_IDPDescriptor(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ContactPerson->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactPerson->gg;
+       e && e->g.tok == zx_m20_ContactPerson_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_ContactPerson(c,(struct zx_m20_ContactPerson_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactPerson = (struct zx_m20_ContactPerson_s*)en;
@@ -1446,7 +1572,9 @@ struct zx_m20_IDPDescriptor_s* zx_DEEP_CLONE_m20_IDPDescriptor(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AdditionalMetaLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AdditionalMetaLocation->gg;
+       e && e->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_AdditionalMetaLocation(c,(struct zx_m20_AdditionalMetaLocation_s*)e,dup_strs);
   	  if (!enn)
   	      x->AdditionalMetaLocation = (struct zx_m20_AdditionalMetaLocation_s*)en;
@@ -1454,7 +1582,9 @@ struct zx_m20_IDPDescriptor_s* zx_DEEP_CLONE_m20_IDPDescriptor(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Extension(c,(struct zx_m20_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_m20_Extension_s*)en;
@@ -1462,7 +1592,9 @@ struct zx_m20_IDPDescriptor_s* zx_DEEP_CLONE_m20_IDPDescriptor(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -1496,7 +1628,9 @@ int zx_WALK_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s
   if (ret)
     return ret;
 
-  for (e = &x->KeyDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_m20_KeyDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1537,27 +1671,37 @@ int zx_WALK_SO_m20_IDPDescriptor(struct zx_ctx* c, struct zx_m20_IDPDescriptor_s
   ret = zx_walk_so_simple_elems(c, x->NameIdentifierMappingEncryptionProfile, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Organization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Organization->gg;
+       e && e->g.tok == zx_m20_Organization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Organization(c, (struct zx_m20_Organization_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ContactPerson->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactPerson->gg;
+       e && e->g.tok == zx_m20_ContactPerson_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AdditionalMetaLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AdditionalMetaLocation->gg;
+       e && e->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Extension(c, (struct zx_m20_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1626,11 +1770,15 @@ void zx_FREE_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s* 
 
   zx_free_simple_elems(c, x->EncryptionMethod, free_strs);
   zx_free_simple_elems(c, x->KeySize, free_strs);
-  for (e = &x->KeyInfo->gg; e; e = en) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Extension(c, (struct zx_m20_Extension_s*)e, free_strs);
   }
@@ -1673,9 +1821,13 @@ void zx_DUP_STRS_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor
 
   zx_dup_strs_simple_elems(c, x->EncryptionMethod);
   zx_dup_strs_simple_elems(c, x->KeySize);
-  for (se = &x->KeyInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyInfo->gg;
+       se && se->g.tok == zx_ds_KeyInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Extension(c, (struct zx_m20_Extension_s*)se);
 
 }
@@ -1699,7 +1851,9 @@ struct zx_m20_KeyDescriptor_s* zx_DEEP_CLONE_m20_KeyDescriptor(struct zx_ctx* c,
 
   x->EncryptionMethod = zx_deep_clone_simple_elems(c,x->EncryptionMethod, dup_strs);
   x->KeySize = zx_deep_clone_simple_elems(c,x->KeySize, dup_strs);
-  for (enn = 0, e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_KeyInfo(c,(struct zx_ds_KeyInfo_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyInfo = (struct zx_ds_KeyInfo_s*)en;
@@ -1707,7 +1861,9 @@ struct zx_m20_KeyDescriptor_s* zx_DEEP_CLONE_m20_KeyDescriptor(struct zx_ctx* c,
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Extension(c,(struct zx_m20_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_m20_Extension_s*)en;
@@ -1744,12 +1900,16 @@ int zx_WALK_SO_m20_KeyDescriptor(struct zx_ctx* c, struct zx_m20_KeyDescriptor_s
   ret = zx_walk_so_simple_elems(c, x->KeySize, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->KeyInfo->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyInfo->gg;
+       e && e->g.tok == zx_ds_KeyInfo_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_KeyInfo(c, (struct zx_ds_KeyInfo_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Extension(c, (struct zx_m20_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -1806,19 +1966,27 @@ void zx_FREE_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* x,
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (e = &x->OrganizationName->gg; e; e = en) {
+  for (e = &x->OrganizationName->gg;
+       e && e->g.tok == zx_m20_OrganizationName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_OrganizationName(c, (struct zx_m20_OrganizationName_s*)e, free_strs);
   }
-  for (e = &x->OrganizationDisplayName->gg; e; e = en) {
+  for (e = &x->OrganizationDisplayName->gg;
+       e && e->g.tok == zx_m20_OrganizationDisplayName_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_OrganizationDisplayName(c, (struct zx_m20_OrganizationDisplayName_s*)e, free_strs);
   }
-  for (e = &x->OrganizationURL->gg; e; e = en) {
+  for (e = &x->OrganizationURL->gg;
+       e && e->g.tok == zx_m20_OrganizationURL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_OrganizationURL(c, (struct zx_m20_OrganizationURL_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Extension(c, (struct zx_m20_Extension_s*)e, free_strs);
   }
@@ -1858,13 +2026,21 @@ void zx_DUP_STRS_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (se = &x->OrganizationName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationName->gg;
+       se && se->g.tok == zx_m20_OrganizationName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_OrganizationName(c, (struct zx_m20_OrganizationName_s*)se);
-  for (se = &x->OrganizationDisplayName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationDisplayName->gg;
+       se && se->g.tok == zx_m20_OrganizationDisplayName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_OrganizationDisplayName(c, (struct zx_m20_OrganizationDisplayName_s*)se);
-  for (se = &x->OrganizationURL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationURL->gg;
+       se && se->g.tok == zx_m20_OrganizationURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_OrganizationURL(c, (struct zx_m20_OrganizationURL_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Extension(c, (struct zx_m20_Extension_s*)se);
 
 }
@@ -1885,7 +2061,9 @@ struct zx_m20_Organization_s* zx_DEEP_CLONE_m20_Organization(struct zx_ctx* c, s
   /* *** deal with xmlns specifications in exc c14n way */
 
 
-  for (enn = 0, e = &x->OrganizationName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationName->gg;
+       e && e->g.tok == zx_m20_OrganizationName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_OrganizationName(c,(struct zx_m20_OrganizationName_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationName = (struct zx_m20_OrganizationName_s*)en;
@@ -1893,7 +2071,9 @@ struct zx_m20_Organization_s* zx_DEEP_CLONE_m20_Organization(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OrganizationDisplayName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationDisplayName->gg;
+       e && e->g.tok == zx_m20_OrganizationDisplayName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_OrganizationDisplayName(c,(struct zx_m20_OrganizationDisplayName_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationDisplayName = (struct zx_m20_OrganizationDisplayName_s*)en;
@@ -1901,7 +2081,9 @@ struct zx_m20_Organization_s* zx_DEEP_CLONE_m20_Organization(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->OrganizationURL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->OrganizationURL->gg;
+       e && e->g.tok == zx_m20_OrganizationURL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_OrganizationURL(c,(struct zx_m20_OrganizationURL_s*)e,dup_strs);
   	  if (!enn)
   	      x->OrganizationURL = (struct zx_m20_OrganizationURL_s*)en;
@@ -1909,7 +2091,9 @@ struct zx_m20_Organization_s* zx_DEEP_CLONE_m20_Organization(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Extension(c,(struct zx_m20_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_m20_Extension_s*)en;
@@ -1940,22 +2124,30 @@ int zx_WALK_SO_m20_Organization(struct zx_ctx* c, struct zx_m20_Organization_s* 
   if (ret)
     return ret;
 
-  for (e = &x->OrganizationName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationName->gg;
+       e && e->g.tok == zx_m20_OrganizationName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_OrganizationName(c, (struct zx_m20_OrganizationName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OrganizationDisplayName->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationDisplayName->gg;
+       e && e->g.tok == zx_m20_OrganizationDisplayName_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_OrganizationDisplayName(c, (struct zx_m20_OrganizationDisplayName_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->OrganizationURL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->OrganizationURL->gg;
+       e && e->g.tok == zx_m20_OrganizationURL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_OrganizationURL(c, (struct zx_m20_OrganizationURL_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Extension(c, (struct zx_m20_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2415,7 +2607,9 @@ void zx_FREE_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x,
   zx_free_attr(c, x->protocolSupportEnumeration, free_strs);
   zx_free_attr(c, x->validUntil, free_strs);
 
-  for (e = &x->KeyDescriptor->gg; e; e = en) {
+  for (e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_m20_KeyDescriptor_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)e, free_strs);
   }
@@ -2431,27 +2625,39 @@ void zx_FREE_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* x,
   zx_free_simple_elems(c, x->RegisterNameIdentifierServiceReturnURL, free_strs);
   zx_free_simple_elems(c, x->NameIdentifierMappingProtocolProfile, free_strs);
   zx_free_simple_elems(c, x->NameIdentifierMappingEncryptionProfile, free_strs);
-  for (e = &x->Organization->gg; e; e = en) {
+  for (e = &x->Organization->gg;
+       e && e->g.tok == zx_m20_Organization_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Organization(c, (struct zx_m20_Organization_s*)e, free_strs);
   }
-  for (e = &x->ContactPerson->gg; e; e = en) {
+  for (e = &x->ContactPerson->gg;
+       e && e->g.tok == zx_m20_ContactPerson_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)e, free_strs);
   }
-  for (e = &x->AdditionalMetaLocation->gg; e; e = en) {
+  for (e = &x->AdditionalMetaLocation->gg;
+       e && e->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)e, free_strs);
   }
-  for (e = &x->Extension->gg; e; e = en) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_Extension(c, (struct zx_m20_Extension_s*)e, free_strs);
   }
-  for (e = &x->Signature->gg; e; e = en) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_ds_Signature(c, (struct zx_ds_Signature_s*)e, free_strs);
   }
-  for (e = &x->AssertionConsumerServiceURL->gg; e; e = en) {
+  for (e = &x->AssertionConsumerServiceURL->gg;
+       e && e->g.tok == zx_m20_AssertionConsumerServiceURL_ELEM;
+       e = en) {
     en = (struct zx_elem_s*)e->g.n;
     zx_FREE_m20_AssertionConsumerServiceURL(c, (struct zx_m20_AssertionConsumerServiceURL_s*)e, free_strs);
   }
@@ -2496,7 +2702,9 @@ void zx_DUP_STRS_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s
   zx_dup_attr(c, x->protocolSupportEnumeration);
   zx_dup_attr(c, x->validUntil);
 
-  for (se = &x->KeyDescriptor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->KeyDescriptor->gg;
+       se && se->g.tok == zx_m20_KeyDescriptor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)se);
   zx_dup_strs_simple_elems(c, x->SoapEndpoint);
   zx_dup_strs_simple_elems(c, x->SingleLogoutServiceURL);
@@ -2510,17 +2718,29 @@ void zx_DUP_STRS_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s
   zx_dup_strs_simple_elems(c, x->RegisterNameIdentifierServiceReturnURL);
   zx_dup_strs_simple_elems(c, x->NameIdentifierMappingProtocolProfile);
   zx_dup_strs_simple_elems(c, x->NameIdentifierMappingEncryptionProfile);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_m20_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Organization(c, (struct zx_m20_Organization_s*)se);
-  for (se = &x->ContactPerson->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactPerson->gg;
+       se && se->g.tok == zx_m20_ContactPerson_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)se);
-  for (se = &x->AdditionalMetaLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AdditionalMetaLocation->gg;
+       se && se->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)se);
-  for (se = &x->Extension->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Extension->gg;
+       se && se->g.tok == zx_m20_Extension_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_Extension(c, (struct zx_m20_Extension_s*)se);
-  for (se = &x->Signature->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Signature->gg;
+       se && se->g.tok == zx_ds_Signature_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_ds_Signature(c, (struct zx_ds_Signature_s*)se);
-  for (se = &x->AssertionConsumerServiceURL->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AssertionConsumerServiceURL->gg;
+       se && se->g.tok == zx_m20_AssertionConsumerServiceURL_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     zx_DUP_STRS_m20_AssertionConsumerServiceURL(c, (struct zx_m20_AssertionConsumerServiceURL_s*)se);
   zx_dup_strs_simple_elems(c, x->AuthnRequestsSigned);
 
@@ -2546,7 +2766,9 @@ struct zx_m20_SPDescriptor_s* zx_DEEP_CLONE_m20_SPDescriptor(struct zx_ctx* c, s
   x->protocolSupportEnumeration = zx_clone_attr(c, x->protocolSupportEnumeration);
   x->validUntil = zx_clone_attr(c, x->validUntil);
 
-  for (enn = 0, e = &x->KeyDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_m20_KeyDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_KeyDescriptor(c,(struct zx_m20_KeyDescriptor_s*)e,dup_strs);
   	  if (!enn)
   	      x->KeyDescriptor = (struct zx_m20_KeyDescriptor_s*)en;
@@ -2566,7 +2788,9 @@ struct zx_m20_SPDescriptor_s* zx_DEEP_CLONE_m20_SPDescriptor(struct zx_ctx* c, s
   x->RegisterNameIdentifierServiceReturnURL = zx_deep_clone_simple_elems(c,x->RegisterNameIdentifierServiceReturnURL, dup_strs);
   x->NameIdentifierMappingProtocolProfile = zx_deep_clone_simple_elems(c,x->NameIdentifierMappingProtocolProfile, dup_strs);
   x->NameIdentifierMappingEncryptionProfile = zx_deep_clone_simple_elems(c,x->NameIdentifierMappingEncryptionProfile, dup_strs);
-  for (enn = 0, e = &x->Organization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Organization->gg;
+       e && e->g.tok == zx_m20_Organization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Organization(c,(struct zx_m20_Organization_s*)e,dup_strs);
   	  if (!enn)
   	      x->Organization = (struct zx_m20_Organization_s*)en;
@@ -2574,7 +2798,9 @@ struct zx_m20_SPDescriptor_s* zx_DEEP_CLONE_m20_SPDescriptor(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->ContactPerson->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->ContactPerson->gg;
+       e && e->g.tok == zx_m20_ContactPerson_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_ContactPerson(c,(struct zx_m20_ContactPerson_s*)e,dup_strs);
   	  if (!enn)
   	      x->ContactPerson = (struct zx_m20_ContactPerson_s*)en;
@@ -2582,7 +2808,9 @@ struct zx_m20_SPDescriptor_s* zx_DEEP_CLONE_m20_SPDescriptor(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AdditionalMetaLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AdditionalMetaLocation->gg;
+       e && e->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_AdditionalMetaLocation(c,(struct zx_m20_AdditionalMetaLocation_s*)e,dup_strs);
   	  if (!enn)
   	      x->AdditionalMetaLocation = (struct zx_m20_AdditionalMetaLocation_s*)en;
@@ -2590,7 +2818,9 @@ struct zx_m20_SPDescriptor_s* zx_DEEP_CLONE_m20_SPDescriptor(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_Extension(c,(struct zx_m20_Extension_s*)e,dup_strs);
   	  if (!enn)
   	      x->Extension = (struct zx_m20_Extension_s*)en;
@@ -2598,7 +2828,9 @@ struct zx_m20_SPDescriptor_s* zx_DEEP_CLONE_m20_SPDescriptor(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_ds_Signature(c,(struct zx_ds_Signature_s*)e,dup_strs);
   	  if (!enn)
   	      x->Signature = (struct zx_ds_Signature_s*)en;
@@ -2606,7 +2838,9 @@ struct zx_m20_SPDescriptor_s* zx_DEEP_CLONE_m20_SPDescriptor(struct zx_ctx* c, s
   	      enn->g.n = &en->g;
   	  enn = en;
   }
-  for (enn = 0, e = &x->AssertionConsumerServiceURL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (enn = 0, e = &x->AssertionConsumerServiceURL->gg;
+       e && e->g.tok == zx_m20_AssertionConsumerServiceURL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
   	  en=(struct zx_elem_s*)zx_DEEP_CLONE_m20_AssertionConsumerServiceURL(c,(struct zx_m20_AssertionConsumerServiceURL_s*)e,dup_strs);
   	  if (!enn)
   	      x->AssertionConsumerServiceURL = (struct zx_m20_AssertionConsumerServiceURL_s*)en;
@@ -2638,7 +2872,9 @@ int zx_WALK_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* 
   if (ret)
     return ret;
 
-  for (e = &x->KeyDescriptor->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->KeyDescriptor->gg;
+       e && e->g.tok == zx_m20_KeyDescriptor_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_KeyDescriptor(c, (struct zx_m20_KeyDescriptor_s*)e, ctx, callback);
     if (ret)
       return ret;
@@ -2679,32 +2915,44 @@ int zx_WALK_SO_m20_SPDescriptor(struct zx_ctx* c, struct zx_m20_SPDescriptor_s* 
   ret = zx_walk_so_simple_elems(c, x->NameIdentifierMappingEncryptionProfile, ctx, callback);
   if (ret)
     return ret;
-  for (e = &x->Organization->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Organization->gg;
+       e && e->g.tok == zx_m20_Organization_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Organization(c, (struct zx_m20_Organization_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->ContactPerson->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->ContactPerson->gg;
+       e && e->g.tok == zx_m20_ContactPerson_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_ContactPerson(c, (struct zx_m20_ContactPerson_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AdditionalMetaLocation->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AdditionalMetaLocation->gg;
+       e && e->g.tok == zx_m20_AdditionalMetaLocation_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_AdditionalMetaLocation(c, (struct zx_m20_AdditionalMetaLocation_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Extension->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Extension->gg;
+       e && e->g.tok == zx_m20_Extension_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_Extension(c, (struct zx_m20_Extension_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->Signature->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->Signature->gg;
+       e && e->g.tok == zx_ds_Signature_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_ds_Signature(c, (struct zx_ds_Signature_s*)e, ctx, callback);
     if (ret)
       return ret;
   }
-  for (e = &x->AssertionConsumerServiceURL->gg; e; e = (struct zx_elem_s*)e->g.n) {
+  for (e = &x->AssertionConsumerServiceURL->gg;
+       e && e->g.tok == zx_m20_AssertionConsumerServiceURL_ELEM;
+       e = (struct zx_elem_s*)e->g.n) {
     ret = zx_WALK_SO_m20_AssertionConsumerServiceURL(c, (struct zx_m20_AssertionConsumerServiceURL_s*)e, ctx, callback);
     if (ret)
       return ret;

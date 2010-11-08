@@ -85,7 +85,7 @@ int zx_LEN_SO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_Ref
   int len = sizeof("<xasacd1:ReferencedPolicies")-1 + 1 + sizeof("</xasacd1:ReferencedPolicies>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xasacd1_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xasacd1_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -93,9 +93,13 @@ int zx_LEN_SO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_Ref
   int len = 0;
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_xa_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_Policy(c, (struct zx_xa_Policy_s*)se);
-  for (se = &x->PolicySet->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySet->gg;
+       se && se->g.tok == zx_xa_PolicySet_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)se);
 
 
@@ -123,7 +127,7 @@ char* zx_ENC_SO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_R
   ZX_OUT_TAG(p, "<xasacd1:ReferencedPolicies");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xasacd1_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xasacd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -135,9 +139,13 @@ char* zx_ENC_SO_xasacd1_ReferencedPolicies(struct zx_ctx* c, struct zx_xasacd1_R
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_xa_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_Policy(c, (struct zx_xa_Policy_s*)se, p);
-  for (se = &x->PolicySet->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySet->gg;
+       se && se->g.tok == zx_xa_PolicySet_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -218,7 +226,7 @@ int zx_LEN_SO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xa
   int len = sizeof("<xasacd1:XACMLAuthzDecisionStatement")-1 + 1 + sizeof("</xasacd1:XACMLAuthzDecisionStatement>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xasacd1_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xasacd1_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -226,9 +234,13 @@ int zx_LEN_SO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_xa
   int len = 0;
 #endif
   
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_xac_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xac_Response(c, (struct zx_xac_Response_s*)se);
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_xac_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xac_Request(c, (struct zx_xac_Request_s*)se);
 
 
@@ -256,7 +268,7 @@ char* zx_ENC_SO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_
   ZX_OUT_TAG(p, "<xasacd1:XACMLAuthzDecisionStatement");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xasacd1_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xasacd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -268,9 +280,13 @@ char* zx_ENC_SO_xasacd1_XACMLAuthzDecisionStatement(struct zx_ctx* c, struct zx_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Response->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Response->gg;
+       se && se->g.tok == zx_xac_Response_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xac_Response(c, (struct zx_xac_Response_s*)se, p);
-  for (se = &x->Request->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Request->gg;
+       se && se->g.tok == zx_xac_Request_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xac_Request(c, (struct zx_xac_Request_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -351,7 +367,7 @@ int zx_LEN_SO_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_X
   int len = sizeof("<xasacd1:XACMLPolicyStatement")-1 + 1 + sizeof("</xasacd1:XACMLPolicyStatement>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xasacd1_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xasacd1_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -359,11 +375,17 @@ int zx_LEN_SO_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1_X
   int len = 0;
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_xa_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_Policy(c, (struct zx_xa_Policy_s*)se);
-  for (se = &x->PolicySet->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySet->gg;
+       se && se->g.tok == zx_xa_PolicySet_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)se);
-  for (se = &x->ReferencedPolicies->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferencedPolicies->gg;
+       se && se->g.tok == zx_xasacd1_ReferencedPolicies_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_xasacd1_ReferencedPolicies(c, (struct zx_xasacd1_ReferencedPolicies_s*)se);
 
 
@@ -391,7 +413,7 @@ char* zx_ENC_SO_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1
   ZX_OUT_TAG(p, "<xasacd1:XACMLPolicyStatement");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xasacd1_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xasacd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -403,11 +425,17 @@ char* zx_ENC_SO_xasacd1_XACMLPolicyStatement(struct zx_ctx* c, struct zx_xasacd1
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Policy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Policy->gg;
+       se && se->g.tok == zx_xa_Policy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_Policy(c, (struct zx_xa_Policy_s*)se, p);
-  for (se = &x->PolicySet->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PolicySet->gg;
+       se && se->g.tok == zx_xa_PolicySet_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xa_PolicySet(c, (struct zx_xa_PolicySet_s*)se, p);
-  for (se = &x->ReferencedPolicies->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ReferencedPolicies->gg;
+       se && se->g.tok == zx_xasacd1_ReferencedPolicies_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_xasacd1_ReferencedPolicies(c, (struct zx_xasacd1_ReferencedPolicies_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);

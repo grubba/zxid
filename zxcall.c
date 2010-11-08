@@ -335,11 +335,11 @@ int zxid_print_session(zxid_conf* cf, zxid_ses* ses)
     ZX_FREE(cf->ctx, r);
 
     md = epr->Metadata;
-    if (!md || !md->ServiceType || !md->ServiceType->content || !md->ServiceType->content->len) {
+    if (!md || !ZX_SIMPLE_ELEM_CHK(md->ServiceType)) {
       ERR("No Metadata %p or ServiceType. Failed to parse epr_buf(%.*s)", md, epr_len, epr_buf);
       printf("EPR %d no service type\n", ++din);
     } else {
-      ss = md->ServiceType->content;
+      ss = ZX_GET_CONTENT(md->ServiceType);
       printf("EPR %d SvcType: %.*s\n", ++din, ss->len, ss->s);
     }
     ss = zxid_get_epr_address(cf, epr);
@@ -405,7 +405,7 @@ int zxcall_main(int argc, char** argv, char** env)
   if (im_to) {
     D("Map to identity at eid(%s)", im_to);
     zxid_map_identity_token(cf, ses, im_to, 0);
-    //printf("%.*s\n", nameid->gg.content->len, nameid->gg.content->s);
+    //printf("%.*s\n", ZX_GET_CONTENT_LEN(nameid), ZX_GET_CONTENT_S(nameid));
     return 0;
   }
 

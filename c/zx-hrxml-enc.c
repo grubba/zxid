@@ -85,7 +85,7 @@ int zx_LEN_SO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_AccountingC
   int len = sizeof("<hrxml:AccountingCode")-1 + 1 + sizeof("</hrxml:AccountingCode>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->description, sizeof("description")-1, &pop_seen);
 
@@ -120,7 +120,7 @@ char* zx_ENC_SO_hrxml_AccountingCode(struct zx_ctx* c, struct zx_hrxml_Accountin
   ZX_OUT_TAG(p, "<hrxml:AccountingCode");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -212,7 +212,7 @@ int zx_LEN_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s*
   int len = sizeof("<hrxml:Achievement")-1 + 1 + sizeof("</hrxml:Achievement>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -220,11 +220,17 @@ int zx_LEN_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_s*
   int len = 0;
 #endif
   
-  for (se = x->Date; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Date")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Date;
+    se && se->g.tok == zx_hrxml_Date_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Date")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se);
 
 
@@ -252,7 +258,7 @@ char* zx_ENC_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_
   ZX_OUT_TAG(p, "<hrxml:Achievement");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -264,11 +270,17 @@ char* zx_ENC_SO_hrxml_Achievement(struct zx_ctx* c, struct zx_hrxml_Achievement_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Date; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Date", sizeof("hrxml:Date")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Date;
+       se && se->g.tok == zx_hrxml_Date_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Date", sizeof("hrxml:Date")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -349,7 +361,7 @@ int zx_LEN_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_
   int len = sizeof("<hrxml:Achievements")-1 + 1 + sizeof("</hrxml:Achievements>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -357,7 +369,9 @@ int zx_LEN_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievements_
   int len = 0;
 #endif
   
-  for (se = &x->Achievement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Achievement->gg;
+       se && se->g.tok == zx_hrxml_Achievement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Achievement(c, (struct zx_hrxml_Achievement_s*)se);
 
 
@@ -385,7 +399,7 @@ char* zx_ENC_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievement
   ZX_OUT_TAG(p, "<hrxml:Achievements");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -397,7 +411,9 @@ char* zx_ENC_SO_hrxml_Achievements(struct zx_ctx* c, struct zx_hrxml_Achievement
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Achievement->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Achievement->gg;
+       se && se->g.tok == zx_hrxml_Achievement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Achievement(c, (struct zx_hrxml_Achievement_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -478,7 +494,7 @@ int zx_LEN_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_
   int len = sizeof("<hrxml:AffirmativeActionPlanJobGroupId")-1 + 1 + sizeof("</hrxml:AffirmativeActionPlanJobGroupId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -489,7 +505,9 @@ int zx_LEN_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct zx_
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -517,7 +535,7 @@ char* zx_ENC_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct z
   ZX_OUT_TAG(p, "<hrxml:AffirmativeActionPlanJobGroupId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -532,7 +550,9 @@ char* zx_ENC_SO_hrxml_AffirmativeActionPlanJobGroupId(struct zx_ctx* c, struct z
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -613,7 +633,7 @@ int zx_LEN_SO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x )
   int len = sizeof("<hrxml:Affix")-1 + 1 + sizeof("</hrxml:Affix>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -648,7 +668,7 @@ char* zx_ENC_SO_hrxml_Affix(struct zx_ctx* c, struct zx_hrxml_Affix_s* x, char* 
   ZX_OUT_TAG(p, "<hrxml:Affix");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -740,7 +760,7 @@ int zx_LEN_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateS
   int len = sizeof("<hrxml:AlternateScript")-1 + 1 + sizeof("</hrxml:AlternateScript>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->script, sizeof("script")-1, &pop_seen);
 
@@ -749,19 +769,33 @@ int zx_LEN_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_AlternateS
   int len = 0;
 #endif
   
-  for (se = x->FormattedName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->LegalName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LegalName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PreferredGivenName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MiddleName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MiddleName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->FamilyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->FormattedName;
+    se && se->g.tok == zx_hrxml_FormattedName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->LegalName;
+    se && se->g.tok == zx_hrxml_LegalName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LegalName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+    se && se->g.tok == zx_hrxml_GivenName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PreferredGivenName;
+    se && se->g.tok == zx_hrxml_PreferredGivenName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MiddleName;
+    se && se->g.tok == zx_hrxml_MiddleName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MiddleName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->FamilyName->gg;
+       se && se->g.tok == zx_hrxml_FamilyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)se);
-  for (se = &x->Affix->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Affix->gg;
+       se && se->g.tok == zx_hrxml_Affix_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)se);
 
 
@@ -789,7 +823,7 @@ char* zx_ENC_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_Alternat
   ZX_OUT_TAG(p, "<hrxml:AlternateScript");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -802,19 +836,33 @@ char* zx_ENC_SO_hrxml_AlternateScript(struct zx_ctx* c, struct zx_hrxml_Alternat
   /* root node has no begin tag */
 #endif
   
-  for (se = x->FormattedName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedName", sizeof("hrxml:FormattedName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->LegalName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LegalName", sizeof("hrxml:LegalName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GivenName", sizeof("hrxml:GivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PreferredGivenName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PreferredGivenName", sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MiddleName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MiddleName", sizeof("hrxml:MiddleName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->FamilyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->FormattedName;
+       se && se->g.tok == zx_hrxml_FormattedName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedName", sizeof("hrxml:FormattedName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->LegalName;
+       se && se->g.tok == zx_hrxml_LegalName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LegalName", sizeof("hrxml:LegalName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+       se && se->g.tok == zx_hrxml_GivenName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GivenName", sizeof("hrxml:GivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PreferredGivenName;
+       se && se->g.tok == zx_hrxml_PreferredGivenName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PreferredGivenName", sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MiddleName;
+       se && se->g.tok == zx_hrxml_MiddleName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MiddleName", sizeof("hrxml:MiddleName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->FamilyName->gg;
+       se && se->g.tok == zx_hrxml_FamilyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)se, p);
-  for (se = &x->Affix->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Affix->gg;
+       se && se->g.tok == zx_hrxml_Affix_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -895,7 +943,7 @@ int zx_LEN_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x )
   int len = sizeof("<hrxml:Area")-1 + 1 + sizeof("</hrxml:Area>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -904,9 +952,13 @@ int zx_LEN_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Value")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Area->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Value;
+    se && se->g.tok == zx_hrxml_Value_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Value")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Area->gg;
+       se && se->g.tok == zx_hrxml_Area_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Area(c, (struct zx_hrxml_Area_s*)se);
 
 
@@ -934,7 +986,7 @@ char* zx_ENC_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, char* p 
   ZX_OUT_TAG(p, "<hrxml:Area");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -947,9 +999,13 @@ char* zx_ENC_SO_hrxml_Area(struct zx_ctx* c, struct zx_hrxml_Area_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Value", sizeof("hrxml:Value")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Area->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Value;
+       se && se->g.tok == zx_hrxml_Value_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Value", sizeof("hrxml:Value")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Area->gg;
+       se && se->g.tok == zx_hrxml_Area_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Area(c, (struct zx_hrxml_Area_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1030,7 +1086,7 @@ int zx_LEN_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x )
   int len = sizeof("<hrxml:Article")-1 + 1 + sizeof("</hrxml:Article>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1038,31 +1094,57 @@ int zx_LEN_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+    se && se->g.tok == zx_hrxml_Title_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Abstract")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+    se && se->g.tok == zx_hrxml_Link_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Abstract;
+    se && se->g.tok == zx_hrxml_Abstract_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Abstract")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->JournalOrSerialName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:JournalOrSerialName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISSN; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISSN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Volume; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Volume")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Issue; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Issue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PageNumber; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PageNumber")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->JournalOrSerialName;
+    se && se->g.tok == zx_hrxml_JournalOrSerialName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:JournalOrSerialName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISSN;
+    se && se->g.tok == zx_hrxml_ISSN_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISSN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Volume;
+    se && se->g.tok == zx_hrxml_Volume_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Volume")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Issue;
+    se && se->g.tok == zx_hrxml_Issue_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Issue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PageNumber;
+    se && se->g.tok == zx_hrxml_PageNumber_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PageNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationLanguage->gg;
+       se && se->g.tok == zx_hrxml_PublicationLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PublicationLanguage(c, (struct zx_hrxml_PublicationLanguage_s*)se);
 
 
@@ -1090,7 +1172,7 @@ char* zx_ENC_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:Article");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1102,31 +1184,57 @@ char* zx_ENC_SO_hrxml_Article(struct zx_ctx* c, struct zx_hrxml_Article_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+       se && se->g.tok == zx_hrxml_Title_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se, p);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Abstract", sizeof("hrxml:Abstract")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+       se && se->g.tok == zx_hrxml_Link_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Abstract;
+       se && se->g.tok == zx_hrxml_Abstract_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Abstract", sizeof("hrxml:Abstract")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->JournalOrSerialName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:JournalOrSerialName", sizeof("hrxml:JournalOrSerialName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISSN; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISSN", sizeof("hrxml:ISSN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Volume; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Volume", sizeof("hrxml:Volume")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Issue; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Issue", sizeof("hrxml:Issue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PageNumber; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PageNumber", sizeof("hrxml:PageNumber")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->JournalOrSerialName;
+       se && se->g.tok == zx_hrxml_JournalOrSerialName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:JournalOrSerialName", sizeof("hrxml:JournalOrSerialName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISSN;
+       se && se->g.tok == zx_hrxml_ISSN_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISSN", sizeof("hrxml:ISSN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Volume;
+       se && se->g.tok == zx_hrxml_Volume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Volume", sizeof("hrxml:Volume")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Issue;
+       se && se->g.tok == zx_hrxml_Issue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Issue", sizeof("hrxml:Issue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PageNumber;
+       se && se->g.tok == zx_hrxml_PageNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PageNumber", sizeof("hrxml:PageNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationLanguage->gg;
+       se && se->g.tok == zx_hrxml_PublicationLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PublicationLanguage(c, (struct zx_hrxml_PublicationLanguage_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1207,7 +1315,7 @@ int zx_LEN_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s*
   int len = sizeof("<hrxml:Association")-1 + 1 + sizeof("</hrxml:Association>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -1216,20 +1324,34 @@ int zx_LEN_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_s*
   int len = 0;
 #endif
   
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+    se && se->g.tok == zx_hrxml_Link_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
-  for (se = x->Role; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Role")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Role;
+    se && se->g.tok == zx_hrxml_Role_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Role")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1256,7 +1378,7 @@ char* zx_ENC_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_
   ZX_OUT_TAG(p, "<hrxml:Association");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1269,20 +1391,34 @@ char* zx_ENC_SO_hrxml_Association(struct zx_ctx* c, struct zx_hrxml_Association_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+       se && se->g.tok == zx_hrxml_Link_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se, p);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se, p);
-  for (se = x->Role; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Role", sizeof("hrxml:Role")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Role;
+       se && se->g.tok == zx_hrxml_Role_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Role", sizeof("hrxml:Role")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -1362,7 +1498,7 @@ int zx_LEN_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_
   int len = sizeof("<hrxml:Associations")-1 + 1 + sizeof("</hrxml:Associations>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1370,7 +1506,9 @@ int zx_LEN_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Associations_
   int len = 0;
 #endif
   
-  for (se = &x->Association->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Association->gg;
+       se && se->g.tok == zx_hrxml_Association_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Association(c, (struct zx_hrxml_Association_s*)se);
 
 
@@ -1398,7 +1536,7 @@ char* zx_ENC_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Association
   ZX_OUT_TAG(p, "<hrxml:Associations");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1410,7 +1548,9 @@ char* zx_ENC_SO_hrxml_Associations(struct zx_ctx* c, struct zx_hrxml_Association
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Association->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Association->gg;
+       se && se->g.tok == zx_hrxml_Association_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Association(c, (struct zx_hrxml_Association_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1491,7 +1631,7 @@ int zx_LEN_SO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_Attach
   int len = sizeof("<hrxml:AttachmentReference")-1 + 1 + sizeof("</hrxml:AttachmentReference>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->context, sizeof("context")-1, &pop_seen);
   len += zx_attr_so_len(c, x->mimeType, sizeof("mimeType")-1, &pop_seen);
@@ -1527,7 +1667,7 @@ char* zx_ENC_SO_hrxml_AttachmentReference(struct zx_ctx* c, struct zx_hrxml_Atta
   ZX_OUT_TAG(p, "<hrxml:AttachmentReference");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1620,7 +1760,7 @@ int zx_LEN_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Availabi
   int len = sizeof("<hrxml:AvailabilityDates")-1 + 1 + sizeof("</hrxml:AvailabilityDates>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1628,9 +1768,13 @@ int zx_LEN_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Availabi
   int len = 0;
 #endif
   
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
 
 
@@ -1658,7 +1802,7 @@ char* zx_ENC_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Availa
   ZX_OUT_TAG(p, "<hrxml:AvailabilityDates");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1670,9 +1814,13 @@ char* zx_ENC_SO_hrxml_AvailabilityDates(struct zx_ctx* c, struct zx_hrxml_Availa
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se, p);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1753,7 +1901,7 @@ int zx_LEN_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availabil
   int len = sizeof("<hrxml:AvailabilityInfo")-1 + 1 + sizeof("</hrxml:AvailabilityInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1761,9 +1909,13 @@ int zx_LEN_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availabil
   int len = 0;
 #endif
   
-  for (se = &x->AvailabilityDates->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AvailabilityDates->gg;
+       se && se->g.tok == zx_hrxml_AvailabilityDates_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_AvailabilityDates(c, (struct zx_hrxml_AvailabilityDates_s*)se);
-  for (se = &x->TermOfNotice->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TermOfNotice->gg;
+       se && se->g.tok == zx_hrxml_TermOfNotice_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TermOfNotice(c, (struct zx_hrxml_TermOfNotice_s*)se);
 
 
@@ -1791,7 +1943,7 @@ char* zx_ENC_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availab
   ZX_OUT_TAG(p, "<hrxml:AvailabilityInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1803,9 +1955,13 @@ char* zx_ENC_SO_hrxml_AvailabilityInfo(struct zx_ctx* c, struct zx_hrxml_Availab
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->AvailabilityDates->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AvailabilityDates->gg;
+       se && se->g.tok == zx_hrxml_AvailabilityDates_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_AvailabilityDates(c, (struct zx_hrxml_AvailabilityDates_s*)se, p);
-  for (se = &x->TermOfNotice->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TermOfNotice->gg;
+       se && se->g.tok == zx_hrxml_TermOfNotice_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TermOfNotice(c, (struct zx_hrxml_TermOfNotice_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -1886,7 +2042,7 @@ int zx_LEN_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClass
   int len = sizeof("<hrxml:BKZClassification")-1 + 1 + sizeof("</hrxml:BKZClassification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -1894,10 +2050,14 @@ int zx_LEN_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZClass
   int len = 0;
 #endif
   
-  for (se = &x->BKZId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BKZId->gg;
+       se && se->g.tok == zx_hrxml_BKZId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_BKZId(c, (struct zx_hrxml_BKZId_s*)se);
-  for (se = x->BKZName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BKZName")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->BKZName;
+    se && se->g.tok == zx_hrxml_BKZName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BKZName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -1924,7 +2084,7 @@ char* zx_ENC_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZCla
   ZX_OUT_TAG(p, "<hrxml:BKZClassification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1936,10 +2096,14 @@ char* zx_ENC_SO_hrxml_BKZClassification(struct zx_ctx* c, struct zx_hrxml_BKZCla
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->BKZId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BKZId->gg;
+       se && se->g.tok == zx_hrxml_BKZId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_BKZId(c, (struct zx_hrxml_BKZId_s*)se, p);
-  for (se = x->BKZName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BKZName", sizeof("hrxml:BKZName")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->BKZName;
+       se && se->g.tok == zx_hrxml_BKZName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BKZName", sizeof("hrxml:BKZName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2019,7 +2183,7 @@ int zx_LEN_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x )
   int len = sizeof("<hrxml:BKZId")-1 + 1 + sizeof("</hrxml:BKZId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -2030,7 +2194,9 @@ int zx_LEN_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -2058,7 +2224,7 @@ char* zx_ENC_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, char* 
   ZX_OUT_TAG(p, "<hrxml:BKZId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2073,7 +2239,9 @@ char* zx_ENC_SO_hrxml_BKZId(struct zx_ctx* c, struct zx_hrxml_BKZId_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2154,7 +2322,7 @@ int zx_LEN_SO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x )
   int len = sizeof("<hrxml:BasePay")-1 + 1 + sizeof("</hrxml:BasePay>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->baseInterval, sizeof("baseInterval")-1, &pop_seen);
   len += zx_attr_so_len(c, x->currencyCode, sizeof("currencyCode")-1, &pop_seen);
@@ -2164,10 +2332,14 @@ int zx_LEN_SO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x )
   int len = 0;
 #endif
   
-  for (se = x->BasePayAmountMin; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BasePayAmountMin")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->BasePayAmountMax; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BasePayAmountMax")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->BasePayAmountMin;
+    se && se->g.tok == zx_hrxml_BasePayAmountMin_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BasePayAmountMin")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->BasePayAmountMax;
+    se && se->g.tok == zx_hrxml_BasePayAmountMax_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BasePayAmountMax")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2194,7 +2366,7 @@ char* zx_ENC_SO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:BasePay");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2208,10 +2380,14 @@ char* zx_ENC_SO_hrxml_BasePay(struct zx_ctx* c, struct zx_hrxml_BasePay_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = x->BasePayAmountMin; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BasePayAmountMin", sizeof("hrxml:BasePayAmountMin")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->BasePayAmountMax; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BasePayAmountMax", sizeof("hrxml:BasePayAmountMax")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->BasePayAmountMin;
+       se && se->g.tok == zx_hrxml_BasePayAmountMin_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BasePayAmountMin", sizeof("hrxml:BasePayAmountMin")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->BasePayAmountMax;
+       se && se->g.tok == zx_hrxml_BasePayAmountMax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BasePayAmountMax", sizeof("hrxml:BasePayAmountMax")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2291,7 +2467,7 @@ int zx_LEN_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x )
   int len = sizeof("<hrxml:Benefits")-1 + 1 + sizeof("</hrxml:Benefits>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2299,24 +2475,42 @@ int zx_LEN_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Insurance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Insurance->gg;
+       se && se->g.tok == zx_hrxml_Insurance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Insurance(c, (struct zx_hrxml_Insurance_s*)se);
-  for (se = x->RetirementOrSavingsPlan; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RetirementOrSavingsPlan")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->CompanyVehicle->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RetirementOrSavingsPlan;
+    se && se->g.tok == zx_hrxml_RetirementOrSavingsPlan_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RetirementOrSavingsPlan")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CompanyVehicle->gg;
+       se && se->g.tok == zx_hrxml_CompanyVehicle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_CompanyVehicle(c, (struct zx_hrxml_CompanyVehicle_s*)se);
-  for (se = &x->RelocationAssistance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelocationAssistance->gg;
+       se && se->g.tok == zx_hrxml_RelocationAssistance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RelocationAssistance(c, (struct zx_hrxml_RelocationAssistance_s*)se);
-  for (se = x->VisaSponsorship; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:VisaSponsorship")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->TimeOffAllowance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->VisaSponsorship;
+    se && se->g.tok == zx_hrxml_VisaSponsorship_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:VisaSponsorship")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->TimeOffAllowance->gg;
+       se && se->g.tok == zx_hrxml_TimeOffAllowance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TimeOffAllowance(c, (struct zx_hrxml_TimeOffAllowance_s*)se);
-  for (se = &x->ExpatriateBenefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExpatriateBenefits->gg;
+       se && se->g.tok == zx_hrxml_ExpatriateBenefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ExpatriateBenefits(c, (struct zx_hrxml_ExpatriateBenefits_s*)se);
-  for (se = &x->OtherBenefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherBenefits->gg;
+       se && se->g.tok == zx_hrxml_OtherBenefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OtherBenefits(c, (struct zx_hrxml_OtherBenefits_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2343,7 +2537,7 @@ char* zx_ENC_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, 
   ZX_OUT_TAG(p, "<hrxml:Benefits");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2355,24 +2549,42 @@ char* zx_ENC_SO_hrxml_Benefits(struct zx_ctx* c, struct zx_hrxml_Benefits_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Insurance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Insurance->gg;
+       se && se->g.tok == zx_hrxml_Insurance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Insurance(c, (struct zx_hrxml_Insurance_s*)se, p);
-  for (se = x->RetirementOrSavingsPlan; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RetirementOrSavingsPlan", sizeof("hrxml:RetirementOrSavingsPlan")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->CompanyVehicle->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RetirementOrSavingsPlan;
+       se && se->g.tok == zx_hrxml_RetirementOrSavingsPlan_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RetirementOrSavingsPlan", sizeof("hrxml:RetirementOrSavingsPlan")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CompanyVehicle->gg;
+       se && se->g.tok == zx_hrxml_CompanyVehicle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_CompanyVehicle(c, (struct zx_hrxml_CompanyVehicle_s*)se, p);
-  for (se = &x->RelocationAssistance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelocationAssistance->gg;
+       se && se->g.tok == zx_hrxml_RelocationAssistance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RelocationAssistance(c, (struct zx_hrxml_RelocationAssistance_s*)se, p);
-  for (se = x->VisaSponsorship; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:VisaSponsorship", sizeof("hrxml:VisaSponsorship")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->TimeOffAllowance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->VisaSponsorship;
+       se && se->g.tok == zx_hrxml_VisaSponsorship_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:VisaSponsorship", sizeof("hrxml:VisaSponsorship")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->TimeOffAllowance->gg;
+       se && se->g.tok == zx_hrxml_TimeOffAllowance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TimeOffAllowance(c, (struct zx_hrxml_TimeOffAllowance_s*)se, p);
-  for (se = &x->ExpatriateBenefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ExpatriateBenefits->gg;
+       se && se->g.tok == zx_hrxml_ExpatriateBenefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ExpatriateBenefits(c, (struct zx_hrxml_ExpatriateBenefits_s*)se, p);
-  for (se = &x->OtherBenefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherBenefits->gg;
+       se && se->g.tok == zx_hrxml_OtherBenefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OtherBenefits(c, (struct zx_hrxml_OtherBenefits_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2452,7 +2664,7 @@ int zx_LEN_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Biol
   int len = sizeof("<hrxml:BiologicalDescriptors")-1 + 1 + sizeof("</hrxml:BiologicalDescriptors>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2460,27 +2672,49 @@ int zx_LEN_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Biol
   int len = 0;
 #endif
   
-  for (se = x->DateOfBirth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DateOfBirth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDayOfBirth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDayOfBirth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Age; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Age")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GenderCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GenderCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EyeColor; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EyeColor")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->HairColor; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:HairColor")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Height->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->DateOfBirth;
+    se && se->g.tok == zx_hrxml_DateOfBirth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DateOfBirth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDayOfBirth;
+    se && se->g.tok == zx_hrxml_MonthDayOfBirth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDayOfBirth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Age;
+    se && se->g.tok == zx_hrxml_Age_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Age")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GenderCode;
+    se && se->g.tok == zx_hrxml_GenderCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GenderCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EyeColor;
+    se && se->g.tok == zx_hrxml_EyeColor_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EyeColor")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->HairColor;
+    se && se->g.tok == zx_hrxml_HairColor_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:HairColor")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Height->gg;
+       se && se->g.tok == zx_hrxml_Height_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Height(c, (struct zx_hrxml_Height_s*)se);
-  for (se = &x->Weight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Weight->gg;
+       se && se->g.tok == zx_hrxml_Weight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)se);
-  for (se = x->IdentifyingMarks; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:IdentifyingMarks")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DisabilityInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->IdentifyingMarks;
+    se && se->g.tok == zx_hrxml_IdentifyingMarks_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:IdentifyingMarks")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DisabilityInfo->gg;
+       se && se->g.tok == zx_hrxml_DisabilityInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DisabilityInfo(c, (struct zx_hrxml_DisabilityInfo_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -2508,7 +2742,7 @@ char* zx_ENC_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Bi
   ZX_OUT_TAG(p, "<hrxml:BiologicalDescriptors");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2520,27 +2754,49 @@ char* zx_ENC_SO_hrxml_BiologicalDescriptors(struct zx_ctx* c, struct zx_hrxml_Bi
   /* root node has no begin tag */
 #endif
   
-  for (se = x->DateOfBirth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DateOfBirth", sizeof("hrxml:DateOfBirth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDayOfBirth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDayOfBirth", sizeof("hrxml:MonthDayOfBirth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Age; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Age", sizeof("hrxml:Age")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GenderCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GenderCode", sizeof("hrxml:GenderCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EyeColor; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EyeColor", sizeof("hrxml:EyeColor")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->HairColor; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:HairColor", sizeof("hrxml:HairColor")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Height->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->DateOfBirth;
+       se && se->g.tok == zx_hrxml_DateOfBirth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DateOfBirth", sizeof("hrxml:DateOfBirth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDayOfBirth;
+       se && se->g.tok == zx_hrxml_MonthDayOfBirth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDayOfBirth", sizeof("hrxml:MonthDayOfBirth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Age;
+       se && se->g.tok == zx_hrxml_Age_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Age", sizeof("hrxml:Age")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GenderCode;
+       se && se->g.tok == zx_hrxml_GenderCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GenderCode", sizeof("hrxml:GenderCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EyeColor;
+       se && se->g.tok == zx_hrxml_EyeColor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EyeColor", sizeof("hrxml:EyeColor")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->HairColor;
+       se && se->g.tok == zx_hrxml_HairColor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:HairColor", sizeof("hrxml:HairColor")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Height->gg;
+       se && se->g.tok == zx_hrxml_Height_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Height(c, (struct zx_hrxml_Height_s*)se, p);
-  for (se = &x->Weight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Weight->gg;
+       se && se->g.tok == zx_hrxml_Weight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)se, p);
-  for (se = x->IdentifyingMarks; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:IdentifyingMarks", sizeof("hrxml:IdentifyingMarks")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DisabilityInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->IdentifyingMarks;
+       se && se->g.tok == zx_hrxml_IdentifyingMarks_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:IdentifyingMarks", sizeof("hrxml:IdentifyingMarks")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DisabilityInfo->gg;
+       se && se->g.tok == zx_hrxml_DisabilityInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DisabilityInfo(c, (struct zx_hrxml_DisabilityInfo_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2621,7 +2877,7 @@ int zx_LEN_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x )
   int len = sizeof("<hrxml:Book")-1 + 1 + sizeof("</hrxml:Book>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -2629,34 +2885,62 @@ int zx_LEN_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+    se && se->g.tok == zx_hrxml_Title_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Abstract")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+    se && se->g.tok == zx_hrxml_Link_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Abstract;
+    se && se->g.tok == zx_hrxml_Abstract_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Abstract")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Edition; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Edition")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Chapter; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Chapter")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISSN; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISSN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISBN; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISBN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->NumberOfPages; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NumberOfPages")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PublisherName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PublisherName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PublisherLocation; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PublisherLocation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Edition;
+    se && se->g.tok == zx_hrxml_Edition_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Edition")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Chapter;
+    se && se->g.tok == zx_hrxml_Chapter_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Chapter")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISSN;
+    se && se->g.tok == zx_hrxml_ISSN_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISSN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISBN;
+    se && se->g.tok == zx_hrxml_ISBN_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISBN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NumberOfPages;
+    se && se->g.tok == zx_hrxml_NumberOfPages_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NumberOfPages")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PublisherName;
+    se && se->g.tok == zx_hrxml_PublisherName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PublisherName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PublisherLocation;
+    se && se->g.tok == zx_hrxml_PublisherLocation_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PublisherLocation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -2683,7 +2967,7 @@ char* zx_ENC_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, char* p 
   ZX_OUT_TAG(p, "<hrxml:Book");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2695,34 +2979,62 @@ char* zx_ENC_SO_hrxml_Book(struct zx_ctx* c, struct zx_hrxml_Book_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+       se && se->g.tok == zx_hrxml_Title_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se, p);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Abstract", sizeof("hrxml:Abstract")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+       se && se->g.tok == zx_hrxml_Link_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Abstract;
+       se && se->g.tok == zx_hrxml_Abstract_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Abstract", sizeof("hrxml:Abstract")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Edition; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Edition", sizeof("hrxml:Edition")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Chapter; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Chapter", sizeof("hrxml:Chapter")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISSN; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISSN", sizeof("hrxml:ISSN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISBN; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISBN", sizeof("hrxml:ISBN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->NumberOfPages; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NumberOfPages", sizeof("hrxml:NumberOfPages")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PublisherName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PublisherName", sizeof("hrxml:PublisherName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PublisherLocation; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PublisherLocation", sizeof("hrxml:PublisherLocation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Edition;
+       se && se->g.tok == zx_hrxml_Edition_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Edition", sizeof("hrxml:Edition")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Chapter;
+       se && se->g.tok == zx_hrxml_Chapter_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Chapter", sizeof("hrxml:Chapter")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISSN;
+       se && se->g.tok == zx_hrxml_ISSN_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISSN", sizeof("hrxml:ISSN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISBN;
+       se && se->g.tok == zx_hrxml_ISBN_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISBN", sizeof("hrxml:ISBN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NumberOfPages;
+       se && se->g.tok == zx_hrxml_NumberOfPages_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NumberOfPages", sizeof("hrxml:NumberOfPages")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PublisherName;
+       se && se->g.tok == zx_hrxml_PublisherName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PublisherName", sizeof("hrxml:PublisherName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PublisherLocation;
+       se && se->g.tok == zx_hrxml_PublisherLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PublisherLocation", sizeof("hrxml:PublisherLocation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -2802,9 +3114,9 @@ int zx_LEN_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x )
   int len = sizeof("<hrxml:Candidate")-1 + 1 + sizeof("</hrxml:Candidate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -2813,19 +3125,33 @@ int zx_LEN_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->CandidateRecordInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CandidateRecordInfo->gg;
+       se && se->g.tok == zx_hrxml_CandidateRecordInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_CandidateRecordInfo(c, (struct zx_hrxml_CandidateRecordInfo_s*)se);
-  for (se = &x->RelatedPositionPostings->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedPositionPostings->gg;
+       se && se->g.tok == zx_hrxml_RelatedPositionPostings_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RelatedPositionPostings(c, (struct zx_hrxml_RelatedPositionPostings_s*)se);
-  for (se = &x->CandidateSupplier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CandidateSupplier->gg;
+       se && se->g.tok == zx_hrxml_CandidateSupplier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_CandidateSupplier(c, (struct zx_hrxml_CandidateSupplier_s*)se);
-  for (se = x->DistributionGuidelines; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->CandidateProfile->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->DistributionGuidelines;
+    se && se->g.tok == zx_hrxml_DistributionGuidelines_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CandidateProfile->gg;
+       se && se->g.tok == zx_hrxml_CandidateProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_CandidateProfile(c, (struct zx_hrxml_CandidateProfile_s*)se);
-  for (se = &x->Resume->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Resume->gg;
+       se && se->g.tok == zx_hrxml_Resume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Resume(c, (struct zx_hrxml_Resume_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -2853,9 +3179,9 @@ char* zx_ENC_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x
   ZX_OUT_TAG(p, "<hrxml:Candidate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2868,19 +3194,33 @@ char* zx_ENC_SO_hrxml_Candidate(struct zx_ctx* c, struct zx_hrxml_Candidate_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->CandidateRecordInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CandidateRecordInfo->gg;
+       se && se->g.tok == zx_hrxml_CandidateRecordInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_CandidateRecordInfo(c, (struct zx_hrxml_CandidateRecordInfo_s*)se, p);
-  for (se = &x->RelatedPositionPostings->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedPositionPostings->gg;
+       se && se->g.tok == zx_hrxml_RelatedPositionPostings_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RelatedPositionPostings(c, (struct zx_hrxml_RelatedPositionPostings_s*)se, p);
-  for (se = &x->CandidateSupplier->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CandidateSupplier->gg;
+       se && se->g.tok == zx_hrxml_CandidateSupplier_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_CandidateSupplier(c, (struct zx_hrxml_CandidateSupplier_s*)se, p);
-  for (se = x->DistributionGuidelines; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DistributionGuidelines", sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->CandidateProfile->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->DistributionGuidelines;
+       se && se->g.tok == zx_hrxml_DistributionGuidelines_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DistributionGuidelines", sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->CandidateProfile->gg;
+       se && se->g.tok == zx_hrxml_CandidateProfile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_CandidateProfile(c, (struct zx_hrxml_CandidateProfile_s*)se, p);
-  for (se = &x->Resume->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Resume->gg;
+       se && se->g.tok == zx_hrxml_Resume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Resume(c, (struct zx_hrxml_Resume_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -2961,9 +3301,9 @@ int zx_LEN_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candidate
   int len = sizeof("<hrxml:CandidateProfile")-1 + 1 + sizeof("</hrxml:CandidateProfile>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -2972,29 +3312,53 @@ int zx_LEN_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candidate
   int len = 0;
 #endif
   
-  for (se = &x->ProfileId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProfileId->gg;
+       se && se->g.tok == zx_hrxml_ProfileId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ProfileId(c, (struct zx_hrxml_ProfileId_s*)se);
-  for (se = x->ProfileName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ProfileName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->AvailabilityInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProfileName;
+    se && se->g.tok == zx_hrxml_ProfileName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ProfileName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AvailabilityInfo->gg;
+       se && se->g.tok == zx_hrxml_AvailabilityInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_AvailabilityInfo(c, (struct zx_hrxml_AvailabilityInfo_s*)se);
-  for (se = x->DistributionGuidelines; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PersonalData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->DistributionGuidelines;
+    se && se->g.tok == zx_hrxml_DistributionGuidelines_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PersonalData->gg;
+       se && se->g.tok == zx_hrxml_PersonalData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonalData(c, (struct zx_hrxml_PersonalData_s*)se);
-  for (se = &x->PreferredPosition->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredPosition->gg;
+       se && se->g.tok == zx_hrxml_PreferredPosition_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PreferredPosition(c, (struct zx_hrxml_PreferredPosition_s*)se);
-  for (se = &x->EmploymentHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EmploymentHistory->gg;
+       se && se->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)se);
-  for (se = &x->EducationHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EducationHistory->gg;
+       se && se->g.tok == zx_hrxml_EducationHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)se);
-  for (se = &x->MilitaryHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MilitaryHistory->gg;
+       se && se->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)se);
-  for (se = &x->Associations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Associations->gg;
+       se && se->g.tok == zx_hrxml_Associations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)se);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -3022,9 +3386,9 @@ char* zx_ENC_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candida
   ZX_OUT_TAG(p, "<hrxml:CandidateProfile");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3037,29 +3401,53 @@ char* zx_ENC_SO_hrxml_CandidateProfile(struct zx_ctx* c, struct zx_hrxml_Candida
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ProfileId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProfileId->gg;
+       se && se->g.tok == zx_hrxml_ProfileId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ProfileId(c, (struct zx_hrxml_ProfileId_s*)se, p);
-  for (se = x->ProfileName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ProfileName", sizeof("hrxml:ProfileName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->AvailabilityInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ProfileName;
+       se && se->g.tok == zx_hrxml_ProfileName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ProfileName", sizeof("hrxml:ProfileName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AvailabilityInfo->gg;
+       se && se->g.tok == zx_hrxml_AvailabilityInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_AvailabilityInfo(c, (struct zx_hrxml_AvailabilityInfo_s*)se, p);
-  for (se = x->DistributionGuidelines; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DistributionGuidelines", sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PersonalData->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->DistributionGuidelines;
+       se && se->g.tok == zx_hrxml_DistributionGuidelines_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DistributionGuidelines", sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PersonalData->gg;
+       se && se->g.tok == zx_hrxml_PersonalData_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonalData(c, (struct zx_hrxml_PersonalData_s*)se, p);
-  for (se = &x->PreferredPosition->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredPosition->gg;
+       se && se->g.tok == zx_hrxml_PreferredPosition_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PreferredPosition(c, (struct zx_hrxml_PreferredPosition_s*)se, p);
-  for (se = &x->EmploymentHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EmploymentHistory->gg;
+       se && se->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)se, p);
-  for (se = &x->EducationHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EducationHistory->gg;
+       se && se->g.tok == zx_hrxml_EducationHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)se, p);
-  for (se = &x->MilitaryHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MilitaryHistory->gg;
+       se && se->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)se, p);
-  for (se = &x->Associations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Associations->gg;
+       se && se->g.tok == zx_hrxml_Associations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)se, p);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3140,7 +3528,7 @@ int zx_LEN_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Candid
   int len = sizeof("<hrxml:CandidateRecordInfo")-1 + 1 + sizeof("</hrxml:CandidateRecordInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3148,9 +3536,13 @@ int zx_LEN_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Candid
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_hrxml_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Status(c, (struct zx_hrxml_Status_s*)se);
 
 
@@ -3178,7 +3570,7 @@ char* zx_ENC_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Cand
   ZX_OUT_TAG(p, "<hrxml:CandidateRecordInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3190,9 +3582,13 @@ char* zx_ENC_SO_hrxml_CandidateRecordInfo(struct zx_ctx* c, struct zx_hrxml_Cand
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_hrxml_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Status(c, (struct zx_hrxml_Status_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3273,7 +3669,7 @@ int zx_LEN_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candidat
   int len = sizeof("<hrxml:CandidateSupplier")-1 + 1 + sizeof("</hrxml:CandidateSupplier>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->relationship, sizeof("relationship")-1, &pop_seen);
 
@@ -3282,15 +3678,25 @@ int zx_LEN_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candidat
   int len = 0;
 #endif
   
-  for (se = &x->SupplierId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupplierId->gg;
+       se && se->g.tok == zx_hrxml_SupplierId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SupplierId(c, (struct zx_hrxml_SupplierId_s*)se);
-  for (se = x->EntityName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EntityName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ContactName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EntityName;
+    se && se->g.tok == zx_hrxml_EntityName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EntityName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ContactName->gg;
+       se && se->g.tok == zx_hrxml_ContactName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactName(c, (struct zx_hrxml_ContactName_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
-  for (se = &x->SourceType->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SourceType->gg;
+       se && se->g.tok == zx_hrxml_SourceType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SourceType(c, (struct zx_hrxml_SourceType_s*)se);
 
 
@@ -3318,7 +3724,7 @@ char* zx_ENC_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candid
   ZX_OUT_TAG(p, "<hrxml:CandidateSupplier");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3331,15 +3737,25 @@ char* zx_ENC_SO_hrxml_CandidateSupplier(struct zx_ctx* c, struct zx_hrxml_Candid
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SupplierId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupplierId->gg;
+       se && se->g.tok == zx_hrxml_SupplierId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SupplierId(c, (struct zx_hrxml_SupplierId_s*)se, p);
-  for (se = x->EntityName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EntityName", sizeof("hrxml:EntityName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ContactName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EntityName;
+       se && se->g.tok == zx_hrxml_EntityName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EntityName", sizeof("hrxml:EntityName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ContactName->gg;
+       se && se->g.tok == zx_hrxml_ContactName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactName(c, (struct zx_hrxml_ContactName_s*)se, p);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se, p);
-  for (se = &x->SourceType->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SourceType->gg;
+       se && se->g.tok == zx_hrxml_SourceType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SourceType(c, (struct zx_hrxml_SourceType_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -3420,7 +3836,7 @@ int zx_LEN_SO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_
   int len = sizeof("<hrxml:ChildrenInfo")-1 + 1 + sizeof("</hrxml:ChildrenInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3428,10 +3844,14 @@ int zx_LEN_SO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInfo_
   int len = 0;
 #endif
   
-  for (se = x->NumberOfChildren; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NumberOfChildren")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->NumberOfChildren;
+    se && se->g.tok == zx_hrxml_NumberOfChildren_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NumberOfChildren")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3458,7 +3878,7 @@ char* zx_ENC_SO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInf
   ZX_OUT_TAG(p, "<hrxml:ChildrenInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3470,10 +3890,14 @@ char* zx_ENC_SO_hrxml_ChildrenInfo(struct zx_ctx* c, struct zx_hrxml_ChildrenInf
   /* root node has no begin tag */
 #endif
   
-  for (se = x->NumberOfChildren; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NumberOfChildren", sizeof("hrxml:NumberOfChildren")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->NumberOfChildren;
+       se && se->g.tok == zx_hrxml_NumberOfChildren_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NumberOfChildren", sizeof("hrxml:NumberOfChildren")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3553,7 +3977,7 @@ int zx_LEN_SO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x )
   int len = sizeof("<hrxml:ClassRank")-1 + 1 + sizeof("</hrxml:ClassRank>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->numberOfStudents, sizeof("numberOfStudents")-1, &pop_seen);
 
@@ -3588,7 +4012,7 @@ char* zx_ENC_SO_hrxml_ClassRank(struct zx_ctx* c, struct zx_hrxml_ClassRank_s* x
   ZX_OUT_TAG(p, "<hrxml:ClassRank");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3680,7 +4104,7 @@ int zx_LEN_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x )
   int len = sizeof("<hrxml:Commute")-1 + 1 + sizeof("</hrxml:Commute>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3688,12 +4112,18 @@ int zx_LEN_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->TimeMax->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TimeMax->gg;
+       se && se->g.tok == zx_hrxml_TimeMax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TimeMax(c, (struct zx_hrxml_TimeMax_s*)se);
-  for (se = &x->DistanceMax->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DistanceMax->gg;
+       se && se->g.tok == zx_hrxml_DistanceMax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DistanceMax(c, (struct zx_hrxml_DistanceMax_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3720,7 +4150,7 @@ char* zx_ENC_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:Commute");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3732,12 +4162,18 @@ char* zx_ENC_SO_hrxml_Commute(struct zx_ctx* c, struct zx_hrxml_Commute_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->TimeMax->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TimeMax->gg;
+       se && se->g.tok == zx_hrxml_TimeMax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TimeMax(c, (struct zx_hrxml_TimeMax_s*)se, p);
-  for (se = &x->DistanceMax->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DistanceMax->gg;
+       se && se->g.tok == zx_hrxml_DistanceMax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DistanceMax(c, (struct zx_hrxml_DistanceMax_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3817,7 +4253,7 @@ int zx_LEN_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x )
   int len = sizeof("<hrxml:Company")-1 + 1 + sizeof("</hrxml:Company>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3825,10 +4261,14 @@ int zx_LEN_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -3855,7 +4295,7 @@ char* zx_ENC_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:Company");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3867,10 +4307,14 @@ char* zx_ENC_SO_hrxml_Company(struct zx_ctx* c, struct zx_hrxml_Company_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -3950,7 +4394,7 @@ int zx_LEN_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehi
   int len = sizeof("<hrxml:CompanyVehicle")-1 + 1 + sizeof("</hrxml:CompanyVehicle>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->companyOffered, sizeof("companyOffered")-1, &pop_seen);
 
@@ -3959,7 +4403,9 @@ int zx_LEN_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVehi
   int len = 0;
 #endif
   
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 
@@ -3987,7 +4433,7 @@ char* zx_ENC_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVe
   ZX_OUT_TAG(p, "<hrxml:CompanyVehicle");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4000,7 +4446,9 @@ char* zx_ENC_SO_hrxml_CompanyVehicle(struct zx_ctx* c, struct zx_hrxml_CompanyVe
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4081,7 +4529,7 @@ int zx_LEN_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_
   int len = sizeof("<hrxml:Compensation")-1 + 1 + sizeof("</hrxml:Compensation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -4089,13 +4537,21 @@ int zx_LEN_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensation_
   int len = 0;
 #endif
   
-  for (se = &x->StartingCompensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartingCompensation->gg;
+       se && se->g.tok == zx_hrxml_StartingCompensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StartingCompensation(c, (struct zx_hrxml_StartingCompensation_s*)se);
-  for (se = &x->EndingCompensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndingCompensation->gg;
+       se && se->g.tok == zx_hrxml_EndingCompensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EndingCompensation(c, (struct zx_hrxml_EndingCompensation_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OtherCompensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OtherCompensation->gg;
+       se && se->g.tok == zx_hrxml_OtherCompensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OtherCompensation(c, (struct zx_hrxml_OtherCompensation_s*)se);
 
 
@@ -4123,7 +4579,7 @@ char* zx_ENC_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensatio
   ZX_OUT_TAG(p, "<hrxml:Compensation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4135,13 +4591,21 @@ char* zx_ENC_SO_hrxml_Compensation(struct zx_ctx* c, struct zx_hrxml_Compensatio
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->StartingCompensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartingCompensation->gg;
+       se && se->g.tok == zx_hrxml_StartingCompensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StartingCompensation(c, (struct zx_hrxml_StartingCompensation_s*)se, p);
-  for (se = &x->EndingCompensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndingCompensation->gg;
+       se && se->g.tok == zx_hrxml_EndingCompensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EndingCompensation(c, (struct zx_hrxml_EndingCompensation_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OtherCompensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OtherCompensation->gg;
+       se && se->g.tok == zx_hrxml_OtherCompensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OtherCompensation(c, (struct zx_hrxml_OtherCompensation_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4222,7 +4686,7 @@ int zx_LEN_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x
   int len = sizeof("<hrxml:Competency")-1 + 1 + sizeof("</hrxml:Competency>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->description, sizeof("description")-1, &pop_seen);
   len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
@@ -4233,17 +4697,29 @@ int zx_LEN_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s* x
   int len = 0;
 #endif
   
-  for (se = &x->CompetencyId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyId->gg;
+       se && se->g.tok == zx_hrxml_CompetencyId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)se);
-  for (se = &x->TaxonomyId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TaxonomyId->gg;
+       se && se->g.tok == zx_hrxml_TaxonomyId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TaxonomyId(c, (struct zx_hrxml_TaxonomyId_s*)se);
-  for (se = &x->CompetencyEvidence->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyEvidence->gg;
+       se && se->g.tok == zx_hrxml_CompetencyEvidence_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_CompetencyEvidence(c, (struct zx_hrxml_CompetencyEvidence_s*)se);
-  for (se = &x->CompetencyWeight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyWeight->gg;
+       se && se->g.tok == zx_hrxml_CompetencyWeight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_CompetencyWeight(c, (struct zx_hrxml_CompetencyWeight_s*)se);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -4271,7 +4747,7 @@ char* zx_ENC_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s*
   ZX_OUT_TAG(p, "<hrxml:Competency");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4286,17 +4762,29 @@ char* zx_ENC_SO_hrxml_Competency(struct zx_ctx* c, struct zx_hrxml_Competency_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->CompetencyId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyId->gg;
+       se && se->g.tok == zx_hrxml_CompetencyId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)se, p);
-  for (se = &x->TaxonomyId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TaxonomyId->gg;
+       se && se->g.tok == zx_hrxml_TaxonomyId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TaxonomyId(c, (struct zx_hrxml_TaxonomyId_s*)se, p);
-  for (se = &x->CompetencyEvidence->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyEvidence->gg;
+       se && se->g.tok == zx_hrxml_CompetencyEvidence_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_CompetencyEvidence(c, (struct zx_hrxml_CompetencyEvidence_s*)se, p);
-  for (se = &x->CompetencyWeight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyWeight->gg;
+       se && se->g.tok == zx_hrxml_CompetencyWeight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_CompetencyWeight(c, (struct zx_hrxml_CompetencyWeight_s*)se, p);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4377,7 +4865,7 @@ int zx_LEN_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Compete
   int len = sizeof("<hrxml:CompetencyEvidence")-1 + 1 + sizeof("</hrxml:CompetencyEvidence>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateOfIncident, sizeof("dateOfIncident")-1, &pop_seen);
   len += zx_attr_so_len(c, x->expirationDate, sizeof("expirationDate")-1, &pop_seen);
@@ -4392,14 +4880,22 @@ int zx_LEN_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Compete
   int len = 0;
 #endif
   
-  for (se = &x->EvidenceId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EvidenceId->gg;
+       se && se->g.tok == zx_hrxml_EvidenceId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EvidenceId(c, (struct zx_hrxml_EvidenceId_s*)se);
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se);
-  for (se = x->SupportingInformation; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SupportingInformation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->SupportingInformation;
+    se && se->g.tok == zx_hrxml_SupportingInformation_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SupportingInformation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -4426,7 +4922,7 @@ char* zx_ENC_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Compe
   ZX_OUT_TAG(p, "<hrxml:CompetencyEvidence");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4445,14 +4941,22 @@ char* zx_ENC_SO_hrxml_CompetencyEvidence(struct zx_ctx* c, struct zx_hrxml_Compe
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EvidenceId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EvidenceId->gg;
+       se && se->g.tok == zx_hrxml_EvidenceId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EvidenceId(c, (struct zx_hrxml_EvidenceId_s*)se, p);
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se, p);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se, p);
-  for (se = x->SupportingInformation; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SupportingInformation", sizeof("hrxml:SupportingInformation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->SupportingInformation;
+       se && se->g.tok == zx_hrxml_SupportingInformation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SupportingInformation", sizeof("hrxml:SupportingInformation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -4532,7 +5036,7 @@ int zx_LEN_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_
   int len = sizeof("<hrxml:CompetencyId")-1 + 1 + sizeof("</hrxml:CompetencyId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -4543,7 +5047,9 @@ int zx_LEN_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyId_
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -4571,7 +5077,7 @@ char* zx_ENC_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyI
   ZX_OUT_TAG(p, "<hrxml:CompetencyId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4586,7 +5092,9 @@ char* zx_ENC_SO_hrxml_CompetencyId(struct zx_ctx* c, struct zx_hrxml_CompetencyI
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -4667,7 +5175,7 @@ int zx_LEN_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Competenc
   int len = sizeof("<hrxml:CompetencyWeight")-1 + 1 + sizeof("</hrxml:CompetencyWeight>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -4676,12 +5184,18 @@ int zx_LEN_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Competenc
   int len = 0;
 #endif
   
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se);
-  for (se = x->SupportingInformation; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SupportingInformation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->SupportingInformation;
+    se && se->g.tok == zx_hrxml_SupportingInformation_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SupportingInformation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -4708,7 +5222,7 @@ char* zx_ENC_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Compete
   ZX_OUT_TAG(p, "<hrxml:CompetencyWeight");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4721,12 +5235,18 @@ char* zx_ENC_SO_hrxml_CompetencyWeight(struct zx_ctx* c, struct zx_hrxml_Compete
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se, p);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se, p);
-  for (se = x->SupportingInformation; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SupportingInformation", sizeof("hrxml:SupportingInformation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->SupportingInformation;
+       se && se->g.tok == zx_hrxml_SupportingInformation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SupportingInformation", sizeof("hrxml:SupportingInformation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -4806,7 +5326,7 @@ int zx_LEN_SO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceD
   int len = sizeof("<hrxml:ConferenceDate")-1 + 1 + sizeof("</hrxml:ConferenceDate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -4815,16 +5335,26 @@ int zx_LEN_SO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_ConferenceD
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -4851,7 +5381,7 @@ char* zx_ENC_SO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_Conferenc
   ZX_OUT_TAG(p, "<hrxml:ConferenceDate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4864,16 +5394,26 @@ char* zx_ENC_SO_hrxml_ConferenceDate(struct zx_ctx* c, struct zx_hrxml_Conferenc
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -4953,7 +5493,7 @@ int zx_LEN_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conference
   int len = sizeof("<hrxml:ConferencePaper")-1 + 1 + sizeof("</hrxml:ConferencePaper>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -4961,26 +5501,46 @@ int zx_LEN_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conference
   int len = 0;
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+    se && se->g.tok == zx_hrxml_Title_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Abstract")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+    se && se->g.tok == zx_hrxml_Link_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Abstract;
+    se && se->g.tok == zx_hrxml_Abstract_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Abstract")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EventName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EventName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ConferenceDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EventName;
+    se && se->g.tok == zx_hrxml_EventName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EventName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ConferenceDate->gg;
+       se && se->g.tok == zx_hrxml_ConferenceDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ConferenceDate(c, (struct zx_hrxml_ConferenceDate_s*)se);
-  for (se = x->ConferenceLocation; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ConferenceLocation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ConferenceLocation;
+    se && se->g.tok == zx_hrxml_ConferenceLocation_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ConferenceLocation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -5007,7 +5567,7 @@ char* zx_ENC_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conferen
   ZX_OUT_TAG(p, "<hrxml:ConferencePaper");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5019,26 +5579,46 @@ char* zx_ENC_SO_hrxml_ConferencePaper(struct zx_ctx* c, struct zx_hrxml_Conferen
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+       se && se->g.tok == zx_hrxml_Title_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se, p);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Abstract", sizeof("hrxml:Abstract")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+       se && se->g.tok == zx_hrxml_Link_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Abstract;
+       se && se->g.tok == zx_hrxml_Abstract_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Abstract", sizeof("hrxml:Abstract")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EventName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EventName", sizeof("hrxml:EventName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ConferenceDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EventName;
+       se && se->g.tok == zx_hrxml_EventName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EventName", sizeof("hrxml:EventName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ConferenceDate->gg;
+       se && se->g.tok == zx_hrxml_ConferenceDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ConferenceDate(c, (struct zx_hrxml_ConferenceDate_s*)se, p);
-  for (se = x->ConferenceLocation; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ConferenceLocation", sizeof("hrxml:ConferenceLocation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ConferenceLocation;
+       se && se->g.tok == zx_hrxml_ConferenceLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ConferenceLocation", sizeof("hrxml:ConferenceLocation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -5118,9 +5698,9 @@ int zx_LEN_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerati
   int len = sizeof("<hrxml:Considerations")-1 + 1 + sizeof("</hrxml:Considerations>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -5129,15 +5709,25 @@ int zx_LEN_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considerati
   int len = 0;
 #endif
   
-  for (se = x->General; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:General")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Physical; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Physical")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SafetyEquipment->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->General;
+    se && se->g.tok == zx_hrxml_General_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:General")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Physical;
+    se && se->g.tok == zx_hrxml_Physical_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Physical")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SafetyEquipment->gg;
+       se && se->g.tok == zx_hrxml_SafetyEquipment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SafetyEquipment(c, (struct zx_hrxml_SafetyEquipment_s*)se);
-  for (se = &x->DressCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DressCode->gg;
+       se && se->g.tok == zx_hrxml_DressCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -5165,9 +5755,9 @@ char* zx_ENC_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considera
   ZX_OUT_TAG(p, "<hrxml:Considerations");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5180,15 +5770,25 @@ char* zx_ENC_SO_hrxml_Considerations(struct zx_ctx* c, struct zx_hrxml_Considera
   /* root node has no begin tag */
 #endif
   
-  for (se = x->General; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:General", sizeof("hrxml:General")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Physical; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Physical", sizeof("hrxml:Physical")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SafetyEquipment->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->General;
+       se && se->g.tok == zx_hrxml_General_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:General", sizeof("hrxml:General")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Physical;
+       se && se->g.tok == zx_hrxml_Physical_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Physical", sizeof("hrxml:Physical")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SafetyEquipment->gg;
+       se && se->g.tok == zx_hrxml_SafetyEquipment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SafetyEquipment(c, (struct zx_hrxml_SafetyEquipment_s*)se, p);
-  for (se = &x->DressCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DressCode->gg;
+       se && se->g.tok == zx_hrxml_DressCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5269,7 +5869,7 @@ int zx_LEN_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x )
   int len = sizeof("<hrxml:ContactId")-1 + 1 + sizeof("</hrxml:ContactId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -5280,7 +5880,9 @@ int zx_LEN_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -5308,7 +5910,7 @@ char* zx_ENC_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x
   ZX_OUT_TAG(p, "<hrxml:ContactId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5323,7 +5925,9 @@ char* zx_ENC_SO_hrxml_ContactId(struct zx_ctx* c, struct zx_hrxml_ContactId_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5404,7 +6008,7 @@ int zx_LEN_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s*
   int len = sizeof("<hrxml:ContactInfo")-1 + 1 + sizeof("</hrxml:ContactInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -5412,9 +6016,13 @@ int zx_LEN_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_s*
   int len = 0;
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
 
 
@@ -5442,7 +6050,7 @@ char* zx_ENC_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_
   ZX_OUT_TAG(p, "<hrxml:ContactInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5454,9 +6062,13 @@ char* zx_ENC_SO_hrxml_ContactInfo(struct zx_ctx* c, struct zx_hrxml_ContactInfo_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se, p);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5537,7 +6149,7 @@ int zx_LEN_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMetho
   int len = sizeof("<hrxml:ContactMethod")-1 + 1 + sizeof("</hrxml:ContactMethod>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -5545,27 +6157,49 @@ int zx_LEN_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMetho
   int len = 0;
 #endif
   
-  for (se = x->Use; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Use")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Location; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Location")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->WhenAvailable; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WhenAvailable")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Telephone->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Use;
+    se && se->g.tok == zx_hrxml_Use_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Use")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Location;
+    se && se->g.tok == zx_hrxml_Location_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Location")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->WhenAvailable;
+    se && se->g.tok == zx_hrxml_WhenAvailable_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WhenAvailable")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Telephone->gg;
+       se && se->g.tok == zx_hrxml_Telephone_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Telephone(c, (struct zx_hrxml_Telephone_s*)se);
-  for (se = &x->Mobile->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Mobile->gg;
+       se && se->g.tok == zx_hrxml_Mobile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Mobile(c, (struct zx_hrxml_Mobile_s*)se);
-  for (se = &x->Fax->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Fax->gg;
+       se && se->g.tok == zx_hrxml_Fax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Fax(c, (struct zx_hrxml_Fax_s*)se);
-  for (se = &x->Pager->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Pager->gg;
+       se && se->g.tok == zx_hrxml_Pager_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Pager(c, (struct zx_hrxml_Pager_s*)se);
-  for (se = &x->TTYTDD->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TTYTDD->gg;
+       se && se->g.tok == zx_hrxml_TTYTDD_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TTYTDD(c, (struct zx_hrxml_TTYTDD_s*)se);
-  for (se = x->InternetEmailAddress; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:InternetEmailAddress")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->InternetWebAddress; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:InternetWebAddress")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->InternetEmailAddress;
+    se && se->g.tok == zx_hrxml_InternetEmailAddress_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:InternetEmailAddress")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->InternetWebAddress;
+    se && se->g.tok == zx_hrxml_InternetWebAddress_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:InternetWebAddress")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
 
 
@@ -5593,7 +6227,7 @@ char* zx_ENC_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMet
   ZX_OUT_TAG(p, "<hrxml:ContactMethod");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5605,27 +6239,49 @@ char* zx_ENC_SO_hrxml_ContactMethod(struct zx_ctx* c, struct zx_hrxml_ContactMet
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Use; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Use", sizeof("hrxml:Use")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Location; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Location", sizeof("hrxml:Location")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->WhenAvailable; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WhenAvailable", sizeof("hrxml:WhenAvailable")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Telephone->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Use;
+       se && se->g.tok == zx_hrxml_Use_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Use", sizeof("hrxml:Use")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Location;
+       se && se->g.tok == zx_hrxml_Location_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Location", sizeof("hrxml:Location")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->WhenAvailable;
+       se && se->g.tok == zx_hrxml_WhenAvailable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WhenAvailable", sizeof("hrxml:WhenAvailable")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Telephone->gg;
+       se && se->g.tok == zx_hrxml_Telephone_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Telephone(c, (struct zx_hrxml_Telephone_s*)se, p);
-  for (se = &x->Mobile->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Mobile->gg;
+       se && se->g.tok == zx_hrxml_Mobile_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Mobile(c, (struct zx_hrxml_Mobile_s*)se, p);
-  for (se = &x->Fax->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Fax->gg;
+       se && se->g.tok == zx_hrxml_Fax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Fax(c, (struct zx_hrxml_Fax_s*)se, p);
-  for (se = &x->Pager->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Pager->gg;
+       se && se->g.tok == zx_hrxml_Pager_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Pager(c, (struct zx_hrxml_Pager_s*)se, p);
-  for (se = &x->TTYTDD->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TTYTDD->gg;
+       se && se->g.tok == zx_hrxml_TTYTDD_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TTYTDD(c, (struct zx_hrxml_TTYTDD_s*)se, p);
-  for (se = x->InternetEmailAddress; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:InternetEmailAddress", sizeof("hrxml:InternetEmailAddress")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->InternetWebAddress; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:InternetWebAddress", sizeof("hrxml:InternetWebAddress")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->InternetEmailAddress;
+       se && se->g.tok == zx_hrxml_InternetEmailAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:InternetEmailAddress", sizeof("hrxml:InternetEmailAddress")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->InternetWebAddress;
+       se && se->g.tok == zx_hrxml_InternetWebAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:InternetWebAddress", sizeof("hrxml:InternetWebAddress")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5706,7 +6362,7 @@ int zx_LEN_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s*
   int len = sizeof("<hrxml:ContactName")-1 + 1 + sizeof("</hrxml:ContactName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->script, sizeof("script")-1, &pop_seen);
 
@@ -5715,21 +6371,37 @@ int zx_LEN_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_s*
   int len = 0;
 #endif
   
-  for (se = x->FormattedName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->LegalName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LegalName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PreferredGivenName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MiddleName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MiddleName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->FamilyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->FormattedName;
+    se && se->g.tok == zx_hrxml_FormattedName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->LegalName;
+    se && se->g.tok == zx_hrxml_LegalName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LegalName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+    se && se->g.tok == zx_hrxml_GivenName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PreferredGivenName;
+    se && se->g.tok == zx_hrxml_PreferredGivenName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MiddleName;
+    se && se->g.tok == zx_hrxml_MiddleName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MiddleName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->FamilyName->gg;
+       se && se->g.tok == zx_hrxml_FamilyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)se);
-  for (se = &x->Affix->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Affix->gg;
+       se && se->g.tok == zx_hrxml_Affix_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)se);
-  for (se = &x->AlternateScript->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AlternateScript->gg;
+       se && se->g.tok == zx_hrxml_AlternateScript_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)se);
 
 
@@ -5757,7 +6429,7 @@ char* zx_ENC_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_
   ZX_OUT_TAG(p, "<hrxml:ContactName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5770,21 +6442,37 @@ char* zx_ENC_SO_hrxml_ContactName(struct zx_ctx* c, struct zx_hrxml_ContactName_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->FormattedName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedName", sizeof("hrxml:FormattedName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->LegalName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LegalName", sizeof("hrxml:LegalName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GivenName", sizeof("hrxml:GivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PreferredGivenName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PreferredGivenName", sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MiddleName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MiddleName", sizeof("hrxml:MiddleName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->FamilyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->FormattedName;
+       se && se->g.tok == zx_hrxml_FormattedName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedName", sizeof("hrxml:FormattedName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->LegalName;
+       se && se->g.tok == zx_hrxml_LegalName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LegalName", sizeof("hrxml:LegalName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+       se && se->g.tok == zx_hrxml_GivenName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GivenName", sizeof("hrxml:GivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PreferredGivenName;
+       se && se->g.tok == zx_hrxml_PreferredGivenName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PreferredGivenName", sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MiddleName;
+       se && se->g.tok == zx_hrxml_MiddleName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MiddleName", sizeof("hrxml:MiddleName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->FamilyName->gg;
+       se && se->g.tok == zx_hrxml_FamilyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)se, p);
-  for (se = &x->Affix->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Affix->gg;
+       se && se->g.tok == zx_hrxml_Affix_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)se, p);
-  for (se = &x->AlternateScript->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AlternateScript->gg;
+       se && se->g.tok == zx_hrxml_AlternateScript_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -5865,7 +6553,7 @@ int zx_LEN_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x )
   int len = sizeof("<hrxml:Copyright")-1 + 1 + sizeof("</hrxml:Copyright>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -5873,10 +6561,14 @@ int zx_LEN_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->CopyrightDates->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CopyrightDates->gg;
+       se && se->g.tok == zx_hrxml_CopyrightDates_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_CopyrightDates(c, (struct zx_hrxml_CopyrightDates_s*)se);
-  for (se = x->CopyrightText; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CopyrightText")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->CopyrightText;
+    se && se->g.tok == zx_hrxml_CopyrightText_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CopyrightText")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -5903,7 +6595,7 @@ char* zx_ENC_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x
   ZX_OUT_TAG(p, "<hrxml:Copyright");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5915,10 +6607,14 @@ char* zx_ENC_SO_hrxml_Copyright(struct zx_ctx* c, struct zx_hrxml_Copyright_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->CopyrightDates->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CopyrightDates->gg;
+       se && se->g.tok == zx_hrxml_CopyrightDates_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_CopyrightDates(c, (struct zx_hrxml_CopyrightDates_s*)se, p);
-  for (se = x->CopyrightText; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CopyrightText", sizeof("hrxml:CopyrightText")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->CopyrightText;
+       se && se->g.tok == zx_hrxml_CopyrightText_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CopyrightText", sizeof("hrxml:CopyrightText")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -5998,7 +6694,7 @@ int zx_LEN_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDa
   int len = sizeof("<hrxml:CopyrightDates")-1 + 1 + sizeof("</hrxml:CopyrightDates>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -6006,9 +6702,13 @@ int zx_LEN_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_CopyrightDa
   int len = 0;
 #endif
   
-  for (se = &x->OriginalDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OriginalDate->gg;
+       se && se->g.tok == zx_hrxml_OriginalDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OriginalDate(c, (struct zx_hrxml_OriginalDate_s*)se);
-  for (se = &x->MostRecentDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MostRecentDate->gg;
+       se && se->g.tok == zx_hrxml_MostRecentDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_MostRecentDate(c, (struct zx_hrxml_MostRecentDate_s*)se);
 
 
@@ -6036,7 +6736,7 @@ char* zx_ENC_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_Copyright
   ZX_OUT_TAG(p, "<hrxml:CopyrightDates");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6048,9 +6748,13 @@ char* zx_ENC_SO_hrxml_CopyrightDates(struct zx_ctx* c, struct zx_hrxml_Copyright
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->OriginalDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OriginalDate->gg;
+       se && se->g.tok == zx_hrxml_OriginalDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OriginalDate(c, (struct zx_hrxml_OriginalDate_s*)se, p);
-  for (se = &x->MostRecentDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MostRecentDate->gg;
+       se && se->g.tok == zx_hrxml_MostRecentDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_MostRecentDate(c, (struct zx_hrxml_MostRecentDate_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6131,7 +6835,7 @@ int zx_LEN_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfA
   int len = sizeof("<hrxml:DatesOfAttendance")-1 + 1 + sizeof("</hrxml:DatesOfAttendance>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->currentlyEnrolled, sizeof("currentlyEnrolled")-1, &pop_seen);
   len += zx_attr_so_len(c, x->enrollmentStatus, sizeof("enrollmentStatus")-1, &pop_seen);
@@ -6142,9 +6846,13 @@ int zx_LEN_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesOfA
   int len = 0;
 #endif
   
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
 
 
@@ -6172,7 +6880,7 @@ char* zx_ENC_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesO
   ZX_OUT_TAG(p, "<hrxml:DatesOfAttendance");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6187,9 +6895,13 @@ char* zx_ENC_SO_hrxml_DatesOfAttendance(struct zx_ctx* c, struct zx_hrxml_DatesO
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se, p);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6270,7 +6982,7 @@ int zx_LEN_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfServ
   int len = sizeof("<hrxml:DatesOfService")-1 + 1 + sizeof("</hrxml:DatesOfService>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -6278,9 +6990,13 @@ int zx_LEN_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfServ
   int len = 0;
 #endif
   
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
 
 
@@ -6308,7 +7024,7 @@ char* zx_ENC_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfSe
   ZX_OUT_TAG(p, "<hrxml:DatesOfService");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6320,9 +7036,13 @@ char* zx_ENC_SO_hrxml_DatesOfService(struct zx_ctx* c, struct zx_hrxml_DatesOfSe
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se, p);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6403,7 +7123,7 @@ int zx_LEN_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x )
   int len = sizeof("<hrxml:Degree")-1 + 1 + sizeof("</hrxml:Degree>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->degreeType, sizeof("degreeType")-1, &pop_seen);
   len += zx_attr_so_len(c, x->examPassed, sizeof("examPassed")-1, &pop_seen);
@@ -6414,25 +7134,45 @@ int zx_LEN_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->DegreeName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeName->gg;
+       se && se->g.tok == zx_hrxml_DegreeName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DegreeName(c, (struct zx_hrxml_DegreeName_s*)se);
-  for (se = &x->DegreeDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeDate->gg;
+       se && se->g.tok == zx_hrxml_DegreeDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DegreeDate(c, (struct zx_hrxml_DegreeDate_s*)se);
-  for (se = &x->OtherHonors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherHonors->gg;
+       se && se->g.tok == zx_hrxml_OtherHonors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OtherHonors(c, (struct zx_hrxml_OtherHonors_s*)se);
-  for (se = &x->DegreeMajor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeMajor->gg;
+       se && se->g.tok == zx_hrxml_DegreeMajor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DegreeMajor(c, (struct zx_hrxml_DegreeMajor_s*)se);
-  for (se = &x->DegreeMinor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeMinor->gg;
+       se && se->g.tok == zx_hrxml_DegreeMinor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DegreeMinor(c, (struct zx_hrxml_DegreeMinor_s*)se);
-  for (se = &x->DegreeMeasure->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeMeasure->gg;
+       se && se->g.tok == zx_hrxml_DegreeMeasure_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DegreeMeasure(c, (struct zx_hrxml_DegreeMeasure_s*)se);
-  for (se = &x->DatesOfAttendance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DatesOfAttendance->gg;
+       se && se->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DegreeClassification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DegreeClassification->gg;
+       se && se->g.tok == zx_hrxml_DegreeClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DegreeClassification(c, (struct zx_hrxml_DegreeClassification_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -6460,7 +7200,7 @@ char* zx_ENC_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, char
   ZX_OUT_TAG(p, "<hrxml:Degree");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6475,25 +7215,45 @@ char* zx_ENC_SO_hrxml_Degree(struct zx_ctx* c, struct zx_hrxml_Degree_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->DegreeName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeName->gg;
+       se && se->g.tok == zx_hrxml_DegreeName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DegreeName(c, (struct zx_hrxml_DegreeName_s*)se, p);
-  for (se = &x->DegreeDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeDate->gg;
+       se && se->g.tok == zx_hrxml_DegreeDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DegreeDate(c, (struct zx_hrxml_DegreeDate_s*)se, p);
-  for (se = &x->OtherHonors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherHonors->gg;
+       se && se->g.tok == zx_hrxml_OtherHonors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OtherHonors(c, (struct zx_hrxml_OtherHonors_s*)se, p);
-  for (se = &x->DegreeMajor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeMajor->gg;
+       se && se->g.tok == zx_hrxml_DegreeMajor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DegreeMajor(c, (struct zx_hrxml_DegreeMajor_s*)se, p);
-  for (se = &x->DegreeMinor->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeMinor->gg;
+       se && se->g.tok == zx_hrxml_DegreeMinor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DegreeMinor(c, (struct zx_hrxml_DegreeMinor_s*)se, p);
-  for (se = &x->DegreeMeasure->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DegreeMeasure->gg;
+       se && se->g.tok == zx_hrxml_DegreeMeasure_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DegreeMeasure(c, (struct zx_hrxml_DegreeMeasure_s*)se, p);
-  for (se = &x->DatesOfAttendance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DatesOfAttendance->gg;
+       se && se->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DegreeClassification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DegreeClassification->gg;
+       se && se->g.tok == zx_hrxml_DegreeClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DegreeClassification(c, (struct zx_hrxml_DegreeClassification_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6574,7 +7334,7 @@ int zx_LEN_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_Degre
   int len = sizeof("<hrxml:DegreeClassification")-1 + 1 + sizeof("</hrxml:DegreeClassification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -6582,9 +7342,13 @@ int zx_LEN_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_Degre
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 
@@ -6612,7 +7376,7 @@ char* zx_ENC_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_Deg
   ZX_OUT_TAG(p, "<hrxml:DegreeClassification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6624,9 +7388,13 @@ char* zx_ENC_SO_hrxml_DegreeClassification(struct zx_ctx* c, struct zx_hrxml_Deg
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -6707,7 +7475,7 @@ int zx_LEN_SO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x
   int len = sizeof("<hrxml:DegreeDate")-1 + 1 + sizeof("</hrxml:DegreeDate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -6716,16 +7484,26 @@ int zx_LEN_SO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s* x
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -6752,7 +7530,7 @@ char* zx_ENC_SO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s*
   ZX_OUT_TAG(p, "<hrxml:DegreeDate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6765,16 +7543,26 @@ char* zx_ENC_SO_hrxml_DegreeDate(struct zx_ctx* c, struct zx_hrxml_DegreeDate_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -6854,7 +7642,7 @@ int zx_LEN_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s*
   int len = sizeof("<hrxml:DegreeMajor")-1 + 1 + sizeof("</hrxml:DegreeMajor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -6862,14 +7650,22 @@ int zx_LEN_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_s*
   int len = 0;
 #endif
   
-  for (se = &x->ProgramId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProgramId->gg;
+       se && se->g.tok == zx_hrxml_ProgramId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)se);
-  for (se = x->DegreeConcentration; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DegreeConcentration")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Option; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Option")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->DegreeConcentration;
+    se && se->g.tok == zx_hrxml_DegreeConcentration_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DegreeConcentration")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Option;
+    se && se->g.tok == zx_hrxml_Option_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Option")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -6896,7 +7692,7 @@ char* zx_ENC_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_
   ZX_OUT_TAG(p, "<hrxml:DegreeMajor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6908,14 +7704,22 @@ char* zx_ENC_SO_hrxml_DegreeMajor(struct zx_ctx* c, struct zx_hrxml_DegreeMajor_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ProgramId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProgramId->gg;
+       se && se->g.tok == zx_hrxml_ProgramId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)se, p);
-  for (se = x->DegreeConcentration; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DegreeConcentration", sizeof("hrxml:DegreeConcentration")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Option; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Option", sizeof("hrxml:Option")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->DegreeConcentration;
+       se && se->g.tok == zx_hrxml_DegreeConcentration_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DegreeConcentration", sizeof("hrxml:DegreeConcentration")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Option;
+       se && se->g.tok == zx_hrxml_Option_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Option", sizeof("hrxml:Option")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -6995,7 +7799,7 @@ int zx_LEN_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasur
   int len = sizeof("<hrxml:DegreeMeasure")-1 + 1 + sizeof("</hrxml:DegreeMeasure>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->measureType, sizeof("measureType")-1, &pop_seen);
 
@@ -7004,21 +7808,37 @@ int zx_LEN_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeasur
   int len = 0;
 #endif
   
-  for (se = &x->EducationalMeasure->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EducationalMeasure->gg;
+       se && se->g.tok == zx_hrxml_EducationalMeasure_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EducationalMeasure(c, (struct zx_hrxml_EducationalMeasure_s*)se);
-  for (se = x->AcademicCreditCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AcademicCreditCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CourseLevelCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CourseLevelCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CumulativeSummaryIndicator; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CumulativeSummaryIndicator")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AcademicCreditHoursIncluded; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AcademicCreditHoursIncluded")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AcademicCreditHoursAttempted; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AcademicCreditHoursAttempted")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AcademicCreditHoursEarned; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AcademicCreditHoursEarned")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ClassRank->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AcademicCreditCode;
+    se && se->g.tok == zx_hrxml_AcademicCreditCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AcademicCreditCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CourseLevelCode;
+    se && se->g.tok == zx_hrxml_CourseLevelCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CourseLevelCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CumulativeSummaryIndicator;
+    se && se->g.tok == zx_hrxml_CumulativeSummaryIndicator_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CumulativeSummaryIndicator")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AcademicCreditHoursIncluded;
+    se && se->g.tok == zx_hrxml_AcademicCreditHoursIncluded_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AcademicCreditHoursIncluded")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AcademicCreditHoursAttempted;
+    se && se->g.tok == zx_hrxml_AcademicCreditHoursAttempted_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AcademicCreditHoursAttempted")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AcademicCreditHoursEarned;
+    se && se->g.tok == zx_hrxml_AcademicCreditHoursEarned_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AcademicCreditHoursEarned")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ClassRank->gg;
+       se && se->g.tok == zx_hrxml_ClassRank_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ClassRank(c, (struct zx_hrxml_ClassRank_s*)se);
 
 
@@ -7046,7 +7866,7 @@ char* zx_ENC_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeas
   ZX_OUT_TAG(p, "<hrxml:DegreeMeasure");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7059,21 +7879,37 @@ char* zx_ENC_SO_hrxml_DegreeMeasure(struct zx_ctx* c, struct zx_hrxml_DegreeMeas
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EducationalMeasure->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EducationalMeasure->gg;
+       se && se->g.tok == zx_hrxml_EducationalMeasure_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EducationalMeasure(c, (struct zx_hrxml_EducationalMeasure_s*)se, p);
-  for (se = x->AcademicCreditCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AcademicCreditCode", sizeof("hrxml:AcademicCreditCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CourseLevelCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CourseLevelCode", sizeof("hrxml:CourseLevelCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CumulativeSummaryIndicator; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CumulativeSummaryIndicator", sizeof("hrxml:CumulativeSummaryIndicator")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AcademicCreditHoursIncluded; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AcademicCreditHoursIncluded", sizeof("hrxml:AcademicCreditHoursIncluded")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AcademicCreditHoursAttempted; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AcademicCreditHoursAttempted", sizeof("hrxml:AcademicCreditHoursAttempted")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AcademicCreditHoursEarned; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AcademicCreditHoursEarned", sizeof("hrxml:AcademicCreditHoursEarned")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ClassRank->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AcademicCreditCode;
+       se && se->g.tok == zx_hrxml_AcademicCreditCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AcademicCreditCode", sizeof("hrxml:AcademicCreditCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CourseLevelCode;
+       se && se->g.tok == zx_hrxml_CourseLevelCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CourseLevelCode", sizeof("hrxml:CourseLevelCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CumulativeSummaryIndicator;
+       se && se->g.tok == zx_hrxml_CumulativeSummaryIndicator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CumulativeSummaryIndicator", sizeof("hrxml:CumulativeSummaryIndicator")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AcademicCreditHoursIncluded;
+       se && se->g.tok == zx_hrxml_AcademicCreditHoursIncluded_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AcademicCreditHoursIncluded", sizeof("hrxml:AcademicCreditHoursIncluded")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AcademicCreditHoursAttempted;
+       se && se->g.tok == zx_hrxml_AcademicCreditHoursAttempted_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AcademicCreditHoursAttempted", sizeof("hrxml:AcademicCreditHoursAttempted")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AcademicCreditHoursEarned;
+       se && se->g.tok == zx_hrxml_AcademicCreditHoursEarned_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AcademicCreditHoursEarned", sizeof("hrxml:AcademicCreditHoursEarned")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ClassRank->gg;
+       se && se->g.tok == zx_hrxml_ClassRank_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ClassRank(c, (struct zx_hrxml_ClassRank_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -7154,7 +7990,7 @@ int zx_LEN_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s*
   int len = sizeof("<hrxml:DegreeMinor")-1 + 1 + sizeof("</hrxml:DegreeMinor>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -7162,10 +7998,14 @@ int zx_LEN_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_s*
   int len = 0;
 #endif
   
-  for (se = &x->ProgramId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProgramId->gg;
+       se && se->g.tok == zx_hrxml_ProgramId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)se);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -7192,7 +8032,7 @@ char* zx_ENC_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_
   ZX_OUT_TAG(p, "<hrxml:DegreeMinor");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7204,10 +8044,14 @@ char* zx_ENC_SO_hrxml_DegreeMinor(struct zx_ctx* c, struct zx_hrxml_DegreeMinor_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ProgramId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProgramId->gg;
+       se && se->g.tok == zx_hrxml_ProgramId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ProgramId(c, (struct zx_hrxml_ProgramId_s*)se, p);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -7287,7 +8131,7 @@ int zx_LEN_SO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s* x
   int len = sizeof("<hrxml:DegreeName")-1 + 1 + sizeof("</hrxml:DegreeName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->academicHonors, sizeof("academicHonors")-1, &pop_seen);
   len += zx_attr_so_len(c, x->honorsProgram, sizeof("honorsProgram")-1, &pop_seen);
@@ -7323,7 +8167,7 @@ char* zx_ENC_SO_hrxml_DegreeName(struct zx_ctx* c, struct zx_hrxml_DegreeName_s*
   ZX_OUT_TAG(p, "<hrxml:DegreeName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7416,7 +8260,7 @@ int zx_LEN_SO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAd
   int len = sizeof("<hrxml:DeliveryAddress")-1 + 1 + sizeof("</hrxml:DeliveryAddress>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -7424,16 +8268,26 @@ int zx_LEN_SO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_DeliveryAd
   int len = 0;
 #endif
   
-  for (se = x->AddressLine; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AddressLine")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StreetName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StreetName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->BuildingNumber; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BuildingNumber")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Unit; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Unit")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PostOfficeBox; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PostOfficeBox")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AddressLine;
+    se && se->g.tok == zx_hrxml_AddressLine_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AddressLine")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StreetName;
+    se && se->g.tok == zx_hrxml_StreetName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StreetName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->BuildingNumber;
+    se && se->g.tok == zx_hrxml_BuildingNumber_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BuildingNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Unit;
+    se && se->g.tok == zx_hrxml_Unit_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Unit")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PostOfficeBox;
+    se && se->g.tok == zx_hrxml_PostOfficeBox_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PostOfficeBox")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -7460,7 +8314,7 @@ char* zx_ENC_SO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_Delivery
   ZX_OUT_TAG(p, "<hrxml:DeliveryAddress");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7472,16 +8326,26 @@ char* zx_ENC_SO_hrxml_DeliveryAddress(struct zx_ctx* c, struct zx_hrxml_Delivery
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AddressLine; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AddressLine", sizeof("hrxml:AddressLine")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StreetName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StreetName", sizeof("hrxml:StreetName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->BuildingNumber; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BuildingNumber", sizeof("hrxml:BuildingNumber")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Unit; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Unit", sizeof("hrxml:Unit")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PostOfficeBox; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PostOfficeBox", sizeof("hrxml:PostOfficeBox")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AddressLine;
+       se && se->g.tok == zx_hrxml_AddressLine_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AddressLine", sizeof("hrxml:AddressLine")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StreetName;
+       se && se->g.tok == zx_hrxml_StreetName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StreetName", sizeof("hrxml:StreetName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->BuildingNumber;
+       se && se->g.tok == zx_hrxml_BuildingNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BuildingNumber", sizeof("hrxml:BuildingNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Unit;
+       se && se->g.tok == zx_hrxml_Unit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Unit", sizeof("hrxml:Unit")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PostOfficeBox;
+       se && se->g.tok == zx_hrxml_PostOfficeBox_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PostOfficeBox", sizeof("hrxml:PostOfficeBox")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -7561,7 +8425,7 @@ int zx_LEN_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_Dem
   int len = sizeof("<hrxml:DemographicDescriptors")-1 + 1 + sizeof("</hrxml:DemographicDescriptors>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -7569,23 +8433,41 @@ int zx_LEN_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_Dem
   int len = 0;
 #endif
   
-  for (se = x->Race; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Race")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Ethnicity; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Ethnicity")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Nationality; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Nationality")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PrimaryLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Race;
+    se && se->g.tok == zx_hrxml_Race_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Race")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Ethnicity;
+    se && se->g.tok == zx_hrxml_Ethnicity_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Ethnicity")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Nationality;
+    se && se->g.tok == zx_hrxml_Nationality_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Nationality")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PrimaryLanguage->gg;
+       se && se->g.tok == zx_hrxml_PrimaryLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PrimaryLanguage(c, (struct zx_hrxml_PrimaryLanguage_s*)se);
-  for (se = x->BirthPlace; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BirthPlace")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Religion; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Religion")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MaritalStatus; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MaritalStatus")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ChildrenInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->BirthPlace;
+    se && se->g.tok == zx_hrxml_BirthPlace_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:BirthPlace")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Religion;
+    se && se->g.tok == zx_hrxml_Religion_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Religion")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MaritalStatus;
+    se && se->g.tok == zx_hrxml_MaritalStatus_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MaritalStatus")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ChildrenInfo->gg;
+       se && se->g.tok == zx_hrxml_ChildrenInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ChildrenInfo(c, (struct zx_hrxml_ChildrenInfo_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -7613,7 +8495,7 @@ char* zx_ENC_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_D
   ZX_OUT_TAG(p, "<hrxml:DemographicDescriptors");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7625,23 +8507,41 @@ char* zx_ENC_SO_hrxml_DemographicDescriptors(struct zx_ctx* c, struct zx_hrxml_D
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Race; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Race", sizeof("hrxml:Race")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Ethnicity; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Ethnicity", sizeof("hrxml:Ethnicity")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Nationality; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Nationality", sizeof("hrxml:Nationality")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PrimaryLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Race;
+       se && se->g.tok == zx_hrxml_Race_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Race", sizeof("hrxml:Race")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Ethnicity;
+       se && se->g.tok == zx_hrxml_Ethnicity_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Ethnicity", sizeof("hrxml:Ethnicity")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Nationality;
+       se && se->g.tok == zx_hrxml_Nationality_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Nationality", sizeof("hrxml:Nationality")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PrimaryLanguage->gg;
+       se && se->g.tok == zx_hrxml_PrimaryLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PrimaryLanguage(c, (struct zx_hrxml_PrimaryLanguage_s*)se, p);
-  for (se = x->BirthPlace; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BirthPlace", sizeof("hrxml:BirthPlace")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Religion; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Religion", sizeof("hrxml:Religion")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MaritalStatus; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MaritalStatus", sizeof("hrxml:MaritalStatus")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ChildrenInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->BirthPlace;
+       se && se->g.tok == zx_hrxml_BirthPlace_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:BirthPlace", sizeof("hrxml:BirthPlace")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Religion;
+       se && se->g.tok == zx_hrxml_Religion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Religion", sizeof("hrxml:Religion")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MaritalStatus;
+       se && se->g.tok == zx_hrxml_MaritalStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MaritalStatus", sizeof("hrxml:MaritalStatus")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ChildrenInfo->gg;
+       se && se->g.tok == zx_hrxml_ChildrenInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ChildrenInfo(c, (struct zx_hrxml_ChildrenInfo_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -7722,9 +8622,9 @@ int zx_LEN_SO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_s*
   int len = sizeof("<hrxml:Description")-1 + 1 + sizeof("</hrxml:Description>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -7759,9 +8659,9 @@ char* zx_ENC_SO_hrxml_Description(struct zx_ctx* c, struct zx_hrxml_Description_
   ZX_OUT_TAG(p, "<hrxml:Description");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7853,9 +8753,9 @@ int zx_LEN_SO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x )
   int len = sizeof("<hrxml:Details")-1 + 1 + sizeof("</hrxml:Details>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
@@ -7891,9 +8791,9 @@ char* zx_ENC_SO_hrxml_Details(struct zx_ctx* c, struct zx_hrxml_Details_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:Details");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7986,7 +8886,7 @@ int zx_LEN_SO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityI
   int len = sizeof("<hrxml:DisabilityInfo")-1 + 1 + sizeof("</hrxml:DisabilityInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -7994,14 +8894,22 @@ int zx_LEN_SO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_DisabilityI
   int len = 0;
 #endif
   
-  for (se = x->LevelOfDisability; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LevelOfDisability")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Percentage; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Percentage")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Type; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Type")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AccommodationsNeeded; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AccommodationsNeeded")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->LevelOfDisability;
+    se && se->g.tok == zx_hrxml_LevelOfDisability_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LevelOfDisability")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Percentage;
+    se && se->g.tok == zx_hrxml_Percentage_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Percentage")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Type;
+    se && se->g.tok == zx_hrxml_Type_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Type")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AccommodationsNeeded;
+    se && se->g.tok == zx_hrxml_AccommodationsNeeded_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AccommodationsNeeded")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -8028,7 +8936,7 @@ char* zx_ENC_SO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_Disabilit
   ZX_OUT_TAG(p, "<hrxml:DisabilityInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8040,14 +8948,22 @@ char* zx_ENC_SO_hrxml_DisabilityInfo(struct zx_ctx* c, struct zx_hrxml_Disabilit
   /* root node has no begin tag */
 #endif
   
-  for (se = x->LevelOfDisability; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LevelOfDisability", sizeof("hrxml:LevelOfDisability")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Percentage; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Percentage", sizeof("hrxml:Percentage")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Type; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Type", sizeof("hrxml:Type")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AccommodationsNeeded; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AccommodationsNeeded", sizeof("hrxml:AccommodationsNeeded")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->LevelOfDisability;
+       se && se->g.tok == zx_hrxml_LevelOfDisability_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LevelOfDisability", sizeof("hrxml:LevelOfDisability")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Percentage;
+       se && se->g.tok == zx_hrxml_Percentage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Percentage", sizeof("hrxml:Percentage")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Type;
+       se && se->g.tok == zx_hrxml_Type_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Type", sizeof("hrxml:Type")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AccommodationsNeeded;
+       se && se->g.tok == zx_hrxml_AccommodationsNeeded_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AccommodationsNeeded", sizeof("hrxml:AccommodationsNeeded")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -8127,7 +9043,7 @@ int zx_LEN_SO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_s*
   int len = sizeof("<hrxml:DistanceMax")-1 + 1 + sizeof("</hrxml:DistanceMax>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->unitOfMeasure, sizeof("unitOfMeasure")-1, &pop_seen);
 
@@ -8162,7 +9078,7 @@ char* zx_ENC_SO_hrxml_DistanceMax(struct zx_ctx* c, struct zx_hrxml_DistanceMax_
   ZX_OUT_TAG(p, "<hrxml:DistanceMax");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8254,7 +9170,7 @@ int zx_LEN_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_
   int len = sizeof("<hrxml:DistributeTo")-1 + 1 + sizeof("</hrxml:DistributeTo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -8262,7 +9178,9 @@ int zx_LEN_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeTo_
   int len = 0;
 #endif
   
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
 
 
@@ -8290,7 +9208,7 @@ char* zx_ENC_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeT
   ZX_OUT_TAG(p, "<hrxml:DistributeTo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8302,7 +9220,9 @@ char* zx_ENC_SO_hrxml_DistributeTo(struct zx_ctx* c, struct zx_hrxml_DistributeT
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -8383,9 +9303,9 @@ int zx_LEN_SO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBusin
   int len = sizeof("<hrxml:DoingBusinessAs")-1 + 1 + sizeof("</hrxml:DoingBusinessAs>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -8420,9 +9340,9 @@ char* zx_ENC_SO_hrxml_DoingBusinessAs(struct zx_ctx* c, struct zx_hrxml_DoingBus
   ZX_OUT_TAG(p, "<hrxml:DoingBusinessAs");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8514,7 +9434,7 @@ int zx_LEN_SO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x )
   int len = sizeof("<hrxml:DressCode")-1 + 1 + sizeof("</hrxml:DressCode>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->suppliedByOrganization, sizeof("suppliedByOrganization")-1, &pop_seen);
 
@@ -8549,7 +9469,7 @@ char* zx_ENC_SO_hrxml_DressCode(struct zx_ctx* c, struct zx_hrxml_DressCode_s* x
   ZX_OUT_TAG(p, "<hrxml:DressCode");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8641,7 +9561,7 @@ int zx_LEN_SO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s* x
   int len = sizeof("<hrxml:DunsNumber")-1 + 1 + sizeof("</hrxml:DunsNumber>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dunsNumberType, sizeof("dunsNumberType")-1, &pop_seen);
 
@@ -8676,7 +9596,7 @@ char* zx_ENC_SO_hrxml_DunsNumber(struct zx_ctx* c, struct zx_hrxml_DunsNumber_s*
   ZX_OUT_TAG(p, "<hrxml:DunsNumber");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8768,7 +9688,7 @@ int zx_LEN_SO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCat
   int len = sizeof("<hrxml:EEOCJobCategory")-1 + 1 + sizeof("</hrxml:EEOCJobCategory>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -8776,10 +9696,14 @@ int zx_LEN_SO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobCat
   int len = 0;
 #endif
   
-  for (se = x->StandardValue; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StandardValue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->NonStandardValue; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NonStandardValue")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->StandardValue;
+    se && se->g.tok == zx_hrxml_StandardValue_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StandardValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NonStandardValue;
+    se && se->g.tok == zx_hrxml_NonStandardValue_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NonStandardValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -8806,7 +9730,7 @@ char* zx_ENC_SO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobC
   ZX_OUT_TAG(p, "<hrxml:EEOCJobCategory");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8818,10 +9742,14 @@ char* zx_ENC_SO_hrxml_EEOCJobCategory(struct zx_ctx* c, struct zx_hrxml_EEOCJobC
   /* root node has no begin tag */
 #endif
   
-  for (se = x->StandardValue; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StandardValue", sizeof("hrxml:StandardValue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->NonStandardValue; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NonStandardValue", sizeof("hrxml:NonStandardValue")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->StandardValue;
+       se && se->g.tok == zx_hrxml_StandardValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StandardValue", sizeof("hrxml:StandardValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NonStandardValue;
+       se && se->g.tok == zx_hrxml_NonStandardValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NonStandardValue", sizeof("hrxml:NonStandardValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -8901,7 +9829,7 @@ int zx_LEN_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_Education
   int len = sizeof("<hrxml:EducationHistory")-1 + 1 + sizeof("</hrxml:EducationHistory>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -8909,7 +9837,9 @@ int zx_LEN_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_Education
   int len = 0;
 #endif
   
-  for (se = &x->SchoolOrInstitution->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SchoolOrInstitution->gg;
+       se && se->g.tok == zx_hrxml_SchoolOrInstitution_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SchoolOrInstitution(c, (struct zx_hrxml_SchoolOrInstitution_s*)se);
 
 
@@ -8937,7 +9867,7 @@ char* zx_ENC_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_Educati
   ZX_OUT_TAG(p, "<hrxml:EducationHistory");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8949,7 +9879,9 @@ char* zx_ENC_SO_hrxml_EducationHistory(struct zx_ctx* c, struct zx_hrxml_Educati
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SchoolOrInstitution->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SchoolOrInstitution->gg;
+       se && se->g.tok == zx_hrxml_SchoolOrInstitution_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SchoolOrInstitution(c, (struct zx_hrxml_SchoolOrInstitution_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -9030,7 +9962,7 @@ int zx_LEN_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educati
   int len = sizeof("<hrxml:EducationalMeasure")-1 + 1 + sizeof("</hrxml:EducationalMeasure>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -9038,18 +9970,30 @@ int zx_LEN_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educati
   int len = 0;
 #endif
   
-  for (se = x->MeasureSystem; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MeasureSystem")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MeasureValue; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MeasureValue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->LowestPossibleValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->MeasureSystem;
+    se && se->g.tok == zx_hrxml_MeasureSystem_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MeasureSystem")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MeasureValue;
+    se && se->g.tok == zx_hrxml_MeasureValue_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MeasureValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LowestPossibleValue->gg;
+       se && se->g.tok == zx_hrxml_LowestPossibleValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LowestPossibleValue(c, (struct zx_hrxml_LowestPossibleValue_s*)se);
-  for (se = &x->HighestPossibleValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->HighestPossibleValue->gg;
+       se && se->g.tok == zx_hrxml_HighestPossibleValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_HighestPossibleValue(c, (struct zx_hrxml_HighestPossibleValue_s*)se);
-  for (se = x->ExcessiveValueIndicator; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ExcessiveValueIndicator")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GoodStudentIndicator; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GoodStudentIndicator")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ExcessiveValueIndicator;
+    se && se->g.tok == zx_hrxml_ExcessiveValueIndicator_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ExcessiveValueIndicator")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GoodStudentIndicator;
+    se && se->g.tok == zx_hrxml_GoodStudentIndicator_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GoodStudentIndicator")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -9076,7 +10020,7 @@ char* zx_ENC_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educa
   ZX_OUT_TAG(p, "<hrxml:EducationalMeasure");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -9088,18 +10032,30 @@ char* zx_ENC_SO_hrxml_EducationalMeasure(struct zx_ctx* c, struct zx_hrxml_Educa
   /* root node has no begin tag */
 #endif
   
-  for (se = x->MeasureSystem; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MeasureSystem", sizeof("hrxml:MeasureSystem")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MeasureValue; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MeasureValue", sizeof("hrxml:MeasureValue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->LowestPossibleValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->MeasureSystem;
+       se && se->g.tok == zx_hrxml_MeasureSystem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MeasureSystem", sizeof("hrxml:MeasureSystem")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MeasureValue;
+       se && se->g.tok == zx_hrxml_MeasureValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MeasureValue", sizeof("hrxml:MeasureValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LowestPossibleValue->gg;
+       se && se->g.tok == zx_hrxml_LowestPossibleValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LowestPossibleValue(c, (struct zx_hrxml_LowestPossibleValue_s*)se, p);
-  for (se = &x->HighestPossibleValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->HighestPossibleValue->gg;
+       se && se->g.tok == zx_hrxml_HighestPossibleValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_HighestPossibleValue(c, (struct zx_hrxml_HighestPossibleValue_s*)se, p);
-  for (se = x->ExcessiveValueIndicator; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ExcessiveValueIndicator", sizeof("hrxml:ExcessiveValueIndicator")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GoodStudentIndicator; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GoodStudentIndicator", sizeof("hrxml:GoodStudentIndicator")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ExcessiveValueIndicator;
+       se && se->g.tok == zx_hrxml_ExcessiveValueIndicator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ExcessiveValueIndicator", sizeof("hrxml:ExcessiveValueIndicator")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GoodStudentIndicator;
+       se && se->g.tok == zx_hrxml_GoodStudentIndicator_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GoodStudentIndicator", sizeof("hrxml:GoodStudentIndicator")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -9179,7 +10135,7 @@ int zx_LEN_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDat
   int len = sizeof("<hrxml:EffectiveDate")-1 + 1 + sizeof("</hrxml:EffectiveDate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -9187,9 +10143,13 @@ int zx_LEN_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveDat
   int len = 0;
 #endif
   
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
 
 
@@ -9217,7 +10177,7 @@ char* zx_ENC_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveD
   ZX_OUT_TAG(p, "<hrxml:EffectiveDate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -9229,9 +10189,13 @@ char* zx_ENC_SO_hrxml_EffectiveDate(struct zx_ctx* c, struct zx_hrxml_EffectiveD
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se, p);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -9312,7 +10276,7 @@ int zx_LEN_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Employ
   int len = sizeof("<hrxml:EmployerContactInfo")-1 + 1 + sizeof("</hrxml:EmployerContactInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->contactType, sizeof("contactType")-1, &pop_seen);
 
@@ -9321,13 +10285,21 @@ int zx_LEN_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Employ
   int len = 0;
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
-  for (se = &x->LocationSummary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LocationSummary->gg;
+       se && se->g.tok == zx_hrxml_LocationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)se);
-  for (se = &x->InternetDomainName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InternetDomainName->gg;
+       se && se->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)se);
 
 
@@ -9355,7 +10327,7 @@ char* zx_ENC_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Empl
   ZX_OUT_TAG(p, "<hrxml:EmployerContactInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -9368,13 +10340,21 @@ char* zx_ENC_SO_hrxml_EmployerContactInfo(struct zx_ctx* c, struct zx_hrxml_Empl
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se, p);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se, p);
-  for (se = &x->LocationSummary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LocationSummary->gg;
+       se && se->g.tok == zx_hrxml_LocationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)se, p);
-  for (se = &x->InternetDomainName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InternetDomainName->gg;
+       se && se->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -9455,7 +10435,7 @@ int zx_LEN_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s*
   int len = sizeof("<hrxml:EmployerOrg")-1 + 1 + sizeof("</hrxml:EmployerOrg>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->employerOrgType, sizeof("employerOrgType")-1, &pop_seen);
 
@@ -9464,13 +10444,21 @@ int zx_LEN_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_s*
   int len = 0;
 #endif
   
-  for (se = x->EmployerOrgName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EmployerOrgName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->EmployerContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EmployerOrgName;
+    se && se->g.tok == zx_hrxml_EmployerOrgName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EmployerOrgName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EmployerContactInfo->gg;
+       se && se->g.tok == zx_hrxml_EmployerContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EmployerContactInfo(c, (struct zx_hrxml_EmployerContactInfo_s*)se);
-  for (se = &x->PositionHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionHistory->gg;
+       se && se->g.tok == zx_hrxml_PositionHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PositionHistory(c, (struct zx_hrxml_PositionHistory_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -9498,7 +10486,7 @@ char* zx_ENC_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_
   ZX_OUT_TAG(p, "<hrxml:EmployerOrg");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -9511,13 +10499,21 @@ char* zx_ENC_SO_hrxml_EmployerOrg(struct zx_ctx* c, struct zx_hrxml_EmployerOrg_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->EmployerOrgName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EmployerOrgName", sizeof("hrxml:EmployerOrgName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->EmployerContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EmployerOrgName;
+       se && se->g.tok == zx_hrxml_EmployerOrgName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EmployerOrgName", sizeof("hrxml:EmployerOrgName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EmployerContactInfo->gg;
+       se && se->g.tok == zx_hrxml_EmployerContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EmployerContactInfo(c, (struct zx_hrxml_EmployerContactInfo_s*)se, p);
-  for (se = &x->PositionHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionHistory->gg;
+       se && se->g.tok == zx_hrxml_PositionHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PositionHistory(c, (struct zx_hrxml_PositionHistory_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -9598,7 +10594,7 @@ int zx_LEN_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Employme
   int len = sizeof("<hrxml:EmploymentHistory")-1 + 1 + sizeof("</hrxml:EmploymentHistory>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -9606,7 +10602,9 @@ int zx_LEN_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Employme
   int len = 0;
 #endif
   
-  for (se = &x->EmployerOrg->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EmployerOrg->gg;
+       se && se->g.tok == zx_hrxml_EmployerOrg_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EmployerOrg(c, (struct zx_hrxml_EmployerOrg_s*)se);
 
 
@@ -9634,7 +10632,7 @@ char* zx_ENC_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Employ
   ZX_OUT_TAG(p, "<hrxml:EmploymentHistory");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -9646,7 +10644,9 @@ char* zx_ENC_SO_hrxml_EmploymentHistory(struct zx_ctx* c, struct zx_hrxml_Employ
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EmployerOrg->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EmployerOrg->gg;
+       se && se->g.tok == zx_hrxml_EmployerOrg_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EmployerOrg(c, (struct zx_hrxml_EmployerOrg_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -9727,7 +10727,7 @@ int zx_LEN_SO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x )
   int len = sizeof("<hrxml:EndDate")-1 + 1 + sizeof("</hrxml:EndDate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -9736,16 +10736,26 @@ int zx_LEN_SO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x )
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -9772,7 +10782,7 @@ char* zx_ENC_SO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:EndDate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -9785,16 +10795,26 @@ char* zx_ENC_SO_hrxml_EndDate(struct zx_ctx* c, struct zx_hrxml_EndDate_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -9874,7 +10894,7 @@ int zx_LEN_SO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_EndingC
   int len = sizeof("<hrxml:EndingCompensation")-1 + 1 + sizeof("</hrxml:EndingCompensation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->currency, sizeof("currency")-1, &pop_seen);
   len += zx_attr_so_len(c, x->intervalType, sizeof("intervalType")-1, &pop_seen);
@@ -9912,7 +10932,7 @@ char* zx_ENC_SO_hrxml_EndingCompensation(struct zx_ctx* c, struct zx_hrxml_Endin
   ZX_OUT_TAG(p, "<hrxml:EndingCompensation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -10007,7 +11027,7 @@ int zx_LEN_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentI
   int len = sizeof("<hrxml:EnvironmentId")-1 + 1 + sizeof("</hrxml:EnvironmentId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -10018,7 +11038,9 @@ int zx_LEN_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_EnvironmentI
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -10046,7 +11068,7 @@ char* zx_ENC_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_Environmen
   ZX_OUT_TAG(p, "<hrxml:EnvironmentId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -10061,7 +11083,9 @@ char* zx_ENC_SO_hrxml_EnvironmentId(struct zx_ctx* c, struct zx_hrxml_Environmen
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -10142,7 +11166,7 @@ int zx_LEN_SO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s* x
   int len = sizeof("<hrxml:EvidenceId")-1 + 1 + sizeof("</hrxml:EvidenceId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->description, sizeof("description")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -10179,7 +11203,7 @@ char* zx_ENC_SO_hrxml_EvidenceId(struct zx_ctx* c, struct zx_hrxml_EvidenceId_s*
   ZX_OUT_TAG(p, "<hrxml:EvidenceId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -10273,7 +11297,7 @@ int zx_LEN_SO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_Expatri
   int len = sizeof("<hrxml:ExpatriateBenefits")-1 + 1 + sizeof("</hrxml:ExpatriateBenefits>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -10281,10 +11305,14 @@ int zx_LEN_SO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_Expatri
   int len = 0;
 #endif
   
-  for (se = x->ExpatriateBenefitsOffered; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ExpatriateBenefitsOffered")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ExpatriateBenefitList; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ExpatriateBenefitList")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ExpatriateBenefitsOffered;
+    se && se->g.tok == zx_hrxml_ExpatriateBenefitsOffered_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ExpatriateBenefitsOffered")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ExpatriateBenefitList;
+    se && se->g.tok == zx_hrxml_ExpatriateBenefitList_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ExpatriateBenefitList")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -10311,7 +11339,7 @@ char* zx_ENC_SO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_Expat
   ZX_OUT_TAG(p, "<hrxml:ExpatriateBenefits");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -10323,10 +11351,14 @@ char* zx_ENC_SO_hrxml_ExpatriateBenefits(struct zx_ctx* c, struct zx_hrxml_Expat
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ExpatriateBenefitsOffered; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ExpatriateBenefitsOffered", sizeof("hrxml:ExpatriateBenefitsOffered")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ExpatriateBenefitList; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ExpatriateBenefitList", sizeof("hrxml:ExpatriateBenefitList")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ExpatriateBenefitsOffered;
+       se && se->g.tok == zx_hrxml_ExpatriateBenefitsOffered_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ExpatriateBenefitsOffered", sizeof("hrxml:ExpatriateBenefitsOffered")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ExpatriateBenefitList;
+       se && se->g.tok == zx_hrxml_ExpatriateBenefitList_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ExpatriateBenefitList", sizeof("hrxml:ExpatriateBenefitList")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -10406,7 +11438,7 @@ int zx_LEN_SO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s* x
   int len = sizeof("<hrxml:FamilyName")-1 + 1 + sizeof("</hrxml:FamilyName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->prefix, sizeof("prefix")-1, &pop_seen);
   len += zx_attr_so_len(c, x->primary, sizeof("primary")-1, &pop_seen);
@@ -10442,7 +11474,7 @@ char* zx_ENC_SO_hrxml_FamilyName(struct zx_ctx* c, struct zx_hrxml_FamilyName_s*
   ZX_OUT_TAG(p, "<hrxml:FamilyName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -10535,7 +11567,7 @@ int zx_LEN_SO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x )
   int len = sizeof("<hrxml:Fax")-1 + 1 + sizeof("</hrxml:Fax>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -10543,8 +11575,10 @@ int zx_LEN_SO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x )
   int len = 0;
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+    se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -10571,7 +11605,7 @@ char* zx_ENC_SO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x, char* p )
   ZX_OUT_TAG(p, "<hrxml:Fax");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -10583,8 +11617,10 @@ char* zx_ENC_SO_hrxml_Fax(struct zx_ctx* c, struct zx_hrxml_Fax_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+       se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -10664,7 +11700,7 @@ int zx_LEN_SO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssue
   int len = sizeof("<hrxml:FirstIssuedDate")-1 + 1 + sizeof("</hrxml:FirstIssuedDate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -10673,16 +11709,26 @@ int zx_LEN_SO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIssue
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -10709,7 +11755,7 @@ char* zx_ENC_SO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIss
   ZX_OUT_TAG(p, "<hrxml:FirstIssuedDate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -10722,16 +11768,26 @@ char* zx_ENC_SO_hrxml_FirstIssuedDate(struct zx_ctx* c, struct zx_hrxml_FirstIss
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -10811,7 +11867,7 @@ int zx_LEN_SO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct zx_
   int len = sizeof("<hrxml:FormattedPublicationDescription")-1 + 1 + sizeof("</hrxml:FormattedPublicationDescription>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -10846,7 +11902,7 @@ char* zx_ENC_SO_hrxml_FormattedPublicationDescription(struct zx_ctx* c, struct z
   ZX_OUT_TAG(p, "<hrxml:FormattedPublicationDescription");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -10938,7 +11994,7 @@ int zx_LEN_SO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x )
   int len = sizeof("<hrxml:Height")-1 + 1 + sizeof("</hrxml:Height>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->unitOfMeasure, sizeof("unitOfMeasure")-1, &pop_seen);
 
@@ -10973,7 +12029,7 @@ char* zx_ENC_SO_hrxml_Height(struct zx_ctx* c, struct zx_hrxml_Height_s* x, char
   ZX_OUT_TAG(p, "<hrxml:Height");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -11065,7 +12121,7 @@ int zx_LEN_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Highe
   int len = sizeof("<hrxml:HighestPossibleValue")-1 + 1 + sizeof("</hrxml:HighestPossibleValue>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -11073,9 +12129,13 @@ int zx_LEN_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Highe
   int len = 0;
 #endif
   
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se);
 
 
@@ -11103,7 +12163,7 @@ char* zx_ENC_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Hig
   ZX_OUT_TAG(p, "<hrxml:HighestPossibleValue");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -11115,9 +12175,13 @@ char* zx_ENC_SO_hrxml_HighestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Hig
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se, p);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -11198,7 +12262,7 @@ int zx_LEN_SO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_Horizon
   int len = sizeof("<hrxml:HorizontalAccuracy")-1 + 1 + sizeof("</hrxml:HorizontalAccuracy>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -11232,7 +12296,7 @@ char* zx_ENC_SO_hrxml_HorizontalAccuracy(struct zx_ctx* c, struct zx_hrxml_Horiz
   ZX_OUT_TAG(p, "<hrxml:HorizontalAccuracy");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -11323,7 +12387,7 @@ int zx_LEN_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x )
   int len = sizeof("<hrxml:Id")-1 + 1 + sizeof("</hrxml:Id>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -11334,7 +12398,9 @@ int zx_LEN_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -11362,7 +12428,7 @@ char* zx_ENC_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, char* p )
   ZX_OUT_TAG(p, "<hrxml:Id");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -11377,7 +12443,9 @@ char* zx_ENC_SO_hrxml_Id(struct zx_ctx* c, struct zx_hrxml_Id_s* x, char* p )
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -11458,7 +12526,7 @@ int zx_LEN_SO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x )
   int len = sizeof("<hrxml:IdValue")-1 + 1 + sizeof("</hrxml:IdValue>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->name, sizeof("name")-1, &pop_seen);
 
@@ -11493,7 +12561,7 @@ char* zx_ENC_SO_hrxml_IdValue(struct zx_ctx* c, struct zx_hrxml_IdValue_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:IdValue");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -11585,7 +12653,7 @@ int zx_LEN_SO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCode_
   int len = sizeof("<hrxml:IndustryCode")-1 + 1 + sizeof("</hrxml:IndustryCode>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->classificationName, sizeof("classificationName")-1, &pop_seen);
   len += zx_attr_so_len(c, x->primaryIndicator, sizeof("primaryIndicator")-1, &pop_seen);
@@ -11621,7 +12689,7 @@ char* zx_ENC_SO_hrxml_IndustryCode(struct zx_ctx* c, struct zx_hrxml_IndustryCod
   ZX_OUT_TAG(p, "<hrxml:IndustryCode");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -11714,7 +12782,7 @@ int zx_LEN_SO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x )
   int len = sizeof("<hrxml:Insurance")-1 + 1 + sizeof("</hrxml:Insurance>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -11749,7 +12817,7 @@ char* zx_ENC_SO_hrxml_Insurance(struct zx_ctx* c, struct zx_hrxml_Insurance_s* x
   ZX_OUT_TAG(p, "<hrxml:Insurance");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -11841,7 +12909,7 @@ int zx_LEN_SO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_Interne
   int len = sizeof("<hrxml:InternetDomainName")-1 + 1 + sizeof("</hrxml:InternetDomainName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->primaryIndicator, sizeof("primaryIndicator")-1, &pop_seen);
 
@@ -11876,7 +12944,7 @@ char* zx_ENC_SO_hrxml_InternetDomainName(struct zx_ctx* c, struct zx_hrxml_Inter
   ZX_OUT_TAG(p, "<hrxml:InternetDomainName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -11968,7 +13036,7 @@ int zx_LEN_SO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x )
   int len = sizeof("<hrxml:Inventors")-1 + 1 + sizeof("</hrxml:Inventors>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -11976,8 +13044,10 @@ int zx_LEN_SO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x )
   int len = 0;
 #endif
   
-  for (se = x->InventorName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:InventorName")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->InventorName;
+    se && se->g.tok == zx_hrxml_InventorName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:InventorName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -12004,7 +13074,7 @@ char* zx_ENC_SO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x
   ZX_OUT_TAG(p, "<hrxml:Inventors");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -12016,8 +13086,10 @@ char* zx_ENC_SO_hrxml_Inventors(struct zx_ctx* c, struct zx_hrxml_Inventors_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->InventorName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:InventorName", sizeof("hrxml:InventorName")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->InventorName;
+       se && se->g.tok == zx_hrxml_InventorName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:InventorName", sizeof("hrxml:InventorName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -12097,7 +13169,7 @@ int zx_LEN_SO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_IssuingAu
   int len = sizeof("<hrxml:IssuingAuthority")-1 + 1 + sizeof("</hrxml:IssuingAuthority>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->countryCode, sizeof("countryCode")-1, &pop_seen);
 
@@ -12132,7 +13204,7 @@ char* zx_ENC_SO_hrxml_IssuingAuthority(struct zx_ctx* c, struct zx_hrxml_Issuing
   ZX_OUT_TAG(p, "<hrxml:IssuingAuthority");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -12224,7 +13296,7 @@ int zx_LEN_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s*
   int len = sizeof("<hrxml:JobCategory")-1 + 1 + sizeof("</hrxml:JobCategory>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -12232,15 +13304,25 @@ int zx_LEN_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_s*
   int len = 0;
 #endif
   
-  for (se = &x->TaxonomyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TaxonomyName->gg;
+       se && se->g.tok == zx_hrxml_TaxonomyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TaxonomyName(c, (struct zx_hrxml_TaxonomyName_s*)se);
-  for (se = x->CategoryCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CategoryCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CategoryDescription; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CategoryDescription")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CategoryCode;
+    se && se->g.tok == zx_hrxml_CategoryCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CategoryCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CategoryDescription;
+    se && se->g.tok == zx_hrxml_CategoryDescription_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CategoryDescription")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se);
 
 
@@ -12268,7 +13350,7 @@ char* zx_ENC_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_
   ZX_OUT_TAG(p, "<hrxml:JobCategory");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -12280,15 +13362,25 @@ char* zx_ENC_SO_hrxml_JobCategory(struct zx_ctx* c, struct zx_hrxml_JobCategory_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->TaxonomyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TaxonomyName->gg;
+       se && se->g.tok == zx_hrxml_TaxonomyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TaxonomyName(c, (struct zx_hrxml_TaxonomyName_s*)se, p);
-  for (se = x->CategoryCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CategoryCode", sizeof("hrxml:CategoryCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CategoryDescription; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CategoryDescription", sizeof("hrxml:CategoryDescription")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CategoryCode;
+       se && se->g.tok == zx_hrxml_CategoryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CategoryCode", sizeof("hrxml:CategoryCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CategoryDescription;
+       se && se->g.tok == zx_hrxml_CategoryDescription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CategoryDescription", sizeof("hrxml:CategoryDescription")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -12369,7 +13461,7 @@ int zx_LEN_SO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_
   int len = sizeof("<hrxml:JobLevelInfo")-1 + 1 + sizeof("</hrxml:JobLevelInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -12377,14 +13469,22 @@ int zx_LEN_SO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInfo_
   int len = 0;
 #endif
   
-  for (se = x->JobPlan; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:JobPlan")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->JobGrade; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:JobGrade")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->JobStep; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:JobStep")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->JobPlan;
+    se && se->g.tok == zx_hrxml_JobPlan_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:JobPlan")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->JobGrade;
+    se && se->g.tok == zx_hrxml_JobGrade_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:JobGrade")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->JobStep;
+    se && se->g.tok == zx_hrxml_JobStep_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:JobStep")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -12411,7 +13511,7 @@ char* zx_ENC_SO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInf
   ZX_OUT_TAG(p, "<hrxml:JobLevelInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -12423,14 +13523,22 @@ char* zx_ENC_SO_hrxml_JobLevelInfo(struct zx_ctx* c, struct zx_hrxml_JobLevelInf
   /* root node has no begin tag */
 #endif
   
-  for (se = x->JobPlan; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:JobPlan", sizeof("hrxml:JobPlan")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->JobGrade; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:JobGrade", sizeof("hrxml:JobGrade")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->JobStep; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:JobStep", sizeof("hrxml:JobStep")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->JobPlan;
+       se && se->g.tok == zx_hrxml_JobPlan_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:JobPlan", sizeof("hrxml:JobPlan")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->JobGrade;
+       se && se->g.tok == zx_hrxml_JobGrade_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:JobGrade", sizeof("hrxml:JobGrade")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->JobStep;
+       se && se->g.tok == zx_hrxml_JobStep_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:JobStep", sizeof("hrxml:JobStep")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -12510,7 +13618,7 @@ int zx_LEN_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x )
   int len = sizeof("<hrxml:Language")-1 + 1 + sizeof("</hrxml:Language>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -12518,16 +13626,26 @@ int zx_LEN_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->LanguageCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LanguageCode->gg;
+       se && se->g.tok == zx_hrxml_LanguageCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LanguageCode(c, (struct zx_hrxml_LanguageCode_s*)se);
-  for (se = x->Read; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Read")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Write; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Write")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Speak; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Speak")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Read;
+    se && se->g.tok == zx_hrxml_Read_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Read")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Write;
+    se && se->g.tok == zx_hrxml_Write_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Write")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Speak;
+    se && se->g.tok == zx_hrxml_Speak_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Speak")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -12554,7 +13672,7 @@ char* zx_ENC_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, 
   ZX_OUT_TAG(p, "<hrxml:Language");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -12566,16 +13684,26 @@ char* zx_ENC_SO_hrxml_Language(struct zx_ctx* c, struct zx_hrxml_Language_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->LanguageCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LanguageCode->gg;
+       se && se->g.tok == zx_hrxml_LanguageCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LanguageCode(c, (struct zx_hrxml_LanguageCode_s*)se, p);
-  for (se = x->Read; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Read", sizeof("hrxml:Read")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Write; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Write", sizeof("hrxml:Write")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Speak; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Speak", sizeof("hrxml:Speak")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Read;
+       se && se->g.tok == zx_hrxml_Read_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Read", sizeof("hrxml:Read")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Write;
+       se && se->g.tok == zx_hrxml_Write_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Write", sizeof("hrxml:Write")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Speak;
+       se && se->g.tok == zx_hrxml_Speak_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Speak", sizeof("hrxml:Speak")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -12655,7 +13783,7 @@ int zx_LEN_SO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCode_
   int len = sizeof("<hrxml:LanguageCode")-1 + 1 + sizeof("</hrxml:LanguageCode>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -12689,7 +13817,7 @@ char* zx_ENC_SO_hrxml_LanguageCode(struct zx_ctx* c, struct zx_hrxml_LanguageCod
   ZX_OUT_TAG(p, "<hrxml:LanguageCode");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -12780,7 +13908,7 @@ int zx_LEN_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x )
   int len = sizeof("<hrxml:Languages")-1 + 1 + sizeof("</hrxml:Languages>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -12788,7 +13916,9 @@ int zx_LEN_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Language->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Language->gg;
+       se && se->g.tok == zx_hrxml_Language_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Language(c, (struct zx_hrxml_Language_s*)se);
 
 
@@ -12816,7 +13946,7 @@ char* zx_ENC_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x
   ZX_OUT_TAG(p, "<hrxml:Languages");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -12828,7 +13958,9 @@ char* zx_ENC_SO_hrxml_Languages(struct zx_ctx* c, struct zx_hrxml_Languages_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Language->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Language->gg;
+       se && se->g.tok == zx_hrxml_Language_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Language(c, (struct zx_hrxml_Language_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -12909,7 +14041,7 @@ int zx_LEN_SO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x )
   int len = sizeof("<hrxml:Latitude")-1 + 1 + sizeof("</hrxml:Latitude>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -12943,7 +14075,7 @@ char* zx_ENC_SO_hrxml_Latitude(struct zx_ctx* c, struct zx_hrxml_Latitude_s* x, 
   ZX_OUT_TAG(p, "<hrxml:Latitude");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -13034,7 +14166,7 @@ int zx_LEN_SO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_LegalC
   int len = sizeof("<hrxml:LegalClassification")-1 + 1 + sizeof("</hrxml:LegalClassification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->countryCode, sizeof("countryCode")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ownership, sizeof("ownership")-1, &pop_seen);
@@ -13070,7 +14202,7 @@ char* zx_ENC_SO_hrxml_LegalClassification(struct zx_ctx* c, struct zx_hrxml_Lega
   ZX_OUT_TAG(p, "<hrxml:LegalClassification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -13163,7 +14295,7 @@ int zx_LEN_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x )
   int len = sizeof("<hrxml:LegalId")-1 + 1 + sizeof("</hrxml:LegalId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -13174,7 +14306,9 @@ int zx_LEN_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -13202,7 +14336,7 @@ char* zx_ENC_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:LegalId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -13217,7 +14351,9 @@ char* zx_ENC_SO_hrxml_LegalId(struct zx_ctx* c, struct zx_hrxml_LegalId_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -13298,7 +14434,7 @@ int zx_LEN_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIden
   int len = sizeof("<hrxml:LegalIdentifiers")-1 + 1 + sizeof("</hrxml:LegalIdentifiers>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -13306,17 +14442,29 @@ int zx_LEN_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalIden
   int len = 0;
 #endif
   
-  for (se = &x->PersonLegalId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonLegalId->gg;
+       se && se->g.tok == zx_hrxml_PersonLegalId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonLegalId(c, (struct zx_hrxml_PersonLegalId_s*)se);
-  for (se = &x->MilitaryStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MilitaryStatus->gg;
+       se && se->g.tok == zx_hrxml_MilitaryStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_MilitaryStatus(c, (struct zx_hrxml_MilitaryStatus_s*)se);
-  for (se = &x->VisaStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VisaStatus->gg;
+       se && se->g.tok == zx_hrxml_VisaStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_VisaStatus(c, (struct zx_hrxml_VisaStatus_s*)se);
-  for (se = x->Citizenship; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Citizenship")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Residency; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Residency")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Citizenship;
+    se && se->g.tok == zx_hrxml_Citizenship_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Citizenship")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Residency;
+    se && se->g.tok == zx_hrxml_Residency_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Residency")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -13344,7 +14492,7 @@ char* zx_ENC_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalId
   ZX_OUT_TAG(p, "<hrxml:LegalIdentifiers");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -13356,17 +14504,29 @@ char* zx_ENC_SO_hrxml_LegalIdentifiers(struct zx_ctx* c, struct zx_hrxml_LegalId
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PersonLegalId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonLegalId->gg;
+       se && se->g.tok == zx_hrxml_PersonLegalId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonLegalId(c, (struct zx_hrxml_PersonLegalId_s*)se, p);
-  for (se = &x->MilitaryStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MilitaryStatus->gg;
+       se && se->g.tok == zx_hrxml_MilitaryStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_MilitaryStatus(c, (struct zx_hrxml_MilitaryStatus_s*)se, p);
-  for (se = &x->VisaStatus->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VisaStatus->gg;
+       se && se->g.tok == zx_hrxml_VisaStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_VisaStatus(c, (struct zx_hrxml_VisaStatus_s*)se, p);
-  for (se = x->Citizenship; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Citizenship", sizeof("hrxml:Citizenship")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Residency; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Residency", sizeof("hrxml:Residency")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Citizenship;
+       se && se->g.tok == zx_hrxml_Citizenship_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Citizenship", sizeof("hrxml:Citizenship")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Residency;
+       se && se->g.tok == zx_hrxml_Residency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Residency", sizeof("hrxml:Residency")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -13447,7 +14607,7 @@ int zx_LEN_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_Lic
   int len = sizeof("<hrxml:LicenseOrCertification")-1 + 1 + sizeof("</hrxml:LicenseOrCertification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -13455,15 +14615,25 @@ int zx_LEN_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_Lic
   int len = 0;
 #endif
   
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se);
 
 
@@ -13491,7 +14661,7 @@ char* zx_ENC_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_L
   ZX_OUT_TAG(p, "<hrxml:LicenseOrCertification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -13503,15 +14673,25 @@ char* zx_ENC_SO_hrxml_LicenseOrCertification(struct zx_ctx* c, struct zx_hrxml_L
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -13592,7 +14772,7 @@ int zx_LEN_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_
   int len = sizeof("<hrxml:LicensesAndCertifications")-1 + 1 + sizeof("</hrxml:LicensesAndCertifications>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -13600,7 +14780,9 @@ int zx_LEN_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxml_
   int len = 0;
 #endif
   
-  for (se = &x->LicenseOrCertification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LicenseOrCertification->gg;
+       se && se->g.tok == zx_hrxml_LicenseOrCertification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LicenseOrCertification(c, (struct zx_hrxml_LicenseOrCertification_s*)se);
 
 
@@ -13628,7 +14810,7 @@ char* zx_ENC_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxm
   ZX_OUT_TAG(p, "<hrxml:LicensesAndCertifications");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -13640,7 +14822,9 @@ char* zx_ENC_SO_hrxml_LicensesAndCertifications(struct zx_ctx* c, struct zx_hrxm
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->LicenseOrCertification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LicenseOrCertification->gg;
+       se && se->g.tok == zx_hrxml_LicenseOrCertification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LicenseOrCertification(c, (struct zx_hrxml_LicenseOrCertification_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -13721,7 +14905,7 @@ int zx_LEN_SO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x )
   int len = sizeof("<hrxml:List")-1 + 1 + sizeof("</hrxml:List>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -13729,8 +14913,10 @@ int zx_LEN_SO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Item; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Item")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Item;
+    se && se->g.tok == zx_hrxml_Item_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Item")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -13757,7 +14943,7 @@ char* zx_ENC_SO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x, char* p 
   ZX_OUT_TAG(p, "<hrxml:List");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -13769,8 +14955,10 @@ char* zx_ENC_SO_hrxml_List(struct zx_ctx* c, struct zx_hrxml_List_s* x, char* p 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Item; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Item", sizeof("hrxml:Item")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Item;
+       se && se->g.tok == zx_hrxml_Item_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Item", sizeof("hrxml:Item")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -13850,7 +15038,7 @@ int zx_LEN_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_h
   int len = sizeof("<hrxml:LocalInstitutionClassification")-1 + 1 + sizeof("</hrxml:LocalInstitutionClassification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -13858,9 +15046,13 @@ int zx_LEN_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx_h
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 
@@ -13888,7 +15080,7 @@ char* zx_ENC_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx
   ZX_OUT_TAG(p, "<hrxml:LocalInstitutionClassification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -13900,9 +15092,13 @@ char* zx_ENC_SO_hrxml_LocalInstitutionClassification(struct zx_ctx* c, struct zx
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -13983,7 +15179,7 @@ int zx_LEN_SO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSu
   int len = sizeof("<hrxml:LocationSummary")-1 + 1 + sizeof("</hrxml:LocationSummary>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -13991,14 +15187,22 @@ int zx_LEN_SO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_LocationSu
   int len = 0;
 #endif
   
-  for (se = x->Municipality; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Municipality")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Region; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Region")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CountryCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CountryCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PostalCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PostalCode")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Municipality;
+    se && se->g.tok == zx_hrxml_Municipality_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Municipality")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Region;
+    se && se->g.tok == zx_hrxml_Region_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Region")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CountryCode;
+    se && se->g.tok == zx_hrxml_CountryCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CountryCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PostalCode;
+    se && se->g.tok == zx_hrxml_PostalCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PostalCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -14025,7 +15229,7 @@ char* zx_ENC_SO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_Location
   ZX_OUT_TAG(p, "<hrxml:LocationSummary");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -14037,14 +15241,22 @@ char* zx_ENC_SO_hrxml_LocationSummary(struct zx_ctx* c, struct zx_hrxml_Location
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Municipality; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Municipality", sizeof("hrxml:Municipality")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Region; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Region", sizeof("hrxml:Region")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CountryCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CountryCode", sizeof("hrxml:CountryCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PostalCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PostalCode", sizeof("hrxml:PostalCode")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Municipality;
+       se && se->g.tok == zx_hrxml_Municipality_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Municipality", sizeof("hrxml:Municipality")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Region;
+       se && se->g.tok == zx_hrxml_Region_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Region", sizeof("hrxml:Region")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CountryCode;
+       se && se->g.tok == zx_hrxml_CountryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CountryCode", sizeof("hrxml:CountryCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PostalCode;
+       se && se->g.tok == zx_hrxml_PostalCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PostalCode", sizeof("hrxml:PostalCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -14124,7 +15336,7 @@ int zx_LEN_SO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x )
   int len = sizeof("<hrxml:Longitude")-1 + 1 + sizeof("</hrxml:Longitude>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -14158,7 +15370,7 @@ char* zx_ENC_SO_hrxml_Longitude(struct zx_ctx* c, struct zx_hrxml_Longitude_s* x
   ZX_OUT_TAG(p, "<hrxml:Longitude");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -14249,7 +15461,7 @@ int zx_LEN_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Lowest
   int len = sizeof("<hrxml:LowestPossibleValue")-1 + 1 + sizeof("</hrxml:LowestPossibleValue>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -14257,9 +15469,13 @@ int zx_LEN_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Lowest
   int len = 0;
 #endif
   
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se);
 
 
@@ -14287,7 +15503,7 @@ char* zx_ENC_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Lowe
   ZX_OUT_TAG(p, "<hrxml:LowestPossibleValue");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -14299,9 +15515,13 @@ char* zx_ENC_SO_hrxml_LowestPossibleValue(struct zx_ctx* c, struct zx_hrxml_Lowe
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->NumericValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NumericValue->gg;
+       se && se->g.tok == zx_hrxml_NumericValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_NumericValue(c, (struct zx_hrxml_NumericValue_s*)se, p);
-  for (se = &x->StringValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StringValue->gg;
+       se && se->g.tok == zx_hrxml_StringValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StringValue(c, (struct zx_hrxml_StringValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -14382,7 +15602,7 @@ int zx_LEN_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObj
   int len = sizeof("<hrxml:MatchedObjectId")-1 + 1 + sizeof("</hrxml:MatchedObjectId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -14393,7 +15613,9 @@ int zx_LEN_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedObj
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -14421,7 +15643,7 @@ char* zx_ENC_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedO
   ZX_OUT_TAG(p, "<hrxml:MatchedObjectId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -14436,7 +15658,9 @@ char* zx_ENC_SO_hrxml_MatchedObjectId(struct zx_ctx* c, struct zx_hrxml_MatchedO
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -14517,7 +15741,7 @@ int zx_LEN_SO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x )
   int len = sizeof("<hrxml:Measure")-1 + 1 + sizeof("</hrxml:Measure>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->measureType, sizeof("measureType")-1, &pop_seen);
 
@@ -14526,10 +15750,14 @@ int zx_LEN_SO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x )
   int len = 0;
 #endif
   
-  for (se = x->MeasureSystem; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MeasureSystem")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MeasureValue; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MeasureValue")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->MeasureSystem;
+    se && se->g.tok == zx_hrxml_MeasureSystem_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MeasureSystem")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MeasureValue;
+    se && se->g.tok == zx_hrxml_MeasureValue_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MeasureValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -14556,7 +15784,7 @@ char* zx_ENC_SO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:Measure");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -14569,10 +15797,14 @@ char* zx_ENC_SO_hrxml_Measure(struct zx_ctx* c, struct zx_hrxml_Measure_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = x->MeasureSystem; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MeasureSystem", sizeof("hrxml:MeasureSystem")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MeasureValue; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MeasureValue", sizeof("hrxml:MeasureValue")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->MeasureSystem;
+       se && se->g.tok == zx_hrxml_MeasureSystem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MeasureSystem", sizeof("hrxml:MeasureSystem")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MeasureValue;
+       se && se->g.tok == zx_hrxml_MeasureValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MeasureValue", sizeof("hrxml:MeasureValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -14652,7 +15884,7 @@ int zx_LEN_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHi
   int len = sizeof("<hrxml:MilitaryHistory")-1 + 1 + sizeof("</hrxml:MilitaryHistory>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -14660,17 +15892,29 @@ int zx_LEN_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_MilitaryHi
   int len = 0;
 #endif
   
-  for (se = x->CountryServed; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CountryServed")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ServiceNumber->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CountryServed;
+    se && se->g.tok == zx_hrxml_CountryServed_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CountryServed")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ServiceNumber->gg;
+       se && se->g.tok == zx_hrxml_ServiceNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ServiceNumber(c, (struct zx_hrxml_ServiceNumber_s*)se);
-  for (se = &x->ServiceDetail->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceDetail->gg;
+       se && se->g.tok == zx_hrxml_ServiceDetail_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ServiceDetail(c, (struct zx_hrxml_ServiceDetail_s*)se);
-  for (se = x->ServiceStatus; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ServiceStatus")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceStatus;
+    se && se->g.tok == zx_hrxml_ServiceStatus_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ServiceStatus")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -14698,7 +15942,7 @@ char* zx_ENC_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_Military
   ZX_OUT_TAG(p, "<hrxml:MilitaryHistory");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -14710,17 +15954,29 @@ char* zx_ENC_SO_hrxml_MilitaryHistory(struct zx_ctx* c, struct zx_hrxml_Military
   /* root node has no begin tag */
 #endif
   
-  for (se = x->CountryServed; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CountryServed", sizeof("hrxml:CountryServed")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ServiceNumber->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CountryServed;
+       se && se->g.tok == zx_hrxml_CountryServed_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CountryServed", sizeof("hrxml:CountryServed")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ServiceNumber->gg;
+       se && se->g.tok == zx_hrxml_ServiceNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ServiceNumber(c, (struct zx_hrxml_ServiceNumber_s*)se, p);
-  for (se = &x->ServiceDetail->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ServiceDetail->gg;
+       se && se->g.tok == zx_hrxml_ServiceDetail_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ServiceDetail(c, (struct zx_hrxml_ServiceDetail_s*)se, p);
-  for (se = x->ServiceStatus; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ServiceStatus", sizeof("hrxml:ServiceStatus")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ServiceStatus;
+       se && se->g.tok == zx_hrxml_ServiceStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ServiceStatus", sizeof("hrxml:ServiceStatus")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -14801,7 +16057,7 @@ int zx_LEN_SO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitarySta
   int len = sizeof("<hrxml:MilitaryStatus")-1 + 1 + sizeof("</hrxml:MilitaryStatus>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -14836,7 +16092,7 @@ char* zx_ENC_SO_hrxml_MilitaryStatus(struct zx_ctx* c, struct zx_hrxml_MilitaryS
   ZX_OUT_TAG(p, "<hrxml:MilitaryStatus");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -14928,7 +16184,7 @@ int zx_LEN_SO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x )
   int len = sizeof("<hrxml:Mobile")-1 + 1 + sizeof("</hrxml:Mobile>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->smsEnabled, sizeof("smsEnabled")-1, &pop_seen);
 
@@ -14937,8 +16193,10 @@ int zx_LEN_SO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x )
   int len = 0;
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+    se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -14965,7 +16223,7 @@ char* zx_ENC_SO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x, char
   ZX_OUT_TAG(p, "<hrxml:Mobile");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -14978,8 +16236,10 @@ char* zx_ENC_SO_hrxml_Mobile(struct zx_ctx* c, struct zx_hrxml_Mobile_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+       se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -15059,7 +16319,7 @@ int zx_LEN_SO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentD
   int len = sizeof("<hrxml:MostRecentDate")-1 + 1 + sizeof("</hrxml:MostRecentDate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -15068,16 +16328,26 @@ int zx_LEN_SO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecentD
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -15104,7 +16374,7 @@ char* zx_ENC_SO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecen
   ZX_OUT_TAG(p, "<hrxml:MostRecentDate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -15117,16 +16387,26 @@ char* zx_ENC_SO_hrxml_MostRecentDate(struct zx_ctx* c, struct zx_hrxml_MostRecen
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -15206,7 +16486,7 @@ int zx_LEN_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_
   int len = sizeof("<hrxml:NonXMLResume")-1 + 1 + sizeof("</hrxml:NonXMLResume>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -15214,16 +16494,26 @@ int zx_LEN_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResume_
   int len = 0;
 #endif
   
-  for (se = x->TextResume; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:TextResume")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->LinkToResume; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LinkToResume")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TextResume;
+    se && se->g.tok == zx_hrxml_TextResume_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:TextResume")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->LinkToResume;
+    se && se->g.tok == zx_hrxml_LinkToResume_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LinkToResume")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->RevisionDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RevisionDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RevisionDate;
+    se && se->g.tok == zx_hrxml_RevisionDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RevisionDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -15250,7 +16540,7 @@ char* zx_ENC_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResum
   ZX_OUT_TAG(p, "<hrxml:NonXMLResume");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -15262,16 +16552,26 @@ char* zx_ENC_SO_hrxml_NonXMLResume(struct zx_ctx* c, struct zx_hrxml_NonXMLResum
   /* root node has no begin tag */
 #endif
   
-  for (se = x->TextResume; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:TextResume", sizeof("hrxml:TextResume")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->LinkToResume; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LinkToResume", sizeof("hrxml:LinkToResume")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->TextResume;
+       se && se->g.tok == zx_hrxml_TextResume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:TextResume", sizeof("hrxml:TextResume")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->LinkToResume;
+       se && se->g.tok == zx_hrxml_LinkToResume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LinkToResume", sizeof("hrxml:LinkToResume")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->RevisionDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RevisionDate", sizeof("hrxml:RevisionDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RevisionDate;
+       se && se->g.tok == zx_hrxml_RevisionDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RevisionDate", sizeof("hrxml:RevisionDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -15351,7 +16651,7 @@ int zx_LEN_SO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValue_
   int len = sizeof("<hrxml:NumericValue")-1 + 1 + sizeof("</hrxml:NumericValue>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->description, sizeof("description")-1, &pop_seen);
   len += zx_attr_so_len(c, x->interval, sizeof("interval")-1, &pop_seen);
@@ -15389,7 +16689,7 @@ char* zx_ENC_SO_hrxml_NumericValue(struct zx_ctx* c, struct zx_hrxml_NumericValu
   ZX_OUT_TAG(p, "<hrxml:NumericValue");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -15484,7 +16784,7 @@ int zx_LEN_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s*
   int len = sizeof("<hrxml:OrgIndustry")-1 + 1 + sizeof("</hrxml:OrgIndustry>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->primaryIndicator, sizeof("primaryIndicator")-1, &pop_seen);
 
@@ -15493,9 +16793,13 @@ int zx_LEN_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_s*
   int len = 0;
 #endif
   
-  for (se = x->IndustryDescription; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:IndustryDescription")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->IndustryDescription;
+    se && se->g.tok == zx_hrxml_IndustryDescription_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:IndustryDescription")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
 
 
@@ -15523,7 +16827,7 @@ char* zx_ENC_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_
   ZX_OUT_TAG(p, "<hrxml:OrgIndustry");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -15536,9 +16840,13 @@ char* zx_ENC_SO_hrxml_OrgIndustry(struct zx_ctx* c, struct zx_hrxml_OrgIndustry_
   /* root node has no begin tag */
 #endif
   
-  for (se = x->IndustryDescription; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:IndustryDescription", sizeof("hrxml:IndustryDescription")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->IndustryDescription;
+       se && se->g.tok == zx_hrxml_IndustryDescription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:IndustryDescription", sizeof("hrxml:IndustryDescription")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -15619,7 +16927,7 @@ int zx_LEN_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x )
   int len = sizeof("<hrxml:OrgInfo")-1 + 1 + sizeof("</hrxml:OrgInfo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -15627,11 +16935,17 @@ int zx_LEN_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->PositionLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionLocation->gg;
+       se && se->g.tok == zx_hrxml_PositionLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PositionLocation(c, (struct zx_hrxml_PositionLocation_s*)se);
-  for (se = x->WebSite; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WebSite")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->LocationSummary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->WebSite;
+    se && se->g.tok == zx_hrxml_WebSite_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WebSite")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LocationSummary->gg;
+       se && se->g.tok == zx_hrxml_LocationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)se);
 
 
@@ -15659,7 +16973,7 @@ char* zx_ENC_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:OrgInfo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -15671,11 +16985,17 @@ char* zx_ENC_SO_hrxml_OrgInfo(struct zx_ctx* c, struct zx_hrxml_OrgInfo_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PositionLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionLocation->gg;
+       se && se->g.tok == zx_hrxml_PositionLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PositionLocation(c, (struct zx_hrxml_PositionLocation_s*)se, p);
-  for (se = x->WebSite; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WebSite", sizeof("hrxml:WebSite")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->LocationSummary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->WebSite;
+       se && se->g.tok == zx_hrxml_WebSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WebSite", sizeof("hrxml:WebSite")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LocationSummary->gg;
+       se && se->g.tok == zx_hrxml_LocationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -15756,7 +17076,7 @@ int zx_LEN_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x )
   int len = sizeof("<hrxml:OrgName")-1 + 1 + sizeof("</hrxml:OrgName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->organizationType, sizeof("organizationType")-1, &pop_seen);
 
@@ -15765,9 +17085,13 @@ int zx_LEN_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x )
   int len = 0;
 #endif
   
-  for (se = x->OrganizationName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrgName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrganizationName;
+    se && se->g.tok == zx_hrxml_OrganizationName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrgName->gg;
+       se && se->g.tok == zx_hrxml_OrgName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)se);
 
 
@@ -15795,7 +17119,7 @@ char* zx_ENC_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:OrgName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -15808,9 +17132,13 @@ char* zx_ENC_SO_hrxml_OrgName(struct zx_ctx* c, struct zx_hrxml_OrgName_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = x->OrganizationName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationName", sizeof("hrxml:OrganizationName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrgName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrganizationName;
+       se && se->g.tok == zx_hrxml_OrganizationName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationName", sizeof("hrxml:OrganizationName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrgName->gg;
+       se && se->g.tok == zx_hrxml_OrgName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -15891,7 +17219,7 @@ int zx_LEN_SO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organization_
   int len = sizeof("<hrxml:Organization")-1 + 1 + sizeof("</hrxml:Organization>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -15925,7 +17253,7 @@ char* zx_ENC_SO_hrxml_Organization(struct zx_ctx* c, struct zx_hrxml_Organizatio
   ZX_OUT_TAG(p, "<hrxml:Organization");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -16016,7 +17344,7 @@ int zx_LEN_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organizatio
   int len = sizeof("<hrxml:OrganizationId")-1 + 1 + sizeof("</hrxml:OrganizationId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -16027,7 +17355,9 @@ int zx_LEN_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organizatio
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -16055,7 +17385,7 @@ char* zx_ENC_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organizat
   ZX_OUT_TAG(p, "<hrxml:OrganizationId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -16070,7 +17400,9 @@ char* zx_ENC_SO_hrxml_OrganizationId(struct zx_ctx* c, struct zx_hrxml_Organizat
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -16151,7 +17483,7 @@ int zx_LEN_SO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_Organizat
   int len = sizeof("<hrxml:OrganizationUnit")-1 + 1 + sizeof("</hrxml:OrganizationUnit>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->attendanceStatus, sizeof("attendanceStatus")-1, &pop_seen);
   len += zx_attr_so_len(c, x->organizationType, sizeof("organizationType")-1, &pop_seen);
@@ -16187,7 +17519,7 @@ char* zx_ENC_SO_hrxml_OrganizationUnit(struct zx_ctx* c, struct zx_hrxml_Organiz
   ZX_OUT_TAG(p, "<hrxml:OrganizationUnit");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -16280,7 +17612,7 @@ int zx_LEN_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Organiz
   int len = sizeof("<hrxml:OrganizationalUnit")-1 + 1 + sizeof("</hrxml:OrganizationalUnit>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->hierarchicalRole, sizeof("hierarchicalRole")-1, &pop_seen);
   len += zx_attr_so_len(c, x->typeOfGroup, sizeof("typeOfGroup")-1, &pop_seen);
@@ -16290,25 +17622,45 @@ int zx_LEN_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Organiz
   int len = 0;
 #endif
   
-  for (se = x->OrganizationalUnitName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationalUnitName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrganizationalUnitId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrganizationalUnitName;
+    se && se->g.tok == zx_hrxml_OrganizationalUnitName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationalUnitName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrganizationalUnitId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)se);
-  for (se = &x->OrganizationId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
-  for (se = &x->AccountingCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AccountingCode->gg;
+       se && se->g.tok == zx_hrxml_AccountingCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)se);
-  for (se = &x->WorkSite->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSite->gg;
+       se && se->g.tok == zx_hrxml_WorkSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)se);
-  for (se = &x->RelatedOrganizationalUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedOrganizationalUnit->gg;
+       se && se->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)se);
-  for (se = &x->PersonMember->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonMember->gg;
+       se && se->g.tok == zx_hrxml_PersonMember_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -16336,7 +17688,7 @@ char* zx_ENC_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Organ
   ZX_OUT_TAG(p, "<hrxml:OrganizationalUnit");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -16350,25 +17702,45 @@ char* zx_ENC_SO_hrxml_OrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_Organ
   /* root node has no begin tag */
 #endif
   
-  for (se = x->OrganizationalUnitName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationalUnitName", sizeof("hrxml:OrganizationalUnitName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrganizationalUnitId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrganizationalUnitName;
+       se && se->g.tok == zx_hrxml_OrganizationalUnitName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationalUnitName", sizeof("hrxml:OrganizationalUnitName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrganizationalUnitId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)se, p);
-  for (se = &x->OrganizationId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se, p);
-  for (se = &x->AccountingCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AccountingCode->gg;
+       se && se->g.tok == zx_hrxml_AccountingCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)se, p);
-  for (se = &x->WorkSite->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSite->gg;
+       se && se->g.tok == zx_hrxml_WorkSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)se, p);
-  for (se = &x->RelatedOrganizationalUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedOrganizationalUnit->gg;
+       se && se->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)se, p);
-  for (se = &x->PersonMember->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonMember->gg;
+       se && se->g.tok == zx_hrxml_PersonMember_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -16449,7 +17821,7 @@ int zx_LEN_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Organ
   int len = sizeof("<hrxml:OrganizationalUnitId")-1 + 1 + sizeof("</hrxml:OrganizationalUnitId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -16460,7 +17832,9 @@ int zx_LEN_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Organ
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -16488,7 +17862,7 @@ char* zx_ENC_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Org
   ZX_OUT_TAG(p, "<hrxml:OrganizationalUnitId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -16503,7 +17877,9 @@ char* zx_ENC_SO_hrxml_OrganizationalUnitId(struct zx_ctx* c, struct zx_hrxml_Org
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -16584,7 +17960,7 @@ int zx_LEN_SO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_
   int len = sizeof("<hrxml:OriginalDate")-1 + 1 + sizeof("</hrxml:OriginalDate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -16593,16 +17969,26 @@ int zx_LEN_SO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDate_
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -16629,7 +18015,7 @@ char* zx_ENC_SO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDat
   ZX_OUT_TAG(p, "<hrxml:OriginalDate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -16642,16 +18028,26 @@ char* zx_ENC_SO_hrxml_OriginalDate(struct zx_ctx* c, struct zx_hrxml_OriginalDat
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -16731,7 +18127,7 @@ int zx_LEN_SO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenefit
   int len = sizeof("<hrxml:OtherBenefits")-1 + 1 + sizeof("</hrxml:OtherBenefits>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -16766,7 +18162,7 @@ char* zx_ENC_SO_hrxml_OtherBenefits(struct zx_ctx* c, struct zx_hrxml_OtherBenef
   ZX_OUT_TAG(p, "<hrxml:OtherBenefits");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -16858,7 +18254,7 @@ int zx_LEN_SO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherCom
   int len = sizeof("<hrxml:OtherCompensation")-1 + 1 + sizeof("</hrxml:OtherCompensation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -16895,7 +18291,7 @@ char* zx_ENC_SO_hrxml_OtherCompensation(struct zx_ctx* c, struct zx_hrxml_OtherC
   ZX_OUT_TAG(p, "<hrxml:OtherCompensation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -16989,7 +18385,7 @@ int zx_LEN_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDesc
   int len = sizeof("<hrxml:OtherDescriptors")-1 + 1 + sizeof("</hrxml:OtherDescriptors>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -16997,13 +18393,21 @@ int zx_LEN_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDesc
   int len = 0;
 #endif
   
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Applicable; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Applicable")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Value")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->List->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Applicable;
+    se && se->g.tok == zx_hrxml_Applicable_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Applicable")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Value;
+    se && se->g.tok == zx_hrxml_Value_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Value")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->List->gg;
+       se && se->g.tok == zx_hrxml_List_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_List(c, (struct zx_hrxml_List_s*)se);
 
 
@@ -17031,7 +18435,7 @@ char* zx_ENC_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDe
   ZX_OUT_TAG(p, "<hrxml:OtherDescriptors");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -17043,13 +18447,21 @@ char* zx_ENC_SO_hrxml_OtherDescriptors(struct zx_ctx* c, struct zx_hrxml_OtherDe
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Applicable; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Applicable", sizeof("hrxml:Applicable")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Value", sizeof("hrxml:Value")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->List->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Applicable;
+       se && se->g.tok == zx_hrxml_Applicable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Applicable", sizeof("hrxml:Applicable")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Value;
+       se && se->g.tok == zx_hrxml_Value_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Value", sizeof("hrxml:Value")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->List->gg;
+       se && se->g.tok == zx_hrxml_List_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_List(c, (struct zx_hrxml_List_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -17130,7 +18542,7 @@ int zx_LEN_SO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_s*
   int len = sizeof("<hrxml:OtherHonors")-1 + 1 + sizeof("</hrxml:OtherHonors>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -17165,7 +18577,7 @@ char* zx_ENC_SO_hrxml_OtherHonors(struct zx_ctx* c, struct zx_hrxml_OtherHonors_
   ZX_OUT_TAG(p, "<hrxml:OtherHonors");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -17257,7 +18669,7 @@ int zx_LEN_SO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x )
   int len = sizeof("<hrxml:OtherPay")-1 + 1 + sizeof("</hrxml:OtherPay>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->currencyCode, sizeof("currencyCode")-1, &pop_seen);
   len += zx_attr_so_len(c, x->otherInterval, sizeof("otherInterval")-1, &pop_seen);
@@ -17268,14 +18680,22 @@ int zx_LEN_SO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x )
   int len = 0;
 #endif
   
-  for (se = x->OtherPayAmountMin; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OtherPayAmountMin")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->OtherPayAmountMax; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OtherPayAmountMax")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->OtherPayCalculation; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OtherPayCalculation")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->OtherPayAmountMin;
+    se && se->g.tok == zx_hrxml_OtherPayAmountMin_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OtherPayAmountMin")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OtherPayAmountMax;
+    se && se->g.tok == zx_hrxml_OtherPayAmountMax_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OtherPayAmountMax")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OtherPayCalculation;
+    se && se->g.tok == zx_hrxml_OtherPayCalculation_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OtherPayCalculation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -17302,7 +18722,7 @@ char* zx_ENC_SO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x, 
   ZX_OUT_TAG(p, "<hrxml:OtherPay");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -17317,14 +18737,22 @@ char* zx_ENC_SO_hrxml_OtherPay(struct zx_ctx* c, struct zx_hrxml_OtherPay_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->OtherPayAmountMin; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OtherPayAmountMin", sizeof("hrxml:OtherPayAmountMin")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->OtherPayAmountMax; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OtherPayAmountMax", sizeof("hrxml:OtherPayAmountMax")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->OtherPayCalculation; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OtherPayCalculation", sizeof("hrxml:OtherPayCalculation")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->OtherPayAmountMin;
+       se && se->g.tok == zx_hrxml_OtherPayAmountMin_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OtherPayAmountMin", sizeof("hrxml:OtherPayAmountMin")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OtherPayAmountMax;
+       se && se->g.tok == zx_hrxml_OtherPayAmountMax_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OtherPayAmountMax", sizeof("hrxml:OtherPayAmountMax")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OtherPayCalculation;
+       se && se->g.tok == zx_hrxml_OtherPayCalculation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OtherPayCalculation", sizeof("hrxml:OtherPayCalculation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -17404,7 +18832,7 @@ int zx_LEN_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPubl
   int len = sizeof("<hrxml:OtherPublication")-1 + 1 + sizeof("</hrxml:OtherPublication>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -17413,30 +18841,54 @@ int zx_LEN_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPubl
   int len = 0;
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+    se && se->g.tok == zx_hrxml_Title_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Abstract")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+    se && se->g.tok == zx_hrxml_Link_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Abstract;
+    se && se->g.tok == zx_hrxml_Abstract_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Abstract")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISSN; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISSN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISBN; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISBN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->NumberOfPages; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NumberOfPages")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PublisherName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PublisherName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PublisherLocation; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PublisherLocation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISSN;
+    se && se->g.tok == zx_hrxml_ISSN_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISSN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISBN;
+    se && se->g.tok == zx_hrxml_ISBN_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISBN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NumberOfPages;
+    se && se->g.tok == zx_hrxml_NumberOfPages_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NumberOfPages")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PublisherName;
+    se && se->g.tok == zx_hrxml_PublisherName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PublisherName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PublisherLocation;
+    se && se->g.tok == zx_hrxml_PublisherLocation_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PublisherLocation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -17463,7 +18915,7 @@ char* zx_ENC_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPu
   ZX_OUT_TAG(p, "<hrxml:OtherPublication");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -17476,30 +18928,54 @@ char* zx_ENC_SO_hrxml_OtherPublication(struct zx_ctx* c, struct zx_hrxml_OtherPu
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PublicationDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+       se && se->g.tok == zx_hrxml_Title_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PublicationDate->gg;
+       se && se->g.tok == zx_hrxml_PublicationDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PublicationDate(c, (struct zx_hrxml_PublicationDate_s*)se, p);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Abstract; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Abstract", sizeof("hrxml:Abstract")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Copyright->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+       se && se->g.tok == zx_hrxml_Link_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Abstract;
+       se && se->g.tok == zx_hrxml_Abstract_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Abstract", sizeof("hrxml:Abstract")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Copyright->gg;
+       se && se->g.tok == zx_hrxml_Copyright_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Copyright(c, (struct zx_hrxml_Copyright_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISSN; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISSN", sizeof("hrxml:ISSN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISBN; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISBN", sizeof("hrxml:ISBN")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->NumberOfPages; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NumberOfPages", sizeof("hrxml:NumberOfPages")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PublisherName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PublisherName", sizeof("hrxml:PublisherName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PublisherLocation; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PublisherLocation", sizeof("hrxml:PublisherLocation")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISSN;
+       se && se->g.tok == zx_hrxml_ISSN_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISSN", sizeof("hrxml:ISSN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISBN;
+       se && se->g.tok == zx_hrxml_ISBN_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISBN", sizeof("hrxml:ISBN")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NumberOfPages;
+       se && se->g.tok == zx_hrxml_NumberOfPages_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NumberOfPages", sizeof("hrxml:NumberOfPages")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PublisherName;
+       se && se->g.tok == zx_hrxml_PublisherName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PublisherName", sizeof("hrxml:PublisherName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PublisherLocation;
+       se && se->g.tok == zx_hrxml_PublisherLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PublisherLocation", sizeof("hrxml:PublisherLocation")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -17579,7 +19055,7 @@ int zx_LEN_SO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x )
   int len = sizeof("<hrxml:Pager")-1 + 1 + sizeof("</hrxml:Pager>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -17587,8 +19063,10 @@ int zx_LEN_SO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x )
   int len = 0;
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+    se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -17615,7 +19093,7 @@ char* zx_ENC_SO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x, char* 
   ZX_OUT_TAG(p, "<hrxml:Pager");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -17627,8 +19105,10 @@ char* zx_ENC_SO_hrxml_Pager(struct zx_ctx* c, struct zx_hrxml_Pager_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+       se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -17708,9 +19188,9 @@ int zx_LEN_SO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_Parkin
   int len = sizeof("<hrxml:ParkingInstructions")-1 + 1 + sizeof("</hrxml:ParkingInstructions>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -17745,9 +19225,9 @@ char* zx_ENC_SO_hrxml_ParkingInstructions(struct zx_ctx* c, struct zx_hrxml_Park
   ZX_OUT_TAG(p, "<hrxml:ParkingInstructions");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -17839,7 +19319,7 @@ int zx_LEN_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x )
   int len = sizeof("<hrxml:Patent")-1 + 1 + sizeof("</hrxml:Patent>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -17847,16 +19327,26 @@ int zx_LEN_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x )
   int len = 0;
 #endif
   
-  for (se = x->PatentTitle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PatentTitle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PatentTitle;
+    se && se->g.tok == zx_hrxml_PatentTitle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PatentTitle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->Inventors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Inventors->gg;
+       se && se->g.tok == zx_hrxml_Inventors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Inventors(c, (struct zx_hrxml_Inventors_s*)se);
-  for (se = &x->PatentDetail->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PatentDetail->gg;
+       se && se->g.tok == zx_hrxml_PatentDetail_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PatentDetail(c, (struct zx_hrxml_PatentDetail_s*)se);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Link;
+    se && se->g.tok == zx_hrxml_Link_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -17883,7 +19373,7 @@ char* zx_ENC_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, char
   ZX_OUT_TAG(p, "<hrxml:Patent");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -17895,16 +19385,26 @@ char* zx_ENC_SO_hrxml_Patent(struct zx_ctx* c, struct zx_hrxml_Patent_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = x->PatentTitle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PatentTitle", sizeof("hrxml:PatentTitle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PatentTitle;
+       se && se->g.tok == zx_hrxml_PatentTitle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PatentTitle", sizeof("hrxml:PatentTitle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = &x->Inventors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Inventors->gg;
+       se && se->g.tok == zx_hrxml_Inventors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Inventors(c, (struct zx_hrxml_Inventors_s*)se, p);
-  for (se = &x->PatentDetail->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PatentDetail->gg;
+       se && se->g.tok == zx_hrxml_PatentDetail_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PatentDetail(c, (struct zx_hrxml_PatentDetail_s*)se, p);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Link;
+       se && se->g.tok == zx_hrxml_Link_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -17984,7 +19484,7 @@ int zx_LEN_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_
   int len = sizeof("<hrxml:PatentDetail")-1 + 1 + sizeof("</hrxml:PatentDetail>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -17992,9 +19492,13 @@ int zx_LEN_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetail_
   int len = 0;
 #endif
   
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se);
-  for (se = &x->PatentMilestone->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PatentMilestone->gg;
+       se && se->g.tok == zx_hrxml_PatentMilestone_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PatentMilestone(c, (struct zx_hrxml_PatentMilestone_s*)se);
 
 
@@ -18022,7 +19526,7 @@ char* zx_ENC_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetai
   ZX_OUT_TAG(p, "<hrxml:PatentDetail");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -18034,9 +19538,13 @@ char* zx_ENC_SO_hrxml_PatentDetail(struct zx_ctx* c, struct zx_hrxml_PatentDetai
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se, p);
-  for (se = &x->PatentMilestone->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PatentMilestone->gg;
+       se && se->g.tok == zx_hrxml_PatentMilestone_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PatentMilestone(c, (struct zx_hrxml_PatentMilestone_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -18117,7 +19625,7 @@ int zx_LEN_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistor
   int len = sizeof("<hrxml:PatentHistory")-1 + 1 + sizeof("</hrxml:PatentHistory>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -18125,7 +19633,9 @@ int zx_LEN_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHistor
   int len = 0;
 #endif
   
-  for (se = &x->Patent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Patent->gg;
+       se && se->g.tok == zx_hrxml_Patent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Patent(c, (struct zx_hrxml_Patent_s*)se);
 
 
@@ -18153,7 +19663,7 @@ char* zx_ENC_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHist
   ZX_OUT_TAG(p, "<hrxml:PatentHistory");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -18165,7 +19675,9 @@ char* zx_ENC_SO_hrxml_PatentHistory(struct zx_ctx* c, struct zx_hrxml_PatentHist
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Patent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Patent->gg;
+       se && se->g.tok == zx_hrxml_Patent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Patent(c, (struct zx_hrxml_Patent_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -18246,7 +19758,7 @@ int zx_LEN_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMile
   int len = sizeof("<hrxml:PatentMilestone")-1 + 1 + sizeof("</hrxml:PatentMilestone>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -18254,12 +19766,18 @@ int zx_LEN_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMile
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_hrxml_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Status(c, (struct zx_hrxml_Status_s*)se);
-  for (se = x->Date; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Date")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Date;
+    se && se->g.tok == zx_hrxml_Date_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Date")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -18286,7 +19804,7 @@ char* zx_ENC_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMi
   ZX_OUT_TAG(p, "<hrxml:PatentMilestone");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -18298,12 +19816,18 @@ char* zx_ENC_SO_hrxml_PatentMilestone(struct zx_ctx* c, struct zx_hrxml_PatentMi
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = &x->Status->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Status->gg;
+       se && se->g.tok == zx_hrxml_Status_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Status(c, (struct zx_hrxml_Status_s*)se, p);
-  for (se = x->Date; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Date", sizeof("hrxml:Date")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Date;
+       se && se->g.tok == zx_hrxml_Date_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Date", sizeof("hrxml:Date")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -18383,7 +19907,7 @@ int zx_LEN_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDe
   int len = sizeof("<hrxml:PersonDescriptors")-1 + 1 + sizeof("</hrxml:PersonDescriptors>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -18391,17 +19915,29 @@ int zx_LEN_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_PersonDe
   int len = 0;
 #endif
   
-  for (se = &x->LegalIdentifiers->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LegalIdentifiers->gg;
+       se && se->g.tok == zx_hrxml_LegalIdentifiers_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LegalIdentifiers(c, (struct zx_hrxml_LegalIdentifiers_s*)se);
-  for (se = &x->DemographicDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DemographicDescriptors->gg;
+       se && se->g.tok == zx_hrxml_DemographicDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DemographicDescriptors(c, (struct zx_hrxml_DemographicDescriptors_s*)se);
-  for (se = &x->BiologicalDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BiologicalDescriptors->gg;
+       se && se->g.tok == zx_hrxml_BiologicalDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_BiologicalDescriptors(c, (struct zx_hrxml_BiologicalDescriptors_s*)se);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se);
-  for (se = &x->OtherDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherDescriptors->gg;
+       se && se->g.tok == zx_hrxml_OtherDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OtherDescriptors(c, (struct zx_hrxml_OtherDescriptors_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -18429,7 +19965,7 @@ char* zx_ENC_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_Person
   ZX_OUT_TAG(p, "<hrxml:PersonDescriptors");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -18441,17 +19977,29 @@ char* zx_ENC_SO_hrxml_PersonDescriptors(struct zx_ctx* c, struct zx_hrxml_Person
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->LegalIdentifiers->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LegalIdentifiers->gg;
+       se && se->g.tok == zx_hrxml_LegalIdentifiers_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LegalIdentifiers(c, (struct zx_hrxml_LegalIdentifiers_s*)se, p);
-  for (se = &x->DemographicDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DemographicDescriptors->gg;
+       se && se->g.tok == zx_hrxml_DemographicDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DemographicDescriptors(c, (struct zx_hrxml_DemographicDescriptors_s*)se, p);
-  for (se = &x->BiologicalDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BiologicalDescriptors->gg;
+       se && se->g.tok == zx_hrxml_BiologicalDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_BiologicalDescriptors(c, (struct zx_hrxml_BiologicalDescriptors_s*)se, p);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se, p);
-  for (se = &x->OtherDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherDescriptors->gg;
+       se && se->g.tok == zx_hrxml_OtherDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OtherDescriptors(c, (struct zx_hrxml_OtherDescriptors_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -18532,7 +20080,7 @@ int zx_LEN_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x )
   int len = sizeof("<hrxml:PersonId")-1 + 1 + sizeof("</hrxml:PersonId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -18543,7 +20091,9 @@ int zx_LEN_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -18571,7 +20121,7 @@ char* zx_ENC_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, 
   ZX_OUT_TAG(p, "<hrxml:PersonId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -18586,7 +20136,9 @@ char* zx_ENC_SO_hrxml_PersonId(struct zx_ctx* c, struct zx_hrxml_PersonId_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -18667,7 +20219,7 @@ int zx_LEN_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalI
   int len = sizeof("<hrxml:PersonLegalId")-1 + 1 + sizeof("</hrxml:PersonLegalId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->countryCode, sizeof("countryCode")-1, &pop_seen);
   len += zx_attr_so_len(c, x->documentType, sizeof("documentType")-1, &pop_seen);
@@ -18683,7 +20235,9 @@ int zx_LEN_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLegalI
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -18711,7 +20265,7 @@ char* zx_ENC_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLega
   ZX_OUT_TAG(p, "<hrxml:PersonLegalId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -18731,7 +20285,9 @@ char* zx_ENC_SO_hrxml_PersonLegalId(struct zx_ctx* c, struct zx_hrxml_PersonLega
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -18812,7 +20368,7 @@ int zx_LEN_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_
   int len = sizeof("<hrxml:PersonMember")-1 + 1 + sizeof("</hrxml:PersonMember>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -18820,13 +20376,21 @@ int zx_LEN_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMember_
   int len = 0;
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = &x->PersonId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonId->gg;
+       se && se->g.tok == zx_hrxml_PersonId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)se);
-  for (se = &x->PersonRole->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonRole->gg;
+       se && se->g.tok == zx_hrxml_PersonRole_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonRole(c, (struct zx_hrxml_PersonRole_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
 
 
@@ -18854,7 +20418,7 @@ char* zx_ENC_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMembe
   ZX_OUT_TAG(p, "<hrxml:PersonMember");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -18866,13 +20430,21 @@ char* zx_ENC_SO_hrxml_PersonMember(struct zx_ctx* c, struct zx_hrxml_PersonMembe
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se, p);
-  for (se = &x->PersonId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonId->gg;
+       se && se->g.tok == zx_hrxml_PersonId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)se, p);
-  for (se = &x->PersonRole->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonRole->gg;
+       se && se->g.tok == zx_hrxml_PersonRole_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonRole(c, (struct zx_hrxml_PersonRole_s*)se, p);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -18953,7 +20525,7 @@ int zx_LEN_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x
   int len = sizeof("<hrxml:PersonName")-1 + 1 + sizeof("</hrxml:PersonName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->script, sizeof("script")-1, &pop_seen);
 
@@ -18962,21 +20534,37 @@ int zx_LEN_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s* x
   int len = 0;
 #endif
   
-  for (se = x->FormattedName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->LegalName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LegalName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PreferredGivenName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MiddleName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MiddleName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->FamilyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->FormattedName;
+    se && se->g.tok == zx_hrxml_FormattedName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->LegalName;
+    se && se->g.tok == zx_hrxml_LegalName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:LegalName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+    se && se->g.tok == zx_hrxml_GivenName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:GivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PreferredGivenName;
+    se && se->g.tok == zx_hrxml_PreferredGivenName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MiddleName;
+    se && se->g.tok == zx_hrxml_MiddleName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MiddleName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->FamilyName->gg;
+       se && se->g.tok == zx_hrxml_FamilyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)se);
-  for (se = &x->Affix->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Affix->gg;
+       se && se->g.tok == zx_hrxml_Affix_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)se);
-  for (se = &x->AlternateScript->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AlternateScript->gg;
+       se && se->g.tok == zx_hrxml_AlternateScript_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)se);
 
 
@@ -19004,7 +20592,7 @@ char* zx_ENC_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s*
   ZX_OUT_TAG(p, "<hrxml:PersonName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -19017,21 +20605,37 @@ char* zx_ENC_SO_hrxml_PersonName(struct zx_ctx* c, struct zx_hrxml_PersonName_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->FormattedName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedName", sizeof("hrxml:FormattedName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->LegalName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LegalName", sizeof("hrxml:LegalName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->GivenName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GivenName", sizeof("hrxml:GivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PreferredGivenName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PreferredGivenName", sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MiddleName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MiddleName", sizeof("hrxml:MiddleName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->FamilyName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->FormattedName;
+       se && se->g.tok == zx_hrxml_FormattedName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedName", sizeof("hrxml:FormattedName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->LegalName;
+       se && se->g.tok == zx_hrxml_LegalName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:LegalName", sizeof("hrxml:LegalName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->GivenName;
+       se && se->g.tok == zx_hrxml_GivenName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:GivenName", sizeof("hrxml:GivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PreferredGivenName;
+       se && se->g.tok == zx_hrxml_PreferredGivenName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PreferredGivenName", sizeof("hrxml:PreferredGivenName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MiddleName;
+       se && se->g.tok == zx_hrxml_MiddleName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MiddleName", sizeof("hrxml:MiddleName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->FamilyName->gg;
+       se && se->g.tok == zx_hrxml_FamilyName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_FamilyName(c, (struct zx_hrxml_FamilyName_s*)se, p);
-  for (se = &x->Affix->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Affix->gg;
+       se && se->g.tok == zx_hrxml_Affix_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Affix(c, (struct zx_hrxml_Affix_s*)se, p);
-  for (se = &x->AlternateScript->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AlternateScript->gg;
+       se && se->g.tok == zx_hrxml_AlternateScript_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_AlternateScript(c, (struct zx_hrxml_AlternateScript_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -19112,7 +20716,7 @@ int zx_LEN_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x
   int len = sizeof("<hrxml:PersonRole")-1 + 1 + sizeof("</hrxml:PersonRole>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->leader, sizeof("leader")-1, &pop_seen);
 
@@ -19121,11 +20725,17 @@ int zx_LEN_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s* x
   int len = 0;
 #endif
   
-  for (se = x->RoleName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RoleName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->RoleId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RoleName;
+    se && se->g.tok == zx_hrxml_RoleName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RoleName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RoleId->gg;
+       se && se->g.tok == zx_hrxml_RoleId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RoleId(c, (struct zx_hrxml_RoleId_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 
@@ -19153,7 +20763,7 @@ char* zx_ENC_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s*
   ZX_OUT_TAG(p, "<hrxml:PersonRole");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -19166,11 +20776,17 @@ char* zx_ENC_SO_hrxml_PersonRole(struct zx_ctx* c, struct zx_hrxml_PersonRole_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->RoleName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RoleName", sizeof("hrxml:RoleName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->RoleId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->RoleName;
+       se && se->g.tok == zx_hrxml_RoleName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RoleName", sizeof("hrxml:RoleName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RoleId->gg;
+       se && se->g.tok == zx_hrxml_RoleId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RoleId(c, (struct zx_hrxml_RoleId_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -19251,7 +20867,7 @@ int zx_LEN_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_
   int len = sizeof("<hrxml:PersonalData")-1 + 1 + sizeof("</hrxml:PersonalData>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -19259,15 +20875,25 @@ int zx_LEN_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalData_
   int len = 0;
 #endif
   
-  for (se = &x->PersonId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonId->gg;
+       se && se->g.tok == zx_hrxml_PersonId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)se);
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
-  for (se = &x->PersonDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonDescriptors->gg;
+       se && se->g.tok == zx_hrxml_PersonDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonDescriptors(c, (struct zx_hrxml_PersonDescriptors_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -19295,7 +20921,7 @@ char* zx_ENC_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalDat
   ZX_OUT_TAG(p, "<hrxml:PersonalData");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -19307,15 +20933,25 @@ char* zx_ENC_SO_hrxml_PersonalData(struct zx_ctx* c, struct zx_hrxml_PersonalDat
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PersonId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonId->gg;
+       se && se->g.tok == zx_hrxml_PersonId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonId(c, (struct zx_hrxml_PersonId_s*)se, p);
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se, p);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se, p);
-  for (se = &x->PersonDescriptors->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonDescriptors->gg;
+       se && se->g.tok == zx_hrxml_PersonDescriptors_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonDescriptors(c, (struct zx_hrxml_PersonDescriptors_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -19396,7 +21032,7 @@ int zx_LEN_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalL
   int len = sizeof("<hrxml:PhysicalLocation")-1 + 1 + sizeof("</hrxml:PhysicalLocation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -19404,22 +21040,38 @@ int zx_LEN_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_PhysicalL
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se);
-  for (se = &x->SpatialLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpatialLocation->gg;
+       se && se->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)se);
-  for (se = &x->TravelDirections->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TravelDirections->gg;
+       se && se->g.tok == zx_hrxml_TravelDirections_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)se);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
-  for (se = &x->Area->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Area->gg;
+       se && se->g.tok == zx_hrxml_Area_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Area(c, (struct zx_hrxml_Area_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -19446,7 +21098,7 @@ char* zx_ENC_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_Physica
   ZX_OUT_TAG(p, "<hrxml:PhysicalLocation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -19458,22 +21110,38 @@ char* zx_ENC_SO_hrxml_PhysicalLocation(struct zx_ctx* c, struct zx_hrxml_Physica
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se, p);
-  for (se = &x->SpatialLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpatialLocation->gg;
+       se && se->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)se, p);
-  for (se = &x->TravelDirections->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TravelDirections->gg;
+       se && se->g.tok == zx_hrxml_TravelDirections_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)se, p);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se, p);
-  for (se = &x->Area->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Area->gg;
+       se && se->g.tok == zx_hrxml_Area_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Area(c, (struct zx_hrxml_Area_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -19553,7 +21221,7 @@ int zx_LEN_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHi
   int len = sizeof("<hrxml:PositionHistory")-1 + 1 + sizeof("</hrxml:PositionHistory>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->currentEmployer, sizeof("currentEmployer")-1, &pop_seen);
   len += zx_attr_so_len(c, x->positionType, sizeof("positionType")-1, &pop_seen);
@@ -19563,35 +21231,65 @@ int zx_LEN_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_PositionHi
   int len = 0;
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrgName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+    se && se->g.tok == zx_hrxml_Title_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrgName->gg;
+       se && se->g.tok == zx_hrxml_OrgName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)se);
-  for (se = &x->OrgInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrgInfo->gg;
+       se && se->g.tok == zx_hrxml_OrgInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrgInfo(c, (struct zx_hrxml_OrgInfo_s*)se);
-  for (se = &x->OrgIndustry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrgIndustry->gg;
+       se && se->g.tok == zx_hrxml_OrgIndustry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrgIndustry(c, (struct zx_hrxml_OrgIndustry_s*)se);
-  for (se = x->OrgSize; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrgSize")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrgSize;
+    se && se->g.tok == zx_hrxml_OrgSize_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrgSize")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
-  for (se = &x->Compensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Compensation->gg;
+       se && se->g.tok == zx_hrxml_Compensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Compensation(c, (struct zx_hrxml_Compensation_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Verification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Verification->gg;
+       se && se->g.tok == zx_hrxml_Verification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Verification(c, (struct zx_hrxml_Verification_s*)se);
-  for (se = &x->JobLevelInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobLevelInfo->gg;
+       se && se->g.tok == zx_hrxml_JobLevelInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_JobLevelInfo(c, (struct zx_hrxml_JobLevelInfo_s*)se);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -19619,7 +21317,7 @@ char* zx_ENC_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_Position
   ZX_OUT_TAG(p, "<hrxml:PositionHistory");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -19633,35 +21331,65 @@ char* zx_ENC_SO_hrxml_PositionHistory(struct zx_ctx* c, struct zx_hrxml_Position
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrgName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+       se && se->g.tok == zx_hrxml_Title_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrgName->gg;
+       se && se->g.tok == zx_hrxml_OrgName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrgName(c, (struct zx_hrxml_OrgName_s*)se, p);
-  for (se = &x->OrgInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrgInfo->gg;
+       se && se->g.tok == zx_hrxml_OrgInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrgInfo(c, (struct zx_hrxml_OrgInfo_s*)se, p);
-  for (se = &x->OrgIndustry->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrgIndustry->gg;
+       se && se->g.tok == zx_hrxml_OrgIndustry_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrgIndustry(c, (struct zx_hrxml_OrgIndustry_s*)se, p);
-  for (se = x->OrgSize; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrgSize", sizeof("hrxml:OrgSize")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrgSize;
+       se && se->g.tok == zx_hrxml_OrgSize_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrgSize", sizeof("hrxml:OrgSize")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se, p);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se, p);
-  for (se = &x->Compensation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Compensation->gg;
+       se && se->g.tok == zx_hrxml_Compensation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Compensation(c, (struct zx_hrxml_Compensation_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Verification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Verification->gg;
+       se && se->g.tok == zx_hrxml_Verification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Verification(c, (struct zx_hrxml_Verification_s*)se, p);
-  for (se = &x->JobLevelInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobLevelInfo->gg;
+       se && se->g.tok == zx_hrxml_JobLevelInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_JobLevelInfo(c, (struct zx_hrxml_JobLevelInfo_s*)se, p);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se, p);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -19742,7 +21470,7 @@ int zx_LEN_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionL
   int len = sizeof("<hrxml:PositionLocation")-1 + 1 + sizeof("</hrxml:PositionLocation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -19751,17 +21479,29 @@ int zx_LEN_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_PositionL
   int len = 0;
 #endif
   
-  for (se = x->CountryCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CountryCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PostalCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PostalCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Region; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Region")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Municipality; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Municipality")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DeliveryAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CountryCode;
+    se && se->g.tok == zx_hrxml_CountryCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CountryCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PostalCode;
+    se && se->g.tok == zx_hrxml_PostalCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PostalCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Region;
+    se && se->g.tok == zx_hrxml_Region_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Region")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Municipality;
+    se && se->g.tok == zx_hrxml_Municipality_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Municipality")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DeliveryAddress->gg;
+       se && se->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)se);
-  for (se = &x->Recipient->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipient->gg;
+       se && se->g.tok == zx_hrxml_Recipient_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)se);
 
 
@@ -19789,7 +21529,7 @@ char* zx_ENC_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_Positio
   ZX_OUT_TAG(p, "<hrxml:PositionLocation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -19802,17 +21542,29 @@ char* zx_ENC_SO_hrxml_PositionLocation(struct zx_ctx* c, struct zx_hrxml_Positio
   /* root node has no begin tag */
 #endif
   
-  for (se = x->CountryCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CountryCode", sizeof("hrxml:CountryCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PostalCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PostalCode", sizeof("hrxml:PostalCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Region; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Region", sizeof("hrxml:Region")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Municipality; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Municipality", sizeof("hrxml:Municipality")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DeliveryAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CountryCode;
+       se && se->g.tok == zx_hrxml_CountryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CountryCode", sizeof("hrxml:CountryCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PostalCode;
+       se && se->g.tok == zx_hrxml_PostalCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PostalCode", sizeof("hrxml:PostalCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Region;
+       se && se->g.tok == zx_hrxml_Region_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Region", sizeof("hrxml:Region")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Municipality;
+       se && se->g.tok == zx_hrxml_Municipality_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Municipality", sizeof("hrxml:Municipality")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DeliveryAddress->gg;
+       se && se->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)se, p);
-  for (se = &x->Recipient->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipient->gg;
+       se && se->g.tok == zx_hrxml_Recipient_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -19893,7 +21645,7 @@ int zx_LEN_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionM
   int len = sizeof("<hrxml:PositionMatching")-1 + 1 + sizeof("</hrxml:PositionMatching>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -19901,39 +21653,73 @@ int zx_LEN_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_PositionM
   int len = 0;
 #endif
   
-  for (se = &x->Company->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Company->gg;
+       se && se->g.tok == zx_hrxml_Company_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Company(c, (struct zx_hrxml_Company_s*)se);
-  for (se = x->CompanyScale; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CompanyScale")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CompanyScale;
+    se && se->g.tok == zx_hrxml_CompanyScale_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CompanyScale")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
-  for (se = &x->PhysicalLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PhysicalLocation->gg;
+       se && se->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)se);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se);
-  for (se = x->PositionTitle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionTitle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PositionClassification; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionClassification")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PositionSchedule->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PositionTitle;
+    se && se->g.tok == zx_hrxml_PositionTitle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionTitle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PositionClassification;
+    se && se->g.tok == zx_hrxml_PositionClassification_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionClassification")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PositionSchedule->gg;
+       se && se->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)se);
-  for (se = &x->Shift->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Shift->gg;
+       se && se->g.tok == zx_hrxml_Shift_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)se);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
-  for (se = &x->RemunerationPackage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemunerationPackage->gg;
+       se && se->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)se);
-  for (se = x->WorkStyle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WorkStyle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DressCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->WorkStyle;
+    se && se->g.tok == zx_hrxml_WorkStyle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WorkStyle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DressCode->gg;
+       se && se->g.tok == zx_hrxml_DressCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)se);
-  for (se = &x->Travel->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Travel->gg;
+       se && se->g.tok == zx_hrxml_Travel_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)se);
-  for (se = &x->Relocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Relocation->gg;
+       se && se->g.tok == zx_hrxml_Relocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)se);
-  for (se = &x->PreferredLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredLanguage->gg;
+       se && se->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -19961,7 +21747,7 @@ char* zx_ENC_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_Positio
   ZX_OUT_TAG(p, "<hrxml:PositionMatching");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -19973,39 +21759,73 @@ char* zx_ENC_SO_hrxml_PositionMatching(struct zx_ctx* c, struct zx_hrxml_Positio
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Company->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Company->gg;
+       se && se->g.tok == zx_hrxml_Company_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Company(c, (struct zx_hrxml_Company_s*)se, p);
-  for (se = x->CompanyScale; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CompanyScale", sizeof("hrxml:CompanyScale")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CompanyScale;
+       se && se->g.tok == zx_hrxml_CompanyScale_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CompanyScale", sizeof("hrxml:CompanyScale")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se, p);
-  for (se = &x->PhysicalLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PhysicalLocation->gg;
+       se && se->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)se, p);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se, p);
-  for (se = x->PositionTitle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionTitle", sizeof("hrxml:PositionTitle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PositionClassification; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionClassification", sizeof("hrxml:PositionClassification")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PositionSchedule->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PositionTitle;
+       se && se->g.tok == zx_hrxml_PositionTitle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionTitle", sizeof("hrxml:PositionTitle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PositionClassification;
+       se && se->g.tok == zx_hrxml_PositionClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionClassification", sizeof("hrxml:PositionClassification")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PositionSchedule->gg;
+       se && se->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)se, p);
-  for (se = &x->Shift->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Shift->gg;
+       se && se->g.tok == zx_hrxml_Shift_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)se, p);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se, p);
-  for (se = &x->RemunerationPackage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemunerationPackage->gg;
+       se && se->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)se, p);
-  for (se = x->WorkStyle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WorkStyle", sizeof("hrxml:WorkStyle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DressCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->WorkStyle;
+       se && se->g.tok == zx_hrxml_WorkStyle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WorkStyle", sizeof("hrxml:WorkStyle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DressCode->gg;
+       se && se->g.tok == zx_hrxml_DressCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)se, p);
-  for (se = &x->Travel->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Travel->gg;
+       se && se->g.tok == zx_hrxml_Travel_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)se, p);
-  for (se = &x->Relocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Relocation->gg;
+       se && se->g.tok == zx_hrxml_Relocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)se, p);
-  for (se = &x->PreferredLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredLanguage->gg;
+       se && se->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -20086,7 +21906,7 @@ int zx_LEN_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPo
   int len = sizeof("<hrxml:PositionPosting")-1 + 1 + sizeof("</hrxml:PositionPosting>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -20094,15 +21914,25 @@ int zx_LEN_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_PositionPo
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SearchCriteria->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+    se && se->g.tok == zx_hrxml_Title_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Link;
+    se && se->g.tok == zx_hrxml_Link_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SearchCriteria->gg;
+       se && se->g.tok == zx_hrxml_SearchCriteria_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SearchCriteria(c, (struct zx_hrxml_SearchCriteria_s*)se);
-  for (se = &x->SearchResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchResult->gg;
+       se && se->g.tok == zx_hrxml_SearchResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SearchResult(c, (struct zx_hrxml_SearchResult_s*)se);
 
 
@@ -20130,7 +21960,7 @@ char* zx_ENC_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_Position
   ZX_OUT_TAG(p, "<hrxml:PositionPosting");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -20142,15 +21972,25 @@ char* zx_ENC_SO_hrxml_PositionPosting(struct zx_ctx* c, struct zx_hrxml_Position
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SearchCriteria->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+       se && se->g.tok == zx_hrxml_Title_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Link;
+       se && se->g.tok == zx_hrxml_Link_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SearchCriteria->gg;
+       se && se->g.tok == zx_hrxml_SearchCriteria_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SearchCriteria(c, (struct zx_hrxml_SearchCriteria_s*)se, p);
-  for (se = &x->SearchResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchResult->gg;
+       se && se->g.tok == zx_hrxml_SearchResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SearchResult(c, (struct zx_hrxml_SearchResult_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -20231,7 +22071,7 @@ int zx_LEN_SO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_PositionS
   int len = sizeof("<hrxml:PositionSchedule")-1 + 1 + sizeof("</hrxml:PositionSchedule>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->percentage, sizeof("percentage")-1, &pop_seen);
 
@@ -20266,7 +22106,7 @@ char* zx_ENC_SO_hrxml_PositionSchedule(struct zx_ctx* c, struct zx_hrxml_Positio
   ZX_OUT_TAG(p, "<hrxml:PositionSchedule");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -20358,7 +22198,7 @@ int zx_LEN_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddres
   int len = sizeof("<hrxml:PostalAddress")-1 + 1 + sizeof("</hrxml:PostalAddress>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -20367,17 +22207,29 @@ int zx_LEN_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddres
   int len = 0;
 #endif
   
-  for (se = x->CountryCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CountryCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PostalCode; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PostalCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Region; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Region")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Municipality; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Municipality")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DeliveryAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CountryCode;
+    se && se->g.tok == zx_hrxml_CountryCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CountryCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PostalCode;
+    se && se->g.tok == zx_hrxml_PostalCode_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PostalCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Region;
+    se && se->g.tok == zx_hrxml_Region_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Region")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Municipality;
+    se && se->g.tok == zx_hrxml_Municipality_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Municipality")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DeliveryAddress->gg;
+       se && se->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)se);
-  for (se = &x->Recipient->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipient->gg;
+       se && se->g.tok == zx_hrxml_Recipient_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)se);
 
 
@@ -20405,7 +22257,7 @@ char* zx_ENC_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddr
   ZX_OUT_TAG(p, "<hrxml:PostalAddress");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -20418,17 +22270,29 @@ char* zx_ENC_SO_hrxml_PostalAddress(struct zx_ctx* c, struct zx_hrxml_PostalAddr
   /* root node has no begin tag */
 #endif
   
-  for (se = x->CountryCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CountryCode", sizeof("hrxml:CountryCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PostalCode; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PostalCode", sizeof("hrxml:PostalCode")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Region; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Region", sizeof("hrxml:Region")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Municipality; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Municipality", sizeof("hrxml:Municipality")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DeliveryAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CountryCode;
+       se && se->g.tok == zx_hrxml_CountryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CountryCode", sizeof("hrxml:CountryCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PostalCode;
+       se && se->g.tok == zx_hrxml_PostalCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PostalCode", sizeof("hrxml:PostalCode")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Region;
+       se && se->g.tok == zx_hrxml_Region_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Region", sizeof("hrxml:Region")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Municipality;
+       se && se->g.tok == zx_hrxml_Municipality_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Municipality", sizeof("hrxml:Municipality")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DeliveryAddress->gg;
+       se && se->g.tok == zx_hrxml_DeliveryAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DeliveryAddress(c, (struct zx_hrxml_DeliveryAddress_s*)se, p);
-  for (se = &x->Recipient->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Recipient->gg;
+       se && se->g.tok == zx_hrxml_Recipient_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Recipient(c, (struct zx_hrxml_Recipient_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -20509,7 +22373,7 @@ int zx_LEN_SO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_Preferre
   int len = sizeof("<hrxml:PreferredLanguage")-1 + 1 + sizeof("</hrxml:PreferredLanguage>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -20543,7 +22407,7 @@ char* zx_ENC_SO_hrxml_PreferredLanguage(struct zx_ctx* c, struct zx_hrxml_Prefer
   ZX_OUT_TAG(p, "<hrxml:PreferredLanguage");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -20634,7 +22498,7 @@ int zx_LEN_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Preferre
   int len = sizeof("<hrxml:PreferredPosition")-1 + 1 + sizeof("</hrxml:PreferredPosition>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -20642,41 +22506,77 @@ int zx_LEN_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Preferre
   int len = 0;
 #endif
   
-  for (se = &x->Company->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Company->gg;
+       se && se->g.tok == zx_hrxml_Company_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Company(c, (struct zx_hrxml_Company_s*)se);
-  for (se = x->CompanyScale; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CompanyScale")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CompanyScale;
+    se && se->g.tok == zx_hrxml_CompanyScale_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CompanyScale")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
-  for (se = &x->PhysicalLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PhysicalLocation->gg;
+       se && se->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)se);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se);
-  for (se = x->PositionTitle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionTitle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PositionClassification; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionClassification")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PositionSchedule->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PositionTitle;
+    se && se->g.tok == zx_hrxml_PositionTitle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionTitle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PositionClassification;
+    se && se->g.tok == zx_hrxml_PositionClassification_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionClassification")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PositionSchedule->gg;
+       se && se->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)se);
-  for (se = &x->Shift->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Shift->gg;
+       se && se->g.tok == zx_hrxml_Shift_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)se);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
-  for (se = &x->RemunerationPackage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemunerationPackage->gg;
+       se && se->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)se);
-  for (se = x->WorkStyle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WorkStyle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DressCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->WorkStyle;
+    se && se->g.tok == zx_hrxml_WorkStyle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WorkStyle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DressCode->gg;
+       se && se->g.tok == zx_hrxml_DressCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)se);
-  for (se = &x->Travel->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Travel->gg;
+       se && se->g.tok == zx_hrxml_Travel_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)se);
-  for (se = &x->Relocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Relocation->gg;
+       se && se->g.tok == zx_hrxml_Relocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)se);
-  for (se = &x->PreferredLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredLanguage->gg;
+       se && se->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
-  for (se = &x->Commute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Commute->gg;
+       se && se->g.tok == zx_hrxml_Commute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Commute(c, (struct zx_hrxml_Commute_s*)se);
 
 
@@ -20704,7 +22604,7 @@ char* zx_ENC_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Prefer
   ZX_OUT_TAG(p, "<hrxml:PreferredPosition");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -20716,41 +22616,77 @@ char* zx_ENC_SO_hrxml_PreferredPosition(struct zx_ctx* c, struct zx_hrxml_Prefer
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Company->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Company->gg;
+       se && se->g.tok == zx_hrxml_Company_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Company(c, (struct zx_hrxml_Company_s*)se, p);
-  for (se = x->CompanyScale; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CompanyScale", sizeof("hrxml:CompanyScale")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CompanyScale;
+       se && se->g.tok == zx_hrxml_CompanyScale_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CompanyScale", sizeof("hrxml:CompanyScale")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se, p);
-  for (se = &x->PhysicalLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PhysicalLocation->gg;
+       se && se->g.tok == zx_hrxml_PhysicalLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PhysicalLocation(c, (struct zx_hrxml_PhysicalLocation_s*)se, p);
-  for (se = &x->JobCategory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->JobCategory->gg;
+       se && se->g.tok == zx_hrxml_JobCategory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_JobCategory(c, (struct zx_hrxml_JobCategory_s*)se, p);
-  for (se = x->PositionTitle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionTitle", sizeof("hrxml:PositionTitle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PositionClassification; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionClassification", sizeof("hrxml:PositionClassification")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->PositionSchedule->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PositionTitle;
+       se && se->g.tok == zx_hrxml_PositionTitle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionTitle", sizeof("hrxml:PositionTitle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PositionClassification;
+       se && se->g.tok == zx_hrxml_PositionClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionClassification", sizeof("hrxml:PositionClassification")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->PositionSchedule->gg;
+       se && se->g.tok == zx_hrxml_PositionSchedule_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PositionSchedule(c, (struct zx_hrxml_PositionSchedule_s*)se, p);
-  for (se = &x->Shift->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Shift->gg;
+       se && se->g.tok == zx_hrxml_Shift_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Shift(c, (struct zx_hrxml_Shift_s*)se, p);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se, p);
-  for (se = &x->RemunerationPackage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RemunerationPackage->gg;
+       se && se->g.tok == zx_hrxml_RemunerationPackage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RemunerationPackage(c, (struct zx_hrxml_RemunerationPackage_s*)se, p);
-  for (se = x->WorkStyle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WorkStyle", sizeof("hrxml:WorkStyle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->DressCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->WorkStyle;
+       se && se->g.tok == zx_hrxml_WorkStyle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WorkStyle", sizeof("hrxml:WorkStyle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->DressCode->gg;
+       se && se->g.tok == zx_hrxml_DressCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DressCode(c, (struct zx_hrxml_DressCode_s*)se, p);
-  for (se = &x->Travel->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Travel->gg;
+       se && se->g.tok == zx_hrxml_Travel_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Travel(c, (struct zx_hrxml_Travel_s*)se, p);
-  for (se = &x->Relocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Relocation->gg;
+       se && se->g.tok == zx_hrxml_Relocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Relocation(c, (struct zx_hrxml_Relocation_s*)se, p);
-  for (se = &x->PreferredLanguage->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PreferredLanguage->gg;
+       se && se->g.tok == zx_hrxml_PreferredLanguage_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PreferredLanguage(c, (struct zx_hrxml_PreferredLanguage_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
-  for (se = &x->Commute->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Commute->gg;
+       se && se->g.tok == zx_hrxml_Commute_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Commute(c, (struct zx_hrxml_Commute_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -20831,7 +22767,7 @@ int zx_LEN_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Prehir
   int len = sizeof("<hrxml:PrehireRemuneration")-1 + 1 + sizeof("</hrxml:PrehireRemuneration>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -20839,13 +22775,21 @@ int zx_LEN_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Prehir
   int len = 0;
 #endif
   
-  for (se = &x->BasePay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BasePay->gg;
+       se && se->g.tok == zx_hrxml_BasePay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)se);
-  for (se = &x->OtherPay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherPay->gg;
+       se && se->g.tok == zx_hrxml_OtherPay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)se);
-  for (se = &x->Benefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Benefits->gg;
+       se && se->g.tok == zx_hrxml_Benefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -20873,7 +22817,7 @@ char* zx_ENC_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Preh
   ZX_OUT_TAG(p, "<hrxml:PrehireRemuneration");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -20885,13 +22829,21 @@ char* zx_ENC_SO_hrxml_PrehireRemuneration(struct zx_ctx* c, struct zx_hrxml_Preh
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->BasePay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BasePay->gg;
+       se && se->g.tok == zx_hrxml_BasePay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)se, p);
-  for (se = &x->OtherPay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherPay->gg;
+       se && se->g.tok == zx_hrxml_OtherPay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)se, p);
-  for (se = &x->Benefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Benefits->gg;
+       se && se->g.tok == zx_hrxml_Benefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -20972,7 +22924,7 @@ int zx_LEN_SO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryLan
   int len = sizeof("<hrxml:PrimaryLanguage")-1 + 1 + sizeof("</hrxml:PrimaryLanguage>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -21006,7 +22958,7 @@ char* zx_ENC_SO_hrxml_PrimaryLanguage(struct zx_ctx* c, struct zx_hrxml_PrimaryL
   ZX_OUT_TAG(p, "<hrxml:PrimaryLanguage");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -21097,7 +23049,7 @@ int zx_LEN_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_P
   int len = sizeof("<hrxml:ProfessionalAssociations")-1 + 1 + sizeof("</hrxml:ProfessionalAssociations>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -21105,7 +23057,9 @@ int zx_LEN_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml_P
   int len = 0;
 #endif
   
-  for (se = &x->Association->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Association->gg;
+       se && se->g.tok == zx_hrxml_Association_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Association(c, (struct zx_hrxml_Association_s*)se);
 
 
@@ -21133,7 +23087,7 @@ char* zx_ENC_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml
   ZX_OUT_TAG(p, "<hrxml:ProfessionalAssociations");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -21145,7 +23099,9 @@ char* zx_ENC_SO_hrxml_ProfessionalAssociations(struct zx_ctx* c, struct zx_hrxml
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Association->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Association->gg;
+       se && se->g.tok == zx_hrxml_Association_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Association(c, (struct zx_hrxml_Association_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -21226,7 +23182,7 @@ int zx_LEN_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x )
   int len = sizeof("<hrxml:ProfileId")-1 + 1 + sizeof("</hrxml:ProfileId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -21237,7 +23193,9 @@ int zx_LEN_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -21265,7 +23223,7 @@ char* zx_ENC_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x
   ZX_OUT_TAG(p, "<hrxml:ProfileId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -21280,7 +23238,9 @@ char* zx_ENC_SO_hrxml_ProfileId(struct zx_ctx* c, struct zx_hrxml_ProfileId_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -21361,7 +23321,7 @@ int zx_LEN_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x )
   int len = sizeof("<hrxml:ProgramId")-1 + 1 + sizeof("</hrxml:ProgramId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -21372,7 +23332,9 @@ int zx_LEN_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -21400,7 +23362,7 @@ char* zx_ENC_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x
   ZX_OUT_TAG(p, "<hrxml:ProgramId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -21415,7 +23377,9 @@ char* zx_ENC_SO_hrxml_ProgramId(struct zx_ctx* c, struct zx_hrxml_ProgramId_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -21496,7 +23460,7 @@ int zx_LEN_SO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_Publicatio
   int len = sizeof("<hrxml:PublicationDate")-1 + 1 + sizeof("</hrxml:PublicationDate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -21505,16 +23469,26 @@ int zx_LEN_SO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_Publicatio
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -21541,7 +23515,7 @@ char* zx_ENC_SO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_Publicat
   ZX_OUT_TAG(p, "<hrxml:PublicationDate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -21554,16 +23528,26 @@ char* zx_ENC_SO_hrxml_PublicationDate(struct zx_ctx* c, struct zx_hrxml_Publicat
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -21643,7 +23627,7 @@ int zx_LEN_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Publica
   int len = sizeof("<hrxml:PublicationHistory")-1 + 1 + sizeof("</hrxml:PublicationHistory>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -21651,15 +23635,25 @@ int zx_LEN_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Publica
   int len = 0;
 #endif
   
-  for (se = &x->FormattedPublicationDescription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FormattedPublicationDescription->gg;
+       se && se->g.tok == zx_hrxml_FormattedPublicationDescription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_FormattedPublicationDescription(c, (struct zx_hrxml_FormattedPublicationDescription_s*)se);
-  for (se = &x->Article->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Article->gg;
+       se && se->g.tok == zx_hrxml_Article_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Article(c, (struct zx_hrxml_Article_s*)se);
-  for (se = &x->Book->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Book->gg;
+       se && se->g.tok == zx_hrxml_Book_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Book(c, (struct zx_hrxml_Book_s*)se);
-  for (se = &x->ConferencePaper->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ConferencePaper->gg;
+       se && se->g.tok == zx_hrxml_ConferencePaper_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ConferencePaper(c, (struct zx_hrxml_ConferencePaper_s*)se);
-  for (se = &x->OtherPublication->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherPublication->gg;
+       se && se->g.tok == zx_hrxml_OtherPublication_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OtherPublication(c, (struct zx_hrxml_OtherPublication_s*)se);
 
 
@@ -21687,7 +23681,7 @@ char* zx_ENC_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Publi
   ZX_OUT_TAG(p, "<hrxml:PublicationHistory");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -21699,15 +23693,25 @@ char* zx_ENC_SO_hrxml_PublicationHistory(struct zx_ctx* c, struct zx_hrxml_Publi
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->FormattedPublicationDescription->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->FormattedPublicationDescription->gg;
+       se && se->g.tok == zx_hrxml_FormattedPublicationDescription_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_FormattedPublicationDescription(c, (struct zx_hrxml_FormattedPublicationDescription_s*)se, p);
-  for (se = &x->Article->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Article->gg;
+       se && se->g.tok == zx_hrxml_Article_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Article(c, (struct zx_hrxml_Article_s*)se, p);
-  for (se = &x->Book->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Book->gg;
+       se && se->g.tok == zx_hrxml_Book_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Book(c, (struct zx_hrxml_Book_s*)se, p);
-  for (se = &x->ConferencePaper->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ConferencePaper->gg;
+       se && se->g.tok == zx_hrxml_ConferencePaper_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ConferencePaper(c, (struct zx_hrxml_ConferencePaper_s*)se, p);
-  for (se = &x->OtherPublication->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherPublication->gg;
+       se && se->g.tok == zx_hrxml_OtherPublication_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OtherPublication(c, (struct zx_hrxml_OtherPublication_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -21788,7 +23792,7 @@ int zx_LEN_SO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_Public
   int len = sizeof("<hrxml:PublicationLanguage")-1 + 1 + sizeof("</hrxml:PublicationLanguage>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -21822,7 +23826,7 @@ char* zx_ENC_SO_hrxml_PublicationLanguage(struct zx_ctx* c, struct zx_hrxml_Publ
   ZX_OUT_TAG(p, "<hrxml:PublicationLanguage");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -21913,7 +23917,7 @@ int zx_LEN_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualificati
   int len = sizeof("<hrxml:Qualifications")-1 + 1 + sizeof("</hrxml:Qualifications>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -21921,9 +23925,13 @@ int zx_LEN_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualificati
   int len = 0;
 #endif
   
-  for (se = x->QualificationSummary; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:QualificationSummary")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->QualificationSummary;
+    se && se->g.tok == zx_hrxml_QualificationSummary_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:QualificationSummary")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se);
 
 
@@ -21951,7 +23959,7 @@ char* zx_ENC_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifica
   ZX_OUT_TAG(p, "<hrxml:Qualifications");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -21963,9 +23971,13 @@ char* zx_ENC_SO_hrxml_Qualifications(struct zx_ctx* c, struct zx_hrxml_Qualifica
   /* root node has no begin tag */
 #endif
   
-  for (se = x->QualificationSummary; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:QualificationSummary", sizeof("hrxml:QualificationSummary")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Competency->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->QualificationSummary;
+       se && se->g.tok == zx_hrxml_QualificationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:QualificationSummary", sizeof("hrxml:QualificationSummary")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Competency->gg;
+       se && se->g.tok == zx_hrxml_Competency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Competency(c, (struct zx_hrxml_Competency_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -22046,7 +24058,7 @@ int zx_LEN_SO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_
   int len = sizeof("<hrxml:RankAchieved")-1 + 1 + sizeof("</hrxml:RankAchieved>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -22054,10 +24066,14 @@ int zx_LEN_SO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieved_
   int len = 0;
 #endif
   
-  for (se = x->StartRank; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StartRank")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CurrentOrEndRank; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CurrentOrEndRank")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->StartRank;
+    se && se->g.tok == zx_hrxml_StartRank_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StartRank")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CurrentOrEndRank;
+    se && se->g.tok == zx_hrxml_CurrentOrEndRank_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CurrentOrEndRank")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -22084,7 +24100,7 @@ char* zx_ENC_SO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieve
   ZX_OUT_TAG(p, "<hrxml:RankAchieved");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -22096,10 +24112,14 @@ char* zx_ENC_SO_hrxml_RankAchieved(struct zx_ctx* c, struct zx_hrxml_RankAchieve
   /* root node has no begin tag */
 #endif
   
-  for (se = x->StartRank; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StartRank", sizeof("hrxml:StartRank")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CurrentOrEndRank; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CurrentOrEndRank", sizeof("hrxml:CurrentOrEndRank")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->StartRank;
+       se && se->g.tok == zx_hrxml_StartRank_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StartRank", sizeof("hrxml:StartRank")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CurrentOrEndRank;
+       se && se->g.tok == zx_hrxml_CurrentOrEndRank_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CurrentOrEndRank", sizeof("hrxml:CurrentOrEndRank")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -22179,7 +24199,7 @@ int zx_LEN_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_
   int len = sizeof("<hrxml:RankedResult")-1 + 1 + sizeof("</hrxml:RankedResult>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -22187,19 +24207,33 @@ int zx_LEN_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResult_
   int len = 0;
 #endif
   
-  for (se = x->CriterionName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CriterionName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Requested; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Requested")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Offered; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Offered")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Score->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CriterionName;
+    se && se->g.tok == zx_hrxml_CriterionName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CriterionName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Requested;
+    se && se->g.tok == zx_hrxml_Requested_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Requested")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Offered;
+    se && se->g.tok == zx_hrxml_Offered_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Offered")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Score->gg;
+       se && se->g.tok == zx_hrxml_Score_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Score(c, (struct zx_hrxml_Score_s*)se);
-  for (se = &x->Weight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Weight->gg;
+       se && se->g.tok == zx_hrxml_Weight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
-  for (se = &x->RankedResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RankedResult->gg;
+       se && se->g.tok == zx_hrxml_RankedResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)se);
 
 
@@ -22227,7 +24261,7 @@ char* zx_ENC_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResul
   ZX_OUT_TAG(p, "<hrxml:RankedResult");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -22239,19 +24273,33 @@ char* zx_ENC_SO_hrxml_RankedResult(struct zx_ctx* c, struct zx_hrxml_RankedResul
   /* root node has no begin tag */
 #endif
   
-  for (se = x->CriterionName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CriterionName", sizeof("hrxml:CriterionName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Requested; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Requested", sizeof("hrxml:Requested")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Offered; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Offered", sizeof("hrxml:Offered")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Score->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CriterionName;
+       se && se->g.tok == zx_hrxml_CriterionName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CriterionName", sizeof("hrxml:CriterionName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Requested;
+       se && se->g.tok == zx_hrxml_Requested_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Requested", sizeof("hrxml:Requested")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Offered;
+       se && se->g.tok == zx_hrxml_Offered_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Offered", sizeof("hrxml:Offered")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Score->gg;
+       se && se->g.tok == zx_hrxml_Score_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Score(c, (struct zx_hrxml_Score_s*)se, p);
-  for (se = &x->Weight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Weight->gg;
+       se && se->g.tok == zx_hrxml_Weight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
-  for (se = &x->RankedResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RankedResult->gg;
+       se && se->g.tok == zx_hrxml_RankedResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -22332,7 +24380,7 @@ int zx_LEN_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_Ranked
   int len = sizeof("<hrxml:RankedSearchResults")-1 + 1 + sizeof("</hrxml:RankedSearchResults>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -22340,7 +24388,9 @@ int zx_LEN_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_Ranked
   int len = 0;
 #endif
   
-  for (se = &x->RankedResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RankedResult->gg;
+       se && se->g.tok == zx_hrxml_RankedResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)se);
 
 
@@ -22368,7 +24418,7 @@ char* zx_ENC_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_Rank
   ZX_OUT_TAG(p, "<hrxml:RankedSearchResults");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -22380,7 +24430,9 @@ char* zx_ENC_SO_hrxml_RankedSearchResults(struct zx_ctx* c, struct zx_hrxml_Rank
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->RankedResult->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RankedResult->gg;
+       se && se->g.tok == zx_hrxml_RankedResult_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RankedResult(c, (struct zx_hrxml_RankedResult_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -22461,7 +24513,7 @@ int zx_LEN_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x )
   int len = sizeof("<hrxml:Recipient")-1 + 1 + sizeof("</hrxml:Recipient>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -22469,14 +24521,22 @@ int zx_LEN_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = x->AdditionalText; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AdditionalText")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AdditionalText;
+    se && se->g.tok == zx_hrxml_AdditionalText_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AdditionalText")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_hrxml_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Organization(c, (struct zx_hrxml_Organization_s*)se);
-  for (se = x->OrganizationName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationName")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->OrganizationName;
+    se && se->g.tok == zx_hrxml_OrganizationName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -22503,7 +24563,7 @@ char* zx_ENC_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x
   ZX_OUT_TAG(p, "<hrxml:Recipient");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -22515,14 +24575,22 @@ char* zx_ENC_SO_hrxml_Recipient(struct zx_ctx* c, struct zx_hrxml_Recipient_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se, p);
-  for (se = x->AdditionalText; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AdditionalText", sizeof("hrxml:AdditionalText")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Organization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->AdditionalText;
+       se && se->g.tok == zx_hrxml_AdditionalText_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AdditionalText", sizeof("hrxml:AdditionalText")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Organization->gg;
+       se && se->g.tok == zx_hrxml_Organization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Organization(c, (struct zx_hrxml_Organization_s*)se, p);
-  for (se = x->OrganizationName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationName", sizeof("hrxml:OrganizationName")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->OrganizationName;
+       se && se->g.tok == zx_hrxml_OrganizationName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationName", sizeof("hrxml:OrganizationName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -22602,7 +24670,7 @@ int zx_LEN_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x )
   int len = sizeof("<hrxml:Reference")-1 + 1 + sizeof("</hrxml:Reference>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -22611,14 +24679,22 @@ int zx_LEN_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se);
-  for (se = x->PositionTitle; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionTitle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PositionTitle;
+    se && se->g.tok == zx_hrxml_PositionTitle_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PositionTitle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -22645,7 +24721,7 @@ char* zx_ENC_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x
   ZX_OUT_TAG(p, "<hrxml:Reference");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -22658,14 +24734,22 @@ char* zx_ENC_SO_hrxml_Reference(struct zx_ctx* c, struct zx_hrxml_Reference_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PersonName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonName->gg;
+       se && se->g.tok == zx_hrxml_PersonName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonName(c, (struct zx_hrxml_PersonName_s*)se, p);
-  for (se = x->PositionTitle; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionTitle", sizeof("hrxml:PositionTitle")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->ContactMethod->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->PositionTitle;
+       se && se->g.tok == zx_hrxml_PositionTitle_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PositionTitle", sizeof("hrxml:PositionTitle")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->ContactMethod->gg;
+       se && se->g.tok == zx_hrxml_ContactMethod_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactMethod(c, (struct zx_hrxml_ContactMethod_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -22745,7 +24829,7 @@ int zx_LEN_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x
   int len = sizeof("<hrxml:References")-1 + 1 + sizeof("</hrxml:References>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -22753,7 +24837,9 @@ int zx_LEN_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s* x
   int len = 0;
 #endif
   
-  for (se = &x->Reference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Reference->gg;
+       se && se->g.tok == zx_hrxml_Reference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Reference(c, (struct zx_hrxml_Reference_s*)se);
 
 
@@ -22781,7 +24867,7 @@ char* zx_ENC_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s*
   ZX_OUT_TAG(p, "<hrxml:References");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -22793,7 +24879,9 @@ char* zx_ENC_SO_hrxml_References(struct zx_ctx* c, struct zx_hrxml_References_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Reference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Reference->gg;
+       se && se->g.tok == zx_hrxml_Reference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Reference(c, (struct zx_hrxml_Reference_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -22874,7 +24962,7 @@ int zx_LEN_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Relate
   int len = sizeof("<hrxml:RelatedOrganization")-1 + 1 + sizeof("</hrxml:RelatedOrganization>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->relationship, sizeof("relationship")-1, &pop_seen);
 
@@ -22883,45 +24971,85 @@ int zx_LEN_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Relate
   int len = 0;
 #endif
   
-  for (se = x->OrganizationName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrganizationId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrganizationName;
+    se && se->g.tok == zx_hrxml_OrganizationName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrganizationId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)se);
-  for (se = &x->TaxId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TaxId->gg;
+       se && se->g.tok == zx_hrxml_TaxId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TaxId(c, (struct zx_hrxml_TaxId_s*)se);
-  for (se = &x->LegalId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LegalId->gg;
+       se && se->g.tok == zx_hrxml_LegalId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LegalId(c, (struct zx_hrxml_LegalId_s*)se);
-  for (se = &x->DunsNumber->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DunsNumber->gg;
+       se && se->g.tok == zx_hrxml_DunsNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DunsNumber(c, (struct zx_hrxml_DunsNumber_s*)se);
-  for (se = x->IsPublicCompany; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:IsPublicCompany")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Stock->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->IsPublicCompany;
+    se && se->g.tok == zx_hrxml_IsPublicCompany_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:IsPublicCompany")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Stock->gg;
+       se && se->g.tok == zx_hrxml_Stock_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Stock(c, (struct zx_hrxml_Stock_s*)se);
-  for (se = x->MissionStatement; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MissionStatement")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ValueStatement; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ValueStatement")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->InternetDomainName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->MissionStatement;
+    se && se->g.tok == zx_hrxml_MissionStatement_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MissionStatement")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ValueStatement;
+    se && se->g.tok == zx_hrxml_ValueStatement_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ValueStatement")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->InternetDomainName->gg;
+       se && se->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)se);
-  for (se = &x->DoingBusinessAs->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DoingBusinessAs->gg;
+       se && se->g.tok == zx_hrxml_DoingBusinessAs_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DoingBusinessAs(c, (struct zx_hrxml_DoingBusinessAs_s*)se);
-  for (se = &x->LegalClassification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LegalClassification->gg;
+       se && se->g.tok == zx_hrxml_LegalClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LegalClassification(c, (struct zx_hrxml_LegalClassification_s*)se);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
-  for (se = x->Headcount; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Headcount")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Headcount;
+    se && se->g.tok == zx_hrxml_Headcount_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Headcount")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->WorkSite->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSite->gg;
+       se && se->g.tok == zx_hrxml_WorkSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)se);
-  for (se = &x->ContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactInfo->gg;
+       se && se->g.tok == zx_hrxml_ContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)se);
-  for (se = &x->RelatedOrganization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedOrganization->gg;
+       se && se->g.tok == zx_hrxml_RelatedOrganization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RelatedOrganization(c, (struct zx_hrxml_RelatedOrganization_s*)se);
-  for (se = &x->OrganizationalUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationalUnit->gg;
+       se && se->g.tok == zx_hrxml_OrganizationalUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrganizationalUnit(c, (struct zx_hrxml_OrganizationalUnit_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -22949,7 +25077,7 @@ char* zx_ENC_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Rela
   ZX_OUT_TAG(p, "<hrxml:RelatedOrganization");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -22962,45 +25090,85 @@ char* zx_ENC_SO_hrxml_RelatedOrganization(struct zx_ctx* c, struct zx_hrxml_Rela
   /* root node has no begin tag */
 #endif
   
-  for (se = x->OrganizationName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationName", sizeof("hrxml:OrganizationName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrganizationId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrganizationName;
+       se && se->g.tok == zx_hrxml_OrganizationName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationName", sizeof("hrxml:OrganizationName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrganizationId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)se, p);
-  for (se = &x->TaxId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TaxId->gg;
+       se && se->g.tok == zx_hrxml_TaxId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TaxId(c, (struct zx_hrxml_TaxId_s*)se, p);
-  for (se = &x->LegalId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LegalId->gg;
+       se && se->g.tok == zx_hrxml_LegalId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LegalId(c, (struct zx_hrxml_LegalId_s*)se, p);
-  for (se = &x->DunsNumber->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DunsNumber->gg;
+       se && se->g.tok == zx_hrxml_DunsNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DunsNumber(c, (struct zx_hrxml_DunsNumber_s*)se, p);
-  for (se = x->IsPublicCompany; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:IsPublicCompany", sizeof("hrxml:IsPublicCompany")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Stock->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->IsPublicCompany;
+       se && se->g.tok == zx_hrxml_IsPublicCompany_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:IsPublicCompany", sizeof("hrxml:IsPublicCompany")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Stock->gg;
+       se && se->g.tok == zx_hrxml_Stock_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Stock(c, (struct zx_hrxml_Stock_s*)se, p);
-  for (se = x->MissionStatement; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MissionStatement", sizeof("hrxml:MissionStatement")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ValueStatement; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ValueStatement", sizeof("hrxml:ValueStatement")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->InternetDomainName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->MissionStatement;
+       se && se->g.tok == zx_hrxml_MissionStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MissionStatement", sizeof("hrxml:MissionStatement")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ValueStatement;
+       se && se->g.tok == zx_hrxml_ValueStatement_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ValueStatement", sizeof("hrxml:ValueStatement")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->InternetDomainName->gg;
+       se && se->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)se, p);
-  for (se = &x->DoingBusinessAs->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DoingBusinessAs->gg;
+       se && se->g.tok == zx_hrxml_DoingBusinessAs_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DoingBusinessAs(c, (struct zx_hrxml_DoingBusinessAs_s*)se, p);
-  for (se = &x->LegalClassification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LegalClassification->gg;
+       se && se->g.tok == zx_hrxml_LegalClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LegalClassification(c, (struct zx_hrxml_LegalClassification_s*)se, p);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se, p);
-  for (se = x->Headcount; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Headcount", sizeof("hrxml:Headcount")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Headcount;
+       se && se->g.tok == zx_hrxml_Headcount_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Headcount", sizeof("hrxml:Headcount")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = &x->WorkSite->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSite->gg;
+       se && se->g.tok == zx_hrxml_WorkSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)se, p);
-  for (se = &x->ContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactInfo->gg;
+       se && se->g.tok == zx_hrxml_ContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)se, p);
-  for (se = &x->RelatedOrganization->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedOrganization->gg;
+       se && se->g.tok == zx_hrxml_RelatedOrganization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RelatedOrganization(c, (struct zx_hrxml_RelatedOrganization_s*)se, p);
-  for (se = &x->OrganizationalUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationalUnit->gg;
+       se && se->g.tok == zx_hrxml_OrganizationalUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrganizationalUnit(c, (struct zx_hrxml_OrganizationalUnit_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -23081,7 +25249,7 @@ int zx_LEN_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_
   int len = sizeof("<hrxml:RelatedOrganizationalUnit")-1 + 1 + sizeof("</hrxml:RelatedOrganizationalUnit>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->hierarchicalRole, sizeof("hierarchicalRole")-1, &pop_seen);
   len += zx_attr_so_len(c, x->natureOfRelationship, sizeof("natureOfRelationship")-1, &pop_seen);
@@ -23093,25 +25261,45 @@ int zx_LEN_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxml_
   int len = 0;
 #endif
   
-  for (se = x->OrganizationalUnitName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationalUnitName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrganizationalUnitId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrganizationalUnitName;
+    se && se->g.tok == zx_hrxml_OrganizationalUnitName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OrganizationalUnitName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrganizationalUnitId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)se);
-  for (se = &x->OrganizationId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se);
-  for (se = &x->AccountingCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AccountingCode->gg;
+       se && se->g.tok == zx_hrxml_AccountingCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)se);
-  for (se = &x->WorkSite->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSite->gg;
+       se && se->g.tok == zx_hrxml_WorkSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)se);
-  for (se = &x->RelatedOrganizationalUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedOrganizationalUnit->gg;
+       se && se->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)se);
-  for (se = &x->PersonMember->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonMember->gg;
+       se && se->g.tok == zx_hrxml_PersonMember_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -23139,7 +25327,7 @@ char* zx_ENC_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxm
   ZX_OUT_TAG(p, "<hrxml:RelatedOrganizationalUnit");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -23155,25 +25343,45 @@ char* zx_ENC_SO_hrxml_RelatedOrganizationalUnit(struct zx_ctx* c, struct zx_hrxm
   /* root node has no begin tag */
 #endif
   
-  for (se = x->OrganizationalUnitName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationalUnitName", sizeof("hrxml:OrganizationalUnitName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->OrganizationalUnitId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->OrganizationalUnitName;
+       se && se->g.tok == zx_hrxml_OrganizationalUnitName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OrganizationalUnitName", sizeof("hrxml:OrganizationalUnitName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->OrganizationalUnitId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationalUnitId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrganizationalUnitId(c, (struct zx_hrxml_OrganizationalUnitId_s*)se, p);
-  for (se = &x->OrganizationId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationId->gg;
+       se && se->g.tok == zx_hrxml_OrganizationId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrganizationId(c, (struct zx_hrxml_OrganizationId_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = &x->IndustryCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IndustryCode->gg;
+       se && se->g.tok == zx_hrxml_IndustryCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IndustryCode(c, (struct zx_hrxml_IndustryCode_s*)se, p);
-  for (se = &x->AccountingCode->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->AccountingCode->gg;
+       se && se->g.tok == zx_hrxml_AccountingCode_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_AccountingCode(c, (struct zx_hrxml_AccountingCode_s*)se, p);
-  for (se = &x->WorkSite->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSite->gg;
+       se && se->g.tok == zx_hrxml_WorkSite_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_WorkSite(c, (struct zx_hrxml_WorkSite_s*)se, p);
-  for (se = &x->RelatedOrganizationalUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->RelatedOrganizationalUnit->gg;
+       se && se->g.tok == zx_hrxml_RelatedOrganizationalUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RelatedOrganizationalUnit(c, (struct zx_hrxml_RelatedOrganizationalUnit_s*)se, p);
-  for (se = &x->PersonMember->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PersonMember->gg;
+       se && se->g.tok == zx_hrxml_PersonMember_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PersonMember(c, (struct zx_hrxml_PersonMember_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -23254,7 +25462,7 @@ int zx_LEN_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_Re
   int len = sizeof("<hrxml:RelatedPositionPostings")-1 + 1 + sizeof("</hrxml:RelatedPositionPostings>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -23262,7 +25470,9 @@ int zx_LEN_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_Re
   int len = 0;
 #endif
   
-  for (se = &x->PositionPosting->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionPosting->gg;
+       se && se->g.tok == zx_hrxml_PositionPosting_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PositionPosting(c, (struct zx_hrxml_PositionPosting_s*)se);
 
 
@@ -23290,7 +25500,7 @@ char* zx_ENC_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_
   ZX_OUT_TAG(p, "<hrxml:RelatedPositionPostings");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -23302,7 +25512,9 @@ char* zx_ENC_SO_hrxml_RelatedPositionPostings(struct zx_ctx* c, struct zx_hrxml_
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->PositionPosting->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PositionPosting->gg;
+       se && se->g.tok == zx_hrxml_PositionPosting_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PositionPosting(c, (struct zx_hrxml_PositionPosting_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -23383,7 +25595,7 @@ int zx_LEN_SO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x
   int len = sizeof("<hrxml:Relocation")-1 + 1 + sizeof("</hrxml:Relocation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->relocationConsidered, sizeof("relocationConsidered")-1, &pop_seen);
 
@@ -23392,8 +25604,10 @@ int zx_LEN_SO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s* x
   int len = 0;
 #endif
   
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -23420,7 +25634,7 @@ char* zx_ENC_SO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s*
   ZX_OUT_TAG(p, "<hrxml:Relocation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -23433,8 +25647,10 @@ char* zx_ENC_SO_hrxml_Relocation(struct zx_ctx* c, struct zx_hrxml_Relocation_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -23514,7 +25730,7 @@ int zx_LEN_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Reloc
   int len = sizeof("<hrxml:RelocationAssistance")-1 + 1 + sizeof("</hrxml:RelocationAssistance>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->companyOffered, sizeof("companyOffered")-1, &pop_seen);
 
@@ -23523,7 +25739,9 @@ int zx_LEN_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Reloc
   int len = 0;
 #endif
   
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 
@@ -23551,7 +25769,7 @@ char* zx_ENC_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Rel
   ZX_OUT_TAG(p, "<hrxml:RelocationAssistance");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -23564,7 +25782,9 @@ char* zx_ENC_SO_hrxml_RelocationAssistance(struct zx_ctx* c, struct zx_hrxml_Rel
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -23645,7 +25865,7 @@ int zx_LEN_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Remune
   int len = sizeof("<hrxml:RemunerationPackage")-1 + 1 + sizeof("</hrxml:RemunerationPackage>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -23653,13 +25873,21 @@ int zx_LEN_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Remune
   int len = 0;
 #endif
   
-  for (se = &x->BasePay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BasePay->gg;
+       se && se->g.tok == zx_hrxml_BasePay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)se);
-  for (se = &x->OtherPay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherPay->gg;
+       se && se->g.tok == zx_hrxml_OtherPay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)se);
-  for (se = &x->Benefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Benefits->gg;
+       se && se->g.tok == zx_hrxml_Benefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -23687,7 +25915,7 @@ char* zx_ENC_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Remu
   ZX_OUT_TAG(p, "<hrxml:RemunerationPackage");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -23699,13 +25927,21 @@ char* zx_ENC_SO_hrxml_RemunerationPackage(struct zx_ctx* c, struct zx_hrxml_Remu
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->BasePay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->BasePay->gg;
+       se && se->g.tok == zx_hrxml_BasePay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_BasePay(c, (struct zx_hrxml_BasePay_s*)se, p);
-  for (se = &x->OtherPay->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OtherPay->gg;
+       se && se->g.tok == zx_hrxml_OtherPay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OtherPay(c, (struct zx_hrxml_OtherPay_s*)se, p);
-  for (se = &x->Benefits->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Benefits->gg;
+       se && se->g.tok == zx_hrxml_Benefits_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Benefits(c, (struct zx_hrxml_Benefits_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -23786,9 +26022,9 @@ int zx_LEN_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x )
   int len = sizeof("<hrxml:Resume")-1 + 1 + sizeof("</hrxml:Resume>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -23797,15 +26033,25 @@ int zx_LEN_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x )
   int len = 0;
 #endif
   
-  for (se = x->ResumeId; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ResumeId")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->DistributionGuidelines; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->StructuredXMLResume->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ResumeId;
+    se && se->g.tok == zx_hrxml_ResumeId_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ResumeId")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->DistributionGuidelines;
+    se && se->g.tok == zx_hrxml_DistributionGuidelines_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->StructuredXMLResume->gg;
+       se && se->g.tok == zx_hrxml_StructuredXMLResume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StructuredXMLResume(c, (struct zx_hrxml_StructuredXMLResume_s*)se);
-  for (se = &x->NonXMLResume->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NonXMLResume->gg;
+       se && se->g.tok == zx_hrxml_NonXMLResume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_NonXMLResume(c, (struct zx_hrxml_NonXMLResume_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -23833,9 +26079,9 @@ char* zx_ENC_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, char
   ZX_OUT_TAG(p, "<hrxml:Resume");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -23848,15 +26094,25 @@ char* zx_ENC_SO_hrxml_Resume(struct zx_ctx* c, struct zx_hrxml_Resume_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = x->ResumeId; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ResumeId", sizeof("hrxml:ResumeId")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->DistributionGuidelines; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DistributionGuidelines", sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->StructuredXMLResume->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ResumeId;
+       se && se->g.tok == zx_hrxml_ResumeId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ResumeId", sizeof("hrxml:ResumeId")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->DistributionGuidelines;
+       se && se->g.tok == zx_hrxml_DistributionGuidelines_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DistributionGuidelines", sizeof("hrxml:DistributionGuidelines")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->StructuredXMLResume->gg;
+       se && se->g.tok == zx_hrxml_StructuredXMLResume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StructuredXMLResume(c, (struct zx_hrxml_StructuredXMLResume_s*)se, p);
-  for (se = &x->NonXMLResume->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->NonXMLResume->gg;
+       se && se->g.tok == zx_hrxml_NonXMLResume_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_NonXMLResume(c, (struct zx_hrxml_NonXMLResume_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -23937,7 +26193,7 @@ int zx_LEN_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Resum
   int len = sizeof("<hrxml:ResumeAdditionalItem")-1 + 1 + sizeof("</hrxml:ResumeAdditionalItem>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -23946,9 +26202,13 @@ int zx_LEN_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Resum
   int len = 0;
 #endif
   
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 
@@ -23976,7 +26236,7 @@ char* zx_ENC_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Res
   ZX_OUT_TAG(p, "<hrxml:ResumeAdditionalItem");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -23989,9 +26249,13 @@ char* zx_ENC_SO_hrxml_ResumeAdditionalItem(struct zx_ctx* c, struct zx_hrxml_Res
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -24072,7 +26336,7 @@ int zx_LEN_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_Resu
   int len = sizeof("<hrxml:ResumeAdditionalItems")-1 + 1 + sizeof("</hrxml:ResumeAdditionalItems>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -24080,7 +26344,9 @@ int zx_LEN_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_Resu
   int len = 0;
 #endif
   
-  for (se = &x->ResumeAdditionalItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResumeAdditionalItem->gg;
+       se && se->g.tok == zx_hrxml_ResumeAdditionalItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ResumeAdditionalItem(c, (struct zx_hrxml_ResumeAdditionalItem_s*)se);
 
 
@@ -24108,7 +26374,7 @@ char* zx_ENC_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_Re
   ZX_OUT_TAG(p, "<hrxml:ResumeAdditionalItems");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -24120,7 +26386,9 @@ char* zx_ENC_SO_hrxml_ResumeAdditionalItems(struct zx_ctx* c, struct zx_hrxml_Re
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ResumeAdditionalItem->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResumeAdditionalItem->gg;
+       se && se->g.tok == zx_hrxml_ResumeAdditionalItem_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ResumeAdditionalItem(c, (struct zx_hrxml_ResumeAdditionalItem_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -24201,7 +26469,7 @@ int zx_LEN_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x )
   int len = sizeof("<hrxml:RoleId")-1 + 1 + sizeof("</hrxml:RoleId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -24212,7 +26480,9 @@ int zx_LEN_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -24240,7 +26510,7 @@ char* zx_ENC_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, char
   ZX_OUT_TAG(p, "<hrxml:RoleId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -24255,7 +26525,9 @@ char* zx_ENC_SO_hrxml_RoleId(struct zx_ctx* c, struct zx_hrxml_RoleId_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -24336,7 +26608,7 @@ int zx_LEN_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhy
   int len = sizeof("<hrxml:SEPPhysicalLocation")-1 + 1 + sizeof("</hrxml:SEPPhysicalLocation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -24344,20 +26616,34 @@ int zx_LEN_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPPhy
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SpatialLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SpatialLocation->gg;
+       se && se->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)se);
-  for (se = &x->TravelDirections->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TravelDirections->gg;
+       se && se->g.tok == zx_hrxml_TravelDirections_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)se);
-  for (se = &x->Area->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Area->gg;
+       se && se->g.tok == zx_hrxml_Area_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Area(c, (struct zx_hrxml_Area_s*)se);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -24384,7 +26670,7 @@ char* zx_ENC_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPP
   ZX_OUT_TAG(p, "<hrxml:SEPPhysicalLocation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -24396,20 +26682,34 @@ char* zx_ENC_SO_hrxml_SEPPhysicalLocation(struct zx_ctx* c, struct zx_hrxml_SEPP
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SpatialLocation->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SpatialLocation->gg;
+       se && se->g.tok == zx_hrxml_SpatialLocation_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SpatialLocation(c, (struct zx_hrxml_SpatialLocation_s*)se, p);
-  for (se = &x->TravelDirections->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TravelDirections->gg;
+       se && se->g.tok == zx_hrxml_TravelDirections_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)se, p);
-  for (se = &x->Area->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Area->gg;
+       se && se->g.tok == zx_hrxml_Area_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Area(c, (struct zx_hrxml_Area_s*)se, p);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -24489,7 +26789,7 @@ int zx_LEN_SO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEqui
   int len = sizeof("<hrxml:SafetyEquipment")-1 + 1 + sizeof("</hrxml:SafetyEquipment>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->suppliedByOrganization, sizeof("suppliedByOrganization")-1, &pop_seen);
 
@@ -24524,7 +26824,7 @@ char* zx_ENC_SO_hrxml_SafetyEquipment(struct zx_ctx* c, struct zx_hrxml_SafetyEq
   ZX_OUT_TAG(p, "<hrxml:SafetyEquipment");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -24616,7 +26916,7 @@ int zx_LEN_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x )
   int len = sizeof("<hrxml:School")-1 + 1 + sizeof("</hrxml:School>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -24625,12 +26925,18 @@ int zx_LEN_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->InternetDomainName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InternetDomainName->gg;
+       se && se->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)se);
-  for (se = &x->SchoolId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SchoolId->gg;
+       se && se->g.tok == zx_hrxml_SchoolId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SchoolId(c, (struct zx_hrxml_SchoolId_s*)se);
-  for (se = x->SchoolName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SchoolName")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->SchoolName;
+    se && se->g.tok == zx_hrxml_SchoolName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SchoolName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -24657,7 +26963,7 @@ char* zx_ENC_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, char
   ZX_OUT_TAG(p, "<hrxml:School");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -24670,12 +26976,18 @@ char* zx_ENC_SO_hrxml_School(struct zx_ctx* c, struct zx_hrxml_School_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->InternetDomainName->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->InternetDomainName->gg;
+       se && se->g.tok == zx_hrxml_InternetDomainName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_InternetDomainName(c, (struct zx_hrxml_InternetDomainName_s*)se, p);
-  for (se = &x->SchoolId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SchoolId->gg;
+       se && se->g.tok == zx_hrxml_SchoolId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SchoolId(c, (struct zx_hrxml_SchoolId_s*)se, p);
-  for (se = x->SchoolName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SchoolName", sizeof("hrxml:SchoolName")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->SchoolName;
+       se && se->g.tok == zx_hrxml_SchoolName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SchoolName", sizeof("hrxml:SchoolName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -24755,7 +27067,7 @@ int zx_LEN_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x )
   int len = sizeof("<hrxml:SchoolId")-1 + 1 + sizeof("</hrxml:SchoolId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -24766,7 +27078,9 @@ int zx_LEN_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -24794,7 +27108,7 @@ char* zx_ENC_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, 
   ZX_OUT_TAG(p, "<hrxml:SchoolId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -24809,7 +27123,9 @@ char* zx_ENC_SO_hrxml_SchoolId(struct zx_ctx* c, struct zx_hrxml_SchoolId_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -24890,7 +27206,7 @@ int zx_LEN_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_School
   int len = sizeof("<hrxml:SchoolOrInstitution")-1 + 1 + sizeof("</hrxml:SchoolOrInstitution>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->schoolType, sizeof("schoolType")-1, &pop_seen);
 
@@ -24899,33 +27215,61 @@ int zx_LEN_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_School
   int len = 0;
 #endif
   
-  for (se = x->SchoolName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SchoolName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->School->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SchoolName;
+    se && se->g.tok == zx_hrxml_SchoolName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SchoolName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->School->gg;
+       se && se->g.tok == zx_hrxml_School_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_School(c, (struct zx_hrxml_School_s*)se);
-  for (se = &x->LocationSummary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LocationSummary->gg;
+       se && se->g.tok == zx_hrxml_LocationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)se);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
-  for (se = &x->OrganizationUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationUnit->gg;
+       se && se->g.tok == zx_hrxml_OrganizationUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_OrganizationUnit(c, (struct zx_hrxml_OrganizationUnit_s*)se);
-  for (se = &x->Degree->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Degree->gg;
+       se && se->g.tok == zx_hrxml_Degree_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Degree(c, (struct zx_hrxml_Degree_s*)se);
-  for (se = x->Major; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Major")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Minor; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Minor")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Measure->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Major;
+    se && se->g.tok == zx_hrxml_Major_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Major")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Minor;
+    se && se->g.tok == zx_hrxml_Minor_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Minor")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Measure->gg;
+       se && se->g.tok == zx_hrxml_Measure_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Measure(c, (struct zx_hrxml_Measure_s*)se);
-  for (se = &x->DatesOfAttendance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DatesOfAttendance->gg;
+       se && se->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISCEDInstitutionClassification; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISCEDInstitutionClassification")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->LocalInstitutionClassification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISCEDInstitutionClassification;
+    se && se->g.tok == zx_hrxml_ISCEDInstitutionClassification_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ISCEDInstitutionClassification")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LocalInstitutionClassification->gg;
+       se && se->g.tok == zx_hrxml_LocalInstitutionClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LocalInstitutionClassification(c, (struct zx_hrxml_LocalInstitutionClassification_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -24953,7 +27297,7 @@ char* zx_ENC_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_Scho
   ZX_OUT_TAG(p, "<hrxml:SchoolOrInstitution");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -24966,33 +27310,61 @@ char* zx_ENC_SO_hrxml_SchoolOrInstitution(struct zx_ctx* c, struct zx_hrxml_Scho
   /* root node has no begin tag */
 #endif
   
-  for (se = x->SchoolName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SchoolName", sizeof("hrxml:SchoolName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->School->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SchoolName;
+       se && se->g.tok == zx_hrxml_SchoolName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SchoolName", sizeof("hrxml:SchoolName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->School->gg;
+       se && se->g.tok == zx_hrxml_School_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_School(c, (struct zx_hrxml_School_s*)se, p);
-  for (se = &x->LocationSummary->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LocationSummary->gg;
+       se && se->g.tok == zx_hrxml_LocationSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LocationSummary(c, (struct zx_hrxml_LocationSummary_s*)se, p);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se, p);
-  for (se = &x->OrganizationUnit->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->OrganizationUnit->gg;
+       se && se->g.tok == zx_hrxml_OrganizationUnit_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_OrganizationUnit(c, (struct zx_hrxml_OrganizationUnit_s*)se, p);
-  for (se = &x->Degree->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Degree->gg;
+       se && se->g.tok == zx_hrxml_Degree_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Degree(c, (struct zx_hrxml_Degree_s*)se, p);
-  for (se = x->Major; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Major", sizeof("hrxml:Major")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Minor; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Minor", sizeof("hrxml:Minor")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Measure->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Major;
+       se && se->g.tok == zx_hrxml_Major_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Major", sizeof("hrxml:Major")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Minor;
+       se && se->g.tok == zx_hrxml_Minor_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Minor", sizeof("hrxml:Minor")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Measure->gg;
+       se && se->g.tok == zx_hrxml_Measure_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Measure(c, (struct zx_hrxml_Measure_s*)se, p);
-  for (se = &x->DatesOfAttendance->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DatesOfAttendance->gg;
+       se && se->g.tok == zx_hrxml_DatesOfAttendance_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DatesOfAttendance(c, (struct zx_hrxml_DatesOfAttendance_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->ISCEDInstitutionClassification; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISCEDInstitutionClassification", sizeof("hrxml:ISCEDInstitutionClassification")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->LocalInstitutionClassification->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->ISCEDInstitutionClassification;
+       se && se->g.tok == zx_hrxml_ISCEDInstitutionClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ISCEDInstitutionClassification", sizeof("hrxml:ISCEDInstitutionClassification")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->LocalInstitutionClassification->gg;
+       se && se->g.tok == zx_hrxml_LocalInstitutionClassification_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LocalInstitutionClassification(c, (struct zx_hrxml_LocalInstitutionClassification_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -25073,7 +27445,7 @@ int zx_LEN_SO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x )
   int len = sizeof("<hrxml:Score")-1 + 1 + sizeof("</hrxml:Score>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->unitOfMeasure, sizeof("unitOfMeasure")-1, &pop_seen);
 
@@ -25108,7 +27480,7 @@ char* zx_ENC_SO_hrxml_Score(struct zx_ctx* c, struct zx_hrxml_Score_s* x, char* 
   ZX_OUT_TAG(p, "<hrxml:Score");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -25200,7 +27572,7 @@ int zx_LEN_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCrite
   int len = sizeof("<hrxml:SearchCriteria")-1 + 1 + sizeof("</hrxml:SearchCriteria>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -25208,19 +27580,33 @@ int zx_LEN_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCrite
   int len = 0;
 #endif
   
-  for (se = &x->SearchCriteriaId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchCriteriaId->gg;
+       se && se->g.tok == zx_hrxml_SearchCriteriaId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SearchCriteriaId(c, (struct zx_hrxml_SearchCriteriaId_s*)se);
-  for (se = x->SearchTarget; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchTarget")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchTarget;
+    se && se->g.tok == zx_hrxml_SearchTarget_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchTarget")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserId->gg;
+       se && se->g.tok == zx_hrxml_UserId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)se);
-  for (se = x->SearchTimeStamp; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchTimeStamp")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->SearchString; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchString")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SearchCriterion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchTimeStamp;
+    se && se->g.tok == zx_hrxml_SearchTimeStamp_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchTimeStamp")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SearchString;
+    se && se->g.tok == zx_hrxml_SearchString_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchString")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SearchCriterion->gg;
+       se && se->g.tok == zx_hrxml_SearchCriterion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SearchCriterion(c, (struct zx_hrxml_SearchCriterion_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -25248,7 +27634,7 @@ char* zx_ENC_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCri
   ZX_OUT_TAG(p, "<hrxml:SearchCriteria");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -25260,19 +27646,33 @@ char* zx_ENC_SO_hrxml_SearchCriteria(struct zx_ctx* c, struct zx_hrxml_SearchCri
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SearchCriteriaId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchCriteriaId->gg;
+       se && se->g.tok == zx_hrxml_SearchCriteriaId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SearchCriteriaId(c, (struct zx_hrxml_SearchCriteriaId_s*)se, p);
-  for (se = x->SearchTarget; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchTarget", sizeof("hrxml:SearchTarget")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchTarget;
+       se && se->g.tok == zx_hrxml_SearchTarget_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchTarget", sizeof("hrxml:SearchTarget")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserId->gg;
+       se && se->g.tok == zx_hrxml_UserId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)se, p);
-  for (se = x->SearchTimeStamp; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchTimeStamp", sizeof("hrxml:SearchTimeStamp")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->SearchString; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchString", sizeof("hrxml:SearchString")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->SearchCriterion->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchTimeStamp;
+       se && se->g.tok == zx_hrxml_SearchTimeStamp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchTimeStamp", sizeof("hrxml:SearchTimeStamp")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SearchString;
+       se && se->g.tok == zx_hrxml_SearchString_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchString", sizeof("hrxml:SearchString")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->SearchCriterion->gg;
+       se && se->g.tok == zx_hrxml_SearchCriterion_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SearchCriterion(c, (struct zx_hrxml_SearchCriterion_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -25353,7 +27753,7 @@ int zx_LEN_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCri
   int len = sizeof("<hrxml:SearchCriteriaId")-1 + 1 + sizeof("</hrxml:SearchCriteriaId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -25364,7 +27764,9 @@ int zx_LEN_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchCri
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -25392,7 +27794,7 @@ char* zx_ENC_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchC
   ZX_OUT_TAG(p, "<hrxml:SearchCriteriaId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -25407,7 +27809,9 @@ char* zx_ENC_SO_hrxml_SearchCriteriaId(struct zx_ctx* c, struct zx_hrxml_SearchC
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -25488,7 +27892,7 @@ int zx_LEN_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCrit
   int len = sizeof("<hrxml:SearchCriterion")-1 + 1 + sizeof("</hrxml:SearchCriterion>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -25496,11 +27900,17 @@ int zx_LEN_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCrit
   int len = 0;
 #endif
   
-  for (se = x->CriterionName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CriterionName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CriterionValue; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CriterionValue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Weight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CriterionName;
+    se && se->g.tok == zx_hrxml_CriterionName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CriterionName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CriterionValue;
+    se && se->g.tok == zx_hrxml_CriterionValue_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:CriterionValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Weight->gg;
+       se && se->g.tok == zx_hrxml_Weight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)se);
 
 
@@ -25528,7 +27938,7 @@ char* zx_ENC_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCr
   ZX_OUT_TAG(p, "<hrxml:SearchCriterion");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -25540,11 +27950,17 @@ char* zx_ENC_SO_hrxml_SearchCriterion(struct zx_ctx* c, struct zx_hrxml_SearchCr
   /* root node has no begin tag */
 #endif
   
-  for (se = x->CriterionName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CriterionName", sizeof("hrxml:CriterionName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->CriterionValue; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CriterionValue", sizeof("hrxml:CriterionValue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Weight->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->CriterionName;
+       se && se->g.tok == zx_hrxml_CriterionName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CriterionName", sizeof("hrxml:CriterionName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->CriterionValue;
+       se && se->g.tok == zx_hrxml_CriterionValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:CriterionValue", sizeof("hrxml:CriterionValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Weight->gg;
+       se && se->g.tok == zx_hrxml_Weight_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Weight(c, (struct zx_hrxml_Weight_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -25625,7 +28041,7 @@ int zx_LEN_SO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_Searc
   int len = sizeof("<hrxml:SearchRelevanceScore")-1 + 1 + sizeof("</hrxml:SearchRelevanceScore>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->unitOfMeasure, sizeof("unitOfMeasure")-1, &pop_seen);
 
@@ -25660,7 +28076,7 @@ char* zx_ENC_SO_hrxml_SearchRelevanceScore(struct zx_ctx* c, struct zx_hrxml_Sea
   ZX_OUT_TAG(p, "<hrxml:SearchRelevanceScore");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -25752,7 +28168,7 @@ int zx_LEN_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_
   int len = sizeof("<hrxml:SearchResult")-1 + 1 + sizeof("</hrxml:SearchResult>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -25760,25 +28176,45 @@ int zx_LEN_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResult_
   int len = 0;
 #endif
   
-  for (se = &x->SearchResultId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchResultId->gg;
+       se && se->g.tok == zx_hrxml_SearchResultId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SearchResultId(c, (struct zx_hrxml_SearchResultId_s*)se);
-  for (se = x->SearchTarget; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchTarget")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchTarget;
+    se && se->g.tok == zx_hrxml_SearchTarget_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchTarget")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserId->gg;
+       se && se->g.tok == zx_hrxml_UserId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)se);
-  for (se = x->SearchTimeStamp; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchTimeStamp")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->MatchedObjectId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchTimeStamp;
+    se && se->g.tok == zx_hrxml_SearchTimeStamp_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchTimeStamp")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->MatchedObjectId->gg;
+       se && se->g.tok == zx_hrxml_MatchedObjectId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_MatchedObjectId(c, (struct zx_hrxml_MatchedObjectId_s*)se);
-  for (se = &x->SearchRelevanceScore->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchRelevanceScore->gg;
+       se && se->g.tok == zx_hrxml_SearchRelevanceScore_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SearchRelevanceScore(c, (struct zx_hrxml_SearchRelevanceScore_s*)se);
-  for (se = x->SearchRelevanceRank; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchRelevanceRank")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->SearchResultCount; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchResultCount")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->RankedSearchResults->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchRelevanceRank;
+    se && se->g.tok == zx_hrxml_SearchRelevanceRank_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchRelevanceRank")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SearchResultCount;
+    se && se->g.tok == zx_hrxml_SearchResultCount_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:SearchResultCount")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RankedSearchResults->gg;
+       se && se->g.tok == zx_hrxml_RankedSearchResults_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RankedSearchResults(c, (struct zx_hrxml_RankedSearchResults_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -25806,7 +28242,7 @@ char* zx_ENC_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResul
   ZX_OUT_TAG(p, "<hrxml:SearchResult");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -25818,25 +28254,45 @@ char* zx_ENC_SO_hrxml_SearchResult(struct zx_ctx* c, struct zx_hrxml_SearchResul
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SearchResultId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchResultId->gg;
+       se && se->g.tok == zx_hrxml_SearchResultId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SearchResultId(c, (struct zx_hrxml_SearchResultId_s*)se, p);
-  for (se = x->SearchTarget; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchTarget", sizeof("hrxml:SearchTarget")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchTarget;
+       se && se->g.tok == zx_hrxml_SearchTarget_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchTarget", sizeof("hrxml:SearchTarget")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserId->gg;
+       se && se->g.tok == zx_hrxml_UserId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserId(c, (struct zx_hrxml_UserId_s*)se, p);
-  for (se = x->SearchTimeStamp; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchTimeStamp", sizeof("hrxml:SearchTimeStamp")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->MatchedObjectId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchTimeStamp;
+       se && se->g.tok == zx_hrxml_SearchTimeStamp_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchTimeStamp", sizeof("hrxml:SearchTimeStamp")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->MatchedObjectId->gg;
+       se && se->g.tok == zx_hrxml_MatchedObjectId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_MatchedObjectId(c, (struct zx_hrxml_MatchedObjectId_s*)se, p);
-  for (se = &x->SearchRelevanceScore->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SearchRelevanceScore->gg;
+       se && se->g.tok == zx_hrxml_SearchRelevanceScore_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SearchRelevanceScore(c, (struct zx_hrxml_SearchRelevanceScore_s*)se, p);
-  for (se = x->SearchRelevanceRank; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchRelevanceRank", sizeof("hrxml:SearchRelevanceRank")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->SearchResultCount; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchResultCount", sizeof("hrxml:SearchResultCount")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->RankedSearchResults->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->SearchRelevanceRank;
+       se && se->g.tok == zx_hrxml_SearchRelevanceRank_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchRelevanceRank", sizeof("hrxml:SearchRelevanceRank")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->SearchResultCount;
+       se && se->g.tok == zx_hrxml_SearchResultCount_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:SearchResultCount", sizeof("hrxml:SearchResultCount")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RankedSearchResults->gg;
+       se && se->g.tok == zx_hrxml_RankedSearchResults_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RankedSearchResults(c, (struct zx_hrxml_RankedSearchResults_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -25917,7 +28373,7 @@ int zx_LEN_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResul
   int len = sizeof("<hrxml:SearchResultId")-1 + 1 + sizeof("</hrxml:SearchResultId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -25928,7 +28384,9 @@ int zx_LEN_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchResul
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -25956,7 +28414,7 @@ char* zx_ENC_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchRes
   ZX_OUT_TAG(p, "<hrxml:SearchResultId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -25971,7 +28429,9 @@ char* zx_ENC_SO_hrxml_SearchResultId(struct zx_ctx* c, struct zx_hrxml_SearchRes
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -26052,7 +28512,7 @@ int zx_LEN_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Securit
   int len = sizeof("<hrxml:SecurityCredential")-1 + 1 + sizeof("</hrxml:SecurityCredential>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -26060,15 +28520,25 @@ int zx_LEN_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Securit
   int len = 0;
 #endif
   
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se);
 
 
@@ -26096,7 +28566,7 @@ char* zx_ENC_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Secur
   ZX_OUT_TAG(p, "<hrxml:SecurityCredential");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -26108,15 +28578,25 @@ char* zx_ENC_SO_hrxml_SecurityCredential(struct zx_ctx* c, struct zx_hrxml_Secur
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = &x->IssuingAuthority->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IssuingAuthority->gg;
+       se && se->g.tok == zx_hrxml_IssuingAuthority_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IssuingAuthority(c, (struct zx_hrxml_IssuingAuthority_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = &x->EffectiveDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EffectiveDate->gg;
+       se && se->g.tok == zx_hrxml_EffectiveDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EffectiveDate(c, (struct zx_hrxml_EffectiveDate_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -26197,7 +28677,7 @@ int zx_LEN_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Securi
   int len = sizeof("<hrxml:SecurityCredentials")-1 + 1 + sizeof("</hrxml:SecurityCredentials>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -26205,7 +28685,9 @@ int zx_LEN_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Securi
   int len = 0;
 #endif
   
-  for (se = &x->SecurityCredential->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityCredential->gg;
+       se && se->g.tok == zx_hrxml_SecurityCredential_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SecurityCredential(c, (struct zx_hrxml_SecurityCredential_s*)se);
 
 
@@ -26233,7 +28715,7 @@ char* zx_ENC_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Secu
   ZX_OUT_TAG(p, "<hrxml:SecurityCredentials");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -26245,7 +28727,9 @@ char* zx_ENC_SO_hrxml_SecurityCredentials(struct zx_ctx* c, struct zx_hrxml_Secu
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SecurityCredential->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityCredential->gg;
+       se && se->g.tok == zx_hrxml_SecurityCredential_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SecurityCredential(c, (struct zx_hrxml_SecurityCredential_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -26326,7 +28810,7 @@ int zx_LEN_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetai
   int len = sizeof("<hrxml:ServiceDetail")-1 + 1 + sizeof("</hrxml:ServiceDetail>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->branch, sizeof("branch")-1, &pop_seen);
 
@@ -26335,23 +28819,41 @@ int zx_LEN_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDetai
   int len = 0;
 #endif
   
-  for (se = x->UnitOrDivision; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:UnitOrDivision")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->RankAchieved->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->UnitOrDivision;
+    se && se->g.tok == zx_hrxml_UnitOrDivision_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:UnitOrDivision")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RankAchieved->gg;
+       se && se->g.tok == zx_hrxml_RankAchieved_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_RankAchieved(c, (struct zx_hrxml_RankAchieved_s*)se);
-  for (se = &x->DatesOfService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DatesOfService->gg;
+       se && se->g.tok == zx_hrxml_DatesOfService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_DatesOfService(c, (struct zx_hrxml_DatesOfService_s*)se);
-  for (se = x->Campaign; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Campaign")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AreaOfExpertise; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AreaOfExpertise")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->RecognitionAchieved; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RecognitionAchieved")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->DisciplinaryAction; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DisciplinaryAction")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->DischargeStatus; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DischargeStatus")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Campaign;
+    se && se->g.tok == zx_hrxml_Campaign_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Campaign")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AreaOfExpertise;
+    se && se->g.tok == zx_hrxml_AreaOfExpertise_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AreaOfExpertise")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RecognitionAchieved;
+    se && se->g.tok == zx_hrxml_RecognitionAchieved_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RecognitionAchieved")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->DisciplinaryAction;
+    se && se->g.tok == zx_hrxml_DisciplinaryAction_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DisciplinaryAction")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->DischargeStatus;
+    se && se->g.tok == zx_hrxml_DischargeStatus_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:DischargeStatus")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -26379,7 +28881,7 @@ char* zx_ENC_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDet
   ZX_OUT_TAG(p, "<hrxml:ServiceDetail");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -26392,23 +28894,41 @@ char* zx_ENC_SO_hrxml_ServiceDetail(struct zx_ctx* c, struct zx_hrxml_ServiceDet
   /* root node has no begin tag */
 #endif
   
-  for (se = x->UnitOrDivision; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:UnitOrDivision", sizeof("hrxml:UnitOrDivision")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->RankAchieved->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->UnitOrDivision;
+       se && se->g.tok == zx_hrxml_UnitOrDivision_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:UnitOrDivision", sizeof("hrxml:UnitOrDivision")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->RankAchieved->gg;
+       se && se->g.tok == zx_hrxml_RankAchieved_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_RankAchieved(c, (struct zx_hrxml_RankAchieved_s*)se, p);
-  for (se = &x->DatesOfService->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->DatesOfService->gg;
+       se && se->g.tok == zx_hrxml_DatesOfService_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_DatesOfService(c, (struct zx_hrxml_DatesOfService_s*)se, p);
-  for (se = x->Campaign; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Campaign", sizeof("hrxml:Campaign")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AreaOfExpertise; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AreaOfExpertise", sizeof("hrxml:AreaOfExpertise")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->RecognitionAchieved; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RecognitionAchieved", sizeof("hrxml:RecognitionAchieved")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->DisciplinaryAction; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DisciplinaryAction", sizeof("hrxml:DisciplinaryAction")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->DischargeStatus; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DischargeStatus", sizeof("hrxml:DischargeStatus")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Campaign;
+       se && se->g.tok == zx_hrxml_Campaign_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Campaign", sizeof("hrxml:Campaign")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AreaOfExpertise;
+       se && se->g.tok == zx_hrxml_AreaOfExpertise_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AreaOfExpertise", sizeof("hrxml:AreaOfExpertise")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RecognitionAchieved;
+       se && se->g.tok == zx_hrxml_RecognitionAchieved_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RecognitionAchieved", sizeof("hrxml:RecognitionAchieved")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->DisciplinaryAction;
+       se && se->g.tok == zx_hrxml_DisciplinaryAction_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DisciplinaryAction", sizeof("hrxml:DisciplinaryAction")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->DischargeStatus;
+       se && se->g.tok == zx_hrxml_DischargeStatus_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:DischargeStatus", sizeof("hrxml:DischargeStatus")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -26489,7 +29009,7 @@ int zx_LEN_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumbe
   int len = sizeof("<hrxml:ServiceNumber")-1 + 1 + sizeof("</hrxml:ServiceNumber>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -26500,7 +29020,9 @@ int zx_LEN_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNumbe
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -26528,7 +29050,7 @@ char* zx_ENC_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNum
   ZX_OUT_TAG(p, "<hrxml:ServiceNumber");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -26543,7 +29065,9 @@ char* zx_ENC_SO_hrxml_ServiceNumber(struct zx_ctx* c, struct zx_hrxml_ServiceNum
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -26624,7 +29148,7 @@ int zx_LEN_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x )
   int len = sizeof("<hrxml:Shift")-1 + 1 + sizeof("</hrxml:Shift>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->shiftPeriod, sizeof("shiftPeriod")-1, &pop_seen);
 
@@ -26633,20 +29157,34 @@ int zx_LEN_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Hours; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Hours")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StartTime; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StartTime")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EndTime; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EndTime")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PayTypeHours; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PayTypeHours")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Name;
+    se && se->g.tok == zx_hrxml_Name_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Hours;
+    se && se->g.tok == zx_hrxml_Hours_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Hours")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StartTime;
+    se && se->g.tok == zx_hrxml_StartTime_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StartTime")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EndTime;
+    se && se->g.tok == zx_hrxml_EndTime_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EndTime")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PayTypeHours;
+    se && se->g.tok == zx_hrxml_PayTypeHours_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PayTypeHours")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -26673,7 +29211,7 @@ char* zx_ENC_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, char* 
   ZX_OUT_TAG(p, "<hrxml:Shift");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -26686,20 +29224,34 @@ char* zx_ENC_SO_hrxml_Shift(struct zx_ctx* c, struct zx_hrxml_Shift_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = x->Name; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Hours; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Hours", sizeof("hrxml:Hours")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StartTime; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StartTime", sizeof("hrxml:StartTime")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EndTime; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EndTime", sizeof("hrxml:EndTime")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PayTypeHours; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PayTypeHours", sizeof("hrxml:PayTypeHours")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Name;
+       se && se->g.tok == zx_hrxml_Name_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Name", sizeof("hrxml:Name")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Hours;
+       se && se->g.tok == zx_hrxml_Hours_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Hours", sizeof("hrxml:Hours")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StartTime;
+       se && se->g.tok == zx_hrxml_StartTime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StartTime", sizeof("hrxml:StartTime")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EndTime;
+       se && se->g.tok == zx_hrxml_EndTime_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EndTime", sizeof("hrxml:EndTime")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PayTypeHours;
+       se && se->g.tok == zx_hrxml_PayTypeHours_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PayTypeHours", sizeof("hrxml:PayTypeHours")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -26779,7 +29331,7 @@ int zx_LEN_SO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x
   int len = sizeof("<hrxml:SourceType")-1 + 1 + sizeof("</hrxml:SourceType>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -26787,10 +29339,14 @@ int zx_LEN_SO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s* x
   int len = 0;
 #endif
   
-  for (se = x->StandardValue; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StandardValue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->NonStandardValue; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NonStandardValue")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->StandardValue;
+    se && se->g.tok == zx_hrxml_StandardValue_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StandardValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NonStandardValue;
+    se && se->g.tok == zx_hrxml_NonStandardValue_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:NonStandardValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -26817,7 +29373,7 @@ char* zx_ENC_SO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s*
   ZX_OUT_TAG(p, "<hrxml:SourceType");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -26829,10 +29385,14 @@ char* zx_ENC_SO_hrxml_SourceType(struct zx_ctx* c, struct zx_hrxml_SourceType_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = x->StandardValue; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StandardValue", sizeof("hrxml:StandardValue")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->NonStandardValue; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NonStandardValue", sizeof("hrxml:NonStandardValue")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->StandardValue;
+       se && se->g.tok == zx_hrxml_StandardValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StandardValue", sizeof("hrxml:StandardValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->NonStandardValue;
+       se && se->g.tok == zx_hrxml_NonStandardValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:NonStandardValue", sizeof("hrxml:NonStandardValue")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -26912,7 +29472,7 @@ int zx_LEN_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLoc
   int len = sizeof("<hrxml:SpatialLocation")-1 + 1 + sizeof("</hrxml:SpatialLocation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -26920,17 +29480,29 @@ int zx_LEN_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialLoc
   int len = 0;
 #endif
   
-  for (se = &x->Latitude->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Latitude->gg;
+       se && se->g.tok == zx_hrxml_Latitude_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Latitude(c, (struct zx_hrxml_Latitude_s*)se);
-  for (se = &x->Longitude->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Longitude->gg;
+       se && se->g.tok == zx_hrxml_Longitude_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Longitude(c, (struct zx_hrxml_Longitude_s*)se);
-  for (se = x->Altitude; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Altitude")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AltitudeMeanSeaLevel; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AltitudeMeanSeaLevel")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->HorizontalAccuracy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Altitude;
+    se && se->g.tok == zx_hrxml_Altitude_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Altitude")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AltitudeMeanSeaLevel;
+    se && se->g.tok == zx_hrxml_AltitudeMeanSeaLevel_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AltitudeMeanSeaLevel")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->HorizontalAccuracy->gg;
+       se && se->g.tok == zx_hrxml_HorizontalAccuracy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_HorizontalAccuracy(c, (struct zx_hrxml_HorizontalAccuracy_s*)se);
-  for (se = &x->VerticalAccuracy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VerticalAccuracy->gg;
+       se && se->g.tok == zx_hrxml_VerticalAccuracy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_VerticalAccuracy(c, (struct zx_hrxml_VerticalAccuracy_s*)se);
 
 
@@ -26958,7 +29530,7 @@ char* zx_ENC_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialL
   ZX_OUT_TAG(p, "<hrxml:SpatialLocation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -26970,17 +29542,29 @@ char* zx_ENC_SO_hrxml_SpatialLocation(struct zx_ctx* c, struct zx_hrxml_SpatialL
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Latitude->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Latitude->gg;
+       se && se->g.tok == zx_hrxml_Latitude_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Latitude(c, (struct zx_hrxml_Latitude_s*)se, p);
-  for (se = &x->Longitude->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Longitude->gg;
+       se && se->g.tok == zx_hrxml_Longitude_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Longitude(c, (struct zx_hrxml_Longitude_s*)se, p);
-  for (se = x->Altitude; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Altitude", sizeof("hrxml:Altitude")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AltitudeMeanSeaLevel; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AltitudeMeanSeaLevel", sizeof("hrxml:AltitudeMeanSeaLevel")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->HorizontalAccuracy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Altitude;
+       se && se->g.tok == zx_hrxml_Altitude_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Altitude", sizeof("hrxml:Altitude")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AltitudeMeanSeaLevel;
+       se && se->g.tok == zx_hrxml_AltitudeMeanSeaLevel_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AltitudeMeanSeaLevel", sizeof("hrxml:AltitudeMeanSeaLevel")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->HorizontalAccuracy->gg;
+       se && se->g.tok == zx_hrxml_HorizontalAccuracy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_HorizontalAccuracy(c, (struct zx_hrxml_HorizontalAccuracy_s*)se, p);
-  for (se = &x->VerticalAccuracy->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->VerticalAccuracy->gg;
+       se && se->g.tok == zx_hrxml_VerticalAccuracy_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_VerticalAccuracy(c, (struct zx_hrxml_VerticalAccuracy_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -27061,7 +29645,7 @@ int zx_LEN_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEven
   int len = sizeof("<hrxml:SpeakingEvent")-1 + 1 + sizeof("</hrxml:SpeakingEvent>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->type, sizeof("type")-1, &pop_seen);
 
@@ -27070,26 +29654,46 @@ int zx_LEN_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEven
   int len = 0;
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Role; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Role")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+    se && se->g.tok == zx_hrxml_Title_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Role;
+    se && se->g.tok == zx_hrxml_Role_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Role")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se);
-  for (se = x->EventName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EventName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EventType; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EventType")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Location; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Location")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EventName;
+    se && se->g.tok == zx_hrxml_EventName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EventName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EventType;
+    se && se->g.tok == zx_hrxml_EventType_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EventType")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Location;
+    se && se->g.tok == zx_hrxml_Location_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Location")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = x->AffiliatedOrganization; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AffiliatedOrganization")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AffiliatedOrganization;
+    se && se->g.tok == zx_hrxml_AffiliatedOrganization_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AffiliatedOrganization")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Link;
+    se && se->g.tok == zx_hrxml_Link_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -27116,7 +29720,7 @@ char* zx_ENC_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEv
   ZX_OUT_TAG(p, "<hrxml:SpeakingEvent");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -27129,26 +29733,46 @@ char* zx_ENC_SO_hrxml_SpeakingEvent(struct zx_ctx* c, struct zx_hrxml_SpeakingEv
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Title; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Role; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Role", sizeof("hrxml:Role")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->StartDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Title;
+       se && se->g.tok == zx_hrxml_Title_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Title", sizeof("hrxml:Title")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Role;
+       se && se->g.tok == zx_hrxml_Role_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Role", sizeof("hrxml:Role")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->StartDate->gg;
+       se && se->g.tok == zx_hrxml_StartDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_StartDate(c, (struct zx_hrxml_StartDate_s*)se, p);
-  for (se = &x->EndDate->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EndDate->gg;
+       se && se->g.tok == zx_hrxml_EndDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EndDate(c, (struct zx_hrxml_EndDate_s*)se, p);
-  for (se = x->EventName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EventName", sizeof("hrxml:EventName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EventType; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EventType", sizeof("hrxml:EventType")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Location; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Location", sizeof("hrxml:Location")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EventName;
+       se && se->g.tok == zx_hrxml_EventName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EventName", sizeof("hrxml:EventName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EventType;
+       se && se->g.tok == zx_hrxml_EventType_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EventType", sizeof("hrxml:EventType")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Location;
+       se && se->g.tok == zx_hrxml_Location_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Location", sizeof("hrxml:Location")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = x->AffiliatedOrganization; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AffiliatedOrganization", sizeof("hrxml:AffiliatedOrganization")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AffiliatedOrganization;
+       se && se->g.tok == zx_hrxml_AffiliatedOrganization_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AffiliatedOrganization", sizeof("hrxml:AffiliatedOrganization")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Link;
+       se && se->g.tok == zx_hrxml_Link_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -27228,7 +29852,7 @@ int zx_LEN_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_Spea
   int len = sizeof("<hrxml:SpeakingEventsHistory")-1 + 1 + sizeof("</hrxml:SpeakingEventsHistory>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -27236,7 +29860,9 @@ int zx_LEN_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_Spea
   int len = 0;
 #endif
   
-  for (se = &x->SpeakingEvent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpeakingEvent->gg;
+       se && se->g.tok == zx_hrxml_SpeakingEvent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SpeakingEvent(c, (struct zx_hrxml_SpeakingEvent_s*)se);
 
 
@@ -27264,7 +29890,7 @@ char* zx_ENC_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_Sp
   ZX_OUT_TAG(p, "<hrxml:SpeakingEventsHistory");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -27276,7 +29902,9 @@ char* zx_ENC_SO_hrxml_SpeakingEventsHistory(struct zx_ctx* c, struct zx_hrxml_Sp
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->SpeakingEvent->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpeakingEvent->gg;
+       se && se->g.tok == zx_hrxml_SpeakingEvent_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SpeakingEvent(c, (struct zx_hrxml_SpeakingEvent_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -27357,7 +29985,7 @@ int zx_LEN_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrx
   int len = sizeof("<hrxml:SpecifiedCompetencyReference")-1 + 1 + sizeof("</hrxml:SpecifiedCompetencyReference>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -27365,10 +29993,14 @@ int zx_LEN_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_hrx
   int len = 0;
 #endif
   
-  for (se = &x->CompetencyId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyId->gg;
+       se && se->g.tok == zx_hrxml_CompetencyId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)se);
-  for (se = x->ProficencyLevel; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ProficencyLevel")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ProficencyLevel;
+    se && se->g.tok == zx_hrxml_ProficencyLevel_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ProficencyLevel")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -27395,7 +30027,7 @@ char* zx_ENC_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_h
   ZX_OUT_TAG(p, "<hrxml:SpecifiedCompetencyReference");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -27407,10 +30039,14 @@ char* zx_ENC_SO_hrxml_SpecifiedCompetencyReference(struct zx_ctx* c, struct zx_h
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->CompetencyId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->CompetencyId->gg;
+       se && se->g.tok == zx_hrxml_CompetencyId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_CompetencyId(c, (struct zx_hrxml_CompetencyId_s*)se, p);
-  for (se = x->ProficencyLevel; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ProficencyLevel", sizeof("hrxml:ProficencyLevel")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ProficencyLevel;
+       se && se->g.tok == zx_hrxml_ProficencyLevel_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ProficencyLevel", sizeof("hrxml:ProficencyLevel")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -27490,7 +30126,7 @@ int zx_LEN_SO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x )
   int len = sizeof("<hrxml:StartDate")-1 + 1 + sizeof("</hrxml:StartDate>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -27499,16 +30135,26 @@ int zx_LEN_SO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x )
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -27535,7 +30181,7 @@ char* zx_ENC_SO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x
   ZX_OUT_TAG(p, "<hrxml:StartDate");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -27548,16 +30194,26 @@ char* zx_ENC_SO_hrxml_StartDate(struct zx_ctx* c, struct zx_hrxml_StartDate_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -27637,7 +30293,7 @@ int zx_LEN_SO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_Start
   int len = sizeof("<hrxml:StartingCompensation")-1 + 1 + sizeof("</hrxml:StartingCompensation>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->currency, sizeof("currency")-1, &pop_seen);
   len += zx_attr_so_len(c, x->intervalType, sizeof("intervalType")-1, &pop_seen);
@@ -27675,7 +30331,7 @@ char* zx_ENC_SO_hrxml_StartingCompensation(struct zx_ctx* c, struct zx_hrxml_Sta
   ZX_OUT_TAG(p, "<hrxml:StartingCompensation");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -27770,7 +30426,7 @@ int zx_LEN_SO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x )
   int len = sizeof("<hrxml:Status")-1 + 1 + sizeof("</hrxml:Status>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validTo, sizeof("validTo")-1, &pop_seen);
@@ -27806,7 +30462,7 @@ char* zx_ENC_SO_hrxml_Status(struct zx_ctx* c, struct zx_hrxml_Status_s* x, char
   ZX_OUT_TAG(p, "<hrxml:Status");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -27899,7 +30555,7 @@ int zx_LEN_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x )
   int len = sizeof("<hrxml:Stock")-1 + 1 + sizeof("</hrxml:Stock>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -27907,12 +30563,18 @@ int zx_LEN_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se);
-  for (se = x->Symbol; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Symbol")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Exchange; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Exchange")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Symbol;
+    se && se->g.tok == zx_hrxml_Symbol_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Symbol")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Exchange;
+    se && se->g.tok == zx_hrxml_Exchange_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Exchange")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -27939,7 +30601,7 @@ char* zx_ENC_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, char* 
   ZX_OUT_TAG(p, "<hrxml:Stock");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -27951,12 +30613,18 @@ char* zx_ENC_SO_hrxml_Stock(struct zx_ctx* c, struct zx_hrxml_Stock_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Id->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Id->gg;
+       se && se->g.tok == zx_hrxml_Id_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Id(c, (struct zx_hrxml_Id_s*)se, p);
-  for (se = x->Symbol; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Symbol", sizeof("hrxml:Symbol")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Exchange; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Exchange", sizeof("hrxml:Exchange")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Symbol;
+       se && se->g.tok == zx_hrxml_Symbol_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Symbol", sizeof("hrxml:Symbol")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Exchange;
+       se && se->g.tok == zx_hrxml_Exchange_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Exchange", sizeof("hrxml:Exchange")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -28036,7 +30704,7 @@ int zx_LEN_SO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_s*
   int len = sizeof("<hrxml:StringValue")-1 + 1 + sizeof("</hrxml:StringValue>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->description, sizeof("description")-1, &pop_seen);
   len += zx_attr_so_len(c, x->maxValue, sizeof("maxValue")-1, &pop_seen);
@@ -28073,7 +30741,7 @@ char* zx_ENC_SO_hrxml_StringValue(struct zx_ctx* c, struct zx_hrxml_StringValue_
   ZX_OUT_TAG(p, "<hrxml:StringValue");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -28167,7 +30835,7 @@ int zx_LEN_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Struct
   int len = sizeof("<hrxml:StructuredXMLResume")-1 + 1 + sizeof("</hrxml:StructuredXMLResume>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -28175,48 +30843,90 @@ int zx_LEN_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Struct
   int len = 0;
 #endif
   
-  for (se = &x->ContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactInfo->gg;
+       se && se->g.tok == zx_hrxml_ContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)se);
-  for (se = x->ExecutiveSummary; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ExecutiveSummary")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Objective; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Objective")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->EmploymentHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ExecutiveSummary;
+    se && se->g.tok == zx_hrxml_ExecutiveSummary_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ExecutiveSummary")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Objective;
+    se && se->g.tok == zx_hrxml_Objective_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Objective")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EmploymentHistory->gg;
+       se && se->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)se);
-  for (se = &x->EducationHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EducationHistory->gg;
+       se && se->g.tok == zx_hrxml_EducationHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)se);
-  for (se = &x->LicensesAndCertifications->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LicensesAndCertifications->gg;
+       se && se->g.tok == zx_hrxml_LicensesAndCertifications_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_LicensesAndCertifications(c, (struct zx_hrxml_LicensesAndCertifications_s*)se);
-  for (se = &x->MilitaryHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MilitaryHistory->gg;
+       se && se->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)se);
-  for (se = &x->PatentHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PatentHistory->gg;
+       se && se->g.tok == zx_hrxml_PatentHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PatentHistory(c, (struct zx_hrxml_PatentHistory_s*)se);
-  for (se = &x->PublicationHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PublicationHistory->gg;
+       se && se->g.tok == zx_hrxml_PublicationHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PublicationHistory(c, (struct zx_hrxml_PublicationHistory_s*)se);
-  for (se = &x->SpeakingEventsHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpeakingEventsHistory->gg;
+       se && se->g.tok == zx_hrxml_SpeakingEventsHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SpeakingEventsHistory(c, (struct zx_hrxml_SpeakingEventsHistory_s*)se);
-  for (se = &x->Qualifications->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Qualifications->gg;
+       se && se->g.tok == zx_hrxml_Qualifications_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Qualifications(c, (struct zx_hrxml_Qualifications_s*)se);
-  for (se = &x->Languages->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Languages->gg;
+       se && se->g.tok == zx_hrxml_Languages_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Languages(c, (struct zx_hrxml_Languages_s*)se);
-  for (se = &x->Achievements->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Achievements->gg;
+       se && se->g.tok == zx_hrxml_Achievements_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Achievements(c, (struct zx_hrxml_Achievements_s*)se);
-  for (se = &x->Associations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Associations->gg;
+       se && se->g.tok == zx_hrxml_Associations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)se);
-  for (se = &x->References->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->References->gg;
+       se && se->g.tok == zx_hrxml_References_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_References(c, (struct zx_hrxml_References_s*)se);
-  for (se = &x->SecurityCredentials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityCredentials->gg;
+       se && se->g.tok == zx_hrxml_SecurityCredentials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SecurityCredentials(c, (struct zx_hrxml_SecurityCredentials_s*)se);
-  for (se = &x->ResumeAdditionalItems->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResumeAdditionalItems->gg;
+       se && se->g.tok == zx_hrxml_ResumeAdditionalItems_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ResumeAdditionalItems(c, (struct zx_hrxml_ResumeAdditionalItems_s*)se);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se);
-  for (se = &x->ProfessionalAssociations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProfessionalAssociations->gg;
+       se && se->g.tok == zx_hrxml_ProfessionalAssociations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ProfessionalAssociations(c, (struct zx_hrxml_ProfessionalAssociations_s*)se);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->RevisionDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RevisionDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+    se && se->g.tok == zx_hrxml_Comments_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RevisionDate;
+    se && se->g.tok == zx_hrxml_RevisionDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:RevisionDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -28243,7 +30953,7 @@ char* zx_ENC_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Stru
   ZX_OUT_TAG(p, "<hrxml:StructuredXMLResume");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -28255,48 +30965,90 @@ char* zx_ENC_SO_hrxml_StructuredXMLResume(struct zx_ctx* c, struct zx_hrxml_Stru
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactInfo->gg;
+       se && se->g.tok == zx_hrxml_ContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)se, p);
-  for (se = x->ExecutiveSummary; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ExecutiveSummary", sizeof("hrxml:ExecutiveSummary")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Objective; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Objective", sizeof("hrxml:Objective")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->EmploymentHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->ExecutiveSummary;
+       se && se->g.tok == zx_hrxml_ExecutiveSummary_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ExecutiveSummary", sizeof("hrxml:ExecutiveSummary")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Objective;
+       se && se->g.tok == zx_hrxml_Objective_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Objective", sizeof("hrxml:Objective")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EmploymentHistory->gg;
+       se && se->g.tok == zx_hrxml_EmploymentHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EmploymentHistory(c, (struct zx_hrxml_EmploymentHistory_s*)se, p);
-  for (se = &x->EducationHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->EducationHistory->gg;
+       se && se->g.tok == zx_hrxml_EducationHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EducationHistory(c, (struct zx_hrxml_EducationHistory_s*)se, p);
-  for (se = &x->LicensesAndCertifications->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->LicensesAndCertifications->gg;
+       se && se->g.tok == zx_hrxml_LicensesAndCertifications_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_LicensesAndCertifications(c, (struct zx_hrxml_LicensesAndCertifications_s*)se, p);
-  for (se = &x->MilitaryHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->MilitaryHistory->gg;
+       se && se->g.tok == zx_hrxml_MilitaryHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_MilitaryHistory(c, (struct zx_hrxml_MilitaryHistory_s*)se, p);
-  for (se = &x->PatentHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PatentHistory->gg;
+       se && se->g.tok == zx_hrxml_PatentHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PatentHistory(c, (struct zx_hrxml_PatentHistory_s*)se, p);
-  for (se = &x->PublicationHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PublicationHistory->gg;
+       se && se->g.tok == zx_hrxml_PublicationHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PublicationHistory(c, (struct zx_hrxml_PublicationHistory_s*)se, p);
-  for (se = &x->SpeakingEventsHistory->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SpeakingEventsHistory->gg;
+       se && se->g.tok == zx_hrxml_SpeakingEventsHistory_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SpeakingEventsHistory(c, (struct zx_hrxml_SpeakingEventsHistory_s*)se, p);
-  for (se = &x->Qualifications->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Qualifications->gg;
+       se && se->g.tok == zx_hrxml_Qualifications_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Qualifications(c, (struct zx_hrxml_Qualifications_s*)se, p);
-  for (se = &x->Languages->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Languages->gg;
+       se && se->g.tok == zx_hrxml_Languages_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Languages(c, (struct zx_hrxml_Languages_s*)se, p);
-  for (se = &x->Achievements->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Achievements->gg;
+       se && se->g.tok == zx_hrxml_Achievements_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Achievements(c, (struct zx_hrxml_Achievements_s*)se, p);
-  for (se = &x->Associations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Associations->gg;
+       se && se->g.tok == zx_hrxml_Associations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Associations(c, (struct zx_hrxml_Associations_s*)se, p);
-  for (se = &x->References->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->References->gg;
+       se && se->g.tok == zx_hrxml_References_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_References(c, (struct zx_hrxml_References_s*)se, p);
-  for (se = &x->SecurityCredentials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SecurityCredentials->gg;
+       se && se->g.tok == zx_hrxml_SecurityCredentials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SecurityCredentials(c, (struct zx_hrxml_SecurityCredentials_s*)se, p);
-  for (se = &x->ResumeAdditionalItems->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ResumeAdditionalItems->gg;
+       se && se->g.tok == zx_hrxml_ResumeAdditionalItems_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ResumeAdditionalItems(c, (struct zx_hrxml_ResumeAdditionalItems_s*)se, p);
-  for (se = &x->SupportingMaterials->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->SupportingMaterials->gg;
+       se && se->g.tok == zx_hrxml_SupportingMaterials_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_SupportingMaterials(c, (struct zx_hrxml_SupportingMaterials_s*)se, p);
-  for (se = &x->ProfessionalAssociations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ProfessionalAssociations->gg;
+       se && se->g.tok == zx_hrxml_ProfessionalAssociations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ProfessionalAssociations(c, (struct zx_hrxml_ProfessionalAssociations_s*)se, p);
-  for (se = x->Comments; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->RevisionDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RevisionDate", sizeof("hrxml:RevisionDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Comments;
+       se && se->g.tok == zx_hrxml_Comments_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Comments", sizeof("hrxml:Comments")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->RevisionDate;
+       se && se->g.tok == zx_hrxml_RevisionDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:RevisionDate", sizeof("hrxml:RevisionDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -28376,7 +31128,7 @@ int zx_LEN_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x
   int len = sizeof("<hrxml:SupplierId")-1 + 1 + sizeof("</hrxml:SupplierId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -28387,7 +31139,9 @@ int zx_LEN_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s* x
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -28415,7 +31169,7 @@ char* zx_ENC_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s*
   ZX_OUT_TAG(p, "<hrxml:SupplierId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -28430,7 +31184,9 @@ char* zx_ENC_SO_hrxml_SupplierId(struct zx_ctx* c, struct zx_hrxml_SupplierId_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -28511,7 +31267,7 @@ int zx_LEN_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Suppor
   int len = sizeof("<hrxml:SupportingMaterials")-1 + 1 + sizeof("</hrxml:SupportingMaterials>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -28519,11 +31275,17 @@ int zx_LEN_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Suppor
   int len = 0;
 #endif
   
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->AttachmentReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+    se && se->g.tok == zx_hrxml_Link_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AttachmentReference->gg;
+       se && se->g.tok == zx_hrxml_AttachmentReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_AttachmentReference(c, (struct zx_hrxml_AttachmentReference_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 
@@ -28551,7 +31313,7 @@ char* zx_ENC_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Supp
   ZX_OUT_TAG(p, "<hrxml:SupportingMaterials");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -28563,11 +31325,17 @@ char* zx_ENC_SO_hrxml_SupportingMaterials(struct zx_ctx* c, struct zx_hrxml_Supp
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Link; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->AttachmentReference->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->Link;
+       se && se->g.tok == zx_hrxml_Link_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Link", sizeof("hrxml:Link")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->AttachmentReference->gg;
+       se && se->g.tok == zx_hrxml_AttachmentReference_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_AttachmentReference(c, (struct zx_hrxml_AttachmentReference_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -28648,7 +31416,7 @@ int zx_LEN_SO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x )
   int len = sizeof("<hrxml:TTYTDD")-1 + 1 + sizeof("</hrxml:TTYTDD>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -28656,8 +31424,10 @@ int zx_LEN_SO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x )
   int len = 0;
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+    se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -28684,7 +31454,7 @@ char* zx_ENC_SO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x, char
   ZX_OUT_TAG(p, "<hrxml:TTYTDD");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -28696,8 +31466,10 @@ char* zx_ENC_SO_hrxml_TTYTDD(struct zx_ctx* c, struct zx_hrxml_TTYTDD_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+       se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -28777,7 +31549,7 @@ int zx_LEN_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x )
   int len = sizeof("<hrxml:TaxId")-1 + 1 + sizeof("</hrxml:TaxId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -28788,7 +31560,9 @@ int zx_LEN_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -28816,7 +31590,7 @@ char* zx_ENC_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, char* 
   ZX_OUT_TAG(p, "<hrxml:TaxId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -28831,7 +31605,9 @@ char* zx_ENC_SO_hrxml_TaxId(struct zx_ctx* c, struct zx_hrxml_TaxId_s* x, char* 
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -28912,7 +31688,7 @@ int zx_LEN_SO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s* x
   int len = sizeof("<hrxml:TaxonomyId")-1 + 1 + sizeof("</hrxml:TaxonomyId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->description, sizeof("description")-1, &pop_seen);
   len += zx_attr_so_len(c, x->id, sizeof("id")-1, &pop_seen);
@@ -28949,7 +31725,7 @@ char* zx_ENC_SO_hrxml_TaxonomyId(struct zx_ctx* c, struct zx_hrxml_TaxonomyId_s*
   ZX_OUT_TAG(p, "<hrxml:TaxonomyId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -29043,7 +31819,7 @@ int zx_LEN_SO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyName_
   int len = sizeof("<hrxml:TaxonomyName")-1 + 1 + sizeof("</hrxml:TaxonomyName>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->version, sizeof("version")-1, &pop_seen);
 
@@ -29078,7 +31854,7 @@ char* zx_ENC_SO_hrxml_TaxonomyName(struct zx_ctx* c, struct zx_hrxml_TaxonomyNam
   ZX_OUT_TAG(p, "<hrxml:TaxonomyName");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -29170,7 +31946,7 @@ int zx_LEN_SO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x )
   int len = sizeof("<hrxml:Telephone")-1 + 1 + sizeof("</hrxml:Telephone>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -29178,8 +31954,10 @@ int zx_LEN_SO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x )
   int len = 0;
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+    se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -29206,7 +31984,7 @@ char* zx_ENC_SO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x
   ZX_OUT_TAG(p, "<hrxml:Telephone");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -29218,8 +31996,10 @@ char* zx_ENC_SO_hrxml_Telephone(struct zx_ctx* c, struct zx_hrxml_Telephone_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->FormattedNumber; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->FormattedNumber;
+       se && se->g.tok == zx_hrxml_FormattedNumber_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:FormattedNumber", sizeof("hrxml:FormattedNumber")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -29299,7 +32079,7 @@ int zx_LEN_SO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_
   int len = sizeof("<hrxml:TermOfNotice")-1 + 1 + sizeof("</hrxml:TermOfNotice>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -29307,10 +32087,14 @@ int zx_LEN_SO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotice_
   int len = 0;
 #endif
   
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Value")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Interval; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Interval")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Value;
+    se && se->g.tok == zx_hrxml_Value_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Value")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Interval;
+    se && se->g.tok == zx_hrxml_Interval_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Interval")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -29337,7 +32121,7 @@ char* zx_ENC_SO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotic
   ZX_OUT_TAG(p, "<hrxml:TermOfNotice");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -29349,10 +32133,14 @@ char* zx_ENC_SO_hrxml_TermOfNotice(struct zx_ctx* c, struct zx_hrxml_TermOfNotic
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Value; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Value", sizeof("hrxml:Value")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Interval; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Interval", sizeof("hrxml:Interval")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Value;
+       se && se->g.tok == zx_hrxml_Value_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Value", sizeof("hrxml:Value")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Interval;
+       se && se->g.tok == zx_hrxml_Interval_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Interval", sizeof("hrxml:Interval")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -29432,7 +32220,7 @@ int zx_LEN_SO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x )
   int len = sizeof("<hrxml:TimeMax")-1 + 1 + sizeof("</hrxml:TimeMax>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->unitOfMeasure, sizeof("unitOfMeasure")-1, &pop_seen);
 
@@ -29467,7 +32255,7 @@ char* zx_ENC_SO_hrxml_TimeMax(struct zx_ctx* c, struct zx_hrxml_TimeMax_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:TimeMax");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -29559,7 +32347,7 @@ int zx_LEN_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAl
   int len = sizeof("<hrxml:TimeOffAllowance")-1 + 1 + sizeof("</hrxml:TimeOffAllowance>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->timeOffType, sizeof("timeOffType")-1, &pop_seen);
 
@@ -29568,7 +32356,9 @@ int zx_LEN_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOffAl
   int len = 0;
 #endif
   
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
 
 
@@ -29596,7 +32386,7 @@ char* zx_ENC_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOff
   ZX_OUT_TAG(p, "<hrxml:TimeOffAllowance");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -29609,7 +32399,9 @@ char* zx_ENC_SO_hrxml_TimeOffAllowance(struct zx_ctx* c, struct zx_hrxml_TimeOff
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -29690,7 +32482,7 @@ int zx_LEN_SO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x )
   int len = sizeof("<hrxml:Travel")-1 + 1 + sizeof("</hrxml:Travel>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -29698,12 +32490,18 @@ int zx_LEN_SO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x )
   int len = 0;
 #endif
   
-  for (se = x->Applicable; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Applicable")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->TravelFrequency; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:TravelFrequency")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->TravelConsiderations; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:TravelConsiderations")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Applicable;
+    se && se->g.tok == zx_hrxml_Applicable_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Applicable")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->TravelFrequency;
+    se && se->g.tok == zx_hrxml_TravelFrequency_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:TravelFrequency")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->TravelConsiderations;
+    se && se->g.tok == zx_hrxml_TravelConsiderations_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:TravelConsiderations")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -29730,7 +32528,7 @@ char* zx_ENC_SO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x, char
   ZX_OUT_TAG(p, "<hrxml:Travel");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -29742,12 +32540,18 @@ char* zx_ENC_SO_hrxml_Travel(struct zx_ctx* c, struct zx_hrxml_Travel_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = x->Applicable; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Applicable", sizeof("hrxml:Applicable")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->TravelFrequency; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:TravelFrequency", sizeof("hrxml:TravelFrequency")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->TravelConsiderations; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:TravelConsiderations", sizeof("hrxml:TravelConsiderations")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->Applicable;
+       se && se->g.tok == zx_hrxml_Applicable_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Applicable", sizeof("hrxml:Applicable")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->TravelFrequency;
+       se && se->g.tok == zx_hrxml_TravelFrequency_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:TravelFrequency", sizeof("hrxml:TravelFrequency")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->TravelConsiderations;
+       se && se->g.tok == zx_hrxml_TravelConsiderations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:TravelConsiderations", sizeof("hrxml:TravelConsiderations")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -29827,9 +32631,9 @@ int zx_LEN_SO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelDir
   int len = sizeof("<hrxml:TravelDirections")-1 + 1 + sizeof("</hrxml:TravelDirections>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->lang, sizeof("xml:lang")-1, &pop_seen);
 
@@ -29864,9 +32668,9 @@ char* zx_ENC_SO_hrxml_TravelDirections(struct zx_ctx* c, struct zx_hrxml_TravelD
   ZX_OUT_TAG(p, "<hrxml:TravelDirections");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->lang)
-    zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_xml_NS, &pop_seen);
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -29958,7 +32762,7 @@ int zx_LEN_SO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x )
   int len = sizeof("<hrxml:UserArea")-1 + 1 + sizeof("</hrxml:UserArea>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -29992,7 +32796,7 @@ char* zx_ENC_SO_hrxml_UserArea(struct zx_ctx* c, struct zx_hrxml_UserArea_s* x, 
   ZX_OUT_TAG(p, "<hrxml:UserArea");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -30083,7 +32887,7 @@ int zx_LEN_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x )
   int len = sizeof("<hrxml:UserId")-1 + 1 + sizeof("</hrxml:UserId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -30094,7 +32898,9 @@ int zx_LEN_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x )
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -30122,7 +32928,7 @@ char* zx_ENC_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, char
   ZX_OUT_TAG(p, "<hrxml:UserId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -30137,7 +32943,9 @@ char* zx_ENC_SO_hrxml_UserId(struct zx_ctx* c, struct zx_hrxml_UserId_s* x, char
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -30218,7 +33026,7 @@ int zx_LEN_SO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x )
   int len = sizeof("<hrxml:ValidFrom")-1 + 1 + sizeof("</hrxml:ValidFrom>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -30227,16 +33035,26 @@ int zx_LEN_SO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x )
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -30263,7 +33081,7 @@ char* zx_ENC_SO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x
   ZX_OUT_TAG(p, "<hrxml:ValidFrom");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -30276,16 +33094,26 @@ char* zx_ENC_SO_hrxml_ValidFrom(struct zx_ctx* c, struct zx_hrxml_ValidFrom_s* x
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -30365,7 +33193,7 @@ int zx_LEN_SO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x )
   int len = sizeof("<hrxml:ValidTo")-1 + 1 + sizeof("</hrxml:ValidTo>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->dateDescription, sizeof("dateDescription")-1, &pop_seen);
 
@@ -30374,16 +33202,26 @@ int zx_LEN_SO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x )
   int len = 0;
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+    se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+    se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+    se && se->g.tok == zx_hrxml_Year_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+    se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+    se && se->g.tok == zx_hrxml_StringDate_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -30410,7 +33248,7 @@ char* zx_ENC_SO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x, ch
   ZX_OUT_TAG(p, "<hrxml:ValidTo");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -30423,16 +33261,26 @@ char* zx_ENC_SO_hrxml_ValidTo(struct zx_ctx* c, struct zx_hrxml_ValidTo_s* x, ch
   /* root node has no begin tag */
 #endif
   
-  for (se = x->AnyDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->YearMonth; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->Year; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->MonthDay; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->StringDate; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->AnyDate;
+       se && se->g.tok == zx_hrxml_AnyDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AnyDate", sizeof("hrxml:AnyDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->YearMonth;
+       se && se->g.tok == zx_hrxml_YearMonth_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:YearMonth", sizeof("hrxml:YearMonth")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->Year;
+       se && se->g.tok == zx_hrxml_Year_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:Year", sizeof("hrxml:Year")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->MonthDay;
+       se && se->g.tok == zx_hrxml_MonthDay_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:MonthDay", sizeof("hrxml:MonthDay")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->StringDate;
+       se && se->g.tok == zx_hrxml_StringDate_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:StringDate", sizeof("hrxml:StringDate")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -30512,7 +33360,7 @@ int zx_LEN_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_
   int len = sizeof("<hrxml:Verification")-1 + 1 + sizeof("</hrxml:Verification>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -30520,22 +33368,38 @@ int zx_LEN_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verification_
   int len = 0;
 #endif
   
-  for (se = &x->ContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactInfo->gg;
+       se && se->g.tok == zx_hrxml_ContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)se);
-  for (se = x->ReasonForLeaving; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ReasonForLeaving")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PermissionToContact; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PermissionToContact")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->VerifyEmployment; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:VerifyEmployment")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EligibleForRehire; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EligibleForRehire")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AttendanceRating; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AttendanceRating")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->OverallPerformanceRating; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OverallPerformanceRating")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->QuestionAnswerPair; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:QuestionAnswerPair")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ReasonForLeaving;
+    se && se->g.tok == zx_hrxml_ReasonForLeaving_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:ReasonForLeaving")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PermissionToContact;
+    se && se->g.tok == zx_hrxml_PermissionToContact_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:PermissionToContact")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->VerifyEmployment;
+    se && se->g.tok == zx_hrxml_VerifyEmployment_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:VerifyEmployment")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EligibleForRehire;
+    se && se->g.tok == zx_hrxml_EligibleForRehire_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EligibleForRehire")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AttendanceRating;
+    se && se->g.tok == zx_hrxml_AttendanceRating_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:AttendanceRating")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OverallPerformanceRating;
+    se && se->g.tok == zx_hrxml_OverallPerformanceRating_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:OverallPerformanceRating")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->QuestionAnswerPair;
+    se && se->g.tok == zx_hrxml_QuestionAnswerPair_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:QuestionAnswerPair")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
 
   len += zx_len_so_common(c, &x->gg, &pop_seen);
@@ -30562,7 +33426,7 @@ char* zx_ENC_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verificatio
   ZX_OUT_TAG(p, "<hrxml:Verification");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -30574,22 +33438,38 @@ char* zx_ENC_SO_hrxml_Verification(struct zx_ctx* c, struct zx_hrxml_Verificatio
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->ContactInfo->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ContactInfo->gg;
+       se && se->g.tok == zx_hrxml_ContactInfo_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ContactInfo(c, (struct zx_hrxml_ContactInfo_s*)se, p);
-  for (se = x->ReasonForLeaving; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ReasonForLeaving", sizeof("hrxml:ReasonForLeaving")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->PermissionToContact; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PermissionToContact", sizeof("hrxml:PermissionToContact")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->VerifyEmployment; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:VerifyEmployment", sizeof("hrxml:VerifyEmployment")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->EligibleForRehire; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EligibleForRehire", sizeof("hrxml:EligibleForRehire")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->AttendanceRating; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AttendanceRating", sizeof("hrxml:AttendanceRating")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->OverallPerformanceRating; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OverallPerformanceRating", sizeof("hrxml:OverallPerformanceRating")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = x->QuestionAnswerPair; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:QuestionAnswerPair", sizeof("hrxml:QuestionAnswerPair")-1, zx_ns_tab+zx_hrxml_NS);
+  for (se = x->ReasonForLeaving;
+       se && se->g.tok == zx_hrxml_ReasonForLeaving_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:ReasonForLeaving", sizeof("hrxml:ReasonForLeaving")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->PermissionToContact;
+       se && se->g.tok == zx_hrxml_PermissionToContact_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:PermissionToContact", sizeof("hrxml:PermissionToContact")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->VerifyEmployment;
+       se && se->g.tok == zx_hrxml_VerifyEmployment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:VerifyEmployment", sizeof("hrxml:VerifyEmployment")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->EligibleForRehire;
+       se && se->g.tok == zx_hrxml_EligibleForRehire_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EligibleForRehire", sizeof("hrxml:EligibleForRehire")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->AttendanceRating;
+       se && se->g.tok == zx_hrxml_AttendanceRating_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:AttendanceRating", sizeof("hrxml:AttendanceRating")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->OverallPerformanceRating;
+       se && se->g.tok == zx_hrxml_OverallPerformanceRating_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:OverallPerformanceRating", sizeof("hrxml:OverallPerformanceRating")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = x->QuestionAnswerPair;
+       se && se->g.tok == zx_hrxml_QuestionAnswerPair_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:QuestionAnswerPair", sizeof("hrxml:QuestionAnswerPair")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
   
@@ -30669,7 +33549,7 @@ int zx_LEN_SO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_VerticalA
   int len = sizeof("<hrxml:VerticalAccuracy")-1 + 1 + sizeof("</hrxml:VerticalAccuracy>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -30703,7 +33583,7 @@ char* zx_ENC_SO_hrxml_VerticalAccuracy(struct zx_ctx* c, struct zx_hrxml_Vertica
   ZX_OUT_TAG(p, "<hrxml:VerticalAccuracy");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -30794,7 +33674,7 @@ int zx_LEN_SO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s* x
   int len = sizeof("<hrxml:VisaStatus")-1 + 1 + sizeof("</hrxml:VisaStatus>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->countryCode, sizeof("countryCode")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -30831,7 +33711,7 @@ char* zx_ENC_SO_hrxml_VisaStatus(struct zx_ctx* c, struct zx_hrxml_VisaStatus_s*
   ZX_OUT_TAG(p, "<hrxml:VisaStatus");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -30925,7 +33805,7 @@ int zx_LEN_SO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x )
   int len = sizeof("<hrxml:Weight")-1 + 1 + sizeof("</hrxml:Weight>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->description, sizeof("description")-1, &pop_seen);
   len += zx_attr_so_len(c, x->interval, sizeof("interval")-1, &pop_seen);
@@ -30963,7 +33843,7 @@ char* zx_ENC_SO_hrxml_Weight(struct zx_ctx* c, struct zx_hrxml_Weight_s* x, char
   ZX_OUT_TAG(p, "<hrxml:Weight");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -31058,7 +33938,7 @@ int zx_LEN_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x )
   int len = sizeof("<hrxml:WorkSite")-1 + 1 + sizeof("</hrxml:WorkSite>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -31066,21 +33946,37 @@ int zx_LEN_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x )
   int len = 0;
 #endif
   
-  for (se = x->WorkSiteName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WorkSiteName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->WorkSiteId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->WorkSiteName;
+    se && se->g.tok == zx_hrxml_WorkSiteName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:WorkSiteName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->WorkSiteId->gg;
+       se && se->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)se);
-  for (se = &x->Details->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Details->gg;
+       se && se->g.tok == zx_hrxml_Details_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Details(c, (struct zx_hrxml_Details_s*)se);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se);
-  for (se = &x->TravelDirections->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TravelDirections->gg;
+       se && se->g.tok == zx_hrxml_TravelDirections_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)se);
-  for (se = &x->ParkingInstructions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ParkingInstructions->gg;
+       se && se->g.tok == zx_hrxml_ParkingInstructions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_ParkingInstructions(c, (struct zx_hrxml_ParkingInstructions_s*)se);
-  for (se = &x->WorkSiteEnvironment->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSiteEnvironment->gg;
+       se && se->g.tok == zx_hrxml_WorkSiteEnvironment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_WorkSiteEnvironment(c, (struct zx_hrxml_WorkSiteEnvironment_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -31108,7 +34004,7 @@ char* zx_ENC_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, 
   ZX_OUT_TAG(p, "<hrxml:WorkSite");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -31120,21 +34016,37 @@ char* zx_ENC_SO_hrxml_WorkSite(struct zx_ctx* c, struct zx_hrxml_WorkSite_s* x, 
   /* root node has no begin tag */
 #endif
   
-  for (se = x->WorkSiteName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WorkSiteName", sizeof("hrxml:WorkSiteName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->WorkSiteId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->WorkSiteName;
+       se && se->g.tok == zx_hrxml_WorkSiteName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:WorkSiteName", sizeof("hrxml:WorkSiteName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->WorkSiteId->gg;
+       se && se->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)se, p);
-  for (se = &x->Details->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Details->gg;
+       se && se->g.tok == zx_hrxml_Details_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Details(c, (struct zx_hrxml_Details_s*)se, p);
-  for (se = &x->PostalAddress->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->PostalAddress->gg;
+       se && se->g.tok == zx_hrxml_PostalAddress_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_PostalAddress(c, (struct zx_hrxml_PostalAddress_s*)se, p);
-  for (se = &x->TravelDirections->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->TravelDirections->gg;
+       se && se->g.tok == zx_hrxml_TravelDirections_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_TravelDirections(c, (struct zx_hrxml_TravelDirections_s*)se, p);
-  for (se = &x->ParkingInstructions->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->ParkingInstructions->gg;
+       se && se->g.tok == zx_hrxml_ParkingInstructions_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_ParkingInstructions(c, (struct zx_hrxml_ParkingInstructions_s*)se, p);
-  for (se = &x->WorkSiteEnvironment->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSiteEnvironment->gg;
+       se && se->g.tok == zx_hrxml_WorkSiteEnvironment_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_WorkSiteEnvironment(c, (struct zx_hrxml_WorkSiteEnvironment_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -31215,7 +34127,7 @@ int zx_LEN_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSi
   int len = sizeof("<hrxml:WorkSiteEnvironment")-1 + 1 + sizeof("</hrxml:WorkSiteEnvironment>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -31223,17 +34135,29 @@ int zx_LEN_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_WorkSi
   int len = 0;
 #endif
   
-  for (se = x->EnvironmentName; se; se = (struct zx_elem_s*)se->g.n)
-    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EnvironmentName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->EnvironmentId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EnvironmentName;
+    se && se->g.tok == zx_hrxml_EnvironmentName_ELEM;
+    se = (struct zx_elem_s*)se->g.n)
+    len += zx_LEN_SO_simple_elem(c,se, sizeof("hrxml:EnvironmentName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EnvironmentId->gg;
+       se && se->g.tok == zx_hrxml_EnvironmentId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_EnvironmentId(c, (struct zx_hrxml_EnvironmentId_s*)se);
-  for (se = &x->WorkSiteId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSiteId->gg;
+       se && se->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)se);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se);
-  for (se = &x->Considerations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Considerations->gg;
+       se && se->g.tok == zx_hrxml_Considerations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_Considerations(c, (struct zx_hrxml_Considerations_s*)se);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se);
 
 
@@ -31261,7 +34185,7 @@ char* zx_ENC_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_Work
   ZX_OUT_TAG(p, "<hrxml:WorkSiteEnvironment");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -31273,17 +34197,29 @@ char* zx_ENC_SO_hrxml_WorkSiteEnvironment(struct zx_ctx* c, struct zx_hrxml_Work
   /* root node has no begin tag */
 #endif
   
-  for (se = x->EnvironmentName; se; se = (struct zx_elem_s*)se->g.n)
-    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EnvironmentName", sizeof("hrxml:EnvironmentName")-1, zx_ns_tab+zx_hrxml_NS);
-  for (se = &x->EnvironmentId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = x->EnvironmentName;
+       se && se->g.tok == zx_hrxml_EnvironmentName_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
+    p = zx_ENC_SO_simple_elem(c, se, p, "hrxml:EnvironmentName", sizeof("hrxml:EnvironmentName")-1, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT));
+  for (se = &x->EnvironmentId->gg;
+       se && se->g.tok == zx_hrxml_EnvironmentId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_EnvironmentId(c, (struct zx_hrxml_EnvironmentId_s*)se, p);
-  for (se = &x->WorkSiteId->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->WorkSiteId->gg;
+       se && se->g.tok == zx_hrxml_WorkSiteId_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_WorkSiteId(c, (struct zx_hrxml_WorkSiteId_s*)se, p);
-  for (se = &x->Description->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Description->gg;
+       se && se->g.tok == zx_hrxml_Description_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Description(c, (struct zx_hrxml_Description_s*)se, p);
-  for (se = &x->Considerations->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->Considerations->gg;
+       se && se->g.tok == zx_hrxml_Considerations_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_Considerations(c, (struct zx_hrxml_Considerations_s*)se, p);
-  for (se = &x->UserArea->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->UserArea->gg;
+       se && se->g.tok == zx_hrxml_UserArea_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_UserArea(c, (struct zx_hrxml_UserArea_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
@@ -31364,7 +34300,7 @@ int zx_LEN_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x
   int len = sizeof("<hrxml:WorkSiteId")-1 + 1 + sizeof("</hrxml:WorkSiteId>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->idOwner, sizeof("idOwner")-1, &pop_seen);
   len += zx_attr_so_len(c, x->validFrom, sizeof("validFrom")-1, &pop_seen);
@@ -31375,7 +34311,9 @@ int zx_LEN_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s* x
   int len = 0;
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     len += zx_LEN_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se);
 
 
@@ -31403,7 +34341,7 @@ char* zx_ENC_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s*
   ZX_OUT_TAG(p, "<hrxml:WorkSiteId");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+zx_hrxml_NS, &pop_seen);
+  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_hrxml_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -31418,7 +34356,9 @@ char* zx_ENC_SO_hrxml_WorkSiteId(struct zx_ctx* c, struct zx_hrxml_WorkSiteId_s*
   /* root node has no begin tag */
 #endif
   
-  for (se = &x->IdValue->gg; se; se = (struct zx_elem_s*)se->g.n)
+  for (se = &x->IdValue->gg;
+       se && se->g.tok == zx_hrxml_IdValue_ELEM;
+       se = (struct zx_elem_s*)se->g.n)
     p = zx_ENC_SO_hrxml_IdValue(c, (struct zx_hrxml_IdValue_s*)se, p);
 
   p = zx_enc_so_unknown_elems_and_content(c, p, &x->gg);
