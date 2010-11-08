@@ -345,6 +345,10 @@ int zx_str_ends_in(struct zx_str* ss, int len, const char* suffix)
 
 void zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont)
 {
+  if (!cont || !x) {
+    ERR("Call to zx_add_content(c,%p,%p) with null values", x, cont);
+    return x;
+  }
   cont->tok = ZX_TOK_DATA;
   cont->n = &x->kids->g;
   x->kids = (struct zx_elem_s*)cont;

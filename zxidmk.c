@@ -398,7 +398,8 @@ struct zx_xac_Attribute_s* zxid_mk_xacml_simple_at(zxid_conf* cf, struct zx_xac_
   ZX_NEXT(at) = (void*)aa;
   at->AttributeId = zx_ref_len_attr(cf->ctx, zx_AttributeId_ATTR, atid->len, atid->s);
   at->DataType = zx_ref_len_attr(cf->ctx, zx_DataType_ATTR, attype->len, attype->s);
-  at->Issuer = zx_ref_len_attr(cf->ctx, zx_Issuer_ATTR, atissuer->len, atissuer->s);
+  if (atissuer)
+    at->Issuer = zx_ref_len_attr(cf->ctx, zx_Issuer_ATTR, atissuer->len, atissuer->s);
   //at->AttributeValue = zx_NEW_xac_AttributeValue(cf->ctx, &at->gg);
   at->AttributeValue = zx_new_simple_elem(cf->ctx, &at->gg, zx_xac_AttributeValue_ELEM, atvalue);
   return at;

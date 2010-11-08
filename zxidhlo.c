@@ -47,8 +47,8 @@ Usage: zxidhlo [options]   (when used as CGI, no options can be supplied)\n\
 /* CONFIG: You must edit the URL to match your domain name and port */
 
 #define ZXIDHLO "zxidhlo"
-#define CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
-//#define CONF "PATH=/var/zxid/&URL=http://sp1.zxidsp.org:8081/" ZXIDHLO "&NOSIG_FATAL=0"
+//#define CONF "PATH=/var/zxid/&URL=http://sp1.zxid.org/demohlo"
+#define CONF "PATH=/var/zxid/&URL=http://sp1.zxidsp.org:8081/" ZXIDHLO "&NOSIG_FATAL=0&DUP_A7N_FATAL=0&DUP_MSG_FATAL=0"
 //#define CONF "URL=https://sp1.zxidsp.org:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 //#define CONF "URL=https://lima.tas3.eu:8443/" ZXIDHLO "&NOSIG_FATAL=0&PATH=/var/zxid/"
 
