@@ -68,14 +68,19 @@ Here are example docs for SimpleSAMLPHP, or Shibboleth:
     - Sort unknown attributes wrt known attributes in SO and WO enc
     - zxpasswd account creation problems
         echo -n tas3 | ~/zxid/zxpasswd -at 'cn: Mallory McBean$givenname: Mallory$sn: McBeanBean$o: Laskenta Keskus$eduPersonEntitlement: admin$' -c mallory
+
+zxid-0.71:: 8.11.2010
+    - Moved back to global elems hash, but with separate namespace hash
     NOTPUB
 
-zxid-0.70:: 21.10.2010
+zxid-0.70:: 7.11.2010
     - zxdecode: assertion decode and decryption support
     - zxdecode: sha1 validation without sig validation using -s -s
     - Fix canonicalization of attribute names with namespace prefixes
     - Fix detection of namespace of an XML attribute, see t/shib-a7n2.xml
     - Some optimizations based on gcov and gprof
+    - Moved to per namespace elem hashes and namespace hash
+    - Fairly complete re-engineering/re-factoring of the generated enc/dec code
 
 zxid-0.69:: 20.10.2010
     - Added DeployingZxidServlets.txt, ZxidSSOFilter.java, and ZxidServlet.java by Stijn Lievens

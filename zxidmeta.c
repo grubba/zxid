@@ -511,9 +511,9 @@ struct zx_ds_KeyInfo_s* zxid_key_info(zxid_conf* cf, struct zx_elem_s* father, X
 /* Called by:  zxid_idp_sso_desc x2, zxid_sp_sso_desc x2 */
 struct zx_md_KeyDescriptor_s* zxid_key_desc(zxid_conf* cf, struct zx_elem_s* father, char* use, X509* x)
 {
-  struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx,father);
+  struct zx_md_KeyDescriptor_s* kd = zx_NEW_md_KeyDescriptor(cf->ctx, father);
   kd->use = zx_ref_attr(cf->ctx, zx_use_ATTR, use);
-  kd->KeyInfo = zxid_key_info(cf, father, x);
+  kd->KeyInfo = zxid_key_info(cf, &kd->gg, x);
   return kd;
 }
 

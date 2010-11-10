@@ -901,6 +901,7 @@ CMD('COT2', 'zxcot list swap', "./zxcot -s");
 CMD('COT3', 'zxcot list s2', "./zxcot -s -s");
 CMD('COT4', 'zxcot get idp meta dry', "./zxcot -g http://idp.tas3.pt:8081/zxididp?o=B -n -v");
 CMD('COT5', 'zxcot get sp meta dry', "./zxcot -g http://sp.tas3.pt:8080/zxidservlet/sso?o=B -n -v");
+CMD('COT6', 'zxcot my meta', "./zxcot -m");
 
 CMD('SIG1',  'sig vry shib resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.xml");
 CMD('SIG2',  'sig vry shib post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <cal-private/shib-resp.qs");
