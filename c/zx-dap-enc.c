@@ -147,7 +147,8 @@ char* zx_ENC_SO_dap_Create(struct zx_ctx* c, struct zx_dap_Create_s* x, char* p 
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -302,7 +303,8 @@ char* zx_ENC_SO_dap_CreateItem(struct zx_ctx* c, struct zx_dap_CreateItem_s* x, 
   p = zx_attr_so_enc(p, x->objectType, " dst:objectType=\"", sizeof(" dst:objectType=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -451,7 +453,8 @@ char* zx_ENC_SO_dap_CreateResponse(struct zx_ctx* c, struct zx_dap_CreateRespons
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -612,7 +615,8 @@ char* zx_ENC_SO_dap_Data(struct zx_ctx* c, struct zx_dap_Data_s* x, char* p )
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -759,7 +763,8 @@ char* zx_ENC_SO_dap_Delete(struct zx_ctx* c, struct zx_dap_Delete_s* x, char* p 
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -910,7 +915,8 @@ char* zx_ENC_SO_dap_DeleteItem(struct zx_ctx* c, struct zx_dap_DeleteItem_s* x, 
   p = zx_attr_so_enc(p, x->predefined, " dst:predefined=\"", sizeof(" dst:predefined=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1049,7 +1055,8 @@ char* zx_ENC_SO_dap_DeleteResponse(struct zx_ctx* c, struct zx_dap_DeleteRespons
   p = zx_attr_so_enc(p, x->itemIDRef, " itemIDRef=\"", sizeof(" itemIDRef=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1200,7 +1207,8 @@ char* zx_ENC_SO_dap_ItemData(struct zx_ctx* c, struct zx_dap_ItemData_s* x, char
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1355,7 +1363,8 @@ char* zx_ENC_SO_dap_LDIF(struct zx_ctx* c, struct zx_dap_LDIF_s* x, char* p )
   p = zx_attr_so_enc(p, x->script, " dst:script=\"", sizeof(" dst:script=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1502,7 +1511,8 @@ char* zx_ENC_SO_dap_Modify(struct zx_ctx* c, struct zx_dap_Modify_s* x, char* p 
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1667,7 +1677,8 @@ char* zx_ENC_SO_dap_ModifyItem(struct zx_ctx* c, struct zx_dap_ModifyItem_s* x, 
   p = zx_attr_so_enc(p, x->predefined, " dst:predefined=\"", sizeof(" dst:predefined=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1820,7 +1831,8 @@ char* zx_ENC_SO_dap_ModifyResponse(struct zx_ctx* c, struct zx_dap_ModifyRespons
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1965,7 +1977,8 @@ char* zx_ENC_SO_dap_NewData(struct zx_ctx* c, struct zx_dap_NewData_s* x, char* 
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2114,7 +2127,8 @@ char* zx_ENC_SO_dap_Notification(struct zx_ctx* c, struct zx_dap_Notification_s*
   p = zx_attr_so_enc(p, x->subscriptionID, " subscriptionID=\"", sizeof(" subscriptionID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2263,7 +2277,8 @@ char* zx_ENC_SO_dap_Notify(struct zx_ctx* c, struct zx_dap_Notify_s* x, char* p 
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2406,7 +2421,8 @@ char* zx_ENC_SO_dap_NotifyResponse(struct zx_ctx* c, struct zx_dap_NotifyRespons
   p = zx_attr_so_enc(p, x->itemIDRef, " itemIDRef=\"", sizeof(" itemIDRef=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2561,7 +2577,8 @@ char* zx_ENC_SO_dap_Query(struct zx_ctx* c, struct zx_dap_Query_s* x, char* p )
   p = zx_attr_so_enc(p, x->itemID, " dst:itemID=\"", sizeof(" dst:itemID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2740,7 +2757,8 @@ char* zx_ENC_SO_dap_QueryItem(struct zx_ctx* c, struct zx_dap_QueryItem_s* x, ch
   p = zx_attr_so_enc(p, x->predefined, " dst:predefined=\"", sizeof(" dst:predefined=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2901,7 +2919,8 @@ char* zx_ENC_SO_dap_QueryResponse(struct zx_ctx* c, struct zx_dap_QueryResponse_
   p = zx_attr_so_enc(p, x->itemIDRef, " dst:itemIDRef=\"", sizeof(" dst:itemIDRef=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3072,7 +3091,8 @@ char* zx_ENC_SO_dap_ResultQuery(struct zx_ctx* c, struct zx_dap_ResultQuery_s* x
   p = zx_attr_so_enc(p, x->predefined, " dst:predefined=\"", sizeof(" dst:predefined=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3229,7 +3249,8 @@ char* zx_ENC_SO_dap_Select(struct zx_ctx* c, struct zx_dap_Select_s* x, char* p 
   p = zx_attr_so_enc(p, x->typesonly, " typesonly=\"", sizeof(" typesonly=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3396,7 +3417,8 @@ char* zx_ENC_SO_dap_Subscription(struct zx_ctx* c, struct zx_dap_Subscription_s*
   p = zx_attr_so_enc(p, x->subscriptionID, " subscriptionID=\"", sizeof(" subscriptionID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3557,7 +3579,8 @@ char* zx_ENC_SO_dap_TestItem(struct zx_ctx* c, struct zx_dap_TestItem_s* x, char
   p = zx_attr_so_enc(p, x->predefined, " dst:predefined=\"", sizeof(" dst:predefined=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3706,7 +3729,8 @@ char* zx_ENC_SO_dap_TestOp(struct zx_ctx* c, struct zx_dap_TestOp_s* x, char* p 
   p = zx_attr_so_enc(p, x->typesonly, " typesonly=\"", sizeof(" typesonly=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */

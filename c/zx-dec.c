@@ -62,6 +62,7 @@ struct zx_root_s* zx_DEC_root(struct zx_ctx* c, struct zx_root_s* x , int n_deco
 
   x = ZX_ZALLOC(c, struct zx_root_s);
   x->gg.g.s = "";
+  x->gg.g.tok = zx_root_ELEM;
 
 
   /* Process contents until '</' */

@@ -133,7 +133,8 @@ char* zx_ENC_SO_pmm_PMActivate(struct zx_ctx* c, struct zx_pmm_PMActivate_s* x, 
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -274,7 +275,8 @@ char* zx_ENC_SO_pmm_PMActivateItem(struct zx_ctx* c, struct zx_pmm_PMActivateIte
   p = zx_attr_so_enc(p, x->itemID, " itemID=\"", sizeof(" itemID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -407,7 +409,8 @@ char* zx_ENC_SO_pmm_PMActivateResponse(struct zx_ctx* c, struct zx_pmm_PMActivat
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -544,7 +547,8 @@ char* zx_ENC_SO_pmm_PMDeactivate(struct zx_ctx* c, struct zx_pmm_PMDeactivate_s*
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -685,7 +689,8 @@ char* zx_ENC_SO_pmm_PMDeactivateItem(struct zx_ctx* c, struct zx_pmm_PMDeactivat
   p = zx_attr_so_enc(p, x->itemID, " itemID=\"", sizeof(" itemID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -818,7 +823,8 @@ char* zx_ENC_SO_pmm_PMDeactivateResponse(struct zx_ctx* c, struct zx_pmm_PMDeact
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -951,7 +957,8 @@ char* zx_ENC_SO_pmm_PMDelete(struct zx_ctx* c, struct zx_pmm_PMDelete_s* x, char
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1086,7 +1093,8 @@ char* zx_ENC_SO_pmm_PMDeleteItem(struct zx_ctx* c, struct zx_pmm_PMDeleteItem_s*
   p = zx_attr_so_enc(p, x->itemID, " itemID=\"", sizeof(" itemID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1219,7 +1227,8 @@ char* zx_ENC_SO_pmm_PMDeleteResponse(struct zx_ctx* c, struct zx_pmm_PMDeleteRes
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1352,7 +1361,8 @@ char* zx_ENC_SO_pmm_PMGetStatus(struct zx_ctx* c, struct zx_pmm_PMGetStatus_s* x
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1489,7 +1499,8 @@ char* zx_ENC_SO_pmm_PMGetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMGetSta
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1626,7 +1637,8 @@ char* zx_ENC_SO_pmm_PMSetStatus(struct zx_ctx* c, struct zx_pmm_PMSetStatus_s* x
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1759,7 +1771,8 @@ char* zx_ENC_SO_pmm_PMSetStatusResponse(struct zx_ctx* c, struct zx_pmm_PMSetSta
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1896,7 +1909,8 @@ char* zx_ENC_SO_pmm_PMUpdate(struct zx_ctx* c, struct zx_pmm_PMUpdate_s* x, char
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2039,7 +2053,8 @@ char* zx_ENC_SO_pmm_PMUpdateItem(struct zx_ctx* c, struct zx_pmm_PMUpdateItem_s*
   p = zx_attr_so_enc(p, x->type, " type=\"", sizeof(" type=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2172,7 +2187,8 @@ char* zx_ENC_SO_pmm_PMUpdateResponse(struct zx_ctx* c, struct zx_pmm_PMUpdateRes
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2315,7 +2331,8 @@ char* zx_ENC_SO_pmm_Provision(struct zx_ctx* c, struct zx_pmm_Provision_s* x, ch
   p = zx_attr_so_enc(p, x->wait, " wait=\"", sizeof(" wait=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2456,7 +2473,8 @@ char* zx_ENC_SO_pmm_ProvisionResponse(struct zx_ctx* c, struct zx_pmm_ProvisionR
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */

@@ -157,7 +157,8 @@ char* zx_ENC_SO_b_ApplicationEPR(struct zx_ctx* c, struct zx_b_ApplicationEPR_s*
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -314,7 +315,8 @@ char* zx_ENC_SO_b_Consent(struct zx_ctx* c, struct zx_b_Consent_s* x, char* p )
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -463,7 +465,8 @@ char* zx_ENC_SO_b_CredentialsContext(struct zx_ctx* c, struct zx_b_CredentialsCo
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -630,7 +633,8 @@ char* zx_ENC_SO_b_EndpointUpdate(struct zx_ctx* c, struct zx_b_EndpointUpdate_s*
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -785,7 +789,8 @@ char* zx_ENC_SO_b_Framework(struct zx_ctx* c, struct zx_b_Framework_s* x, char* 
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -942,7 +947,8 @@ char* zx_ENC_SO_b_InteractionService(struct zx_ctx* c, struct zx_b_InteractionSe
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1095,7 +1101,8 @@ char* zx_ENC_SO_b_ProcessingContext(struct zx_ctx* c, struct zx_b_ProcessingCont
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1238,7 +1245,8 @@ char* zx_ENC_SO_b_RedirectRequest(struct zx_ctx* c, struct zx_b_RedirectRequest_
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1383,7 +1391,8 @@ char* zx_ENC_SO_b_Sender(struct zx_ctx* c, struct zx_b_Sender_s* x, char* p )
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1540,7 +1549,8 @@ char* zx_ENC_SO_b_TargetIdentity(struct zx_ctx* c, struct zx_b_TargetIdentity_s*
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1699,7 +1709,8 @@ char* zx_ENC_SO_b_Timeout(struct zx_ctx* c, struct zx_b_Timeout_s* x, char* p )
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1850,7 +1861,8 @@ char* zx_ENC_SO_b_UsageDirective(struct zx_ctx* c, struct zx_b_UsageDirective_s*
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2011,7 +2023,8 @@ char* zx_ENC_SO_b_UserInteraction(struct zx_ctx* c, struct zx_b_UserInteraction_
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */

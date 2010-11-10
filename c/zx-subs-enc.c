@@ -133,7 +133,8 @@ char* zx_ENC_SO_subs_RefItem(struct zx_ctx* c, struct zx_subs_RefItem_s* x, char
   p = zx_attr_so_enc(p, x->itemIDRef, " lu:itemIDRef=\"", sizeof(" lu:itemIDRef=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */

@@ -369,20 +369,20 @@ int main(int argc, char** argv, char** env)
     if (!r)
       DIE("Decode failure");
 
-    len_so = zx_LEN_SO_root(&ctx, r);
-    D("Enc so len %d chars", len_so);
-
-    ctx.bas = so_out;
-    so_p = zx_ENC_SO_root(&ctx, r, so_out);
-    if (!so_p)
-      DIE("encoding error");
-
     len_wo = zx_LEN_WO_any_elem(&ctx, &r->gg);
     D("Enc wo len %d chars", len_wo);
 
     ctx.bas = wo_out;
     wo_p = zx_ENC_WO_any_elem(&ctx, &r->gg, wo_out);
     if (!wo_p)
+      DIE("encoding error");
+
+    len_so = zx_LEN_SO_root(&ctx, r);
+    D("Enc so len %d chars", len_so);
+
+    ctx.bas = so_out;
+    so_p = zx_ENC_SO_root(&ctx, r, so_out);
+    if (!so_p)
       DIE("encoding error");
 
     zx_free_elem(&ctx, &r->gg, 0);

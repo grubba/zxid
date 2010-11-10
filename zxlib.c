@@ -409,9 +409,16 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
   struct zx_ns_s* pop_seen = 0;
   struct zx_attr_s* attr;
   struct zx_elem_s* kid;
-  int len;
+  int len = 0;
   //struct zx_elem_s* kid;
   switch (x->g.tok) {
+  case zx_root_ELEM:
+    len = 0;
+    if (c->inc_ns_len)
+      len += zx_len_inc_ns(c, &pop_seen);
+    for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.n)))
+      len += zx_LEN_WO_any_elem(c, kid);
+    break;
   case ZX_TOK_DATA:
     return x->g.len;
   case zx_ds_Signature_ELEM:
@@ -422,6 +429,7 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
     /*    <   elem       >   </  elem       >  */
     len = 1 + x->g.len + 1 + 2 + x->g.len + 1;
     len += zx_len_xmlns_if_not_seen(c, x->ns, &pop_seen);
+
     if (c->inc_ns_len)
       len += zx_len_inc_ns(c, &pop_seen);
 
@@ -433,11 +441,11 @@ int zx_LEN_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x)
 
     for (kid = x->kids; kid; kid = ((struct zx_elem_s*)(kid->g.n)))
       len += zx_LEN_WO_any_elem(c, kid);
-
-    zx_pop_seen(pop_seen);
-    return len;
+    
+    break;
   }
-  return 0;
+  zx_pop_seen(pop_seen);
+  return len;
 }
 
 /* Called by: */
@@ -503,6 +511,13 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
   struct zx_attr_s* attr;
   struct zx_elem_s* kid;
   switch (x->g.tok) {
+  case zx_root_ELEM:
+    if (c->inc_ns)
+      zx_add_inc_ns(c, &pop_seen);
+    p = zx_enc_seen(p, pop_seen);
+    for (kid = x->kids; kid; kid = (struct zx_elem_s*)kid->g.n)
+      p = zx_ENC_WO_any_elem(c, kid, p);
+    break;
   case ZX_TOK_DATA:
     ZX_OUT_STR(p, x);
     break;
@@ -530,8 +545,8 @@ char* zx_ENC_WO_any_elem(struct zx_ctx* c, struct zx_elem_s* x, char* p)
     ZX_OUT_CH(p, '/');
     ZX_OUT_MEM(p, x->g.s, x->g.len);
     ZX_OUT_CH(p, '>');
-    zx_pop_seen(pop_seen);
   }
+  zx_pop_seen(pop_seen);
   return p;
 }
 
@@ -591,7 +606,7 @@ int zx_len_so_common(struct zx_ctx* c, struct zx_elem_s* x, struct zx_ns_s** pop
   struct zx_elem_s* ae;
   
   for (aa = x->attr; aa; aa = (struct zx_attr_s*)aa->g.n) {  /* attributes */
-    /*if (aa->g.tok != ZX_TOK_ATTR_NOT_FOUND)      continue; *** all attributes are trated same */
+    if (aa->g.tok != ZX_TOK_ATTR_NOT_FOUND)      continue; /*** all attributes are trated same */
     if (aa->ns && aa->ns->prefix_len)
       len += aa->ns->prefix_len + 1;
     len += 1 + aa->name_len + 1 + 1 + aa->g.len + 1;  /* attr="val" */
@@ -631,7 +646,7 @@ char* zx_enc_so_unknown_elems_and_content(struct zx_ctx* c, char* p, struct zx_e
       ZX_OUT_MEM(p, ae->g.s, ae->g.len);
       break;
     case ZX_TOK_AND_NS_NOT_FOUND:
-      p = zx_ENC_SO_simple_elem(c, ae, p, x->g.s, x->g.len, x->ns);
+      p = zx_ENC_SO_simple_elem(c, ae, p, ae->g.s, ae->g.len, ae->ns);
       break;
       /* default:  All known elements are already handled by SO encoder. */
     }

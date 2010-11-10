@@ -605,6 +605,11 @@
 
 #define ZXID_XASP_VERS "2.0"
 
+/*(c) What to pass in XACML PolicySetIdReference when calling PDP.
+ * Empty means not to pass PolicySetIdReference. */
+
+#define ZXID_XA_POLICY_SET_ID_REF ""  /* *** implement */
+
 /*(c) Specify XACML Attributes for SSO PEP in format ns$A$rule$b$ext */
 #define ZXID_PEPMAP "env$*$$$;subj$idpnid$rename$urn:oasis:names:tc:xacml:1.0:subject:subject-id$;subj$role$$$;rsrc$rs$rename$urn:oasis:names:tc:xacml:1.0:resource:resource-id$;act$Action$rename$urn:oasis:names:tc:xacml:1.0:action:action-id$;env$ZXID_PEPvers$$$;$cookie$del$$;$setcookie$del$$"
 

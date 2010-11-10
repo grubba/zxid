@@ -127,7 +127,8 @@ char* zx_ENC_SO_md_AdditionalMetadataLocation(struct zx_ctx* c, struct zx_md_Add
   p = zx_attr_so_enc(p, x->namespace_is_cxx_keyword, " namespace=\"", sizeof(" namespace=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -277,7 +278,8 @@ char* zx_ENC_SO_md_AffiliationDescriptor(struct zx_ctx* c, struct zx_md_Affiliat
   p = zx_attr_so_enc(p, x->validUntil, " validUntil=\"", sizeof(" validUntil=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -429,7 +431,8 @@ char* zx_ENC_SO_md_ArtifactResolutionService(struct zx_ctx* c, struct zx_md_Arti
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -564,7 +567,8 @@ char* zx_ENC_SO_md_AssertionConsumerService(struct zx_ctx* c, struct zx_md_Asser
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -699,7 +703,8 @@ char* zx_ENC_SO_md_AssertionIDRequestService(struct zx_ctx* c, struct zx_md_Asse
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -875,7 +880,8 @@ char* zx_ENC_SO_md_AttributeAuthorityDescriptor(struct zx_ctx* c, struct zx_md_A
   p = zx_attr_so_enc(p, x->validUntil, " validUntil=\"", sizeof(" validUntil=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1057,7 +1063,8 @@ char* zx_ENC_SO_md_AttributeConsumingService(struct zx_ctx* c, struct zx_md_Attr
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1204,7 +1211,8 @@ char* zx_ENC_SO_md_AttributeService(struct zx_ctx* c, struct zx_md_AttributeServ
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1372,7 +1380,8 @@ char* zx_ENC_SO_md_AuthnAuthorityDescriptor(struct zx_ctx* c, struct zx_md_Authn
   p = zx_attr_so_enc(p, x->validUntil, " validUntil=\"", sizeof(" validUntil=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1540,7 +1549,8 @@ char* zx_ENC_SO_md_AuthnQueryService(struct zx_ctx* c, struct zx_md_AuthnQuerySe
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1675,7 +1685,8 @@ char* zx_ENC_SO_md_AuthzService(struct zx_ctx* c, struct zx_md_AuthzService_s* x
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1826,7 +1837,8 @@ char* zx_ENC_SO_md_ContactPerson(struct zx_ctx* c, struct zx_md_ContactPerson_s*
   p = zx_attr_so_enc(p, x->contactType, " contactType=\"", sizeof(" contactType=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -1985,7 +1997,8 @@ char* zx_ENC_SO_md_EncryptionMethod(struct zx_ctx* c, struct zx_md_EncryptionMet
   p = zx_attr_so_enc(p, x->Algorithm, " Algorithm=\"", sizeof(" Algorithm=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2143,7 +2156,8 @@ char* zx_ENC_SO_md_EntitiesDescriptor(struct zx_ctx* c, struct zx_md_EntitiesDes
   p = zx_attr_so_enc(p, x->validUntil, " validUntil=\"", sizeof(" validUntil=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2342,7 +2356,8 @@ char* zx_ENC_SO_md_EntityDescriptor(struct zx_ctx* c, struct zx_md_EntityDescrip
   p = zx_attr_so_enc(p, x->validUntil, " validUntil=\"", sizeof(" validUntil=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2528,7 +2543,8 @@ char* zx_ENC_SO_md_Extensions(struct zx_ctx* c, struct zx_md_Extensions_s* x, ch
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2734,7 +2750,8 @@ char* zx_ENC_SO_md_IDPSSODescriptor(struct zx_ctx* c, struct zx_md_IDPSSODescrip
   p = zx_attr_so_enc(p, x->validUntil, " validUntil=\"", sizeof(" validUntil=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -2926,7 +2943,8 @@ char* zx_ENC_SO_md_KeyDescriptor(struct zx_ctx* c, struct zx_md_KeyDescriptor_s*
   p = zx_attr_so_enc(p, x->use, " use=\"", sizeof(" use=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3069,7 +3087,8 @@ char* zx_ENC_SO_md_ManageNameIDService(struct zx_ctx* c, struct zx_md_ManageName
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3204,7 +3223,8 @@ char* zx_ENC_SO_md_NameIDMappingService(struct zx_ctx* c, struct zx_md_NameIDMap
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3345,7 +3365,8 @@ char* zx_ENC_SO_md_Organization(struct zx_ctx* c, struct zx_md_Organization_s* x
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3492,7 +3513,8 @@ char* zx_ENC_SO_md_OrganizationDisplayName(struct zx_ctx* c, struct zx_md_Organi
   p = zx_attr_so_enc(p, x->lang, " xml:lang=\"", sizeof(" xml:lang=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3623,7 +3645,8 @@ char* zx_ENC_SO_md_OrganizationName(struct zx_ctx* c, struct zx_md_OrganizationN
   p = zx_attr_so_enc(p, x->lang, " xml:lang=\"", sizeof(" xml:lang=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3754,7 +3777,8 @@ char* zx_ENC_SO_md_OrganizationURL(struct zx_ctx* c, struct zx_md_OrganizationUR
   p = zx_attr_so_enc(p, x->lang, " xml:lang=\"", sizeof(" xml:lang=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -3922,7 +3946,8 @@ char* zx_ENC_SO_md_PDPDescriptor(struct zx_ctx* c, struct zx_md_PDPDescriptor_s*
   p = zx_attr_so_enc(p, x->validUntil, " validUntil=\"", sizeof(" validUntil=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -4092,7 +4117,8 @@ char* zx_ENC_SO_md_RequestedAttribute(struct zx_ctx* c, struct zx_md_RequestedAt
   p = zx_attr_so_enc(p, x->isRequired, " isRequired=\"", sizeof(" isRequired=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -4252,7 +4278,8 @@ char* zx_ENC_SO_md_RoleDescriptor(struct zx_ctx* c, struct zx_md_RoleDescriptor_
   p = zx_attr_so_enc(p, x->validUntil, " validUntil=\"", sizeof(" validUntil=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -4457,7 +4484,8 @@ char* zx_ENC_SO_md_SPSSODescriptor(struct zx_ctx* c, struct zx_md_SPSSODescripto
   p = zx_attr_so_enc(p, x->validUntil, " validUntil=\"", sizeof(" validUntil=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -4633,7 +4661,8 @@ char* zx_ENC_SO_md_ServiceDescription(struct zx_ctx* c, struct zx_md_ServiceDesc
   p = zx_attr_so_enc(p, x->lang, " xml:lang=\"", sizeof(" xml:lang=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -4764,7 +4793,8 @@ char* zx_ENC_SO_md_ServiceName(struct zx_ctx* c, struct zx_md_ServiceName_s* x, 
   p = zx_attr_so_enc(p, x->lang, " xml:lang=\"", sizeof(" xml:lang=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -4899,7 +4929,8 @@ char* zx_ENC_SO_md_SingleLogoutService(struct zx_ctx* c, struct zx_md_SingleLogo
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
@@ -5034,7 +5065,8 @@ char* zx_ENC_SO_md_SingleSignOnService(struct zx_ctx* c, struct zx_md_SingleSign
   p = zx_attr_so_enc(p, x->isDefault, " isDefault=\"", sizeof(" isDefault=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */

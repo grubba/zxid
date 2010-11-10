@@ -127,7 +127,8 @@ char* zx_ENC_SO_xml_DummyToPullLang(struct zx_ctx* c, struct zx_xml_DummyToPullL
   p = zx_attr_so_enc(p, x->lang, " lang=\"", sizeof(" lang=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    p = zx_attr_wo_enc(p, attr);
+    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+      p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
   /* root node has no begin tag */
