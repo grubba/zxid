@@ -139,7 +139,7 @@ char* zx_ENC_SO_paos_Request(struct zx_ctx* c, struct zx_paos_Request_s* x, char
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -275,7 +275,7 @@ char* zx_ENC_SO_paos_Response(struct zx_ctx* c, struct zx_paos_Response_s* x, ch
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else

@@ -127,7 +127,7 @@ char* zx_ENC_SO_exca_InclusiveNamespaces(struct zx_ctx* c, struct zx_exca_Inclus
   p = zx_attr_so_enc(p, x->PrefixList, " PrefixList=\"", sizeof(" PrefixList=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else

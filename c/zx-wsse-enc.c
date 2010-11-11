@@ -135,7 +135,7 @@ char* zx_ENC_SO_wsse_BinarySecurityToken(struct zx_ctx* c, struct zx_wsse_Binary
   p = zx_attr_so_enc(p, x->Id, " wsu:Id=\"", sizeof(" wsu:Id=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -263,7 +263,7 @@ char* zx_ENC_SO_wsse_Embedded(struct zx_ctx* c, struct zx_wsse_Embedded_s* x, ch
   p = zx_attr_so_enc(p, x->ValueType, " ValueType=\"", sizeof(" ValueType=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -399,7 +399,7 @@ char* zx_ENC_SO_wsse_KeyIdentifier(struct zx_ctx* c, struct zx_wsse_KeyIdentifie
   p = zx_attr_so_enc(p, x->Id, " wsu:Id=\"", sizeof(" wsu:Id=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -533,7 +533,7 @@ char* zx_ENC_SO_wsse_Nonce(struct zx_ctx* c, struct zx_wsse_Nonce_s* x, char* p 
   p = zx_attr_so_enc(p, x->Id, " wsu:Id=\"", sizeof(" wsu:Id=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -667,7 +667,7 @@ char* zx_ENC_SO_wsse_Password(struct zx_ctx* c, struct zx_wsse_Password_s* x, ch
   p = zx_attr_so_enc(p, x->Id, " wsu:Id=\"", sizeof(" wsu:Id=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -797,7 +797,7 @@ char* zx_ENC_SO_wsse_Reference(struct zx_ctx* c, struct zx_wsse_Reference_s* x, 
   p = zx_attr_so_enc(p, x->ValueType, " ValueType=\"", sizeof(" ValueType=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -970,7 +970,7 @@ char* zx_ENC_SO_wsse_Security(struct zx_ctx* c, struct zx_wsse_Security_s* x, ch
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1143,7 +1143,7 @@ char* zx_ENC_SO_wsse_SecurityTokenReference(struct zx_ctx* c, struct zx_wsse_Sec
   p = zx_attr_so_enc(p, x->Id, " wsu:Id=\"", sizeof(" wsu:Id=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1273,7 +1273,7 @@ char* zx_ENC_SO_wsse_TransformationParameters(struct zx_ctx* c, struct zx_wsse_T
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1405,7 +1405,7 @@ char* zx_ENC_SO_wsse_Username(struct zx_ctx* c, struct zx_wsse_Username_s* x, ch
   p = zx_attr_so_enc(p, x->Id, " wsu:Id=\"", sizeof(" wsu:Id=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1541,7 +1541,7 @@ char* zx_ENC_SO_wsse_UsernameToken(struct zx_ctx* c, struct zx_wsse_UsernameToke
   p = zx_attr_so_enc(p, x->Id, " wsu:Id=\"", sizeof(" wsu:Id=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else

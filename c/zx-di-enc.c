@@ -141,7 +141,7 @@ char* zx_ENC_SO_di_EndpointContext(struct zx_ctx* c, struct zx_di_EndpointContex
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -299,7 +299,7 @@ char* zx_ENC_SO_di_Framework(struct zx_ctx* c, struct zx_di_Framework_s* x, char
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -429,7 +429,7 @@ char* zx_ENC_SO_di_Keys(struct zx_ctx* c, struct zx_di_Keys_s* x, char* p )
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -563,7 +563,7 @@ char* zx_ENC_SO_di_Options(struct zx_ctx* c, struct zx_di_Options_s* x, char* p 
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -697,7 +697,7 @@ char* zx_ENC_SO_di_Query(struct zx_ctx* c, struct zx_di_Query_s* x, char* p )
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -835,7 +835,7 @@ char* zx_ENC_SO_di_QueryResponse(struct zx_ctx* c, struct zx_di_QueryResponse_s*
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -997,7 +997,7 @@ char* zx_ENC_SO_di_RequestedService(struct zx_ctx* c, struct zx_di_RequestedServ
   p = zx_attr_so_enc(p, x->resultsType, " resultsType=\"", sizeof(" resultsType=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1155,7 +1155,7 @@ char* zx_ENC_SO_di_SecurityContext(struct zx_ctx* c, struct zx_di_SecurityContex
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1301,7 +1301,7 @@ char* zx_ENC_SO_di_ServiceContext(struct zx_ctx* c, struct zx_di_ServiceContext_
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1453,7 +1453,7 @@ char* zx_ENC_SO_di_SvcMD(struct zx_ctx* c, struct zx_di_SvcMD_s* x, char* p )
   p = zx_attr_so_enc(p, x->svcMDID, " svcMDID=\"", sizeof(" svcMDID=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1595,7 +1595,7 @@ char* zx_ENC_SO_di_SvcMDAssociationAdd(struct zx_ctx* c, struct zx_di_SvcMDAssoc
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1729,7 +1729,7 @@ char* zx_ENC_SO_di_SvcMDAssociationAddResponse(struct zx_ctx* c, struct zx_di_Sv
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1863,7 +1863,7 @@ char* zx_ENC_SO_di_SvcMDAssociationDelete(struct zx_ctx* c, struct zx_di_SvcMDAs
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -1997,7 +1997,7 @@ char* zx_ENC_SO_di_SvcMDAssociationDeleteResponse(struct zx_ctx* c, struct zx_di
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -2131,7 +2131,7 @@ char* zx_ENC_SO_di_SvcMDAssociationQuery(struct zx_ctx* c, struct zx_di_SvcMDAss
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -2269,7 +2269,7 @@ char* zx_ENC_SO_di_SvcMDAssociationQueryResponse(struct zx_ctx* c, struct zx_di_
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -2407,7 +2407,7 @@ char* zx_ENC_SO_di_SvcMDDelete(struct zx_ctx* c, struct zx_di_SvcMDDelete_s* x, 
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -2541,7 +2541,7 @@ char* zx_ENC_SO_di_SvcMDDeleteResponse(struct zx_ctx* c, struct zx_di_SvcMDDelet
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -2675,7 +2675,7 @@ char* zx_ENC_SO_di_SvcMDQuery(struct zx_ctx* c, struct zx_di_SvcMDQuery_s* x, ch
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -2813,7 +2813,7 @@ char* zx_ENC_SO_di_SvcMDQueryResponse(struct zx_ctx* c, struct zx_di_SvcMDQueryR
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -2951,7 +2951,7 @@ char* zx_ENC_SO_di_SvcMDRegister(struct zx_ctx* c, struct zx_di_SvcMDRegister_s*
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -3093,7 +3093,7 @@ char* zx_ENC_SO_di_SvcMDRegisterResponse(struct zx_ctx* c, struct zx_di_SvcMDReg
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -3235,7 +3235,7 @@ char* zx_ENC_SO_di_SvcMDReplace(struct zx_ctx* c, struct zx_di_SvcMDReplace_s* x
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -3369,7 +3369,7 @@ char* zx_ENC_SO_di_SvcMDReplaceResponse(struct zx_ctx* c, struct zx_di_SvcMDRepl
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else

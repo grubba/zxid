@@ -171,7 +171,7 @@ char* zx_ENC_SO_tas3_Credentials(struct zx_ctx* c, struct zx_tas3_Credentials_s*
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -333,7 +333,7 @@ char* zx_ENC_SO_tas3_ESLApply(struct zx_ctx* c, struct zx_tas3_ESLApply_s* x, ch
   p = zx_enc_seen(p, pop_seen); 
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -489,7 +489,7 @@ char* zx_ENC_SO_tas3_ESLPolicies(struct zx_ctx* c, struct zx_tas3_ESLPolicies_s*
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -623,7 +623,7 @@ char* zx_ENC_SO_tas3_ESLRef(struct zx_ctx* c, struct zx_tas3_ESLRef_s* x, char* 
   p = zx_attr_so_enc(p, x->xpath, " xpath=\"", sizeof(" xpath=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
@@ -777,7 +777,7 @@ char* zx_ENC_SO_tas3_Status(struct zx_ctx* c, struct zx_tas3_Status_s* x, char* 
   p = zx_attr_so_enc(p, x->mustUnderstand, " e:mustUnderstand=\"", sizeof(" e:mustUnderstand=\"")-1);
 
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else

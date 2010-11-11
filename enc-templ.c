@@ -105,7 +105,7 @@ XMLNS_SO_SEE;
   p = zx_enc_seen(p, pop_seen); 
 ATTRS_SO_ENC;
   for (attr = x->gg.attr; attr; attr = (struct zx_attr_s*)attr->g.n)
-    if (attr->g.tok != ZX_TOK_ATTR_NOT_FOUND)
+    if (attr->g.tok == ZX_TOK_ATTR_NOT_FOUND)
       p = zx_attr_wo_enc(p, attr);
   ZX_OUT_CH(p, '>');
 #else
