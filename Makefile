@@ -1086,7 +1086,7 @@ javazxid_war:
 
 javaswigchk:
 	ls zxidjava/SWIGTYPE*.java >foo
-	grep zxidjava/SWIGTYPE Manifest | cmp - foo
+	fgrep zxidjava/SWIGTYPE Manifest | cmp - foo
 
 javaclean:
 	rm -rf zxidjava/*.$(OBJ_EXT) zxidjava/*~ zxidjava/*.so zxidjava/*.class *.class
@@ -1611,6 +1611,7 @@ winbindist:
 #     pd2tex index.pd
 #     pd2tex apache.pd
 #     pd2tex mod_auth_saml.pd
+#   make javaswigchk
 #   make dist
 #   make copydist
 #   make release

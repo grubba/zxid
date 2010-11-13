@@ -975,7 +975,7 @@ ED('XML10', 'Decode-Encode SO and WO: dirq2',  1000, 't/dirq2.xml');
 ED('XML11', 'Decode-Encode SO and WO: dia7n1', 1000, 't/dia7n1.xml');
 ED('XML12', '* Decode-Encode SO and WO: epr1', 1000, 't/epr1.xml');  # WO and SO differ
 ED('XML13', 'Decode-Encode SO and WO: wsrq1',  1000, 't/wsrq1.xml');
-ED('XML14', 'Decode-Encode SO and WO: wsrs1',  1000, 't/wsrs1.xml');
+ED('XML14', '* Decode-Encode SO and WO: wsrs1',  1000, 't/wsrs1.xml'); # WO and SO differ
 ED('XML15', 'Decode-Encode SO and WO: wsrq2',  1000, 't/wsrq2.xml');
 ED('XML16', 'Decode-Encode SO and WO: wsrs2',  1000, 't/wsrs2.xml');
 ED('XML17', 'Decode-Encode SO and WO: as-req',  1000, 't/as-req.xml');
