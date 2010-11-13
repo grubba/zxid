@@ -85,7 +85,8 @@ int zx_LEN_SO_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x )
   int len = sizeof("<dp:Request")-1 + 1 + sizeof("</dp:Request>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->itemID, sizeof("itemID")-1, &pop_seen);
 
@@ -120,7 +121,8 @@ char* zx_ENC_SO_dp_Request(struct zx_ctx* c, struct zx_dp_Request_s* x, char* p 
   ZX_OUT_TAG(p, "<dp:Request");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -154,7 +156,7 @@ struct zx_str* zx_EASY_ENC_SO_dp_Request(struct zx_ctx* c, struct zx_dp_Request_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_dp_Request(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -213,7 +215,8 @@ int zx_LEN_SO_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x )
   int len = sizeof("<dp:Response")-1 + 1 + sizeof("</dp:Response>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dp_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ref, sizeof("ref")-1, &pop_seen);
 
@@ -248,7 +251,8 @@ char* zx_ENC_SO_dp_Response(struct zx_ctx* c, struct zx_dp_Response_s* x, char* 
   ZX_OUT_TAG(p, "<dp:Response");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_dp_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -282,7 +286,7 @@ struct zx_str* zx_EASY_ENC_SO_dp_Response(struct zx_ctx* c, struct zx_dp_Respons
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_dp_Response(c, x );
   buf = ZX_ALLOC(c, len+1);

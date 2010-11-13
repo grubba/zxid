@@ -85,7 +85,8 @@ int zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xaspcd
   int len = sizeof("<xaspcd1:XACMLAuthzDecisionQuery")-1 + 1 + sizeof("</xaspcd1:XACMLAuthzDecisionQuery>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->CombinePolicies, sizeof("CombinePolicies")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Consent, sizeof("Consent")-1, &pop_seen);
@@ -156,7 +157,8 @@ char* zx_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, struct zx_xasp
   ZX_OUT_TAG(p, "<xaspcd1:XACMLAuthzDecisionQuery");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -226,7 +228,7 @@ struct zx_str* zx_EASY_ENC_SO_xaspcd1_XACMLAuthzDecisionQuery(struct zx_ctx* c, 
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_xaspcd1_XACMLAuthzDecisionQuery(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -285,7 +287,8 @@ int zx_LEN_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XACML
   int len = sizeof("<xaspcd1:XACMLPolicyQuery")-1 + 1 + sizeof("</xaspcd1:XACMLPolicyQuery>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->Consent, sizeof("Consent")-1, &pop_seen);
   len += zx_attr_so_len(c, x->Destination, sizeof("Destination")-1, &pop_seen);
@@ -353,7 +356,8 @@ char* zx_ENC_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct zx_xaspcd1_XAC
   ZX_OUT_TAG(p, "<xaspcd1:XACMLPolicyQuery");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_xaspcd1_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -420,7 +424,7 @@ struct zx_str* zx_EASY_ENC_SO_xaspcd1_XACMLPolicyQuery(struct zx_ctx* c, struct 
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_xaspcd1_XACMLPolicyQuery(c, x );
   buf = ZX_ALLOC(c, len+1);

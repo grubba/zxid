@@ -1,0 +1,37 @@
+<recursed xmlns="urn:zxid:unknown-ns-prefix:zx_elem_lookup:"><lu:Status xmlns:lu="urn:zxid:unknown-ns-prefix:zx_elem_lookup:lu"></lu:Status><data>nid=FUPjDUcKNnzTXDb_jw9nGwGZw
+dn: idpnid=FUPjDUcKNnzTXDb_jw9nGwGZw,affid=http://idp.tas3.pt:8081/zxididp
+rs: 
+msgid: urn:MS1depMo8l6o_iRNNTs4vGaZ5
+cookie: 
+setcookie: 
+sesix: 
+sespath: /var/zxid/ses/S4SvSIrkIbfLoj4XTveeRKE28
+sesid: S4SvSIrkIbfLoj4XTveeRKE28
+ssores: 0
+sigres: 0
+eid: http://sp.tas3.pt:8080/zxidservlet/wspleaf?o=B
+tgt_mailopt: maildir
+ou: Mail dept
+o: Local Mail Manufac
+authnctxlevel: -
+tgtpath: /var/zxid/user/B4mK47IblS48LWkAaU50DCr-fCg
+tgtfmt: P
+tgtnid: FUPjDUcKNnzTXDb_jw9nGwGZw
+tgtaffid: http://idp.tas3.pt:8081/zxididp
+tgta7npath: /var/zxid/log/rely/HP5IP9fE_HtNMNuTisquh7oNqg4/a7n/phr5nYW-rFYuSB5yfP-I4uNp6o8
+tgtissuer: http://idp.tas3.pt:8081/zxididp
+localpath: /var/zxid/user/B4mK47IblS48LWkAaU50DCr-fCg
+nidfmt: P
+idpnid: FUPjDUcKNnzTXDb_jw9nGwGZw
+affid: http://idp.tas3.pt:8081/zxididp
+ssoa7npath: /var/zxid/log/rely/HP5IP9fE_HtNMNuTisquh7oNqg4/a7n/phr5nYW-rFYuSB5yfP-I4uNp6o8
+issuer: http://idp.tas3.pt:8081/zxididp
+zxididp: 0.70 1289655398
+fedusername: FUPjDUcKNnzTXDb_jw9nGwGZw@idp.tas3.pt
+urn:oid:1.3.6.1.4.1.5923.1.1.1.6: FUPjDUcKNnzTXDb_jw9nGwGZw@idp.tas3.pt
+cn: Testy Foo
+idpinfo: Demo customer of Demo IdP
+urn:liberty:disco:2006-08:DiscoveryEPR: 
+urn:liberty:disco:2006-08:DiscoveryEPR: 
+
+</data></recursed>

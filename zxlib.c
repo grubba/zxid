@@ -34,22 +34,6 @@
 #include "zx.h"
 #include "c/zx-data.h"  /* Also generic zx_simple_elem, etc. */
 
-/*() Format error message describing an XML parse error. The buf argument
- * should be at leaset 256 bytes for satisfactory results. */
-
-/* Called by:  zxid_wsp_validate */
-int zx_format_parse_error(struct zx_ctx* ctx, char* buf, int siz, char* logkey)
-{
-  int at, end, start, len;
-  end = ctx->lim - ctx->bas;
-  at = MIN(ctx->p - ctx->bas, end);
-  start = MAX(0,at-30);
-  len = MIN(at+30, end) - start;    
-  len = snprintf(buf, siz, "%s: Parse error at char %d/%d (prev char, char, next char: 0x%02x 0x%02x 0x%02x)\n%.*s\n%.*s^\n", logkey, at, end, at > 0 ? ctx->p[-1]:0, ctx->p[0], at < end ? ctx->p[1]:0, len, ctx->bas + start, at-start, "-----------------------------------------------");
-  buf[siz-1] = 0; /* must terminate manually as on win32 nul is not guaranteed */
-  return len;
-}
-
 /*() ZX implementation of memmem(3) for platforms that do not have this. */
 
 /* Called by:  zxid_map_sec_mech x3 */
@@ -347,7 +331,7 @@ void zx_add_content(struct zx_ctx* c, struct zx_elem_s* x, struct zx_str* cont)
 {
   if (!cont || !x) {
     ERR("Call to zx_add_content(c,%p,%p) with null values", x, cont);
-    return x;
+    return;
   }
   cont->tok = ZX_TOK_DATA;
   cont->n = &x->kids->g;

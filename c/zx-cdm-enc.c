@@ -87,7 +87,8 @@ int zx_LEN_SO_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -181,7 +182,8 @@ char* zx_ENC_SO_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -272,7 +274,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_ADR(struct zx_ctx* c, struct zx_cdm_ADR_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_ADR(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -333,7 +335,8 @@ int zx_LEN_SO_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -379,7 +382,8 @@ char* zx_ENC_SO_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -422,7 +426,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_AGENT(struct zx_ctx* c, struct zx_cdm_AGENT_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_AGENT(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -483,7 +487,8 @@ int zx_LEN_SO_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -524,7 +529,8 @@ char* zx_ENC_SO_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -562,7 +568,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_BDAY(struct zx_ctx* c, struct zx_cdm_BDAY_s* x
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_BDAY(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -623,7 +629,8 @@ int zx_LEN_SO_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -664,7 +671,8 @@ char* zx_ENC_SO_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -702,7 +710,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_BINVAL(struct zx_ctx* c, struct zx_cdm_BINVAL_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_BINVAL(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -763,7 +771,8 @@ int zx_LEN_SO_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -812,7 +821,8 @@ char* zx_ENC_SO_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALADRURI_s* x, ch
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -858,7 +868,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_CALADRURI(struct zx_ctx* c, struct zx_cdm_CALA
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_CALADRURI(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -919,7 +929,8 @@ int zx_LEN_SO_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -968,7 +979,8 @@ char* zx_ENC_SO_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1014,7 +1026,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_CALURI(struct zx_ctx* c, struct zx_cdm_CALURI_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_CALURI(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -1075,7 +1087,8 @@ int zx_LEN_SO_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -1124,7 +1137,8 @@ char* zx_ENC_SO_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1170,7 +1184,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_CAPURI(struct zx_ctx* c, struct zx_cdm_CAPURI_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_CAPURI(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -1231,7 +1245,8 @@ int zx_LEN_SO_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -1273,7 +1288,8 @@ char* zx_ENC_SO_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CATEGORIES_s* x, 
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1312,7 +1328,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_CATEGORIES(struct zx_ctx* c, struct zx_cdm_CAT
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_CATEGORIES(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -1373,7 +1389,8 @@ int zx_LEN_SO_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -1426,7 +1443,8 @@ char* zx_ENC_SO_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1476,7 +1494,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_CLASS(struct zx_ctx* c, struct zx_cdm_CLASS_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_CLASS(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -1537,7 +1555,8 @@ int zx_LEN_SO_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -1578,7 +1597,8 @@ char* zx_ENC_SO_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1616,7 +1636,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_CRED(struct zx_ctx* c, struct zx_cdm_CRED_s* x
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_CRED(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -1677,7 +1697,8 @@ int zx_LEN_SO_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -1714,7 +1735,8 @@ char* zx_ENC_SO_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1748,7 +1770,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_CTRY(struct zx_ctx* c, struct zx_cdm_CTRY_s* x
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_CTRY(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -1809,7 +1831,8 @@ int zx_LEN_SO_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -1846,7 +1869,8 @@ char* zx_ENC_SO_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -1880,7 +1904,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_DESC(struct zx_ctx* c, struct zx_cdm_DESC_s* x
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_DESC(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -1941,7 +1965,8 @@ int zx_LEN_SO_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -2003,7 +2028,8 @@ char* zx_ENC_SO_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2062,7 +2088,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_EMAIL(struct zx_ctx* c, struct zx_cdm_EMAIL_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_EMAIL(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -2123,7 +2149,8 @@ int zx_LEN_SO_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -2160,7 +2187,8 @@ char* zx_ENC_SO_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2194,7 +2222,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_EXTADR(struct zx_ctx* c, struct zx_cdm_EXTADR_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_EXTADR(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -2255,7 +2283,8 @@ int zx_LEN_SO_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -2296,7 +2325,8 @@ char* zx_ENC_SO_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2334,7 +2364,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_EXTVAL(struct zx_ctx* c, struct zx_cdm_EXTVAL_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_EXTVAL(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -2395,7 +2425,8 @@ int zx_LEN_SO_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -2432,7 +2463,8 @@ char* zx_ENC_SO_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2466,7 +2498,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_FAMILY(struct zx_ctx* c, struct zx_cdm_FAMILY_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_FAMILY(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -2527,7 +2559,8 @@ int zx_LEN_SO_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -2576,7 +2609,8 @@ char* zx_ENC_SO_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2622,7 +2656,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_FBURL(struct zx_ctx* c, struct zx_cdm_FBURL_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_FBURL(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -2683,7 +2717,8 @@ int zx_LEN_SO_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -2720,7 +2755,8 @@ char* zx_ENC_SO_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2754,7 +2790,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_FN(struct zx_ctx* c, struct zx_cdm_FN_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_FN(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -2815,7 +2851,8 @@ int zx_LEN_SO_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -2861,7 +2898,8 @@ char* zx_ENC_SO_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -2904,7 +2942,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_GEO(struct zx_ctx* c, struct zx_cdm_GEO_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_GEO(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -2965,7 +3003,8 @@ int zx_LEN_SO_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -3002,7 +3041,8 @@ char* zx_ENC_SO_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3036,7 +3076,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_GIVEN(struct zx_ctx* c, struct zx_cdm_GIVEN_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_GIVEN(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -3097,7 +3137,8 @@ int zx_LEN_SO_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBERID_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -3138,7 +3179,8 @@ char* zx_ENC_SO_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBERID_s* x, char
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3176,7 +3218,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_JABBERID(struct zx_ctx* c, struct zx_cdm_JABBE
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_JABBERID(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -3235,7 +3277,8 @@ int zx_LEN_SO_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x )
   int len = sizeof("<cdm:KEY")-1 + 1 + sizeof("</cdm:KEY>")-1;
   if (c->inc_ns_len)
     len += zx_len_inc_ns(c, &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
 
 #else
@@ -3277,7 +3320,8 @@ char* zx_ENC_SO_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x, char* p )
   ZX_OUT_TAG(p, "<cdm:KEY");
   if (c->inc_ns)
     zx_add_inc_ns(c, &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3318,7 +3362,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_KEY(struct zx_ctx* c, struct zx_cdm_KEY_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_KEY(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -3379,7 +3423,8 @@ int zx_LEN_SO_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWORD_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -3420,7 +3465,8 @@ char* zx_ENC_SO_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWORD_s* x, char* 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3458,7 +3504,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_KEYWORD(struct zx_ctx* c, struct zx_cdm_KEYWOR
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_KEYWORD(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -3519,7 +3565,8 @@ int zx_LEN_SO_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -3589,7 +3636,8 @@ char* zx_ENC_SO_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3656,7 +3704,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_LABEL(struct zx_ctx* c, struct zx_cdm_LABEL_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_LABEL(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -3717,7 +3765,8 @@ int zx_LEN_SO_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -3758,7 +3807,8 @@ char* zx_ENC_SO_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3796,7 +3846,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_LAT(struct zx_ctx* c, struct zx_cdm_LAT_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_LAT(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -3857,7 +3907,8 @@ int zx_LEN_SO_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -3894,7 +3945,8 @@ char* zx_ENC_SO_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -3928,7 +3980,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_LINE(struct zx_ctx* c, struct zx_cdm_LINE_s* x
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_LINE(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -3989,7 +4041,8 @@ int zx_LEN_SO_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LISTMEMBER_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -4030,7 +4083,8 @@ char* zx_ENC_SO_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LISTMEMBER_s* x, 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4068,7 +4122,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_LISTMEMBER(struct zx_ctx* c, struct zx_cdm_LIS
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_LISTMEMBER(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -4129,7 +4183,8 @@ int zx_LEN_SO_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCALITY_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -4166,7 +4221,8 @@ char* zx_ENC_SO_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCALITY_s* x, char
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4200,7 +4256,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_LOCALITY(struct zx_ctx* c, struct zx_cdm_LOCAL
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_LOCALITY(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -4261,7 +4317,8 @@ int zx_LEN_SO_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -4311,7 +4368,8 @@ char* zx_ENC_SO_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4358,7 +4416,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_LOGO(struct zx_ctx* c, struct zx_cdm_LOGO_s* x
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_LOGO(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -4419,7 +4477,8 @@ int zx_LEN_SO_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -4460,7 +4519,8 @@ char* zx_ENC_SO_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4498,7 +4558,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_LON(struct zx_ctx* c, struct zx_cdm_LON_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_LON(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -4559,7 +4619,8 @@ int zx_LEN_SO_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -4600,7 +4661,8 @@ char* zx_ENC_SO_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4638,7 +4700,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_MAILER(struct zx_ctx* c, struct zx_cdm_MAILER_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_MAILER(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -4699,7 +4761,8 @@ int zx_LEN_SO_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -4736,7 +4799,8 @@ char* zx_ENC_SO_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4770,7 +4834,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_MIDDLE(struct zx_ctx* c, struct zx_cdm_MIDDLE_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_MIDDLE(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -4831,7 +4895,8 @@ int zx_LEN_SO_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -4889,7 +4954,8 @@ char* zx_ENC_SO_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -4944,7 +5010,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_N(struct zx_ctx* c, struct zx_cdm_N_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_N(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -5005,7 +5071,8 @@ int zx_LEN_SO_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKNAME_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -5042,7 +5109,8 @@ char* zx_ENC_SO_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKNAME_s* x, char
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5076,7 +5144,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_NICKNAME(struct zx_ctx* c, struct zx_cdm_NICKN
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_NICKNAME(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -5137,7 +5205,8 @@ int zx_LEN_SO_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -5174,7 +5243,8 @@ char* zx_ENC_SO_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5208,7 +5278,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_NOTE(struct zx_ctx* c, struct zx_cdm_NOTE_s* x
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_NOTE(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -5269,7 +5339,8 @@ int zx_LEN_SO_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -5310,7 +5381,8 @@ char* zx_ENC_SO_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5348,7 +5420,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_NUMBER(struct zx_ctx* c, struct zx_cdm_NUMBER_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_NUMBER(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -5409,7 +5481,8 @@ int zx_LEN_SO_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -5455,7 +5528,8 @@ char* zx_ENC_SO_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5498,7 +5572,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_ORG(struct zx_ctx* c, struct zx_cdm_ORG_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_ORG(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -5559,7 +5633,8 @@ int zx_LEN_SO_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAME_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -5596,7 +5671,8 @@ char* zx_ENC_SO_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAME_s* x, char* 
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5630,7 +5706,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_ORGNAME(struct zx_ctx* c, struct zx_cdm_ORGNAM
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_ORGNAME(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -5691,7 +5767,8 @@ int zx_LEN_SO_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNIT_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -5728,7 +5805,8 @@ char* zx_ENC_SO_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNIT_s* x, char* 
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5762,7 +5840,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_ORGUNIT(struct zx_ctx* c, struct zx_cdm_ORGUNI
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_ORGUNIT(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -5823,7 +5901,8 @@ int zx_LEN_SO_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -5860,7 +5939,8 @@ char* zx_ENC_SO_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -5894,7 +5974,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_PCODE(struct zx_ctx* c, struct zx_cdm_PCODE_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_PCODE(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -5955,7 +6035,8 @@ int zx_LEN_SO_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONETIC_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -5992,7 +6073,8 @@ char* zx_ENC_SO_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONETIC_s* x, char
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6026,7 +6108,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_PHONETIC(struct zx_ctx* c, struct zx_cdm_PHONE
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_PHONETIC(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -6087,7 +6169,8 @@ int zx_LEN_SO_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -6137,7 +6220,8 @@ char* zx_ENC_SO_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6184,7 +6268,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_PHOTO(struct zx_ctx* c, struct zx_cdm_PHOTO_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_PHOTO(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -6245,7 +6329,8 @@ int zx_LEN_SO_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm_PHYSICALACCESS_
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -6282,7 +6367,8 @@ char* zx_ENC_SO_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm_PHYSICALACCES
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6316,7 +6402,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_PHYSICALACCESS(struct zx_ctx* c, struct zx_cdm
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_PHYSICALACCESS(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -6377,7 +6463,8 @@ int zx_LEN_SO_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -6414,7 +6501,8 @@ char* zx_ENC_SO_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6448,7 +6536,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_POBOX(struct zx_ctx* c, struct zx_cdm_POBOX_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_POBOX(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -6509,7 +6597,8 @@ int zx_LEN_SO_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -6546,7 +6635,8 @@ char* zx_ENC_SO_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6580,7 +6670,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_PREFIX(struct zx_ctx* c, struct zx_cdm_PREFIX_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_PREFIX(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -6641,7 +6731,8 @@ int zx_LEN_SO_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -6682,7 +6773,8 @@ char* zx_ENC_SO_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6720,7 +6812,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_PRODID(struct zx_ctx* c, struct zx_cdm_PRODID_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_PRODID(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -6781,7 +6873,8 @@ int zx_LEN_SO_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -6818,7 +6911,8 @@ char* zx_ENC_SO_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6852,7 +6946,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_REGION(struct zx_ctx* c, struct zx_cdm_REGION_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_REGION(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -6913,7 +7007,8 @@ int zx_LEN_SO_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -6954,7 +7049,8 @@ char* zx_ENC_SO_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -6992,7 +7088,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_REV(struct zx_ctx* c, struct zx_cdm_REV_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_REV(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -7053,7 +7149,8 @@ int zx_LEN_SO_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -7090,7 +7187,8 @@ char* zx_ENC_SO_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7124,7 +7222,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_ROLE(struct zx_ctx* c, struct zx_cdm_ROLE_s* x
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_ROLE(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -7185,7 +7283,8 @@ int zx_LEN_SO_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SORT_STRING_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -7222,7 +7321,8 @@ char* zx_ENC_SO_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SORT_STRING_s* x
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7256,7 +7356,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_SORT_STRING(struct zx_ctx* c, struct zx_cdm_SO
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_SORT_STRING(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -7317,7 +7417,8 @@ int zx_LEN_SO_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -7367,7 +7468,8 @@ char* zx_ENC_SO_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7414,7 +7516,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_SOUND(struct zx_ctx* c, struct zx_cdm_SOUND_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_SOUND(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -7475,7 +7577,8 @@ int zx_LEN_SO_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -7512,7 +7615,8 @@ char* zx_ENC_SO_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7546,7 +7650,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_STREET(struct zx_ctx* c, struct zx_cdm_STREET_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_STREET(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -7607,7 +7711,8 @@ int zx_LEN_SO_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -7644,7 +7749,8 @@ char* zx_ENC_SO_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7678,7 +7784,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_SUFFIX(struct zx_ctx* c, struct zx_cdm_SUFFIX_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_SUFFIX(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -7739,7 +7845,8 @@ int zx_LEN_SO_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -7833,7 +7940,8 @@ char* zx_ENC_SO_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -7924,7 +8032,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_TEL(struct zx_ctx* c, struct zx_cdm_TEL_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_TEL(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -7985,7 +8093,8 @@ int zx_LEN_SO_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->group)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->group, sizeof("cb:group")-1, &pop_seen);
 
@@ -8022,7 +8131,8 @@ char* zx_ENC_SO_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->group)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8056,7 +8166,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_TITLE(struct zx_ctx* c, struct zx_cdm_TITLE_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_TITLE(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -8117,7 +8227,8 @@ int zx_LEN_SO_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -8158,7 +8269,8 @@ char* zx_ENC_SO_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8196,7 +8308,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_TYPE(struct zx_ctx* c, struct zx_cdm_TYPE_s* x
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_TYPE(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -8257,7 +8369,8 @@ int zx_LEN_SO_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -8298,7 +8411,8 @@ char* zx_ENC_SO_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8336,7 +8450,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_TZ(struct zx_ctx* c, struct zx_cdm_TZ_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_TZ(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -8397,7 +8511,8 @@ int zx_LEN_SO_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -8438,7 +8553,8 @@ char* zx_ENC_SO_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8476,7 +8592,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_UID(struct zx_ctx* c, struct zx_cdm_UID_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_UID(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -8537,7 +8653,8 @@ int zx_LEN_SO_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -8578,7 +8695,8 @@ char* zx_ENC_SO_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8616,7 +8734,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_URI(struct zx_ctx* c, struct zx_cdm_URI_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_URI(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -8677,7 +8795,8 @@ int zx_LEN_SO_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -8718,7 +8837,8 @@ char* zx_ENC_SO_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8756,7 +8876,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_URL(struct zx_ctx* c, struct zx_cdm_URL_s* x )
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_URL(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -8817,7 +8937,8 @@ int zx_LEN_SO_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -8858,7 +8979,8 @@ char* zx_ENC_SO_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_s* x, char* p 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -8896,7 +9018,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_USERID(struct zx_ctx* c, struct zx_cdm_USERID_
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_USERID(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -8957,7 +9079,8 @@ int zx_LEN_SO_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSION_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->ACC, sizeof("cb:ACC")-1, &pop_seen);
   len += zx_attr_so_len(c, x->ACCTime, sizeof("cb:ACCTime")-1, &pop_seen);
@@ -8998,7 +9121,8 @@ char* zx_ENC_SO_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSION_s* x, char* 
     zx_add_inc_ns(c, &pop_seen);
   if (x->ACC || x->ACCTime || x->id || x->modificationTime || x->modifier)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -9036,7 +9160,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_VERSION(struct zx_ctx* c, struct zx_cdm_VERSIO
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_VERSION(c, x );
   buf = ZX_ALLOC(c, len+1);
@@ -9097,7 +9221,8 @@ int zx_LEN_SO_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   len += zx_attr_so_len(c, x->id, sizeof("cb:id")-1, &pop_seen);
   len += zx_attr_so_len(c, x->modificationTime, sizeof("cb:modificationTime")-1, &pop_seen);
@@ -9299,7 +9424,8 @@ char* zx_ENC_SO_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s* x, char* p )
     zx_add_inc_ns(c, &pop_seen);
   if (x->id || x->modificationTime)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cb_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_cdm_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
   zx_see_attr_ns(c, x->gg.attr, &pop_seen);
   p = zx_enc_seen(p, pop_seen); 
@@ -9498,7 +9624,7 @@ struct zx_str* zx_EASY_ENC_SO_cdm_vCard(struct zx_ctx* c, struct zx_cdm_vCard_s*
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_cdm_vCard(c, x );
   buf = ZX_ALLOC(c, len+1);

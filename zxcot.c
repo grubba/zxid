@@ -243,6 +243,10 @@ static void opt(int* argc, char*** argv, char*** env)
     DD("HERE");
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
+    if (verbose>1) {
+      printf(help);
+      exit(0);
+    }
     fprintf(stderr, help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);

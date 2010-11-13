@@ -87,7 +87,8 @@ int zx_LEN_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x )
     len += zx_len_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_sbf_NS >>  ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_sbf_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
     len += zx_len_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
@@ -129,7 +130,8 @@ char* zx_ENC_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Framework_s* x, ch
     zx_add_inc_ns(c, &pop_seen);
   if (x->actor || x->mustUnderstand)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_e_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
-  zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_sbf_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
+  if (1)
+    zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_sbf_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
   if (x->Id)
     zx_add_xmlns_if_not_seen(c, zx_ns_tab+(zx_wsu_NS >> ZX_TOK_NS_SHIFT), &pop_seen);
 
@@ -168,7 +170,7 @@ struct zx_str* zx_EASY_ENC_SO_sbf_Framework(struct zx_ctx* c, struct zx_sbf_Fram
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(zx_ns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, zx_ns_tab, sizeof(zx_ns_tab));
   len = zx_LEN_SO_sbf_Framework(c, x );
   buf = ZX_ALLOC(c, len+1);

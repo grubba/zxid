@@ -109,6 +109,10 @@ struct zx_ds_Signature_s* zxsig_sign(struct zx_ctx* c, int n, struct zxsig_ref* 
     base64_fancy_raw(sha1, sizeof(sha1), b64->s, std_basis_64, 1<<31, 0, 0, '=');
     ref->DigestValue = zx_new_simple_elem(c, &ref->gg, zx_ds_DigestValue_ELEM, b64);
     si->Reference = ref;  /* *** Need to reverse the list? */
+    /* This debug print allows you to debug canonicalization reated signature
+     * problems from signer's end. The verifier's end is aroind line zxsig.c:270
+     * in zxsig_validate() */
+    D("SIG REF(#%.*s) SHA1(%.*s) CANON(%.*s)", sref->id->len, sref->id->s, b64->len, b64->s, sref->canon->len, sref->canon->s);
   }
   
   ss = zx_EASY_ENC_SO_ds_SignedInfo(c, si);
@@ -261,6 +265,8 @@ int zxsig_validate(struct zx_ctx* c, X509* cert, struct zx_ds_Signature_s* sig, 
     }
     unbase64_raw(dv->s, dv->s + dv->len, md_given, zx_std_index_64);
     if (memcmp(md_calc, md_given, siz)) {
+      /* See also debug print of original canonicalization for signature
+       * generation around line zxsig.c:115 in zxsig_sign() */
       ERR("Message digest(%.*s) mismatch at sref(%.*s), canon blob(%.*s)",
 	  dv->len, dv->s, sref->sref->URI->g.len, sref->sref->URI->g.s, ss->len, ss->s);
       ZX_FREE(c, ss);

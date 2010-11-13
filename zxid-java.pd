@@ -629,9 +629,11 @@ of the libzxidjni.so with different names.
 
   java.lang.UnsatisfiedLinkError: Given procedure could not be found
 
+  -mno-cygwin
+  -Wl,--add-stdcall-alias
 
--mno-cygwin
--Wl,--add-stdcall-alias
+No documented solution to this mystery error. It is believed to come
+from Windows dynamic linker.
 
 9.8 Logging and Debugging Tips
 ------------------------------

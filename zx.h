@@ -64,7 +64,7 @@ struct zx_ns_s {
   struct zx_el_tok* (*elem2tok)(const char* name, int len);  /* Pointer to the (xsd2sg + gperf generated) perfect hash function for determining tok in namespace */
   struct zx_el_tok* el_tab; /* Table of element names (for perfoect hash). */
   struct zx_ns_s* n;        /* For holding runtime equivalences as a linked list. */
-  struct zx_ns_s* master;   /* For a rt equivalence, pointer to the master entry. */
+  struct zx_ns_s* master;   /* For a runtime equivalence, pointer to the master entry. */
   struct zx_ns_s* seen;     /* Pointer to other "seen" namespaces with same prefix (stack) */
   struct zx_ns_s* seen_n;   /* Next prefix in seen structure (list) */
   struct zx_ns_s* seen_p;   /* Previous prefix in seen structure (list) */
@@ -322,6 +322,7 @@ void zx_known_elem_wrong_context(struct zx_ctx* c, struct zx_elem_s* x);
 const char* zx_dec_attr_val(struct zx_ctx* c, const char* func);
 void zx_dec_reverse_lists(struct zx_elem_s* x);
 void  zx_xml_parse_err(struct zx_ctx* c, char quote, const char* func, const char* msg);
+void  zx_xml_parse_dbg(struct zx_ctx* c, char quote, const char* func, const char* msg);
 const char* zx_scan_elem_start(struct zx_ctx* c, const char* func);
 int zx_scan_elem_end(struct zx_ctx* c, const char* start, const char* func);
 struct zx_ns_s* zx_xmlns_detected(struct zx_ctx* c, struct zx_elem_s* x, const char* data);

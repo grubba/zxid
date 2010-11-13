@@ -749,8 +749,9 @@ int zxid_as_call_ses(zxid_conf* cf, zxid_entity* idp_meta, zxid_cgi* cgi, zxid_s
 	&& ar_svc->Location)
       break;
 #else
+  /* *** Kludge: We use the SLO SOAP endpoint for AS. ArtifactResolution might be more natural. */
   for (ar_svc = idp_meta->ed->IDPSSODescriptor->SingleLogoutService;
-       ar_svc && ar_svc->gg.g.tok == zx_md_ArtifactResolutionService_ELEM;
+       ar_svc && ar_svc->gg.g.tok == zx_md_SingleLogoutService_ELEM;
        ar_svc = (struct zx_md_SingleLogoutService_s*)ar_svc->gg.g.n)
     if (ar_svc->Binding  && !memcmp(SAML2_SOAP, ar_svc->Binding->g.s, ar_svc->Binding->g.len)
 	/*&& ar_svc->index && !memcmp(end_pt_ix, ar_svc->index->s, ar_svc->index->len)*/

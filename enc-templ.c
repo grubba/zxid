@@ -132,7 +132,7 @@ struct zx_str* TXEASY_ENC_SO_ELNAME(struct zx_ctx* c, struct ELSTRUCT* x SIMPLET
 {
   int len;
   char* buf;
-  c->ns_tab = ZX_ALLOC(c, sizeof(TXns_tab));
+  c->ns_tab = ZX_ALLOC(c, sizeof(TXns_tab));      /* *** do we really need to make a copy? Do we still keep list of aliases? */
   memcpy(c->ns_tab, TXns_tab, sizeof(TXns_tab));
   len = TXLEN_SO_ELNAME(c, x SIMPLELENNSARG);
   buf = ZX_ALLOC(c, len+1);

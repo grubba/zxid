@@ -1,0 +1,33 @@
+zxcot  -  Circle-of-Trust management tool R0.70
+Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0
+See http://www.apache.org/licenses/LICENSE-2.0
+Send well researched bug reports to the author. Home: zxid.org
+
+Usage: zxcot [options] [dir]         # Gives listing of metadata
+       zxcot -a [options] [dir] <meta.xml
+       zxcot -b [options] [dir] <epr.xml
+       curl https://site.com/metadata.xml | zxcot -a [options] [dir]
+       zxcot -g https://site.com/metadata.xml [options] [dir]
+       zxcot -m [options] >meta.xml  # Generate our own metadata
+       zxcot -p https://site.com/metadata.xml
+  [dir]            CoT directory. Default /var/zxid/cot
+  -c CONF          Optional configuration string (default -c PATH=/var/zxid/)
+                   Most of the configuration is read from /var/zxid/zxid.conf
+  -a               Add metadata from stdin
+  -b               Register Web Service, add Service EPR from stdin
+  -bs              Register Web Service and Bootstrap, add Service EPR from stdin
+  -e endpoint abstract entid servicetype   Dump EPR to stdout.
+  -g URL           Do HTTP(S) GET to URL and add as metadata (if compiled w/libcurl)
+  -n               Dryrun. Do not actually add the metadata. Instead print it to stdout.
+  -s               Swap columns, for easier sorting by URL
+  -m               Output metadata of this installation (our own metadata)
+  -p ENTID         Print sha1 name corresponding to an entity ID.
+  -v               Verbose messages.
+  -q               Be extra quiet.
+  -d               Turn on debugging.
+  -h               This help message
+  --               End of options
+
+zxcot -e http://idp.tas3.pt:8081/zxididp?o=S 'TAS3 Default Discovery Service (ID-WSF 2.0)' http://idp.tas3.pt:8081/zxididp?o=B urn:liberty:disco:2006-08 | zxcot -b
+

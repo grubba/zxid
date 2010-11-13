@@ -185,10 +185,48 @@ static void opt(int* argc, char*** argv, char*** env)
     /* fall thru means unrecognized flag */
     if (*argc)
       fprintf(stderr, "Unrecognized flag `%s'\n", (*argv)[0]);
+    if (verbose>1) {
+      printf(help);
+      exit(0);
+    }
     fprintf(stderr, help);
     /*fprintf(stderr, "version=0x%06x rel(%s)\n", zxid_version(), zxid_version_str());*/
     exit(3);
   }
+}
+
+static int wsse_sec_validate(struct zx_e_Envelope_s* env)
+{
+  int ret;
+  int n_refs = 0;
+  struct zxsig_ref refs[ZXID_N_WSF_SIGNED_HEADERS];
+  struct zx_wsse_Security_s* sec = env->Header->Security;
+
+  if (!sec || !sec->Signature) {
+    ERR("Missing signature on <wsse:Security> %p", sec);
+    return 8;
+  }
+  if (!sec->Signature->SignedInfo || !sec->Signature->SignedInfo->Reference) {
+    ERR("Malformed signature, missing mandatory SignedInfo(%p) or Reference", sec->Signature->SignedInfo);
+    return 9;
+  }
+  
+  ZERO(refs, sizeof(refs));
+  n_refs = zxid_hunt_sig_parts(cf, n_refs, refs, sec->Signature->SignedInfo->Reference, env->Header, env->Body);
+  /*zx_see_elem_ns(cf->ctx, &refs.pop_seen, &resp->gg); *** */
+  ret = zxsig_validate(cf->ctx, 0, sec->Signature, n_refs, refs);
+  if (ret == ZXSIG_BAD_CERT) {
+    INFO("Canon sha1 of <wsse:Security> verified OK %d", ret);
+    if (verbose)
+      printf("\nCanon sha1 if <wsse:Security> verified OK %d\n", ret);
+  } else {
+    ERR("Response Signature hash validation error. Bad canonicalization? ret=%d",ret);
+    return 10;
+  }
+
+  if (ret && verbose)
+    printf("\nSIG Verified OK, zxid_sp_sso_finalize() returned %d\n", ret);
+  return ret?0:6;
 }
 
 static int sig_validate(int len, char* p)
@@ -211,7 +249,6 @@ static int sig_validate(int len, char* p)
     return 2;
   }
 
-
   if (r->Response)
     resp = r->Response;
   else if (r->Envelope && r->Envelope->Body) {
@@ -219,6 +256,12 @@ static int sig_validate(int len, char* p)
       resp = r->Envelope->Body->Response;
     else if (r->Envelope->Body->ArtifactResponse && r->Envelope->Body->ArtifactResponse->Response)
       resp = r->Envelope->Body->ArtifactResponse->Response;
+    else if (r->Envelope->Header && r->Envelope->Header->Security)
+      return wsse_sec_validate(r->Envelope);
+    else {
+      ERR("<e:Envelope> found, but no <sp:Response> element in it %d",0);
+      return 3;
+    }
   } else {
     a7n = zxid_dec_a7n(cf, r->Assertion, r->EncryptedAssertion);
     if (a7n) {
@@ -360,7 +403,7 @@ decompress:
     for (p2 = p-1; m2 < p2; --p2)
       if (!ONE_OF_4(*p2, ' ', '\t', '\015', '\012'))
 	break;
-    D("Msg_sans_ws(%.*s) start=%x end=%x", p2-m2+1, m2, *m2, *p2);
+    D("Msg_minus_whitespace(%.*s) start=%x end=%x", p2-m2+1, m2, *m2, *p2);
     
     if (*m2 == '<' && *p2 == '>') {  /* POST profiles do not compress the payload */
       len = p2 - m2 + 1;

@@ -787,7 +787,8 @@ sub ZXC {  # zxcall
     
     unlink "tmp/$tsti.out";
     
-    my $latency = call_system($test, 60, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp?o=B tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
+    #my $latency = call_system($test, 60, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp?o=B tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
+    my $latency = call_system($test, 60, $slow, "./zxcall -a http://idp.tas3.pt:8081/zxididp tastest:tas123 $arg <$file >tmp/$tsti.out 2>tmp/tst.err");
     return if $latency == -1;
     
     #if (system "/usr/bin/diff -u t/$tsti.out tmp/$tsti.out") {
@@ -890,6 +891,11 @@ if ($ascii) {
 
 ### Service testing
 
+CMD('HELP1', 'zxcall -h',   "./zxcall -v -h");
+CMD('HELP2', 'zxpasswd -h', "./zxpasswd -v -h");
+CMD('HELP3', 'zxcot -h',    "./zxcot -v -h");
+CMD('HELP4', 'zxdecode -h', "./zxdecode -v -h");
+
 CMD('CONF1', 'zxcall -dc dump config', "./zxcall -v -v -c PATH=/var/zxid/ -dc");
 
 CMD('PW1', 'zxpasswd list user', "./zxpasswd -l tastest");
@@ -912,8 +918,8 @@ CMD('SIG4',  'sig vry zxid post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEO
 CMD('SIG5',  'sig vry sm resp', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.xml");
 CMD('SIG6',  'sig vry sm post', "./zxdecode -v -s -c AUDIENCE_FATAL=0 -c TIMEOUT_FATAL=0 -c DUP_A7N_FATAL=0 -c DUP_MSG_FATAL=0 <t/siteminder-resp.b64");
 
-CMD('SIG7',  'sig vry shib resp undecl prefix deep', "./zxdecode -v -s -s <t/shib-a7n2.xml");  # fail due to inclusive ns prefix that is declared only deep in the document
-CMD('SIG8',  'sig vry ping resp', "./zxdecode -v -s -s <t/ping-resp.xml");  # Ping miscanonicalizes. Fail due to lack of InclusiveNamespace/@PrefixList="xs" (and declares namespace deep in the document)
+CMD('SIG7',  '* sig vry shib resp undecl prefix deep', "./zxdecode -v -s -s <t/shib-a7n2.xml");  # fail due to inclusive ns prefix that is declared only deep in the document
+CMD('SIG8',  '* sig vry ping resp', "./zxdecode -v -s -s <t/ping-resp.xml");  # Ping miscanonicalizes. Fail due to lack of InclusiveNamespace/@PrefixList="xs" (and declares namespace deep in the document)
 CMD('SIG9',  'sig vry ping post', "./zxdecode -v -s -s <t/ping-resp.qs");
 CMD('SIG10', 'sig vry hp a7n',    "./zxdecode -v -s -s <t/hp-a7n.xml");
 CMD('SIG11', 'sig vry hp post',   "./zxdecode -v -s -s <t/hp-idp-post-resp.cgi");
@@ -959,7 +965,7 @@ CMD('SIG37', 'sig vry', "./zxdecode -v -s -s <t/enve-sigval-err.xml");
 ED('XML1',  'Decode-Encode SO and WO: ns-bug', 1000, 't/default-ns-bug.xml');
 ED('XML2',  'Decode-Encode SO and WO: azrq1',  1000, 't/azrq1.xml');
 ED('XML3',  'Decode-Encode SO and WO: azrs1',  1000, 't/azrs1.xml');
-ED('XML4',  'Decode-Encode RIS malformed 1',   1,    't/risaris-bad.xml');
+ED('XML4',  '* Decode-Encode RIS malformed 1', 1,    't/risaris-bad.xml');  # Order of unknown elements gets inverted
 ED('XML5',  'Decode-Encode SO and WO: ana7n1', 1000, 't/ana7n1.xml');
 ED('XML6',  'Decode-Encode SO and WO: anrq1',  1000, 't/anrq1.xml');
 ED('XML7',  'Decode-Encode SO and WO: anrs1',  1000, 't/anrs1.xml');
@@ -967,7 +973,7 @@ ED('XML8',  'Decode-Encode SO and WO: dirq1',  1000, 't/dirq1.xml');
 ED('XML9',  'Decode-Encode SO and WO: dirs1',  1000, 't/dirs1.xml');
 ED('XML10', 'Decode-Encode SO and WO: dirq2',  1000, 't/dirq2.xml');
 ED('XML11', 'Decode-Encode SO and WO: dia7n1', 1000, 't/dia7n1.xml');
-ED('XML12', 'Decode-Encode SO and WO: epr1',   1000, 't/epr1.xml');
+ED('XML12', '* Decode-Encode SO and WO: epr1', 1000, 't/epr1.xml');  # WO and SO differ
 ED('XML13', 'Decode-Encode SO and WO: wsrq1',  1000, 't/wsrq1.xml');
 ED('XML14', 'Decode-Encode SO and WO: wsrs1',  1000, 't/wsrs1.xml');
 ED('XML15', 'Decode-Encode SO and WO: wsrq2',  1000, 't/wsrq2.xml');
@@ -996,7 +1002,9 @@ ED('XML30', 'Decode-Encode SO and WO: zx a7n',    10, 't/a7n-len-err.xml');
 # *** TODO: set up test SP
 # *** TODO: set up test WSP
 
+
 ZXC('ZXC-AS1', 'Authentication Service call: SSO + AZ', 1000, "-az ''", '/dev/null');
+CMD('ZXC-AS2', 'Authentication Service call: An Fail', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:tas -t urn:x-foobar -e '<foobar>Hello</foobar>' -b", 256);
 
 ZXC('ZXC-IM1', 'Identity Mapping Service call', 1000, "-im http://sp.tas3.pt:8081/zxidhrxmlwsp?o=B", '/dev/null');
 
@@ -1005,6 +1013,8 @@ ZXC('ZXC-DI2', 'List EPR cache', 1, "-l", '/dev/null');
 
 ZXC('ZXC-WS1', 'AS + WSF call: idhrxml',  1000, "-t urn:id-sis-idhrxml:2007-06:dst-2.1", 't/id-hrxml-rq.xml');
 ZXC('ZXC-WS2', 'AS + WSF call: x-foobar', 1000, "-t urn:x-foobar", 't/x-foobar-rq.xml');
+
+CMD('ZXC-WS3', 'AS + WSF call leaf (x-recurs)', "./zxcall -d -a http://idp.tas3.pt:8081/zxididp test:foo -t x-recurs -e '<foobar>Hello</foobar>' -b");
 
 # *** TODO: add through GUI testing for SSO
 # *** TODO: via zxidhlo

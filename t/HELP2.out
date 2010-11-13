@@ -1,0 +1,26 @@
+zxpasswd  -  Password creation and user management tool R0.70
+Copyright (c) 2009-2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0
+See http://www.apache.org/licenses/LICENSE-2.0
+Send well researched bug reports to the author. Home: zxid.org
+
+Usage: zxpasswd [options] user [udir] <passwd    # Set user's password
+       zxpasswd [options] -c user [udir] <passwd # Create user and set password
+       zxpasswd [options] -a user [udir] <passwd # Authenticate as user using pw
+       zxpasswd [options] -l [user [udir]]       # List information about user
+  [udir]           Specify zxididp user directory. Default /var/zxid/idpuid
+  -c               Create user
+  -at 'attr: val'  Append attribute(s) to .bs/.at
+  -s exist_uid     Symlink user to an existing user (e.g. yubikey alias)
+  -a               Authenticate as user. exit(2) value 0 means success
+  -l               List user info. If no user is specified, lists all users.
+  -t N             Choose password hash type: 0=plain, 1=MD5 (default), y=yubikey
+  -v               Verbose messages.
+  -q               Be extra quiet.
+  -d               Turn on debugging.
+  -h               This help message
+  --               End of options
+
+For Yubikey (yubico.com) authentication (-a), supply the yubikey ticket
+as user and omit the password. For creating account or changing password,
+use -t y to indicate that you pass yubikey AES128 shared key in hex as password.

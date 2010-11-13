@@ -1,0 +1,41 @@
+zxcall  -  Web Service Client tool R0.70
+SAML 2.0 and ID-WSF 2.0 are standards for federated identity and web services.
+Copyright (c) 2010 Sampo Kellomaki (sampo@iki.fi), All Rights Reserved.
+NO WARRANTY, not even implied warranties. Licensed under Apache License v2.0
+See http://www.apache.org/licenses/LICENSE-2.0
+Send well researched bug reports to the author. Home: zxid.org
+
+Usage: zxcall [options] -s SESID -t SVCTYPE <soap_req_body.xml >soap_resp.xml
+       zxcall [options] -a IDP USER:PW -t SVCTYPE <soap_req_body.xml >soap_resp.xml
+       zxcall [options] -a IDP USER:PW -t SVCTYPE -nd # Discovery only
+       zxcall [options] -a IDP USER:PW   # Authentication only
+       zxcall [options] -s SESID -im EID # Identity Mapping to EID
+       zxcall [options] -s SESID -l      # List session cache
+  -c CONF          Optional configuration string (default -c PATH=/var/zxid/)
+                   Most of the configuration is read from /var/zxid/zxid.conf
+  -s SESID         Session ID referring to a directory in /var/zxid/ses
+                   Use zxidhlo to do SSO and then cut and paste from there.
+  -a IDP USER:PW   Use Authentication service to authenticate the user and
+                   create session. IDP is IdP's Entity ID. This is alternative to -s
+  -t SVCTYPE       Service Type URI. Used for discovery. Mandatory (omitting -t
+                   causes authorization only mode, provided that -az was specified).
+  -u URL           Optional endpoint URL or ProviderID. Discovery must match this.
+  -di DISCOOPTS    Optional discovery options. Query string format.
+  -din N           Discovery index (default: 1=pick first).
+  -az AZCREDS      Optional authorization credentials. Query string format.
+                   N.B. For authorization to work PDP_URL configuration option is needed.
+  -im DSTEID       Map session's login identity to identity at some other SP
+  -e SOAPBODY      Pass SOAP body as argument (default is to read from STDIN)
+  -b               In response, only return content of SOAP body, omitting Envelope and Body.
+  -nd              Discovery only (you need to specify -t SVCTYPE as well)
+  -n               Dryrun. Do not actually make call. Instead print it to stdout.
+  -l               List EPR cache (you need to specify -s SEDID or -a as well)
+  -v               Verbose messages.
+  -q               Be extra quiet.
+  -d               Turn on debugging.
+  -dc              Dump config.
+  -h               This help message
+  --               End of options
+
+echo '<query>Foo</query>' | zxcall -a https://idp.tas3.eu/zxididp?o=B user:pw -t urn:x-demo-svc
+

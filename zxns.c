@@ -160,6 +160,7 @@ static struct zx_ns_s* zx_xmlns_decl(struct zx_ctx* c, int prefix_len, const cha
   ns = zx_locate_ns_by_url(c, url_len, url);
   if (!ns) {
     D("Namespace(%.*s) not found by URL(%.*s) (probably unknown or wrong namespace URL)", prefix_len, prefix, url_len, url);
+    zx_xml_parse_dbg(c, '-', __FUNCTION__, "Namespace here");
     ns = zx_locate_ns_by_prefix(c, prefix_len, prefix);
     if (!ns) {
       /* Namespace not known by compiled in schemata. */
