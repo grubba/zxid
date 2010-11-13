@@ -979,11 +979,12 @@ ED('XML21', 'Decode-Encode SO and WO: provisioning-req',  10, 't/pmdreg-req.xml'
 ED('XML22', 'Decode-Encode SO and WO: provisioning-resp', 10, 't/pmdreg-resp.xml');
 ED('XML23', 'Decode-Encode SO and WO: pds-create-uc1',    10, 't/pds-create-uc1.xml');
 ED('XML24', 'Decode-Encode SO and WO: pds-query-uc1',     10, 't/pds-query-uc1.xml');
-ED('XML25', 'Decode-Encode SO and WO: AdvClient hoard-trnsnt', 10, 't/ac-hoard-tnsnt.xml');
-ED('XML26', 'Decode-Encode SO and WO: AdvClient ming-trnsnt',  10, 't/ac-ming-tnsnt.xml');
+ED('XML25', 'Decode-Encode SO and WO: AdvClient hoard-trnsnt', 10, 't/ac-hoard-trnsnt.xml');
+ED('XML26', 'Decode-Encode SO and WO: AdvClient ming-trnsnt',  10, 't/ac-ming-trnsnt.xml');
 ED('XML27', 'Decode-Encode SO and WO: AdvClient ming-prstnt',  10, 't/ac-ming-prstnt.xml');
 ED('XML28', 'Decode-Encode SO and WO: AdvClient ming-ntt',     10, 't/ac-ming-ntt.xml');
 ED('XML29', 'Decode-Encode SO and WO: AdvClient ntt-fixed',    10, 't/ac-ming-ntt-fixed.xml');
+ED('XML30', 'Decode-Encode SO and WO: zx a7n',    10, 't/a7n-len-err.xml');
 
 # *** TODO: add EncDec for all other types of protocol messages
 # *** TODO: add specific SSO signature validation tests
