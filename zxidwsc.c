@@ -379,7 +379,7 @@ static int zxid_wsc_prep_secmech(zxid_conf* cf, zxid_ses* ses, zxid_epr* epr, st
 
 /*(i) zxid_wsc_call() implements the main low level ID-WSF web service call
  * logic, including preparation of SOAP headers, use of sec mech (e.g.
- * preparation of wsse:Security header and signing of appropriate compoments
+ * preparation of wsse:Security header and signing of appropriate components
  * of the message), and sequencing of the call. In particular, it is
  * possible that WSP requests user interaction and thus the caller web
  * application will need to perform a redirect and then later call this
