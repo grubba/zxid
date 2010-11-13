@@ -247,10 +247,6 @@ public class zxidappdemo extends HttpServlet {
 		    out.print("</textarea>\n");
 		}
 	    }
-
-
-	    out.print(ret);
-	    out.print("</textarea>");
 	}
 	
 	// Demo another web service call, this time the service by zxidwspdemo.java

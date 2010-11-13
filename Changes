@@ -83,7 +83,7 @@ zxid-0.70:: 13.11.2010
     - Moved to per namespace elem hashes and namespace hash
     - Fairly complete re-engineering/re-factoring of the generated enc/dec code
     - Fix SO encoder
-    - Add more test cases
+    - Added more test cases
 
 zxid-0.69:: 20.10.2010
     - Added DeployingZxidServlets.txt, ZxidSSOFilter.java, and ZxidServlet.java by Stijn Lievens

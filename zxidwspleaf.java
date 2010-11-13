@@ -121,7 +121,7 @@ public class zxidwspleaf extends HttpServlet {
 
 	ret = zxidjni.wsp_decorate(cf, ses, null,
 				   "<recursed>"
-				   + "<lu:Status code=\"OK\"></lu:Status>"
+				   + "<lu:Status code=\"OK\">ok</lu:Status>"
 				   + "<data>nid="+nid+"\n"+ldif+"\n</data>" +
 				   "</recursed>");
 	
